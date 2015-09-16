@@ -1,58 +1,51 @@
 import sbt._
-import Keys._
+import sbt.Keys._
+import uk.gov.hmrc.SbtAutoBuildPlugin
+import uk.gov.hmrc.versioning.SbtGitVersioning
 
 object HmrcBuild extends Build {
 
-  import uk.gov.hmrc.PublishingSettings._
-  import uk.gov.hmrc.NexusPublishing._
-  import uk.gov.hmrc.DefaultBuildSettings
-  import scala.util.Properties.envOrElse
-  import DefaultBuildSettings._
-  import uk.gov.hmrc.{SbtBuildInfo, ShellPrompt}
-  import Dependencies._
+  import BuildDependencies._
+  import uk.gov.hmrc.DefaultBuildSettings._
 
-  val nameApp = "cato-calculators"
-  val versionApp = envOrElse("CATO_CALCULATORS_VERSION", "999-SNAPSHOT")
+  val appName = "ct-calculations"
 
-  val appDependencies = Seq(
-    Compile.playJson,
-
-    Test.scalaTest,
-    Test.pegdown,
-    Test.scalaCheck
-  )
-
-  lazy val calculators = (project in file("."))
-    .settings(name := nameApp)
-    .settings(version := versionApp)
-    .settings(scalaSettings : _*)
-    .settings(defaultSettings() : _*)
+  lazy val PlayEvents = (project in file("."))
+    .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning)
     .settings(
+      name := appName,
+      scalaVersion := "2.11.7",
       targetJvm := "jvm-1.7",
-      shellPrompt := ShellPrompt(versionApp),
-      libraryDependencies ++= appDependencies,
-      crossScalaVersions := Seq("2.11.2", "2.10.4")
+      crossScalaVersions := Seq("2.11.7"),
+      libraryDependencies ++= Seq(
+        Compile.playJson,
+        Test.scalaTest,
+        Test.pegdown,
+        Test.mockito,
+        Test.hamcrest
+      ),
+      Developers()
     )
-    .settings(publishAllArtefacts: _*)
-    .settings(nexusPublishingSettings: _*)
-    .settings(SbtBuildInfo(): _*)
 }
 
-object Dependencies {
+private object BuildDependencies {
 
   object Compile {
-    val playJson = "com.typesafe.play" %% "play-json" % "2.3.2" % "provided"
+    val playJson = "com.typesafe.play" %% "play-json" % "2.3.4" % "provided"
   }
 
   sealed abstract class Test(scope: String) {
-
-    val scalaTest = "org.scalatest" %% "scalatest" % "2.2.0" % scope
-    val scalaCheck = "org.scalacheck" %% "scalacheck" % "1.11.5" % scope
-    val pegdown = "org.pegdown" % "pegdown" % "1.4.2" % scope
+    val scalaTest = "org.scalatest" %% "scalatest" % "2.2.4" % scope
+    val mockito = "org.mockito" % "mockito-all" % "1.9.5" % scope
+    val pegdown = "org.pegdown" % "pegdown" % "1.5.0" % scope
+    val hamcrest = "org.hamcrest" % "hamcrest-all" % "1.3" % scope
   }
 
   object Test extends Test("test")
 
-  object IntegrationTest extends Test("it")
+}
 
+object Developers {
+
+  def apply() = developers := List[Developer]()
 }
