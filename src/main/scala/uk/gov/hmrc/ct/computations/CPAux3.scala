@@ -1,0 +1,13 @@
+package uk.gov.hmrc.ct.computations
+
+import uk.gov.hmrc.ct.box.{Calculated, CtInteger, CtBoxIdentifier}
+import uk.gov.hmrc.ct.computations.calculations.LowEmissionCarsCalculator
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+
+case class CPAux3(value: Int) extends CtBoxIdentifier("SpecialRatePoolSum") with CtInteger
+
+object CPAux3 extends Calculated[CPAux3, ComputationsBoxRetriever] with LowEmissionCarsCalculator  {
+
+  override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CPAux3 =
+    CPAux3(getSpecialRatePoolSum(fieldValueRetriever.retrieveLEC01()))
+}

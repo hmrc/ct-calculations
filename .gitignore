@@ -1,0 +1,8 @@
+.idea
+target
+logs
+lib_managed
+*.ipr
+*.iws
+*.iml
+*.DS_Store

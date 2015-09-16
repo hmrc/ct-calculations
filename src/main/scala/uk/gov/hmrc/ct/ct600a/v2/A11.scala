@@ -1,0 +1,15 @@
+package uk.gov.hmrc.ct.ct600a.v2
+
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalBigDecimal}
+import uk.gov.hmrc.ct.ct600.v2.calculations.LoansToParticipatorsCalculator
+import uk.gov.hmrc.ct.ct600a.v2.retriever.CT600ABoxRetriever
+
+case class A11(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "A11 - Relief due now for loans repaid, released or written off more than nine months after the end of the period")
+ with CtOptionalBigDecimal
+
+object A11 extends Calculated[A11, CT600ABoxRetriever] with LoansToParticipatorsCalculator {
+
+  override def calculate(fieldValueRetriever: CT600ABoxRetriever): A11 = {
+    calculateA11(fieldValueRetriever.retrieveA10())
+  }
+}
