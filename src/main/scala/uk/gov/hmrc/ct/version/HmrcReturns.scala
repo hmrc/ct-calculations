@@ -33,6 +33,10 @@ object HmrcReturns {
     override def key(): String = "CT600j"
   }
 
+  case object HmrcUploadedAccounts extends ReturnType with Accounts {
+    override def key(): String = "HmrcUploadedAccounts"
+  }
+
   case object HmrcMicroEntityAccounts extends ReturnType with Accounts {
     override def key(): String = "HmrcMicroEntityAccounts"
   }
