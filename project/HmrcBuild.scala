@@ -10,7 +10,7 @@ object HmrcBuild extends Build {
 
   val appName = "ct-calculations"
 
-  lazy val PlayEvents = (project in file("."))
+  lazy val CtCalculations = (project in file("."))
     .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning)
     .settings(
       name := appName,

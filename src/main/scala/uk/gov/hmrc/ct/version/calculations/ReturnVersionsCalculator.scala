@@ -85,6 +85,8 @@ trait ReturnVersionsCalculator {
 
       case (HMRCFiling(true), _, StatutoryAccountsFiling(true)) => Set(Return(HmrcStatutoryAccounts, AccountsVersion1))
 
+      case (HMRCFiling(true), MicroEntityFiling(false), StatutoryAccountsFiling(false)) => Set(Return(HmrcUploadedAccounts, UploadedAccounts))
+
       case _ => Set.empty
     }
 

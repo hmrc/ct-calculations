@@ -24,8 +24,8 @@ import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.version.CoHoAccounts.{CoHoMicroEntityAbridgedAccounts, CoHoMicroEntityAccounts, CoHoStatutoryAbbreviatedAccounts, CoHoStatutoryAccounts}
 import uk.gov.hmrc.ct.version.CoHoVersions.AccountsVersion1
 import uk.gov.hmrc.ct.version.HmrcReturns._
@@ -175,7 +175,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe expectedResult
       }
 
-      "return HMRC version for abbreviated statutory accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculator {
+      "return HMRC versions for abbreviated statutory accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculator {
         val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
                                  Return(CT600, CT600Version2),
                                  Return(CT600a, CT600Version2),
@@ -188,7 +188,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                 abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe expectedResult
       }
 
-      "return HMRC version for abbreviated statutory accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculator {
+      "return HMRC versions for abbreviated statutory accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculator {
         val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
                                  Return(CT600, CT600Version3),
                                  Return(CT600a, CT600Version3),
@@ -199,6 +199,37 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                 hmrcFiling = HMRCFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true),
                                 abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe expectedResult
+      }
+
+      "return HMRC versions for uploaded accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculator {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600, CT600Version2),
+          Return(CT600a, CT600Version2),
+          Return(CT600j, CT600Version2),
+          Return(Computations, ComputationsCT20141001))
+        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-03-31"))),
+          cp2 = Some(CP2(LocalDate.parse("2015-12-31"))),
+          hmrcFiling = HMRCFiling(true),
+          microEntityFiling = MicroEntityFiling(false),
+          abridgedFiling = AbridgedFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(false),
+          abbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)) shouldBe expectedResult
+      }
+
+
+      "return HMRC versions for uploaded accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculator {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+                                 Return(CT600, CT600Version3),
+                                 Return(CT600a, CT600Version3),
+                                 Return(CT600j, CT600Version3),
+                                 Return(Computations, ComputationsCT20150201))
+        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-04-01"))),
+                                cp2 = Some(CP2(LocalDate.parse("2016-03-31"))),
+                                hmrcFiling = HMRCFiling(true),
+                                microEntityFiling = MicroEntityFiling(false),
+                                abridgedFiling = AbridgedFiling(false),
+                                statutoryAccountsFiling = StatutoryAccountsFiling(false),
+                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)) shouldBe expectedResult
       }
     }
 
