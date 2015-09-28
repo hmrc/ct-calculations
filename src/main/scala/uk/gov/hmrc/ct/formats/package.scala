@@ -16,8 +16,10 @@
 
 package uk.gov.hmrc.ct
 
-import play.api.libs.json.Format
+import play.api.libs.json.{Format, Json}
 import uk.gov.hmrc.ct.box.formats._
+import uk.gov.hmrc.ct.ct600a.v3.WriteOff
+import uk.gov.hmrc.ct.domain.CompanyTypes.BaseCompanyType
 
 package object formats {
 
@@ -45,6 +47,8 @@ package object formats {
 
   implicit val productNameFormat: Format[ProductName] = new StringFormat[ProductName](ProductName.apply)
 
+  implicit val companyTypeFormat: Format[CompanyType] = Json.format[CompanyType]
+
   implicit val abbreviatedAccountsFilingFormat: Format[AbbreviatedAccountsFiling] = new BooleanFormat[AbbreviatedAccountsFiling](AbbreviatedAccountsFiling.apply)
 
   implicit val abridgedFilingFormat: Format[AbridgedFiling] = new BooleanFormat[AbridgedFiling](AbridgedFiling.apply)
@@ -56,7 +60,6 @@ package object formats {
   implicit val microEntityFilingFormat: Format[MicroEntityFiling] = new BooleanFormat[MicroEntityFiling](MicroEntityFiling.apply)
 
   implicit val statutoryAccountsFilingFormat: Format[StatutoryAccountsFiling] = new BooleanFormat[StatutoryAccountsFiling](StatutoryAccountsFiling.apply)
-
 
   implicit val cato21Format: Format[CATO21] = new BigDecimalFormat[CATO21](CATO21.apply)
 

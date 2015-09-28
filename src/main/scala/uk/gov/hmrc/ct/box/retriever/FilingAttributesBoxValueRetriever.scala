@@ -24,6 +24,8 @@ trait FilingAttributesBoxValueRetriever extends BoxRetriever {
 
   def retrieveProductName(): ProductName
 
+  def retrieveCompanyType(): CompanyType
+
   def retrieveAbbreviatedAccountsFiling(): AbbreviatedAccountsFiling
 
   def retrieveAbridgedFiling(): AbridgedFiling

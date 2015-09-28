@@ -76,6 +76,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           override def retrieveAC205(): AC205 = ???
 
           override def retrieveProductName(): ProductName = ???
+          override def retrieveCompanyType(): CompanyType = ???
           override def retrieveAbbreviatedAccountsFiling(): AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)
           override def retrieveStatutoryAccountsFiling(): StatutoryAccountsFiling = StatutoryAccountsFiling(false)
           override def retrieveMicroEntityFiling(): MicroEntityFiling = MicroEntityFiling(true)
@@ -406,6 +407,8 @@ class ComputationsBoxRetrieverForTest extends ComputationsBoxRetriever with Fili
   override def generateValues: Map[String, CtValue[_]] = ???
 
   override def retrieveProductName(): ProductName = ???
+
+  override def retrieveCompanyType(): CompanyType = ???
 
   override def retrieveCP36(): CP36 = ???
 
