@@ -15,7 +15,6 @@ object HmrcBuild extends Build {
     .settings(
       name := appName,
       scalaVersion := "2.11.7",
-      targetJvm := "jvm-1.7",
       crossScalaVersions := Seq("2.11.7"),
       libraryDependencies ++= Seq(
         Compile.playJson,
