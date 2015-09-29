@@ -45,7 +45,7 @@ object HmrcReturns {
     override def key(): String = "HmrcStatutoryAccounts"
   }
 
-  val returns: Set[ReturnType] = Set(Computations, CT600, CT600a, CT600j, HmrcMicroEntityAccounts, HmrcStatutoryAccounts)
+  val returns: Set[ReturnType] = Set(Computations, CT600, CT600a, CT600j, HmrcMicroEntityAccounts, HmrcStatutoryAccounts, HmrcUploadedAccounts)
 
   def fromKey(key: String): ReturnType = {
     returns.find(_.key() == key).getOrElse(throw new IllegalArgumentException(s"Unknown key for HmrcReturn: $key"))
