@@ -34,7 +34,7 @@ class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
       val retriever = new FilingAttributesBoxValueRetrieverForTest
       val result = FilingAttributesBoxValueRetriever.generateValues(retriever)
       result("ProductName") shouldBe retriever.retrieveProductName()
-      result("CompanyType") shouldBe retriever.retrieveCompanyType()
+      result("FilingCompanyType") shouldBe retriever.retrieveCompanyType()
 
       result("AbbreviatedAccountsFiling") shouldBe retriever.retrieveAbbreviatedAccountsFiling()
       result("StatutoryAccountsFiling") shouldBe retriever.retrieveStatutoryAccountsFiling()
@@ -53,7 +53,7 @@ class FilingAttributesBoxValueRetrieverForTest extends FilingAttributesBoxValueR
 
   override def retrieveProductName(): ProductName = ProductName("productType")
 
-  override def retrieveCompanyType(): CompanyType = CompanyType(CompanyTypes.UkTradingCompany)
+  override def retrieveCompanyType(): FilingCompanyType = FilingCompanyType(CompanyTypes.UkTradingCompany)
 
   override def retrieveAbbreviatedAccountsFiling(): AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)
 

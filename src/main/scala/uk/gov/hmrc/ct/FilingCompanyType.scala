@@ -17,6 +17,6 @@
 package uk.gov.hmrc.ct
 
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtValue, Input}
-import uk.gov.hmrc.ct.domain.CompanyTypes.BaseCompanyType
+import uk.gov.hmrc.ct.domain.CompanyTypes.CompanyType
 
-case class CompanyType(value: BaseCompanyType) extends CtBoxIdentifier("Company Type") with CtValue[BaseCompanyType] with Input
+case class FilingCompanyType(value: CompanyType) extends CtBoxIdentifier("Company Type") with CtValue[CompanyType] with Input
