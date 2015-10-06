@@ -39,6 +39,8 @@ package object formats {
 
   implicit val BFQ1Format: Format[BFQ1] = new OptionalBooleanFormat[BFQ1](BFQ1.apply)
 
+  implicit val PAYEEQ1Format: Format[PAYEEQ1] = new OptionalBooleanFormat[PAYEEQ1](PAYEEQ1.apply)
+
   implicit val B620Format: Format[B620] = new OptionalIntegerFormat[B620](B620.apply)
 
   implicit val B515Format: Format[B515] = new BigDecimalFormat[B515](B515.apply)
