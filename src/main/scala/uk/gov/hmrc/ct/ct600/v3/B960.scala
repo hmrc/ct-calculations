@@ -19,7 +19,9 @@ package uk.gov.hmrc.ct.ct600.v3
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-case class B860(value: Option[Int]) extends CtBoxIdentifier("Repayment amount upper bound") with CtOptionalInteger with Input with ValidatableBox[CT600BoxRetriever] {
 
-  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = validateIntegerAsMandatory("B860", this)
+case class B960(value: Option[String]) extends CtBoxIdentifier("payee address")
+with CtOptionalString with Input with ValidatableBox[CT600BoxRetriever] {
+
+  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = Set.empty // validateBooleanAsMandatory("B935", this)
 }

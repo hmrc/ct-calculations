@@ -43,6 +43,15 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
+//  protected def validateStringAsDependentMandatory(boxId: String, box: CtOptionalString, dependentBox:CtOptionalBoolean): Set[CtValidation] = {
+//    (dependentBox.value, box.value) match {
+////      case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
+////      case _ => Set()
+//      case (Some(true))
+//      case  (None, None) => Set()
+//    }
+//  }
+
   protected def validateStringAsBlank(boxId: String, box: CtOptionalString): Set[CtValidation] = {
     box.value match {
       case None => Set()
@@ -84,4 +93,6 @@ trait ValidatableBox[T <: BoxRetriever] {
       case _ => Set()
     }
   }
+
+
 }
