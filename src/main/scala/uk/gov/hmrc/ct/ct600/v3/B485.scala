@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.retriever
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.accounts._
-import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, BoxValues}
+import uk.gov.hmrc.ct.box.{CtBoolean, Calculated, CtBoxIdentifier}
+import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
+import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 
-object AccountsBoxRetriever extends BoxValues[AccountsBoxRetriever]
+case class B485(value: Boolean) extends CtBoxIdentifier("Put an 'X' in box 485 if you completed box A70 in the supplementary pages CT600A") with CtBoolean
 
-trait AccountsBoxRetriever extends BoxRetriever {
-  def retrieveAC1(): AC1
-  def retrieveAC3(): AC3
-  def retrieveAC4(): AC4
+object B485 extends CorporationTaxCalculator with Calculated[B485, CT600ABoxRetriever] {
 
-  def retrieveAC12(): AC12
 
-  def retrieveAC205(): AC205
-  def retrieveAC206(): AC206
+  override def calculate(fieldValueRetriever: CT600ABoxRetriever): B485 = {
+    calculateB485(fieldValueRetriever.retrieveA70())
+  }
+
 }

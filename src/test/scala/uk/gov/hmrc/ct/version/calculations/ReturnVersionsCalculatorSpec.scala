@@ -73,6 +73,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           override def retrieveAC1(): AC1 = ???
           override def retrieveAC206(): AC206 = ???
           override def retrieveAC3(): AC3 = ???
+          override def retrieveAC12(): AC12 = ???
           override def retrieveAC205(): AC205 = ???
 
           override def retrieveProductName(): ProductName = ???
