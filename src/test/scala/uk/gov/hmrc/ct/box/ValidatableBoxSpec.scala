@@ -126,6 +126,24 @@ class ValidatableBoxSpec  extends WordSpec with Matchers with ValidatableBox[Box
     }
   }
 
+  "validateStringByLength" should {
+    "pass if in range #1" in {
+      validateStringByLength("testBox", testOptStringBox(Some("1234567")), 7,8) shouldBe Set()
+    }
+
+    "pass if in range #2" in {
+      validateStringByLength("testBox", testOptStringBox(Some("12345678")), 7,8) shouldBe Set()
+    }
+
+    "return error if too short" in {
+      validateStringByLength("testBox", testOptStringBox(Some("123456")), 7,8) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.text.sizeRange"))
+    }
+
+    "return error if too long" in {
+      validateStringByLength("testBox", testOptStringBox(Some("123456789")), 7,8) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.text.sizeRange"))
+    }
+  }
+
 
   case class testOptBooleanBox(value: Option[Boolean]) extends CtBoxIdentifier("testBox") with CtOptionalBoolean{}
   case class testOptIntegerBox(value: Option[Int]) extends CtBoxIdentifier("testBox") with CtOptionalInteger{}

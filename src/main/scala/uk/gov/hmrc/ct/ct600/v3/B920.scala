@@ -20,8 +20,16 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 
-case class B920(value: Option[String]) extends CtBoxIdentifier("bank/BS name")
-with CtOptionalString with Input with ValidatableBox[CT600BoxRetriever] {
+case class B920(value: String) extends CtBoxIdentifier("bank/BS name")
+with CtString with Input with ValidatableBox[CT600BoxRetriever] {
 
-  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = Set.empty // TODO validateBooleanAsMandatory("B920", this)
+  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
+    val allorNoneGroup:Set[CtString] = Set(
+      boxRetriever.retrieveB920(),
+      boxRetriever.retrieveB925(),
+      boxRetriever.retrieveB930(),
+      boxRetriever.retrieveB935()
+    )
+    validateAllFilledOrEmptyStrings("B920",allorNoneGroup)
+  }
 }

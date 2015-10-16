@@ -20,8 +20,16 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 
-case class B925(value: Option[String]) extends CtBoxIdentifier("sort code")
-with CtOptionalString with Input with ValidatableBox[CT600BoxRetriever] {
+case class B925(value: String) extends CtBoxIdentifier("sort code")
+with CtString with Input with ValidatableBox[CT600BoxRetriever] {
 
-  def validate(boxRetriever: CT600BoxRetriever):  Set[CtValidation] = Set.empty // TODO add validation
+  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
+    val allorNoneGroup:Set[CtString] = Set(
+      boxRetriever.retrieveB920(),
+      boxRetriever.retrieveB925(),
+      boxRetriever.retrieveB930(),
+      boxRetriever.retrieveB935()
+    )
+    validateAllFilledOrEmptyStrings("B925",allorNoneGroup)
+  }
 }

@@ -20,6 +20,11 @@ import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 
 trait ValidatableBox[T <: BoxRetriever] {
 
+  val validNonForeignLessRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"!%\\*_\\+:@<>\\?=;]*"
+  val validNonForeignMoreRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"]*"
+  val SortCodeValidChars = """^[0-9]{6}$"""
+  val AccountNumberValidChars = """^[0-9]{8}$"""
+
   def validate(boxRetriever: T): Set[CtValidation]
 
   protected def validateBooleanAsMandatory(boxId: String, box: CtOptionalBoolean): Set[CtValidation] = {
@@ -40,6 +45,17 @@ trait ValidatableBox[T <: BoxRetriever] {
     box.value match {
       case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
       case _ => Set()
+    }
+  }
+
+  protected def validateAllFilledOrEmptyStrings(boxId: String, allBoxes: Set[CtString]): Set[CtValidation] = {
+    val allEmpty = allBoxes.count(_.value.isEmpty) == allBoxes.size
+    val allNonEmpty = allBoxes.count(_.value.nonEmpty) == allBoxes.size
+
+    if(allEmpty || allNonEmpty) {
+      Set()
+    } else {
+      Set(CtValidation(Some(boxId), s"error.$boxId.allornone"))
     }
   }
 
@@ -80,6 +96,17 @@ trait ValidatableBox[T <: BoxRetriever] {
       case Some(x) if x.nonEmpty => {
         if (x.matches(regex)) Set()
         else Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+      }
+      case _ => Set()
+    }
+  }
+
+  protected def validateStringByLength(boxId: String, box: CtOptionalString, min:Int, max:Int): Set[CtValidation] = {
+    box.value match {
+      case Some(x) if x.nonEmpty => {
+       if(x.size < min || x.size > max) {
+         Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange"))
+       } else Set()
       }
       case _ => Set()
     }
