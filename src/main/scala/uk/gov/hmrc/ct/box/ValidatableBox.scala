@@ -91,7 +91,7 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  protected def validateStringByRegex(boxId: String, box: CtOptionalString, regex: String): Set[CtValidation] = {
+  protected def validateOptionalStringByRegex(boxId: String, box: CtOptionalString, regex: String): Set[CtValidation] = {
     box.value match {
       case Some(x) if x.nonEmpty => {
         if (x.matches(regex)) Set()
@@ -101,14 +101,14 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  protected def validateStringByLength(boxId: String, box: CtOptionalString, min:Int, max:Int): Set[CtValidation] = {
-    box.value match {
-      case Some(x) if x.nonEmpty => {
-       if(x.size < min || x.size > max) {
-         Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange"))
-       } else Set()
-      }
-      case _ => Set()
-    }
+  protected def validateStringByRegex(boxId: String, box: CtString, regex: String): Set[CtValidation] = {
+    if (box.value.isEmpty || box.value.matches(regex)) Set()
+    else Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+  }
+
+  protected def validateStringByLength(boxId: String, box: CtString, min:Int, max:Int): Set[CtValidation] = {
+     if(box.value.nonEmpty && box.value.size < min || box.value.size > max) {
+       Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange"))
+     } else Set()
   }
 }

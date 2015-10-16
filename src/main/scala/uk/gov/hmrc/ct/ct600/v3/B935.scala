@@ -30,6 +30,8 @@ with CtString with Input with ValidatableBox[CT600BoxRetriever] {
       boxRetriever.retrieveB930(),
       boxRetriever.retrieveB935()
     )
-    validateAllFilledOrEmptyStrings("B935", allorNoneGroup)
+    validateAllFilledOrEmptyStrings("B935", allorNoneGroup) ++
+      validateStringByLength("B935", this, 2, 28) ++
+      validateStringByRegex("B935", this, validNonForeignLessRestrictiveCharacters)
   }
 }
