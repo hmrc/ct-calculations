@@ -84,6 +84,4 @@ trait ValidatableBox[T <: BoxRetriever] {
       case _ => Set()
     }
   }
-
-
 }

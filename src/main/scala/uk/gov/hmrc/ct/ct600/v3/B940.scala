@@ -23,5 +23,5 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 case class B940(value: Option[String]) extends CtBoxIdentifier("building society reference")
 with CtOptionalString with Input with ValidatableBox[CT600BoxRetriever] {
 
-  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = Set.empty // validateBooleanAsMandatory("B9", this)
+  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = Set.empty // TODO add validation
 }
