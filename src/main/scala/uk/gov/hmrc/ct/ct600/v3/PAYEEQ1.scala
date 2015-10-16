@@ -19,8 +19,8 @@ package uk.gov.hmrc.ct.ct600.v3
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
+case class PAYEEQ1(value: Option[Boolean]) extends CtBoxIdentifier("Repayment to other than company ?")
+with CtOptionalBoolean with Input with ValidatableBox[CT600BoxRetriever] {
 
-case class B95(value: Option[Boolean]) extends CtBoxIdentifier("Loans and arrangements to participators by close companies") with CtOptionalBoolean with Input with ValidatableBox[CT600BoxRetriever] {
-
-  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = validateBooleanAsMandatory("B95", this)
+  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = validateBooleanAsMandatory("PAYEEQ1", this)
 }
