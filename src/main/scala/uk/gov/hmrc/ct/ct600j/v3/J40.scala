@@ -25,7 +25,7 @@ case class J40(value: Option[String]) extends CtBoxIdentifier("Scheme reference 
     if(boxRetriever.retrieveJ35().value.isEmpty) {
       validateStringAsBlank("J40A", this)
     } else {
-      validateStringByRegex("J40A", this, taxAvoidanceSchemeNumberRegex)
+      validateOptionalStringByRegex("J40A", this, taxAvoidanceSchemeNumberRegex)
     }
   }
 

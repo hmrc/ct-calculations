@@ -110,19 +110,37 @@ class ValidatableBoxSpec  extends WordSpec with Matchers with ValidatableBox[Box
 
   "validateStringByRegex" should {
     "return error if it does not match" in {
-      validateStringByRegex("testBox", testOptStringBox(Some("1234567")), regexString) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.regexFailure"))
+      validateOptionalStringByRegex("testBox", testOptStringBox(Some("1234567")), regexString) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.regexFailure"))
     }
 
     "return no errors if it matches" in {
-      validateStringByRegex("testBox", testOptStringBox(Some("12345678")), regexString) shouldBe Set()
+      validateOptionalStringByRegex("testBox", testOptStringBox(Some("12345678")), regexString) shouldBe Set()
     }
 
     "return no errors if no value set" in {
-      validateStringByRegex("testBox", testOptStringBox(None), regexString) shouldBe Set()
+      validateOptionalStringByRegex("testBox", testOptStringBox(None), regexString) shouldBe Set()
     }
 
     "return no errors if empty string" in {
-      validateStringByRegex("testBox", testOptStringBox(Some("")), regexString) shouldBe Set()
+      validateOptionalStringByRegex("testBox", testOptStringBox(Some("")), regexString) shouldBe Set()
+    }
+  }
+
+  "validateStringByLength" should {
+    "pass if in range #1" in {
+      validateStringByLength("testBox", testOptStringBox(Some("1234567")), 7,8) shouldBe Set()
+    }
+
+    "pass if in range #2" in {
+      validateStringByLength("testBox", testOptStringBox(Some("12345678")), 7,8) shouldBe Set()
+    }
+
+    "return error if too short" in {
+      validateStringByLength("testBox", testOptStringBox(Some("123456")), 7,8) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.text.sizeRange"))
+    }
+
+    "return error if too long" in {
+      validateStringByLength("testBox", testOptStringBox(Some("123456789")), 7,8) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.text.sizeRange"))
     }
   }
 

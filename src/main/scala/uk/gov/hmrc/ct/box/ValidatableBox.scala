@@ -20,6 +20,11 @@ import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 
 trait ValidatableBox[T <: BoxRetriever] {
 
+  val validNonForeignLessRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"!%\\*_\\+:@<>\\?=;]*"
+  val validNonForeignMoreRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"]*"
+  val SortCodeValidChars = """^[0-9]{6}$"""
+  val AccountNumberValidChars = """^[0-9]{8}$"""
+
   def validate(boxRetriever: T): Set[CtValidation]
 
   protected def validateBooleanAsMandatory(boxId: String, box: CtOptionalBoolean): Set[CtValidation] = {
@@ -40,6 +45,17 @@ trait ValidatableBox[T <: BoxRetriever] {
     box.value match {
       case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
       case _ => Set()
+    }
+  }
+
+  protected def validateAllFilledOrEmptyStrings(boxId: String, allBoxes: Set[CtString]): Set[CtValidation] = {
+    val allEmpty = allBoxes.count(_.value.isEmpty) == allBoxes.size
+    val allNonEmpty = allBoxes.count(_.value.nonEmpty) == allBoxes.size
+
+    if(allEmpty || allNonEmpty) {
+      Set()
+    } else {
+      Set(CtValidation(Some(boxId), s"error.$boxId.allornone"))
     }
   }
 
@@ -75,7 +91,7 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  protected def validateStringByRegex(boxId: String, box: CtOptionalString, regex: String): Set[CtValidation] = {
+  protected def validateOptionalStringByRegex(boxId: String, box: CtOptionalString, regex: String): Set[CtValidation] = {
     box.value match {
       case Some(x) if x.nonEmpty => {
         if (x.matches(regex)) Set()
@@ -83,5 +99,16 @@ trait ValidatableBox[T <: BoxRetriever] {
       }
       case _ => Set()
     }
+  }
+
+  protected def validateStringByRegex(boxId: String, box: CtString, regex: String): Set[CtValidation] = {
+    if (box.value.isEmpty || box.value.matches(regex)) Set()
+    else Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+  }
+
+  protected def validateStringByLength(boxId: String, box: CtString, min:Int, max:Int): Set[CtValidation] = {
+     if(box.value.nonEmpty && box.value.size < min || box.value.size > max) {
+       Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange"))
+     } else Set()
   }
 }
