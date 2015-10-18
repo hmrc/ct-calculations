@@ -24,9 +24,6 @@ case class B960(value: Option[String]) extends CtBoxIdentifier("payee address")
 with CtOptionalString with Input with ValidatableBox[CT600BoxRetriever] {
 
   def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    val payeeq1 = boxRetriever.retrievePAYEEQ1()
-    if (!payeeq1.value.getOrElse(true)) {
-      validateStringAsMandatory("B960", this)
-    } else Set()
+    validateStringAsMandatoryIfPAYEEQ1False(boxRetriever,"B960",this)
   }
 }

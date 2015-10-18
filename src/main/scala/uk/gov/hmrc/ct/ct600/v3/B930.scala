@@ -24,13 +24,7 @@ case class B930(value: String) extends CtBoxIdentifier("account number")
 with CtString with Input with ValidatableBox[CT600BoxRetriever] {
 
   def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    val allorNoneGroup:Set[CtString] = Set(
-      boxRetriever.retrieveB920(),
-      boxRetriever.retrieveB925(),
-      boxRetriever.retrieveB930(),
-      boxRetriever.retrieveB935()
-    )
-    validateStringByRegex("B930",this,AccountNumberValidChars) ++
-      validateAllFilledOrEmptyStrings("B930",allorNoneGroup)
+    validateAllFilledOrEmptyStringsForBankDetails(boxRetriever,"B930") ++
+      validateStringByRegex("B930",this,AccountNumberValidChars)
   }
 }

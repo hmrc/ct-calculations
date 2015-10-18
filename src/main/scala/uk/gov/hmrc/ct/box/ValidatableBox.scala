@@ -17,6 +17,8 @@
 package uk.gov.hmrc.ct.box
 
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.ct600a.v2.retriever.CT600ABoxRetriever
 
 trait ValidatableBox[T <: BoxRetriever] {
 
@@ -48,6 +50,13 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
+  protected def validateStringAsMandatoryIfPAYEEQ1False(boxRetriever: CT600BoxRetriever, boxId: String, box: CtOptionalString): Set[CtValidation] = {
+    val payeeq1 = boxRetriever.retrievePAYEEQ1()
+    if (!payeeq1.value.getOrElse(true)) {
+      validateStringAsMandatory(boxId, box)
+    } else Set()
+  }
+
   protected def validateAllFilledOrEmptyStrings(boxId: String, allBoxes: Set[CtString]): Set[CtValidation] = {
     val allEmpty = allBoxes.count(_.value.isEmpty) == allBoxes.size
     val allNonEmpty = allBoxes.count(_.value.nonEmpty) == allBoxes.size
@@ -57,6 +66,16 @@ trait ValidatableBox[T <: BoxRetriever] {
     } else {
       Set(CtValidation(Some(boxId), s"error.$boxId.allornone"))
     }
+  }
+
+  protected def validateAllFilledOrEmptyStringsForBankDetails(boxRetriever: CT600BoxRetriever, boxId: String): Set[CtValidation] = {
+    val bankDetailsBoxGroup:Set[CtString] = Set(
+      boxRetriever.retrieveB920(),
+      boxRetriever.retrieveB925(),
+      boxRetriever.retrieveB930(),
+      boxRetriever.retrieveB935()
+    )
+    validateAllFilledOrEmptyStrings(boxId, bankDetailsBoxGroup)
   }
 
   protected def validateStringAsBlank(boxId: String, box: CtOptionalString): Set[CtValidation] = {
