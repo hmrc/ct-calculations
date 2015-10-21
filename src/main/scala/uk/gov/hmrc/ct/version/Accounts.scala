@@ -16,6 +16,4 @@
 
 package uk.gov.hmrc.ct.version
 
-trait Accounts {
-
-}
+trait Accounts extends ReturnType
