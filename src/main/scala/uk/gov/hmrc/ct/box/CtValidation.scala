@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.box
 
 import play.api.libs.json.Json
 
-case class CtValidation(boxId: Option[String], errorMessageKey: String)
+case class CtValidation(boxId: Option[String], errorMessageKey: String, args:Option[Seq[String]]=None)
 
 object CtValidation {
 

@@ -95,11 +95,11 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
   
   "validateNumberRange" should {
     "return error if number too small" in {
-      validateIntegerRange("testBox", testOptIntegerBox(Some(0)), min = 1, max = 2) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.outOfRange"))
+      validateIntegerRange("testBox", testOptIntegerBox(Some(0)), min = 1, max = 2) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.outOfRange", Some(Seq("1","2"))))
     }
 
     "return error if number too large" in {
-      validateIntegerRange("testBox", testOptIntegerBox(Some(3)), min = 1, max = 2) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.outOfRange"))
+      validateIntegerRange("testBox", testOptIntegerBox(Some(3)), min = 1, max = 2) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.outOfRange", Some(Seq("1","2"))))
     }
 
 
@@ -144,11 +144,11 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
 
     "return error if too short" in {
-      validateStringByLength("testBox", testStringBox("123456"), 7,8) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.text.sizeRange"))
+      validateStringByLength("testBox", testStringBox("123456"), 7,8) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.text.sizeRange", Some(Seq("7","8"))))
     }
 
     "return error if too long" in {
-      validateStringByLength("testBox", testStringBox("123456789"), 7,8) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.text.sizeRange"))
+      validateStringByLength("testBox", testStringBox("123456789"), 7,8) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.text.sizeRange", Some(Seq("7","8"))))
     }
   }
 

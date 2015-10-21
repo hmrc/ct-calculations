@@ -104,7 +104,7 @@ trait ValidatableBox[T <: BoxRetriever] {
     box.value match {
       case Some(x) => {
         if (min <= x && x <= max) Set()
-        else Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange"))
+        else Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(min.toString,max.toString))))
       }
       case _ => Set()
     }
@@ -127,7 +127,7 @@ trait ValidatableBox[T <: BoxRetriever] {
 
   protected def validateStringByLength(boxId: String, box: CtString, min:Int, max:Int): Set[CtValidation] = {
      if(box.value.nonEmpty && box.value.size < min || box.value.size > max) {
-       Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange"))
+       Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(min.toString,max.toString))))
      } else Set()
   }
 }
