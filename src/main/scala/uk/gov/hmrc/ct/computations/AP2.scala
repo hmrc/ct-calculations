@@ -18,9 +18,9 @@ package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box.{MustBeNoneOrZeroOrPositive, CtBoxIdentifier, CtOptionalInteger, Input}
 
-case class CP7(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover/Sales") with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input
+case class AP2(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover apportioned during accounting period") with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input
 
-object CP7 {
+object AP2 {
 
-  def apply(value: Int): CP7 = CP7(Some(value))
+  def apply(value: Int): AP2 = AP2(Some(value))
 }
