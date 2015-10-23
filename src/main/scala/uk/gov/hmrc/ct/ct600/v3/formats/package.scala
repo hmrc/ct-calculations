@@ -51,6 +51,8 @@ package object formats {
 
   implicit val PAYEEQ1Format: Format[PAYEEQ1] = new OptionalBooleanFormat[PAYEEQ1](PAYEEQ1.apply)
 
+  implicit val REPAYMENTSQ1Format: Format[REPAYMENTSQ1] = new OptionalBooleanFormat[REPAYMENTSQ1](REPAYMENTSQ1.apply)
+
   implicit val B925Format: Format[B925] = new StringFormat[B925](B925.apply)
 
   implicit val B930Format: Format[B930] = new StringFormat[B930](B930.apply)

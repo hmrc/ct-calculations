@@ -206,6 +206,31 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
   }
 
+  "validateAsMandatory" should {
+    "return error if None" in {
+      validateAsMandatory( testOptStringBox(None)) shouldBe Set(CtValidation(Some("testOptStringBox"), "error.testOptStringBox.required"))
+    }
+
+    "return no errors if any value present" in {
+      validateAsMandatory(testOptStringBox(Some("This is a string."))) shouldBe Set()
+    }
+  }
+
+  "validatePositiveInteger" should {
+    "return error if number is negative" in {
+      validatePositiveInteger(testOptIntegerBox(Some(-1))) shouldBe Set(CtValidation(Some("testOptIntegerBox"), "error.testOptIntegerBox.mustBePositive"))
+    }
+
+    "return no errors if positive" in {
+      validatePositiveInteger(testOptIntegerBox(Some(0))) shouldBe Set()
+      validatePositiveInteger(testOptIntegerBox(Some(1))) shouldBe Set()
+    }
+
+    "return no errors if no value present" in {
+      validatePositiveInteger(testOptIntegerBox(None)) shouldBe Set()
+    }
+  }
+
 
   case class testOptBooleanBox(value: Option[Boolean]) extends CtBoxIdentifier("testBox") with CtOptionalBoolean{}
   case class testOptIntegerBox(value: Option[Int]) extends CtBoxIdentifier("testBox") with CtOptionalInteger{}

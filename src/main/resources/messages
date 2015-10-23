@@ -3,11 +3,17 @@ error.required=Missing value in required field
 error.nonBlankValue=This field must be blank.
 error.regexFailure=This field text is in the wrong format
 error.allornone=Enter data in all fields or don''t fill in anything.
+error.notAValidInteger=This field must be a whole number.
+error.mustBePositive=This field must be a positive number
 
 error.B40.required=error.required
 error.B45.required=error.required
 error.B55.required=error.required
 error.B620.required=error.required
+error.B860.required=error.required
+error.B860.mustBePositive=error.mustBePositive
+error.REPAYMENTSQ1.required=error.required
+
 error.B920.allornone=error.allornone
 error.B920.text.sizeRange=Text should be between {0} and {1} characters long.
 error.B920.regexFailure=error.regexFailure
