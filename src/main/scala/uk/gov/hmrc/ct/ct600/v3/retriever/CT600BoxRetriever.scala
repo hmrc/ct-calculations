@@ -99,6 +99,8 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever
 
   def retrievePAYEEQ1(): PAYEEQ1
 
+  def retrieveREPAYMENTSQ1(): REPAYMENTSQ1
+
   def retrieveB920(): B920
 
   def retrieveB925(): B925

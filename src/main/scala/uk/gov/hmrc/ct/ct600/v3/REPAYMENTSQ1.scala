@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.box
+package uk.gov.hmrc.ct.ct600.v3
 
-abstract class CtBoxIdentifier(val name: String = "Unknown"){
-  def id:String=this.getClass.getSimpleName
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+
+case class REPAYMENTSQ1(value: Option[Boolean]) extends CtBoxIdentifier("Send Repayment in all cases?")
+with CtOptionalBoolean with Input with ValidatableBox[CT600BoxRetriever] {
+
+  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = validateAsMandatory(this)
 }

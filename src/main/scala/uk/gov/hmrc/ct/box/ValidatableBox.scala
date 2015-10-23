@@ -50,6 +50,13 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
+  protected def validateAsMandatory[U](box: CtValue[U] with CtBoxIdentifier): Set[CtValidation] = {
+    box.value match {
+      case None => Set(CtValidation(Some(box.id), s"error.${box.id}.required"))
+      case _ => Set()
+    }
+  }
+
   protected def validateStringAsMandatoryIfPAYEEQ1False(boxRetriever: CT600BoxRetriever, boxId: String, box: CtOptionalString): Set[CtValidation] = {
     val payeeq1 = boxRetriever.retrievePAYEEQ1()
     if (!payeeq1.value.getOrElse(true)) {
@@ -106,6 +113,14 @@ trait ValidatableBox[T <: BoxRetriever] {
         if (min <= x && x <= max) Set()
         else Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(min.toString,max.toString))))
       }
+      case _ => Set()
+    }
+  }
+
+  protected def validatePositiveInteger(box: CtOptionalInteger with CtBoxIdentifier): Set[CtValidation] = {
+    box.value match {
+      case Some(x) if x>=0 => Set()
+      case Some(x) => Set(CtValidation(Some(box.id), s"error.${box.id}.mustBePositive"))
       case _ => Set()
     }
   }
