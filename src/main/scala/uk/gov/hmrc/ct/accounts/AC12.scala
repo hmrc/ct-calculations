@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtBoxIdentifier, Input}
+import uk.gov.hmrc.ct.box._
 
-case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover/Sales") with CtOptionalInteger with Input
+case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover/Sales") with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input
 
 object AC12 {
 

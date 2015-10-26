@@ -26,8 +26,9 @@ import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 
 object CT600BoxRetriever extends BoxValues[CT600BoxRetriever]
 
-trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever with CT600JBoxRetriever
-  with DeclarationBoxRetriever with AccountsBoxRetriever {
+trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever with CT600JBoxRetriever with DeclarationBoxRetriever {
+
+  self: AccountsBoxRetriever =>
 
   def retrieveB1(): B1
 
