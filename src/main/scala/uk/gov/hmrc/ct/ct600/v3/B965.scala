@@ -23,5 +23,7 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 case class B965(value: Option[String]) extends CtBoxIdentifier("nominee reference")
 with CtOptionalString with Input with ValidatableBox[CT600BoxRetriever] {
 
-  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = Set.empty // TODO add validation
+  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
+    validateStringAsMandatoryIfPAYEEQ1False(boxRetriever,"B965",this)
+  }
 }

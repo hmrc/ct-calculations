@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600j.v3
+package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-case class J40(value: Option[String]) extends CtBoxIdentifier("Scheme reference number") with CtOptionalString with Input with ValidatableBox[CT600BoxRetriever] {
+case class REPAYMENTSQ1(value: Option[Boolean]) extends CtBoxIdentifier("Send Repayment in all cases?")
+with CtOptionalBoolean with Input with ValidatableBox[CT600BoxRetriever] {
 
-  override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    if(boxRetriever.retrieveJ35().value.isEmpty) {
-      validateStringAsBlank("J40A", this)
-    } else {
-      validateOptionalStringByRegex("J40A", this, taxAvoidanceSchemeNumberRegex)
-    }
-  }
-
+  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = validateAsMandatory(this)
 }

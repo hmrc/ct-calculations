@@ -20,8 +20,12 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 
-case class B935(value: Option[String]) extends CtBoxIdentifier("account name")
-with CtOptionalString with Input with ValidatableBox[CT600BoxRetriever] {
+case class B935(value: String) extends CtBoxIdentifier("account name")
+with CtString with Input with ValidatableBox[CT600BoxRetriever] {
 
-  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = Set.empty // TODO add validation
+  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
+    validateAllFilledOrEmptyStringsForBankDetails(boxRetriever,"B935") ++
+      validateStringByLength("B935", this, 2, 28) ++
+      validateStringByRegex("B935", this, validNonForeignLessRestrictiveCharacters)
+  }
 }

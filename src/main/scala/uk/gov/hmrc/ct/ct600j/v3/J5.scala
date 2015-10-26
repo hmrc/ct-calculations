@@ -25,7 +25,7 @@ case class J5(value: Option[String]) extends CtBoxIdentifier("Scheme reference n
 
   override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
     if(boxRetriever.retrieveB65().value.getOrElse(false)) {
-      validateStringAsMandatory(boxNumber, this) ++ validateStringByRegex(boxNumber, this, taxAvoidanceSchemeNumberRegex)
+      validateStringAsMandatory(boxNumber, this) ++ validateOptionalStringByRegex(boxNumber, this, taxAvoidanceSchemeNumberRegex)
     } else {
       Set()
     }

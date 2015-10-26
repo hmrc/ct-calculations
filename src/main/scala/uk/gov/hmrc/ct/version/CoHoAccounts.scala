@@ -18,20 +18,24 @@ package uk.gov.hmrc.ct.version
 
 object CoHoAccounts {
 
-  case object CoHoMicroEntityAccounts extends ReturnType with Accounts {
+  case object CoHoMicroEntityAccounts extends Accounts {
     override def key(): String = "CoHoMicroEntityAccounts"
   }
 
-  case object CoHoMicroEntityAbridgedAccounts extends ReturnType with Accounts {
+  case object CoHoMicroEntityAbridgedAccounts extends Accounts with ReducedAccounts {
     override def key(): String = "CoHoMicroEntityAbridgedAccounts"
+
+    override def fullVersion: Accounts = CoHoMicroEntityAccounts
   }
 
-  case object CoHoStatutoryAccounts extends ReturnType with Accounts {
+  case object CoHoStatutoryAccounts extends Accounts {
     override def key(): String = "CoHoStatutoryAccounts"
   }
 
-  case object CoHoStatutoryAbbreviatedAccounts extends ReturnType with Accounts {
+  case object CoHoStatutoryAbbreviatedAccounts extends Accounts with ReducedAccounts {
     override def key(): String = "CoHoStatutoryAbbreviatedAccounts"
+
+    override def fullVersion: Accounts = CoHoStatutoryAccounts
   }
 
   val returns: Set[ReturnType] = Set(CoHoMicroEntityAccounts, CoHoMicroEntityAbridgedAccounts, CoHoStatutoryAccounts, CoHoStatutoryAbbreviatedAccounts)
@@ -39,4 +43,11 @@ object CoHoAccounts {
   def fromKey(key: String): ReturnType = {
     returns.find(_.key() == key).getOrElse(throw new IllegalArgumentException(s"Unknown key for CoHoAccounts: $key"))
   }
+}
+
+trait ReducedAccounts {
+
+  self: Accounts =>
+
+  def fullVersion: Accounts
 }
