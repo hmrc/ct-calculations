@@ -25,6 +25,8 @@ package object formats {
 
 //  implicit val A1Format: Format[A1] = new OptionalBooleanFormat[A1](A1.apply)
 
+  implicit val a5Format: Format[A5] = new OptionalBooleanFormat[A5](A5.apply)
+
   implicit val a15Format: Format[A15] = new OptionalIntegerFormat[A15](A15.apply)
 
   implicit val a20Format: Format[A20] = new OptionalBigDecimalFormat[A20](A20.apply)
@@ -57,13 +59,11 @@ package object formats {
 
   implicit val a80Format: Format[A80] = new OptionalBigDecimalFormat[A80](A80.apply)
 
-  implicit val loanFormatter = Json.format[Loan]
+  implicit val writeOffFormat = Json.format[WriteOff]
 
-  implicit val a10Format: Format[A10] = Json.format[A10]
+  implicit val loanFormat = Json.format[Loan]
 
-  implicit val writeOffFormatter = Json.format[WriteOff]
-
-  implicit val a25Format: Format[A25] = Json.format[A25]
+  implicit val loansToParticipatorsFormat: Format[LoansToParticipators] = Json.format[LoansToParticipators]
 
   implicit val lp04Format: Format[LP04] = new OptionalIntegerFormat[LP04](LP04.apply)
 
@@ -80,8 +80,6 @@ package object formats {
   implicit val lpq07Format: Format[LPQ07] = new OptionalDateFormat[LPQ07](LPQ07.apply)
 
   implicit val lpq08Format: Format[LPQ08] = new OptionalBooleanFormat[LPQ08](LPQ08.apply)
-
-  implicit val lpq09Format: Format[LPQ09] = new OptionalBooleanFormat[LPQ09](LPQ09.apply)
 
   implicit val lpq10Format: Format[LPQ10] = new OptionalBooleanFormat[LPQ10](LPQ10.apply)
 
