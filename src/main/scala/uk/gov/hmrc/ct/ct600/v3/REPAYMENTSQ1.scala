@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{MustBeNoneOrZeroOrPositive, CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-case class CP7(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover/Sales") with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input
+case class REPAYMENTSQ1(value: Option[Boolean]) extends CtBoxIdentifier("Send Repayment in all cases?")
+with CtOptionalBoolean with Input with ValidatableBox[CT600BoxRetriever] {
 
-object CP7 {
-
-  def apply(value: Int): CP7 = CP7(Some(value))
+  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = validateAsMandatory(this)
 }
