@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.ct600a.v3.retriever
 
 import uk.gov.hmrc.ct.box.retriever.BoxValues
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.ct600a.v3.{A10, _}
+import uk.gov.hmrc.ct.ct600a.v3._
 
 object CT600ABoxRetriever extends BoxValues[CT600ABoxRetriever]
 
@@ -38,17 +38,15 @@ trait CT600ABoxRetriever extends ComputationsBoxRetriever {
 
   def retrieveLPQ08(): LPQ08
 
-  def retrieveLPQ09(): LPQ09
-
   def retrieveLPQ10(): LPQ10
 
-  def retrieveA10(): A10
+  def retrieveLoansToParticipators(): LoansToParticipators
+
+  def retrieveA5(): A5
 
   def retrieveA15(): A15 = A15.calculate(this)
   
   def retrieveA20(): A20 = A20.calculate(this)
-
-  def retrieveA25(): A25
 
   def retrieveA30(): A30 = A30.calculate(this)
 
