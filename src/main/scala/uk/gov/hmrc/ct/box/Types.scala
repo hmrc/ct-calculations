@@ -206,3 +206,14 @@ trait MustBeZeroOrPositive {
 
   require(value >= 0)
 }
+
+trait MustBeNoneOrZeroOrPositive {
+
+  self: CtOptionalInteger =>
+
+  require(value match {
+    case Some(v) if v >= 0 => true
+    case None => true
+    case _ => false
+  })
+}

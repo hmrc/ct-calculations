@@ -17,12 +17,21 @@
 package uk.gov.hmrc.ct.computations.retriever
 
 import uk.gov.hmrc.ct._
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, BoxValues}
 import uk.gov.hmrc.ct.computations._
 
 object ComputationsBoxRetriever extends BoxValues[ComputationsBoxRetriever]
 
 trait ComputationsBoxRetriever extends BoxRetriever {
+
+  self: AccountsBoxRetriever =>
+
+  def retrieveAP1(): AP1
+
+  def retrieveAP2(): AP2
+
+  def retrieveAP3(): AP3
 
   def retrieveCP1(): CP1
 

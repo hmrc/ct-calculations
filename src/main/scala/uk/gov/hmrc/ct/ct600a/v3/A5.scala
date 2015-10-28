@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600a.v3.formats
+package uk.gov.hmrc.ct.ct600a.v3
 
-import play.api.libs.json.Json
-import uk.gov.hmrc.ct.ct600a.v3.LoansToParticipators
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, Input}
 
-object LoansFormatter {
-
-  import uk.gov.hmrc.ct.ct600a.v3.formats._
-
-  def LoansFromJsonString(json: String): LoansToParticipators = Json.fromJson[LoansToParticipators](Json.parse(json)).get
-
-  def toJsonString(loans2p: LoansToParticipators): String =  Json.toJson(loans2p).toString()
-
-  def asBoxString(loans2p: LoansToParticipators): Option[String] = Some(toJsonString(loans2p))
-
-}
+case class A5(value: Option[Boolean]) extends CtBoxIdentifier(name = "Were any loans written off or released during this period?") with CtOptionalBoolean with Input

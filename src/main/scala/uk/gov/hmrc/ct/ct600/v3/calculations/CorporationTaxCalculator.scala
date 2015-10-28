@@ -101,8 +101,4 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     case _ => B280(false)
   }
 
-  def calculateB485(a70: A70): B485 = a70.value match {
-    case Some(x) if x > 0 => B485(true)
-    case _ => B485(false)
-  }
 }

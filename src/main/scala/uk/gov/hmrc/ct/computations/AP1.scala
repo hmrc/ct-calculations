@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600a.v3.formats
+package uk.gov.hmrc.ct.computations
 
-import play.api.libs.json.Json
-import uk.gov.hmrc.ct.ct600a.v3.LoansToParticipators
+import uk.gov.hmrc.ct.box.{MustBeNoneOrZeroOrPositive, CtBoxIdentifier, CtOptionalInteger, Input}
 
-object LoansFormatter {
+case class AP1(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover apportioned before accounting period") with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input
 
-  import uk.gov.hmrc.ct.ct600a.v3.formats._
+object AP1 {
 
-  def LoansFromJsonString(json: String): LoansToParticipators = Json.fromJson[LoansToParticipators](Json.parse(json)).get
-
-  def toJsonString(loans2p: LoansToParticipators): String =  Json.toJson(loans2p).toString()
-
-  def asBoxString(loans2p: LoansToParticipators): Option[String] = Some(toJsonString(loans2p))
-
+  def apply(value: Int): AP1 = AP1(Some(value))
 }

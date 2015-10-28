@@ -140,17 +140,5 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
 
   }
 
-  "B485 - Put an 'X' in box 485 if you completed box A70 in the supplementary pages CT600A" should {
-    "be false if A70 = None" in new CorporationTaxCalculator {
-      calculateB485(A70(None)) shouldBe B485(false)
-    }
-    "be false if A70 = 0" in new CorporationTaxCalculator {
-      calculateB485(A70(Some(0))) shouldBe B485(false)
-    }
-    "be true if A70 > 0" in new CorporationTaxCalculator {
-      calculateB485(A70(Some(1))) shouldBe B485(true)
-    }
-  }
-
   class Calc extends CorporationTaxCalculator
 }

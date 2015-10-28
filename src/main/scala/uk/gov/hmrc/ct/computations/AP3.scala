@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600a.v3
+package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, Input}
+import uk.gov.hmrc.ct.box.{MustBeNoneOrZeroOrPositive, CtBoxIdentifier, CtOptionalInteger, Input}
 
-case class LPQ09(value: Option[Boolean]) extends CtBoxIdentifier(name = "Were any loans written off or released during this period?") with CtOptionalBoolean with Input
+case class AP3(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover apportioned after accounting period") with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input
+
+object AP3 {
+
+  def apply(value: Int): AP3 = AP3(Some(value))
+}
