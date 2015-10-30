@@ -59,6 +59,8 @@ package object formats {
 
   implicit val a80Format: Format[A80] = new OptionalBigDecimalFormat[A80](A80.apply)
 
+  implicit val repaymentFormat = Json.format[Repayment]
+
   implicit val writeOffFormat = Json.format[WriteOff]
 
   implicit val loanFormat = Json.format[Loan]
