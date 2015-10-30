@@ -21,6 +21,7 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.ct600.calculations.CorporationTaxCalculatorParameters
 import uk.gov.hmrc.ct.ct600.v3._
+import uk.gov.hmrc.ct.ct600a.v3.A70
 
 class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
 

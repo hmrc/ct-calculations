@@ -46,4 +46,24 @@ package object formats {
   implicit val B595Format: Format[B595] = new BigDecimalFormat[B595](B595.apply)
 
   implicit val B860Format: Format[B860] = new OptionalIntegerFormat[B860](B860.apply)
+
+  implicit val B920Format: Format[B920] = new StringFormat[B920](B920.apply)
+
+  implicit val PAYEEQ1Format: Format[PAYEEQ1] = new OptionalBooleanFormat[PAYEEQ1](PAYEEQ1.apply)
+
+  implicit val REPAYMENTSQ1Format: Format[REPAYMENTSQ1] = new OptionalBooleanFormat[REPAYMENTSQ1](REPAYMENTSQ1.apply)
+
+  implicit val B925Format: Format[B925] = new StringFormat[B925](B925.apply)
+
+  implicit val B930Format: Format[B930] = new StringFormat[B930](B930.apply)
+
+  implicit val B935Format: Format[B935] = new StringFormat[B935](B935.apply)
+
+  implicit val B940Format: Format[B940] = new OptionalStringFormat[B940](B940.apply)
+
+  implicit val B955Format: Format[B955] = new OptionalStringFormat[B955](B955.apply)
+
+  implicit val B960Format: Format[B960] = new OptionalStringFormat[B960](B960.apply)
+
+  implicit val B965Format: Format[B965] = new OptionalStringFormat[B965](B965.apply)
 }

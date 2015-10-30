@@ -21,6 +21,7 @@ import uk.gov.hmrc.ct.computations.{CP286, CP2, CP1, HmrcAccountingPeriod}
 import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper._
 import uk.gov.hmrc.ct.ct600.calculations._
 import uk.gov.hmrc.ct.ct600.v3._
+import uk.gov.hmrc.ct.ct600a.v3.A70
 
 
 trait CorporationTaxCalculator extends CtTypeConverters {
@@ -99,4 +100,5 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     case Some(v) if v > 0 => B280(true)
     case _ => B280(false)
   }
+
 }

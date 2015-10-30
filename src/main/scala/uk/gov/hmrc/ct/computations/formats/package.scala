@@ -24,11 +24,17 @@ import uk.gov.hmrc.ct.ct600a.v2.{LP02, Loan}
 
 package object formats {
 
+  implicit val ap1Format: Format[AP1] = new OptionalIntegerFormat[AP1](AP1.apply)
+
+  implicit val ap2Format: Format[AP2] = new OptionalIntegerFormat[AP2](AP2.apply)
+
+  implicit val ap3Format: Format[AP3] = new OptionalIntegerFormat[AP3](AP3.apply)
+
   implicit val cp1Format: Format[CP1] = new DateFormat[CP1](CP1.apply)
 
   implicit val cp2Format: Format[CP2] = new DateFormat[CP2](CP2.apply)
 
-  implicit val cp6Format: Format[CP6] = Json.format[CP6]
+  implicit val cp6Format: Format[CP6] = new IntegerFormat[CP6](CP6.apply)
 
   implicit val cp7Format: Format[CP7] = new OptionalIntegerFormat[CP7](CP7.apply)
 

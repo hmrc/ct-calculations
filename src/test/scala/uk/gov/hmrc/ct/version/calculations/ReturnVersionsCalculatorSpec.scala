@@ -69,13 +69,15 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
           override def generateValues: Map[String, CtValue[_]] = ???
 
-          override def retrieveAC4(): AC4 = ???
           override def retrieveAC1(): AC1 = ???
-          override def retrieveAC206(): AC206 = ???
           override def retrieveAC3(): AC3 = ???
+          override def retrieveAC4(): AC4 = ???
+          override def retrieveAC12(): AC12 = ???
           override def retrieveAC205(): AC205 = ???
+          override def retrieveAC206(): AC206 = ???
 
           override def retrieveProductName(): ProductName = ???
+          override def retrieveCompanyType(): FilingCompanyType = ???
           override def retrieveAbbreviatedAccountsFiling(): AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)
           override def retrieveStatutoryAccountsFiling(): StatutoryAccountsFiling = StatutoryAccountsFiling(false)
           override def retrieveMicroEntityFiling(): MicroEntityFiling = MicroEntityFiling(true)
@@ -95,7 +97,20 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(Computations, ComputationsCT20141001),
                                  Return(CT600, CT600Version2))
 
-        ReturnVersionsCalculator.doCalculation(new ComputationsBoxRetrieverForTest) shouldBe expectedResult
+        ReturnVersionsCalculator.doCalculation(new ComputationsBoxRetrieverForTest with AccountsBoxRetriever{
+
+          override def retrieveAC1(): uk.gov.hmrc.ct.accounts.AC1 = ???
+          override def retrieveAC3(): uk.gov.hmrc.ct.accounts.AC3 = ???
+          override def retrieveAC4(): uk.gov.hmrc.ct.accounts.AC4 = ???
+          override def retrieveAC12(): uk.gov.hmrc.ct.accounts.AC12 = ???
+          override def retrieveAC205(): uk.gov.hmrc.ct.accounts.AC205 = ???
+          override def retrieveAC206(): uk.gov.hmrc.ct.accounts.AC206 = ???
+
+          override def retrieveAP1(): uk.gov.hmrc.ct.computations.AP1 = ???
+          override def retrieveAP2(): uk.gov.hmrc.ct.computations.AP2 = ???
+          override def retrieveAP3(): uk.gov.hmrc.ct.computations.AP3 = ???
+
+        }) shouldBe expectedResult
       }
     }
 
@@ -386,6 +401,12 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
 class ComputationsBoxRetrieverForTest extends ComputationsBoxRetriever with FilingAttributesBoxValueRetriever {
 
+  self: AccountsBoxRetriever =>
+
+  override def retrieveAP1(): uk.gov.hmrc.ct.computations.AP1 = ???
+  override def retrieveAP2(): uk.gov.hmrc.ct.computations.AP2 = ???
+  override def retrieveAP3(): uk.gov.hmrc.ct.computations.AP3 = ???
+
   override def retrieveCP1(): CP1 = CP1(LocalDate.parse("2015-03-31"))
 
   override def retrieveCP2(): CP2 = CP2(LocalDate.parse("2015-12-31"))
@@ -406,6 +427,8 @@ class ComputationsBoxRetrieverForTest extends ComputationsBoxRetriever with Fili
   override def generateValues: Map[String, CtValue[_]] = ???
 
   override def retrieveProductName(): ProductName = ???
+
+  override def retrieveCompanyType(): FilingCompanyType = ???
 
   override def retrieveCP36(): CP36 = ???
 

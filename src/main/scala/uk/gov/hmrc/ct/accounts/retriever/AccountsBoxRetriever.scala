@@ -26,6 +26,8 @@ trait AccountsBoxRetriever extends BoxRetriever {
   def retrieveAC3(): AC3
   def retrieveAC4(): AC4
 
+  def retrieveAC12(): AC12
+
   def retrieveAC205(): AC205
   def retrieveAC206(): AC206
 }

@@ -20,12 +20,13 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.ct600a.v2.retriever.CT600ABoxRetriever
 import uk.gov.hmrc.ct._
+import uk.gov.hmrc.ct.domain.CompanyTypes
 
 class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
 
   "FilingAttributesBoxValueRetriever" should {
-    "have 7 functions" in {
-      FilingAttributesBoxValueRetriever.retrieveBoxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 7
+    "have 8 functions" in {
+      FilingAttributesBoxValueRetriever.retrieveBoxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 8
     }
 
     "get ct values" in {
@@ -33,6 +34,7 @@ class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
       val retriever = new FilingAttributesBoxValueRetrieverForTest
       val result = FilingAttributesBoxValueRetriever.generateValues(retriever)
       result("ProductName") shouldBe retriever.retrieveProductName()
+      result("FilingCompanyType") shouldBe retriever.retrieveCompanyType()
 
       result("AbbreviatedAccountsFiling") shouldBe retriever.retrieveAbbreviatedAccountsFiling()
       result("StatutoryAccountsFiling") shouldBe retriever.retrieveStatutoryAccountsFiling()
@@ -50,6 +52,8 @@ class FilingAttributesBoxValueRetrieverForTest extends FilingAttributesBoxValueR
   override def generateValues: Map[String, CtValue[_]] = ???
 
   override def retrieveProductName(): ProductName = ProductName("productType")
+
+  override def retrieveCompanyType(): FilingCompanyType = FilingCompanyType(CompanyTypes.UkTradingCompany)
 
   override def retrieveAbbreviatedAccountsFiling(): AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)
 
