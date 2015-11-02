@@ -17,11 +17,11 @@
 package uk.gov.hmrc.ct.ct600a.v3
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtValue}
+import uk.gov.hmrc.ct.box.{Input, CtBoxIdentifier, CtValue}
 import uk.gov.hmrc.ct.ct600a.v3.formats.LoansFormatter
 
 
-case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIdentifier(name = "Loans to participators.") with CtValue[List[Loan]] {
+case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIdentifier(name = "Loans to participators.") with CtValue[List[Loan]] with Input {
 
   def +(other: LoansToParticipators): LoansToParticipators = new LoansToParticipators(loans ++ other.loans)
 
