@@ -31,17 +31,19 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
     }
   }
 
+  // CHRIS cardinality 1..1 - cannot be null
   def calculateA15(loans2p: LoansToParticipators): A15 = {
     val sumOfLoanAmounts: Int = loans2p.loans.flatMap(l => Some(l.amount)).sum
     A15(Some(sumOfLoanAmounts))
   }
 
+  // CHRIS cardinality 1..1 - cannot be null
   def calculateA20(a15: A15): A20 = {
     A20(a15.value.map(x => BigDecimal(x * 0.25)))
   }
 
 
-
+  // CHRIS cardinality 0..1 - can be null
   def calculateA30(cp2: CP2, loans2p: LoansToParticipators): A30 = {
     val validLoans: List[Loan] = loans2p.loans.filter { loan =>
       (loan.isRepaidWithin9Months, loan.repaymentWithin9Months) match {
@@ -53,16 +55,17 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
       case Some(x: Repayment) => x.amount
       case _ => 0
     }).sum
-    A30(Some(sumOfRepayments))
+    if (validLoans.isEmpty) A30(None) else A30(Some(sumOfRepayments))
   }
 
+  // CHRIS cardinality is 0..1 - so can be null
   def calculateA35(cp2: CP2, loans2p: LoansToParticipators): A35 = {
     val validWriteOffs: List[WriteOff] = loans2p.loans.flatMap(loan =>
       loan.writeOffs.filter(writeOff =>
         writeOff.isReliefEarlierThanDue(cp2.value))
     )
     val writeOffs: Int = validWriteOffs.map(w => w.amount).sum
-    A35(Some(writeOffs))
+    if (validWriteOffs.isEmpty) A35(None) else A35(Some(writeOffs))
   }
 
   def calculateA40(a30: A30, a35: A35): A40 = {
@@ -72,31 +75,29 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
     }
   }
 
+  // CHRIS cardinality 1..1 - cannot be empty
   def calculateA45(a40: A40): A45 = {
     A45(a40.value.map(x => BigDecimal(x * 0.25)))
   }
 
+  // CHRIS cardinality 0..1 - can be null
   def calculateA55(cp2: CP2, loans2p: LoansToParticipators, filingDate: LPQ07): A55 = {
     val validRepayments: List[Repayment] = loans2p.loans.flatMap(_.otherRepayments.filter(_.isLaterReliefNowDue(cp2.value, filingDate)))
-    A55(Some(validRepayments.foldLeft(0)(_ + _.amount)))
+    if (validRepayments.isEmpty) A55(None) else A55(Some(validRepayments.foldLeft(0)(_ + _.amount)))
   }
 
   def calculateA55Inverse(apEndDate: CP2, loans2p: LoansToParticipators, filingDate: LPQ07): A55Inverse = {
     val validRepayments: List[Repayment] = loans2p.loans.flatMap(_.otherRepayments.filter(_.isLaterReliefNotYetDue(apEndDate.value, filingDate)))
-    A55Inverse(Some(validRepayments.foldLeft(0)(_ + _.amount)))
+    if (validRepayments.isEmpty) A55Inverse(None) else A55Inverse(Some(validRepayments.foldLeft(0)(_ + _.amount)))
   }
 
+  //CHRIS cardinality 0..1 - can be null
   def calculateA60(cp2: CP2, loans2p: LoansToParticipators, filingDate: LPQ07): A60 = {
     val validWriteOffs: List[WriteOff] = loans2p.loans.flatMap(loan =>
       loan.writeOffs.filter(writeOff =>
         writeOff.isLaterReliefNowDue(cp2.value, filingDate))
     )
-    if(validWriteOffs.isEmpty){
-      A60(None)
-    }else {
-      val writeOffs: Int = validWriteOffs.flatMap(w => Some(w.amount)).sum
-      A60(Some(writeOffs))
-    }
+    if(validWriteOffs.isEmpty) A60(None) else A60(Some(validWriteOffs.flatMap(w => Some(w.amount)).sum))
   }
 
   def calculateA60Inverse(cp2: CP2, loans2p: LoansToParticipators, filingDate: LPQ07): A60Inverse = {
@@ -104,8 +105,7 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
       loan.writeOffs.filter(writeOff =>
         writeOff.isLaterReliefNotYetDue(cp2.value, filingDate))
     )
-    val writeOffs: Int = validWriteOffs.flatMap(w => Some(w.amount)).sum
-    A60Inverse(Some(writeOffs))
+    if(validWriteOffs.isEmpty) A60Inverse(None) else A60Inverse(Some(validWriteOffs.flatMap(w => Some(w.amount)).sum))
   }
 
   def calculateA65(a55: A55, a60: A60): A65 = {
@@ -118,7 +118,8 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   def calculateA65Inverse(a55Inverse: A55Inverse, a60Inverse: A60Inverse): A65Inverse = {
     A65Inverse(Some(a55Inverse plus a60Inverse))
   }
-  
+
+  // CHRIS cardinality 1..1 - cannot be null
   def calculateA70(a65: A65): A70 = {
     A70(a65.value.map(x => BigDecimal(x * 0.25)))
   }
