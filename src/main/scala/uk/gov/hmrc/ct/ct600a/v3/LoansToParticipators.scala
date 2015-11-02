@@ -40,9 +40,9 @@ case class Loan ( name: String,
                   hasWriteOffs: Option[Boolean] = None,
                   writeOffs: List[WriteOff] = List.empty)
 
-case class Repayment(amount: Int, date: LocalDate, endDateOfAP: Option[LocalDate] = None) extends LoansDateRules
+case class Repayment(id: String, amount: Int, date: LocalDate, endDateOfAP: Option[LocalDate] = None) extends LoansDateRules
 
-case class WriteOff(loanId: String, amount: Int, date: LocalDate, endDateOfAP : Option[LocalDate] = None) extends LoansDateRules
+case class WriteOff(id: String, amount: Int, date: LocalDate, endDateOfAP : Option[LocalDate] = None) extends LoansDateRules
 
 
 trait LoansDateRules {
