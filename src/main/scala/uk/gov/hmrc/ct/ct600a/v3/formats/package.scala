@@ -77,8 +77,6 @@ package object formats {
 
   implicit val lpq05Format: Format[LPQ05] = new OptionalBooleanFormat[LPQ05](LPQ05.apply)
 
-  implicit val lpq06Format: Format[LPQ06] = new OptionalBooleanFormat[LPQ06](LPQ06.apply)
-
   implicit val lpq07Format: Format[LPQ07] = new OptionalDateFormat[LPQ07](LPQ07.apply)
 
   implicit val lpq08Format: Format[LPQ08] = new OptionalBooleanFormat[LPQ08](LPQ08.apply)
