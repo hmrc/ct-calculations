@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.ct600.v3
 
 import play.api.libs.json.Format
 import uk.gov.hmrc.ct.box.formats._
+import uk.gov.hmrc.ct.ct600j.v3._
 
 package object formats {
 
@@ -29,13 +30,51 @@ package object formats {
 
   implicit val B4Format: Format[B4] = new StringFormat[B4](B4.apply)
 
+  implicit val B30Format: Format[B30] = new DateFormat[B30](B30.apply)
+
+  implicit val B35Format: Format[B35] = new DateFormat[B35](B35.apply)
+
   implicit val B40Format: Format[B40] = new OptionalBooleanFormat[B40](B40.apply)
 
   implicit val B45Format: Format[B45] = new OptionalBooleanFormat[B45](B45.apply)
 
   implicit val B55Format: Format[B55] = new OptionalBooleanFormat[B55](B55.apply)
 
+  implicit val B95Format: Format[B95] = new OptionalBooleanFormat[B95](B95.apply)
+
+  implicit val B140Format: Format[B140] = new OptionalBooleanFormat[B140](B140.apply)
+
+  implicit val B145Format: Format[B145] = new OptionalIntegerFormat[B145](B145.apply)
+
+  implicit val B150Format: Format[B150] = new OptionalBooleanFormat[B150](B150.apply)
+
+  implicit val B155Format: Format[B155] = new IntegerFormat[B155](B155.apply)
+
+  implicit val B160Format: Format[B160] = new OptionalIntegerFormat[B160](B160.apply)
+
+  implicit val B165Format: Format[B165] = new IntegerFormat[B165](B165.apply)
+
+  implicit val B170Format: Format[B170] = new IntegerFormat[B170](B170.apply)
+
+  implicit val B190Format: Format[B190] = new IntegerFormat[B190](B190.apply)
+
+  implicit val B235Format: Format[B235] = new IntegerFormat[B235](B235.apply)
+
+  implicit val B275Format: Format[B275] = new IntegerFormat[B275](B275.apply)
+
+  implicit val B280Format: Format[B280] = new BooleanFormat[B280](B280.apply)
+
+  implicit val B295Format: Format[B295] = new IntegerFormat[B295](B295.apply)
+
+  implicit val B300Format: Format[B300] = new IntegerFormat[B300](B300.apply)
+
+  implicit val B305Format: Format[B305] = new IntegerFormat[B305](B305.apply)
+
+  implicit val B315Format: Format[B315] = new IntegerFormat[B315](B315.apply)
+
   implicit val B335Format: Format[B335] = new IntegerFormat[B335](B335.apply)
+
+  implicit val B485Format: Format[B485] = new BooleanFormat[B485](B485.apply)
 
   implicit val BFQ1Format: Format[BFQ1] = new OptionalBooleanFormat[BFQ1](BFQ1.apply)
 
@@ -44,6 +83,26 @@ package object formats {
   implicit val B515Format: Format[B515] = new BigDecimalFormat[B515](B515.apply)
 
   implicit val B595Format: Format[B595] = new BigDecimalFormat[B595](B595.apply)
+
+  implicit val B690Format: Format[B690] = new OptionalIntegerFormat[B690](B690.apply)
+
+  implicit val B705Format: Format[B705] = new OptionalIntegerFormat[B705](B705.apply)
+
+  implicit val B710Format: Format[B710] = new OptionalIntegerFormat[B710](B710.apply)
+
+  implicit val B735Format: Format[B735] = new OptionalIntegerFormat[B735](B735.apply)
+
+  implicit val B750Format: Format[B750] = new OptionalIntegerFormat[B750](B750.apply)
+
+  implicit val B755Format: Format[B755] = new OptionalIntegerFormat[B755](B755.apply)
+
+  implicit val B760Format: Format[B760] = new OptionalIntegerFormat[B760](B760.apply)
+
+  implicit val B765Format: Format[B765] = new OptionalIntegerFormat[B765](B765.apply)
+
+  implicit val B775Format: Format[B775] = new OptionalIntegerFormat[B775](B775.apply)
+
+  implicit val B780Format: Format[B780] = new OptionalIntegerFormat[B780](B780.apply)
 
   implicit val B860Format: Format[B860] = new OptionalIntegerFormat[B860](B860.apply)
 
@@ -66,4 +125,8 @@ package object formats {
   implicit val B960Format: Format[B960] = new OptionalStringFormat[B960](B960.apply)
 
   implicit val B965Format: Format[B965] = new OptionalStringFormat[B965](B965.apply)
+
+  implicit val B975Format: Format[B975] = new OptionalStringFormat[B975](B975.apply)
+
+  implicit val B985Format: Format[B985] = new OptionalStringFormat[B985](B985.apply)
 }
