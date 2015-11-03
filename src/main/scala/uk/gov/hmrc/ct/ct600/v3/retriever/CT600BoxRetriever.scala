@@ -22,6 +22,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.retriever.DeclarationBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
+import uk.gov.hmrc.ct.ct600j.v3.B140
 import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 
 object CT600BoxRetriever extends BoxValues[CT600BoxRetriever]
@@ -38,6 +39,10 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever
 
   def retrieveB4(): B4
 
+  def retrieveB30(): B30 = B30(retrieveCP1())
+
+  def retrieveB35(): B35 = B35(retrieveCP2())
+
   def retrieveB40(): B40
 
   def retrieveB45(): B45
@@ -46,7 +51,35 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever
 
   def retrieveB55(): B55
 
+  def retrieveB95(): B95
+
+  def retrieveB140(): B140 = B140(retrieveB65())
+
+  def retrieveB145(): B145 = B145(retrieveCP7())
+
+  def retrieveB150(): B150
+
+  def retrieveB155(): B155 = B155(retrieveCP256())
+
+  def retrieveB160(): B160 = B160(retrieveCP257())
+
+  def retrieveB165(): B165 = B165(retrieveCP258())
+
+  def retrieveB170(): B170 = B170(retrieveCP259())
+
+  def retrieveB190(): B190 = B190(retrieveCP511())
+
+  def retrieveB235(): B235 = B235(retrieveCP265())
+
+  def retrieveB275(): B275 = B275(retrieveCP264())
+
   def retrieveB280(): B280 = B280.calculate(this)
+
+  def retrieveB295(): B295 = B295(retrieveCP264())
+
+  def retrieveB300(): B300 = B300.calculate(this)
+
+  def retrieveB305(): B305 = B305(retrieveCP305())
 
   def retrieveB315(): B315 = B315(retrieveCP295())
 
@@ -74,6 +107,8 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever
 
   def retrieveB480(): B480 = B480.calculate(this)
 
+  def retrieveB485(): B485 = B485.calculate(this)
+
   def retrieveB510(): B510 = B510.calculate(this)
 
   def retrieveB515(): B515
@@ -89,6 +124,30 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever
   def retrieveB605(): B605 = B605.calculate(this)
 
   def retrieveB620(): B620
+
+  def retrieveB690(): B690
+
+  def retrieveB695(): B695 = B695(retrieveCP668())
+
+  def retrieveB700(): B700 = B700(retrieveCP670())
+
+  def retrieveB705(): B705
+
+  def retrieveB710(): B710
+
+  def retrieveB735(): B735
+
+  def retrieveB750(): B750
+
+  def retrieveB755(): B755
+
+  def retrieveB760(): B760
+
+  def retrieveB765(): B765
+
+  def retrieveB775(): B775
+
+  def retrieveB780(): B780
 
   def retrieveB860(): B860
 
@@ -117,4 +176,8 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever
   def retrieveB960(): B960
 
   def retrieveB965(): B965
+
+  def retrieveB975(): B975
+  
+  def retrieveB985(): B985
 }

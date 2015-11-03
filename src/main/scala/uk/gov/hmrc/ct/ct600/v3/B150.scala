@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtInteger, Linked}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-case class CP278(value: Int) extends CtBoxIdentifier("Expenditure on designated environmentally friendly machinery and plant") with CtInteger
-
-object CP278 extends Linked[CP252, CP278] {
-
-  override def apply(source: CP252): CP278 = CP278(source.value)
+case class B150(value: Option[Boolean]) extends CtBoxIdentifier("Banks, building societies, insurance companies and other financial concerns") with CtOptionalBoolean with Input with ValidatableBox[CT600BoxRetriever] {
+  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = validateBooleanAsMandatory("B150", this)
 }

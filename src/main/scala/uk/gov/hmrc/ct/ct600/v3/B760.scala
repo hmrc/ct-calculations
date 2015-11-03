@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtInteger, Linked}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
 
-case class CP278(value: Int) extends CtBoxIdentifier("Expenditure on designated environmentally friendly machinery and plant") with CtInteger
-
-object CP278 extends Linked[CP252, CP278] {
-
-  override def apply(source: CP252): CP278 = CP278(source.value)
-}
+case class B760(value: Option[Int]) extends CtBoxIdentifier("") with CtOptionalInteger with Input

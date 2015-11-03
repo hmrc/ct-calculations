@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtInteger, Linked}
+import uk.gov.hmrc.ct.box.{CtInteger, CtBoxIdentifier, Linked}
+import uk.gov.hmrc.ct.computations.CP264
 
-case class CP278(value: Int) extends CtBoxIdentifier("Expenditure on designated environmentally friendly machinery and plant") with CtInteger
+case class B295(value: Int) extends CtBoxIdentifier(name = "Total of deductions and reliefs") with CtInteger
 
-object CP278 extends Linked[CP252, CP278] {
+object B295 extends Linked[CP264, B295] {
 
-  override def apply(source: CP252): CP278 = CP278(source.value)
+  override def apply(source: CP264): B295 = B295(source.value)
 }
