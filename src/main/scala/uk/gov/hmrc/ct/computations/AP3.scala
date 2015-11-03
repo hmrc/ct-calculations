@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtInteger, Linked}
+import uk.gov.hmrc.ct.box.{MustBeNoneOrZeroOrPositive, CtBoxIdentifier, CtOptionalInteger, Input}
 
-case class CP278(value: Int) extends CtBoxIdentifier("Expenditure on designated environmentally friendly machinery and plant") with CtInteger
+case class AP3(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover apportioned after accounting period") with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input
 
-object CP278 extends Linked[CP252, CP278] {
+object AP3 {
 
-  override def apply(source: CP252): CP278 = CP278(source.value)
+  def apply(value: Int): AP3 = AP3(Some(value))
 }

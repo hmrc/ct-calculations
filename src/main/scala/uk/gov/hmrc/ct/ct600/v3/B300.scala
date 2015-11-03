@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
-import uk.gov.hmrc.ct.computations.calculations.TotalFirstYearAllowanceClaimedCalculation
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-case class CP87(value: Int) extends CtBoxIdentifier(name = "Total first year allowance claimed") with CtInteger
+case class B300(value: Int) extends CtBoxIdentifier("Profits chargeable to Corporation Tax") with CtInteger
 
-object CP87 extends Calculated[CP87, ComputationsBoxRetriever] with TotalFirstYearAllowanceClaimedCalculation {
+object B300 extends CorporationTaxCalculator with Calculated[B300, CT600BoxRetriever] {
 
-  override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP87 = {
-    totalFirstYearAllowanceClaimedCalculation(cp85 = fieldValueRetriever.retrieveCP85(), cp86 = fieldValueRetriever.retrieveCP86())
-  }
+  override def calculate(fieldValueRetriever: CT600BoxRetriever): B300 =
+    calculateProfitsChargeableToCorporationTax(fieldValueRetriever.retrieveB235(), fieldValueRetriever.retrieveB275())
 }

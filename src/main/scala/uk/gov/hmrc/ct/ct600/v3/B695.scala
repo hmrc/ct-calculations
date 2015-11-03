@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtInteger, Linked}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.CP668
 
-case class CP278(value: Int) extends CtBoxIdentifier("Expenditure on designated environmentally friendly machinery and plant") with CtInteger
+// was B78
+case class B695(value: Option[Int]) extends CtBoxIdentifier("Machinery and plant - special rate pool / Capital allowances") with CtOptionalInteger
 
-object CP278 extends Linked[CP252, CP278] {
-
-  override def apply(source: CP252): CP278 = CP278(source.value)
+object B695 extends Linked[CP668, B695] {
+  override def apply(source: CP668): B695 = B695(source.value)
 }

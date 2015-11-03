@@ -27,6 +27,6 @@ object A60Inverse extends Calculated[A60Inverse, CT600ABoxRetriever] with LoansT
 
   override def calculate(fieldValueRetriever: CT600ABoxRetriever): A60Inverse = {
     import fieldValueRetriever._
-    calculateA60Inverse(retrieveCP2(), retrieveA25(), retrieveLPQ07())
+    calculateA60Inverse(retrieveCP2(), retrieveLoansToParticipators(), retrieveLPQ07())
   }
 }

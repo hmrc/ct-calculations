@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600a.v3
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, Input}
+import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtBoxIdentifier, Input}
 
-case class LPQ09(value: Option[Boolean]) extends CtBoxIdentifier(name = "Were any loans written off or released during this period?") with CtOptionalBoolean with Input
+case class B690(value: Option[Int]) extends CtBoxIdentifier("") with CtOptionalInteger with Input
