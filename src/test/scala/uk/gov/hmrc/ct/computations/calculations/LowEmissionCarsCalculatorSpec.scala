@@ -163,121 +163,77 @@ class LowEmissionCarsCalculatorSpec extends WordSpec with Matchers {
 
   "calculateSpecialRatePoolBalancingCharge" should {
 
-    "return CP670 of None if CPQ8 is true" in {
-      val result = calculator.calculateSpecialRatePoolBalancingCharge(specialRatesCarList,
+    "calculate CP670 where cpq8 is false" in {
+      val result = calculator.calculateSpecialRatePoolBalancingCharge(
+        cpq8 = CPQ8(Some(false)),
+        cp666 = CP666(Some(1)),
+        cp667 = CP667(Some(20)),
+        cpAux3 = CPAux3(3)
+      )
+
+      result shouldBe CP670(Some(16))
+    }
+
+    "calculate CP670 where cpq8 is true" in {
+      val result = calculator.calculateSpecialRatePoolBalancingCharge(
         cpq8 = CPQ8(Some(true)),
-        cp666 = CP666(Some(50)),
-        cp667 = CP667(Some(200))
+        cp666 = CP666(Some(1)),
+        cp667 = CP667(Some(20)),
+        cpAux3 = CPAux3(3)
       )
 
-      result shouldBe CP670(None)
+      result shouldBe CP670(Some(0))
     }
 
-    "return CP670 of None if CPQ8 is None" in {
-      val result = calculator.calculateSpecialRatePoolBalancingCharge(specialRatesCarList,
-        cpq8 = CPQ8(None),
-        cp666 = CP666(Some(50)),
-        cp667 = CP667(Some(200))
-      )
-
-      result shouldBe CP670(None)
-    }
-
-    "return CP670 of None if CP667 < CP666 + SpecialRatePool" in {
-      val result = calculator.calculateSpecialRatePoolBalancingCharge(specialRatesCarList,
+    "calculate CP670 where cp667<=cp666+cpAux3" in {
+      val result = calculator.calculateSpecialRatePoolBalancingCharge(
         cpq8 = CPQ8(Some(false)),
-        cp666 = CP666(Some(50)),
-        cp667 = CP667(Some(100))
+        cp666 = CP666(Some(1)),
+        cp667 = CP667(Some(4)),
+        cpAux3 = CPAux3(3)
       )
 
-      result shouldBe CP670(None)
-    }
-
-    "return CP670 of 101 if CP667 > CP666 + SpecialRatePool" in {
-      val result = calculator.calculateSpecialRatePoolBalancingCharge(specialRatesCarList,
-        cpq8 = CPQ8(Some(false)),
-        cp666 = CP666(Some(50)),
-        cp667 = CP667(Some(201))
-      )
-
-      result shouldBe CP670(Some(101))
-    }
-
-    "return CP670 of None if CP667 == CP666 + SpecialRatePool" in {
-      val result = calculator.calculateSpecialRatePoolBalancingCharge(specialRatesCarList,
-        cpq8 = CPQ8(Some(false)),
-        cp666 = CP666(Some(50)),
-        cp667 = CP667(Some(100))
-      )
-
-      result shouldBe CP670(None)
+      result shouldBe CP670(Some(0))
     }
 
   }
 
   "calculateSpecialRatePoolWrittenDownValueCarriedForward" should {
 
-    "return CP669 of 0 if CPQ8 is true and CP666 + SpecialRatePool - CP668 - CP667 is less then zero" in {
-      val result = calculator.calculateSpecialRatePoolWrittenDownValueCarriedForward(specialRatesCarList,
+    "calculate CP669 where cpq8 is false" in {
+      val result = calculator.calculateSpecialRatePoolWrittenDownValueCarriedForward(
+        cpq8 = CPQ8(Some(false)),
+        cp666 = CP666(Some(10)),
+        cp667 = CP667(Some(4)),
+        cp668 = CP668(Some(3)),
+        cp670 = CP670(Some(0)),
+        cpAux3 = CPAux3(2)
+      )
+
+      result shouldBe CP669(Some(5))
+    }
+
+    "calculate CP669 where cpq8 is true" in {
+      val result = calculator.calculateSpecialRatePoolWrittenDownValueCarriedForward(
         cpq8 = CPQ8(Some(true)),
-        cp666 = CP666(Some(50)),
-        cp667 = CP667(Some(100)),
-        cp668 = CP668(Some(1000))
+        cp666 = CP666(Some(10)),
+        cp667 = CP667(Some(4)),
+        cp668 = CP668(Some(3)),
+        cp670 = CP670(Some(0)),
+        cpAux3 = CPAux3(2)
       )
 
       result shouldBe CP669(Some(0))
     }
 
-    "return CP669 of 200 if CPQ8 is true and CP666 + SpecialRatePool - CP668 - CP667 is 200" in {
-      val result = calculator.calculateSpecialRatePoolWrittenDownValueCarriedForward(specialRatesCarList,
-        cpq8 = CPQ8(Some(true)),
-        cp666 = CP666(Some(250)),
-        cp667 = CP667(Some(20)),
-        cp668 = CP668(Some(80))
-      )
-
-      result shouldBe CP669(Some(200))
-    }
-
-    "return CP669 of 200 if CPQ8 is None and CP666 + SpecialRatePool - CP668 - CP667 is 200" in {
-      val result = calculator.calculateSpecialRatePoolWrittenDownValueCarriedForward(specialRatesCarList,
-        cpq8 = CPQ8(None),
-        cp666 = CP666(Some(250)),
-        cp667 = CP667(Some(20)),
-        cp668 = CP668(Some(80))
-      )
-
-      result shouldBe CP669(Some(200))
-    }
-
-    "return CP669 of 0 if CPQ8 is false and CP667 > CP666 + SpecialRatePool" in {
-      val result = calculator.calculateSpecialRatePoolWrittenDownValueCarriedForward(specialRatesCarList,
+    "calculate CP669 where result is -ve value" in {
+      val result = calculator.calculateSpecialRatePoolWrittenDownValueCarriedForward(
         cpq8 = CPQ8(Some(false)),
-        cp666 = CP666(Some(250)),
-        cp667 = CP667(Some(1000)),
-        cp668 = CP668(Some(80))
-      )
-
-      result shouldBe CP669(Some(0))
-    }
-
-    "return CP669 of 200 if CPQ8 is false and CP667 < CP666 + SpecialRatePool" in {
-      val result = calculator.calculateSpecialRatePoolWrittenDownValueCarriedForward(specialRatesCarList,
-        cpq8 = CPQ8(Some(false)),
-        cp666 = CP666(Some(250)),
-        cp667 = CP667(Some(20)),
-        cp668 = CP668(Some(80))
-      )
-
-      result shouldBe CP669(Some(200))
-    }
-
-    "return CP669 of 0 if CPQ8 is false and CP667 = CP666 + SpecialRatePool" in {
-      val result = calculator.calculateSpecialRatePoolWrittenDownValueCarriedForward(specialRatesCarList,
-        cpq8 = CPQ8(Some(false)),
-        cp666 = CP666(Some(250)),
-        cp667 = CP667(Some(300)),
-        cp668 = CP668(Some(80))
+        cp666 = CP666(Some(10)),
+        cp667 = CP667(Some(40)),
+        cp668 = CP668(Some(3)),
+        cp670 = CP670(Some(0)),
+        cpAux3 = CPAux3(2)
       )
 
       result shouldBe CP669(Some(0))
@@ -328,5 +284,7 @@ class LowEmissionCarsCalculatorSpec extends WordSpec with Matchers {
       result shouldBe false
     }
   }
+
+
 
 }

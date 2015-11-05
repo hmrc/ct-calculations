@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
 
+@deprecated("This box is no longer in use")
 case class CP96(value: Option[Int]) extends CtBoxIdentifier("Machinery and plant") with CtOptionalInteger
 
 object CP96 extends Linked[CP91, CP96]{
