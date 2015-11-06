@@ -279,6 +279,8 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
 
     def retrieveAC4(): AC4 = ???
 
+    def retrieveAC5(): AC5 = ???
+
     def retrieveAC12(): AC12 = ???
 
     def retrieveAC205(): AC205 = ???

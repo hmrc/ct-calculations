@@ -72,6 +72,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           override def retrieveAC1(): AC1 = ???
           override def retrieveAC3(): AC3 = ???
           override def retrieveAC4(): AC4 = ???
+          override def retrieveAC5(): AC5 = ???
           override def retrieveAC12(): AC12 = ???
           override def retrieveAC205(): AC205 = ???
           override def retrieveAC206(): AC206 = ???
@@ -102,6 +103,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           override def retrieveAC1(): uk.gov.hmrc.ct.accounts.AC1 = ???
           override def retrieveAC3(): uk.gov.hmrc.ct.accounts.AC3 = ???
           override def retrieveAC4(): uk.gov.hmrc.ct.accounts.AC4 = ???
+          override def retrieveAC5(): AC5 = ???
           override def retrieveAC12(): uk.gov.hmrc.ct.accounts.AC12 = ???
           override def retrieveAC205(): uk.gov.hmrc.ct.accounts.AC205 = ???
           override def retrieveAC206(): uk.gov.hmrc.ct.accounts.AC206 = ???
