@@ -14,21 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.retriever
+package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.accounts._
-import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, BoxValues}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, Input}
 
-object AccountsBoxRetriever extends BoxValues[AccountsBoxRetriever]
-
-trait AccountsBoxRetriever extends BoxRetriever {
-  def retrieveAC1(): AC1
-  def retrieveAC3(): AC3
-  def retrieveAC4(): AC4
-  def retrieveAC5(): AC5
-
-  def retrieveAC12(): AC12
-
-  def retrieveAC205(): AC205
-  def retrieveAC206(): AC206
-}
+case class AC5(value: Option[Boolean]) extends CtBoxIdentifier(name = "Have loans made during the period been released, or written off before the end of the period?")
+  with CtOptionalBoolean with Input

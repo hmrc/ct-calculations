@@ -14,21 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.retriever
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.accounts._
-import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, BoxValues}
+import uk.gov.hmrc.ct.box._
 
-object AccountsBoxRetriever extends BoxValues[AccountsBoxRetriever]
-
-trait AccountsBoxRetriever extends BoxRetriever {
-  def retrieveAC1(): AC1
-  def retrieveAC3(): AC3
-  def retrieveAC4(): AC4
-  def retrieveAC5(): AC5
-
-  def retrieveAC12(): AC12
-
-  def retrieveAC205(): AC205
-  def retrieveAC206(): AC206
+case class B80A(value: Option[Boolean]) extends CtBoxIdentifier("Is a repayment due for this period") with CtOptionalBoolean with Input {
 }
