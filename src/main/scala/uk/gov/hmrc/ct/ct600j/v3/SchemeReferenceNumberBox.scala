@@ -16,15 +16,14 @@
 
 package uk.gov.hmrc.ct.ct600j.v3
 
-import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-case class J5A(value: Option[LocalDate]) extends SchemeDateBox {
+abstract class SchemeReferenceNumberBox extends CtBoxIdentifier("Scheme reference number") with CtOptionalString with Input with ValidatableBox[CT600BoxRetriever] {
 
-  override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = boxRetriever.retrieveB140().value match {
-    case Some(true) => validateDateAsMandatory(id, this)
-    case _ => Set()
+  def validateSchemeReferenceNumber(previousSchemeNumberBox: CtOptionalString, previousSchemeDateBox: CtOptionalDate, schemeDateBox: CtOptionalDate) = (previousSchemeNumberBox.value, previousSchemeDateBox.value, schemeDateBox.value) match {
+    case (None, None, _) => validateStringAsBlank(id, this)
+    case (_, _, Some(_)) => validateAsMandatory(this) ++ validateOptionalStringByRegex(id, this, taxAvoidanceSchemeNumberRegex)
+    case _ => validateOptionalStringByRegex(id, this, taxAvoidanceSchemeNumberRegex)
   }
-
 }

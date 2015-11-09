@@ -19,17 +19,8 @@ package uk.gov.hmrc.ct.ct600j.v3
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-case class J10(value: Option[String]) extends CtBoxIdentifier("Scheme reference number") with CtOptionalString with Input with ValidatableBox[CT600BoxRetriever] {
+case class J10(value: Option[String]) extends SchemeReferenceNumberBox {
 
-
-  override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    if (boxRetriever.retrieveJ5().value.isEmpty && boxRetriever.retrieveJ5A().value.isEmpty) {
-      validateStringAsBlank(id, this)
-    } else if (boxRetriever.retrieveJ10A().value.isDefined) {
-      validateAsMandatory(this) ++ validateOptionalStringByRegex(id, this, taxAvoidanceSchemeNumberRegex)
-    } else {
-      validateOptionalStringByRegex(id, this, taxAvoidanceSchemeNumberRegex)
-    }
-  }
-
+  override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] =
+    validateSchemeReferenceNumber(boxRetriever.retrieveJ5(), boxRetriever.retrieveJ5A(), boxRetriever.retrieveJ10A())
 }
