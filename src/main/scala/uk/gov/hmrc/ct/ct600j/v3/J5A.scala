@@ -23,8 +23,8 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 case class J5A(value: Option[LocalDate]) extends CtBoxIdentifier("Accounting period in which the expected advantage arises") with CtOptionalDate with Input with ValidatableBox[CT600BoxRetriever] {
 
   override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    if(boxRetriever.retrieveB65().value.getOrElse(false)) {
-      validateDateAsMandatory("J5A", this)
+    if(boxRetriever.retrieveB140().value.getOrElse(false)) {
+      validateDateAsMandatory(id, this)
     } else {
       Set()
     }

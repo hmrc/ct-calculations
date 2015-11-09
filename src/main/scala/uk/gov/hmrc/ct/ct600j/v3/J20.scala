@@ -21,13 +21,13 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 case class J20(value: Option[String]) extends CtBoxIdentifier("Scheme reference number") with CtOptionalString with Input with ValidatableBox[CT600BoxRetriever] {
 
-  val boxNumber = "J20"
-
   override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    if(boxRetriever.retrieveJ15().value.isEmpty) {
-      validateStringAsBlank(boxNumber, this)
+    if (boxRetriever.retrieveJ15().value.isEmpty && boxRetriever.retrieveJ15A().value.isEmpty) {
+      validateStringAsBlank(id, this)
+    } else if (boxRetriever.retrieveJ20A().value.isDefined) {
+      validateAsMandatory(this) ++ validateOptionalStringByRegex(id, this, taxAvoidanceSchemeNumberRegex)
     } else {
-      validateOptionalStringByRegex(boxNumber, this, taxAvoidanceSchemeNumberRegex)
+      validateOptionalStringByRegex(id, this, taxAvoidanceSchemeNumberRegex)
     }
   }
 

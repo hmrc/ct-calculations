@@ -4,11 +4,13 @@ error.nonBlankValue=This field must be blank.
 error.regexFailure=This field text is in the wrong format
 error.allornone=Enter data in all fields or don''t fill in anything.
 error.notAValidInteger=This field must be a whole number.
+error.notAValidDate=This field must be a valid date.
 error.mustBePositive=This field must be a positive number
 
 error.B40.required=error.required
 error.B45.required=error.required
 error.B55.required=error.required
+error.B65.required=error.required
 error.B620.required=error.required
 error.B860.required=error.required
 error.B860.mustBePositive=error.mustBePositive
@@ -31,6 +33,7 @@ error.B965.required=error.required
 error.BFQ1.required=error.required
 error.PAYEEQ1.required=error.required
 
+error.J5.required=error.required
 error.J5.nonBlankValue=error.nonBlankValue
 error.J5.regexFailure=error.regexFailure
 error.J5A.required=error.required

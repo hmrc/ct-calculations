@@ -22,17 +22,13 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 case class J45A(value: Option[LocalDate]) extends CtBoxIdentifier("Accounting period in which the expected advantage arises") with CtOptionalDate with Input with ValidatableBox[CT600BoxRetriever] {
 
-  val boxNumber = "J45A"
-
   override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    if(boxRetriever.retrieveJ40A().value.isEmpty) {
-      validateDateAsBlank(boxNumber, this)
+    if (boxRetriever.retrieveJ30().value.isEmpty && boxRetriever.retrieveJ30A().value.isEmpty) {
+      validateDateAsBlank(id, this)
+    } else if (boxRetriever.retrieveJ35().value.isDefined) {
+      validateAsMandatory(this)
     } else {
-      if(boxRetriever.retrieveJ45().value.isDefined) {
-        validateDateAsMandatory(boxNumber, this)
-      } else {
-        Set()
-      }
+      Set()
     }
   }
 
