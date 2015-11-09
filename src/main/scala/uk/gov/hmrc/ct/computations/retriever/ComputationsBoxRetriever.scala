@@ -171,9 +171,9 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def retrieveCP59(): CP59 = CP59.calculate(this)
 
-  def retrieveCP81(): CP81 = CP81.calculate(this)
+  def retrieveCP81(): CP81 = CP81(retrieveCP81Input())
 
-  def retrieveCP87(): CP87 = CP87.calculate(this)
+  def retrieveCP87(): CP87 = CP87(retrieveCP87Input())
 
   def retrieveCP90(): CP90 = CP90.calculate(this)
 
@@ -239,7 +239,7 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def retrieveCP249(): CP249 = CP249(retrieveCP88())
 
-  def retrieveCP251(): CP251 = CP251(retrieveCP87())
+  def retrieveCP251(): CP251 = CP251(retrieveCP81())
 
   def retrieveCP252(): CP252 = CP252(retrieveCP79())
 

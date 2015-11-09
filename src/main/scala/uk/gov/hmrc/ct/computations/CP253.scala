@@ -26,8 +26,7 @@ object CP253 extends Calculated[CP253, ComputationsBoxRetriever] with Qualifying
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP253 = {
     qualifyingExpenditureCalculation(fieldValueRetriever.retrieveCP82(),
-                                     fieldValueRetriever.retrieveCP87(),
-                                     fieldValueRetriever.retrieveCP81())
+                                     fieldValueRetriever.retrieveCP83())
   }
 
 }

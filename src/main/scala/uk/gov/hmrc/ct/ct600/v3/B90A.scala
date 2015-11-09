@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.box._
 
-@deprecated("This box is no longer in use")
-case class CP80(value: Option[Int]) extends CtBoxIdentifier(name = "Other (FYA) expenditure") with CtOptionalInteger with Input
-
-object CP80 {
-
-  def apply(value: Int): CP80 = CP80(Some(value))
+case class B90A(value: Option[String]) extends CtBoxIdentifier("Reason for lack of accounts.") with CtOptionalString with Input {
 }

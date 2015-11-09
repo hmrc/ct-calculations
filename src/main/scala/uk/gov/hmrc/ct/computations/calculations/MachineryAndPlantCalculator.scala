@@ -24,41 +24,51 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
 
   def computeBalanceAllowance(cpq8: CPQ8,
                               cp78: CP78,
-                              cp81: CP81,
-                              cp82: CP82,
                               cp84: CP84,
-                              cp91: CP91Input): CP90 = {
-    val result  = total(cpq8, cp78, cp81, cp82, cp84, cp91) match {
-      case Some(t) if t >= 0 => Some(t)
+                              cp666: CP666,
+                              cp673: CP673,
+                              cp674: CP674,
+                              cpAux1: CPAux1,
+                              cpAux2: CPAux2,
+                              cpAux3: CPAux3): CP90 = {
+    val varAux = cp78 + cp666 + cp674 - cp84 + cpAux1 + cpAux2 + cpAux3 - cp673
+
+    val result = cpq8.value match {
+      case Some(true) => Some(varAux max 0)
       case _ => None
     }
+
     CP90(result)
   }
 
   def computeBalancingCharge(cpq8: CPQ8,
                              cp78: CP78,
-                             cp81: CP81,
                              cp82: CP82,
                              cp84: CP84,
-                             cp91: CP91Input): CP91 = {
-    val result = total(cpq8, cp78, cp81, cp82, cp84, cp91) match {
-      case Some(t) if t < 0 => Some(t.abs)
-      case _ => cp91.value
+                             cp666: CP666,
+                             cp667: CP667,
+                             cp672: CP672,
+                             cp673: CP673,
+                             cp674: CP674,
+                             cpAux1: CPAux1,
+                             cpAux2: CPAux2,
+                             cpAux3: CPAux3,
+                             cato20: CATO20): CP91 = {
+    val result: Option[Int] = cpq8.value match {
+      case Some(true) => {
+        val sum: Int = cp78 + cp666 + cp674 - cp84 - cp667 + cpAux1 + cpAux2 + cpAux3 - cp673
+        Some(sum.min(0).abs)
+      }
+      case Some(false) => {
+        val x: Int = cp78 + cp82 + cpAux2 + cato20
+        if (cp672 > x)
+          Some(cp672 - x)
+        else None
+      }
+      case _ => None
     }
-    CP91(result)
-  }
 
-  def computesBalances(cpq8: CPQ8,
-                       cp78: CP78,
-                       cp81: CP81,
-                       cp82: CP82,
-                       cp84: CP84,
-                       cp91: CP91Input): BalancesResult = {
-    (computeBalanceAllowance(cpq8, cp78, cp81, cp82, cp84, cp91), computeBalancingCharge(cpq8, cp78, cp81, cp82, cp84, cp91)) match {
-      case (CP90(Some(allowance)), CP91(Some(charge))) =>
-        throw new IllegalArgumentException("We should never be able to have both an allowance and a charge.")
-      case (allowance, charge) => BalancesResult(allowance, charge)
-    }
+    CP91(result)
   }
 
   def computeTotalAllowancesClaimed(cpq8: CPQ8,
@@ -78,24 +88,22 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
   }
 
   def writtenDownValue(cpq8: CPQ8,
-                       cpq10: CPQ10,
                        cp78: CP78,
-                       cp81: CP81,
                        cp82: CP82,
-                       cp84: CP84,
-                       cp186: CP186,
-                       cp91: CP91): CP92 = {
+                       cp89: CP89,
+                       cp91: CP91,
+                       cp672: CP672,
+                       cato20: CATO20,
+                       cpAux2: CPAux2): CP92 = {
 
-    def calculation(ceaseTrading: Boolean): Int = {
-      if (ceaseTrading) 0
-      else cp78 + cp81 + cp82 - cp84 - cp186 + cp91
+    val result = (cpq8.value, cp91.value) match {
+      case (Some(false), None) => {
+        (cp78 + cp82 + cpAux2 + cato20 - cp89 - cp672).max(0)
+      }
+      case _ => 0
     }
 
-    val result = for{
-      ceaseTrading <- cpq8.value
-      machineryAndPlant <- cpq10.value if machineryAndPlant
-    } yield calculation(ceaseTrading)
-    CP92(result)
+    CP92(Some(result))
   }
 
   def unclaimedAIAFirstYearAllowance(cp81: CP81, cp83: CP83, cp87: CP87, cp88: CP88, cpAux1: CPAux1): CATO20 = {
