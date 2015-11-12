@@ -16,15 +16,15 @@
 
 package uk.gov.hmrc.ct.ct600j.v3
 
-import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-case class J5A(value: Option[LocalDate]) extends SchemeDateBox {
+abstract class SchemeDateBox extends CtBoxIdentifier("Accounting period in which the expected advantage arises") with CtOptionalDate with Input with ValidatableBox[CT600BoxRetriever] {
 
-  override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = boxRetriever.retrieveB140().value match {
-    case Some(true) => validateDateAsMandatory(id, this)
-    case _ => Set()
-  }
-
+  def validateSchemeDate(previousSchemeNumberBox: CtOptionalString, previousSchemeDateBox: CtOptionalDate, schemeReferenceNumberBox: CtOptionalString) =
+    (previousSchemeNumberBox.value, previousSchemeDateBox.value, schemeReferenceNumberBox.value) match {
+      case (None, None, _) => validateDateAsBlank(id, this)
+      case (_, _, Some(_)) => validateAsMandatory(this)
+      case _ => Set[CtValidation]()
+    }
 }

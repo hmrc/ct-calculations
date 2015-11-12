@@ -27,9 +27,17 @@ object CP91 extends Calculated[CP91, ComputationsBoxRetriever] with MachineryAnd
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP91 = {
     computeBalancingCharge(cpq8 = fieldValueRetriever.retrieveCPQ8(),
                            cp78 = fieldValueRetriever.retrieveCP78(),
-                           cp81 = fieldValueRetriever.retrieveCP81(),
                            cp82 = fieldValueRetriever.retrieveCP82(),
                            cp84 = fieldValueRetriever.retrieveCP84(),
-                           cp91 = fieldValueRetriever.retrieveCP91Input())
+                           cp666 = fieldValueRetriever.retrieveCP666(),
+                           cp667 = fieldValueRetriever.retrieveCP667(),
+                           cp672 = fieldValueRetriever.retrieveCP672(),
+                           cp673 = fieldValueRetriever.retrieveCP673(),
+                           cp674 = fieldValueRetriever.retrieveCP674(),
+                           cpAux1 = fieldValueRetriever.retrieveCPAux1(),
+                           cpAux2 = fieldValueRetriever.retrieveCPAux2(),
+                           cpAux3 = fieldValueRetriever.retrieveCPAux3(),
+                           cato20 = fieldValueRetriever.retrieveCATO20()
+    )
   }
 }

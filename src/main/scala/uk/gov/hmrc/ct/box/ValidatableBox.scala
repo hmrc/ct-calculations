@@ -46,6 +46,7 @@ trait ValidatableBox[T <: BoxRetriever] {
   protected def validateStringAsMandatory(boxId: String, box: CtOptionalString): Set[CtValidation] = {
     box.value match {
       case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
+      case Some(x) if x.isEmpty => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
       case _ => Set()
     }
   }
