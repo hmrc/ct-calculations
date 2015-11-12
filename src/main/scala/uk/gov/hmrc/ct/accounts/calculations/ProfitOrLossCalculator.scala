@@ -47,10 +47,37 @@ trait ProfitOrLossCalculator {
     AC33(calculateProfitOrLossBeforeTax(operatingProfit = ac27.value, interestRecieved = ac29.value, interestedPayable = ac31.value))
   }
 
+  def calculateCurrentProfitOtLossAfterTax(ac32: AC32, ac34: AC34): AC36 = {
+    AC36(calculateProfitOrLossAfterTax(ac32.value, ac34.value))
+  }
+
+  def calculatePreviousProfitOtLossAfterTax(ac33: AC33, ac35: AC35): AC37 = {
+    AC37(calculateProfitOrLossAfterTax(ac33.value, ac35.value))
+  }
+
+  def calculateCurrentNetBalance(ac36: AC36, ac38: AC38): AC40 = {
+    AC40(calculateNetBalance(ac36.value, ac38.value))
+  }
+
+  def calculatePreviousNetBalance(ac37: AC37, ac39: AC39): AC41 = {
+    ???
+  }
+
+  private def calculateProfitOrLossAfterTax(profitBeforeTax: Option[Int], tax: Option[Int]): Option[Int] = {
+    profitBeforeTax.map { p =>
+      p - tax.getOrElse(0)
+    }
+  }
+
+  private def calculateNetBalance(profitafterTax: Option[Int], dividends: Option[Int]): Option[Int] = {
+    profitafterTax.map { p =>
+      p - dividends.getOrElse(0)
+    }
+  }
+
   private def calculateProfitOrLossBeforeTax(operatingProfit: Option[Int], interestRecieved: Option[Int], interestedPayable: Option[Int]) : Option[Int] = {
-    (operatingProfit, interestRecieved, interestedPayable) match {
-      case (None, _, _) => None
-      case (op, ir, ip) => Some(op.getOrElse(0) + ir.getOrElse(0) - ip.getOrElse(0))
+    operatingProfit.map { op =>
+      op + interestRecieved.getOrElse(0) - interestedPayable.getOrElse(0)
     }
   }
 
@@ -65,9 +92,8 @@ trait ProfitOrLossCalculator {
                                              distributionCosts: Option[Int],
                                              administrativeExpenses: Option[Int],
                                              otherOperatingIncome: Option[Int]): Option[Int] = {
-    (grossProfit, distributionCosts, administrativeExpenses, otherOperatingIncome) match {
-      case (None, _, _, _) => None
-      case (gp, dc, ae, ooi) => Some(gp.getOrElse(0) - dc.getOrElse(0) - ae.getOrElse(0) + ooi.getOrElse(0))
+    grossProfit.map { gp =>
+      gp - distributionCosts.getOrElse(0) - administrativeExpenses.getOrElse(0) + otherOperatingIncome.getOrElse(0)
     }
   }
 }

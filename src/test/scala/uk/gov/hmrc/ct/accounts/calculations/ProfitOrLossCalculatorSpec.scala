@@ -104,5 +104,49 @@ class ProfitOrLossCalculatorSpec extends WordSpec with Matchers with ProfitOrLos
       }
     }
 
+    "calculateCurrentProfitOrLossAfterTax" when {
+      "return None if ac26 is None" in {
+        calculateCurrentProfitOtLossAfterTax(ac32 = AC32(None), ac34 = AC34(Some(12344))) shouldBe AC36(None)
+      }
+      "return AC26 if all other parameters are empty" in {
+        calculateCurrentProfitOtLossAfterTax(ac32 = AC32(Some(100)), ac34 = AC34(None)) shouldBe AC36(Some(100))
+      }
+      "return value of AC26 plus ac28 minus ac30" in {
+        calculateCurrentProfitOtLossAfterTax(ac32 = AC32(Some(100)), ac34 = AC34(Some(50))) shouldBe AC36(Some(50))
+      }
+      "return value of AC16 plus ac28 minus ac30 resulting in a loss" in {
+        calculateCurrentProfitOtLossAfterTax(ac32 = AC32(Some(100)), ac34 = AC34(Some(150))) shouldBe AC36(Some(-50))
+      }
+    }
+
+    "calculatePreviousProfitOrLossAfterTax" when {
+      "return None if ac33 is None" in {
+        calculatePreviousProfitOtLossAfterTax(ac33 = AC33(None), ac35 = AC35(Some(12344))) shouldBe AC37(None)
+      }
+      "return AC33 if all other parameters are empty" in {
+        calculatePreviousProfitOtLossAfterTax(ac33 = AC33(Some(100)), ac35 = AC35(None)) shouldBe AC37(Some(100))
+      }
+      "return value of AC33 minus ac35" in {
+        calculatePreviousProfitOtLossAfterTax(ac33 = AC33(Some(100)), ac35 = AC35(Some(50))) shouldBe AC37(Some(50))
+      }
+      "return value of AC33 minus ac35 resulting in a loss" in {
+        calculatePreviousProfitOtLossAfterTax(ac33 = AC33(Some(100)), ac35 = AC35(Some(150))) shouldBe AC37(Some(-50))
+      }
+    }
+
+    "calculateCurrentNetBalance" when {
+      "return None if ac36 is None" in {
+        calculateCurrentNetBalance(ac36 = AC36(None), ac38 = AC38(Some(12344))) shouldBe AC40(None)
+      }
+      "return AC36 if all other parameters are empty" in {
+        calculateCurrentNetBalance(ac36 = AC36(Some(100)), ac38 = AC38(None)) shouldBe AC40(Some(100))
+      }
+      "return value of AC36 minus ac38" in {
+        calculateCurrentNetBalance(ac36 = AC36(Some(100)), ac38 = AC38(Some(50))) shouldBe AC40(Some(50))
+      }
+      "return value of AC36 minus ac38 resulting in a loss" in {
+        calculateCurrentNetBalance(ac36 = AC36(Some(100)), ac38 = AC38(Some(150))) shouldBe AC40(Some(-50))
+      }
+    }
   }
 }
