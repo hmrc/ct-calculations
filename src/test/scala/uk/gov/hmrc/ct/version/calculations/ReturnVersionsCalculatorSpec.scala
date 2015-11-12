@@ -84,6 +84,14 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           override def retrieveAbridgedFiling(): AbridgedFiling = AbridgedFiling(false)
           override def retrieveCompaniesHouseFiling(): CompaniesHouseFiling = CompaniesHouseFiling(true)
           override def retrieveHMRCFiling(): HMRCFiling = HMRCFiling(false)
+
+          override def retrieveAC13(): AC13 = ???
+
+          override def retrieveAC16(): AC16 = ???
+
+          override def retrieveAC15(): AC15 = ???
+
+          override def retrieveAC14(): AC14 = ???
         }
 
         ReturnVersionsCalculator.doCalculation(accountsBoxRetriever) shouldBe expectedResult
@@ -97,18 +105,22 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(Computations, ComputationsCT20141001),
                                  Return(CT600, CT600Version2))
 
-        ReturnVersionsCalculator.doCalculation(new ComputationsBoxRetrieverForTest with AccountsBoxRetriever{
+        ReturnVersionsCalculator.doCalculation(new ComputationsBoxRetrieverForTest with AccountsBoxRetriever {
 
-          override def retrieveAC1(): uk.gov.hmrc.ct.accounts.AC1 = ???
-          override def retrieveAC3(): uk.gov.hmrc.ct.accounts.AC3 = ???
-          override def retrieveAC4(): uk.gov.hmrc.ct.accounts.AC4 = ???
-          override def retrieveAC12(): uk.gov.hmrc.ct.accounts.AC12 = ???
-          override def retrieveAC205(): uk.gov.hmrc.ct.accounts.AC205 = ???
-          override def retrieveAC206(): uk.gov.hmrc.ct.accounts.AC206 = ???
+          override def retrieveAC1(): AC1 = ???
+          override def retrieveAC3(): AC3 = ???
+          override def retrieveAC4(): AC4 = ???
+          override def retrieveAC12(): AC12 = ???
+          override def retrieveAC13(): AC13 = ???
+          override def retrieveAC16(): AC16 = ???
+          override def retrieveAC15(): AC15 = ???
+          override def retrieveAC14(): AC14 = ???
+          override def retrieveAC205(): AC205 = ???
+          override def retrieveAC206(): AC206 = ???
 
-          override def retrieveAP1(): uk.gov.hmrc.ct.computations.AP1 = ???
-          override def retrieveAP2(): uk.gov.hmrc.ct.computations.AP2 = ???
-          override def retrieveAP3(): uk.gov.hmrc.ct.computations.AP3 = ???
+          override def retrieveAP1(): AP1 = ???
+          override def retrieveAP2(): AP2 = ???
+          override def retrieveAP3(): AP3 = ???
 
         }) shouldBe expectedResult
       }
