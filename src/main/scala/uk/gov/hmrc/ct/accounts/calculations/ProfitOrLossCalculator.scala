@@ -39,6 +39,21 @@ trait ProfitOrLossCalculator {
     AC27(calculateOperatingProfitOrLoss(ac17.value, ac19.value, ac21.value, ac23.value))
   }
 
+  def calculateCurrentProfitOrLossBeforeTax(ac26: AC26, ac28: AC28, ac30: AC30): AC32 = {
+    AC32(calculateProfitOrLossBeforeTax(operatingProfit = ac26.value, interestRecieved = ac28.value, interestedPayable = ac30.value))
+  }
+
+  def calculatePreviousProfitOrLossBeforeTax(ac27: AC27, ac29: AC29, ac31: AC31): AC33 = {
+    AC33(calculateProfitOrLossBeforeTax(operatingProfit = ac27.value, interestRecieved = ac29.value, interestedPayable = ac31.value))
+  }
+
+  private def calculateProfitOrLossBeforeTax(operatingProfit: Option[Int], interestRecieved: Option[Int], interestedPayable: Option[Int]) : Option[Int] = {
+    (operatingProfit, interestRecieved, interestedPayable) match {
+      case (None, _, _) => None
+      case (op, ir, ip) => Some(op.getOrElse(0) + ir.getOrElse(0) - ip.getOrElse(0))
+    }
+  }
+
   private def calculateProfitOrLoss(turnover: Option[Int], costs: Option[Int]): Option[Int] = {
     (turnover, costs) match {
       case (None, None) => None

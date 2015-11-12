@@ -104,6 +104,14 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           override def retrieveAC20(): AC20 = ???
 
           override def retrieveAC23(): AC23 = ???
+
+          override def retrieveAC28(): AC28 = ???
+
+          override def retrieveAC29(): AC29 = ???
+
+          override def retrieveAC30(): AC30 = ???
+
+          override def retrieveAC31(): AC31 = ???
         }
 
         ReturnVersionsCalculator.doCalculation(accountsBoxRetriever) shouldBe expectedResult
@@ -133,6 +141,10 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           override def retrieveAC21(): AC21 = ???
           override def retrieveAC20(): AC20 = ???
           override def retrieveAC23(): AC23 = ???
+          override def retrieveAC28(): AC28 = ???
+          override def retrieveAC31(): AC31 = ???
+          override def retrieveAC30(): AC30 = ???
+          override def retrieveAC29(): AC29 = ???
           override def retrieveAC205(): AC205 = ???
           override def retrieveAC206(): AC206 = ???
 
