@@ -44,5 +44,35 @@ class ProfitOrLossCalculatorSpec extends WordSpec with Matchers with ProfitOrLos
       }
     }
 
+    "calculateCurrentOperatingProfitOrLoss" when {
+      "return None if ac16 is None" in {
+        calculateCurrentOperatingProfitOrLoss(ac16 = AC16(None), ac18 = AC18(Some(12)), ac20 = AC20(None), ac22 = AC22(None)) shouldBe AC26(None)
+      }
+      "return CP16 if all other parameters are empty" in {
+        calculateCurrentOperatingProfitOrLoss(ac16 = AC16(Some(100)), ac18 = AC18(None), ac20 = AC20(None), ac22 = AC22(None)) shouldBe AC26(Some(100))
+      }
+      "return value of CP16 plus ac22 minus the sum of all other parameters resulting in a profit" in {
+        calculateCurrentOperatingProfitOrLoss(ac16 = AC16(Some(100)), ac18 = AC18(Some(50)), ac20 = AC20(Some(40)), ac22 = AC22(Some(1))) shouldBe AC26(Some(11))
+      }
+      "return value of CP16 plus ac22 minus the sum of all other parameters resulting in a loss" in {
+        calculateCurrentOperatingProfitOrLoss(ac16 = AC16(Some(100)), ac18 = AC18(Some(50)), ac20 = AC20(Some(100)), ac22 = AC22(Some(1))) shouldBe AC26(Some(-49))
+      }
+    }
+
+    "calculateCurrentOperatingProfitOrLoss" when {
+      "return None ac17 is None" in {
+        calculatePreviousOperatingProfitOrLoss(ac17 = AC17(None), ac19 = AC19(Some(12)), ac21 = AC21(None), ac23 = AC23(None)) shouldBe AC27(None)
+      }
+      "return CP17 if all other parameters are empty" in {
+        calculatePreviousOperatingProfitOrLoss(ac17 = AC17(Some(100)), ac19 = AC19(None), ac21 = AC21(None), ac23 = AC23(None)) shouldBe AC27(Some(100))
+      }
+      "return value of CP17 plus ac22 minus the sum of all other parameters resulting in a profit" in {
+        calculatePreviousOperatingProfitOrLoss(ac17 = AC17(Some(100)), ac19 = AC19(Some(50)), ac21 = AC21(Some(40)), ac23 = AC23(Some(1))) shouldBe AC27(Some(11))
+      }
+      "return value of CP17 plus ac22 minus the sum of all other parameters resulting in a loss" in {
+        calculatePreviousOperatingProfitOrLoss(ac17 = AC17(Some(100)), ac19 = AC19(Some(50)), ac21 = AC21(Some(100)), ac23 = AC23(Some(1))) shouldBe AC27(Some(-49))
+      }
+    }
+
   }
 }
