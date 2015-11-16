@@ -128,7 +128,7 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
             cp667 = cp667,
             cp668 = cp668,
             cp672 = cp672
-          ) with AccountsBoxRetriever
+          ) with StubbedAccountsBoxRetriever
 
           assert(retriever.retrieveCP81().value equals cp81_Input.getOrElse(fail("Missing value for CP81 Input")), scenario)
           assert(retriever.retrieveCP87().value equals cp87_Input.getOrElse(fail("Missing value for CP87 Input")), scenario)
@@ -237,187 +237,40 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
                                   cp668: Option[Int] = None,
                                   cp672: Option[Int] = None,
                                   cp673: Option[Int] = None,
-                                  cp674: Option[Int] = None) extends ComputationsBoxRetriever {
+                                  cp674: Option[Int] = None) extends StubbedComputationsBoxRetriever {
 
     self: AccountsBoxRetriever =>
 
-    def retrieveLEC01: LEC01 = LEC01(lec01)
+    override def retrieveLEC01: LEC01 = LEC01(lec01)
 
-    def retrieveCPQ8: CPQ8 = CPQ8(cpq8)
+    override def retrieveCPQ8: CPQ8 = CPQ8(cpq8)
 
-    def retrieveCP78: CP78 = CP78(cp78)
+    override def retrieveCP78: CP78 = CP78(cp78)
 
-    def retrieveCP666: CP666 = CP666(cp666)
+    override def retrieveCP666: CP666 = CP666(cp666)
 
-    def retrieveCP81Input: CP81Input = CP81Input(cp81Input)
+    override def retrieveCP81Input: CP81Input = CP81Input(cp81Input)
 
-    def retrieveCP82: CP82 = CP82(cp82)
+    override def retrieveCP82: CP82 = CP82(cp82)
 
-    def retrieveCP83: CP83 = CP83(cp83)
+    override def retrieveCP83: CP83 = CP83(cp83)
 
-    def retrieveCP84: CP84 = CP84(cp84)
+    override def retrieveCP84: CP84 = CP84(cp84)
 
-    def retrieveCP667: CP667 = CP667(cp667)
+    override def retrieveCP667: CP667 = CP667(cp667)
 
-    def retrieveCP672: CP672 = CP672(cp672)
+    override def retrieveCP672: CP672 = CP672(cp672)
 
-    def retrieveCP673: CP673 = CP673(cp673)
+    override def retrieveCP673: CP673 = CP673(cp673)
 
-    def retrieveCP674: CP674 = CP674(cp674)
+    override def retrieveCP674: CP674 = CP674(cp674)
 
-    def retrieveCP87Input: CP87Input = CP87Input(cp87Input)
+    override def retrieveCP87Input: CP87Input = CP87Input(cp87Input)
 
-    def retrieveCP88: CP88 = CP88(cp88)
+    override def retrieveCP88: CP88 = CP88(cp88)
 
-    def retrieveCP89: CP89 = CP89(cp89)
+    override def retrieveCP89: CP89 = CP89(cp89)
 
-    def retrieveCP668: CP668 = CP668(cp668)
-
-    def retrieveAC1(): AC1 = ???
-
-    def retrieveAC3(): AC3 = ???
-
-    def retrieveAC4(): AC4 = ???
-
-    def retrieveAC12(): AC12 = ???
-
-    def retrieveAC205(): AC205 = ???
-
-    def retrieveAC206(): AC206 = ???
-
-    def retrieveCP36(): CP36 = ???
-
-    def retrieveCP303(): CP303 = ???
-
-    def retrieveCP501(): CP501 = ???
-
-    def retrieveCATO11(): CATO11 = ???
-
-    def retrieveCP287(): CP287 = ???
-
-    def retrieveCP21(): CP21 = ???
-
-    def retrieveCP15(): CP15 = ???
-
-    def retrieveCPQ20(): CPQ20 = ???
-
-    def retrieveCP24(): CP24 = ???
-
-    def retrieveCP18(): CP18 = ???
-
-    def retrieveCP281(): CP281 = ???
-
-    def retrieveCP86(): CP86 = ???
-
-    def retrieveAP2(): AP2 = ???
-
-    def retrieveCPQ17(): CPQ17 = ???
-
-    def retrieveCP80(): CP80 = ???
-
-    def retrieveCP53(): CP53 = ???
-
-    def retrieveCP302(): CP302 = ???
-
-    def retrieveCP35(): CP35 = ???
-
-    def retrieveCPQ1000(): CPQ1000 = ???
-
-    def retrieveCP503(): CP503 = ???
-
-    def retrieveCP23(): CP23 = ???
-
-    def retrieveCP91Input(): CP91Input = ???
-
-    def retrieveCP17(): CP17 = ???
-
-    def retrieveCPQ19(): CPQ19 = ???
-
-    def retrieveCP47(): CP47 = ???
-
-    def retrieveCP26(): CP26 = ???
-
-    def retrieveCP32(): CP32 = ???
-
-    def retrieveCP20(): CP20 = ???
-
-    def retrieveCP286(): CP286 = ???
-
-    def retrieveCP29(): CP29 = ???
-
-    def retrieveCP8(): CP8 = ???
-
-    def retrieveCP85(): CP85 = ???
-
-    def retrieveAP1(): AP1 = ???
-
-    def retrieveCP79(): CP79 = ???
-
-    def retrieveCP46(): CP46 = ???
-
-    def retrieveCP2(): CP2 = ???
-
-    def retrieveCPQ10(): CPQ10 = ???
-
-    def retrieveCP52(): CP52 = ???
-
-    def retrieveCP34(): CP34 = ???
-
-    def retrieveCP49(): CP49 = ???
-
-    def retrieveCP55(): CP55 = ???
-
-    def retrieveCPQ7(): CPQ7 = ???
-
-    def retrieveCP301(): CP301 = ???
-
-    def retrieveCP28(): CP28 = ???
-
-    def retrieveCP22(): CP22 = ???
-
-    def retrieveCP502(): CP502 = ???
-
-    def retrieveCPQ21(): CPQ21 = ???
-
-    def retrieveCP16(): CP16 = ???
-
-    def retrieveCP43(): CP43 = ???
-
-    def retrieveCP37(): CP37 = ???
-
-    def retrieveCP31(): CP31 = ???
-
-    def retrieveCPQ18(): CPQ18 = ???
-
-    def retrieveCP19(): CP19 = ???
-
-    def retrieveCP1(): CP1 = ???
-
-    def retrieveCP25(): CP25 = ???
-
-    def retrieveCP285(): CP285 = ???
-
-    def retrieveCATO12(): CATO12 = ???
-
-    def retrieveCP7(): CP7 = ???
-
-    def retrieveCP57(): CP57 = ???
-
-    def retrieveCP30(): CP30 = ???
-
-    def retrieveAP3(): AP3 = ???
-
-    def retrieveCP51(): CP51 = ???
-
-    def retrieveCP510(): CP510 = ???
-
-    def retrieveCP33(): CP33 = ???
-
-    def retrieveCP48(): CP48 = ???
-
-    def retrieveCP27(): CP27 = ???
-
-    def generateValues: Map[String, CtValue[_]] = ???
-
+    override def retrieveCP668: CP668 = CP668(cp668)
   }
 }
