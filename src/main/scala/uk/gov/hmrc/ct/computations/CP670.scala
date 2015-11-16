@@ -27,11 +27,10 @@ object CP670 extends Calculated[CP670, ComputationsBoxRetriever] with LowEmissio
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP670 = {
 
     calculateSpecialRatePoolBalancingCharge(
-      fieldValueRetriever.retrieveLEC01(),
       fieldValueRetriever.retrieveCPQ8(),
       fieldValueRetriever.retrieveCP666(),
-      fieldValueRetriever.retrieveCP667()
-
+      fieldValueRetriever.retrieveCP667(),
+      fieldValueRetriever.retrieveCPAux3()
     )
 
   }

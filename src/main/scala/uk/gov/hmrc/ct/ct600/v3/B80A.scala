@@ -14,17 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600j.v3
+package uk.gov.hmrc.ct.ct600.v3
 
-import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-case class J5A(value: Option[LocalDate]) extends SchemeDateBox {
-
-  override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = boxRetriever.retrieveB140().value match {
-    case Some(true) => validateDateAsMandatory(id, this)
-    case _ => Set()
-  }
-
+case class B80A(value: Option[Boolean]) extends CtBoxIdentifier("Is a repayment due for this period") with CtOptionalBoolean with Input {
 }

@@ -101,33 +101,33 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   //1st April 2015 and thereafter	    Second hand	  <=130 g/km    Main rate
   //1st April 2015 and thereafter	    -	            >130 g/km	    Special rate
 
-  def calculateSpecialRatePoolBalancingCharge(lec01: LEC01,
-                                              cpq8: CPQ8,
+  def calculateSpecialRatePoolBalancingCharge(cpq8: CPQ8,
                                               cp666: CP666,
-                                              cp667: CP667): CP670 = {
-    val calc = cpq8.value match {
-      case Some(false) if disposalsExceedsSpecialRatePool(lec01,cp666,cp667) => {
-        Some(
-          cp667 - (cp666 + roundDownToInt(getSpecialRatePoolSum(lec01)))
-        )
-      }
-      case _ => None
+                                              cp667: CP667,
+                                              cpAux3: CPAux3): CP670 = {
+    val x = cp666 + cpAux3
+
+    val result = cpq8.value match {
+      case Some(false) if cp667 > x => cp667 - x
+      case _ => 0
     }
 
-    CP670(calc)
+    CP670(Some(result))
   }
 
-  def calculateSpecialRatePoolWrittenDownValueCarriedForward(lec01: LEC01,
-                                                             cpq8: CPQ8,
+  def calculateSpecialRatePoolWrittenDownValueCarriedForward(cpq8: CPQ8,
                                                              cp666: CP666,
                                                              cp667: CP667,
-                                                             cp668: CP668): CP669 = {
-    val calc = cpq8.value match {
-      case Some(false) if disposalsExceedsSpecialRatePool(lec01,cp666,cp667) => Some(0)
-      case _ => Some(0 max (cp666 + getSpecialRatePoolSum(lec01).toInt - cp668 - cp667))
+                                                             cp668: CP668,
+                                                             cp670: CP670,
+                                                             cpAux3: CPAux3): CP669 = {
+
+    val result = (cpq8.value, cp670.value) match {
+      case (Some(false), Some(0)) => (cp666 + cpAux3 - cp668 - cp667).max(0)
+      case _ => 0
     }
 
-    CP669(calc)
+    CP669(Some(result))
   }
 
   def disposalsExceedsSpecialRatePool(lec01: LEC01,

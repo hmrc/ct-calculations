@@ -24,12 +24,16 @@ case class CP90(value: Option[Int]) extends CtBoxIdentifier(name = "Balance Allo
 
 object CP90 extends Calculated[CP90, ComputationsBoxRetriever] with MachineryAndPlantCalculator {
 
-  override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP90 = {
-    computeBalanceAllowance(cpq8 = fieldValueRetriever.retrieveCPQ8(),
-                            cp78 = fieldValueRetriever.retrieveCP78(),
-                            cp81 = fieldValueRetriever.retrieveCP81(),
-                            cp82 = fieldValueRetriever.retrieveCP82(),
-                            cp84 = fieldValueRetriever.retrieveCP84(),
-                            cp91 = fieldValueRetriever.retrieveCP91Input())
-  }
+  override def calculate(retriever: ComputationsBoxRetriever): CP90 =
+    computeBalanceAllowance(
+      retriever.retrieveCPQ8(),
+      retriever.retrieveCP78(),
+      retriever.retrieveCP84(),
+      retriever.retrieveCP666(),
+      retriever.retrieveCP673(),
+      retriever.retrieveCP674(),
+      retriever.retrieveCPAux1(),
+      retriever.retrieveCPAux2(),
+      retriever.retrieveCPAux3()
+    )
 }
