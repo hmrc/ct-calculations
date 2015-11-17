@@ -87,6 +87,30 @@ trait AccountsBoxRetriever extends BoxRetriever {
 
   def retrieveAC41(): AC41 = AC41.calculate(this)
 
+  def retrieveAC405(): AC405
+
+  def retrieveAC406(): AC406
+
+  def retrieveAC410(): AC410
+
+  def retrieveAC411(): AC411
+
+  def retrieveAC415(): AC415
+
+  def retrieveAC416(): AC416
+
+  def retrieveAC420(): AC420
+
+  def retrieveAC421(): AC421
+
+  def retrieveAC425(): AC425
+
+  def retrieveAC426(): AC426
+
+  def retrieveAC435(): AC435 = AC435.calculate(this)
+
+  def retrieveAC436(): AC436 = AC436.calculate(this)
+
   def retrieveAC205(): AC205
 
   def retrieveAC206(): AC206

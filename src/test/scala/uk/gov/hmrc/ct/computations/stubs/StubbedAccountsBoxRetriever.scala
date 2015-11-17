@@ -71,5 +71,25 @@ trait StubbedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   override def retrieveAC23(): AC23 = ???
 
+  override def retrieveAC405(): AC405 = ???
+
+  override def retrieveAC406(): AC406 = ???
+
+  override def retrieveAC410(): AC410 = ???
+
+  override def retrieveAC411(): AC411 = ???
+
+  override def retrieveAC415(): AC415 = ???
+
+  override def retrieveAC416(): AC416 = ???
+
+  override def retrieveAC420(): AC420 = ???
+
+  override def retrieveAC421(): AC421 = ???
+
+  override def retrieveAC425(): AC425 = ???
+
+  override def retrieveAC426(): AC426 = ???
+
   override def generateValues: Map[String, CtValue[_]] = ???
 }

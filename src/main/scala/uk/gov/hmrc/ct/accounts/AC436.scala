@@ -16,11 +16,18 @@
 
 package uk.gov.hmrc.ct.accounts
 
+import uk.gov.hmrc.ct.accounts.calculations.ProfitOrLossCalculator
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger}
 
 case class AC436(value: Option[Int]) extends CtBoxIdentifier(name = "Previous Profit or loss") with CtOptionalInteger
 
-object AC436 extends Calculated[AC436, AccountsBoxRetriever] {
-  override def calculate(boxRetriever: AccountsBoxRetriever): AC436 = ???
+object AC436 extends Calculated[AC436, AccountsBoxRetriever with FilingAttributesBoxValueRetriever] with ProfitOrLossCalculator {
+  override def calculate(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): AC436 = {
+    calculatePreviousProfitOrLoss(ac13 = boxRetriever.retrieveAC13(), ac406 = boxRetriever.retrieveAC406(),
+                                  ac411 = boxRetriever.retrieveAC411(), ac416 = boxRetriever.retrieveAC416(),
+                                  ac421 = boxRetriever.retrieveAC421(), ac426 = boxRetriever.retrieveAC426(),
+                                  ac35 = boxRetriever.retrieveAC35(), boxRetriever.retrieveMicroEntityFiling())
+  }
 }
