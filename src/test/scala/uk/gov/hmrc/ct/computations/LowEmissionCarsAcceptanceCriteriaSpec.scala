@@ -20,11 +20,8 @@ import org.joda.time.LocalDate
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.CtValue
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.{CATO11, CATO12}
+import uk.gov.hmrc.ct.computations.stubs.{StubbedAccountsBoxRetriever, StubbedComputationsBoxRetriever}
 
 class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
 

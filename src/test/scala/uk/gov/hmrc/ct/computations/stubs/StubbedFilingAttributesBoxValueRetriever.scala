@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.computations.stubs
 
 import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
+/**
+  * Created by jameswilliams on 16/11/2015.
+  */
 trait StubbedFilingAttributesBoxValueRetriever extends FilingAttributesBoxValueRetriever {
   override def retrieveProductName(): ProductName = ???
 
