@@ -20,9 +20,3 @@ import uk.gov.hmrc.ct.box._
 
 case class AC13(value: Option[Int]) extends CtBoxIdentifier(name = "Previous Turnover/Sales")
                                     with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input
-
-object AC13 extends FromPreviousPeriod[AC12, AC13] {
-  override def prePopulate(currentFromPreviousPeriodBox: AC12): AC13 = {
-    AC13(currentFromPreviousPeriodBox.value)
-  }
-}
