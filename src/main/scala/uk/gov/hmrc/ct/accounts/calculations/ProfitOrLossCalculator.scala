@@ -76,7 +76,7 @@ trait ProfitOrLossCalculator {
   }
 
   def calculatePreviousNetBalance(ac37: AC37, ac39: AC39): AC41 = {
-    ???
+    AC41(calculateNetBalance(ac37.value, ac39.value))
   }
 
   private def calculateProfitOrLossAfterTax(profitBeforeTax: Option[Int], tax: Option[Int]): Option[Int] = {

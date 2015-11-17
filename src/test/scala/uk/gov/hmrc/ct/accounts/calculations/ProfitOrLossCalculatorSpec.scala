@@ -164,5 +164,20 @@ class ProfitOrLossCalculatorSpec extends WordSpec with Matchers with ProfitOrLos
         calculateCurrentNetBalance(ac36 = AC36(Some(100)), ac38 = AC38(Some(150))) shouldBe AC40(Some(-50))
       }
     }
+
+    "calculatePreviousNetBalance" when {
+      "return None if ac37 is None" in {
+        calculatePreviousNetBalance(ac37 = AC37(None), ac39 = AC39(Some(12344))) shouldBe AC41(None)
+      }
+      "return AC37 if all other parameters are empty" in {
+        calculatePreviousNetBalance(ac37 = AC37(Some(100)), ac39 = AC39(None)) shouldBe AC41(Some(100))
+      }
+      "return value of AC37 minus ac39" in {
+        calculatePreviousNetBalance(ac37 = AC37(Some(100)), ac39 = AC39(Some(50))) shouldBe AC41(Some(50))
+      }
+      "return value of AC37 minus ac39 resulting in a loss" in {
+        calculatePreviousNetBalance(ac37 = AC37(Some(100)), ac39 = AC39(Some(150))) shouldBe AC41(Some(-50))
+      }
+    }
   }
 }
