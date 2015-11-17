@@ -16,17 +16,41 @@
 
 package uk.gov.hmrc.ct.accounts.calculations
 
-import uk.gov.hmrc.ct.StatutoryAccountsFiling
+import uk.gov.hmrc.ct.{MicroEntityFiling, StatutoryAccountsFiling}
 import uk.gov.hmrc.ct.accounts._
 
 trait ProfitOrLossCalculator {
 
-  def calculateCurrentProfitOrLoss(): AC435 = {
-    ???
+  def calculateCurrentProfitOrLoss(ac12: AC12, ac405: AC405, ac410: AC410, ac415: AC415, ac420: AC420, ac425: AC425, ac34: AC34, microEntityFiling: MicroEntityFiling): AC435 = {
+    AC435 (
+      if (microEntityFiling.value) {
+        calculateMicroProfitAndLoss(turnover = ac12.value, otherIncome = ac405.value, rawMaterials = ac410.value,
+                                    staffCosts = ac415.value, depreciation = ac420.value,
+                                    otherCharges = ac425.value, tax = ac34.value)
+      }
+      else None
+    )
   }
 
-  def calculatePreviousProfitOrLoss(): AC436 = {
-    ???
+  def calculatePreviousProfitOrLoss(ac13: AC13, ac406: AC406, ac411: AC411, ac416: AC416, ac421: AC421, ac426: AC426, ac35: AC35, microEntityFiling: MicroEntityFiling): AC436 = {
+    AC436 (
+      if (microEntityFiling.value) {
+        calculateMicroProfitAndLoss(turnover = ac13.value, otherIncome = ac406.value, rawMaterials = ac411.value,
+                                    staffCosts = ac416.value, depreciation = ac421.value,
+                                    otherCharges = ac426.value, tax = ac35.value)
+      }
+      else None
+    )
+  }
+
+  private def calculateMicroProfitAndLoss(turnover: Option[Int], otherIncome: Option[Int],
+                                          rawMaterials: Option[Int], staffCosts: Option[Int],
+                                          depreciation: Option[Int], otherCharges: Option[Int], tax: Option[Int]): Option[Int] = {
+    (turnover, otherIncome) match {
+      case (Some(t), Some(oi)) =>
+        Some((t + oi) - (rawMaterials.getOrElse(0) + staffCosts.getOrElse(0) + depreciation.getOrElse(0) + otherCharges.getOrElse(0) + tax.getOrElse(0)))
+      case _ => None
+    }
   }
 
   def calculateCurrentGrossProfitOrLoss(ac12: AC12, ac14: AC14, statutoryAccountsFiling: StatutoryAccountsFiling): AC16 = {
