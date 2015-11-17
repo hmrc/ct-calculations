@@ -23,10 +23,9 @@ import uk.gov.hmrc.ct.ct600a.v3._
 
 trait LoansToParticipatorsCalculator extends CtTypeConverters {
 
-  def calculateLPQ01(lpq03: LPQ03, lpq04: LPQ04, lpq05: LPQ05): LPQ01 = {
-    (lpq03.value, lpq04.value, lpq05.value) match {
-      case (Some(true), Some(false), Some(true)) => LPQ01(true)
-      case (Some(true), Some(true), _) => LPQ01(true)
+  def calculateLPQ01(lpq03: LPQ03, lpq04: LPQ04): LPQ01 = {
+    (lpq03.value, lpq04.value) match {
+      case (Some(true), Some(true)) => LPQ01(true)
       case _ => LPQ01(false)
     }
   }

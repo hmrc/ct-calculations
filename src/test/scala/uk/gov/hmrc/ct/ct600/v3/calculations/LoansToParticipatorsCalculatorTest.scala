@@ -28,21 +28,22 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
   def someDate(value:String):Option[LocalDate] = Some(new LocalDate(value))
 
   val lpq01Table = Table(
-    ("lpq03", "lpq04", "lpq05", "expectedLpq01"),
-    (Some(true), Some(true), None, true),
-    (Some(true), Some(false), Some(true), true),
-    (Some(true), Some(true), None, true),
-    (Some(true), Some(false), Some(true), true),
-    (None, None, None, false),
-    (Some(false), None, None, false),
-    (Some(true), Some(false), None, false)
-
+    ("lpq03", "lpq04", "expectedLpq01"),
+    (Some(true), Some(true), true),
+    (Some(true), Some(false), false),
+    (Some(false), Some(true), false),
+    (Some(false), Some(false), false),
+    (None, None, false),
+    (Some(false), None, false),
+    (None, Some(false), false),
+    (Some(true), None, false),
+    (None, Some(true), false)
   )
   "LoansToParticipatorsCalculator" should {
     "correctly validate LPQ01 " in new LoansToParticipatorsCalculator {
       forAll(lpq01Table) {
-        (lpq03: Option[Boolean], lpq04: Option[Boolean], lpq05: Option[Boolean], expected: Boolean) => {
-          calculateLPQ01(LPQ03(lpq03), LPQ04(lpq04), LPQ05(lpq05)) shouldBe LPQ01(expected)
+        (lpq03: Option[Boolean], lpq04: Option[Boolean], expected: Boolean) => {
+          calculateLPQ01(LPQ03(lpq03), LPQ04(lpq04)) shouldBe LPQ01(expected)
         }
       }
     }
