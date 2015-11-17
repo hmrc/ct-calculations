@@ -28,15 +28,13 @@ trait CT600ABoxRetriever extends ComputationsBoxRetriever {
 
   self: AccountsBoxRetriever =>
 
-  def retrieveB95(): B95
-
   def retrieveLP04(): LP04
+
+  def retrieveLPQ01(): LPQ01 = LPQ01.calculate(this)
 
   def retrieveLPQ03(): LPQ03
 
   def retrieveLPQ04(): LPQ04
-
-  def retrieveLPQ05(): LPQ05
 
   def retrieveLPQ07(): LPQ07
 
