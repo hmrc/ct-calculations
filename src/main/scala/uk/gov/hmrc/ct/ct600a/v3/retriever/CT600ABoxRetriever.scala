@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.ct600a.v3.retriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.BoxValues
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.B95
 import uk.gov.hmrc.ct.ct600a.v3._
 
 object CT600ABoxRetriever extends BoxValues[CT600ABoxRetriever]
@@ -29,13 +30,11 @@ trait CT600ABoxRetriever extends ComputationsBoxRetriever {
 
   def retrieveLP04(): LP04
 
+  def retrieveLPQ01(): LPQ01 = LPQ01.calculate(this)
+
   def retrieveLPQ03(): LPQ03
 
   def retrieveLPQ04(): LPQ04
-
-  def retrieveLPQ05(): LPQ05
-
-  def retrieveLPQ06(): LPQ06
 
   def retrieveLPQ07(): LPQ07
 
