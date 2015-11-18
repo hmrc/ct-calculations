@@ -18,9 +18,5 @@ package uk.gov.hmrc.ct.accounts
 
 import uk.gov.hmrc.ct.box._
 
-case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turnover/Sales") with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input
-
-object AC12 {
-
-  def apply(value: Int): AC12 = AC12(Some(value))
-}
+case class AC13(value: Option[Int]) extends CtBoxIdentifier(name = "Previous Turnover/Sales")
+                                    with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input

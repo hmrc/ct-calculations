@@ -16,11 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input, MustBeNoneOrZeroOrPositive}
 
-case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turnover/Sales") with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input
-
-object AC12 {
-
-  def apply(value: Int): AC12 = AC12(Some(value))
-}
+case class AC30(value: Option[Int]) extends CtBoxIdentifier(name = "Current Interest payable and similar charges")
+                                    with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input
