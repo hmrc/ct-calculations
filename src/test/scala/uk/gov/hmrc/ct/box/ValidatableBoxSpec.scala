@@ -92,7 +92,31 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
       validateDateAsBlank("testBox", testOptDateBox(None)) shouldBe Set()
     }
   }
-  
+
+  "validateDateAsBefore" should {
+    "return error if date is after" in {
+      validateDateAsBefore("testBox", testOptDateBox(Some(new LocalDate("2013-01-01"))), new LocalDate("2012-12-31")) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.before"))
+    }
+    "return error if date is the same" in {
+      validateDateAsBefore("testBox", testOptDateBox(Some(new LocalDate("2013-12-31"))), new LocalDate("2012-12-31")) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.before"))
+    }
+    "return no errors if date is before" in {
+      validateDateAsBefore("testBox", testOptDateBox(Some(new LocalDate("2012-12-30"))), new LocalDate("2012-12-31")) shouldBe Set()
+    }
+  }
+
+  "validateDateAsAfter" should {
+    "return error if date is before" in {
+      validateDateAsAfter("testBox", testOptDateBox(Some(new LocalDate("2012-12-30"))), new LocalDate("2012-12-31")) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.after"))
+    }
+    "return error if date is the same" in {
+      validateDateAsAfter("testBox", testOptDateBox(Some(new LocalDate("2012-12-31"))), new LocalDate("2012-12-31")) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.after"))
+    }
+    "return no errors if date is after" in {
+      validateDateAsAfter("testBox", testOptDateBox(Some(new LocalDate("2013-01-01"))), new LocalDate("2012-12-31")) shouldBe Set()
+    }
+  }
+
   "validateNumberRange" should {
     "return error if number too small" in {
       validateIntegerRange("testBox", testOptIntegerBox(Some(0)), min = 1, max = 2) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.outOfRange", Some(Seq("1","2"))))

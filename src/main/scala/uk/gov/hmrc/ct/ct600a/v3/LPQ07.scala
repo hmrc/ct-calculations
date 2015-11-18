@@ -22,6 +22,9 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 case class LPQ07(value: Option[LocalDate]) extends CtBoxIdentifier(name = "When do you plan to file your return?") with CtOptionalDate with Input with ValidatableBox[CT600BoxRetriever] {
 
-  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = validateDateAsMandatory("LPQ07", this)
+  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
+      validateDateAsMandatory("LPQ07", this) ++
+      validateDateAsAfter("LPQ07", this, new LocalDate().minusDays(1))
+  }
 
 }

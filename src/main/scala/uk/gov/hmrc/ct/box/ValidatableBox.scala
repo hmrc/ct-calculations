@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.box
 
+import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 import uk.gov.hmrc.ct.ct600a.v2.retriever.CT600ABoxRetriever
@@ -105,6 +106,22 @@ trait ValidatableBox[T <: BoxRetriever] {
     box.value match {
       case None => Set()
       case _ => Set(CtValidation(Some(boxId), s"error.$boxId.nonBlankValue"))
+    }
+  }
+
+  protected def validateDateAsBefore(boxId: String, box: CtOptionalDate, dateToCompare: LocalDate): Set[CtValidation] = {
+    box.value match {
+      case None => Set()
+      case Some(date) if(date.isBefore(dateToCompare)) => Set()
+      case _ => Set(CtValidation(Some(boxId), s"error.$boxId.not.before"))
+    }
+  }
+
+  protected def validateDateAsAfter(boxId: String, box: CtOptionalDate, dateToCompare: LocalDate): Set[CtValidation] = {
+    box.value match {
+      case None => Set()
+      case Some(date) if(date.isAfter(dateToCompare)) => Set()
+      case _ => Set(CtValidation(Some(boxId), s"error.$boxId.not.after"))
     }
   }
 
