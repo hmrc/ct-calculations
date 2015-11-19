@@ -22,11 +22,13 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.box.stubs.StubbedFilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.computations.stubs.{StubbedFilingAttributesBoxValueRetriever, StubbedComputationsBoxRetriever, StubbedAccountsBoxRetriever}
+import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
 import uk.gov.hmrc.ct.version.CoHoAccounts.{CoHoMicroEntityAbridgedAccounts, CoHoMicroEntityAccounts, CoHoStatutoryAbbreviatedAccounts, CoHoStatutoryAccounts}
 import uk.gov.hmrc.ct.version.CoHoVersions.AccountsVersion1
 import uk.gov.hmrc.ct.version.HmrcReturns._

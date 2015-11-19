@@ -17,19 +17,30 @@
 package uk.gov.hmrc.ct.ct600a.v3
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.{Input, CtBoxIdentifier, CtValue}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 import uk.gov.hmrc.ct.ct600a.v3.formats.LoansFormatter
 
 
-case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIdentifier(name = "Loans to participators.") with CtValue[List[Loan]] with Input {
+case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIdentifier(name = "Loans to participators.") with CtValue[List[Loan]] with Input with ValidatableBox[CT600BoxRetriever] {
 
   def +(other: LoansToParticipators): LoansToParticipators = new LoansToParticipators(loans ++ other.loans)
 
   override def value = loans
 
   override def asBoxString = LoansFormatter.asBoxString(this)
-}
 
+  override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
+    val boxId = this.getClass().getSimpleName
+
+    loans.find(invalidLoanNameLength) match {
+      case Some(invalidLoan) => Set(CtValidation(Some(boxId), s"loan.${invalidLoan.name}.error.loanNameLength", None))
+      case _ => Set.empty
+    }
+  }
+
+  private def invalidLoanNameLength(loan: Loan): Boolean = loan.name.length < 2
+}
 
 case class Loan ( name: String,
                   amount: Int,
