@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
 import uk.gov.hmrc.ct.box.CtTypeConverters
-import uk.gov.hmrc.ct.computations.{CP286, CP2, CP1, HmrcAccountingPeriod}
+import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper._
 import uk.gov.hmrc.ct.ct600.calculations._
 import uk.gov.hmrc.ct.ct600.v3._
@@ -105,4 +105,11 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     case _ => B280(false)
   }
 
+  def defaultSetIfLossCarriedForward(b45input:B45Input, cp287:CP287): B45 = {
+    if (cp287.value.getOrElse(0) > 0) {
+      B45(Some(true))
+    } else {
+      B45(b45input.value)
+    }
+  }
 }

@@ -140,5 +140,17 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
 
   }
 
+  "B45" should {
+    "be same as B45Inputs if CP287 == 0" in new CorporationTaxCalculator {
+      defaultSetIfLossCarriedForward(B45Input(None), CP287(0)) shouldBe B45(None)
+      defaultSetIfLossCarriedForward(B45Input(Some(true)), CP287(0)) shouldBe B45(Some(true))
+      defaultSetIfLossCarriedForward(B45Input(Some(false)), CP287(0)) shouldBe B45(Some(false))
+    }
+
+    "be true if CP287 > 0" in new CorporationTaxCalculator {
+      defaultSetIfLossCarriedForward(B45Input(None), CP287(99)) shouldBe B45(Some(true))
+    }
+  }
+
   class Calc extends CorporationTaxCalculator
 }
