@@ -31,18 +31,24 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
   override def asBoxString = LoansFormatter.asBoxString(this)
 
   override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    val boxId = this.getClass().getSimpleName
+    validateLoan(invalidLoanNameLength, "name", "error.loanNameLength") ++
+    validateLoan(invalidLoanAmount, "amount", "error.loanAmount")
+  }
 
-    loans.find(invalidLoanNameLength) match {
-      case Some(invalidLoan) => Set(CtValidation(Some(boxId), s"loan.${invalidLoan.name}.error.loanNameLength", None))
+  private def invalidLoanNameLength(loan: Loan): Boolean = loan.name.length < 2 || loan.name.length > 56
+
+  private def invalidLoanAmount(loan: Loan): Boolean = loan.amount < 1 || loan.amount > 99999999
+
+  def validateLoan(validate: Loan => Boolean, attributeName: String, errorMsg: String): Set[CtValidation] = {
+    loans.find(validate) match {
+      case Some(invalidLoan) => Set(CtValidation(Some(s"loan.${invalidLoan.id}.$attributeName"), s"loan.${invalidLoan.id}.$errorMsg", None))
       case _ => Set.empty
     }
   }
-
-  private def invalidLoanNameLength(loan: Loan): Boolean = loan.name.length < 2
 }
 
-case class Loan ( name: String,
+case class Loan ( id: String,
+                  name: String,
                   amount: Int,
                   isRepaidWithin9Months: Option[Boolean] = None,
                   repaymentWithin9Months: Option[Repayment] = None,
