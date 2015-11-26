@@ -28,6 +28,9 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 trait StubbedCT600BoxRetriever extends CT600BoxRetriever with StubbedAccountsBoxRetriever with StubbedFilingAttributesBoxValueRetriever {
 
+
+  override def retrieveB45Input(): B45Input = ???
+
   override def retrieveB1(): B1 = ???
 
   override def retrieveB45(): B45 = ???

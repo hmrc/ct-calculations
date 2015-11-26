@@ -31,19 +31,18 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
   override def asBoxString = LoansFormatter.asBoxString(this)
 
   override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    validateLoan(invalidLoanNameLength, "name", "error.loanNameLength") ++
-    validateLoan(invalidLoanAmount, "amount", "error.loanAmount")
+    validateLoans(invalidLoanNameLength, "error.name.length") ++
+    validateLoans(invalidLoanAmount, "error.amount.value")
   }
 
   private def invalidLoanNameLength(loan: Loan): Boolean = loan.name.length < 2 || loan.name.length > 56
 
   private def invalidLoanAmount(loan: Loan): Boolean = loan.amount < 1 || loan.amount > 99999999
 
-  def validateLoan(validate: Loan => Boolean, attributeName: String, errorMsg: String): Set[CtValidation] = {
-    loans.find(validate) match {
-      case Some(invalidLoan) => Set(CtValidation(Some(s"loan.${invalidLoan.id}.$attributeName"), s"loan.${invalidLoan.id}.$errorMsg", None))
-      case _ => Set.empty
-    }
+  def validateLoans(invalid: Loan => Boolean, errorMsg: String): Set[CtValidation] = {
+    loans.filter(invalid).map { loan =>
+        CtValidation(Some(s"loan.${loan.id}"), s"loan.${loan.id}.$errorMsg", None)
+    }.toSet
   }
 }
 
