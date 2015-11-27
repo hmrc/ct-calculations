@@ -17,21 +17,37 @@
 package uk.gov.hmrc.ct.ct600a.v3
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.{Input, CtBoxIdentifier, CtValue}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 import uk.gov.hmrc.ct.ct600a.v3.formats.LoansFormatter
 
 
-case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIdentifier(name = "Loans to participators.") with CtValue[List[Loan]] with Input {
+case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIdentifier(name = "Loans to participators.") with CtValue[List[Loan]] with Input with ValidatableBox[CT600BoxRetriever] {
 
   def +(other: LoansToParticipators): LoansToParticipators = new LoansToParticipators(loans ++ other.loans)
 
   override def value = loans
 
   override def asBoxString = LoansFormatter.asBoxString(this)
+
+  override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
+    validateLoans(invalidLoanNameLength, "error.name.length") ++
+    validateLoans(invalidLoanAmount, "error.amount.value")
+  }
+
+  private def invalidLoanNameLength(loan: Loan): Boolean = loan.name.length < 2 || loan.name.length > 56
+
+  private def invalidLoanAmount(loan: Loan): Boolean = loan.amount < 1 || loan.amount > 99999999
+
+  def validateLoans(invalid: Loan => Boolean, errorMsg: String): Set[CtValidation] = {
+    loans.filter(invalid).map { loan =>
+        CtValidation(Some(s"loan.${loan.id}"), s"loan.${loan.id}.$errorMsg", None)
+    }.toSet
+  }
 }
 
-
-case class Loan ( name: String,
+case class Loan ( id: String,
+                  name: String,
                   amount: Int,
                   isRepaidWithin9Months: Option[Boolean] = None,
                   repaymentWithin9Months: Option[Repayment] = None,
