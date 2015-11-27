@@ -39,8 +39,8 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
-      errors.head.boxId shouldBe Some("loan.1.name")
-      errors.head.errorMessageKey shouldBe "loan.1.error.loanNameLength"
+      errors.head.boxId shouldBe Some("loan.1")
+      errors.head.errorMessageKey shouldBe "loan.1.error.name.length"
     }
 
     "return an error if a loan has a name greater then 56 characters" in {
@@ -50,8 +50,8 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
-      errors.head.boxId shouldBe Some("loan.1.name")
-      errors.head.errorMessageKey shouldBe "loan.1.error.loanNameLength"
+      errors.head.boxId shouldBe Some("loan.1")
+      errors.head.errorMessageKey shouldBe "loan.1.error.name.length"
     }
 
     "return no errors if a loan has a name between 2 and 56 characters" in {
@@ -71,8 +71,8 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
-      errors.head.boxId shouldBe Some("loan.1.amount")
-      errors.head.errorMessageKey shouldBe "loan.1.error.loanAmount"
+      errors.head.boxId shouldBe Some("loan.1")
+      errors.head.errorMessageKey shouldBe "loan.1.error.amount.value"
     }
 
     "return an error if a loan has an amount greater then 99999999" in {
@@ -82,8 +82,8 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
-      errors.head.boxId shouldBe Some("loan.1.amount")
-      errors.head.errorMessageKey shouldBe "loan.1.error.loanAmount"
+      errors.head.boxId shouldBe Some("loan.1")
+      errors.head.errorMessageKey shouldBe "loan.1.error.amount.value"
     }
 
     "return no errors if a loan has a amount between 1 and 9999999 characters" in {
