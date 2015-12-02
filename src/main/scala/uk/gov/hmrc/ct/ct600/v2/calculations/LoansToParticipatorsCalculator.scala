@@ -137,8 +137,8 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
     A11Inverse(a10Inverse.value.map(x => BigDecimal(x * 0.25)))
   }
 
-  def calculateA12(a2: A2, lp04: LP04, a6: A6, a10: A10): A12 = {
-    A12(Some(a2 + lp04 - a6 - a10))
+  def calculateA12(a2: A2, lp04: LP04): A12 = {
+    A12(Some(a2 + lp04))
   }
 
 

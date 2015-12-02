@@ -394,12 +394,11 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
       calculateA11Inverse(A10Inverse(Some(333))) shouldBe A11Inverse(Some(83.25))
     }
     
-    "correctly calculate A12, total outstanding loans, as A2 + LP04 - A6 - A10" in new LoansToParticipatorsCalculator {
-      calculateA12(A2(None), LP04(None), A6(None), A10(None)) shouldBe A12(Some(0))
-      calculateA12(A2(None), LP04(Some(4)), A6(None), A10(None)) shouldBe A12(Some(4))
-      calculateA12(A2(None), LP04(None), A6(Some(6)), A10(None)) shouldBe A12(Some(-6))
-      calculateA12(A2(None), LP04(None), A6(None), A10(Some(10))) shouldBe A12(Some(-10))
-      calculateA12(A2(Some(40)), LP04(Some(60)), A6(Some(10)), A10(Some(20))) shouldBe A12(Some(70))
+    "correctly calculate A12, total outstanding loans, as A2 + LP04" in new LoansToParticipatorsCalculator {
+      calculateA12(A2(None), LP04(None)) shouldBe A12(Some(0))
+      calculateA12(A2(None), LP04(Some(4))) shouldBe A12(Some(4))
+      calculateA12(A2(Some(4)), LP04(None)) shouldBe A12(Some(4))
+      calculateA12(A2(Some(3)), LP04(Some(5))) shouldBe A12(Some(8))
     }
 
     "correctly calculate A13 as A3 minus (the sum of Boxes A7 and A11)" in new LoansToParticipatorsCalculator {
