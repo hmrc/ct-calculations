@@ -74,3 +74,5 @@ error.J50.nonBlankValue=error.nonBlankValue
 error.J50.regexFailure=error.regexFailure
 error.J50A.required=error.required
 error.J50A.nonBlankValue=error.nonBlankValue
+
+error.N092.required=error.required
