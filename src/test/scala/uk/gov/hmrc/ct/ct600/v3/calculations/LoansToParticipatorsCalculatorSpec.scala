@@ -162,18 +162,18 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
 //    total of repayments made after (APend + 9months)
     val a55Table = Table(
       ("expectedValue", "loans2p", "filingDate"),
-      (None, LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, hasOtherRepayments = Some(true), otherRepayments =
+      (None, LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, isRepaidAfter9Months = Some(true), otherRepayments =
             List(Repayment(id = "1", amount = 1, date = new LocalDate("2013-08-31"), endDateOfAP = someDate("2013-12-31")))))), LPQ07(someDate("2014-10-01"))),  //illegal state - not >9months after AP end
-      (Some(1), LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, hasOtherRepayments = Some(true),
+      (Some(1), LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, isRepaidAfter9Months = Some(true),
             otherRepayments = List(Repayment(id = "1", amount = 1, date = new LocalDate("2013-10-01"), endDateOfAP = someDate("2013-12-31")))))), LPQ07(someDate("2014-10-01"))),  // ok
-      (Some(1), LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, hasOtherRepayments = Some(true),
+      (Some(1), LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, isRepaidAfter9Months = Some(true),
             otherRepayments = List(Repayment(id = "1", amount = 1, date = new LocalDate("2013-12-31"), endDateOfAP = someDate("2013-12-31")))))), LPQ07(someDate("2014-10-01"))),  // ok
-      (None, LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, hasOtherRepayments = Some(true),
+      (None, LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, isRepaidAfter9Months = Some(true),
           otherRepayments = List(Repayment(id = "1", amount = 1, date = new LocalDate("2014-01-01"), endDateOfAP = someDate("2014-12-31")))))), LPQ07(someDate("2014-01-01"))),  // too late for this filing date
       (Some(6), LoansToParticipators(loans =
-          Loan(id = "1", name = "Bilbo", amount = 123, hasOtherRepayments = Some(true), otherRepayments = List(Repayment(id = "1", amount = 1, date = new LocalDate("2013-10-01"), endDateOfAP = someDate("2013-12-31"))) ) ::
-          Loan(id = "2", name = "Frodo", amount = 456, hasOtherRepayments = Some(true), otherRepayments = List(Repayment(id = "1", amount = 3, date = new LocalDate("2013-09-30"), endDateOfAP = someDate("2013-12-31"))) ) ::
-          Loan(id = "3", name = "Gandalf", amount = 789, hasOtherRepayments = Some(true), otherRepayments = List(Repayment(id = "1", amount = 5, date = new LocalDate("2014-01-31"), endDateOfAP = someDate("2014-12-31"))) ) :: Nil), LPQ07(someDate("2015-10-01")))
+          Loan(id = "1", name = "Bilbo", amount = 123, isRepaidAfter9Months = Some(true), otherRepayments = List(Repayment(id = "1", amount = 1, date = new LocalDate("2013-10-01"), endDateOfAP = someDate("2013-12-31"))) ) ::
+          Loan(id = "2", name = "Frodo", amount = 456, isRepaidAfter9Months = Some(true), otherRepayments = List(Repayment(id = "1", amount = 3, date = new LocalDate("2013-09-30"), endDateOfAP = someDate("2013-12-31"))) ) ::
+          Loan(id = "3", name = "Gandalf", amount = 789, isRepaidAfter9Months = Some(true), otherRepayments = List(Repayment(id = "1", amount = 5, date = new LocalDate("2014-01-31"), endDateOfAP = someDate("2014-12-31"))) ) :: Nil), LPQ07(someDate("2015-10-01")))
     )
     "correctly calculate A55 (A8v2) using loan repayments made more than 9 months after the end of the accounting period " in new LoansToParticipatorsCalculator {
       forAll(a55Table) {
@@ -186,18 +186,18 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
 
     val A55InverseTable = Table(
       ("expectedValue", "loans2p", "filingDate"),
-      (None, LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, hasOtherRepayments = Some(true), otherRepayments =
+      (None, LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, isRepaidAfter9Months = Some(true), otherRepayments =
           List(Repayment(id = "1", amount = 1, date = new LocalDate("2014-05-31"), endDateOfAP = someDate("2014-12-31")))))), LPQ07(someDate("2015-06-01"))), //repayment too early
-      (None, LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, hasOtherRepayments = Some(true), otherRepayments =
+      (None, LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, isRepaidAfter9Months = Some(true), otherRepayments =
           List(Repayment(id = "1", amount = 1, date = new LocalDate("2014-06-01"), endDateOfAP = someDate("2014-12-31")))))), LPQ07(someDate("2015-10-01"))), // relief due now
-      (Some(1), LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, hasOtherRepayments = Some(true), otherRepayments =
+      (Some(1), LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, isRepaidAfter9Months = Some(true), otherRepayments =
           List(Repayment(id = "1", amount = 1, date = new LocalDate("2014-10-01"), endDateOfAP = someDate("2014-12-31")))))), LPQ07(someDate("2015-09-29"))), // filing date early - relief not yet due
-      (Some(1), LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, hasOtherRepayments = Some(true), otherRepayments =
+      (Some(1), LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, isRepaidAfter9Months = Some(true), otherRepayments =
           List(Repayment(id = "1", amount = 1, date = new LocalDate("2014-11-01"), endDateOfAP = someDate("2014-12-31")))))), LPQ07(None)), // no filing date - meaning LPQ06 == true ie filied within 9 months
       (Some(2), LoansToParticipators(loans = List(
-          Loan(id = "1", name = "Bilbo", amount = 123, hasOtherRepayments = Some(true), otherRepayments = List(Repayment(id = "1", amount = 1, date = new LocalDate("2014-05-31"), endDateOfAP = someDate("2014-12-31")))),
-          Loan(id = "1", name = "Frodo", amount = 456, hasOtherRepayments = Some(true), otherRepayments = List(Repayment(id = "1", amount = 2, date = new LocalDate("2014-10-01"), endDateOfAP = someDate("2014-12-31")))),
-          Loan(id = "1", name = "Gandalf", amount = 789, hasOtherRepayments = Some(true), otherRepayments = List(Repayment(id = "1", amount = 5, date = new LocalDate("2014-06-01"), endDateOfAP = someDate("2014-12-31"))))
+          Loan(id = "1", name = "Bilbo", amount = 123, isRepaidAfter9Months = Some(true), otherRepayments = List(Repayment(id = "1", amount = 1, date = new LocalDate("2014-05-31"), endDateOfAP = someDate("2014-12-31")))),
+          Loan(id = "1", name = "Frodo", amount = 456, isRepaidAfter9Months = Some(true), otherRepayments = List(Repayment(id = "1", amount = 2, date = new LocalDate("2014-10-01"), endDateOfAP = someDate("2014-12-31")))),
+          Loan(id = "1", name = "Gandalf", amount = 789, isRepaidAfter9Months = Some(true), otherRepayments = List(Repayment(id = "1", amount = 5, date = new LocalDate("2014-06-01"), endDateOfAP = someDate("2014-12-31"))))
       )), LPQ07(someDate("2015-09-30")))
     )
     "correctly calculate A55Inverse using loan repayments made more than 9 months after the end of the accounting period " in new LoansToParticipatorsCalculator {
@@ -221,7 +221,7 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
     "correctly calculate isRepaymentLaterReliefNowDue using loan repayments made more than 9 months after the end of the accounting period" in new LoansToParticipatorsCalculator {
       forAll(reliefLaterThanDueNowTable) {
         (expectedValue: Boolean, isRepaid:Boolean, repaymentDate:String, endDateOfAccountingPeriodDuringWhichRepaymentWasMade: Option[LocalDate], filingDate: Option[LocalDate]) => {
-          val aLoan = Loan(id = "1", name = "Bilbo", amount = 10000, hasOtherRepayments = Some(isRepaid), otherRepayments =
+          val aLoan = Loan(id = "1", name = "Bilbo", amount = 10000, isRepaidAfter9Months = Some(isRepaid), otherRepayments =
             List(Repayment(id = "1", amount = 5000, date = new LocalDate(repaymentDate), endDateOfAP = endDateOfAccountingPeriodDuringWhichRepaymentWasMade)))
           val acctPeriodEnd = new LocalDate("2013-12-31")
           aLoan.otherRepayments.head.isLaterReliefNowDue(acctPeriodEnd, LPQ07(filingDate)) shouldBe expectedValue
@@ -242,7 +242,7 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
     "correctly calculate isRepaymentLaterReliefNotYetDue using loan repayments made more than 9 months after the end of the accounting period" in new LoansToParticipatorsCalculator {
       forAll(repaymentReliefLaterThanNotYetDueTable) {
         (expectedValue: Boolean, isRepaid:Boolean, repaymentDate:String, endDateOfAccountingPeriodDuringWhichRepaymentWasMade: Option[LocalDate], filingDate: Option[LocalDate]) => {
-          val aLoan = Loan(id = "1", name = "Bilbo", amount = 10000, hasOtherRepayments = Some(isRepaid), otherRepayments =
+          val aLoan = Loan(id = "1", name = "Bilbo", amount = 10000, isRepaidAfter9Months = Some(isRepaid), otherRepayments =
             List(Repayment(id = "1", amount = 5000, date = new LocalDate(repaymentDate), endDateOfAP = endDateOfAccountingPeriodDuringWhichRepaymentWasMade)))
           val acctPeriodEnd = new LocalDate("2013-12-31")
           aLoan.otherRepayments.head.isLaterReliefNotYetDue(acctPeriodEnd, LPQ07(filingDate)) shouldBe expectedValue

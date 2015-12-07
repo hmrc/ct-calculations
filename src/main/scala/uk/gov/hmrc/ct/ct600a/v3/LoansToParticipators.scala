@@ -33,7 +33,9 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
   override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
     validateLoans(invalidLoanNameLength, "error.name.length") ++
     validateLoans(invalidLoanAmount, "error.amount.value") ++
-    validateLoans(invalidRepayedWithin9Months, "error.isRepaidWithin9Months.required")
+    validateLoans(invalidRepayedWithin9Months, "error.isRepaidWithin9Months.required") ++
+    validateLoans(invalidRepayedAfter9Months, "error.isRepaidAfter9Months.required") ++
+    validateLoans(invalidHasWriteOffs, "error.hasWriteOffs.required")
   }
 
   private def invalidLoanNameLength(loan: Loan): Boolean = loan.name.length < 2 || loan.name.length > 56
@@ -41,6 +43,10 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
   private def invalidLoanAmount(loan: Loan): Boolean = loan.amount < 1 || loan.amount > 99999999
 
   private def invalidRepayedWithin9Months(loan: Loan): Boolean = loan.isRepaidWithin9Months.isEmpty
+
+  private def invalidRepayedAfter9Months(loan: Loan): Boolean = loan.isRepaidAfter9Months.isEmpty
+
+  private def invalidHasWriteOffs(loan: Loan): Boolean = loan.hasWriteOffs.isEmpty
 
   def validateLoans(invalid: Loan => Boolean, errorMsg: String): Set[CtValidation] = {
     loans.filter(invalid).map { loan =>
@@ -54,7 +60,7 @@ case class Loan ( id: String,
                   amount: Int,
                   isRepaidWithin9Months: Option[Boolean] = None,
                   repaymentWithin9Months: Option[Repayment] = None,
-                  hasOtherRepayments: Option[Boolean] = None,
+                  isRepaidAfter9Months: Option[Boolean] = None,
                   otherRepayments: List[Repayment] = List.empty,
                   hasWriteOffs: Option[Boolean] = None,
                   writeOffs: List[WriteOff] = List.empty)
