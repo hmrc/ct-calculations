@@ -32,12 +32,15 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
 
   override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
     validateLoans(invalidLoanNameLength, "error.name.length") ++
-    validateLoans(invalidLoanAmount, "error.amount.value")
+    validateLoans(invalidLoanAmount, "error.amount.value") ++
+    validateLoans(invalidRepayedWithin9Months, "error.isRepaidWithin9Months.required")
   }
 
   private def invalidLoanNameLength(loan: Loan): Boolean = loan.name.length < 2 || loan.name.length > 56
 
   private def invalidLoanAmount(loan: Loan): Boolean = loan.amount < 1 || loan.amount > 99999999
+
+  private def invalidRepayedWithin9Months(loan: Loan): Boolean = loan.isRepaidWithin9Months.isEmpty
 
   def validateLoans(invalid: Loan => Boolean, errorMsg: String): Set[CtValidation] = {
     loans.filter(invalid).map { loan =>
@@ -94,10 +97,4 @@ trait LoansDateRules {
     case None => true
   }
 
-  // todo - this should morph into a loans2p validation rule when the validation is added
-  private def requireEndDateOfApp(acctPeriodEnd: LocalDate) = {
-    val message = s"As the repayment/writeOff date [$date] is more than 9 months after the accounting period end date [$acctPeriodEnd], the end date of the accounting period during which it was made must be provided"
-    val requirement: Boolean = if (date.isAfter(acctPeriodEnd.plusMonths(9)) && endDateOfAP.isEmpty) false else true
-    require(requirement, message)
-  }
 }
