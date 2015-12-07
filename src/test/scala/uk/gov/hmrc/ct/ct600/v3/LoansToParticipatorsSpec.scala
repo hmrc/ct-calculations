@@ -22,6 +22,8 @@ import uk.gov.hmrc.ct.ct600a.v3.{Loan, LoansToParticipators}
 
 class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
+  val validLoan = Loan("1", "Smurfette", 200, isRepaidWithin9Months = Some(true))
+
   val boxRetriever = new StubbedCT600BoxRetriever {}
 
   "LoansToParticipators validate" should {
@@ -33,9 +35,8 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if a loan has a name shorter then 2 characters" in {
-      val nameTooShortLoan = Loan("1", "a", 200)
 
-      val l2pBox = LoansToParticipators(List(nameTooShortLoan))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(name = "a")))
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
@@ -44,9 +45,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if a loan has a name greater then 56 characters" in {
-      val nameTooShortLoan = Loan("1", "PneumonoultramicroscopicsilicovolcanoconiosisisgoodformeX", 200)
-
-      val l2pBox = LoansToParticipators(List(nameTooShortLoan))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(name = "PneumonoultramicroscopicsilicovolcanoconiosisisgoodformeX")))
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
@@ -55,19 +54,16 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return no errors if a loan has a name between 2 and 56 characters" in {
-      val nameShortFineLoan = Loan("1", "ab", 200)
-      val nameLongFineLoan = Loan("2", "Pneumonoultramicroscopicsilicovolcanoconiosisisgoodforme", 200)
-
-      val l2pBox = LoansToParticipators(List(nameShortFineLoan, nameLongFineLoan))
+      val l2pBox = LoansToParticipators(List(
+        validLoan.copy(name = "ab"),
+        validLoan.copy(name = "Pneumonoultramicroscopicsilicovolcanoconiosisisgoodforme")))
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
     }
 
     "return an error if a loan has an amount less then 1" in {
-      val amountZeroLoan = Loan("1", "Gargamel", 0)
-
-      val l2pBox = LoansToParticipators(List(amountZeroLoan))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(amount = 0)))
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
@@ -76,9 +72,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if a loan has an amount greater then 99999999" in {
-      val amountZeroLoan = Loan("1", "Gargamel", 100000000)
-
-      val l2pBox = LoansToParticipators(List(amountZeroLoan))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(amount = 100000000)))
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
@@ -87,11 +81,32 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return no errors if a loan has a amount between 1 and 9999999 characters" in {
-      val amountShortFineLoan = Loan("1", "Smurfette", 1)
-      val amountLongFineLoan = Loan("2", "Papa Smurf", 9999999)
+      val l2pBox = LoansToParticipators(List(
+        validLoan.copy(amount = 1),
+        validLoan.copy(amount = 9999999)
+      ))
 
-      val l2pBox = LoansToParticipators(List(amountShortFineLoan, amountLongFineLoan))
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 0
+    }
 
+    "return an error if isRepaidWithin9Months value not provided" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = None)))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("loan.1")
+      errors.head.errorMessageKey shouldBe "loan.1.error.isRepaidWithin9Months.required"
+    }
+
+    "be happy if isRepaidWithin9Months value is true" in {
+      val l2pBox = LoansToParticipators(List(validLoan))
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 0
+    }
+
+    "be happy if isRepaidWithin9Months value is false" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(false))))
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
     }
