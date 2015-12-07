@@ -76,3 +76,5 @@ error.J50A.required=error.required
 error.J50A.nonBlankValue=error.nonBlankValue
 
 error.N092.required=error.required
+error.B975.required=error.required
+error.B985.required=error.required
