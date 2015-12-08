@@ -22,7 +22,12 @@ import uk.gov.hmrc.ct.ct600a.v3.{Loan, LoansToParticipators}
 
 class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
-  val validLoan = Loan("1", "Smurfette", 200, isRepaidWithin9Months = Some(true))
+  val validLoan = Loan(id = "1",
+    name = "Smurfette",
+    amount = 200,
+    isRepaidWithin9Months = Some(false),
+    isRepaidAfter9Months = Some(false),
+    hasWriteOffs = Some(false))
 
   val boxRetriever = new StubbedCT600BoxRetriever {}
 
@@ -100,13 +105,55 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "be happy if isRepaidWithin9Months value is true" in {
-      val l2pBox = LoansToParticipators(List(validLoan))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(true))))
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
     }
 
     "be happy if isRepaidWithin9Months value is false" in {
       val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(false))))
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 0
+    }
+
+    "return an error if isRepaidAfter9Months value not provided" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidAfter9Months = None)))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("loan.1")
+      errors.head.errorMessageKey shouldBe "loan.1.error.isRepaidAfter9Months.required"
+    }
+
+    "be happy if isRepaidAfter9Months value is true" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidAfter9Months = Some(true))))
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 0
+    }
+
+    "be happy if isRepaidAfter9Months value is false" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidAfter9Months = Some(false))))
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 0
+    }
+
+    "return an error if hasWriteOffs value not provided" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(hasWriteOffs = None)))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("loan.1")
+      errors.head.errorMessageKey shouldBe "loan.1.error.hasWriteOffs.required"
+    }
+
+    "be happy if hasWriteOffs value is true" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(hasWriteOffs = Some(true))))
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 0
+    }
+
+    "be happy if hasWriteOffs value is false" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(hasWriteOffs = Some(false))))
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
     }
