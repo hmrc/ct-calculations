@@ -31,11 +31,11 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
   override def asBoxString = LoansFormatter.asBoxString(this)
 
   override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    validateLoans(invalidLoanNameLength, "error.name.length") ++
-    validateLoans(invalidLoanAmount, "error.amount.value") ++
-    validateLoans(invalidRepayedWithin9Months, "error.isRepaidWithin9Months.required") ++
-    validateLoans(invalidRepayedAfter9Months, "error.isRepaidAfter9Months.required") ++
-    validateLoans(invalidHasWriteOffs, "error.hasWriteOffs.required")
+    validateLoans(invalidLoanNameLength, "error.loan.name.length") ++
+    validateLoans(invalidLoanAmount, "error.loan.amount.value") ++
+    validateLoans(invalidRepayedWithin9Months, "error.loan.isRepaidWithin9Months.required") ++
+    validateLoans(invalidRepayedAfter9Months, "error.loan.isRepaidAfter9Months.required") ++
+    validateLoans(invalidHasWriteOffs, "error.loan.hasWriteOffs.required")
   }
 
   private def invalidLoanNameLength(loan: Loan): Boolean = loan.name.length < 2 || loan.name.length > 56
@@ -50,7 +50,7 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
 
   def validateLoans(invalid: Loan => Boolean, errorMsg: String): Set[CtValidation] = {
     loans.filter(invalid).map { loan =>
-        CtValidation(Some(s"loan.${loan.id}"), s"loan.${loan.id}.$errorMsg", None)
+        CtValidation(Some(s"LoansToParticipators"), s"loan.${loan.id}.$errorMsg", None)
     }.toSet
   }
 }

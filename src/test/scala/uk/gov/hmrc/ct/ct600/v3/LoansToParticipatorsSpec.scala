@@ -45,8 +45,8 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
-      errors.head.boxId shouldBe Some("loan.1")
-      errors.head.errorMessageKey shouldBe "loan.1.error.name.length"
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.name.length"
     }
 
     "return an error if a loan has a name greater then 56 characters" in {
@@ -54,8 +54,8 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
-      errors.head.boxId shouldBe Some("loan.1")
-      errors.head.errorMessageKey shouldBe "loan.1.error.name.length"
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.name.length"
     }
 
     "return no errors if a loan has a name between 2 and 56 characters" in {
@@ -72,8 +72,8 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
-      errors.head.boxId shouldBe Some("loan.1")
-      errors.head.errorMessageKey shouldBe "loan.1.error.amount.value"
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.amount.value"
     }
 
     "return an error if a loan has an amount greater then 99999999" in {
@@ -81,8 +81,8 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
-      errors.head.boxId shouldBe Some("loan.1")
-      errors.head.errorMessageKey shouldBe "loan.1.error.amount.value"
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.amount.value"
     }
 
     "return no errors if a loan has a amount between 1 and 9999999 characters" in {
@@ -100,8 +100,8 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
-      errors.head.boxId shouldBe Some("loan.1")
-      errors.head.errorMessageKey shouldBe "loan.1.error.isRepaidWithin9Months.required"
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.isRepaidWithin9Months.required"
     }
 
     "be happy if isRepaidWithin9Months value is true" in {
@@ -121,8 +121,8 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
-      errors.head.boxId shouldBe Some("loan.1")
-      errors.head.errorMessageKey shouldBe "loan.1.error.isRepaidAfter9Months.required"
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.isRepaidAfter9Months.required"
     }
 
     "be happy if isRepaidAfter9Months value is true" in {
@@ -142,8 +142,8 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
-      errors.head.boxId shouldBe Some("loan.1")
-      errors.head.errorMessageKey shouldBe "loan.1.error.hasWriteOffs.required"
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.hasWriteOffs.required"
     }
 
     "be happy if hasWriteOffs value is true" in {
