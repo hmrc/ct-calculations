@@ -43,6 +43,8 @@ trait StubbedCT600BoxRetriever extends CT600BoxRetriever with StubbedAccountsBox
 
   override def retrieveB975(): B975 = ???
 
+  override def retrieveN092(): N092 = ???
+
   override def retrieveB960(): B960 = ???
 
   override def retrieveB765(): B765 = ???
