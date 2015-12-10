@@ -24,7 +24,7 @@ case class B860(value: Option[Int]) extends CtBoxIdentifier("Repayment amount up
     val repaymentsQ1 = boxRetriever.retrieveREPAYMENTSQ1()
 
     repaymentsQ1.value match {
-      case Some(false) => validateAsMandatory(this) ++ validatePositiveInteger(this)
+      case Some(false) => validateAsMandatory(this) ++ validateZeroOrPositiveInteger(this)
       case _ => Set()
     }
   }

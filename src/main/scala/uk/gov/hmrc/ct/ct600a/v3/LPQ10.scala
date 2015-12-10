@@ -16,6 +16,11 @@
 
 package uk.gov.hmrc.ct.ct600a.v3
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, Input}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-case class LPQ10(value: Option[Boolean]) extends CtBoxIdentifier(name = "Any other loans?") with CtOptionalBoolean with Input
+case class LPQ10(value: Option[Boolean]) extends CtBoxIdentifier(name = "Any other loans?") with CtOptionalBoolean with Input with ValidatableBox[CT600BoxRetriever] {
+
+  def validate(boxRetriever: CT600BoxRetriever) = if (boxRetriever.retrieveLPQ01().value) validateAsMandatory(this) else Set()
+
+}
