@@ -12,7 +12,7 @@ class FilterS419TaxNoneIfZeroSpec extends WordSpec with Matchers {
       val a80 = A80(Some(95))
       filterZero(a80) shouldBe B480(Some(95))
     }
-    "be non value if A80 == 0" in new FilterS419TaxNoneIfZero {
+    "be none if A80 == 0" in new FilterS419TaxNoneIfZero {
       val a80 = A80(Some(0))
       filterZero(a80) shouldBe B480(None)
     }
