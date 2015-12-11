@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct.computations.calculations
 
-import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.calculations.FilterS419TaxNoneIfZero
-import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
+import uk.gov.hmrc.ct.box.CtTypeConverters
+import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.ct600.v3.B480
+import uk.gov.hmrc.ct.ct600a.v3.A80
 
+trait FilterS419TaxNoneIfZero extends CtTypeConverters {
 
-
-case class B480(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "Tax payable under S419 ICTA 1988") with AnnualConstant with CtOptionalBigDecimal
-
-object B480 extends Calculated[B480, CT600ABoxRetriever] with FilterS419TaxNoneIfZero {
-
-  override def calculate(fieldValueRetriever: CT600ABoxRetriever): B480 = {
-    filterZero(fieldValueRetriever.retrieveA80())
+  def filterZero(a80:A80): B480 = {
+    a80.value match {
+      case Some(a) if a != BigDecimal(0) => B480(a80)
+      case _ => B480(None)
+    }
   }
 }
-
