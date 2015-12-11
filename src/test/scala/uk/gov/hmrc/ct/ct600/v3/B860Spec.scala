@@ -51,7 +51,7 @@ class B860Spec extends WordSpec with MockitoSugar with Matchers {
       val mockBoxRetriever = mock[CT600BoxRetriever]
       when(mockBoxRetriever.retrieveREPAYMENTSQ1()).thenReturn(REPAYMENTSQ1(Some(false)))
 
-      B860(Some(-1)).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("B860"), "error.B860.mustBePositive", None))
+      B860(Some(-1)).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("B860"), "error.B860.mustBeZeroOrPositive", None))
     }
   }
 }

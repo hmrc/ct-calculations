@@ -242,16 +242,16 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
 
   "validatePositiveInteger" should {
     "return error if number is negative" in {
-      validatePositiveInteger(testOptIntegerBox(Some(-1))) shouldBe Set(CtValidation(Some("testOptIntegerBox"), "error.testOptIntegerBox.mustBePositive"))
+      validateZeroOrPositiveInteger(testOptIntegerBox(Some(-1))) shouldBe Set(CtValidation(Some("testOptIntegerBox"), "error.testOptIntegerBox.mustBeZeroOrPositive"))
     }
 
     "return no errors if positive" in {
-      validatePositiveInteger(testOptIntegerBox(Some(0))) shouldBe Set()
-      validatePositiveInteger(testOptIntegerBox(Some(1))) shouldBe Set()
+      validateZeroOrPositiveInteger(testOptIntegerBox(Some(0))) shouldBe Set()
+      validateZeroOrPositiveInteger(testOptIntegerBox(Some(1))) shouldBe Set()
     }
 
     "return no errors if no value present" in {
-      validatePositiveInteger(testOptIntegerBox(None)) shouldBe Set()
+      validateZeroOrPositiveInteger(testOptIntegerBox(None)) shouldBe Set()
     }
   }
 
