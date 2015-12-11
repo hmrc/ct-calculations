@@ -26,7 +26,7 @@ import uk.gov.hmrc.ct.ct600a.v3.A80
 
 case class B480(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "Tax payable under S419 ICTA 1988") with AnnualConstant with CtOptionalBigDecimal
 
-object B480 extends Linked[A80, B235] {
+object B480 extends Linked[A80, B480] {
 
   override def apply(source: A80): B480 = B480(source.value)
 }
