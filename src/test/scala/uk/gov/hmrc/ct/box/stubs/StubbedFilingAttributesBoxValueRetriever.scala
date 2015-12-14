@@ -20,9 +20,6 @@ import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-/**
-  * Created by jameswilliams on 16/11/2015.
-  */
 trait StubbedFilingAttributesBoxValueRetriever extends FilingAttributesBoxValueRetriever {
   override def retrieveProductName(): ProductName = ???
 
@@ -37,6 +34,8 @@ trait StubbedFilingAttributesBoxValueRetriever extends FilingAttributesBoxValueR
   override def retrieveAbridgedFiling(): AbridgedFiling = ???
 
   override def retrieveHMRCFiling(): HMRCFiling = ???
+
+  override def retrieveHMRCAmendment(): HMRCAmendment = ???
 
   override def retrieveCompaniesHouseFiling(): CompaniesHouseFiling = ???
 

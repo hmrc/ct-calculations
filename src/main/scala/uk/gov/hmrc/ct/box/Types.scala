@@ -204,7 +204,7 @@ trait MustBeZeroOrPositive {
 
   self: CtInteger =>
 
-  require(value >= 0)
+  require(value >= 0, "This box must cannot have a negative value.")
 }
 
 trait MustBeNoneOrZeroOrPositive {

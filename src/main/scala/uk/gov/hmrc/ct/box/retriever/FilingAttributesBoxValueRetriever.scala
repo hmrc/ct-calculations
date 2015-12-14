@@ -34,6 +34,8 @@ trait FilingAttributesBoxValueRetriever extends BoxRetriever {
 
   def retrieveHMRCFiling(): HMRCFiling
 
+  def retrieveHMRCAmendment(): HMRCAmendment
+
   def retrieveMicroEntityFiling(): MicroEntityFiling
 
   def retrieveStatutoryAccountsFiling(): StatutoryAccountsFiling

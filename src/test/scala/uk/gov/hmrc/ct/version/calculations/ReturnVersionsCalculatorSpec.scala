@@ -399,4 +399,6 @@ class ComputationsBoxRetrieverForTest extends StubbedComputationsBoxRetriever wi
   override def retrieveCompaniesHouseFiling(): CompaniesHouseFiling = CompaniesHouseFiling(true)
 
   override def retrieveHMRCFiling(): HMRCFiling = HMRCFiling(true)
+
+  override def retrieveHMRCAmendment(): HMRCAmendment = HMRCAmendment(false)
 }
