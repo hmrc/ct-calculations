@@ -57,6 +57,8 @@ package object formats {
 
   implicit val hmrcFilingFormat: Format[HMRCFiling] = new BooleanFormat[HMRCFiling](HMRCFiling.apply)
 
+  implicit val hmrcAmendmentFormat: Format[HMRCAmendment] = new BooleanFormat[HMRCAmendment](HMRCAmendment.apply)
+
   implicit val microEntityFilingFormat: Format[MicroEntityFiling] = new BooleanFormat[MicroEntityFiling](MicroEntityFiling.apply)
 
   implicit val statutoryAccountsFilingFormat: Format[StatutoryAccountsFiling] = new BooleanFormat[StatutoryAccountsFiling](StatutoryAccountsFiling.apply)
