@@ -74,3 +74,11 @@ error.J50.nonBlankValue=error.nonBlankValue
 error.J50.regexFailure=error.regexFailure
 error.J50A.required=error.required
 error.J50A.nonBlankValue=error.nonBlankValue
+
+error.LPQ10.required=Choose an answer to continue
+error.LP04.required=Enter an amount over £0
+error.LP04.mustBePositive=As you have said you have other outstanding loans, their total must be greater than zero.
+
+error.N092.required=error.required
+error.B975.required=error.required
+error.B985.required=error.required

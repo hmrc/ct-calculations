@@ -17,25 +17,50 @@
 package uk.gov.hmrc.ct.ct600a.v3
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.{Input, CtBoxIdentifier, CtValue}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 import uk.gov.hmrc.ct.ct600a.v3.formats.LoansFormatter
 
 
-case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIdentifier(name = "Loans to participators.") with CtValue[List[Loan]] with Input {
+case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIdentifier(name = "Loans to participators.") with CtValue[List[Loan]] with Input with ValidatableBox[CT600BoxRetriever] {
 
   def +(other: LoansToParticipators): LoansToParticipators = new LoansToParticipators(loans ++ other.loans)
 
   override def value = loans
 
   override def asBoxString = LoansFormatter.asBoxString(this)
+
+  override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
+    validateLoans(invalidLoanNameLength, "error.loan.name.length") ++
+    validateLoans(invalidLoanAmount, "error.loan.amount.value") ++
+    validateLoans(invalidRepayedWithin9Months, "error.loan.isRepaidWithin9Months.required") ++
+    validateLoans(invalidRepayedAfter9Months, "error.loan.isRepaidAfter9Months.required") ++
+    validateLoans(invalidHasWriteOffs, "error.loan.hasWriteOffs.required")
+  }
+
+  private def invalidLoanNameLength(loan: Loan): Boolean = loan.name.length < 2 || loan.name.length > 56
+
+  private def invalidLoanAmount(loan: Loan): Boolean = loan.amount < 1 || loan.amount > 99999999
+
+  private def invalidRepayedWithin9Months(loan: Loan): Boolean = loan.isRepaidWithin9Months.isEmpty
+
+  private def invalidRepayedAfter9Months(loan: Loan): Boolean = loan.isRepaidAfter9Months.isEmpty
+
+  private def invalidHasWriteOffs(loan: Loan): Boolean = loan.hasWriteOffs.isEmpty
+
+  def validateLoans(invalid: Loan => Boolean, errorMsg: String): Set[CtValidation] = {
+    loans.filter(invalid).map { loan =>
+        CtValidation(Some(s"LoansToParticipators"), s"loan.${loan.id}.$errorMsg", None)
+    }.toSet
+  }
 }
 
-
-case class Loan ( name: String,
+case class Loan ( id: String,
+                  name: String,
                   amount: Int,
                   isRepaidWithin9Months: Option[Boolean] = None,
                   repaymentWithin9Months: Option[Repayment] = None,
-                  hasOtherRepayments: Option[Boolean] = None,
+                  isRepaidAfter9Months: Option[Boolean] = None,
                   otherRepayments: List[Repayment] = List.empty,
                   hasWriteOffs: Option[Boolean] = None,
                   writeOffs: List[WriteOff] = List.empty)
@@ -78,10 +103,4 @@ trait LoansDateRules {
     case None => true
   }
 
-  // todo - this should morph into a loans2p validation rule when the validation is added
-  private def requireEndDateOfApp(acctPeriodEnd: LocalDate) = {
-    val message = s"As the repayment/writeOff date [$date] is more than 9 months after the accounting period end date [$acctPeriodEnd], the end date of the accounting period during which it was made must be provided"
-    val requirement: Boolean = if (date.isAfter(acctPeriodEnd.plusMonths(9)) && endDateOfAP.isEmpty) false else true
-    require(requirement, message)
-  }
 }

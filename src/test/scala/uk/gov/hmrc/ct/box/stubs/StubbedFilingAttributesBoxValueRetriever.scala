@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations.stubs
+package uk.gov.hmrc.ct.box.stubs
 
 import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.CtValue

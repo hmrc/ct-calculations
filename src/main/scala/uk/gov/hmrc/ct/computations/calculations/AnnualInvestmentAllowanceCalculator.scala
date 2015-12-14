@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.joda.time.{Days, LocalDate}
+import org.joda.time.{Months, Days, LocalDate}
 import uk.gov.hmrc.ct.CATO02
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
 
@@ -24,66 +24,91 @@ import scala.math.BigDecimal.RoundingMode
 
 trait AnnualInvestmentAllowanceCalculator {
 
-  def maximum(cp1: CP1, cp2: CP2, allowableAmounts: Set[AnnualInvestmentAllowancePeriod]) : CATO02 = {
-    val result = allowableAmounts.map { investmentAllowancePeriod =>
-      val daysInPeriod = investmentAllowancePeriod.intersectingDays(cp1.value, cp2.value)
-      val allowanceThisPeriod = BigDecimal(daysInPeriod) * (BigDecimal(investmentAllowancePeriod.maximumAllowed) / yearLengthForApportioning(cp1.value, cp2.value))
+  val DaysInYear   = 365
+  val MonthsInYear = 12
 
-      allowanceThisPeriod.setScale(0, RoundingMode.UP).toInt
-    }.sum
+  def maximum(cp1: CP1, cp2: CP2, allowableAmounts: Set[AnnualInvestmentAllowancePeriod]): CATO02 = {
+    val maximumUsingDailyBasis = maximumEntitlementForAccountingPeriod(false) _
+    val maximumUsingMonthlyBasis = maximumEntitlementForAccountingPeriod(true) _
 
-    CATO02(result)
+    CATO02(
+      if(consistsOfCalendarMonths(cp1, cp2))
+        maximumUsingDailyBasis(cp1, cp2, allowableAmounts) max maximumUsingMonthlyBasis(cp1, cp2, allowableAmounts)
+      else
+        maximumUsingDailyBasis(cp1, cp2, allowableAmounts)
+    )
   }
 
   //Apportion by length of AP unless covers an AIA Period Start date with it's date range, in which case we always apportion by 365
   //This is to give the benefit of the calculation to the client when they cover a change in allowance on a leap year
-  protected def yearLengthForApportioning(apStartDate: LocalDate, apEndDate: LocalDate): Int = {
-    val standardYear = 365
-
-    AnnualInvestmentAllowancePeriods().filter(_.startDateFallsWithin(apStartDate, apEndDate)) match {
-      case aiaPeriodsStartingInAP if aiaPeriodsStartingInAP.nonEmpty => standardYear
+  protected def yearLengthForDailyBasis(accountingPeriodStartDate: LocalDate, accountingPeriodEndDate: LocalDate): Int =
+    AnnualInvestmentAllowancePeriods().filter(_.startDateFallsWithin(accountingPeriodStartDate, accountingPeriodEndDate)) match {
+      case aiaPeriodsStartingInAccountingPeriod if aiaPeriodsStartingInAccountingPeriod.nonEmpty => DaysInYear
       case _ => {
-        val numDaysInAP = Days.daysBetween(apStartDate, apEndDate).getDays + 1
-        numDaysInAP max standardYear
+        val accountingPeriodLength = daysBetween(accountingPeriodStartDate, accountingPeriodEndDate)
+        accountingPeriodLength max DaysInYear
       }
     }
+
+  private def maximumEntitlementForAccountingPeriod(useMonthlyBasis: Boolean)(cp1: CP1, cp2: CP2, allowableAmounts: Set[AnnualInvestmentAllowancePeriod]): Int = {
+    val yearLengthForBasis = if(useMonthlyBasis) MonthsInYear else yearLengthForDailyBasis(cp1.value, cp2.value)
+
+    allowableAmounts.toList.map { aiaPeriod =>
+      val intersectingPeriod = if(useMonthlyBasis)
+        aiaPeriod.intersectingPeriod(cp1.value, cp2.value, monthsBetween)
+      else
+        aiaPeriod.intersectingPeriod(cp1.value, cp2.value, daysBetween)
+
+      val proportionOfAIAPeriod = BigDecimal(intersectingPeriod) / BigDecimal(yearLengthForBasis)
+
+      val proRatedForIntersectingPeriod = BigDecimal(aiaPeriod.maximumAllowed) * proportionOfAIAPeriod
+
+      proRatedForIntersectingPeriod.setScale(0, RoundingMode.UP).toInt
+    }.sum
   }
 
+  private def daysBetween(start: LocalDate, end: LocalDate) = Days.daysBetween(start, end).getDays + 1
+  private def monthsBetween(start: LocalDate, end: LocalDate): Int = Months.monthsBetween(start, end.plusDays(1)).getMonths
+
+  private def consistsOfCalendarMonths(cp1: CP1, cp2: CP2): Boolean = {
+    def isFirstDayOfMonth(date: LocalDate) = date == date.dayOfMonth.withMinimumValue
+    def isLastDayOfMonth(date: LocalDate) = date == date.dayOfMonth.withMaximumValue
+
+    isFirstDayOfMonth(cp1.value) && isLastDayOfMonth(cp2.value)
+  }
 }
 
 case class AnnualInvestmentAllowancePeriod(start: LocalDate, end: LocalDate, maximumAllowed: Int) {
 
-  def encompasses(date: LocalDate): Boolean = {
-    !date.isBefore(start) && !date.isAfter(end)
-  }
+  type ComputePeriodBetween = (LocalDate, LocalDate) => Int
 
-  def fallsWithin(startDate: LocalDate, endDate: LocalDate): Boolean = {
-    startDate.isBefore(start) && endDate.isAfter(end)
-  }
-  
-  def startDateFallsWithin(startDate: LocalDate, endDate: LocalDate): Boolean = {
-    (start.isAfter(startDate) || start.equals(startDate)) && (start.isBefore(endDate) || start.equals(endDate))
-  }
+  require(start == start.dayOfMonth.withMinimumValue, "Start date must be a month start date")
+  require(end == end.dayOfMonth.withMaximumValue, "End date must be a month end date")
 
-  def intersectingDays(periodStart: LocalDate, periodEnd: LocalDate): Int = {
+  def encompasses(date: LocalDate): Boolean = !date.isBefore(start) && !date.isAfter(end)
+
+  def fallsWithin(startDate: LocalDate, endDate: LocalDate): Boolean = startDate.isBefore(start) && endDate.isAfter(end)
+
+  def startDateFallsWithin(startDate: LocalDate, endDate: LocalDate): Boolean = (start.isAfter(startDate) || start.equals(startDate)) && (start.isBefore(endDate) || start.equals(endDate))
+
+  def intersectingPeriod(periodStart: LocalDate, periodEnd: LocalDate, periodBetween: ComputePeriodBetween): Int =
     (encompasses(periodStart), encompasses(periodEnd), fallsWithin(periodStart, periodEnd)) match {
-      case (true, true, false) => Days.daysBetween(periodStart, periodEnd).getDays + 1
-      case (true, false, false) => Days.daysBetween(periodStart, end).getDays + 1
-      case (false, true, false) => Days.daysBetween(start, periodEnd).getDays + 1
-      case (false, false, true) => Days.daysBetween(start, end).getDays + 1
+      case (true, true, false) => periodBetween(periodStart, periodEnd)
+      case (true, false, false) => periodBetween(periodStart, end)
+      case (false, true, false) => periodBetween(start, periodEnd)
+      case (false, false, true) => periodBetween(start, end)
       case _ => 0
     }
-  }
 }
 
 object AnnualInvestmentAllowancePeriods {
 
   def apply() = Set(
-    AnnualInvestmentAllowancePeriod(start = LocalDate.parse("2016-01-01"), end = LocalDate.parse("2016-12-31"), maximumAllowed = 200000),
-    AnnualInvestmentAllowancePeriod(start = LocalDate.parse("2014-04-01"), end = LocalDate.parse("2015-12-31"), maximumAllowed = 500000),
-    AnnualInvestmentAllowancePeriod(start = LocalDate.parse("2013-01-01"), end = LocalDate.parse("2014-03-31"), maximumAllowed = 250000),
-    AnnualInvestmentAllowancePeriod(start = LocalDate.parse("2012-04-01"), end = LocalDate.parse("2012-12-31"), maximumAllowed = 25000),
-    AnnualInvestmentAllowancePeriod(start = LocalDate.parse("2010-04-01"), end = LocalDate.parse("2012-03-31"), maximumAllowed = 100000),
-    AnnualInvestmentAllowancePeriod(start = LocalDate.parse("2008-04-01"), end = LocalDate.parse("2010-03-31"), maximumAllowed = 50000)
+    AnnualInvestmentAllowancePeriod(start = new LocalDate(2016, 1, 1), end = new LocalDate(2016, 12, 31), maximumAllowed = 200000),
+    AnnualInvestmentAllowancePeriod(start = new LocalDate(2014, 4, 1), end = new LocalDate(2015, 12, 31), maximumAllowed = 500000),
+    AnnualInvestmentAllowancePeriod(start = new LocalDate(2013, 1, 1), end = new LocalDate(2014, 3, 31),  maximumAllowed = 250000),
+    AnnualInvestmentAllowancePeriod(start = new LocalDate(2012, 4, 1), end = new LocalDate(2012, 12, 31), maximumAllowed = 25000),
+    AnnualInvestmentAllowancePeriod(start = new LocalDate(2010, 4, 1), end = new LocalDate(2012, 3, 31),  maximumAllowed = 100000),
+    AnnualInvestmentAllowancePeriod(start = new LocalDate(2008, 4, 1), end = new LocalDate(2010, 3, 31),  maximumAllowed = 50000)
   )
 }

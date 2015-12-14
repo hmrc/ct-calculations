@@ -17,12 +17,21 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.{CP287, CPAux1}
+import uk.gov.hmrc.ct.computations.CPAux1._
+import uk.gov.hmrc.ct.computations.calculations.LowEmissionCarsCalculator
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 
 case class B45(value: Option[Boolean]) extends CtBoxIdentifier("Are you owed a repayment for an earlier period?")
-  with CtOptionalBoolean with Input with ValidatableBox[CT600BoxRetriever] {
-
-  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = validateBooleanAsMandatory("B45", this)
-
+  with CtOptionalBoolean {
 }
+
+object B45 extends Calculated[B45, CT600BoxRetriever]  with CorporationTaxCalculator{
+
+  override def calculate(fieldValueRetriever: CT600BoxRetriever): B45 =
+    defaultSetIfLossCarriedForward(fieldValueRetriever.retrieveB45Input(), fieldValueRetriever.retrieveCP287())
+}
+

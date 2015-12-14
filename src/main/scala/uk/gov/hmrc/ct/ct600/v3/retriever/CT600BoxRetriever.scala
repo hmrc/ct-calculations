@@ -24,6 +24,7 @@ import uk.gov.hmrc.ct.ct600.v3._
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 import uk.gov.hmrc.ct.ct600j.v3.B140
 import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.B45
 
 object CT600BoxRetriever extends BoxValues[CT600BoxRetriever]
 
@@ -45,7 +46,9 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever
 
   def retrieveB40(): B40
 
-  def retrieveB45(): B45
+  def retrieveB45(): B45 = B45.calculate(this)
+
+  def retrieveB45Input(): B45Input
 
   def retrieveB50(): B50 = B50.calculate(this)
 
@@ -111,7 +114,7 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever
 
   def retrieveB475(): B475 = B475(retrieveB440())
 
-  def retrieveB480(): B480 = B480.calculate(this)
+  def retrieveB480(): B480 = B480(retrieveA80())
 
   def retrieveB485(): B485 = B485.calculate(this)
 
@@ -131,7 +134,7 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever
 
   def retrieveB620(): B620
 
-  def retrieveB690(): B690
+  def retrieveB690(): B690 = B690(retrieveCP88())
 
   def retrieveB695(): B695 = B695(retrieveCP668())
 
@@ -186,4 +189,6 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever
   def retrieveB975(): B975
   
   def retrieveB985(): B985
+
+  def retrieveN092(): N092
 }
