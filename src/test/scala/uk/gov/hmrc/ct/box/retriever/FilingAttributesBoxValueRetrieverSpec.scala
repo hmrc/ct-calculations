@@ -25,8 +25,8 @@ import uk.gov.hmrc.ct.domain.CompanyTypes
 class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
 
   "FilingAttributesBoxValueRetriever" should {
-    "have 8 functions" in {
-      FilingAttributesBoxValueRetriever.retrieveBoxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 8
+    "have 9 functions" in {
+      FilingAttributesBoxValueRetriever.retrieveBoxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 9
     }
 
     "get ct values" in {
@@ -42,6 +42,7 @@ class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
       result("AbridgedFiling") shouldBe retriever.retrieveAbridgedFiling()
       result("CompaniesHouseFiling") shouldBe retriever.retrieveCompaniesHouseFiling()
       result("HMRCFiling") shouldBe retriever.retrieveHMRCFiling()
+      result("HMRCAmendment") shouldBe retriever.retrieveHMRCAmendment()
 
     }
   }
@@ -66,4 +67,6 @@ class FilingAttributesBoxValueRetrieverForTest extends FilingAttributesBoxValueR
   override def retrieveCompaniesHouseFiling(): CompaniesHouseFiling = CompaniesHouseFiling(true)
 
   override def retrieveHMRCFiling(): HMRCFiling = HMRCFiling(true)
+
+  override def retrieveHMRCAmendment(): HMRCAmendment = HMRCAmendment(false)
 }
