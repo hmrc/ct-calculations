@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600j.v3
 
+import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
@@ -24,7 +25,7 @@ abstract class SchemeDateBox extends CtBoxIdentifier("Accounting period in which
   def validateSchemeDate(previousSchemeNumberBox: CtOptionalString, previousSchemeDateBox: CtOptionalDate, schemeReferenceNumberBox: CtOptionalString) =
     (previousSchemeNumberBox.value, previousSchemeDateBox.value, schemeReferenceNumberBox.value) match {
       case (None, None, _) => validateDateAsBlank(id, this)
-      case (_, _, Some(_)) => validateAsMandatory(this)
+      case (_, _, Some(_)) => validateAsMandatory(this) ++ validateDateAsAfter(id, this, new LocalDate(2004, 3, 17))
       case _ => Set[CtValidation]()
     }
 }

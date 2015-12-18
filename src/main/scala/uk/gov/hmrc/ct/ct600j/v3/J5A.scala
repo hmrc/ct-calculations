@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 case class J5A(value: Option[LocalDate]) extends SchemeDateBox {
 
   override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = boxRetriever.retrieveB140().value match {
-    case Some(true) => validateDateAsMandatory(id, this)
+    case Some(true) => validateDateAsMandatory(id, this) ++ validateDateAsAfter(id, this, new LocalDate(2004, 3, 17))
     case _ => Set()
   }
 
