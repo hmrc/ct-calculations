@@ -22,10 +22,12 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 abstract class SchemeDateBox extends CtBoxIdentifier("Accounting period in which the expected advantage arises") with CtOptionalDate with Input with ValidatableBox[CT600BoxRetriever] {
 
+  val earliestSchemeDate = new LocalDate(2004, 3, 17)
+
   def validateSchemeDate(previousSchemeNumberBox: CtOptionalString, previousSchemeDateBox: CtOptionalDate, schemeReferenceNumberBox: CtOptionalString) =
     (previousSchemeNumberBox.value, previousSchemeDateBox.value, schemeReferenceNumberBox.value) match {
       case (None, None, _) => validateDateAsBlank(id, this)
-      case (_, _, Some(_)) => validateAsMandatory(this) ++ validateDateAsAfter(id, this, new LocalDate(2004, 3, 17))
+      case (_, _, Some(_)) => validateAsMandatory(this) ++ validateDateAsAfter(id, this, earliestSchemeDate)
       case _ => Set[CtValidation]()
     }
 }
