@@ -67,5 +67,15 @@ class J10ASpec extends WordSpec with MockitoSugar with Matchers {
 
       J10A(None).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("J10A"), "error.J10A.required", None))
     }
+
+    "return not after error when B140 is true and J10A is before 18/03/2004" in {
+      val mockBoxRetriever = mock[CT600BoxRetriever]
+      when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
+      when(mockBoxRetriever.retrieveJ5()).thenReturn(J5(Some("12345678")))
+      when(mockBoxRetriever.retrieveJ5A()).thenReturn(J5A(Some(LocalDate.parse("2013-02-01"))))
+      when(mockBoxRetriever.retrieveJ10()).thenReturn(J10(Some("12345678")))
+
+      J10A(Some(LocalDate.parse("2004-03-17"))).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("J10A"), "error.J10A.not.after", None))
+    }
   }
 }
