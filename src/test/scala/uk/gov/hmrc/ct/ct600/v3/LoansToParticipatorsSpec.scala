@@ -20,7 +20,7 @@ import org.joda.time.LocalDate
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.computations.{CP2, AP2}
 import uk.gov.hmrc.ct.ct600.v3.stubs.StubbedCT600BoxRetriever
-import uk.gov.hmrc.ct.ct600a.v3.{WriteOff, Loan, LoansToParticipators}
+import uk.gov.hmrc.ct.ct600a.v3.{Repayment, WriteOff, Loan, LoansToParticipators}
 
 class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
@@ -36,6 +36,12 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     isRepaidWithin9Months = Some(false),
     isRepaidAfter9Months = Some(false),
     hasWriteOffs = Some(false))
+
+  val validRepaymentWithin9Months=Repayment(
+    id="3",
+    amount = 50,
+    date = currentAPEndDate.plusDays(3)
+  )
 
   val validWriteOff = WriteOff(
     id = "2",
@@ -148,6 +154,36 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidAfter9Months = Some(false))))
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
+    }
+
+    "be happy if repaymentWithin9Months value is valid" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidAfter9Months = Some(true), repaymentWithin9Months = Some(validRepaymentWithin9Months))))
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 0
+    }
+
+    "return an error if repaymentWithin9Months date is before 9 month interval" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(true), repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(date=currentAPEndDate.minusDays(5))))))
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.repaymentWithin9Months.3.error.repaymentWithin9Months.date.range"
+    }
+
+    "return an error if repaymentWithin9Months date is on AP end date" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(true), repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(date=currentAPEndDate)))))
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.repaymentWithin9Months.3.error.repaymentWithin9Months.date.range"
+    }
+
+    "return an error if repaymentWithin9Months date is after 9 month interval" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(true), repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(date=currentAPEndDate.plusMonths(10))))))
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.repaymentWithin9Months.3.error.repaymentWithin9Months.date.range"
     }
 
     "return an error if hasWriteOffs value not provided" in {

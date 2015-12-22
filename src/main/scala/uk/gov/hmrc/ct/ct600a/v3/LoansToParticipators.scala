@@ -50,6 +50,7 @@ case class Loan ( id: String,
     validateLoan(invalidLoanNameLength, "error.loan.name.length") ++
     validateLoan(invalidLoanAmount, "error.loan.amount.value") ++
     validateLoan(invalidRepayedWithin9Months, "error.loan.isRepaidWithin9Months.required") ++
+    validateRepaymentWithin9Months(boxRetriever) ++
     validateLoan(invalidRepayedAfter9Months, "error.loan.isRepaidAfter9Months.required") ++
     validateLoan(invalidHasWriteOffs, "error.loan.hasWriteOffs.required") ++
     writeOffs.foldRight(Set[CtValidation]())((writeOff, tail) => writeOff.validate(boxRetriever, id) ++ tail)
@@ -60,6 +61,18 @@ case class Loan ( id: String,
   private def invalidLoanAmount: Boolean = amount < MIN_MONEY_AMOUNT_ALLOWED || amount > MAX_MONEY_AMOUNT_ALLOWED
 
   private def invalidRepayedWithin9Months: Boolean = isRepaidWithin9Months.isEmpty
+
+  private def validateRepaymentWithin9Months(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
+    val dateRange = Some(Seq(boxRetriever.retrieveCP2().value.toString("dd MMMM YYYY"), boxRetriever.retrieveCP2().value.plusMonths(9).toString("dd MMMM YYYY")))
+    val apEndDate = boxRetriever.retrieveCP2().value
+    val apEndDatePlus9Months = boxRetriever.retrieveCP2().value.plusMonths(9)
+
+    (isRepaidWithin9Months, repaymentWithin9Months) match {
+      case (Some(true), Some(Repayment(repaymentId, _ , date, _))) if !date.isAfter(apEndDate) || date.isAfter(apEndDatePlus9Months)
+        => Set(CtValidation(Some(s"LoansToParticipators"), s"loan.$id.repaymentWithin9Months.$repaymentId.error.repaymentWithin9Months.date.range", dateRange))
+      case _ => Set()
+    }
+  }
 
   private def invalidRepayedAfter9Months: Boolean = isRepaidAfter9Months.isEmpty
 
