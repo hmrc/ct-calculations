@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.ct600.v3.retriever
 
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.retriever.BoxValues
+import uk.gov.hmrc.ct.box.retriever.{FilingAttributesBoxValueRetriever, BoxValues}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.retriever.DeclarationBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
@@ -28,17 +28,17 @@ import uk.gov.hmrc.ct.ct600.v3.B45
 
 object CT600BoxRetriever extends BoxValues[CT600BoxRetriever]
 
-trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever with CT600JBoxRetriever with DeclarationBoxRetriever {
+trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever with CT600JBoxRetriever with DeclarationBoxRetriever with FilingAttributesBoxValueRetriever {
 
   self: AccountsBoxRetriever =>
 
   def retrieveB1(): B1
 
-  def retrieveB2(): B2
+  def retrieveB2(): B2 = B2(retrieveAC1())
 
-  def retrieveB3(): B3
+  def retrieveB3(): B3 = B3(retrieveUTR())
 
-  def retrieveB4(): B4
+  def retrieveB4(): B4 = B4(retrieveCompanyType())
 
   def retrieveB30(): B30 = B30(retrieveCP1())
 
