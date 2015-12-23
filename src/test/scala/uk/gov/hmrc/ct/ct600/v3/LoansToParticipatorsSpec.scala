@@ -170,7 +170,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if repaymentWithin9Months date is before 9 month interval" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(true), repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(date = currentAPEndDate.minusDays(5))))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(true), repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(date = currentAPEndDate.minusDays(1))))))
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
       errors.head.boxId shouldBe Some("LoansToParticipators")
