@@ -235,7 +235,8 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
                                   cp668: Option[Int] = None,
                                   cp672: Option[Int] = None,
                                   cp673: Option[Int] = None,
-                                  cp674: Option[Int] = None) extends StubbedComputationsBoxRetriever {
+                                  cp674: Option[Int] = None
+                                   ) extends StubbedComputationsBoxRetriever {
 
     self: AccountsBoxRetriever =>
 

@@ -25,8 +25,8 @@ import uk.gov.hmrc.ct.domain.CompanyTypes
 class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
 
   "FilingAttributesBoxValueRetriever" should {
-    "have 9 functions" in {
-      FilingAttributesBoxValueRetriever.retrieveBoxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 9
+    "have 10 functions" in {
+      FilingAttributesBoxValueRetriever.retrieveBoxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 10
     }
 
     "get ct values" in {
@@ -43,7 +43,7 @@ class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
       result("CompaniesHouseFiling") shouldBe retriever.retrieveCompaniesHouseFiling()
       result("HMRCFiling") shouldBe retriever.retrieveHMRCFiling()
       result("HMRCAmendment") shouldBe retriever.retrieveHMRCAmendment()
-
+      result("UTR") shouldBe retriever.retrieveUTR()
     }
   }
 }
@@ -69,4 +69,6 @@ class FilingAttributesBoxValueRetrieverForTest extends FilingAttributesBoxValueR
   override def retrieveHMRCFiling(): HMRCFiling = HMRCFiling(true)
 
   override def retrieveHMRCAmendment(): HMRCAmendment = HMRCAmendment(false)
+
+  override def retrieveUTR(): UTR = UTR("123456")
 }

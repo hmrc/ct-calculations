@@ -40,4 +40,6 @@ trait StubbedFilingAttributesBoxValueRetriever extends FilingAttributesBoxValueR
   override def retrieveCompaniesHouseFiling(): CompaniesHouseFiling = ???
 
   override def generateValues: Map[String, CtValue[_]] = ???
+
+  override def retrieveUTR(): UTR = ???
 }
