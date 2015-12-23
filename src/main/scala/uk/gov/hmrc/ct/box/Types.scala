@@ -217,3 +217,14 @@ trait MustBeNoneOrZeroOrPositive {
     case _ => false
   })
 }
+
+trait MustBeNoneOrZeroOrPositiveDecimal {
+
+  self: CtOptionalBigDecimal =>
+
+  require(value match {
+    case Some(v) if v >= 0 => true
+    case None => true
+    case _ => false
+  })
+}

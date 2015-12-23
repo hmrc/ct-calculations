@@ -401,14 +401,15 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
       calculateA12(A2(Some(3)), LP04(Some(5))) shouldBe A12(Some(8))
     }
 
-    "correctly calculate A13 as A3 minus (the sum of Boxes A7 and A11)" in new LoansToParticipatorsCalculator {
-      calculateA13(a3 = A3(Some(100)), a7 = A7(Some(7.99)), a11 = A11(Some(11))) shouldBe A13(Some(81.01))
-      calculateA13(a3 = A3(Some(100.30)), a7 = A7(Some(7.99)), a11 = A11(Some(11))) shouldBe A13(Some(81.31))
-      calculateA13(a3 = A3(Some(100)), a7 = A7(Some(7)), a11 = A11(Some(11))) shouldBe A13(Some(82))
-      calculateA13(a3 = A3(Some(45.75)), a7 = A7(Some(7.25)), a11 = A11(Some(11))) shouldBe A13(Some(27.5))
-      calculateA13(a3 = A3(Some(7.25)), a7 = A7(Some(7)), a11 = A11(Some(11))) shouldBe A13(Some(-10.75))
-      calculateA13(a3 = A3(None), a7 = A7(None), a11 = A11(None)) shouldBe A13(None)
-      calculateA13(a3 = A3(Some(100)), a7 = A7(None), a11 = A11(None)) shouldBe A13(Some(100))
+    "correctly calculate A13 as A3 minus A7" in new LoansToParticipatorsCalculator {
+      calculateA13(a3 = A3(Some(100)), a7 = A7(Some(7.99))) shouldBe A13(Some(92.01))
+      calculateA13(a3 = A3(Some(100.30)), a7 = A7(Some(7.99))) shouldBe A13(Some(92.31))
+      calculateA13(a3 = A3(Some(100)), a7 = A7(Some(7))) shouldBe A13(Some(93))
+      calculateA13(a3 = A3(Some(45.75)), a7 = A7(Some(7.25))) shouldBe A13(Some(38.5))
+      calculateA13(a3 = A3(Some(7.25)), a7 = A7(Some(7))) shouldBe A13(Some(0.25))
+      calculateA13(a3 = A3(Some(7.25)), a7 = A7(Some(8))) shouldBe A13(Some(0))
+      calculateA13(a3 = A3(None), a7 = A7(None)) shouldBe A13(None)
+      calculateA13(a3 = A3(Some(100)), a7 = A7(None)) shouldBe A13(Some(100))
     }
 
     "correctly calculate B80 as true when A11 > 0, otherwise none" in new LoansToParticipatorsCalculator {
