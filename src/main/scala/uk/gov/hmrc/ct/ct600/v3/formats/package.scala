@@ -24,12 +24,6 @@ package object formats {
 
   implicit val b1Format: Format[B1] = new StringFormat[B1](B1.apply)
 
-  implicit val b2Format: Format[B2] = new StringFormat[B2](B2.apply)
-
-  implicit val b3Format: Format[B3] = new StringFormat[B3](B3.apply)
-
-  implicit val B4Format: Format[B4] = new StringFormat[B4](B4.apply)
-
   implicit val B30Format: Format[B30] = new DateFormat[B30](B30.apply)
 
   implicit val B35Format: Format[B35] = new DateFormat[B35](B35.apply)

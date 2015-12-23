@@ -16,7 +16,13 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtString, Input}
+import uk.gov.hmrc.ct.FilingCompanyType
+import uk.gov.hmrc.ct.box.{Linked, CtBoxIdentifier, CtString, Input}
 
 
-case class B4(value: String) extends CtBoxIdentifier("Type of Company") with CtString with Input
+case class B4(value: String) extends CtBoxIdentifier(name = "Company Type") with CtString
+
+object B4 extends Linked[FilingCompanyType, B4] {
+
+  override def apply(source: FilingCompanyType): B4 = B4(source.value.toString)
+}

@@ -35,6 +35,7 @@ class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
       val result = FilingAttributesBoxValueRetriever.generateValues(retriever)
       result("ProductName") shouldBe retriever.retrieveProductName()
       result("FilingCompanyType") shouldBe retriever.retrieveCompanyType()
+      result("UTR") shouldBe retriever.retrieveUTR()
 
       result("AbbreviatedAccountsFiling") shouldBe retriever.retrieveAbbreviatedAccountsFiling()
       result("StatutoryAccountsFiling") shouldBe retriever.retrieveStatutoryAccountsFiling()
@@ -43,7 +44,6 @@ class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
       result("CompaniesHouseFiling") shouldBe retriever.retrieveCompaniesHouseFiling()
       result("HMRCFiling") shouldBe retriever.retrieveHMRCFiling()
       result("HMRCAmendment") shouldBe retriever.retrieveHMRCAmendment()
-      result("UTR") shouldBe retriever.retrieveUTR()
     }
   }
 }
@@ -55,6 +55,8 @@ class FilingAttributesBoxValueRetrieverForTest extends FilingAttributesBoxValueR
   override def retrieveProductName(): ProductName = ProductName("productType")
 
   override def retrieveCompanyType(): FilingCompanyType = FilingCompanyType(CompanyTypes.UkTradingCompany)
+
+  override def retrieveUTR(): UTR = UTR("123456")
 
   override def retrieveAbbreviatedAccountsFiling(): AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)
 
@@ -69,6 +71,4 @@ class FilingAttributesBoxValueRetrieverForTest extends FilingAttributesBoxValueR
   override def retrieveHMRCFiling(): HMRCFiling = HMRCFiling(true)
 
   override def retrieveHMRCAmendment(): HMRCAmendment = HMRCAmendment(false)
-
-  override def retrieveUTR(): UTR = UTR("123456")
 }
