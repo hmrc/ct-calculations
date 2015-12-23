@@ -16,9 +16,15 @@
 
 package uk.gov.hmrc.ct.domain
 
+import org.joda.time.LocalDate
+
 object ValidationConstants {
 
   val MIN_MONEY_AMOUNT_ALLOWED = 1
   val MAX_MONEY_AMOUNT_ALLOWED = 99999999
+
+  val ERROR_ARGS_DATE_FORMAT = "dd MMMM YYYY"
+
+  def toErrorArgsFormat(date: LocalDate) = date.toString(ERROR_ARGS_DATE_FORMAT)
 
 }
