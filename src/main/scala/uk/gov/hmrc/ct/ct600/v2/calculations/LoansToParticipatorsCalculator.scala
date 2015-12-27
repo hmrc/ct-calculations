@@ -142,15 +142,16 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   }
 
 
-  def calculateA13(a3: A3, a7: A7, a11: A11): A13 = {
+  def calculateA13(cp2: CP2, a3: A3, a7: A7, a11: A11, lpq07: LPQ07): A13 = {
 
+    val reliefIsDueNow = lpq07.value.map { filingDate =>
+      filingDate.isAfter(cp2.value.plusMonths(21))
+    }.getOrElse(false)
     val reliefDueBeforeNineMonths = a7.value.getOrElse(BigDecimal(0))
-    val reliefDueAfterNineMonths = a11.value.getOrElse(BigDecimal(0))
+    val reliefDueAfterNineMonths = if (reliefIsDueNow) a11.value.getOrElse(BigDecimal(0)) else BigDecimal(0)
 
     A13 (
-      a3.value.map { tax =>
-        tax - reliefDueBeforeNineMonths - reliefDueAfterNineMonths
-      }
+      a3.value.map { tax => (tax - reliefDueBeforeNineMonths - reliefDueAfterNineMonths).max(0) }
     )
   }
 

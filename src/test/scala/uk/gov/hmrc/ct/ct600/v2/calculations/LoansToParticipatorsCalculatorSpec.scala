@@ -401,15 +401,41 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
       calculateA12(A2(Some(3)), LP04(Some(5))) shouldBe A12(Some(8))
     }
 
-    "correctly calculate A13 as A3 minus (the sum of Boxes A7 and A11)" in new LoansToParticipatorsCalculator {
-      calculateA13(a3 = A3(Some(100)), a7 = A7(Some(7.99)), a11 = A11(Some(11))) shouldBe A13(Some(81.01))
-      calculateA13(a3 = A3(Some(100.30)), a7 = A7(Some(7.99)), a11 = A11(Some(11))) shouldBe A13(Some(81.31))
-      calculateA13(a3 = A3(Some(100)), a7 = A7(Some(7)), a11 = A11(Some(11))) shouldBe A13(Some(82))
-      calculateA13(a3 = A3(Some(45.75)), a7 = A7(Some(7.25)), a11 = A11(Some(11))) shouldBe A13(Some(27.5))
-      calculateA13(a3 = A3(Some(7.25)), a7 = A7(Some(7)), a11 = A11(Some(11))) shouldBe A13(Some(-10.75))
-      calculateA13(a3 = A3(None), a7 = A7(None), a11 = A11(None)) shouldBe A13(None)
-      calculateA13(a3 = A3(Some(100)), a7 = A7(None), a11 = A11(None)) shouldBe A13(Some(100))
+
+    val a13Table = Table(
+      ("cp2",           "a3",             "a7",           "a11",        "lpq07",       "result"),
+      ("2014-12-31",  Some(100),        Some(7.99),     Some(11.0),   "2015-09-30",   Some(92.01)),
+      ("2014-12-31",  Some(100),        Some(7),        Some(11),     "2015-09-30",   Some(93)),
+      ("2014-12-31",  Some(100.30),     Some(7.99),     Some(11),     "2015-09-30",   Some(92.31)),
+      ("2014-12-31",  Some(42.75),      Some(7.25),     Some(11),     "2015-09-30",   Some(35.5)),
+      ("2014-12-31",  None,             None,           None,         "2015-09-30",   None),
+      ("2014-12-31",  Some(7.25),       Some(7),        Some(11),     "2015-09-30",   Some(0.25)),
+      ("2014-12-31",  Some(7.25),       Some(9),        Some(11),     "2015-09-30",   Some(0)),
+      ("2014-12-31",  Some(100),        None,           None,         "2015-09-30",   Some(100)),
+
+      ("2013-12-31",  Some(100),        Some(7.99),     Some(11.0),   "2015-10-01",   Some(81.01)),
+      ("2013-12-31",  Some(100),        Some(7),        Some(11),     "2015-10-01",   Some(82)),
+      ("2013-12-31",  Some(100.30),     Some(7.99),     Some(11),     "2015-10-01",   Some(81.31)),
+      ("2013-12-31",  Some(42.75),      Some(7.25),     Some(11),     "2015-10-01",   Some(24.5)),
+      ("2013-12-31",  None,             None,           None,         "2015-10-01",   None),
+      ("2013-12-31",  Some(7.25),       Some(7),        Some(11),     "2015-10-01",   Some(0)),
+      ("2013-12-31",  Some(100),        None,           None,         "2015-10-01",   Some(100))
+    )
+
+    "correctly calculate A13" in new LoansToParticipatorsCalculator {
+
+      forAll(a13Table) {
+        (cp2: String, a3: Option[_], a7: Option[_], a11: Option[_], lpq07: String, result: Option[_]) => {
+          calculateA13(cp2 = CP2(new LocalDate(cp2)),
+                       a3 = A3(a3.map( s => BigDecimal(s.toString))),
+                       a7 = A7(a7.map( s => BigDecimal(s.toString))),
+                       a11 = A11(a11.map( s => BigDecimal(s.toString))),
+                       lpq07 = LPQ07(Some(new LocalDate(lpq07)))) shouldBe A13(result.map( s => BigDecimal(s.toString)))
+        }
+      }
     }
+
+
 
     "correctly calculate B80 as true when A11 > 0, otherwise none" in new LoansToParticipatorsCalculator {
       calculateB80(A11(None)) shouldBe B80(None)
