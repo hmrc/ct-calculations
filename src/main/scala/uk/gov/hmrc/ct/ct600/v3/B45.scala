@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 HM Revenue & Customs
+ * Copyright 2016 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,4 +34,3 @@ object B45 extends Calculated[B45, CT600BoxRetriever]  with CorporationTaxCalcul
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B45 =
     defaultSetIfLossCarriedForward(fieldValueRetriever.retrieveB45Input(), fieldValueRetriever.retrieveCP287())
 }
-

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 HM Revenue & Customs
+ * Copyright 2016 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,4 +25,3 @@ case class B95(value: Boolean) extends CtBoxIdentifier("Loans and arrangements t
 object B95 extends Linked[LPQ01, B95] {
   override def apply(source: LPQ01): B95 = B95(source.value)
 }
-
