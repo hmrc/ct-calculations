@@ -18,13 +18,14 @@ package uk.gov.hmrc.ct.ct600.v3
 
 import org.joda.time.LocalDate
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.computations.{CP2, AP2}
+import uk.gov.hmrc.ct.computations.CP2
 import uk.gov.hmrc.ct.ct600.v3.stubs.StubbedCT600BoxRetriever
-import uk.gov.hmrc.ct.ct600a.v3.{Repayment, WriteOff, Loan, LoansToParticipators}
+import uk.gov.hmrc.ct.ct600a.v3.{Loan, LoansToParticipators, Repayment, WriteOff}
 
 class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
-  val currentAPEndDate = new LocalDate(2015, 6, 1)
+  //Know this isn't a V3 date but required so our +9 months date aren't before the current date
+  val currentAPEndDate = new LocalDate(2014, 6, 1)
 
   val boxRetriever = new StubbedCT600BoxRetriever {
     override def retrieveCP2(): CP2 = CP2(currentAPEndDate)
@@ -37,10 +38,16 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     isRepaidAfter9Months = Some(false),
     hasWriteOffs = Some(false))
 
-  val validRepaymentWithin9Months=Repayment(
-    id="3",
+  val validRepaymentWithin9Months = Repayment(
+    id = "3",
     amount = 50,
     date = currentAPEndDate.plusDays(3)
+  )
+
+  val validRepaymentAfter9Months = Repayment(
+    id = "4",
+    amount = 50,
+    date = currentAPEndDate.plusMonths(10)
   )
 
   val validWriteOff = WriteOff(
@@ -163,7 +170,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if repaymentWithin9Months date is before 9 month interval" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(true), repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(date=currentAPEndDate.minusDays(5))))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(true), repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(date = currentAPEndDate.minusDays(1))))))
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
       errors.head.boxId shouldBe Some("LoansToParticipators")
@@ -171,7 +178,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if repaymentWithin9Months date is on AP end date" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(true), repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(date=currentAPEndDate)))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(true), repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(date = currentAPEndDate)))))
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
       errors.head.boxId shouldBe Some("LoansToParticipators")
@@ -179,11 +186,95 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if repaymentWithin9Months date is after 9 month interval" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(true), repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(date=currentAPEndDate.plusMonths(10))))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(true), repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(date = currentAPEndDate.plusMonths(10))))))
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
       errors.head.boxId shouldBe Some("LoansToParticipators")
       errors.head.errorMessageKey shouldBe "loan.1.repaymentWithin9Months.3.error.repaymentWithin9Months.date.range"
+    }
+
+    "return an error if a repaymentWithin9Months has an amount less then 1" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amount = 0)))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.repaymentWithin9Months.3.error.repaymentWithin9Months.amount.value"
+    }
+
+    "return an error if a repaymentWithin9Months has an amount greater then 9999999" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amount = 100000000)))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.repaymentWithin9Months.3.error.repaymentWithin9Months.amount.value"
+    }
+
+    "return an error if a repaymentAfter9Months has an amount less then 1" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months.copy(amount = 0)))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.otherRepayment.4.error.otherRepayment.amount.value"
+    }
+
+    "return an error if a repaymentAfter9Months has an amount greater then 100,000,000" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months.copy(amount = 100000000)))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.otherRepayment.4.error.otherRepayment.amount.value"
+    }
+
+    "return an error if a repaymentAfter9Months has a date on the accounting period end date + 9 months - 1 day" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months.copy(date = currentAPEndDate.plusMonths(9).minusDays(1))))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.otherRepayment.4.error.otherRepayment.date.range"
+    }
+
+    "return an error if a repaymantAfter9Months has a date after todays date" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months.copy(date = LocalDate.now().plusDays(1))))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.otherRepayment.4.error.otherRepayment.date.range"
+    }
+
+    "not return an error if a repaymentAfter9Months has a date on todays date" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months.copy(date = LocalDate.now())))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 0
+    }
+
+    "return an error if a repaymentAfter9Months has a ApEndDate on the accounting period end date" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months.copy(endDateOfAP = Some(currentAPEndDate))))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.otherRepayment.4.error.otherRepayment.apEndDate.range"
+    }
+
+    "return no errors if a repaymentAfter9Months has a ApEndDate after the accounting period end date" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months.copy(endDateOfAP = Some(currentAPEndDate.plusDays(1)))))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 0
+    }
+
+    "no if a repaymentAfter9Months is valid" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 0
     }
 
     "return an error if hasWriteOffs value not provided" in {
