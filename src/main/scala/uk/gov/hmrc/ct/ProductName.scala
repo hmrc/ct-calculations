@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 HM Revenue & Customs
+ * Copyright 2016 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,5 +20,3 @@ import uk.gov.hmrc.ct.box.{CtBoolean, CtBoxIdentifier, CtString, Input}
 
 @deprecated("This is a CATO specific property that is no longer required.")
 case class ProductName(value: String) extends CtBoxIdentifier("Product Name") with CtString with Input
-
-

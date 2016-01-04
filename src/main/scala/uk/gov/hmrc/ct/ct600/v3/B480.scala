@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 HM Revenue & Customs
+ * Copyright 2016 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,4 +26,3 @@ object B480 extends Linked[A80, B480] {
 
   override def apply(source: A80): B480 = B480(source.value)
 }
-
