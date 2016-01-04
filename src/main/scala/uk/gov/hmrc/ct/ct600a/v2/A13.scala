@@ -28,6 +28,8 @@ object A13 extends Calculated[A13, CT600ABoxRetriever] with LoansToParticipators
   override def calculate(fieldValueRetriever: CT600ABoxRetriever): A13 = {
     calculateA13(a3 = fieldValueRetriever.retrieveA3(),
                  a7 = fieldValueRetriever.retrieveA7(),
-                 a11 = fieldValueRetriever.retrieveA11())
+                 a11 = fieldValueRetriever.retrieveA11(),
+                 cp2 = fieldValueRetriever.retrieveCP2(),
+                 lpq07 = fieldValueRetriever.retrieveLPQ07())
   }
 }
