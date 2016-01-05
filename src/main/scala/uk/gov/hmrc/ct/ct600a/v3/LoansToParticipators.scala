@@ -157,7 +157,7 @@ case class Repayment(id: String, amount: Int, date: LocalDate, endDateOfAP: Opti
     Some(Seq(toErrorArgsFormat(currentAPEndDate(boxRetriever)), toErrorArgsFormat(earlierOfNowAndAPEndDatePlus9Months(boxRetriever))))
 
   def errorArgsOtherRepaymentsDate(boxRetriever: CT600BoxRetriever): Some[Seq[String]] =
-    Some(Seq(toErrorArgsFormat(currentAPEndDatePlus9Months(boxRetriever)), toErrorArgsFormat(LocalDate.now())))
+    Some(Seq(toErrorArgsFormat(currentAPEndDatePlus9Months(boxRetriever).plusDays(1)), toErrorArgsFormat(LocalDate.now())))
 
   def errorArgsOtherRepaymentsApEndDate(boxRetriever: CT600BoxRetriever): Some[Seq[String]] =
     Some(Seq(toErrorArgsFormat(currentAPEndDate(boxRetriever))))
