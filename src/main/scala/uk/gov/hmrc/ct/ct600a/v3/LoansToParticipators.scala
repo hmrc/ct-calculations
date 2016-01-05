@@ -32,8 +32,17 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
 
   override def asBoxString = LoansFormatter.asBoxString(this)
 
-  override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] =
+  override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
+    validateLoanRequired(boxRetriever) ++
     loans.foldRight(Set[CtValidation]())((loan, tail) => loan.validate(boxRetriever, this) ++ tail)
+  }
+
+  def validateLoanRequired(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
+    boxRetriever.retrieveLPQ01().value match {
+      case true if loans.isEmpty => Set(CtValidation(Some("LoansToParticipators"), "error.loan.required", None))
+      case _ => Set.empty
+    }
+  }
 }
 
 case class Loan ( id: String,
@@ -48,15 +57,15 @@ case class Loan ( id: String,
 
   def validate(boxRetriever: CT600BoxRetriever, loansToParticipators: LoansToParticipators): Set[CtValidation] = {
     validateLoan(invalidLoanNameLength, "error.loan.name.length") ++
-    validateLoan(invalidLoanNameUnique(loansToParticipators), "error.loan.name.unique") ++
+    validateLoan(invalidLoanNameUnique(loansToParticipators), "error.loan.uniqueName") ++
     validateLoan(invalidLoanAmount, "error.loan.amount.value") ++
     validateLoan(invalidRepayedWithin9Months, "error.loan.isRepaidWithin9Months.required") ++
     validateLoan(invalidRequiredRepaymentWithin9Months, "error.loan.repaymentWithin9Months.required") ++
     validateLoan(invalidRepayedAfter9Months, "error.loan.isRepaidAfter9Months.required") ++
-    validateLoan(invalidRequiredRepaymentAfter9Months, "error.loan.repaymentAfter9Months.required") ++
+    validateLoan(invalidRequiredRepaymentAfter9Months, "error.loan.otherRepayment.required") ++
     validateLoan(invalidHasWriteOffs, "error.loan.hasWriteOffs.required") ++
-    validateLoan(invalidWriteOffs, "error.loan.writeOffs.required") ++
-    validateLoan(invalidBalancedAmount, "error.loan.unbalanced") ++
+    validateLoan(invalidWriteOffs, "error.loan.writeOff.required") ++
+    validateLoan(invalidBalancedAmount, "error.loan.unbalanced", balancedAmountArgs) ++
     repaymentWithin9Months.map(_.validateWithin9Months(boxRetriever, id)).getOrElse(Set()) ++
     otherRepayments.foldRight(Set[CtValidation]())((repayment, tail) => repayment.validateAfter9Months(boxRetriever, id) ++ tail) ++
     writeOffs.foldRight(Set[CtValidation]())((writeOff, tail) => writeOff.validate(boxRetriever, id) ++ tail)
@@ -65,7 +74,7 @@ case class Loan ( id: String,
   private def invalidLoanNameLength: Boolean = name.length < 2 || name.length > 56
 
   private def invalidLoanNameUnique(loansToParticipators: LoansToParticipators): Boolean = {
-    loansToParticipators.loans.exists(loan => loan.id != id && loan.name.trim.toLowerCase == name.trim.toLowerCase && loansToParticipators.loans.indexOf(loan) < loansToParticipators.loans.indexOf(this))
+    loansToParticipators.loans.exists(loan => loan.id != id && loan.name.trim.toLowerCase == name.trim.toLowerCase)
   }
 
   private def invalidLoanAmount: Boolean = amount < MIN_MONEY_AMOUNT_ALLOWED || amount > MAX_MONEY_AMOUNT_ALLOWED
@@ -82,13 +91,16 @@ case class Loan ( id: String,
 
   private def invalidWriteOffs: Boolean = hasWriteOffs.getOrElse(false) && writeOffs.isEmpty
 
-  def invalidBalancedAmount: Boolean = {
-    amount < repaymentWithin9Months.map(_.amount).getOrElse(0) + otherRepayments.foldRight(0)((h,t) => h.amount + t) + writeOffs.foldRight(0)((h,t) => h.amount + t)
-  }
+  private def invalidBalancedAmount: Boolean = amount < totalAmountRepaymentsAndWriteOffs
 
-  def validateLoan(invalid: Boolean, errorMsg: String): Set[CtValidation] = {
+  def totalAmountRepaymentsAndWriteOffs: Int =
+    repaymentWithin9Months.map(_.amount).getOrElse(0) + otherRepayments.foldRight(0)((h, t) => h.amount + t) + writeOffs.foldRight(0)((h, t) => h.amount + t)
+
+  private def balancedAmountArgs: Option[Seq[String]] = Some(Seq(totalAmountRepaymentsAndWriteOffs.toString, amount.toString))
+
+  def validateLoan(invalid: Boolean, errorMsg: String, errorArgs: Option[Seq[String]] = None): Set[CtValidation] = {
    invalid match {
-     case true => Set(CtValidation(Some(s"LoansToParticipators"), s"loan.$id.$errorMsg", None))
+     case true => Set(CtValidation(Some(s"LoansToParticipators"), s"loan.$id.$errorMsg", errorArgs))
      case false => Set.empty
     }
   }
@@ -111,7 +123,7 @@ case class Repayment(id: String, amount: Int, date: LocalDate, endDateOfAP: Opti
     validateRepayment(invalidRepaymentAmount, repaymentWithin9monthsErrorCode, s"error.$repaymentWithin9monthsErrorCode.amount.value", None, loanId)
   }
 
-  private def invalidDateWithin9Months(boxRetriever: CT600BoxRetriever): Boolean = !date.isAfter(currentAPEndDate(boxRetriever)) || date.isAfter(currentAPEndDatePlus9Months(boxRetriever))
+  private def invalidDateWithin9Months(boxRetriever: CT600BoxRetriever): Boolean = !date.isAfter(currentAPEndDate(boxRetriever)) || date.isAfter(earlierOfNowAndAPEndDatePlus9Months(boxRetriever))
 
   private def invalidDateAfter9Months(boxRetriever: CT600BoxRetriever): Boolean = {
     !(date.isAfter(currentAPEndDatePlus9Months(boxRetriever)) && date.isBefore(LocalDate.now().plusDays(1).toDateTimeAtStartOfDay.toLocalDate))

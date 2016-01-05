@@ -20,7 +20,7 @@ import org.joda.time.LocalDate
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.computations.CP2
 import uk.gov.hmrc.ct.ct600.v3.stubs.StubbedCT600BoxRetriever
-import uk.gov.hmrc.ct.ct600a.v3.{Loan, LoansToParticipators, Repayment, WriteOff}
+import uk.gov.hmrc.ct.ct600a.v3._
 
 class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
@@ -29,6 +29,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
   val boxRetriever = new StubbedCT600BoxRetriever {
     override def retrieveCP2(): CP2 = CP2(currentAPEndDate)
+    override def retrieveLPQ01(): LPQ01 = LPQ01(true)
   }
 
   val validLoan = Loan(id = "1",
@@ -58,12 +59,6 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
   )
 
   "Loans validation" should {
-
-    "not return any errors for an empty loans list" in {
-      val l2pBox = LoansToParticipators(List.empty)
-
-      l2pBox.validate(boxRetriever) shouldBe Set.empty
-    }
 
     "return an error if a loan has a name shorter then 2 characters" in {
 
@@ -115,9 +110,10 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       val l2pBox = LoansToParticipators(List(validLoan.copy(name = "Kylo Ren"), validLoan.copy(id = "987", name = " KYLO Ren ")))
 
       val errors = l2pBox.validate(boxRetriever)
-      errors.size shouldBe 1
+      errors.size shouldBe 2
       errors.head.boxId shouldBe Some("LoansToParticipators")
-      errors.head.errorMessageKey shouldBe "loan.987.error.loan.name.unique"
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.uniqueName"
+      errors.last.errorMessageKey shouldBe "loan.987.error.loan.uniqueName"
     }
 
     "return no errors if a loan has a amount between 1 and 9999999 characters, and name is unique" in {
@@ -463,6 +459,26 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       errors.size shouldBe 0
     }
 
+    "return an error if there is no loans and LPQ01 is true" in {
+      val l2pBox = LoansToParticipators(List.empty)
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "error.loan.required"
+    }
+
+    "not return an error if there is no loans and LPQ01 is false" in {
+      val l2pBox = LoansToParticipators(List.empty)
+
+      val testRetriever = new StubbedCT600BoxRetriever {
+        override def retrieveLPQ01(): LPQ01 = LPQ01(false)
+      }
+
+      val errors = l2pBox.validate(testRetriever)
+      errors.size shouldBe 0
+    }
+
     "return an error if there is no repaymentsWithin9Months and hasRepaymentsWithin9Months is true" in {
       val l2pBox = LoansToParticipators(List(validLoan.copy(
         isRepaidWithin9Months = Some(true),
@@ -484,7 +500,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
       errors.head.boxId shouldBe Some("LoansToParticipators")
-      errors.head.errorMessageKey shouldBe "loan.1.error.loan.repaymentAfter9Months.required"
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.otherRepayment.required"
     }
 
     "return an error if there are no writeOffs and hasWriteOffs is true" in {
@@ -496,7 +512,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
       errors.head.boxId shouldBe Some("LoansToParticipators")
-      errors.head.errorMessageKey shouldBe "loan.1.error.loan.writeOffs.required"
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.writeOff.required"
     }
   }
 
