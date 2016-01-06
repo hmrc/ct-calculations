@@ -48,7 +48,8 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
   val validRepaymentAfter9Months = Repayment(
     id = "4",
     amount = 50,
-    date = currentAPEndDate.plusMonths(10)
+    date = currentAPEndDate.plusMonths(10),
+    endDateOfAP = Some(currentAPEndDate.plusYears(1))
   )
 
   val validWriteOff = WriteOff(
@@ -274,6 +275,15 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       errors.size shouldBe 0
     }
 
+    "return an error if a repaymentAfter9Months has no ApEndDate" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months.copy(endDateOfAP = None)))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.otherRepayment.4.error.otherRepayment.apEndDate.required"
+    }
+
     "return an error if a repaymentAfter9Months has a ApEndDate on the accounting period end date" in {
       val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months.copy(endDateOfAP = Some(currentAPEndDate))))))
 
@@ -373,6 +383,22 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
         validLoan.copy(writeOffs = List(validWriteOff.copy(amount = 1))),
         validLoan.copy(writeOffs = List(validWriteOff.copy(amount = 60)))
       ))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 0
+    }
+
+    "return an error if a write off has a date > 9 months after current AP End Date and no apEndDate" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(writeOffs = List(validWriteOff.copy(date = currentAPEndDate.plusMonths(10), endDateOfAP = None)))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.last.errorMessageKey shouldBe "loan.1.writeOff.2.error.writeOff.apEndDate.required"
+    }
+
+    "return no error if a write off has a date <= 9 months after current AP End Date and no apEndDate" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(writeOffs = List(validWriteOff.copy(date = currentAPEndDate.plusMonths(9), endDateOfAP = None)))))
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
