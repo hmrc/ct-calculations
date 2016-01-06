@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.box
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
-import uk.gov.hmrc.ct.ct600a.v2.retriever.CT600ABoxRetriever
+import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 trait ValidatableBox[T <: BoxRetriever] {
 
@@ -112,7 +112,7 @@ trait ValidatableBox[T <: BoxRetriever] {
   protected def validateDateAsBefore(boxId: String, box: CtOptionalDate, dateToCompare: LocalDate): Set[CtValidation] = {
     box.value match {
       case None => Set()
-      case Some(date) if(date.isBefore(dateToCompare)) => Set()
+      case Some(date) if date.isBefore(dateToCompare) => Set()
       case _ => Set(CtValidation(Some(boxId), s"error.$boxId.not.before"))
     }
   }
@@ -120,8 +120,17 @@ trait ValidatableBox[T <: BoxRetriever] {
   protected def validateDateAsAfter(boxId: String, box: CtOptionalDate, dateToCompare: LocalDate): Set[CtValidation] = {
     box.value match {
       case None => Set()
-      case Some(date) if(date.isAfter(dateToCompare)) => Set()
+      case Some(date) if date.isAfter(dateToCompare) => Set()
       case _ => Set(CtValidation(Some(boxId), s"error.$boxId.not.after"))
+    }
+  }
+
+  protected def validateDateAsBetweenInclusive(boxId: String, box: CtOptionalDate, minDate: LocalDate, maxDate: LocalDate): Set[CtValidation] = {
+    box.value match {
+      case None => Set()
+      case Some(date) if date.isBefore(minDate.toDateTimeAtStartOfDay.toLocalDate) || date.isAfter(maxDate.plusDays(1).toDateTimeAtStartOfDay.minusSeconds(1).toLocalDate) =>
+        Set(CtValidation(Some(boxId), s"error.$boxId.not.betweenInclusive", Some(Seq(toErrorArgsFormat(minDate), toErrorArgsFormat(maxDate)))))
+      case _ => Set()
     }
   }
 
