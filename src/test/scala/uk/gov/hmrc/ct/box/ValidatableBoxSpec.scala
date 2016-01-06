@@ -23,6 +23,7 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with ValidatableBox[BoxRetriever]{
 
@@ -114,6 +115,24 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
     "return no errors if date is after" in {
       validateDateAsAfter("testBox", testOptDateBox(Some(new LocalDate("2013-01-01"))), new LocalDate("2012-12-31")) shouldBe Set()
+    }
+  }
+
+  "validateDateBetweenInclusive" should {
+    val minDate = new LocalDate("2012-12-31")
+    val maxDate = new LocalDate("2013-12-31")
+
+    "return error if date is before start date" in {
+      validateDateAsBetweenInclusive("testBox", testOptDateBox(Some(new LocalDate("2012-12-30"))), minDate, maxDate) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.betweenInclusive", Some(Seq(toErrorArgsFormat(minDate), toErrorArgsFormat(maxDate)))))
+    }
+    "return no errors if date is on start date" in {
+      validateDateAsBetweenInclusive("testBox", testOptDateBox(Some(new LocalDate("2012-12-31"))), minDate, maxDate) shouldBe Set()
+    }
+    "return error if date is after end date" in {
+      validateDateAsBetweenInclusive("testBox", testOptDateBox(Some(new LocalDate("2014-01-01"))), minDate, maxDate) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.betweenInclusive", Some(Seq(toErrorArgsFormat(minDate), toErrorArgsFormat(maxDate)))))
+    }
+    "return no errors if date is on end date" in {
+      validateDateAsBetweenInclusive("testBox", testOptDateBox(Some(new LocalDate("2013-12-31"))), minDate, maxDate) shouldBe Set()
     }
   }
 
