@@ -17,7 +17,25 @@
 package uk.gov.hmrc.ct.ct600e.v3.retriever
 
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
+import uk.gov.hmrc.ct.ct600e.v3._
 
 trait CT600EBoxRetriever extends BoxRetriever {
 
+  def retrieveE50(): E50
+
+  def retrieveE55(): E55
+
+  def retrieveE60(): E60
+
+  def retrieveE65(): E65
+
+  def retrieveE70(): E70
+
+  def retrieveE75(): E75
+
+  def retrieveE80(): E80
+
+  def retrieveE85(): E85
+
+  def retrieveE90(): E90 = E90.calculate(this)
 }
