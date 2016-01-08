@@ -25,14 +25,11 @@ object E180 extends ValidatableBox[CT600EBoxRetriever] {
 
   override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
-    if (retrieveE180().value.isEmpty) {
-      Set(CtValidation(boxId = Some("E180"), errorMessageKey = "error.E180.required"))
-    } else {
-      Set.empty
-    } ++ ((retrieveE180(), retrieveE185()) match {
+    (retrieveE180(), retrieveE185()) match {
+      case (E180(None), _) => Set(CtValidation(boxId = Some("E180"), errorMessageKey = "error.E180.required"))
       case (E180(Some(true)), E185(Some(_))) => Set(CtValidation(boxId = Some("E180"), errorMessageKey = "error.E180.cannot.be.true.when.E185.has.value"))
       case _ => Set.empty
-    })
+    }
   }
 
 }
