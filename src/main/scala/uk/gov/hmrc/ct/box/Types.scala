@@ -70,6 +70,10 @@ trait CtOptionalInteger extends CtValue[Option[Int]] {
   def asInt: Option[Int] = {
     value
   }
+
+  def orZero: Int = {
+    value.getOrElse(0)
+  }
 }
 
 trait CtOptionalBigDecimal extends CtValue[Option[BigDecimal]] {
