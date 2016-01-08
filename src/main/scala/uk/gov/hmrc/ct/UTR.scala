@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 HM Revenue & Customs
+ * Copyright 2016 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,4 +19,3 @@ package uk.gov.hmrc.ct
 import uk.gov.hmrc.ct.box.{CtString, Input, CtBoxIdentifier}
 
 case class UTR(value: String) extends CtBoxIdentifier(name = "Unique Taxpayer Reference") with CtString with Input
-
