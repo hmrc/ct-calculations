@@ -18,7 +18,6 @@ package uk.gov.hmrc.ct.ct600a.v3
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.CP2
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 import uk.gov.hmrc.ct.ct600a.v3.formats.LoansFormatter
 import uk.gov.hmrc.ct.domain.ValidationConstants._
@@ -48,23 +47,14 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
 case class Loan ( id: String,
                   name: String,
                   amount: Int,
-                  isRepaidWithin9Months: Option[Boolean] = None,
                   repaymentWithin9Months: Option[Repayment] = None,
-                  isRepaidAfter9Months: Option[Boolean] = None,
                   otherRepayments: List[Repayment] = List.empty,
-                  hasWriteOffs: Option[Boolean] = None,
                   writeOffs: List[WriteOff] = List.empty) {
 
   def validate(boxRetriever: CT600BoxRetriever, loansToParticipators: LoansToParticipators): Set[CtValidation] = {
     validateLoan(invalidLoanNameLength, "error.loan.name.length") ++
     validateLoan(invalidLoanNameUnique(loansToParticipators), "error.loan.uniqueName") ++
     validateLoan(invalidLoanAmount, "error.loan.amount.value") ++
-    validateLoan(invalidRepayedWithin9Months, "error.loan.isRepaidWithin9Months.required") ++
-    validateLoan(invalidRequiredRepaymentWithin9Months, "error.loan.repaymentWithin9Months.required") ++
-    validateLoan(invalidRepayedAfter9Months, "error.loan.isRepaidAfter9Months.required") ++
-    validateLoan(invalidRequiredRepaymentAfter9Months, "error.loan.otherRepayment.required") ++
-    validateLoan(invalidHasWriteOffs, "error.loan.hasWriteOffs.required") ++
-    validateLoan(invalidWriteOffs, "error.loan.writeOff.required") ++
     validateLoan(invalidBalancedAmount, "error.loan.unbalanced", balancedAmountArgs) ++
     repaymentWithin9Months.map(_.validateWithin9Months(boxRetriever, id)).getOrElse(Set()) ++
     otherRepayments.foldRight(Set[CtValidation]())((repayment, tail) => repayment.validateAfter9Months(boxRetriever, id) ++ tail) ++
@@ -78,18 +68,6 @@ case class Loan ( id: String,
   }
 
   private def invalidLoanAmount: Boolean = amount < MIN_MONEY_AMOUNT_ALLOWED || amount > MAX_MONEY_AMOUNT_ALLOWED
-
-  private def invalidRepayedWithin9Months: Boolean = isRepaidWithin9Months.isEmpty
-
-  private def invalidRequiredRepaymentWithin9Months: Boolean = isRepaidWithin9Months.getOrElse(false) && repaymentWithin9Months.isEmpty
-
-  private def invalidRepayedAfter9Months: Boolean = isRepaidAfter9Months.isEmpty
-
-  private def invalidRequiredRepaymentAfter9Months: Boolean = isRepaidAfter9Months.getOrElse(false) && otherRepayments.isEmpty
-
-  private def invalidHasWriteOffs: Boolean = hasWriteOffs.isEmpty
-
-  private def invalidWriteOffs: Boolean = hasWriteOffs.getOrElse(false) && writeOffs.isEmpty
 
   private def invalidBalancedAmount: Boolean = amount < totalAmountRepaymentsAndWriteOffs
 
@@ -239,7 +217,7 @@ trait LoansDateRules {
   }
 
   private def isFilingBeforeReliefDueDate(filingDate: LPQ07) = filingDate.value match {
-    case Some(date) => !isFilingAfterLaterReliefDueDate(filingDate)
+    case Some(_) => !isFilingAfterLaterReliefDueDate(filingDate)
     case None => true
   }
 
