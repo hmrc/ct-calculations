@@ -20,7 +20,7 @@ import org.joda.time.LocalDate
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.computations.CP2
 import uk.gov.hmrc.ct.ct600.v3.stubs.StubbedCT600BoxRetriever
-import uk.gov.hmrc.ct.ct600a.v3.{Loan, LoansToParticipators, Repayment, WriteOff}
+import uk.gov.hmrc.ct.ct600a.v3._
 
 class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
@@ -29,6 +29,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
   val boxRetriever = new StubbedCT600BoxRetriever {
     override def retrieveCP2(): CP2 = CP2(currentAPEndDate)
+    override def retrieveLPQ01(): LPQ01 = LPQ01(true)
   }
 
   val validLoan = Loan(id = "1",
@@ -47,23 +48,18 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
   val validRepaymentAfter9Months = Repayment(
     id = "4",
     amount = 50,
-    date = currentAPEndDate.plusMonths(10)
+    date = currentAPEndDate.plusMonths(10),
+    endDateOfAP = Some(currentAPEndDate.plusYears(1))
   )
 
   val validWriteOff = WriteOff(
     id = "2",
     date = currentAPEndDate.plusDays(2),
-    amount = 2000,
+    amount = 50,
     endDateOfAP = Some(currentAPEndDate.plusDays(1))
   )
 
-  "LoansToParticipators validate" should {
-
-    "not return any errors for an empty loans list" in {
-      val l2pBox = LoansToParticipators(List.empty)
-
-      l2pBox.validate(boxRetriever) shouldBe Set.empty
-    }
+  "Loans validation" should {
 
     "return an error if a loan has a name shorter then 2 characters" in {
 
@@ -111,15 +107,28 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       errors.head.errorMessageKey shouldBe "loan.1.error.loan.amount.value"
     }
 
-    "return no errors if a loan has a amount between 1 and 9999999 characters" in {
+    "return an error if a loan has the same name as an existing Loan" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(name = "Kylo Ren"), validLoan.copy(id = "987", name = " KYLO Ren ")))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 2
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.uniqueName"
+      errors.last.errorMessageKey shouldBe "loan.987.error.loan.uniqueName"
+    }
+
+    "return no errors if a loan has a amount between 1 and 9999999 characters, and name is unique" in {
       val l2pBox = LoansToParticipators(List(
         validLoan.copy(amount = 1),
-        validLoan.copy(amount = 9999999)
+        validLoan.copy(id = "987", name = "Kylo Ren", amount = 9999999)
       ))
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
     }
+  }
+
+  "isRepaidWithin9Months validation" should {
 
     "return an error if isRepaidWithin9Months value not provided" in {
       val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = None)))
@@ -131,7 +140,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "be happy if isRepaidWithin9Months value is true" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(true))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(true), repaymentWithin9Months = Some(validRepaymentWithin9Months))))
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
     }
@@ -141,6 +150,9 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
     }
+  }
+
+  "isRepaidAfter9Months validation" should {
 
     "return an error if isRepaidAfter9Months value not provided" in {
       val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidAfter9Months = None)))
@@ -152,7 +164,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "be happy if isRepaidAfter9Months value is true" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidAfter9Months = Some(true))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidAfter9Months = Some(true), otherRepayments = List(validRepaymentAfter9Months))))
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
     }
@@ -162,9 +174,11 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
     }
+  }
 
+  "repaymentWithin9Months validation" should {
     "be happy if repaymentWithin9Months value is valid" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidAfter9Months = Some(true), repaymentWithin9Months = Some(validRepaymentWithin9Months))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(isRepaidWithin9Months = Some(true), repaymentWithin9Months = Some(validRepaymentWithin9Months))))
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
     }
@@ -203,13 +217,19 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if a repaymentWithin9Months has an amount greater then 9999999" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amount = 100000000)))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(
+        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amount = 100000000))
+      )))
 
       val errors = l2pBox.validate(boxRetriever)
-      errors.size shouldBe 1
+      errors.size shouldBe 2
       errors.head.boxId shouldBe Some("LoansToParticipators")
-      errors.head.errorMessageKey shouldBe "loan.1.repaymentWithin9Months.3.error.repaymentWithin9Months.amount.value"
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.unbalanced"
+      errors.last.errorMessageKey shouldBe "loan.1.repaymentWithin9Months.3.error.repaymentWithin9Months.amount.value"
     }
+  }
+
+  "repaymentAfter9Months validation" should {
 
     "return an error if a repaymentAfter9Months has an amount less then 1" in {
       val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months.copy(amount = 0)))))
@@ -224,9 +244,10 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months.copy(amount = 100000000)))))
 
       val errors = l2pBox.validate(boxRetriever)
-      errors.size shouldBe 1
+      errors.size shouldBe 2
       errors.head.boxId shouldBe Some("LoansToParticipators")
-      errors.head.errorMessageKey shouldBe "loan.1.otherRepayment.4.error.otherRepayment.amount.value"
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.unbalanced"
+      errors.last.errorMessageKey shouldBe "loan.1.otherRepayment.4.error.otherRepayment.amount.value"
     }
 
     "return an error if a repaymentAfter9Months has a date on the accounting period end date + 9 months - 1 day" in {
@@ -254,6 +275,15 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       errors.size shouldBe 0
     }
 
+    "return an error if a repaymentAfter9Months has no ApEndDate" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months.copy(endDateOfAP = None)))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.otherRepayment.4.error.otherRepayment.apEndDate.required"
+    }
+
     "return an error if a repaymentAfter9Months has a ApEndDate on the accounting period end date" in {
       val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months.copy(endDateOfAP = Some(currentAPEndDate))))))
 
@@ -276,6 +306,9 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
     }
+  }
+
+  "hasWriteOffs validation" should {
 
     "return an error if hasWriteOffs value not provided" in {
       val l2pBox = LoansToParticipators(List(validLoan.copy(hasWriteOffs = None)))
@@ -287,7 +320,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "be happy if hasWriteOffs value is true" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(hasWriteOffs = Some(true))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(hasWriteOffs = Some(true), writeOffs = List(validWriteOff))))
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
     }
@@ -297,6 +330,9 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
     }
+  }
+
+  "writeOff validation" should {
 
     "return an error if a write off has a date on the accounting period end date" in {
       val l2pBox = LoansToParticipators(List(validLoan.copy(writeOffs = List(validWriteOff.copy(date = currentAPEndDate.minusDays(1))))))
@@ -336,16 +372,33 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       val l2pBox = LoansToParticipators(List(validLoan.copy(writeOffs = List(validWriteOff.copy(amount = 100000000)))))
 
       val errors = l2pBox.validate(boxRetriever)
-      errors.size shouldBe 1
+      errors.size shouldBe 2
       errors.head.boxId shouldBe Some("LoansToParticipators")
-      errors.head.errorMessageKey shouldBe "loan.1.writeOff.2.error.writeOff.amount.value"
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.unbalanced"
+      errors.last.errorMessageKey shouldBe "loan.1.writeOff.2.error.writeOff.amount.value"
     }
 
     "return no errors if a writeoff has a amount between 1 and 9999999 characters" in {
       val l2pBox = LoansToParticipators(List(
         validLoan.copy(writeOffs = List(validWriteOff.copy(amount = 1))),
-        validLoan.copy(writeOffs = List(validWriteOff.copy(amount = 99999999)))
+        validLoan.copy(writeOffs = List(validWriteOff.copy(amount = 60)))
       ))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 0
+    }
+
+    "return an error if a write off has a date > 9 months after current AP End Date and no apEndDate" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(writeOffs = List(validWriteOff.copy(date = currentAPEndDate.plusMonths(10), endDateOfAP = None)))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.last.errorMessageKey shouldBe "loan.1.writeOff.2.error.writeOff.apEndDate.required"
+    }
+
+    "return no error if a write off has a date <= 9 months after current AP End Date and no apEndDate" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(writeOffs = List(validWriteOff.copy(date = currentAPEndDate.plusMonths(9), endDateOfAP = None)))))
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
@@ -356,6 +409,136 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 0
+    }
+  }
+
+  "global Loan validation" should {
+
+    "not allow repaidWithin9Months amount to exceed Loan Amount" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(
+        amount = 200,
+        isRepaidWithin9Months = Some(true),
+        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amount = 201))
+      )))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.unbalanced"
+    }
+
+    "not allow total repaidAfter9Months amount to exceed Loan Amount" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(
+        amount = 200,
+        isRepaidAfter9Months = Some(true),
+        otherRepayments = List(validRepaymentAfter9Months.copy(amount = 201))
+      )))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.unbalanced"
+    }
+
+    "not allow total writeOffs amount to exceed Loan Amount" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(
+        amount = 200,
+        hasWriteOffs = Some(true),
+        writeOffs = List(validWriteOff.copy(amount = 201))
+      )))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.unbalanced"
+    }
+
+    "not allow total of repayments and write offs amounts to exceed Loan Amount" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(
+        amount = 200,
+        isRepaidWithin9Months = Some(true),
+        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amount = 50)),
+        isRepaidAfter9Months = Some(true),
+        otherRepayments = List(validRepaymentAfter9Months.copy(amount = 100)),
+        hasWriteOffs = Some(true),
+        writeOffs = List(validWriteOff.copy(amount = 51))
+      )))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.unbalanced"
+    }
+
+    "allow Loan with amount equal to total of repayments and write offs" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(
+        amount = 200,
+        isRepaidWithin9Months = Some(true),
+        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amount = 50)),
+        isRepaidAfter9Months = Some(true),
+        otherRepayments = List(validRepaymentAfter9Months.copy(amount = 100)),
+        hasWriteOffs = Some(true),
+        writeOffs = List(validWriteOff.copy(amount = 50))
+      )))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 0
+    }
+
+    "return an error if there is no loans and LPQ01 is true" in {
+      val l2pBox = LoansToParticipators(List.empty)
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "error.loan.required"
+    }
+
+    "not return an error if there is no loans and LPQ01 is false" in {
+      val l2pBox = LoansToParticipators(List.empty)
+
+      val testRetriever = new StubbedCT600BoxRetriever {
+        override def retrieveLPQ01(): LPQ01 = LPQ01(false)
+      }
+
+      val errors = l2pBox.validate(testRetriever)
+      errors.size shouldBe 0
+    }
+
+    "return an error if there is no repaymentsWithin9Months and hasRepaymentsWithin9Months is true" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(
+        isRepaidWithin9Months = Some(true),
+        repaymentWithin9Months = None
+      )))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.repaymentWithin9Months.required"
+    }
+
+    "return an error if there are no repaymentsAfter9Months and hasRepaymentAfter9Months is true" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(
+        isRepaidAfter9Months = Some(true),
+        otherRepayments = List.empty
+      )))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.otherRepayment.required"
+    }
+
+    "return an error if there are no writeOffs and hasWriteOffs is true" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(
+        hasWriteOffs = Some(true),
+        writeOffs = List.empty
+      )))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.writeOff.required"
     }
   }
 
