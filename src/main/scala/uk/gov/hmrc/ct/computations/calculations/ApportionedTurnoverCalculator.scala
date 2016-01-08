@@ -58,7 +58,7 @@ trait ApportionedTurnoverCalculator {
     val periodOfAccountsEnd   = new LocalDate(ac4.value)
     val accountingPeriodStart = new LocalDate(cp1.value)
     val accountingPeriodEnd   = new LocalDate(cp2.value)
-    val turnover              = ac12.value.getOrElse(0)
+    val turnover              = ac12.orZero
 
     val periodOfAccounts       = Days.daysBetween(periodOfAccountsStart, periodOfAccountsEnd).plus(1)
     val beforeAccountingPeriod = Days.daysBetween(periodOfAccountsStart, accountingPeriodStart)

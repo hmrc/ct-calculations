@@ -23,9 +23,9 @@ trait SummaryCalculator extends CtTypeConverters{
 
   def calculateTradingLossesBroughtForwardForSummary(cp238: CP238): CP257 = CP257(cp238.value)
 
-  def calculateNetTradingAndProfessionalProfits(cp256: CP256, cp257: CP257): CP258 = CP258(cp256 - cp257.value.getOrElse(0))
+  def calculateNetTradingAndProfessionalProfits(cp256: CP256, cp257: CP257): CP258 = CP258(cp256 - cp257.orZero)
 
-  def calculateProfitsAndGainsFromNonTradingLoanRelationships(cp43: CP43): CP259 = CP259(cp43.value.getOrElse(0))
+  def calculateProfitsAndGainsFromNonTradingLoanRelationships(cp43: CP43): CP259 = CP259(cp43.orZero)
 
   def calculateTradingLossesOfThisOrLaterAccountingPeriods(cp239: CP239): CP264 = CP264(cp239)
 

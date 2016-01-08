@@ -36,7 +36,7 @@ trait LossesCarriedForwardsCalculator extends CtTypeConverters {
         case (Some(true), None, None) => somePositiveOrZero(cp281 minus cp283)
         case (None, Some(false), None) => somePositiveOrZero(cp118.value)
         case (None, None, Some(false)) => somePositiveOrZero(cp118.value)
-        case (None, Some(true), Some(true)) => somePositiveOrZero(cp118 - cp998.value.getOrElse(0) - cp287)
+        case (None, Some(true), Some(true)) => somePositiveOrZero(cp118 - cp998.orZero - cp287)
         case (None, Some(true), Some(false)) => somePositiveOrZero(cp118 - cato01)
         case (None, None, Some(true)) => somePositiveOrZero(cp118 - cp287)
         case _ => None

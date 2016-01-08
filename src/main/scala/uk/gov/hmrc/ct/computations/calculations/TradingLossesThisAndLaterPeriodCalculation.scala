@@ -21,6 +21,6 @@ import uk.gov.hmrc.ct.computations.{CP286, CP294, CP998}
 trait TradingLossesThisAndLaterPeriodCalculation {
 
   def tradingLosses(cp286: CP286, cp998: CP998): CP294 = {
-    CP294(cp286.value.getOrElse(0) + cp998.value.getOrElse(0))
+    CP294(cp286.orZero + cp998.orZero)
   }
 }

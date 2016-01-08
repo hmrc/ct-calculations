@@ -60,9 +60,9 @@ trait MarginalRateReliefCalculator extends CtTypeConverters with NumberRounding 
 
     val apportionedProfit = (b37 plus b38) * apFyRatio
 
-    val proRataLrma = (constants.lowerRelevantAmount * msFyRatio) / (b39.value.getOrElse(0) + 1)
+    val proRataLrma = (constants.lowerRelevantAmount * msFyRatio) / (b39.orZero + 1)
 
-    val proRataUrma = constants.upperRelevantAmount * msFyRatio / (b39.value.getOrElse(0) + 1)
+    val proRataUrma = constants.upperRelevantAmount * msFyRatio / (b39.orZero + 1)
 
     val mscrdueap = if (apportionedProfit > 0 &&
                         apportionedProfit > proRataLrma &&

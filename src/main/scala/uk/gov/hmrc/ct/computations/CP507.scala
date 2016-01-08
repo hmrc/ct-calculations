@@ -22,5 +22,5 @@ case class CP507(value: Int) extends CtBoxIdentifier(name = "Income from propert
 
 object CP507 extends Linked[CP501, CP507] {
 
-  override def apply(source: CP501): CP507 = CP507(source.value.getOrElse(0))
+  override def apply(source: CP501): CP507 = CP507(source.orZero)
 }
