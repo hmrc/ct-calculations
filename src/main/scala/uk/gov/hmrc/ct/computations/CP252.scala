@@ -23,5 +23,5 @@ case class CP252(value: Int) extends CtBoxIdentifier("Expenditure on designated 
 
 object CP252 extends Linked[CP79, CP252]{
 
-  override def apply(source: CP79): CP252 = CP252(source.value.getOrElse(0))
+  override def apply(source: CP79): CP252 = CP252(source.orZero)
 }

@@ -27,7 +27,7 @@ trait LossesBroughtForwardAgainstTradingProfitCalculator extends CtTypeConverter
     val result = for {
       cpq17 <- cpq17.value
       cp282 <- cp282.value if cpq17
-    } yield cp282 min cp281.value.getOrElse(0)
+    } yield cp282 min cp281.orZero
     CP283(result)
   }
 

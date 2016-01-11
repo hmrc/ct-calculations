@@ -144,7 +144,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
                                    cp78: CP78,
                                    cp82: CP82,
                                    cp672: CP672):Boolean = {
-    val cp672Value = cp672.value.getOrElse(0)
+    val cp672Value = cp672.orZero
     cp672Value > cp78 + cp82 + roundDownToInt(getMainRatePoolSum(lec01))
   }
 
@@ -152,7 +152,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
                                     cp78: CP78,
                                     cp82: CP82,
                                     cp672: CP672):Boolean = {
-    val cp672Value = cp672.value.getOrElse(0)
+    val cp672Value = cp672.orZero
     cp672Value < cp78 + cp82 + roundDownToInt(getMainRatePoolSum(lec01))
   }
 }

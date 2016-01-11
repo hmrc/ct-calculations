@@ -25,7 +25,7 @@ trait TotalProfitsBeforeDeductionsCalculator extends CtTypeConverters {
                                                     cp58: CP58,
                                                     cp511: CP511,
                                                     cp502: CP502): CP293 = {
-    val result = (cp284.value.getOrElse(0) max 0) + cp58.value + cp511.value + cp502.value.getOrElse(0)
+    val result = (cp284.orZero max 0) + cp58.value + cp511.value + cp502.orZero
     CP293(result max 0)
   }
 }
