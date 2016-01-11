@@ -24,5 +24,5 @@ case class B2(value: String) extends CtBoxIdentifier(name = "Company Registratio
 
 object B2 extends Linked[AC1, B2] {
 
-  override def apply(source: AC1): B2 = B2(source.value.getOrElse(throw new IllegalStateException("We should a crn by now")))
+  override def apply(source: AC1): B2 = B2(source.value.getOrElse(throw new IllegalStateException("We should have a crn by now")))
 }
