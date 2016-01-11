@@ -23,6 +23,32 @@ object CT600EBoxRetriever extends BoxValues[CT600EBoxRetriever]
 
 trait CT600EBoxRetriever extends BoxRetriever {
 
+  def retrieveE1(): E1
+
+  def retrieveE2(): E2
+
+  def retrieveE3(): E3
+
+  def retrieveE4(): E4
+
+  def retrieveE5(): E5
+
+  def retrieveE10(): E10
+
+  def retrieveE15(): E15
+
+  def retrieveE20(): E20
+
+  def retrieveE25(): E25
+
+  def retrieveE30(): E30
+
+  def retrieveE35(): E35
+
+  def retrieveE40(): E40
+
+  def retrieveE45(): E45
+
   def retrieveE50(): E50
 
   def retrieveE55(): E55
