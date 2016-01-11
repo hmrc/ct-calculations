@@ -63,6 +63,8 @@ package object formats {
 
   implicit val statutoryAccountsFilingFormat: Format[StatutoryAccountsFiling] = new BooleanFormat[StatutoryAccountsFiling](StatutoryAccountsFiling.apply)
 
+  implicit val utrFormat: Format[UTR] = new StringFormat[UTR](UTR.apply)
+
   implicit val cato21Format: Format[CATO21] = new BigDecimalFormat[CATO21](CATO21.apply)
 
   implicit val cato22Format: Format[CATO22] = new BigDecimalFormat[CATO22](CATO22.apply)

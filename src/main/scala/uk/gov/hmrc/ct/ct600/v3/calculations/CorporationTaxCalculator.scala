@@ -106,7 +106,7 @@ trait CorporationTaxCalculator extends CtTypeConverters {
   }
 
   def defaultSetIfLossCarriedForward(b45input:B45Input, cp287:CP287): B45 = {
-    if (cp287.value.getOrElse(0) > 0) {
+    if (cp287.orZero > 0) {
       B45(Some(true))
     } else {
       B45(b45input.value)

@@ -44,31 +44,35 @@ trait CtOptionalInteger extends CtValue[Option[Int]] {
   self: CtBoxIdentifier =>
 
   def plus(other: CtOptionalInteger): Int = {
-    value.getOrElse(0) + other.value.getOrElse(0)
+    orZero + other.orZero
   }
 
   def minus(other: CtOptionalInteger): Int = {
-    value.getOrElse(0) - other.value.getOrElse(0)
+    orZero - other.orZero
   }
 
   def plus(other: CtInteger): Int = {
-    value.getOrElse(0) + other.value
+    orZero + other.value
   }
 
   def minus(other: CtInteger): Int = {
-    value.getOrElse(0) - other.value
+    orZero - other.value
   }
 
   def plus(other: Int): Int = {
-    value.getOrElse(0) + other
+    orZero + other
   }
 
   def minus(other: Int): Int = {
-    value.getOrElse(0) - other
+    orZero - other
   }
 
   def asInt: Option[Int] = {
     value
+  }
+
+  def orZero: Int = {
+    value.getOrElse(0)
   }
 }
 

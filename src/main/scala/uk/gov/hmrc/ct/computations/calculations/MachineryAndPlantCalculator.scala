@@ -81,7 +81,7 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
         if (!ceasedTrading) {
           Some(cp87 + cp88 + cp89)
         } else {
-          Some(cp90.value.getOrElse(0))
+          Some(cp90.orZero)
         }
     }
     CP186(result)
@@ -123,7 +123,7 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
   private def calculation(cp78: CP78,
                           cp81: CP81,
                           cp82: CP82,
-                          cp84: CP84): Int = cp78.value.getOrElse(0) + cp81 + cp82.value.getOrElse(0) - cp84.value.getOrElse(0)
+                          cp84: CP84): Int = cp78.orZero + cp81 + cp82.orZero - cp84.orZero
 
   private def checkParameters(cpq8: CPQ8,
                               cp78: CP78,
