@@ -45,8 +45,8 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   // CHRIS cardinality 0..1 - can be null
   def calculateA30(cp2: CP2, loans2p: LoansToParticipators): A30 = {
     val validLoans: List[Loan] = loans2p.loans.filter { loan =>
-      (loan.isRepaidWithin9Months, loan.repaymentWithin9Months) match {
-        case (Some(true), Some(r: Repayment)) if r.isReliefEarlierThanDue(cp2.value) => true
+      loan.repaymentWithin9Months match {
+        case Some(r: Repayment) if r.isReliefEarlierThanDue(cp2.value) => true
         case _ => false
       }
     }
