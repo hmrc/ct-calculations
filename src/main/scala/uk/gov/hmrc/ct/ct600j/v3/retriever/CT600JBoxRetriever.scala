@@ -24,7 +24,14 @@ object CT600JBoxRetriever extends BoxValues[CT600JBoxRetriever]
 
 trait CT600JBoxRetriever {
 
+  self: CT600BoxRetriever =>
+
   def retrieveB65(): B65
+
+  def retrieveJ1(): J1 = J1(retrieveB1())
+  def retrieveJ2(): J2 = J2(retrieveB3())
+  def retrieveJ3(): J3 = J3(retrieveB30())
+  def retrieveJ4(): J4 = J4(retrieveB35())
 
   def retrieveJ5(): J5
   def retrieveJ10(): J10

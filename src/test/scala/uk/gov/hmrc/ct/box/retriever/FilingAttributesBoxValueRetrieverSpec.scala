@@ -25,8 +25,8 @@ import uk.gov.hmrc.ct.domain.CompanyTypes
 class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
 
   "FilingAttributesBoxValueRetriever" should {
-    "have 9 functions" in {
-      FilingAttributesBoxValueRetriever.retrieveBoxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 9
+    "have 10 functions" in {
+      FilingAttributesBoxValueRetriever.retrieveBoxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 10
     }
 
     "get ct values" in {
@@ -35,6 +35,7 @@ class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
       val result = FilingAttributesBoxValueRetriever.generateValues(retriever)
       result("ProductName") shouldBe retriever.retrieveProductName()
       result("FilingCompanyType") shouldBe retriever.retrieveCompanyType()
+      result("UTR") shouldBe retriever.retrieveUTR()
 
       result("AbbreviatedAccountsFiling") shouldBe retriever.retrieveAbbreviatedAccountsFiling()
       result("StatutoryAccountsFiling") shouldBe retriever.retrieveStatutoryAccountsFiling()
@@ -43,7 +44,6 @@ class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
       result("CompaniesHouseFiling") shouldBe retriever.retrieveCompaniesHouseFiling()
       result("HMRCFiling") shouldBe retriever.retrieveHMRCFiling()
       result("HMRCAmendment") shouldBe retriever.retrieveHMRCAmendment()
-
     }
   }
 }
@@ -55,6 +55,8 @@ class FilingAttributesBoxValueRetrieverForTest extends FilingAttributesBoxValueR
   override def retrieveProductName(): ProductName = ProductName("productType")
 
   override def retrieveCompanyType(): FilingCompanyType = FilingCompanyType(CompanyTypes.UkTradingCompany)
+
+  override def retrieveUTR(): UTR = UTR("123456")
 
   override def retrieveAbbreviatedAccountsFiling(): AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)
 

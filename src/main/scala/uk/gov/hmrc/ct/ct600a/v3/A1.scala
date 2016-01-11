@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct.ct600a.v3
 
-import uk.gov.hmrc.ct.accounts.AC1
-import uk.gov.hmrc.ct.box.{Linked, CtBoxIdentifier, CtString}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtString, Linked}
+import uk.gov.hmrc.ct.ct600.v3.B1
 
 
-case class B2(value: String) extends CtBoxIdentifier(name = "Company Registration Number (CRN)") with CtString
+case class A1(value: String) extends CtBoxIdentifier(name = "Company name") with CtString
 
-object B2 extends Linked[AC1, B2] {
+object A1 extends Linked[B1, A1] {
 
-  override def apply(source: AC1): B2 = B2(source.value.getOrElse(throw new IllegalStateException("We should have a crn by now")))
+  override def apply(source: B1): A1 = A1(source.value)
 }
