@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct.ct600a.v3
 
-import uk.gov.hmrc.ct.accounts.AC1
-import uk.gov.hmrc.ct.box.{Linked, CtBoxIdentifier, CtString}
+import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtDate, Linked}
+import uk.gov.hmrc.ct.ct600.v3.B30
 
 
-case class B2(value: String) extends CtBoxIdentifier(name = "Company Registration Number (CRN)") with CtString
+case class A3(value: LocalDate) extends CtBoxIdentifier(name = "AP Start date") with CtDate
 
-object B2 extends Linked[AC1, B2] {
+object A3 extends Linked[B30, A3] {
 
-  override def apply(source: AC1): B2 = B2(source.value.getOrElse(throw new IllegalStateException("We should have a crn by now")))
+  override def apply(source: B30): A3 = A3(source.value)
 }
