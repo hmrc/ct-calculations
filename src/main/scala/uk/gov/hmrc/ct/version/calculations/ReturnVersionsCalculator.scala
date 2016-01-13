@@ -21,6 +21,7 @@ import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
+import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes.{MembersClub, LimitedByGuaranteeCharity, Charity, UkTradingCompany}
 import uk.gov.hmrc.ct.version.CoHoAccounts.{CoHoMicroEntityAbridgedAccounts, CoHoMicroEntityAccounts, CoHoStatutoryAbbreviatedAccounts, CoHoStatutoryAccounts}
 import uk.gov.hmrc.ct.version.CoHoVersions.AccountsVersion1
@@ -44,6 +45,18 @@ trait ReturnVersionsCalculator {
                                 abridgedFiling = boxRetriever.retrieveAbridgedFiling(),
                                 abbreviatedAccountsFiling = boxRetriever.retrieveAbbreviatedAccountsFiling(),
                                 companyType = boxRetriever.retrieveCompanyType())
+
+      case boxRetriever: CT600EBoxRetriever with FilingAttributesBoxValueRetriever =>
+        calculateReturnVersions(apStartDate = Some(boxRetriever.retrieveE3().value),
+                                apEndDate = Some(boxRetriever.retrieveE4().value),
+                                coHoFiling = boxRetriever.retrieveCompaniesHouseFiling(),
+                                hmrcFiling = boxRetriever.retrieveHMRCFiling(),
+                                microEntityFiling = boxRetriever.retrieveMicroEntityFiling(),
+                                statutoryAccountsFiling = boxRetriever.retrieveStatutoryAccountsFiling(),
+                                abridgedFiling = boxRetriever.retrieveAbridgedFiling(),
+                                abbreviatedAccountsFiling = boxRetriever.retrieveAbbreviatedAccountsFiling(),
+                                companyType = boxRetriever.retrieveCompanyType(),
+                                charityAllExempt = boxRetriever.retrieveE20().value)
 
       case boxRetriever: FilingAttributesBoxValueRetriever =>
         calculateReturnVersions(apStartDate = None,
