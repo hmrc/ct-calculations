@@ -34,6 +34,8 @@ object CompanyTypes {
 
   case object Charity extends CompanyType(8)
 
+  case object LimitedByGuaranteeCharity extends CompanyType(8)
+
   case object MembersVoluntaryLiquidation extends CompanyType(0)
 
   case object UnitTrust extends CompanyType(1)
@@ -62,7 +64,7 @@ object CompanyTypes {
     UkTradingCompany, CompanyLimitedByGuarantee, CommunityAmateurSportsClub, CompanyInLiquidation,
     MembersClub, Charity, MembersVoluntaryLiquidation, UnitTrust, CloseInvestmentHoldingCompany,
     InvestmentTrustWithHousingInvestmentProfits, InsuranceCompany, PropertyManagementCompany,
-    RealEstateInvestmentTrust, PublicLimitedCompany, LimitedLiabilityPartnership, Ineligible
+    RealEstateInvestmentTrust, PublicLimitedCompany, LimitedLiabilityPartnership, Ineligible, LimitedByGuaranteeCharity
   )
 
   implicit val reads: Reads[CompanyType] =
