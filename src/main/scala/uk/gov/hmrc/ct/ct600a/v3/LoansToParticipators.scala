@@ -37,7 +37,7 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
   }
 
   def validateLoanRequired(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    boxRetriever.retrieveLPQ01().value match {
+    boxRetriever.retrieveLPQ03().value.getOrElse(false) match {
       case true if loans.isEmpty => Set(CtValidation(Some("LoansToParticipators"), "error.loan.required", None))
       case _ => Set.empty
     }
