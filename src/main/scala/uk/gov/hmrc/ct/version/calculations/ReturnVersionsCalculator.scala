@@ -21,7 +21,7 @@ import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
-import uk.gov.hmrc.ct.domain.CompanyTypes.{LimitedByGuaranteeCharity, Charity, UkTradingCompany}
+import uk.gov.hmrc.ct.domain.CompanyTypes.{MembersClub, LimitedByGuaranteeCharity, Charity, UkTradingCompany}
 import uk.gov.hmrc.ct.version.CoHoAccounts.{CoHoMicroEntityAbridgedAccounts, CoHoMicroEntityAccounts, CoHoStatutoryAbbreviatedAccounts, CoHoStatutoryAccounts}
 import uk.gov.hmrc.ct.version.CoHoVersions.AccountsVersion1
 import uk.gov.hmrc.ct.version.HmrcReturns._
@@ -106,16 +106,16 @@ trait ReturnVersionsCalculator {
     val ct600Returns = (hmrcFiling, apStartDate, companyType, charityAllExempt) match {
 
       case (HMRCFiling(true), Some(startDate), FilingCompanyType(LimitedByGuaranteeCharity), Some(all)) =>
-        ct600ReturnsForLimitedByGuaranteeCharity(startDate, all)
+        ct600ReturnsForCharity(startDate, all)
 
       case (HMRCFiling(true), Some(startDate), FilingCompanyType(Charity), Some(all)) =>
         ct600ReturnsForCharity(startDate, all)
 
+      case (HMRCFiling(true), Some(startDate), FilingCompanyType(MembersClub), _) =>
+        ct600ReturnsForMembersClub(startDate)
+
       case (HMRCFiling(true), Some(startDate), _, _) =>
-        val version = ct600VersionBasedOnApStartDate(startDate)
-        Set(Return(CT600, version),
-            Return(CT600a, version),
-            Return(CT600j, version))
+        ct600ReturnsForCompany(startDate)
 
       case _ => Set.empty
     }
@@ -145,25 +145,7 @@ trait ReturnVersionsCalculator {
     }
   }
 
-  private def ct600VersionBasedOnApStartDate(apStartDate: LocalDate): Version = {
-    if (apStartDate.isAfter(LocalDate.parse("2015-03-31"))) {
-      CT600Version3
-    }
-    else CT600Version2
-  }
-
-  private def ct600ReturnsForLimitedByGuaranteeCharity(apStartDate: LocalDate, charityAllExempt: Boolean): Set[Return] = {
-
-    val version = ct600VersionBasedOnApStartDate(apStartDate)
-    if (charityAllExempt) {
-      Set(Return(CT600e, version))
-    }
-    else {
-        Set(Return(CT600e, version),
-            Return(CT600, version),
-            Return(CT600j, version))
-    }
-  }
+  private def ct600VersionBasedOnApStartDate(apStartDate: LocalDate): Version = if (apStartDate.isAfter(LocalDate.parse("2015-03-31"))) CT600Version3 else CT600Version2
 
   private def ct600ReturnsForCharity(apStartDate: LocalDate, charityAllExempt: Boolean): Set[Return] = {
 
@@ -176,5 +158,18 @@ trait ReturnVersionsCalculator {
           Return(CT600, version),
           Return(CT600j, version))
     }
+  }
+
+  private def ct600ReturnsForMembersClub(apStartDate: LocalDate): Set[Return] = {
+    val version = ct600VersionBasedOnApStartDate(apStartDate)
+    Set(Return(CT600, version),
+        Return(CT600j, version))
+  }
+
+  private def ct600ReturnsForCompany(startDate: LocalDate): Set[Return] = {
+    val version = ct600VersionBasedOnApStartDate(startDate)
+    Set(Return(CT600, version),
+        Return(CT600a, version),
+        Return(CT600j, version))
   }
 }
