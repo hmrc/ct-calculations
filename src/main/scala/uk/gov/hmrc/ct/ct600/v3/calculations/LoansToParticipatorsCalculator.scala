@@ -23,9 +23,11 @@ import uk.gov.hmrc.ct.ct600a.v3._
 
 trait LoansToParticipatorsCalculator extends CtTypeConverters {
 
-  def calculateLPQ01(lpq03: LPQ03, lpq04: LPQ04): LPQ01 = {
-    (lpq03.value, lpq04.value) match {
-      case (Some(true), Some(true)) => LPQ01(true)
+  def calculateLPQ01(lpq04: LPQ04, lpq10: LPQ10, a5: A5, lpq03: LPQ03): LPQ01 = {
+    (lpq04.value, lpq10.value, a5.value, lpq03.value) match {
+      case (Some(true), Some(true), _, _) => LPQ01(true)
+      case (Some(true), _, Some(true), _) => LPQ01(true)
+      case (Some(true), _, _, Some(true)) => LPQ01(true)
       case _ => LPQ01(false)
     }
   }
@@ -40,7 +42,6 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   def calculateA20(a15: A15): A20 = {
     A20(a15.value.map(x => BigDecimal(x * 0.25)))
   }
-
 
   // CHRIS cardinality 0..1 - can be null
   def calculateA30(cp2: CP2, loans2p: LoansToParticipators): A30 = {
