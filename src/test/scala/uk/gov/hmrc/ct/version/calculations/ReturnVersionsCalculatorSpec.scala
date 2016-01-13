@@ -66,6 +66,22 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                 abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe expectedResult
       }
 
+      "return accounts version for abbreviated statutory accounts for LimitedByGuaranteeCharity" in new ReturnVersionsCalculator {
+        val expectedResult = Set(Return(CoHoStatutoryAbbreviatedAccounts, AccountsVersion1))
+        calculateReturnVersions(coHoFiling = CompaniesHouseFiling(true),
+                                statutoryAccountsFiling = StatutoryAccountsFiling(true),
+                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true),
+                                companyType = FilingCompanyType(LimitedByGuaranteeCharity)) shouldBe expectedResult
+      }
+
+      "return accounts version for full statutory accounts for LimitedByGuaranteeCharity" in new ReturnVersionsCalculator {
+        val expectedResult = Set(Return(CoHoStatutoryAccounts, AccountsVersion1))
+        calculateReturnVersions(coHoFiling = CompaniesHouseFiling(true),
+                                statutoryAccountsFiling = StatutoryAccountsFiling(true),
+                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(false),
+                                companyType = FilingCompanyType(LimitedByGuaranteeCharity)) shouldBe expectedResult
+      }
+
       "match successfully for AccountsBoxRetriever" in {
         val expectedResult = Set(Return(CoHoMicroEntityAccounts, AccountsVersion1))
 
