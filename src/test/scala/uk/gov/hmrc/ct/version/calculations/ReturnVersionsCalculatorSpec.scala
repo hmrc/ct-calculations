@@ -29,6 +29,7 @@ import uk.gov.hmrc.ct.box.stubs.StubbedFilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
+import uk.gov.hmrc.ct.domain.CompanyTypes.{LimitedByGuaranteeCharity, Charity, UkTradingCompany}
 import uk.gov.hmrc.ct.version.CoHoAccounts.{CoHoMicroEntityAbridgedAccounts, CoHoMicroEntityAccounts, CoHoStatutoryAbbreviatedAccounts, CoHoStatutoryAccounts}
 import uk.gov.hmrc.ct.version.CoHoVersions.AccountsVersion1
 import uk.gov.hmrc.ct.version.HmrcReturns._
@@ -73,6 +74,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           override def retrieveAbbreviatedAccountsFiling(): AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)
           override def retrieveStatutoryAccountsFiling(): StatutoryAccountsFiling = StatutoryAccountsFiling(false)
           override def retrieveMicroEntityFiling(): MicroEntityFiling = MicroEntityFiling(true)
+          override def retrieveCompanyType(): FilingCompanyType = FilingCompanyType(UkTradingCompany)
           override def retrieveAbridgedFiling(): AbridgedFiling = AbridgedFiling(false)
           override def retrieveCompaniesHouseFiling(): CompaniesHouseFiling = CompaniesHouseFiling(true)
           override def retrieveHMRCFiling(): HMRCFiling = HMRCFiling(false)
@@ -103,8 +105,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600j, CT600Version2),
                                  Return(Computations, ComputationsCT20141001))
 
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-03-31"))),
-                                cp2 = Some(CP2(LocalDate.parse("2015-12-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
+                                apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 microEntityFiling = MicroEntityFiling(true)) shouldBe expectedResult
       }
@@ -115,8 +117,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600j, CT600Version3),
                                  Return(Computations, ComputationsCT20150201))
 
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-04-01"))),
-                                cp2 = Some(CP2(LocalDate.parse("2016-03-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
+                                apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 microEntityFiling = MicroEntityFiling(true)) shouldBe expectedResult
       }
@@ -127,8 +129,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
                                  Return(Computations, ComputationsCT20141001))
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-03-31"))),
-                                cp2 = Some(CP2(LocalDate.parse("2015-12-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
+                                apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 microEntityFiling = MicroEntityFiling(true),
                                 abridgedFiling = AbridgedFiling(true)) shouldBe expectedResult
@@ -140,8 +142,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
                                  Return(Computations, ComputationsCT20150201))
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-04-01"))),
-                                cp2 = Some(CP2(LocalDate.parse("2016-03-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
+                                apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 microEntityFiling = MicroEntityFiling(true),
                                 abridgedFiling = AbridgedFiling(true)) shouldBe expectedResult
@@ -153,8 +155,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
                                  Return(Computations, ComputationsCT20141001))
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-03-31"))),
-                                cp2 = Some(CP2(LocalDate.parse("2015-12-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
+                                apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe expectedResult
       }
@@ -165,8 +167,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
                                  Return(Computations, ComputationsCT20150201))
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-04-01"))),
-                                cp2 = Some(CP2(LocalDate.parse("2016-03-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
+                                apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe expectedResult
       }
@@ -177,8 +179,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
                                  Return(Computations, ComputationsCT20141001))
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-03-31"))),
-                                cp2 = Some(CP2(LocalDate.parse("2015-12-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
+                                apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true),
                                 abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe expectedResult
@@ -190,8 +192,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
                                  Return(Computations, ComputationsCT20150201))
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-04-01"))),
-                                cp2 = Some(CP2(LocalDate.parse("2016-03-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
+                                apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true),
                                 abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe expectedResult
@@ -203,8 +205,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
                                  Return(Computations, ComputationsCT20141001))
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-03-31"))),
-                                cp2 = Some(CP2(LocalDate.parse("2015-12-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
+                                apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 microEntityFiling = MicroEntityFiling(false),
                                 abridgedFiling = AbridgedFiling(false),
@@ -219,8 +221,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
                                  Return(Computations, ComputationsCT20150201))
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-04-01"))),
-                                cp2 = Some(CP2(LocalDate.parse("2016-03-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
+                                apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 microEntityFiling = MicroEntityFiling(false),
                                 abridgedFiling = AbridgedFiling(false),
@@ -250,12 +252,141 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return Computations version" in new ReturnVersionsCalculator {
         forAll(computationsVersions) {
           (start: String, end: String, version: Version) => {
-            val versions = calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse(start))),
-                                               cp2 = Some(CP2(LocalDate.parse(end))),
-                                               hmrcFiling = HMRCFiling(true))
+            val versions = calculateReturnVersions(apStartDate = Some(LocalDate.parse(start)),
+                                                   apEndDate = Some(LocalDate.parse(end)),
+                                                   hmrcFiling = HMRCFiling(true))
             versions.find( v => v.submission == Computations).get.version shouldBe version
           }
         }
+      }
+    }
+
+    "for Non company charity filing" when {
+      "return versions for all proceeds used for charitable purposes for AP starting before 2015-04-01" in new ReturnVersionsCalculator {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+                                 Return(CT600e, CT600Version2))
+
+        private val apStartDate = Some(LocalDate.parse("2015-03-31"))
+        private val apEndDate = Some(LocalDate.parse("2015-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+                                apEndDate = apEndDate,
+                                hmrcFiling = HMRCFiling(true),
+                                coHoFiling = CompaniesHouseFiling(false),
+                                microEntityFiling = MicroEntityFiling(false),
+                                companyType = FilingCompanyType(Charity),
+                                charityAllExempt = Some(true)) shouldBe expectedResult
+      }
+      "return versions for all proceeds used for charitable purposes for AP starting on or after 2015-04-01" in new ReturnVersionsCalculator {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+                                 Return(CT600e, CT600Version3))
+
+        private val apStartDate = Some(LocalDate.parse("2015-04-01"))
+        private val apEndDate = Some(LocalDate.parse("2015-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+                                apEndDate = apEndDate,
+                                hmrcFiling = HMRCFiling(true),
+                                coHoFiling = CompaniesHouseFiling(false),
+                                microEntityFiling = MicroEntityFiling(false),
+                                companyType = FilingCompanyType(Charity),
+                                charityAllExempt = Some(true)) shouldBe expectedResult
+      }
+      "return versions when NOT all proceeds used for charitable purposes for AP starting before 2015-04-01" in new ReturnVersionsCalculator {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+                                 Return(CT600e, CT600Version2),
+                                 Return(CT600, CT600Version2),
+                                 Return(CT600j, CT600Version2),
+                                 Return(Computations, ComputationsCT20141001))
+
+        private val apStartDate = Some(LocalDate.parse("2015-03-31"))
+        private val apEndDate = Some(LocalDate.parse("2015-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+                                apEndDate = apEndDate,
+                                hmrcFiling = HMRCFiling(true),
+                                coHoFiling = CompaniesHouseFiling(false),
+                                microEntityFiling = MicroEntityFiling(false),
+                                companyType = FilingCompanyType(Charity),
+                                charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions when NOT all proceeds used for charitable purposes for AP starting on or after 2015-04-01" in new ReturnVersionsCalculator {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+                                 Return(CT600e, CT600Version3),
+                                 Return(CT600, CT600Version3),
+                                 Return(CT600j, CT600Version3),
+                                 Return(Computations, ComputationsCT20150201))
+
+        private val apStartDate = Some(LocalDate.parse("2015-04-01"))
+        private val apEndDate = Some(LocalDate.parse("2015-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+                                apEndDate = apEndDate,
+                                hmrcFiling = HMRCFiling(true),
+                                coHoFiling = CompaniesHouseFiling(false),
+                                microEntityFiling = MicroEntityFiling(false),
+                                companyType = FilingCompanyType(Charity),
+                                charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+    }
+
+    "for HMRC only filing for a Company (limited by guarantee) that is a charity" when {
+      "return versions where all proceeds used for charity for AP starting before 2015-04-01" in new ReturnVersionsCalculator {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+                                 Return(CT600e, CT600Version2))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
+                                apEndDate = Some(LocalDate.parse("2015-12-31")),
+                                hmrcFiling = HMRCFiling(true),
+                                coHoFiling = CompaniesHouseFiling(false),
+                                statutoryAccountsFiling = StatutoryAccountsFiling(false),
+                                companyType = FilingCompanyType(LimitedByGuaranteeCharity),
+                                charityAllExempt = Some(true)) shouldBe expectedResult
+      }
+
+      "return versions where all proceeds used for charity for AP starting after 2015-03-31" in new ReturnVersionsCalculator {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+                                 Return(CT600e, CT600Version3))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
+                                apEndDate = Some(LocalDate.parse("2016-03-31")),
+                                hmrcFiling = HMRCFiling(true),
+                                coHoFiling = CompaniesHouseFiling(false),
+                                statutoryAccountsFiling = StatutoryAccountsFiling(false),
+                                companyType = FilingCompanyType(LimitedByGuaranteeCharity),
+                                charityAllExempt = Some(true)) shouldBe expectedResult
+      }
+
+      "return versions where NOT all proceeds used for charity for AP starting before 2015-04-01" in new ReturnVersionsCalculator {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+                                 Return(CT600, CT600Version2),
+                                 Return(CT600e, CT600Version2),
+                                 Return(CT600j, CT600Version2),
+                                 Return(Computations, ComputationsCT20141001))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
+                                apEndDate = Some(LocalDate.parse("2015-12-31")),
+                                hmrcFiling = HMRCFiling(true),
+                                coHoFiling = CompaniesHouseFiling(false),
+                                statutoryAccountsFiling = StatutoryAccountsFiling(false),
+                                companyType = FilingCompanyType(LimitedByGuaranteeCharity),
+                                charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+
+      "return versions where NOT all proceeds used for charity for AP starting after 2015-03-31" in new ReturnVersionsCalculator {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+                                 Return(CT600, CT600Version3),
+                                 Return(CT600e, CT600Version3),
+                                 Return(CT600j, CT600Version3),
+                                 Return(Computations, ComputationsCT20150201))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
+                                apEndDate = Some(LocalDate.parse("2016-03-31")),
+                                hmrcFiling = HMRCFiling(true),
+                                coHoFiling = CompaniesHouseFiling(false),
+                                statutoryAccountsFiling = StatutoryAccountsFiling(false),
+                                companyType = FilingCompanyType(LimitedByGuaranteeCharity),
+                                charityAllExempt = Some(false)) shouldBe expectedResult
       }
     }
 
@@ -268,8 +399,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600j, CT600Version2),
                                  Return(Computations, ComputationsCT20141001))
 
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-03-31"))),
-                                cp2 = Some(CP2(LocalDate.parse("2015-12-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
+                                apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
                                 microEntityFiling = MicroEntityFiling(true)) shouldBe expectedResult
@@ -282,8 +413,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600j, CT600Version3),
                                  Return(Computations, ComputationsCT20150201))
 
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-04-01"))),
-                                cp2 = Some(CP2(LocalDate.parse("2016-03-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
+                                apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
                                 microEntityFiling = MicroEntityFiling(true)) shouldBe expectedResult
@@ -296,8 +427,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
                                  Return(Computations, ComputationsCT20141001))
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-03-31"))),
-                                cp2 = Some(CP2(LocalDate.parse("2015-12-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
+                                apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
                                 microEntityFiling = MicroEntityFiling(true),
@@ -311,8 +442,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
                                  Return(Computations, ComputationsCT20150201))
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-04-01"))),
-                                cp2 = Some(CP2(LocalDate.parse("2016-03-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
+                                apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
                                 microEntityFiling = MicroEntityFiling(true),
@@ -326,8 +457,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
                                  Return(Computations, ComputationsCT20141001))
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-03-31"))),
-                                cp2 = Some(CP2(LocalDate.parse("2015-12-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
+                                apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe expectedResult
@@ -340,8 +471,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
                                  Return(Computations, ComputationsCT20150201))
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-04-01"))),
-                                cp2 = Some(CP2(LocalDate.parse("2016-03-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
+                                apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe expectedResult
@@ -354,8 +485,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
                                  Return(Computations, ComputationsCT20141001))
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-03-31"))),
-                                cp2 = Some(CP2(LocalDate.parse("2015-12-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
+                                apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true),
@@ -369,8 +500,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
                                  Return(Computations, ComputationsCT20150201))
-        calculateReturnVersions(cp1 = Some(CP1(LocalDate.parse("2015-04-01"))),
-                                cp2 = Some(CP2(LocalDate.parse("2016-03-31"))),
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
+                                apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true),
@@ -387,6 +518,8 @@ class ComputationsBoxRetrieverForTest extends StubbedComputationsBoxRetriever wi
   override def retrieveCP1(): CP1 = CP1(LocalDate.parse("2015-03-31"))
 
   override def retrieveCP2(): CP2 = CP2(LocalDate.parse("2015-12-31"))
+
+  override def retrieveCompanyType(): FilingCompanyType = FilingCompanyType(UkTradingCompany)
 
   override def retrieveAbbreviatedAccountsFiling(): AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)
 

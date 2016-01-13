@@ -33,6 +33,10 @@ object HmrcReturns {
     override def key(): String = "CT600j"
   }
 
+  case object CT600e extends ReturnType {
+    override def key(): String = "CT600e"
+  }
+
   case object HmrcUploadedAccounts extends ReturnType with Accounts {
     override def key(): String = "HmrcUploadedAccounts"
   }
@@ -45,7 +49,7 @@ object HmrcReturns {
     override def key(): String = "HmrcStatutoryAccounts"
   }
 
-  val returns: Set[ReturnType] = Set(Computations, CT600, CT600a, CT600j, HmrcMicroEntityAccounts, HmrcStatutoryAccounts, HmrcUploadedAccounts)
+  val returns: Set[ReturnType] = Set(Computations, CT600, CT600a, CT600e, CT600j, HmrcMicroEntityAccounts, HmrcStatutoryAccounts, HmrcUploadedAccounts)
 
   def fromKey(key: String): ReturnType = {
     returns.find(_.key() == key).getOrElse(throw new IllegalArgumentException(s"Unknown key for HmrcReturn: $key"))
