@@ -29,7 +29,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
   val boxRetriever = new StubbedCT600BoxRetriever {
     override def retrieveCP2(): CP2 = CP2(currentAPEndDate)
-    override def retrieveLPQ01(): LPQ01 = LPQ01(true)
+    override def retrieveLPQ03(): LPQ03 = LPQ03(Some(true))
   }
 
   val validLoan = Loan(id = "1",
@@ -414,7 +414,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       val l2pBox = LoansToParticipators(List.empty)
 
       val testRetriever = new StubbedCT600BoxRetriever {
-        override def retrieveLPQ01(): LPQ01 = LPQ01(false)
+        override def retrieveLPQ03(): LPQ03 = LPQ03(Some(false))
       }
 
       val errors = l2pBox.validate(testRetriever)
