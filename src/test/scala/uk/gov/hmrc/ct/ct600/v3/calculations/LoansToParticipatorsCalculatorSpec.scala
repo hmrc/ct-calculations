@@ -28,22 +28,35 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
   def someDate(value:String):Option[LocalDate] = Some(new LocalDate(value))
 
   val lpq01Table = Table(
-    ("lpq03", "lpq04", "expectedLpq01"),
-    (Some(true), Some(true), true),
-    (Some(true), Some(false), false),
-    (Some(false), Some(true), false),
-    (Some(false), Some(false), false),
-    (None, None, false),
-    (Some(false), None, false),
-    (None, Some(false), false),
-    (Some(true), None, false),
-    (None, Some(true), false)
+    ("lpq04",     "lpq10",      "A5",         "lpq03",      "expectedLpq01"),
+    (Some(true),  Some(true),   Some(true),   Some(true),   true),
+    (Some(false), Some(true),   Some(true),   Some(true),   false),
+    (Some(false), Some(false),  Some(true),   Some(true),   false),
+    (Some(false), Some(false),  Some(false),  Some(true),   false),
+    (Some(false), Some(false),  Some(false),  Some(false),  false),
+    (Some(true),  Some(false),  Some(true),   Some(true),   true),
+    (Some(true),  Some(false),  Some(false),  Some(true),   true),
+    (Some(true),  Some(false),  Some(false),  Some(false),  false),
+    (None,        Some(true),   Some(true),   Some(true),   false),
+    (None,        Some(false),  Some(false),  Some(false),  false),
+    (Some(true),  None,         Some(true),   Some(true),   true),
+    (Some(true),  None,         None,         Some(true),   true),
+    (Some(true),  None,         None,         None,         false),
+    (Some(true),  Some(true),   None,         None,         true),
+    (Some(false), None,         Some(true),   Some(true),   false),
+    (Some(false), None,         None,         Some(true),   false),
+    (Some(false), None,         None,         None,         false),
+    (Some(false), Some(true),   None,         None,         false),
+    (Some(false), None,         Some(true),   Some(true),   false),
+    (Some(false), None,         None,         Some(true),   false),
+    (Some(false), None,         None,         None,         false),
+    (None,        None,         None,         None,         false)
   )
   "LoansToParticipatorsCalculator" should {
     "correctly validate LPQ01 " in new LoansToParticipatorsCalculator {
       forAll(lpq01Table) {
-        (lpq03: Option[Boolean], lpq04: Option[Boolean], expected: Boolean) => {
-          calculateLPQ01(LPQ03(lpq03), LPQ04(lpq04)) shouldBe LPQ01(expected)
+        (lpq04: Option[Boolean], lpq10: Option[Boolean], a5: Option[Boolean], lpq03: Option[Boolean], expected: Boolean) => {
+          calculateLPQ01(LPQ04(lpq04), LPQ10(lpq10), A5(a5), LPQ03(lpq03)) shouldBe LPQ01(expected)
         }
       }
     }
