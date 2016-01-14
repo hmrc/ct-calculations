@@ -19,14 +19,22 @@ package uk.gov.hmrc.ct.ct600.v3.stubs
 import uk.gov.hmrc.ct.accounts.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.stubs.StubbedFilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
 import uk.gov.hmrc.ct.ct600a.v3._
+import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 import uk.gov.hmrc.ct.ct600j.v3._
+import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 import uk.gov.hmrc.ct.{CATO11, CATO10, CATO12}
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-trait StubbedCT600BoxRetriever extends CT600BoxRetriever with StubbedAccountsBoxRetriever with StubbedFilingAttributesBoxValueRetriever {
+trait StubbedCT600BoxRetriever extends CT600BoxRetriever
+                                  with StubbedAccountsBoxRetriever
+                                  with StubbedFilingAttributesBoxValueRetriever
+                                  with ComputationsBoxRetriever
+                                  with CT600ABoxRetriever
+                                  with CT600JBoxRetriever {
 
 
   override def retrieveB45Input(): B45Input = ???
@@ -124,8 +132,6 @@ trait StubbedCT600BoxRetriever extends CT600BoxRetriever with StubbedAccountsBox
   override def retrieveJ5(): J5 = ???
 
   override def retrieveJ15(): J15 = ???
-
-  override def retrieveB65(): B65 = ???
 
   override def retrieveJ30(): J30 = ???
 
@@ -334,4 +340,6 @@ trait StubbedCT600BoxRetriever extends CT600BoxRetriever with StubbedAccountsBox
   override def retrieveCATO12(): CATO12 = ???
 
   override def generateValues: Map[String, CtValue[_]] = ???
+
+  override def retrieveB65(): B65 = ???
 }

@@ -28,7 +28,7 @@ class J10ASpec extends WordSpec with MockitoSugar with Matchers {
 
   "J10A validate" should {
     "not return errors when B140 is false" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
       when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(false)))
       when(mockBoxRetriever.retrieveJ5()).thenReturn(J5(None))
       when(mockBoxRetriever.retrieveJ5A()).thenReturn(J5A(None))
@@ -38,7 +38,7 @@ class J10ASpec extends WordSpec with MockitoSugar with Matchers {
     }
 
     "return nonBlank errors when B140 is true and J5 and J5A are blank" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
       when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
       when(mockBoxRetriever.retrieveJ5()).thenReturn(J5(None))
       when(mockBoxRetriever.retrieveJ5A()).thenReturn(J5A(None))
@@ -49,7 +49,7 @@ class J10ASpec extends WordSpec with MockitoSugar with Matchers {
 
 
     "not return errors when B140 is true and J5 and J5A are present and J10 is valid" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
       when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
       when(mockBoxRetriever.retrieveJ5()).thenReturn(J5(Some("12345678")))
       when(mockBoxRetriever.retrieveJ5A()).thenReturn(J5A(Some(LocalDate.parse("2013-02-01"))))
@@ -59,7 +59,7 @@ class J10ASpec extends WordSpec with MockitoSugar with Matchers {
     }
 
     "return required error when B140 is true and J10A is blank" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
       when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
       when(mockBoxRetriever.retrieveJ5()).thenReturn(J5(Some("12345678")))
       when(mockBoxRetriever.retrieveJ5A()).thenReturn(J5A(Some(LocalDate.parse("2013-02-01"))))
@@ -69,7 +69,7 @@ class J10ASpec extends WordSpec with MockitoSugar with Matchers {
     }
 
     "return not after error when B140 is true and J10A is before 18/03/2004" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
       when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
       when(mockBoxRetriever.retrieveJ5()).thenReturn(J5(Some("12345678")))
       when(mockBoxRetriever.retrieveJ5A()).thenReturn(J5A(Some(LocalDate.parse("2013-02-01"))))

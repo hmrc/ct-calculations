@@ -16,17 +16,15 @@
 
 package uk.gov.hmrc.ct.ct600j.v3.retriever
 
-import uk.gov.hmrc.ct.box.retriever.BoxValues
+import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, BoxValues}
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 import uk.gov.hmrc.ct.ct600j.v3._
 
 object CT600JBoxRetriever extends BoxValues[CT600JBoxRetriever]
 
-trait CT600JBoxRetriever {
+trait CT600JBoxRetriever extends BoxRetriever {
 
   self: CT600BoxRetriever =>
-
-  def retrieveB65(): B65
 
   def retrieveJ1(): J1 = J1(retrieveB1())
   def retrieveJ2(): J2 = J2(retrieveB3())

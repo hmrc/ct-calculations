@@ -22,15 +22,15 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.retriever.DeclarationBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
-import uk.gov.hmrc.ct.ct600j.v3.B140
+import uk.gov.hmrc.ct.ct600j.v3.{B65, B140}
 import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.B45
 
 object CT600BoxRetriever extends BoxValues[CT600BoxRetriever]
 
-trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever with CT600JBoxRetriever with DeclarationBoxRetriever with FilingAttributesBoxValueRetriever {
+trait CT600BoxRetriever extends ComputationsBoxRetriever with DeclarationBoxRetriever {
 
-  self: AccountsBoxRetriever =>
+  self: AccountsBoxRetriever with FilingAttributesBoxValueRetriever =>
 
   def retrieveB1(): B1
 
@@ -60,7 +60,15 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever
 
   def retrieveB55(): B55
 
-  def retrieveB95(): B95 = B95(retrieveLPQ01)
+  def retrieveB65(): B65
+
+  def retrieveB95(): B95 = {
+    this match {
+      case r: CT600ABoxRetriever => B95(r.retrieveLPQ01)
+      case _ => B95(false)
+    }
+
+  }
 
   def retrieveB140(): B140 = B140(retrieveB65())
 
@@ -114,9 +122,20 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever
 
   def retrieveB475(): B475 = B475(retrieveB440())
 
-  def retrieveB480(): B480 = B480(retrieveA80())
+  def retrieveB480(): B480 = {
+    this match {
+      case r: CT600ABoxRetriever => B480(r.retrieveA80())
+      case _ => B480(None)
+    }
 
-  def retrieveB485(): B485 = B485.calculate(this)
+  }
+
+  def retrieveB485(): B485 = {
+    this match {
+      case r: CT600ABoxRetriever => B485.calculate(r)
+      case _ => B485(false)
+    }
+  }
 
   def retrieveB510(): B510 = B510.calculate(this)
 

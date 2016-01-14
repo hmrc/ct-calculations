@@ -16,13 +16,9 @@
 
 package uk.gov.hmrc.ct.ct600j.v3
 
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 
-case class J30(value: Option[String]) extends SchemeReferenceNumberBox{
-
-  override def validate(boxRetriever: CT600JBoxRetriever): Set[CtValidation] =
-    validateSchemeReferenceNumber(boxRetriever.retrieveJ25(), boxRetriever.retrieveJ25A(), boxRetriever.retrieveJ30A())
-
-}
+trait TaxAvoidanceBoxRetrieverForTest extends CT600BoxRetriever with CT600JBoxRetriever with AccountsBoxRetriever with FilingAttributesBoxValueRetriever

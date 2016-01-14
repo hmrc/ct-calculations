@@ -25,8 +25,6 @@ object ComputationsBoxRetriever extends BoxValues[ComputationsBoxRetriever]
 
 trait ComputationsBoxRetriever extends BoxRetriever {
 
-  self: AccountsBoxRetriever =>
-
   def retrieveAP1(): AP1
 
   def retrieveAP2(): AP2

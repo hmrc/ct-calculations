@@ -20,14 +20,12 @@ import uk.gov.hmrc.ct.CATO04
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.BoxValues
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.ct600.retriever.DeclarationBoxRetriever
 import uk.gov.hmrc.ct.ct600.v2._
 import uk.gov.hmrc.ct.ct600a.v2.retriever.CT600ABoxRetriever
-import uk.gov.hmrc.ct.ct600j.v2.retriever.CT600JBoxRetriever
 
 object CT600BoxRetriever extends BoxValues[CT600BoxRetriever]
 
-trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever with CT600JBoxRetriever with DeclarationBoxRetriever {
+trait CT600BoxRetriever extends ComputationsBoxRetriever {
 
   self: AccountsBoxRetriever =>
 
@@ -121,9 +119,20 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever
 
   def retrieveB78(): B78 = B78(retrieveB65())
 
-  def retrieveB79(): B79 = B79(retrieveA13())
+  def retrieveB79(): B79 = {
+    this match {
+      case r: CT600ABoxRetriever => B79(r.retrieveA13())
+      case _ => B79(None)
+    }
+  }
 
-  def retrieveB80(): B80 = B80.calculate(this)
+  def retrieveB80(): B80 = {
+    this match {
+      case r: CT600ABoxRetriever => B80.calculate(r)
+      case _ => B80(None)
+    }
+
+  }
 
   def retrieveB85(): B85 = B85.calculate(this)
 
