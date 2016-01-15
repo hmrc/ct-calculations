@@ -74,6 +74,8 @@ trait CtOptionalInteger extends CtValue[Option[Int]] {
   def orZero: Int = {
     value.getOrElse(0)
   }
+
+  def isPositive: Boolean = orZero > 0
 }
 
 trait CtOptionalBigDecimal extends CtValue[Option[BigDecimal]] {
@@ -90,8 +92,12 @@ trait CtOptionalBigDecimal extends CtValue[Option[BigDecimal]] {
 
   def asInt: Option[Int] = value.map(_.toInt)
 
-
+  def orZero: BigDecimal = {
+    value.getOrElse(0)
   }
+
+  def isPositive: Boolean = orZero > 0
+}
 
 trait CtInteger extends CtValue[Int] {
 
