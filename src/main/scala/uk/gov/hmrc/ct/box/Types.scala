@@ -128,6 +128,8 @@ trait CtInteger extends CtValue[Int] {
   }
 
   def asInt:Option[Int]=Some(value)
+
+  def isPositive: Boolean = value > 0
 }
 
 trait CtBoolean extends CtValue[Boolean] {
@@ -194,6 +196,7 @@ trait CtBigDecimal extends CtValue[BigDecimal] {
 
   def asInt:Option[Int] = Some(value.toInt)
 
+  def isPositive: Boolean = value > BigDecimal(0)
 }
 
 trait CtDate extends CtValue[LocalDate] {
