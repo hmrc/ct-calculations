@@ -135,7 +135,9 @@ trait CtOptionalBoolean extends CtValue[Option[Boolean]] {
 
   self: CtBoxIdentifier =>
 
-  def asBoolean:Option[Boolean]=value
+  def asBoolean: Option[Boolean] = value
+
+  def orFalse: Boolean = value.getOrElse(false)
 }
 
 trait CtString extends CtValue[String] {
