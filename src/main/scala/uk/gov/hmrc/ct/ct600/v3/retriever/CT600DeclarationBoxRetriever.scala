@@ -16,8 +16,10 @@
 
 package uk.gov.hmrc.ct.ct600.v3.retriever
 
-import uk.gov.hmrc.ct.box.retriever.BoxRetriever
+import uk.gov.hmrc.ct.box.retriever.{BoxValues, BoxRetriever}
 import uk.gov.hmrc.ct.ct600.v3.{B980, N092, B985, B975}
+
+object CT600DeclarationBoxRetriever extends BoxValues[CT600DeclarationBoxRetriever]
 
 trait CT600DeclarationBoxRetriever extends BoxRetriever {
 
