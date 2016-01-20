@@ -204,10 +204,4 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with DeclarationBoxRetr
   def retrieveB960(): B960
 
   def retrieveB965(): B965
-
-  def retrieveB975(): B975
-  
-  def retrieveB985(): B985
-
-  def retrieveN092(): N092
 }
