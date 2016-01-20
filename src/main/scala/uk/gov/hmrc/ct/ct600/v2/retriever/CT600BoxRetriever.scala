@@ -23,11 +23,12 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.retriever.DeclarationBoxRetriever
 import uk.gov.hmrc.ct.ct600.v2._
 import uk.gov.hmrc.ct.ct600a.v2.retriever.CT600ABoxRetriever
+import uk.gov.hmrc.ct.ct600e.v2.retriever.CT600EBoxRetriever
 import uk.gov.hmrc.ct.ct600j.v2.retriever.CT600JBoxRetriever
 
 object CT600BoxRetriever extends BoxValues[CT600BoxRetriever]
 
-trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever with CT600JBoxRetriever with DeclarationBoxRetriever {
+trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600ABoxRetriever with CT600JBoxRetriever with CT600EBoxRetriever with DeclarationBoxRetriever {
 
   self: AccountsBoxRetriever =>
 
