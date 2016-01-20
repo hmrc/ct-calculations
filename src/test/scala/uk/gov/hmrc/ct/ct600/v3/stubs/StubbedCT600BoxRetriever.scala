@@ -27,14 +27,15 @@ import uk.gov.hmrc.ct.ct600j.v3._
 import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 import uk.gov.hmrc.ct.{CATO11, CATO10, CATO12}
 import uk.gov.hmrc.ct.box.CtValue
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600DeclarationBoxRetriever, CT600BoxRetriever}
 
 trait StubbedCT600BoxRetriever extends CT600BoxRetriever
                                   with StubbedAccountsBoxRetriever
                                   with StubbedFilingAttributesBoxValueRetriever
                                   with ComputationsBoxRetriever
                                   with CT600ABoxRetriever
-                                  with CT600JBoxRetriever {
+                                  with CT600JBoxRetriever
+                                  with CT600DeclarationBoxRetriever {
 
 
   override def retrieveB45Input(): B45Input = ???
@@ -50,6 +51,8 @@ trait StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def retrieveB690(): B690 = ???
 
   override def retrieveB975(): B975 = ???
+
+  override def retrieveB980(): B980 = ???
 
   override def retrieveN092(): N092 = ???
 
