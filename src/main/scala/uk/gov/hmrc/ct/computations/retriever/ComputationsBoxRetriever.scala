@@ -361,10 +361,6 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def retrieveCATO03(): CATO03 = CATO03.calculate(this)
 
-  def retrieveCATO11(): CATO11
-
-  def retrieveCATO12(): CATO12
-
   def retrieveCATO13(): CATO13 = CATO13.calculate(this)
 
   def retrieveCATO14(): CATO14 = CATO14.calculate(this)

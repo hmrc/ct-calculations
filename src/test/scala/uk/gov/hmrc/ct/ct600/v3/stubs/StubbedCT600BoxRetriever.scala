@@ -29,7 +29,7 @@ import uk.gov.hmrc.ct.{CATO11, CATO10, CATO12}
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600DeclarationBoxRetriever, CT600BoxRetriever}
 
-trait StubbedCT600BoxRetriever extends CT600BoxRetriever
+class StubbedCT600BoxRetriever extends CT600BoxRetriever
                                   with StubbedAccountsBoxRetriever
                                   with StubbedFilingAttributesBoxValueRetriever
                                   with ComputationsBoxRetriever
@@ -335,12 +335,6 @@ trait StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def retrieveCP48(): CP48 = ???
 
   override def retrieveCP27(): CP27 = ???
-
-  override def retrieveCATO11(): CATO11 = ???
-
-  override def retrieveCATO10(): CATO10 = ???
-
-  override def retrieveCATO12(): CATO12 = ???
 
   override def generateValues: Map[String, CtValue[_]] = ???
 
