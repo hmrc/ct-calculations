@@ -36,6 +36,18 @@ trait ReturnVersionsCalculator {
   def doCalculation[A <: BoxRetriever](boxRetriever: A): Set[Return] = {
     boxRetriever match {
 
+      case br: CT600EBoxRetriever with ComputationsBoxRetriever with FilingAttributesBoxValueRetriever =>
+        calculateReturnVersions(apStartDate = Some(br.retrieveCP1().value),
+                                apEndDate = Some(br.retrieveCP2().value),
+                                coHoFiling = br.retrieveCompaniesHouseFiling(),
+                                hmrcFiling = br.retrieveHMRCFiling(),
+                                microEntityFiling = br.retrieveMicroEntityFiling(),
+                                statutoryAccountsFiling = br.retrieveStatutoryAccountsFiling(),
+                                abridgedFiling = br.retrieveAbridgedFiling(),
+                                abbreviatedAccountsFiling = br.retrieveAbbreviatedAccountsFiling(),
+                                companyType = br.retrieveCompanyType(),
+                                charityAllExempt = br.retrieveE20().value)
+
       case br: CT600EBoxRetriever with FilingAttributesBoxValueRetriever =>
         calculateReturnVersions(apStartDate = Some(br.retrieveE3().value),
                                 apEndDate = Some(br.retrieveE4().value),
