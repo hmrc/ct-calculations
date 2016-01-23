@@ -37,8 +37,8 @@ trait ReturnVersionsCalculator {
     boxRetriever match {
 
       case br: CT600EBoxRetriever with ComputationsBoxRetriever with FilingAttributesBoxValueRetriever =>
-        calculateReturnVersions(apStartDate = Some(br.retrieveCP1().value),
-                                apEndDate = Some(br.retrieveCP2().value),
+        calculateReturnVersions(apStartDate = Some(br.retrieveE3().value),
+                                apEndDate = Some(br.retrieveE4().value),
                                 coHoFiling = br.retrieveCompaniesHouseFiling(),
                                 hmrcFiling = br.retrieveHMRCFiling(),
                                 microEntityFiling = br.retrieveMicroEntityFiling(),
@@ -132,7 +132,7 @@ trait ReturnVersionsCalculator {
     val ct600Returns = (hmrcFiling, apStartDate, companyType, charityAllExempt) match {
 
       case (HMRCFiling(true), Some(startDate), FilingCompanyType(LimitedByGuaranteeCharity), Some(all)) =>
-        ct600ReturnsForCharity(startDate, all)
+        ct600ReturnsForCharity(startDate, false)
 
       case (HMRCFiling(true), Some(startDate), FilingCompanyType(Charity), Some(all)) =>
         ct600ReturnsForCharity(startDate, all)
@@ -146,11 +146,11 @@ trait ReturnVersionsCalculator {
       case _ => Set.empty
     }
 
-    val compsReturns = (hmrcFiling, apStartDate, apEndDate, charityAllExempt) match {
-      case (HMRCFiling(true), _, _, Some(true)) =>
+    val compsReturns = (hmrcFiling, apStartDate, apEndDate, charityAllExempt, companyType) match {
+      case (HMRCFiling(true), _, _, Some(true), FilingCompanyType(Charity)) =>
         Set.empty
 
-      case (HMRCFiling(true), Some(startDate), Some(endDate), _) =>
+      case (HMRCFiling(true), Some(startDate), Some(endDate), _, _) =>
         Set(Return(Computations, computationsVersionBasedOnDate(startDate, endDate)))
 
       case _ => Set.empty
