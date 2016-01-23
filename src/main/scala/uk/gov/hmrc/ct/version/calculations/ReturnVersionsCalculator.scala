@@ -35,39 +35,40 @@ trait ReturnVersionsCalculator {
 
   def doCalculation[A <: BoxRetriever](boxRetriever: A): Set[Return] = {
     boxRetriever match {
-      case boxRetriever: ComputationsBoxRetriever with FilingAttributesBoxValueRetriever =>
-        calculateReturnVersions(apStartDate = Some(boxRetriever.retrieveCP1().value),
-                                apEndDate = Some(boxRetriever.retrieveCP2().value),
-                                coHoFiling = boxRetriever.retrieveCompaniesHouseFiling(),
-                                hmrcFiling = boxRetriever.retrieveHMRCFiling(),
-                                microEntityFiling = boxRetriever.retrieveMicroEntityFiling(),
-                                statutoryAccountsFiling = boxRetriever.retrieveStatutoryAccountsFiling(),
-                                abridgedFiling = boxRetriever.retrieveAbridgedFiling(),
-                                abbreviatedAccountsFiling = boxRetriever.retrieveAbbreviatedAccountsFiling(),
-                                companyType = boxRetriever.retrieveCompanyType())
 
-      case boxRetriever: CT600EBoxRetriever with FilingAttributesBoxValueRetriever =>
-        calculateReturnVersions(apStartDate = Some(boxRetriever.retrieveE3().value),
-                                apEndDate = Some(boxRetriever.retrieveE4().value),
-                                coHoFiling = boxRetriever.retrieveCompaniesHouseFiling(),
-                                hmrcFiling = boxRetriever.retrieveHMRCFiling(),
-                                microEntityFiling = boxRetriever.retrieveMicroEntityFiling(),
-                                statutoryAccountsFiling = boxRetriever.retrieveStatutoryAccountsFiling(),
-                                abridgedFiling = boxRetriever.retrieveAbridgedFiling(),
-                                abbreviatedAccountsFiling = boxRetriever.retrieveAbbreviatedAccountsFiling(),
-                                companyType = boxRetriever.retrieveCompanyType(),
-                                charityAllExempt = boxRetriever.retrieveE20().value)
+      case br: CT600EBoxRetriever with FilingAttributesBoxValueRetriever =>
+        calculateReturnVersions(apStartDate = Some(br.retrieveE3().value),
+                                apEndDate = Some(br.retrieveE4().value),
+                                coHoFiling = br.retrieveCompaniesHouseFiling(),
+                                hmrcFiling = br.retrieveHMRCFiling(),
+                                microEntityFiling = br.retrieveMicroEntityFiling(),
+                                statutoryAccountsFiling = br.retrieveStatutoryAccountsFiling(),
+                                abridgedFiling = br.retrieveAbridgedFiling(),
+                                abbreviatedAccountsFiling = br.retrieveAbbreviatedAccountsFiling(),
+                                companyType = br.retrieveCompanyType(),
+                                charityAllExempt = br.retrieveE20().value)
 
-      case boxRetriever: FilingAttributesBoxValueRetriever =>
+      case br: ComputationsBoxRetriever with FilingAttributesBoxValueRetriever =>
+        calculateReturnVersions(apStartDate = Some(br.retrieveCP1().value),
+                                apEndDate = Some(br.retrieveCP2().value),
+                                coHoFiling = br.retrieveCompaniesHouseFiling(),
+                                hmrcFiling = br.retrieveHMRCFiling(),
+                                microEntityFiling = br.retrieveMicroEntityFiling(),
+                                statutoryAccountsFiling = br.retrieveStatutoryAccountsFiling(),
+                                abridgedFiling = br.retrieveAbridgedFiling(),
+                                abbreviatedAccountsFiling = br.retrieveAbbreviatedAccountsFiling(),
+                                companyType = br.retrieveCompanyType())
+
+      case br: FilingAttributesBoxValueRetriever =>
         calculateReturnVersions(apStartDate = None,
                                 apEndDate = None,
-                                coHoFiling = boxRetriever.retrieveCompaniesHouseFiling(),
-                                hmrcFiling = boxRetriever.retrieveHMRCFiling(),
-                                microEntityFiling = boxRetriever.retrieveMicroEntityFiling(),
-                                statutoryAccountsFiling = boxRetriever.retrieveStatutoryAccountsFiling(),
-                                abridgedFiling = boxRetriever.retrieveAbridgedFiling(),
-                                abbreviatedAccountsFiling = boxRetriever.retrieveAbbreviatedAccountsFiling(),
-                                companyType = boxRetriever.retrieveCompanyType())
+                                coHoFiling = br.retrieveCompaniesHouseFiling(),
+                                hmrcFiling = br.retrieveHMRCFiling(),
+                                microEntityFiling = br.retrieveMicroEntityFiling(),
+                                statutoryAccountsFiling = br.retrieveStatutoryAccountsFiling(),
+                                abridgedFiling = br.retrieveAbridgedFiling(),
+                                abbreviatedAccountsFiling = br.retrieveAbbreviatedAccountsFiling(),
+                                companyType = br.retrieveCompanyType())
       case _ => throw new IllegalArgumentException("The box retriever passed in must implement FilingAttributesBoxValueRetriever")
     }
   }
