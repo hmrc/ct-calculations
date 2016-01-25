@@ -104,4 +104,5 @@ package object formats {
 
   implicit val E1022Format: Format[E1022] = new DateFormat[E1022](E1022.apply)
 
+  implicit val E1023Format: Format[E1023] = new StringFormat[E1023](E1023.apply)
 }
