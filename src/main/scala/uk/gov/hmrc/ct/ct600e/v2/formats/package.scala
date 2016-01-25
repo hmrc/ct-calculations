@@ -98,4 +98,10 @@ package object formats {
 
   implicit val E1013Format: Format[E1013] = new OptionalBooleanFormat[E1013](E1013.apply)
 
+  implicit val E1020Format: Format[E1020] = new StringFormat[E1020](E1020.apply)
+
+  implicit val E1021Format: Format[E1021] = new DateFormat[E1021](E1021.apply)
+
+  implicit val E1022Format: Format[E1022] = new DateFormat[E1022](E1022.apply)
+
 }
