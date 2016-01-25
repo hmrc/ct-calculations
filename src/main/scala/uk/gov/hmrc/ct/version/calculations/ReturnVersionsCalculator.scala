@@ -21,7 +21,8 @@ import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
-import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
+import uk.gov.hmrc.ct.ct600e.v3.retriever.{CT600EBoxRetriever => V3CT600EBoxRetriever}
+import uk.gov.hmrc.ct.ct600e.v2.retriever.{CT600EBoxRetriever => V2CT600EBoxRetriever}
 import uk.gov.hmrc.ct.domain.CompanyTypes.{MembersClub, LimitedByGuaranteeCharity, Charity, UkTradingCompany}
 import uk.gov.hmrc.ct.version.CoHoAccounts.{CoHoMicroEntityAbridgedAccounts, CoHoMicroEntityAccounts, CoHoStatutoryAbbreviatedAccounts, CoHoStatutoryAccounts}
 import uk.gov.hmrc.ct.version.CoHoVersions.AccountsVersion1
@@ -36,7 +37,7 @@ trait ReturnVersionsCalculator {
   def doCalculation[A <: BoxRetriever](boxRetriever: A): Set[Return] = {
     boxRetriever match {
 
-      case br: CT600EBoxRetriever with ComputationsBoxRetriever with FilingAttributesBoxValueRetriever =>
+      case br: V3CT600EBoxRetriever with ComputationsBoxRetriever with FilingAttributesBoxValueRetriever =>
         calculateReturnVersions(apStartDate = Some(br.retrieveE3().value),
                                 apEndDate = Some(br.retrieveE4().value),
                                 coHoFiling = br.retrieveCompaniesHouseFiling(),
@@ -48,7 +49,7 @@ trait ReturnVersionsCalculator {
                                 companyType = br.retrieveCompanyType(),
                                 charityAllExempt = br.retrieveE20().value)
 
-      case br: CT600EBoxRetriever with FilingAttributesBoxValueRetriever =>
+      case br: V3CT600EBoxRetriever with FilingAttributesBoxValueRetriever =>
         calculateReturnVersions(apStartDate = Some(br.retrieveE3().value),
                                 apEndDate = Some(br.retrieveE4().value),
                                 coHoFiling = br.retrieveCompaniesHouseFiling(),
@@ -59,6 +60,30 @@ trait ReturnVersionsCalculator {
                                 abbreviatedAccountsFiling = br.retrieveAbbreviatedAccountsFiling(),
                                 companyType = br.retrieveCompanyType(),
                                 charityAllExempt = br.retrieveE20().value)
+
+      case br: V2CT600EBoxRetriever with ComputationsBoxRetriever with FilingAttributesBoxValueRetriever =>
+        calculateReturnVersions(apStartDate = Some(br.retrieveE1021().value),
+                                apEndDate = Some(br.retrieveE1022().value),
+                                coHoFiling = br.retrieveCompaniesHouseFiling(),
+                                hmrcFiling = br.retrieveHMRCFiling(),
+                                microEntityFiling = br.retrieveMicroEntityFiling(),
+                                statutoryAccountsFiling = br.retrieveStatutoryAccountsFiling(),
+                                abridgedFiling = br.retrieveAbridgedFiling(),
+                                abbreviatedAccountsFiling = br.retrieveAbbreviatedAccountsFiling(),
+                                companyType = br.retrieveCompanyType(),
+                                charityAllExempt = br.retrieveE1011().value)
+
+      case br: V2CT600EBoxRetriever with FilingAttributesBoxValueRetriever =>
+        calculateReturnVersions(apStartDate = Some(br.retrieveE1021().value),
+                                apEndDate = Some(br.retrieveE1022().value),
+                                coHoFiling = br.retrieveCompaniesHouseFiling(),
+                                hmrcFiling = br.retrieveHMRCFiling(),
+                                microEntityFiling = br.retrieveMicroEntityFiling(),
+                                statutoryAccountsFiling = br.retrieveStatutoryAccountsFiling(),
+                                abridgedFiling = br.retrieveAbridgedFiling(),
+                                abbreviatedAccountsFiling = br.retrieveAbbreviatedAccountsFiling(),
+                                companyType = br.retrieveCompanyType(),
+                                charityAllExempt = br.retrieveE1011().value)
 
       case br: ComputationsBoxRetriever with FilingAttributesBoxValueRetriever =>
         calculateReturnVersions(apStartDate = Some(br.retrieveCP1().value),
