@@ -14,15 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600j.v3
+package uk.gov.hmrc.ct.ct600e.v2
 
-import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
-import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
+import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtDate, Input}
 
-case class J30(value: Option[String]) extends SchemeReferenceNumberBox{
-
-  override def validate(boxRetriever: CT600JBoxRetriever): Set[CtValidation] =
-    validateSchemeReferenceNumber(boxRetriever.retrieveJ25(), boxRetriever.retrieveJ25A(), boxRetriever.retrieveJ30A())
-
-}
+case class E1022(value: LocalDate) extends CtBoxIdentifier("Accounting Period End Date") with CtDate with Input

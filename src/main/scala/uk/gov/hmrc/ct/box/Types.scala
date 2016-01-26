@@ -74,6 +74,8 @@ trait CtOptionalInteger extends CtValue[Option[Int]] {
   def orZero: Int = {
     value.getOrElse(0)
   }
+
+  def isPositive: Boolean = orZero > 0
 }
 
 trait CtOptionalBigDecimal extends CtValue[Option[BigDecimal]] {
@@ -90,8 +92,12 @@ trait CtOptionalBigDecimal extends CtValue[Option[BigDecimal]] {
 
   def asInt: Option[Int] = value.map(_.toInt)
 
-
+  def orZero: BigDecimal = {
+    value.getOrElse(0)
   }
+
+  def isPositive: Boolean = orZero > 0
+}
 
 trait CtInteger extends CtValue[Int] {
 
@@ -122,6 +128,8 @@ trait CtInteger extends CtValue[Int] {
   }
 
   def asInt:Option[Int]=Some(value)
+
+  def isPositive: Boolean = value > 0
 }
 
 trait CtBoolean extends CtValue[Boolean] {
@@ -135,7 +143,9 @@ trait CtOptionalBoolean extends CtValue[Option[Boolean]] {
 
   self: CtBoxIdentifier =>
 
-  def asBoolean:Option[Boolean]=value
+  def asBoolean: Option[Boolean] = value
+
+  def orFalse: Boolean = value.getOrElse(false)
 }
 
 trait CtString extends CtValue[String] {
@@ -186,6 +196,7 @@ trait CtBigDecimal extends CtValue[BigDecimal] {
 
   def asInt:Option[Int] = Some(value.toInt)
 
+  def isPositive: Boolean = value > BigDecimal(0)
 }
 
 trait CtDate extends CtValue[LocalDate] {

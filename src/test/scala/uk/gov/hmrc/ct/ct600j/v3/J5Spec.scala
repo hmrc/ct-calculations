@@ -27,28 +27,28 @@ class J5Spec extends WordSpec with MockitoSugar with Matchers {
 
   "J5 validate" should {
     "not return errors when B140 is false" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
       when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(false)))
 
       J5(None).validate(mockBoxRetriever) shouldBe Set()
     }
 
     "not return errors when B140 is true and J5 is valid" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
       when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
 
       J5(Some("12345678")).validate(mockBoxRetriever) shouldBe Set()
     }
 
     "return required error when B140 is true and J5 is blank" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
       when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
 
       J5(None).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("J5"), "error.J5.required", None))
     }
 
     "return regex error when B140 is true and J5 is invalid" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
       when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
 
       J5(Some("xyz")).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("J5"), "error.J5.regexFailure", None))

@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600j.v3
+package uk.gov.hmrc.ct.ct600.v3
 
+import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
-import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600DeclarationBoxRetriever
 
-case class J30(value: Option[String]) extends SchemeReferenceNumberBox{
+case class B980(value: Option[LocalDate]) extends CtBoxIdentifier("Declaration date")
+            with CtOptionalDate with Input with ValidatableBox[CT600DeclarationBoxRetriever] {
 
-  override def validate(boxRetriever: CT600JBoxRetriever): Set[CtValidation] =
-    validateSchemeReferenceNumber(boxRetriever.retrieveJ25(), boxRetriever.retrieveJ25A(), boxRetriever.retrieveJ30A())
-
+  def validate(boxRetriever: CT600DeclarationBoxRetriever): Set[CtValidation] = validateDateAsMandatory("B980", this)
 }

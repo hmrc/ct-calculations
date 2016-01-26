@@ -99,5 +99,11 @@ trait CT600EBoxRetriever extends BoxRetriever {
 
   def retrieveE1013(): E1013
 
+  def retrieveE1020(): E1020
 
+  def retrieveE1021(): E1021
+
+  def retrieveE1022(): E1022
+
+  def retrieveE1023(): E1023
 }

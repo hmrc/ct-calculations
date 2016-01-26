@@ -25,8 +25,6 @@ object ComputationsBoxRetriever extends BoxValues[ComputationsBoxRetriever]
 
 trait ComputationsBoxRetriever extends BoxRetriever {
 
-  self: AccountsBoxRetriever =>
-
   def retrieveAP1(): AP1
 
   def retrieveAP2(): AP2
@@ -362,10 +360,6 @@ trait ComputationsBoxRetriever extends BoxRetriever {
   def retrieveCATO02(): CATO02 = CATO02.calculate(this)
 
   def retrieveCATO03(): CATO03 = CATO03.calculate(this)
-
-  def retrieveCATO11(): CATO11
-
-  def retrieveCATO12(): CATO12
 
   def retrieveCATO13(): CATO13 = CATO13.calculate(this)
 

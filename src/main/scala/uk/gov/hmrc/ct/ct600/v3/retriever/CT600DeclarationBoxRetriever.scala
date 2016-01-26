@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600j.v3
+package uk.gov.hmrc.ct.ct600.v3.retriever
 
-import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
-import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
+import uk.gov.hmrc.ct.box.retriever.{BoxValues, BoxRetriever}
+import uk.gov.hmrc.ct.ct600.v3.{B980, N092, B985, B975}
 
-case class J30(value: Option[String]) extends SchemeReferenceNumberBox{
+object CT600DeclarationBoxRetriever extends BoxValues[CT600DeclarationBoxRetriever]
 
-  override def validate(boxRetriever: CT600JBoxRetriever): Set[CtValidation] =
-    validateSchemeReferenceNumber(boxRetriever.retrieveJ25(), boxRetriever.retrieveJ25A(), boxRetriever.retrieveJ30A())
+trait CT600DeclarationBoxRetriever extends BoxRetriever {
+
+  def retrieveB975(): B975
+
+  def retrieveB985(): B985
+
+  def retrieveB980(): B980
+
+  def retrieveN092(): N092
 
 }

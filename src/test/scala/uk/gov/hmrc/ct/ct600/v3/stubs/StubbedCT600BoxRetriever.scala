@@ -19,14 +19,23 @@ package uk.gov.hmrc.ct.ct600.v3.stubs
 import uk.gov.hmrc.ct.accounts.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.stubs.StubbedFilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
 import uk.gov.hmrc.ct.ct600a.v3._
+import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 import uk.gov.hmrc.ct.ct600j.v3._
+import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 import uk.gov.hmrc.ct.{CATO11, CATO10, CATO12}
 import uk.gov.hmrc.ct.box.CtValue
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600DeclarationBoxRetriever, CT600BoxRetriever}
 
-trait StubbedCT600BoxRetriever extends CT600BoxRetriever with StubbedAccountsBoxRetriever with StubbedFilingAttributesBoxValueRetriever {
+class StubbedCT600BoxRetriever extends CT600BoxRetriever
+                                  with StubbedAccountsBoxRetriever
+                                  with StubbedFilingAttributesBoxValueRetriever
+                                  with ComputationsBoxRetriever
+                                  with CT600ABoxRetriever
+                                  with CT600JBoxRetriever
+                                  with CT600DeclarationBoxRetriever {
 
 
   override def retrieveB45Input(): B45Input = ???
@@ -42,6 +51,8 @@ trait StubbedCT600BoxRetriever extends CT600BoxRetriever with StubbedAccountsBox
   override def retrieveB690(): B690 = ???
 
   override def retrieveB975(): B975 = ???
+
+  override def retrieveB980(): B980 = ???
 
   override def retrieveN092(): N092 = ???
 
@@ -124,8 +135,6 @@ trait StubbedCT600BoxRetriever extends CT600BoxRetriever with StubbedAccountsBox
   override def retrieveJ5(): J5 = ???
 
   override def retrieveJ15(): J15 = ???
-
-  override def retrieveB65(): B65 = ???
 
   override def retrieveJ30(): J30 = ???
 
@@ -327,11 +336,7 @@ trait StubbedCT600BoxRetriever extends CT600BoxRetriever with StubbedAccountsBox
 
   override def retrieveCP27(): CP27 = ???
 
-  override def retrieveCATO11(): CATO11 = ???
-
-  override def retrieveCATO10(): CATO10 = ???
-
-  override def retrieveCATO12(): CATO12 = ???
-
   override def generateValues: Map[String, CtValue[_]] = ???
+
+  override def retrieveB65(): B65 = ???
 }

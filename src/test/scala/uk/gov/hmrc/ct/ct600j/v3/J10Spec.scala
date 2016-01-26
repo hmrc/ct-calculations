@@ -28,7 +28,7 @@ class J10Spec extends WordSpec with MockitoSugar with Matchers {
 
   "J10 validate" should {
     "not return errors when B140 is false" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
       when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(false)))
       when(mockBoxRetriever.retrieveJ5()).thenReturn(J5(None))
       when(mockBoxRetriever.retrieveJ5A()).thenReturn(J5A(None))
@@ -38,7 +38,7 @@ class J10Spec extends WordSpec with MockitoSugar with Matchers {
     }
 
     "not return errors when B140 is true and J5 and J5A are present and J10A is valid" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
       when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
       when(mockBoxRetriever.retrieveJ5()).thenReturn(J5(Some("12345678")))
       when(mockBoxRetriever.retrieveJ5A()).thenReturn(J5A(Some(LocalDate.parse("2013-02-01"))))
@@ -48,7 +48,7 @@ class J10Spec extends WordSpec with MockitoSugar with Matchers {
     }
 
     "return required error when B140 is true and J10A is blank" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
       when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
       when(mockBoxRetriever.retrieveJ5()).thenReturn(J5(Some("12345678")))
       when(mockBoxRetriever.retrieveJ5A()).thenReturn(J5A(Some(LocalDate.parse("2013-02-01"))))
@@ -58,7 +58,7 @@ class J10Spec extends WordSpec with MockitoSugar with Matchers {
     }
 
     "return regex error when B140 is true and J10A is invalid" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
       when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
       when(mockBoxRetriever.retrieveJ5()).thenReturn(J5(Some("12345678")))
       when(mockBoxRetriever.retrieveJ5A()).thenReturn(J5A(Some(LocalDate.parse("2013-02-01"))))
