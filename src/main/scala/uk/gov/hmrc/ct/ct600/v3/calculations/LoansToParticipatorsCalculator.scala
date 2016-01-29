@@ -128,8 +128,8 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
     A70Inverse(a65Inverse.value.map(x => BigDecimal(x * 0.25)))
   }
 
-  def calculateA75(a15: A15, lp04: LP04, a40: A40, a65: A65): A75 = {
-    A75(Some(a15 + lp04 - a40 - a65))
+  def calculateA75(a15: A15, lp04: LP04): A75 = {
+    A75(Some(a15 + lp04))
   }
 
   def calculateA80(a20: A20, a45: A45, a70: A70): A80 = {
