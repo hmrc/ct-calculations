@@ -373,11 +373,9 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
     }
 
     "correctly calculate A75 (A12v2), total outstanding loans" in new LoansToParticipatorsCalculator {
-      calculateA75(A15(None), LP04(None), A40(None), A65(None)) shouldBe A75(Some(0))
-      calculateA75(A15(None), LP04(Some(4)), A40(None), A65(None)) shouldBe A75(Some(4))
-      calculateA75(A15(None), LP04(None), A40(Some(6)), A65(None)) shouldBe A75(Some(-6))
-      calculateA75(A15(None), LP04(None), A40(None), A65(Some(10))) shouldBe A75(Some(-10))
-      calculateA75(A15(Some(40)), LP04(Some(60)), A40(Some(10)), A65(Some(20))) shouldBe A75(Some(70))
+      calculateA75(A15(None), LP04(None)) shouldBe A75(Some(0))
+      calculateA75(A15(None), LP04(Some(4))) shouldBe A75(Some(4))
+      calculateA75(A15(Some(40)), LP04(Some(60))) shouldBe A75(Some(100))
     }
 
     "correctly calculate A80 (A13v2)" in new LoansToParticipatorsCalculator {
