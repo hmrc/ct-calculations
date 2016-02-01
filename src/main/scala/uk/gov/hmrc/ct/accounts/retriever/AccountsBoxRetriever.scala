@@ -19,8 +19,6 @@ package uk.gov.hmrc.ct.accounts.retriever
 import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.box.retriever.{FilingAttributesBoxValueRetriever, BoxRetriever, BoxValues}
 
-object AccountsBoxRetriever extends BoxValues[AccountsBoxRetriever]
-
 trait AccountsBoxRetriever extends BoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>

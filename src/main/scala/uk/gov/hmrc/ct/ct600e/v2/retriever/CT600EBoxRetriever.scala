@@ -19,8 +19,6 @@ package uk.gov.hmrc.ct.ct600e.v2.retriever
 import uk.gov.hmrc.ct.box.retriever.{FilingAttributesBoxValueRetriever, BoxValues, BoxRetriever}
 import uk.gov.hmrc.ct.ct600e.v2._
 
-object CT600EBoxRetriever extends BoxValues[CT600EBoxRetriever]
-
 trait CT600EBoxRetriever extends BoxRetriever {
 
   def retrieveE1(): E1

@@ -26,13 +26,13 @@ class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
 
   "FilingAttributesBoxValueRetriever" should {
     "have 10 functions" in {
-      FilingAttributesBoxValueRetriever.retrieveBoxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 10
+      BoxValues.retrieveBoxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 10
     }
 
     "get ct values" in {
 
       val retriever = new FilingAttributesBoxValueRetrieverForTest
-      val result = FilingAttributesBoxValueRetriever.generateValues(retriever)
+      val result = BoxValues.generateValues(retriever)
       result("ProductName") shouldBe retriever.retrieveProductName()
       result("FilingCompanyType") shouldBe retriever.retrieveCompanyType()
       result("UTR") shouldBe retriever.retrieveUTR()
