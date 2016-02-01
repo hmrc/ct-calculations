@@ -26,8 +26,6 @@ import uk.gov.hmrc.ct.ct600j.v3.{B65, B140}
 import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.B45
 
-object CT600BoxRetriever extends BoxValues[CT600BoxRetriever]
-
 trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBoxRetriever {
 
   self: AccountsBoxRetriever with FilingAttributesBoxValueRetriever =>

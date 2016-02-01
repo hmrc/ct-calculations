@@ -21,8 +21,6 @@ import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, BoxValues}
 import uk.gov.hmrc.ct.computations._
 
-object ComputationsBoxRetriever extends BoxValues[ComputationsBoxRetriever]
-
 trait ComputationsBoxRetriever extends BoxRetriever {
 
   def retrieveAP1(): AP1
