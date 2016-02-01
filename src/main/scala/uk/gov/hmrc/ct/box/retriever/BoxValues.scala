@@ -35,13 +35,9 @@ object BoxValues {
 
   protected def retrieveBoxMethod: (Method) => Boolean = x => isPublic(x) && isAnyRetrieveBoxMethod(x) && hasNoParameters(x) && returnsCatoValue(x)
 
-//  protected def retrieveBoxMethod(boxId: String): (Method) => Boolean = x => isPublic(x) && isRetrieveBoxMethod(x, boxId) && hasNoParameters(x) && returnsCatoValue(x)
-
   protected def hasNoParameters(method: Method): Boolean = method.getParameterTypes.isEmpty
 
   protected def isAnyRetrieveBoxMethod(method: Method): Boolean = method.getName.startsWith("retrieve")
-
-//  protected def isRetrieveBoxMethod(method: Method, boxId: String): Boolean = method.getName.matches("retrieve" + boxId)
 
   protected def isPublic(method: Method): Boolean = Modifier.isPublic(method.getModifiers)
 
