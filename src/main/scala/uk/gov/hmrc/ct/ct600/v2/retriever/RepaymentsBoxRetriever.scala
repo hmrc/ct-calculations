@@ -21,6 +21,8 @@ import uk.gov.hmrc.ct.ct600.v2._
 
 trait RepaymentsBoxRetriever extends BoxRetriever {
 
+  def retrieveB139(): B139
+
   def retrieveB140(): B140
 
   def retrieveB149(): B149
