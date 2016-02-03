@@ -46,4 +46,8 @@ trait RepaymentsBoxRetriever extends BoxRetriever {
   def retrieveB1575(): B1575
 
   def retrieveB158(): B158
+
+  def retrieveRDQ1(): RDQ1
+
+  def retrieveRDQ2(): RDQ2
 }
