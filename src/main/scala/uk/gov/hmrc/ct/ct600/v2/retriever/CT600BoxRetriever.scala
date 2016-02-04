@@ -39,6 +39,8 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever {
 
   def retrieveB155(): B155
 
+  def retrieveB1(): B1 = B1(retrieveCP7)
+
   def retrieveB3(): B3 = B3(retrieveCP256())
 
   def retrieveB4(): B4 = B4(retrieveCP257())
