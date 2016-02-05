@@ -28,9 +28,9 @@ case class E1045(value: BigDecimal) extends CtBoxIdentifier("Second Financial Ye
 object E1045 extends CorporationTaxCalculator with Calculated[E1045, CT600EBoxRetriever] {
 
   override def calculate(fieldValueRetriever: CT600EBoxRetriever): E1045 =
-    E1045(rateOfTaxFy2(HmrcAccountingPeriod(CP1(fieldValueRetriever.retrieveE1021.value), CP2(fieldValueRetriever.retrieveE1022.value)),
+    E1045(rateOfTaxFy2(HmrcAccountingPeriod(fieldValueRetriever.retrieveE1021, fieldValueRetriever.retrieveE1022),
                        B37(0),
                        B42(false),
                        B39(None),
-                       B38(None)).value)
+                       B38(None)))
 }

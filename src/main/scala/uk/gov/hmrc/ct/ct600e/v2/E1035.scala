@@ -28,11 +28,9 @@ case class E1035(value: BigDecimal) extends CtBoxIdentifier(name = "First Financ
 object E1035 extends CorporationTaxCalculator with Calculated[E1035, CT600EBoxRetriever] {
 
   override def calculate(fieldValueRetriever: CT600EBoxRetriever): E1035 =
-    E1035(rateOfTaxFy1(
-            HmrcAccountingPeriod(CP1(fieldValueRetriever.retrieveE1021().value), CP2(fieldValueRetriever.retrieveE1022().value)),
-            B37(0),
-            B42(false),
-            B39(None),
-            B38(None)
-          ).value)
+    E1035(rateOfTaxFy1(HmrcAccountingPeriod(fieldValueRetriever.retrieveE1021(), fieldValueRetriever.retrieveE1022()),
+                       B37(0),
+                       B42(false),
+                       B39(None),
+                       B38(None)))
 }

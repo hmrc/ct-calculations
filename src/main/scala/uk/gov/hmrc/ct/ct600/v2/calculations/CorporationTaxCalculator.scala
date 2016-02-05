@@ -39,12 +39,12 @@ trait CorporationTaxCalculator extends CtTypeConverters with NumberRounding {
     } else None
   }
 
-  def rateOfTaxFy1(accountingPeriod: HmrcAccountingPeriod, b37: B37, b42: B42, b39: B39, b38: B38): B45 = {
-    B45(calculateRateOfTaxYear(accountingPeriod.start.value, b37, b42, b39, b38))
+  def rateOfTaxFy1(accountingPeriod: HmrcAccountingPeriod, b37: B37, b42: B42, b39: B39, b38: B38): BigDecimal = {
+    calculateRateOfTaxYear(accountingPeriod.start.value, b37, b42, b39, b38)
   }
 
-  def rateOfTaxFy2(accountingPeriod: HmrcAccountingPeriod, b37: B37, b42: B42, b39: B39, b38: B38): B55 = {
-    B55(calculateRateOfTaxYear(accountingPeriod.end.value, b37, b42, b39, b38))
+  def rateOfTaxFy2(accountingPeriod: HmrcAccountingPeriod, b37: B37, b42: B42, b39: B39, b38: B38): BigDecimal = {
+    calculateRateOfTaxYear(accountingPeriod.end.value, b37, b42, b39, b38)
   }
 
   // smallCompaniesRateOfTax, rateOfTax,
