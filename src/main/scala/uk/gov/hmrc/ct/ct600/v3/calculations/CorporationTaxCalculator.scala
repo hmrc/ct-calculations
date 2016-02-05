@@ -53,11 +53,11 @@ trait CorporationTaxCalculator extends CtTypeConverters {
   }
 
   def financialYear1(accountingPeriod: HmrcAccountingPeriod): B330 = {
-    B330(fallsInFinancialYear(accountingPeriod.cp1.value))
+    B330(fallsInFinancialYear(accountingPeriod.start.value))
   }
 
   def financialYear2(accountingPeriod: HmrcAccountingPeriod): B380 = {
-    val fy2 = fallsInFinancialYear(accountingPeriod.cp2.value)
+    val fy2 = fallsInFinancialYear(accountingPeriod.end.value)
     val result = if (financialYear1(accountingPeriod).value != fy2) {
                     Some(fy2)
                   } else None

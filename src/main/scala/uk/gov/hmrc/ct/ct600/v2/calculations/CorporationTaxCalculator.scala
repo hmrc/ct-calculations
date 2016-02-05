@@ -28,24 +28,23 @@ import uk.gov.hmrc.ct.ct600._
 
 trait CorporationTaxCalculator extends CtTypeConverters with NumberRounding {
 
-  def financialYear1(accountingPeriod: HmrcAccountingPeriod): B43 = {
-    B43(fallsInFinancialYear(accountingPeriod.cp1.value))
+  def financialYear1(accountingPeriod: HmrcAccountingPeriod): Int = {
+    fallsInFinancialYear(accountingPeriod.start.value)
   }
 
-  def financialYear2(accountingPeriod: HmrcAccountingPeriod): B53 = {
-    val fy2 = fallsInFinancialYear(accountingPeriod.cp2.value)
-    val result = if (financialYear1(accountingPeriod).value != fy2) {
+  def financialYear2(accountingPeriod: HmrcAccountingPeriod): Option[Int] = {
+    val fy2 = fallsInFinancialYear(accountingPeriod.end.value)
+    if (financialYear1(accountingPeriod) != fy2) {
       Some(fy2)
     } else None
-    B53(result)
   }
 
   def rateOfTaxFy1(accountingPeriod: HmrcAccountingPeriod, b37: B37, b42: B42, b39: B39, b38: B38): B45 = {
-    B45(calculateRateOfTaxYear(accountingPeriod.cp1.value, b37, b42, b39, b38))
+    B45(calculateRateOfTaxYear(accountingPeriod.start.value, b37, b42, b39, b38))
   }
 
   def rateOfTaxFy2(accountingPeriod: HmrcAccountingPeriod, b37: B37, b42: B42, b39: B39, b38: B38): B55 = {
-    B55(calculateRateOfTaxYear(accountingPeriod.cp2.value, b37, b42, b39, b38))
+    B55(calculateRateOfTaxYear(accountingPeriod.end.value, b37, b42, b39, b38))
   }
 
   // smallCompaniesRateOfTax, rateOfTax,

@@ -258,20 +258,20 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
 
     "should return the same years when inside a single calendar year" in new Calc {
       val period = HmrcAccountingPeriod(CP1(new LocalDate(2013, 4, 1)), CP2(new LocalDate(2013, 8, 31)))
-      financialYear1(period) shouldBe B43(2013)
-      financialYear2(period) shouldBe B53(None)
+      financialYear1(period) shouldBe 2013
+      financialYear2(period) shouldBe None
     }
 
     "should return the same years when spanning a full financial year" in new Calc {
       val period = HmrcAccountingPeriod(CP1(new LocalDate(2013, 4, 1)), CP2(new LocalDate(2014, 3, 31)))
-      financialYear1(period) shouldBe B43(2013)
-      financialYear2(period) shouldBe B53(None)
+      financialYear1(period) shouldBe 2013
+      financialYear2(period) shouldBe None
     }
 
     "should return different years when spanning two financial years" in new Calc {
       val period = HmrcAccountingPeriod(CP1(new LocalDate(2013, 9, 1)), CP2(new LocalDate(2014, 8, 31)))
-      financialYear1(period) shouldBe B43(2013)
-      financialYear2(period) shouldBe B53(Some(2014))
+      financialYear1(period) shouldBe 2013
+      financialYear2(period) shouldBe Some(2014)
     }
   }
 

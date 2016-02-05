@@ -18,5 +18,6 @@ package uk.gov.hmrc.ct.ct600e.v2
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtDate, Input}
+import uk.gov.hmrc.ct.computations.EndDate
 
-case class E1022(value: LocalDate) extends CtBoxIdentifier("Accounting Period End Date") with CtDate with Input
+case class E1022(value: LocalDate) extends CtBoxIdentifier("Accounting Period End Date") with EndDate with Input

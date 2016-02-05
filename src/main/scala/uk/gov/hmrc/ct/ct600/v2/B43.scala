@@ -26,7 +26,5 @@ case class B43(value: Int) extends CtBoxIdentifier("Financial Year") with CtInte
 object B43 extends CorporationTaxCalculator with Calculated[B43, ComputationsBoxRetriever] {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): B43 =
-    financialYear1(
-      HmrcAccountingPeriod(fieldValueRetriever.retrieveCP1(), fieldValueRetriever.retrieveCP2())
-    )
+    B43(financialYear1(HmrcAccountingPeriod(fieldValueRetriever.retrieveCP1(), fieldValueRetriever.retrieveCP2())))
 }
