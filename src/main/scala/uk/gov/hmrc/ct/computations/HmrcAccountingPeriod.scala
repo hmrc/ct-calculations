@@ -17,18 +17,10 @@
 package uk.gov.hmrc.ct.computations
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtDate}
+import uk.gov.hmrc.ct.box.{EndDate, StartDate, CtBoxIdentifier, CtDate}
 
-trait StartDate extends CtDate {
-  self: CtBoxIdentifier =>
 
-  def value: LocalDate
-}
 
-trait EndDate extends CtDate {
-  self: CtBoxIdentifier =>
 
-  def value: LocalDate
-}
 
 case class HmrcAccountingPeriod(start: StartDate, end: EndDate)
