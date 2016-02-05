@@ -16,11 +16,6 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.{EndDate, StartDate, CtBoxIdentifier, CtDate}
-
-
-
-
+import uk.gov.hmrc.ct.box.{EndDate, StartDate}
 
 case class HmrcAccountingPeriod(start: StartDate, end: EndDate)
