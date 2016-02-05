@@ -16,8 +16,16 @@
 
 package uk.gov.hmrc.ct.ct600e.v2
 
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
+import uk.gov.hmrc.ct.ct600.v2.calculations.CorporationTaxCalculator
+import uk.gov.hmrc.ct.ct600e.v2.retriever.CT600EBoxRetriever
 
-import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.{StartDate, CtBoxIdentifier, CtDate, Input}
+case class E1033(value: Int) extends CtBoxIdentifier("First Financial Year") with CtInteger
 
-case class E1021(value: LocalDate) extends CtBoxIdentifier("Accounting Period Start Date") with StartDate with Input
+object E1033 extends CorporationTaxCalculator with Calculated[E1033, CT600EBoxRetriever] {
+
+  override def calculate(fieldValueRetriever: CT600EBoxRetriever): E1033 = {
+    E1033(financialYear1(HmrcAccountingPeriod(fieldValueRetriever.retrieveE1021(), fieldValueRetriever.retrieveE1022)))
+  }
+}
