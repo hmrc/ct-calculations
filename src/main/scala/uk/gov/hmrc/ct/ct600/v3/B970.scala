@@ -17,15 +17,10 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.{RepaymentsBoxRetriever, CT600BoxRetriever}
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
+case class B970(value: Option[String]) extends CtBoxIdentifier("Nominee name")
+            with CtOptionalString with Input with ValidatableBox[CT600BoxRetriever] {
 
-case class B935(value: String) extends CtBoxIdentifier("account name")
-with CtString with Input with ValidatableBox[RepaymentsBoxRetriever] {
-
-  def validate(boxRetriever: RepaymentsBoxRetriever): Set[CtValidation] = {
-    validateAllFilledOrEmptyStringsForBankDetails(boxRetriever,"B935") ++
-      validateStringByLength("B935", this, 2, 28) ++
-      validateStringByRegex("B935", this, validNonForeignLessRestrictiveCharacters)
-  }
+  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = validateStringAsMandatory("B970", this)
 }

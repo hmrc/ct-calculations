@@ -14,18 +14,32 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct.ct600.v3.retriever
 
-import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.{RepaymentsBoxRetriever, CT600BoxRetriever}
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever
+import uk.gov.hmrc.ct.ct600.v3._
 
+trait RepaymentsBoxRetriever extends BoxRetriever {
 
-case class B935(value: String) extends CtBoxIdentifier("account name")
-with CtString with Input with ValidatableBox[RepaymentsBoxRetriever] {
+  def retrieveB920(): B920
 
-  def validate(boxRetriever: RepaymentsBoxRetriever): Set[CtValidation] = {
-    validateAllFilledOrEmptyStringsForBankDetails(boxRetriever,"B935") ++
-      validateStringByLength("B935", this, 2, 28) ++
-      validateStringByRegex("B935", this, validNonForeignLessRestrictiveCharacters)
-  }
+  def retrieveB925(): B925
+
+  def retrieveB930(): B930
+
+  def retrieveB935(): B935
+
+  def retrieveB940(): B940
+
+  def retrieveB945(): B945
+
+  def retrieveB950(): B950 = B950.calculate(this)
+
+  def retrieveB955(): B955
+
+  def retrieveB960(): B960
+
+  def retrieveB965(): B965
+
+  def retrieveB970(): B970
 }

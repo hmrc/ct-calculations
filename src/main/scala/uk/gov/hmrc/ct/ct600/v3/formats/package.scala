@@ -112,11 +112,15 @@ package object formats {
 
   implicit val B940Format: Format[B940] = new OptionalStringFormat[B940](B940.apply)
 
+  implicit val B945Format: Format[B945] = new OptionalStringFormat[B945](B945.apply)
+
   implicit val B955Format: Format[B955] = new OptionalStringFormat[B955](B955.apply)
 
   implicit val B960Format: Format[B960] = new OptionalStringFormat[B960](B960.apply)
 
   implicit val B965Format: Format[B965] = new OptionalStringFormat[B965](B965.apply)
+
+  implicit val B970Format: Format[B970] = new OptionalStringFormat[B970](B970.apply)
 
   implicit val B975Format: Format[B975] = new OptionalStringFormat[B975](B975.apply)
 
