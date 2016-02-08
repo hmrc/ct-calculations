@@ -19,37 +19,17 @@ package uk.gov.hmrc.ct.ct600.v2.retriever
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v2._
 
-trait RepaymentsBoxRetriever extends BoxRetriever {
+trait ReturnStatementsBoxRetriever extends BoxRetriever {
 
-  def retrieveB139(): B139
+  def retrieveRSQ1(): RSQ1
 
-  def retrieveB140(): B140
+  def retrieveRSQ2(): RSQ2
 
-  def retrieveB149(): B149
+  def retrieveRSQ3(): RSQ3
 
-  def retrieveB150(): B150
+  def retrieveRSQ4(): RSQ4
 
-  def retrieveB151(): B151
+  def retrieveRSQ7(): RSQ7
 
-  def retrieveB152(): B152
-
-  def retrieveB153(): B153
-
-  def retrieveB156(): B156
-
-  def retrieveB1571(): B1571
-
-  def retrieveB1572(): B1572
-
-  def retrieveB1573(): B1573
-
-  def retrieveB1574(): B1574
-
-  def retrieveB1575(): B1575
-
-  def retrieveB158(): B158
-
-  def retrieveRDQ1(): RDQ1
-
-  def retrieveRDQ2(): RDQ2
+  def retrieveRSQ8(): RSQ8
 }

@@ -21,17 +21,17 @@ import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
 
 object AccountingPeriodHelper {
 
-  def daysInAccountingPeriod(accountingPeriod: HmrcAccountingPeriod) = daysBetween(accountingPeriod.cp1.value, accountingPeriod.cp2.value)
+  def daysInAccountingPeriod(accountingPeriod: HmrcAccountingPeriod) = daysBetween(accountingPeriod.start.value, accountingPeriod.end.value)
 
   def accountingPeriodDaysInFinancialYear(year: Int, accountingPeriod: HmrcAccountingPeriod): BigDecimal = {
     val (fyStartDate, fyEndDate) = financialYearStartingIn(year)
-    val start = if (accountingPeriod.cp1.value.isBefore(fyStartDate)) fyStartDate else accountingPeriod.cp1.value
-    val end = if (accountingPeriod.cp2.value.isAfter(fyEndDate)) fyEndDate else accountingPeriod.cp2.value
+    val start = if (accountingPeriod.start.value.isBefore(fyStartDate)) fyStartDate else accountingPeriod.start.value
+    val end = if (accountingPeriod.end.value.isAfter(fyEndDate)) fyEndDate else accountingPeriod.end.value
     BigDecimal(daysBetween(start, end))
   }
 
   def accountingPeriodSpansTwoFinancialYears(accountingPeriod: HmrcAccountingPeriod): Boolean = {
-    fallsInFinancialYear(accountingPeriod.cp2.value) > fallsInFinancialYear(accountingPeriod.cp1.value)
+    fallsInFinancialYear(accountingPeriod.end.value) > fallsInFinancialYear(accountingPeriod.start.value)
   }
 
   def financialYearStartingIn(year: Int): (LocalDate, LocalDate) = (new LocalDate(year, 4, 1), new LocalDate(year + 1, 3, 31))
@@ -41,21 +41,21 @@ object AccountingPeriodHelper {
   def daysBetween(start: LocalDate, end: LocalDate): Int = Days.daysBetween(start, end).getDays + 1
 
   def validateAccountingPeriod(accountingPeriod: HmrcAccountingPeriod) = {
-    if (accountingPeriod.cp1.value.isAfter(accountingPeriod.cp2.value)) {
+    if (accountingPeriod.start.value.isAfter(accountingPeriod.end.value)) {
       throw new InvalidAccountingPeriodException("Accounting Period start date must be before the end date")
     }
     
-    if (daysBetween(accountingPeriod.cp1.value, accountingPeriod.cp2.value) > maximumNumberOfDaysInAccountingPeriod(accountingPeriod)) {
+    if (daysBetween(accountingPeriod.start.value, accountingPeriod.end.value) > maximumNumberOfDaysInAccountingPeriod(accountingPeriod)) {
       throw new InvalidAccountingPeriodException("Accounting Period must not be longer than one calendar year")
     }
     
-    if (accountingPeriod.cp1.value.isBefore(new LocalDate(2006, 10, 2))) {
+    if (accountingPeriod.start.value.isBefore(new LocalDate(2006, 10, 2))) {
       throw new InvalidAccountingPeriodException("Accounting Period must not be before 1st October 2006")
     }
   }
 
   private def maximumNumberOfDaysInAccountingPeriod(accountingPeriod: HmrcAccountingPeriod): BigDecimal = {
-    val startDate = accountingPeriod.cp1.value
+    val startDate = accountingPeriod.start.value
     val endDate = startDate.withYear(startDate.getYear + 1)
     daysBetween(startDate, endDate) - 1
   }

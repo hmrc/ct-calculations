@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600e.v2
-
+package uk.gov.hmrc.ct.box
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.{StartDate, CtBoxIdentifier, CtDate, Input}
 
-case class E1021(value: LocalDate) extends CtBoxIdentifier("Accounting Period Start Date") with StartDate with Input
+trait EndDate extends CtDate {
+  self: CtBoxIdentifier =>
+
+  def value: LocalDate
+}

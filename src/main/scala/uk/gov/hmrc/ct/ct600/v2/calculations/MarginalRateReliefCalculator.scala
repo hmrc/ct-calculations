@@ -31,8 +31,8 @@ trait MarginalRateReliefCalculator extends CtTypeConverters with NumberRounding 
   def computeMarginalRateRelief(b37: B37, b44: B44, b54: B54, b38: B38, b39: B39, accountingPeriod: HmrcAccountingPeriod): CATO04 = {
     validateAccountingPeriod(accountingPeriod)
 
-    val fy1: Int = fallsInFinancialYear(accountingPeriod.cp1.value)
-    val fy2: Int = fallsInFinancialYear(accountingPeriod.cp2.value)
+    val fy1: Int = fallsInFinancialYear(accountingPeriod.start.value)
+    val fy2: Int = fallsInFinancialYear(accountingPeriod.end.value)
 
     val fy1Result = calculateForFinancialYear(fy1, b44, b38, b37, b39, accountingPeriod, constantsForTaxYear(TaxYear(fy1)))
 
@@ -50,7 +50,7 @@ trait MarginalRateReliefCalculator extends CtTypeConverters with NumberRounding 
                                         b39: B39,
                                         accountingPeriod: HmrcAccountingPeriod,
                                         constants: CtConstants): BigDecimal = {
-    val daysInAccountingPeriod = daysBetween(accountingPeriod.cp1.value, accountingPeriod.cp2.value)
+    val daysInAccountingPeriod = daysBetween(accountingPeriod.start.value, accountingPeriod.end.value)
 
     val apDaysInFy = accountingPeriodDaysInFinancialYear(financialYear, accountingPeriod)
 
