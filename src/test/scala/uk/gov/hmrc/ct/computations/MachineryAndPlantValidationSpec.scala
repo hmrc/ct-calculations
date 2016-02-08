@@ -1,29 +1,34 @@
 package uk.gov.hmrc.ct.computations
 
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.CATO02
-import uk.gov.hmrc.ct.box.{Input, CtOptionalInteger, CtValidation}
+import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
+import uk.gov.hmrc.ct.{CATO02, CATO20, CATO21, CATO22}
 
 class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
-                                  cpq8: Option[Boolean] = None,
-                                  cp78: Option[Int] = None,
-                                  cp81Input: Option[Int] = None,
-                                  cp82: Option[Int] = None,
-                                  cp83: Option[Int] = None,
-                                  cp84: Option[Int] = None,
-                                  cp87Input: Option[Int] = None,
-                                  cp88: Option[Int] = None,
-                                  cp89: Option[Int] = None,
-                                  cp666: Option[Int] = None,
-                                  cp667: Option[Int] = None,
-                                  cp668: Option[Int] = None,
-                                  cp672: Option[Int] = None,
-                                  cp673: Option[Int] = None,
-                                  cp674: Option[Int] = None,
-                                  cato02: Int = 0,
-                                  cpAux1: Int = 0
-                                   ) extends StubbedComputationsBoxRetriever {
+                                     cpq8: Option[Boolean] = None,
+                                     cp78: Option[Int] = None,
+                                     cp81Input: Option[Int] = None,
+                                     cp82: Option[Int] = None,
+                                     cp83: Option[Int] = None,
+                                     cp84: Option[Int] = None,
+                                     cp87Input: Option[Int] = None,
+                                     cp88: Option[Int] = None,
+                                     cp89: Option[Int] = None,
+                                     cp666: Option[Int] = None,
+                                     cp667: Option[Int] = None,
+                                     cp668: Option[Int] = None,
+                                     cp672: Option[Int] = None,
+                                     cp673: Option[Int] = None,
+                                     cp674: Option[Int] = None,
+                                     cato02: Int = 0,
+                                     cato20: Int = 0,
+                                     cato21: Int = 0,
+                                     cato22: Int = 0,
+                                     cpAux1: Int = 0,
+                                     cpAux2: Int = 0,
+                                     cpAux3: Int = 0
+                                      ) extends StubbedComputationsBoxRetriever {
 
   override def retrieveLEC01: LEC01 = LEC01(lec01)
 
@@ -59,7 +64,17 @@ class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
 
   override def retrieveCATO02: CATO02 = CATO02(cato02)
 
+  override def retrieveCATO20: CATO20 = CATO20(cato20)
+
+  override def retrieveCATO21: CATO21 = CATO21(cato21)
+
+  override def retrieveCATO22: CATO22 = CATO22(cato22)
+
   override def retrieveCPAux1: CPAux1 = CPAux1(cpAux1)
+
+  override def retrieveCPAux2: CPAux2 = CPAux2(cpAux2)
+
+  override def retrieveCPAux3: CPAux3 = CPAux3(cpAux3)
 }
 
 
@@ -146,13 +161,6 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
     }
   }
 
-  "ccccccc " should {
-    "ccccc" in {
-      CP89 // MultipleConditionalMapping(optional(moneyNonNegative()), mainPoolClaimedNotGreaterThanMaxMainPool(filing))
-      CP668 // MultipleConditionalMapping(optional(moneyNonNegative()), specialRatePoolClaimedNotGreaterThanMaxSpecialPool(filing)
-    }
-  }
-
   "CP87Input, given is trading and first Year Allowance Not Greater Than Max FYA" should {
     "validate if present and non-negative, otherwise fail" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
@@ -163,37 +171,47 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
   }
 
   "CP87Input, given is non-negative" should {
-      "validate correctly when not greater than CP81  CPaux1" in {
-        val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
-          cpq8 = Some(false),
-          cp81Input = Some(49),
-          cpAux1 = 51)
+    "validate correctly when not greater than CP81  CPaux1" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
+        cpq8 = Some(false),
+        cp81Input = Some(49),
+        cpAux1 = 51)
 
-        CP87Input(Some(100)).validate(stubTestComputationsRetriever) shouldBe Set()
-      }
+      CP87Input(Some(100)).validate(stubTestComputationsRetriever) shouldBe Set()
+    }
 
-      "fail validation when greater than CP81  CPaux1" in {
-        val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
-          cpq8 = Some(false),
-          cp81Input = Some(49),
-          cpAux1 = 51)
+    "fail validation when greater than CP81  CPaux1" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
+        cpq8 = Some(false),
+        cp81Input = Some(49),
+        cpAux1 = 51)
 
-        CP87Input(Some(101)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.firstYearAllowanceClaimExceedsAllowance"))
-      }
+      CP87Input(Some(101)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.firstYearAllowanceClaimExceedsAllowance"))
+    }
 
-      "validate because FYA defaults to 0 when not entered" in {
-        val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
-          cpq8 = Some(true),
-          cp81Input = Some(49),
-          cpAux1 = 51)
+    "validate because FYA defaults to 0 when not entered" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
+        cpq8 = Some(true),
+        cp81Input = Some(49),
+        cpAux1 = 51)
 
-        CP87Input(None).validate(stubTestComputationsRetriever) shouldBe Set()
-      }
+      CP87Input(None).validate(stubTestComputationsRetriever) shouldBe Set()
+    }
 
     "fail validation when trading but no value entered" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
 
       CP87Input(None).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.fieldMustHaveValueIfTrading"))
+    }
+    "validate when ceased trading but no value entered" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(true))
+
+      CP87Input(None).validate(stubTestComputationsRetriever) shouldBe Set()
+    }
+    "fails validation when negative" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
+
+      CP87Input(-1).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.mustBeZeroOrPositive"))
     }
   }
 
@@ -236,6 +254,125 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
 
       CP88(None).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP88"), errorMessageKey = "error.CP88.fieldMustHaveValueIfTrading"))
+    }
+    "validate when ceased trading but no value entered" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(true))
+
+      CP88(None).validate(stubTestComputationsRetriever) shouldBe Set()
+    }
+    "fails validation when negative" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
+
+      CP88(-1).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP88"), errorMessageKey = "error.CP88.mustBeZeroOrPositive"))
+    }
+  }
+
+  "CP89 (Writing Down Allowance claimed from Main pool)" should {
+
+    "validates correctly when not greater than MAX(0, MainPool% * ( CP78 (Main Pool brought forward) " +
+      "+ CP82 (Additions Qualifying for Main Pool) + MainRatePool - CP672 (Proceed from Disposals from Main Pool) " +
+      "+ UnclaimedAIA_FYA (Unclaimed FYA and AIA amounts)) - CATO-2730" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
+        cp78 = Some(2000),    // writtenDownValueBroughtForward
+        cp81Input = Some(50), // expenditureQualifyingForFirstYearAllowanceInput
+        cp82 = Some(2000),    // additionsQualifyingWritingDownAllowanceMainPool
+        cp83 = Some(50),      // expenditureQualifyingAnnualInvestmentAllowance
+        cp87Input = Some(50), // firstYearAllowanceClaimedInput
+        cp672 = Some(1000),   // proceedsFromDisposalsFromMainPool
+        cpAux1 = 0,
+        cpAux2 = 0,
+        cato21 = 18
+      )
+
+      CP89(549).validate(stubTestComputationsRetriever) shouldBe Set()
+      CP89(550).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded"))
+    }
+
+    "validates when greater than MAX(0, MainPool% * ( CP78 (Main Pool brought forward) " +
+      "+ CP82 (Additions Qualifying for Main Pool) + MainRatePool - CP672 (Proceed from Disposals from Main Pool) " +
+      "+ LEC14 (Unclaimed FYA and AIA amounts)))" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
+        cp78 = Some(100),   // writtenDownValueBroughtForward
+        cp82 = Some(100),   // additionsQualifyingWritingDownAllowanceMainPool
+        cp672 = Some(100),  // proceedsFromDisposalsFromMainPool
+        cpAux2 = 50,
+        cato21 = 10,
+        cato20 = 50
+      )
+
+      CP89(15).validate(stubTestComputationsRetriever) shouldBe Set()
+      CP89(16).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded"))
+    }
+
+    "validated when CP672 is large enough to make the total -ve and any +ve claim is made" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
+        cp78 = Some(100),   // writtenDownValueBroughtForward
+        cp82 = Some(100),   // additionsQualifyingWritingDownAllowanceMainPool
+        cp672 = Some(1000), // proceedsFromDisposalsFromMainPool
+        cpAux2 = 100,
+        cato21 = 10
+      )
+
+      CP89(0).validate(stubTestComputationsRetriever) shouldBe Set()
+      CP89(1).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded"))
+    }
+
+    "fail validation when trading but no value entered" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
+
+      CP89(None).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.fieldMustHaveValueIfTrading"))
+    }
+    "validate when ceased trading but no value entered" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(true))
+
+      CP89(None).validate(stubTestComputationsRetriever) shouldBe Set()
+    }
+    "fails validation when negative" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
+
+      CP89(-1).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mustBeZeroOrPositive"))
+    }
+  }
+
+  "(CP668) Writing Down Allowance claimed from Special rate pool" should {
+     "validates correctly when not greater than MAX( 0, SpecialPool% * ( CP666 + CPaux3 - CP667) )" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
+        cp666 = Some(100), // writtenDownValueOfSpecialRatePoolBroughtForward
+        cp667 = Some(100), // proceedsFromDisposalsFromSpecialRatePool
+        cpAux3 = 100,
+        cato22 = 10
+      )
+
+      CP668(10).validate(stubTestComputationsRetriever) shouldBe Set()
+      CP668(11).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.specialRatePoolAllowanceExceeded"))
+     }
+
+    "fails validation when CP667 is large enough to make the total -ve and any +ve claim is made" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
+          cp666 = Some(100),  // writtenDownValueOfSpecialRatePoolBroughtForward
+          cp667 = Some(1000), // proceedsFromDisposalsFromSpecialRatePool
+          cpAux3 = 100,
+          cato22 = 10
+      )
+
+      CP668(0).validate(stubTestComputationsRetriever) shouldBe Set()
+      CP668(1).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.specialRatePoolAllowanceExceeded"))
+    }
+
+    "fail validation when trading but no value entered" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
+
+      CP668(None).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.fieldMustHaveValueIfTrading"))
+    }
+    "validate when ceased trading but no value entered" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(true))
+
+      CP668(None).validate(stubTestComputationsRetriever) shouldBe Set()
+    }
+    "fails validation when negative" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
+
+      CP668(-1).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.mustBeZeroOrPositive"))
     }
   }
 }
