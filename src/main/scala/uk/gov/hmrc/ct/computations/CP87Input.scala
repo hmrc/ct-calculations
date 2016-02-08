@@ -16,12 +16,39 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.Validators.ComputationValidatableBox
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP87Input(value: Option[Int]) extends CtBoxIdentifier(name = "First year allowance claimed") with CtOptionalInteger with Input
+case class CP87Input(value: Option[Int]) extends CtBoxIdentifier(name = "First year allowance claimed")  with CtOptionalInteger with Input with ComputationValidatableBox[ComputationsBoxRetriever] {
+  override def validate(boxRetriever: ComputationsBoxRetriever) = {
+    validateZeroOrPositiveInteger(this) ++
+      fieldhasValueWhenTrading(boxRetriever,"CP87Input", value) ++
+      firstYearAllowanceNotGreaterThanMaxFYA(boxRetriever)
+  }
+
+  private def firstYearAllowanceNotGreaterThanMaxFYA(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
+
+    val expenditureQualifyingForFirstYearAllowanceInput = retriever.retrieveCP81Input()
+    val cpAux1 = retriever.retrieveCPAux1()
+
+    val maxFYA = expenditureQualifyingForFirstYearAllowanceInput.value.getOrElse(0) + cpAux1
+
+    value match {
+      case Some(fyaClaimed) =>
+        if (fyaClaimed <= maxFYA)
+          Set()
+        else
+          Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.firstYearAllowanceClaimExceedsAllowance"))
+      case _ => Set()
+    }
+  }
+}
 
 object CP87Input {
 
   def apply(int: Int): CP87Input = CP87Input(Some(int))
 
 }
+
+
