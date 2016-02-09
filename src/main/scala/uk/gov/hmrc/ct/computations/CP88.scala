@@ -28,10 +28,10 @@ case class CP88(value: Option[Int]) extends CtBoxIdentifier(name = "Annual Inves
   }
 
   private def firstYearAllowanceNotGreaterThanMaxFYA(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    val expenditureQualifyingForFirstYearAllowanceInput: Option[Int] = retriever.retrieveCP81Input().value
+    val expenditureQualifyingForFirstYearAllowanceInput: Int = retriever.retrieveCP81Input().orZero
     val aiaThreshold: Int = retriever.retrieveCATO02().value
 
-    val maxAIA = Math.min(expenditureQualifyingForFirstYearAllowanceInput.getOrElse(0), aiaThreshold)
+    val maxAIA = Math.min(expenditureQualifyingForFirstYearAllowanceInput, aiaThreshold)
 
     value match {
       case Some(aiaClaimed) =>

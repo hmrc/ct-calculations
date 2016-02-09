@@ -45,15 +45,15 @@ case class CP668(value: Option[Int]) extends CtBoxIdentifier(name = "Writing dow
   }
 
   private def calcSpecialRateAllowance(retriever: ComputationsBoxRetriever): Int = {
-    val writtenDownValueOfSpecialRatePoolBroughtForward: Option[Int] = retriever.retrieveCP666().value
-    val proceedsFromDisposalsFromSpecialRatePool: Option[Int] = retriever.retrieveCP667().value
+    val writtenDownValueOfSpecialRatePoolBroughtForward: Int = retriever.retrieveCP666().orZero
+    val proceedsFromDisposalsFromSpecialRatePool: Int = retriever.retrieveCP667().orZero
     val specialRatePoolPercentage: BigDecimal = retriever.retrieveCATO22().value
     val cpAux3 = retriever.retrieveCPAux3().value
 
     val allowance: BigDecimal = specialRatePoolPercentage * (
-      writtenDownValueOfSpecialRatePoolBroughtForward.getOrElse(0)
+      writtenDownValueOfSpecialRatePoolBroughtForward
         + cpAux3
-        - proceedsFromDisposalsFromSpecialRatePool.getOrElse(0)
+        - proceedsFromDisposalsFromSpecialRatePool
       ) / BigDecimal(100.0)
 
     allowance.setScale(0, RoundingMode.UP).toInt
