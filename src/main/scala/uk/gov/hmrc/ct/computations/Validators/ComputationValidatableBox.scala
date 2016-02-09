@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.computations.Validators
 
-import uk.gov.hmrc.ct.box.{ValidatableBox, CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever
+import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, ValidatableBox}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP81Input(value: Option[Int]) extends CtBoxIdentifier(name = "Expenditure qualifying for first year allowance (FYA)") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
-  override def validate(boxRetriever: ComputationsBoxRetriever) = {
-    validateZeroOrPositiveInteger(this)
-  }
-}
+trait ComputationValidatableBox[T <: BoxRetriever] extends ValidatableBox[T] {
 
-object CP81Input {
-
-  def apply(int: Int): CP81Input = CP81Input(Some(int))
-
+  def mandatoryIfCompanyIsTrading(retriever: ComputationsBoxRetriever, boxId: String, value: Option[Int]) =
+    (retriever.retrieveCPQ8().value, value) match {
+      case (Some(false), None) => Set(CtValidation(boxId = Some(boxId), errorMessageKey = s"error.$boxId.fieldMustHaveValueIfTrading"))
+      case _ => Set()
+    }
 }

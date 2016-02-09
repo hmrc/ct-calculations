@@ -16,9 +16,14 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.box.{ValidatableBox, CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP667(value: Option[Int]) extends CtBoxIdentifier(name = "Proceeds from disposals from special rate pool") with CtOptionalInteger with Input
+case class CP667(value: Option[Int]) extends CtBoxIdentifier(name = "Proceeds from disposals from special rate pool")  with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
+  override def validate(boxRetriever: ComputationsBoxRetriever) = {
+    validateZeroOrPositiveInteger(this)
+  }
+}
 
 object CP667 {
 
