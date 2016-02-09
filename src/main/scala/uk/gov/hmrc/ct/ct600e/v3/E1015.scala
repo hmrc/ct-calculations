@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct.ct600e.v3
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBigDecimal, CtBoxIdentifier}
-import uk.gov.hmrc.ct.ct600.v3.calculations.{CorporationTaxCalculator}
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.box.{AnnualConstant, Calculated, CtBigDecimal, CtBoxIdentifier}
+import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
+import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 
-// was B46
-case class B345(value: BigDecimal) extends CtBoxIdentifier("Tax FY1") with CtBigDecimal
+case class E1015(value: BigDecimal) extends CtBoxIdentifier("Second Financial Year Rate Of Tax") with CtBigDecimal with AnnualConstant
 
-object B345 extends CorporationTaxCalculator with Calculated[B345, CT600BoxRetriever] {
+object E1015 extends CorporationTaxCalculator with Calculated[E1015, CT600EBoxRetriever] {
 
-  override def calculate(fieldValueRetriever: CT600BoxRetriever): B345 = {
-    calculateTaxForFirstFinancialYear(fieldValueRetriever.retrieveB335(), fieldValueRetriever.retrieveB340())
-  }
-
+  override def calculate(fieldValueRetriever: CT600EBoxRetriever): E1015 = E1015(rateOfTaxFy2(fieldValueRetriever.retrieveE4))
 }

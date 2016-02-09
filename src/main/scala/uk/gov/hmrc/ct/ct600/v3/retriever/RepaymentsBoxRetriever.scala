@@ -14,19 +14,32 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct.ct600.v3.retriever
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBigDecimal, CtBoxIdentifier}
-import uk.gov.hmrc.ct.ct600.v3.calculations.{CorporationTaxCalculator}
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever
+import uk.gov.hmrc.ct.ct600.v3._
 
-// was B46
-case class B345(value: BigDecimal) extends CtBoxIdentifier("Tax FY1") with CtBigDecimal
+trait RepaymentsBoxRetriever extends BoxRetriever {
 
-object B345 extends CorporationTaxCalculator with Calculated[B345, CT600BoxRetriever] {
+  def retrieveB920(): B920
 
-  override def calculate(fieldValueRetriever: CT600BoxRetriever): B345 = {
-    calculateTaxForFirstFinancialYear(fieldValueRetriever.retrieveB335(), fieldValueRetriever.retrieveB340())
-  }
+  def retrieveB925(): B925
 
+  def retrieveB930(): B930
+
+  def retrieveB935(): B935
+
+  def retrieveB940(): B940
+
+  def retrieveB945(): B945
+
+  def retrieveB950(): B950 = B950.calculate(this)
+
+  def retrieveB955(): B955
+
+  def retrieveB960(): B960
+
+  def retrieveB965(): B965
+
+  def retrieveB970(): B970
 }

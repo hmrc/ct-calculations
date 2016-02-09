@@ -22,7 +22,7 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.retriever.{RepaymentsBoxRetriever, CT600BoxRetriever}
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with ValidatableBox[BoxRetriever]{
@@ -211,7 +211,7 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
 
   "validateAllFilledOrEmptyStringsForBankDetails" should {
     "return error if mixing empty and non-empty" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[RepaymentsBoxRetriever]
       when(mockBoxRetriever.retrieveB920()).thenReturn(B920(""))
       when(mockBoxRetriever.retrieveB925()).thenReturn(B925(""))
       when(mockBoxRetriever.retrieveB930()).thenReturn(B930(""))
