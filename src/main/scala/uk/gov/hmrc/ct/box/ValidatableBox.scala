@@ -180,5 +180,4 @@ trait ValidatableBox[T <: BoxRetriever] {
        Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(min.toString,max.toString))))
      } else Set()
   }
-
 }
