@@ -34,14 +34,14 @@ case class CP668(value: Option[Int]) extends CtBoxIdentifier(name = "Writing dow
     val maxSP = Math.max(0, calcSpecialRateAllowance(retriever))
 
     value match {
-          case Some(writingDownAllowanceClaimedFromSpecialRatePool) =>
-            if(writingDownAllowanceClaimedFromSpecialRatePool <= maxSP)
-              Set()
-            else
-              Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.specialRatePoolAllowanceExceeded"))
+      case Some(writingDownAllowanceClaimedFromSpecialRatePool) =>
+        if (writingDownAllowanceClaimedFromSpecialRatePool <= maxSP)
+          Set()
+        else
+          Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.specialRatePoolAllowanceExceeded"))
 
-          case _ => Set()
-        }
+      case _ => Set()
+    }
   }
 
   private def calcSpecialRateAllowance(retriever: ComputationsBoxRetriever): Int = {
