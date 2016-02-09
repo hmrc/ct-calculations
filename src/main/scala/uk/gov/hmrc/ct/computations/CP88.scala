@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 case class CP88(value: Option[Int]) extends CtBoxIdentifier(name = "Annual Investment Allowance") with CtOptionalInteger with Input with ComputationValidatableBox[ComputationsBoxRetriever] {
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
     validateZeroOrPositiveInteger(this) ++
-      fieldhasValueWhenTrading(boxRetriever, "CP88", value) ++
+      mandatoryIfCompanyIsTradingTrading(boxRetriever, "CP88", value) ++
       firstYearAllowanceNotGreaterThanMaxFYA(boxRetriever)
   }
 
