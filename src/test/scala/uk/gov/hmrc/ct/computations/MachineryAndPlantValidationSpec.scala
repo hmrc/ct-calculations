@@ -224,6 +224,11 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
 
       CP87Input(None).validate(stubTestComputationsRetriever) shouldBe Set()
     }
+    "validate when ceased trading not set" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever()
+
+      CP87Input(None).validate(stubTestComputationsRetriever) shouldBe Set()
+    }
     "fails validation when negative" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
 
@@ -273,6 +278,11 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
     }
     "validate when ceased trading but no value entered" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(true))
+
+      CP88(None).validate(stubTestComputationsRetriever) shouldBe Set()
+    }
+    "validate when ceased trading not set" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever()
 
       CP88(None).validate(stubTestComputationsRetriever) shouldBe Set()
     }
@@ -343,6 +353,11 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
 
       CP89(None).validate(stubTestComputationsRetriever) shouldBe Set()
     }
+    "validate when ceased trading not set" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever()
+
+      CP89(None).validate(stubTestComputationsRetriever) shouldBe Set()
+    }
     "fails validation when negative" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
 
@@ -382,6 +397,11 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
     }
     "validate when ceased trading but no value entered" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(true))
+
+      CP668(None).validate(stubTestComputationsRetriever) shouldBe Set()
+    }
+    "validate when ceased trading not set" in {
+      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever()
 
       CP668(None).validate(stubTestComputationsRetriever) shouldBe Set()
     }
