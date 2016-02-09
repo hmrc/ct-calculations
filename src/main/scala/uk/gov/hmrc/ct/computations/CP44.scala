@@ -28,7 +28,7 @@ object CP44 extends Calculated[CP44, ComputationsBoxRetriever] with ProfitAndLos
     calculateGrossProfitOrLossBeforeTax(cp14 = fieldValueRetriever.retrieveCP14(),
                                         cp40 = fieldValueRetriever.retrieveCP40(),
                                         cp43 =fieldValueRetriever.retrieveCP43(),
-                                        cp501 =fieldValueRetriever.retrieveCP501(),
+                                        cp509 =fieldValueRetriever.retrieveCP509(),
                                         cp502 = fieldValueRetriever.retrieveCP502())
   }
 }
