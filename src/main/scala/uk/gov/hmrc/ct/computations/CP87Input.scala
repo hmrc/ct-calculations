@@ -32,7 +32,7 @@ case class CP87Input(value: Option[Int]) extends CtBoxIdentifier(name = "First y
     val expenditureQualifyingForFirstYearAllowanceInput = retriever.retrieveCP81Input()
     val cpAux1 = retriever.retrieveCPAux1()
 
-    val maxFYA = expenditureQualifyingForFirstYearAllowanceInput.value.getOrElse(0) + cpAux1
+    val maxFYA = expenditureQualifyingForFirstYearAllowanceInput.orZero + cpAux1
 
     value match {
       case Some(fyaClaimed) =>

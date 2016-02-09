@@ -52,10 +52,10 @@ case class CP89(value: Option[Int]) extends CtBoxIdentifier(name = "Writing Down
       retriever.retrieveCP88(),
       retriever.retrieveCPAux1())
 
-    val cp78 = retriever.retrieveCP78().value.getOrElse(0)
-    val cp82 = retriever.retrieveCP82().value.getOrElse(0)
+    val cp78 = retriever.retrieveCP78().orZero
+    val cp82 = retriever.retrieveCP82().orZero
     val cpAux2 = retriever.retrieveCPAux2()
-    val cp672 = retriever.retrieveCP672().value.getOrElse(0)
+    val cp672 = retriever.retrieveCP672().orZero
     val mainPoolPercentage: BigDecimal = retriever.retrieveCATO21().value
 
     val allowance: BigDecimal = mainPoolPercentage * (cp78 + cp82 + cpAux2 - cp672 + unclaimedFYA_AIA) / BigDecimal(100)
