@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.ct600e.v2
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
+import uk.gov.hmrc.ct.ct600.v2.calculations.CorporationTaxCalculator
+import uk.gov.hmrc.ct.ct600e.v2.retriever.CT600EBoxRetriever
 
-case class CP47(value: Option[Int]) extends CtBoxIdentifier(name = "Disallowable entertaining") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
+case class E1033(value: Int) extends CtBoxIdentifier("First Financial Year") with CtInteger
 
-  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = validateZeroOrPositiveInteger(this)
+object E1033 extends CorporationTaxCalculator with Calculated[E1033, CT600EBoxRetriever] {
 
-}
-
-object CP47 {
-
-  def apply(int: Int): CP47 = CP47(Some(int))
-
+  override def calculate(fieldValueRetriever: CT600EBoxRetriever): E1033 = {
+    E1033(financialYear1(HmrcAccountingPeriod(fieldValueRetriever.retrieveE1021(), fieldValueRetriever.retrieveE1022)))
+  }
 }

@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.domain
+package uk.gov.hmrc.ct.ct600.v2.retriever
 
-import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever
+import uk.gov.hmrc.ct.ct600.v2._
 
-object ValidationConstants {
+trait ReturnStatementsBoxRetriever extends BoxRetriever {
 
-  val MIN_MONEY_AMOUNT_ALLOWED = 1
-  val MAX_MONEY_AMOUNT_ALLOWED = 99999999
+  def retrieveRSQ1(): RSQ1
 
-  val ERROR_ARGS_DATE_FORMAT = "d MMMM YYYY"
+  def retrieveRSQ2(): RSQ2
 
-  val EARLIEST_AP_END_DATE_CUTOFF = new LocalDate(2008, 3, 31)
+  def retrieveRSQ3(): RSQ3
 
-  def toErrorArgsFormat(date: LocalDate) = date.toString(ERROR_ARGS_DATE_FORMAT)
+  def retrieveRSQ4(): RSQ4
 
+  def retrieveRSQ7(): RSQ7
+
+  def retrieveRSQ8(): RSQ8
 }

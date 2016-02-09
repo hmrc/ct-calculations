@@ -29,153 +29,153 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
 
 
     "return the correct constants for 2006 & 2007 when B37 is == 0 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2006, 8, 1)), CP2(new LocalDate(2007, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.30"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2006, 8, 1)), CP2(new LocalDate(2007, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.30"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2006, 8, 1)), CP2(new LocalDate(2007, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.30")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2006, 8, 1)), CP2(new LocalDate(2007, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.30")
     }
 
     "return the correct constants for 2007 & 2008 when B37 is == 0 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2007, 8, 1)), CP2(new LocalDate(2008, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.30"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2007, 8, 1)), CP2(new LocalDate(2008, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.28"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2007, 8, 1)), CP2(new LocalDate(2008, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.30")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2007, 8, 1)), CP2(new LocalDate(2008, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.28")
     }
 
     "return the correct constants for 2008 & 2009 when B37 is == 0 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2008, 8, 1)), CP2(new LocalDate(2009, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.28"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2008, 8, 1)), CP2(new LocalDate(2009, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.28"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2008, 8, 1)), CP2(new LocalDate(2009, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.28")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2008, 8, 1)), CP2(new LocalDate(2009, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.28")
     }
 
     "return the correct constants for 2009 & 2010 when B37 is == 0 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2009, 8, 1)), CP2(new LocalDate(2010, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.28"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2009, 8, 1)), CP2(new LocalDate(2010, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.28"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2009, 8, 1)), CP2(new LocalDate(2010, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.28")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2009, 8, 1)), CP2(new LocalDate(2010, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.28")
     }
 
     "return the correct constants for 2010 & 2011 when B37 is == 0 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2010, 8, 1)), CP2(new LocalDate(2011, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.28"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2010, 8, 1)), CP2(new LocalDate(2011, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.26"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2010, 8, 1)), CP2(new LocalDate(2011, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.28")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2010, 8, 1)), CP2(new LocalDate(2011, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.26")
     }
 
     "return the correct constants for 2011 & 2012 when B37 is == 0 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2011, 8, 1)), CP2(new LocalDate(2012, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.26"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2011, 8, 1)), CP2(new LocalDate(2012, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.24"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2011, 8, 1)), CP2(new LocalDate(2012, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.26")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2011, 8, 1)), CP2(new LocalDate(2012, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.24")
     }
 
     "return the correct constants for 2012 & 2013 when B37 is == 0 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2012, 8, 1)), CP2(new LocalDate(2013, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.24"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2012, 8, 1)), CP2(new LocalDate(2013, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.23"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2012, 8, 1)), CP2(new LocalDate(2013, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.24")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2012, 8, 1)), CP2(new LocalDate(2013, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.23")
     }
 
     "return the correct constants for 2006 & 2007 when B37 is == 1 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2006, 8, 1)), CP2(new LocalDate(2007, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.19"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2006, 8, 1)), CP2(new LocalDate(2007, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.20"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2006, 8, 1)), CP2(new LocalDate(2007, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.19")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2006, 8, 1)), CP2(new LocalDate(2007, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.20")
     }
 
     "return the correct constants for 2007 & 2008 when B37 is == 1 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2007, 8, 1)), CP2(new LocalDate(2008, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.20"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2007, 8, 1)), CP2(new LocalDate(2008, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.21"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2007, 8, 1)), CP2(new LocalDate(2008, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.20")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2007, 8, 1)), CP2(new LocalDate(2008, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.21")
     }
 
     "return the correct constants for 2008 & 2009 when B37 is == 1 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2008, 8, 1)), CP2(new LocalDate(2009, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.21"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2008, 8, 1)), CP2(new LocalDate(2009, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.21"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2008, 8, 1)), CP2(new LocalDate(2009, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.21")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2008, 8, 1)), CP2(new LocalDate(2009, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.21")
     }
 
     "return the correct constants for 2009 & 2010 when B37 is == 1 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2009, 8, 1)), CP2(new LocalDate(2010, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.21"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2009, 8, 1)), CP2(new LocalDate(2010, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.21"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2009, 8, 1)), CP2(new LocalDate(2010, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.21")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2009, 8, 1)), CP2(new LocalDate(2010, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.21")
     }
 
     "return the correct constants for 2010 & 2011 when B37 is == 1 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2010, 8, 1)), CP2(new LocalDate(2011, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.21"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2010, 8, 1)), CP2(new LocalDate(2011, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.20"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2010, 8, 1)), CP2(new LocalDate(2011, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.21")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2010, 8, 1)), CP2(new LocalDate(2011, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.20")
     }
 
     "return the correct constants for 2011 & 2012 when B37 is == 1 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2011, 8, 1)), CP2(new LocalDate(2012, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.20"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2011, 8, 1)), CP2(new LocalDate(2012, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.20"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2011, 8, 1)), CP2(new LocalDate(2012, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.20")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2011, 8, 1)), CP2(new LocalDate(2012, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.20")
     }
 
     "return the correct constants for 2012 & 2013 when B37 is == 1 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2012, 8, 1)), CP2(new LocalDate(2013, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.20"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2012, 8, 1)), CP2(new LocalDate(2013, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.20"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2012, 8, 1)), CP2(new LocalDate(2013, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.20")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2012, 8, 1)), CP2(new LocalDate(2013, 7, 31))), b37 = B37(1), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.20")
     }
 
     "return the correct constants for 2013 & 2014 when B37 is >= 300001 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300001),  b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.23"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300001), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.21"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300001),  b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.23")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300001), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.21")
     }
 
     "return the correct constants for 2013 & 2014 when B37 is >= 300001 and B42 is No" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300001),  b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.23"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300001), b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.21"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300001),  b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.23")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300001), b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.21")
     }
 
     "return the correct constants for 2013 & 2014 when B37 is < 300001 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300000), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.20"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300000), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.20"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300000), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.20")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300000), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.20")
     }
 
     "return the correct constants for 2013 & 2014 when B37 is < 300001 and B42 is No" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300000), b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldNot be (B45(BigDecimal("0.20")))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300000), b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldNot be (B55(BigDecimal("0.20")))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300000), b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldNot be (BigDecimal("0.20"))
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(300000), b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldNot be (BigDecimal("0.20"))
     }
 
     "return the correct constants for 2013 & 2014 when B37 is < 0 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(-1000), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.23"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(-1000), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.21"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(-1000), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.23")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(-1000), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.21")
     }
 
     "return the correct constants for 2013 & 2014 when B37 is < 0 and B42 is No" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(-1000), b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.23"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(-1000), b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.21"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(-1000), b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.23")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(-1000), b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.21")
     }
 
     "return the correct constants for 2013 & 2014 when B37 is == 0 and B42 is Yes" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.23"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.21"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.23")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(0), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.21")
     }
 
     "return the correct constants for 2013 & 2014 when B37 is == 0 and B42 is No" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(0), b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.23"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(0), b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.21"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(0), b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.23")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2013, 8, 1)), CP2(new LocalDate(2014, 7, 31))), b37 = B37(0), b42 = B42(false), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.21")
     }
 
     "return the correct constants for 2013 & 2014 when B37 is == 150,001 and B42 is Yes and B39 is 1" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(150001), b42 = B42(true), b39 = B39(Some(1)), b38 = B38(None)) shouldBe B45(BigDecimal("0.23"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(150001), b42 = B42(true), b39 = B39(Some(1)), b38 = B38(None)) shouldBe B55(BigDecimal("0.21"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(150001), b42 = B42(true), b39 = B39(Some(1)), b38 = B38(None)) shouldBe BigDecimal("0.23")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(150001), b42 = B42(true), b39 = B39(Some(1)), b38 = B38(None)) shouldBe BigDecimal("0.21")
     }
 
     "return the correct constants for 2013 & 2014 when B37 is == 150,000 and B42 is Yes and B39 is 1" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(150000), b42 = B42(true), b39 = B39(Some(1)), b38 = B38(None)) shouldBe B45(BigDecimal("0.20"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(150000), b42 = B42(true), b39 = B39(Some(1)), b38 = B38(None)) shouldBe B55(BigDecimal("0.20"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(150000), b42 = B42(true), b39 = B39(Some(1)), b38 = B38(None)) shouldBe BigDecimal("0.20")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(150000), b42 = B42(true), b39 = B39(Some(1)), b38 = B38(None)) shouldBe BigDecimal("0.20")
     }
 
     "return the correct constants for 2013 & 2014 when B37 is == 100,001 and B42 is Yes and B39 is 2" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(100001), b42 = B42(true), b39 = B39(Some(2)), b38 = B38(None)) shouldBe B45(BigDecimal("0.23"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(100001), b42 = B42(true), b39 = B39(Some(2)), b38 = B38(None)) shouldBe B55(BigDecimal("0.21"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(100001), b42 = B42(true), b39 = B39(Some(2)), b38 = B38(None)) shouldBe BigDecimal("0.23")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(100001), b42 = B42(true), b39 = B39(Some(2)), b38 = B38(None)) shouldBe BigDecimal("0.21")
     }
 
     "return the correct constants for 2013 & 2014 when B37 is == 100,000 and B42 is Yes and B39 is 2" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(100000), b42 = B42(true), b39 = B39(Some(2)), b38 = B38(None)) shouldBe B45(BigDecimal("0.20"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(100000), b42 = B42(true), b39 = B39(Some(2)), b38 = B38(None)) shouldBe B55(BigDecimal("0.20"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(100000), b42 = B42(true), b39 = B39(Some(2)), b38 = B38(None)) shouldBe BigDecimal("0.20")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(100000), b42 = B42(true), b39 = B39(Some(2)), b38 = B38(None)) shouldBe BigDecimal("0.20")
     }
 
     "return the correct constants for 2013 & 2014 when B37 is == 299,999 and B42 is Yes and B38 is empty and b39 is empty" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B45(BigDecimal("0.20"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe B55(BigDecimal("0.20"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.20")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(None)) shouldBe BigDecimal("0.20")
     }
 
     "return the correct constants for 2013 & 2014 when B37 is == 299,000 and B42 is Yes and B38 is 1 and b39 is empty" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(Some(1))) shouldBe B45(BigDecimal("0.20"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(Some(1))) shouldBe B55(BigDecimal("0.20"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(Some(1))) shouldBe BigDecimal("0.20")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(Some(1))) shouldBe BigDecimal("0.20")
     }
 
     "return the correct constants for 2013 & 2014 when B37 is == 299,000 and B42 is Yes and B38 is 2 and b39 is empty" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(Some(2))) shouldBe B45(BigDecimal("0.23"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(Some(2))) shouldBe B55(BigDecimal("0.21"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(Some(2))) shouldBe BigDecimal("0.23")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(Some(2))) shouldBe BigDecimal("0.21")
     }
 
     "return the correct constants for 2014 & 2015 when B37 is == 299,000 and B42 is Yes and B38 is 2 and b39 is empty" in new Calc {
-      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2015, 1, 1)), CP2(new LocalDate(2015, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(Some(2))) shouldBe B45(BigDecimal("0.21"))
-      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2015, 1, 1)), CP2(new LocalDate(2015, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(Some(2))) shouldBe B55(BigDecimal("0.20"))
+      rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2015, 1, 1)), CP2(new LocalDate(2015, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(Some(2))) shouldBe BigDecimal("0.21")
+      rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2015, 1, 1)), CP2(new LocalDate(2015, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(Some(2))) shouldBe BigDecimal("0.20")
     }
 
     "throw an exception when constants are unavailable for specified years" in new Calc {
@@ -258,20 +258,20 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
 
     "should return the same years when inside a single calendar year" in new Calc {
       val period = HmrcAccountingPeriod(CP1(new LocalDate(2013, 4, 1)), CP2(new LocalDate(2013, 8, 31)))
-      financialYear1(period) shouldBe B43(2013)
-      financialYear2(period) shouldBe B53(None)
+      financialYear1(period) shouldBe 2013
+      financialYear2(period) shouldBe None
     }
 
     "should return the same years when spanning a full financial year" in new Calc {
       val period = HmrcAccountingPeriod(CP1(new LocalDate(2013, 4, 1)), CP2(new LocalDate(2014, 3, 31)))
-      financialYear1(period) shouldBe B43(2013)
-      financialYear2(period) shouldBe B53(None)
+      financialYear1(period) shouldBe 2013
+      financialYear2(period) shouldBe None
     }
 
     "should return different years when spanning two financial years" in new Calc {
       val period = HmrcAccountingPeriod(CP1(new LocalDate(2013, 9, 1)), CP2(new LocalDate(2014, 8, 31)))
-      financialYear1(period) shouldBe B43(2013)
-      financialYear2(period) shouldBe B53(Some(2014))
+      financialYear1(period) shouldBe 2013
+      financialYear2(period) shouldBe Some(2014)
     }
   }
 

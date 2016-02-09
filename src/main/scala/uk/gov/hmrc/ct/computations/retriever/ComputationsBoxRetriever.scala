@@ -155,6 +155,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def retrieveCP38(): CP38 = CP38.calculate(this)
 
+  def retrieveCP39(): CP39 = CP39(retrieveCP14())
+
   def retrieveCP40(): CP40 = CP40(retrieveCP38())
 
   def retrieveCP44(): CP44 = CP44.calculate(this)
@@ -286,6 +288,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
   def retrieveCP295(): CP295 = CP295.calculate(this)
 
   def retrieveCP305(): CP305 = CP305.calculate(this)
+
+  def retrieveCP500(): CP500 = CP500.calculate(this)
 
   def retrieveCP504(): CP504 = CP504(retrieveCP501())
 
