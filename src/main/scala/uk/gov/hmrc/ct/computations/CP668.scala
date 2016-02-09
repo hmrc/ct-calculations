@@ -26,7 +26,7 @@ import scala.math.BigDecimal.RoundingMode
 case class CP668(value: Option[Int]) extends CtBoxIdentifier(name = "Writing down allowance claimed from special rate pool") with CtOptionalInteger with Input with ComputationValidatableBox[ComputationsBoxRetriever] with MachineryAndPlantCalculator {
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
     validateZeroOrPositiveInteger(this) ++
-      mandatoryIfCompanyIsTradingTrading(boxRetriever, "CP668", value) ++
+      mandatoryIfCompanyIsTrading(boxRetriever, "CP668", value) ++
       specialRatePoolClaimedNotGreaterThanMaxSpecialPool(boxRetriever)
   }
 
