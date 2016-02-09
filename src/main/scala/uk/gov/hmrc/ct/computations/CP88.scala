@@ -34,12 +34,10 @@ case class CP88(value: Option[Int]) extends CtBoxIdentifier(name = "Annual Inves
     val maxAIA = Math.min(expenditureQualifyingForFirstYearAllowanceInput, aiaThreshold)
 
     value match {
-      case Some(aiaClaimed) =>
-        if(aiaClaimed <= maxAIA)
-          Set()
-        else
-          Set(CtValidation(boxId = Some("CP88"), errorMessageKey = "error.CP88.annualInvestmentAllowanceExceeded"))
-      case _ => Set()
+      case Some(aiaClaimed) if aiaClaimed > maxAIA =>
+        Set(CtValidation(boxId = Some("CP88"), errorMessageKey = "error.CP88.annualInvestmentAllowanceExceeded"))
+      case _ =>
+        Set()
     }
   }
 }
