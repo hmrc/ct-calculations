@@ -95,85 +95,85 @@ class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
 
 
 class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
-  val stubBocRetriever = new MyStubbedComputationsRetriever
+  val stubBoxRetriever = new MyStubbedComputationsRetriever
 
   "CP78 " should {
     "validate if present and non-negative or if not present, otherwise fail" in {
-      CP78(Some(0)).validate(stubBocRetriever) shouldBe Set()
-      CP78(None).validate(stubBocRetriever) shouldBe Set()
-      CP78(Some(-1)).validate(stubBocRetriever) shouldBe Set(CtValidation(boxId = Some("CP78"), errorMessageKey = "error.CP78.mustBeZeroOrPositive"))
+      CP78(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP78(None).validate(stubBoxRetriever) shouldBe Set()
+      CP78(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP78"), errorMessageKey = "error.CP78.mustBeZeroOrPositive"))
     }
   }
 
   "CP666 " should {
     "validate if present and non-negative or if not present, otherwise fail" in {
-      CP666(Some(0)).validate(stubBocRetriever) shouldBe Set()
-      CP666(None).validate(stubBocRetriever) shouldBe Set()
-      CP666(Some(-1)).validate(stubBocRetriever) shouldBe Set(CtValidation(boxId = Some("CP666"), errorMessageKey = "error.CP666.mustBeZeroOrPositive"))
+      CP666(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP666(None).validate(stubBoxRetriever) shouldBe Set()
+      CP666(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP666"), errorMessageKey = "error.CP666.mustBeZeroOrPositive"))
     }
   }
 
   "CP81Input " should {
     "validate if present and non-negative or if not present, otherwise fail" in {
-      CP81Input(Some(0)).validate(stubBocRetriever) shouldBe Set()
-      CP81Input(None).validate(stubBocRetriever) shouldBe Set()
-      CP81Input(Some(-1)).validate(stubBocRetriever) shouldBe Set(CtValidation(boxId = Some("CP81Input"), errorMessageKey = "error.CP81Input.mustBeZeroOrPositive"))
+      CP81Input(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP81Input(None).validate(stubBoxRetriever) shouldBe Set()
+      CP81Input(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP81Input"), errorMessageKey = "error.CP81Input.mustBeZeroOrPositive"))
     }
   }
 
   "CP82 " should {
     "validate if present and non-negative or if not present, otherwise fail" in {
-      CP82(Some(0)).validate(stubBocRetriever) shouldBe Set()
-      CP82(None).validate(stubBocRetriever) shouldBe Set()
-      CP82(Some(-1)).validate(stubBocRetriever) shouldBe Set(CtValidation(boxId = Some("CP82"), errorMessageKey = "error.CP82.mustBeZeroOrPositive"))
+      CP82(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP82(None).validate(stubBoxRetriever) shouldBe Set()
+      CP82(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP82"), errorMessageKey = "error.CP82.mustBeZeroOrPositive"))
     }
   }
 
   "CP83 " should {
     "validate if present and non-negative or if not present, otherwise fail" in {
-      CP83(Some(0)).validate(stubBocRetriever) shouldBe Set()
-      CP83(None).validate(stubBocRetriever) shouldBe Set()
-      CP83(Some(-1)).validate(stubBocRetriever) shouldBe Set(CtValidation(boxId = Some("CP83"), errorMessageKey = "error.CP83.mustBeZeroOrPositive"))
+      CP83(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP83(None).validate(stubBoxRetriever) shouldBe Set()
+      CP83(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP83"), errorMessageKey = "error.CP83.mustBeZeroOrPositive"))
     }
   }
 
   "CP674 " should {
     "validate if present and non-negative or if not present, otherwise fail" in {
-      CP674(Some(0)).validate(stubBocRetriever) shouldBe Set()
-      CP674(None).validate(stubBocRetriever) shouldBe Set()
-      CP674(Some(-1)).validate(stubBocRetriever) shouldBe Set(CtValidation(boxId = Some("CP674"), errorMessageKey = "error.CP674.mustBeZeroOrPositive"))
+      CP674(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP674(None).validate(stubBoxRetriever) shouldBe Set()
+      CP674(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP674"), errorMessageKey = "error.CP674.mustBeZeroOrPositive"))
     }
   }
 
   "CP84 " should {
     "validate if present and non-negative or if not present, otherwise fail" in {
-      CP84(Some(0)).validate(stubBocRetriever) shouldBe Set()
-      CP84(None).validate(stubBocRetriever) shouldBe Set()
-      CP84(Some(-1)).validate(stubBocRetriever) shouldBe Set(CtValidation(boxId = Some("CP84"), errorMessageKey = "error.CP84.mustBeZeroOrPositive"))
+      CP84(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP84(None).validate(stubBoxRetriever) shouldBe Set()
+      CP84(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP84"), errorMessageKey = "error.CP84.mustBeZeroOrPositive"))
     }
   }
 
   "CP673 " should {
     "validate if present and non-negative or if not present, otherwise fail" in {
-      CP673(Some(0)).validate(stubBocRetriever) shouldBe Set()
-      CP673(None).validate(stubBocRetriever) shouldBe Set()
-      CP673(Some(-1)).validate(stubBocRetriever) shouldBe Set(CtValidation(boxId = Some("CP673"), errorMessageKey = "error.CP673.mustBeZeroOrPositive"))
+      CP673(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP673(None).validate(stubBoxRetriever) shouldBe Set()
+      CP673(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP673"), errorMessageKey = "error.CP673.mustBeZeroOrPositive"))
     }
   }
 
   "CP667 " should {
     "validate if present and non-negative or if not present, otherwise fail" in {
-      CP667(Some(0)).validate(stubBocRetriever) shouldBe Set()
-      CP667(None).validate(stubBocRetriever) shouldBe Set()
-      CP667(Some(-1)).validate(stubBocRetriever) shouldBe Set(CtValidation(boxId = Some("CP667"), errorMessageKey = "error.CP667.mustBeZeroOrPositive"))
+      CP667(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP667(None).validate(stubBoxRetriever) shouldBe Set()
+      CP667(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP667"), errorMessageKey = "error.CP667.mustBeZeroOrPositive"))
     }
   }
 
   "CP672 " should {
     "validate if present and non-negative or if not present, otherwise fail" in {
-      CP672(Some(0)).validate(stubBocRetriever) shouldBe Set()
-      CP672(None).validate(stubBocRetriever) shouldBe Set()
-      CP672(Some(-1)).validate(stubBocRetriever) shouldBe Set(CtValidation(boxId = Some("CP672"), errorMessageKey = "error.CP672.mustBeZeroOrPositive"))
+      CP672(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP672(None).validate(stubBoxRetriever) shouldBe Set()
+      CP672(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP672"), errorMessageKey = "error.CP672.mustBeZeroOrPositive"))
     }
   }
 
