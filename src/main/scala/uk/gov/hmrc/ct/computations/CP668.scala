@@ -16,9 +16,46 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.box.{CtValidation, CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.computations.Validators.ComputationValidatableBox
+import uk.gov.hmrc.ct.computations.calculations.MachineryAndPlantCalculator
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP668(value: Option[Int]) extends CtBoxIdentifier(name = "Writing down allowance claimed from special rate pool") with CtOptionalInteger with Input
+import scala.math.BigDecimal.RoundingMode
+
+case class CP668(value: Option[Int]) extends CtBoxIdentifier(name = "Writing down allowance claimed from special rate pool") with CtOptionalInteger with Input with ComputationValidatableBox[ComputationsBoxRetriever] with MachineryAndPlantCalculator {
+  override def validate(boxRetriever: ComputationsBoxRetriever) = {
+    validateZeroOrPositiveInteger(this) ++
+      mandatoryIfCompanyIsTrading(boxRetriever, "CP668", value) ++
+      specialRatePoolClaimedNotGreaterThanMaxSpecialPool(boxRetriever)
+  }
+
+  private def specialRatePoolClaimedNotGreaterThanMaxSpecialPool(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    val maxSP = Math.max(0, calcSpecialRateAllowance(retriever))
+
+    value match {
+      case Some(writingDownAllowanceClaimedFromSpecialRatePool) if writingDownAllowanceClaimedFromSpecialRatePool > maxSP =>
+        Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.specialRatePoolAllowanceExceeded"))
+      case _ =>
+        Set()
+    }
+  }
+
+  private def calcSpecialRateAllowance(retriever: ComputationsBoxRetriever): Int = {
+    val writtenDownValueOfSpecialRatePoolBroughtForward: Int = retriever.retrieveCP666().orZero
+    val proceedsFromDisposalsFromSpecialRatePool: Int = retriever.retrieveCP667().orZero
+    val specialRatePoolPercentage: BigDecimal = retriever.retrieveCATO22().value
+    val cpAux3 = retriever.retrieveCPAux3().value
+
+    val allowance: BigDecimal = specialRatePoolPercentage * (
+      writtenDownValueOfSpecialRatePoolBroughtForward
+        + cpAux3
+        - proceedsFromDisposalsFromSpecialRatePool
+      ) / BigDecimal(100.0)
+
+    allowance.setScale(0, RoundingMode.UP).toInt
+  }
+}
 
 object CP668 {
 
