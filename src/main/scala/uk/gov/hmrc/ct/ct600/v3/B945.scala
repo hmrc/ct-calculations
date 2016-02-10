@@ -14,19 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{ValidatableBox, CtBoxIdentifier, CtOptionalInteger, Input}
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-case class CP81Input(value: Option[Int]) extends CtBoxIdentifier(name = "Expenditure qualifying for first year allowance (FYA)") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
-  override def validate(boxRetriever: ComputationsBoxRetriever) = {
-    validateZeroOrPositiveInteger(this)
-  }
-}
 
-object CP81Input {
-
-  def apply(int: Int): CP81Input = CP81Input(Some(int))
-
-}
+case class B945(value: Option[String]) extends CtBoxIdentifier("Status of person authorising payment to other entity") with CtOptionalString with Input

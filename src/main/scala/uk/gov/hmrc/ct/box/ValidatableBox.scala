@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.box
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.retriever.{RepaymentsBoxRetriever, CT600BoxRetriever}
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 trait ValidatableBox[T <: BoxRetriever] {
@@ -77,7 +77,7 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  protected def validateAllFilledOrEmptyStringsForBankDetails(boxRetriever: CT600BoxRetriever, boxId: String): Set[CtValidation] = {
+  protected def validateAllFilledOrEmptyStringsForBankDetails(boxRetriever: RepaymentsBoxRetriever, boxId: String): Set[CtValidation] = {
     val bankDetailsBoxGroup:Set[CtString] = Set(
       boxRetriever.retrieveB920(),
       boxRetriever.retrieveB925(),

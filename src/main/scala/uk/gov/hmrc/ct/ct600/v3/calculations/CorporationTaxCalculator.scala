@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
-import uk.gov.hmrc.ct.box.CtTypeConverters
+import uk.gov.hmrc.ct.box.{EndDate, StartDate, CtTypeConverters}
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper._
 import uk.gov.hmrc.ct.ct600.calculations._
@@ -38,34 +38,26 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B430(b345.plus(b395))
   }
 
-  def calculateFinancialYear(b355: B335, b340: B340): B345 = {
+  def calculateTaxForFirstFinancialYear(b355: B335, b340: B340): B345 = {
     B345(b340.multiply(b355))
   }
 
-  def rateOfTaxFy1(cp1: CP1): B340 = {
-    val constantsForTaxYear = Ct600AnnualConstants.constantsForTaxYear(TaxYear(AccountingPeriodHelper.fallsInFinancialYear(cp1.value)))
-    B340(constantsForTaxYear.rateOfTax)
+  def rateOfTaxFy1(start: StartDate): BigDecimal = Ct600AnnualConstants.constantsForTaxYear(TaxYear(AccountingPeriodHelper.fallsInFinancialYear(start.value))).rateOfTax
+
+  def rateOfTaxFy2(end: EndDate): BigDecimal = Ct600AnnualConstants.constantsForTaxYear(TaxYear(AccountingPeriodHelper.fallsInFinancialYear(end.value))).rateOfTax
+
+  def financialYear1(accountingPeriod: HmrcAccountingPeriod): Int = {
+    fallsInFinancialYear(accountingPeriod.start.value)
   }
 
-  def rateOfTaxFy2(cp2: CP2): B390 = {
-    val constantsForTaxYear = Ct600AnnualConstants.constantsForTaxYear(TaxYear(AccountingPeriodHelper.fallsInFinancialYear(cp2.value)))
-    B390(constantsForTaxYear.rateOfTax)
-  }
-
-  def financialYear1(accountingPeriod: HmrcAccountingPeriod): B330 = {
-    B330(fallsInFinancialYear(accountingPeriod.start.value))
-  }
-
-  def financialYear2(accountingPeriod: HmrcAccountingPeriod): B380 = {
+  def financialYear2(accountingPeriod: HmrcAccountingPeriod): Option[Int] = {
     val fy2 = fallsInFinancialYear(accountingPeriod.end.value)
-    val result = if (financialYear1(accountingPeriod).value != fy2) {
-                    Some(fy2)
-                  } else None
-
-    B380(result)
+    if (financialYear1(accountingPeriod) != fy2) {
+      Some(fy2)
+    } else None
   }
 
-  def calculateTax(b385: B385, b390: B390) = {
+  def calculateTaxForSecondFinancialYear(b385: B385, b390: B390) = {
     B395(b390.multiply(b385))
   }
 

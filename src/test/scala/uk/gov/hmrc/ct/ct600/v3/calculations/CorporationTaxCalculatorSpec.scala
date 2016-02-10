@@ -48,33 +48,33 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
   }
 
   "B345 = B335v3 * B340v3" in new CorporationTaxCalculator {
-    calculateFinancialYear(B335(10),B340(BigDecimal("10.11"))) shouldBe B345(BigDecimal("101.1"))
+    calculateTaxForFirstFinancialYear(B335(10),B340(BigDecimal("10.11"))) shouldBe B345(BigDecimal("101.1"))
   }
 
   "B330" in new CorporationTaxCalculator {
-    financialYear1(HmrcAccountingPeriod(new CP1(new LocalDate(2014, 6, 1)),new CP2(new LocalDate(2015, 5, 31)) )) shouldBe B330(2014)
+    financialYear1(HmrcAccountingPeriod(new CP1(new LocalDate(2014, 6, 1)),new CP2(new LocalDate(2015, 5, 31)) )) shouldBe 2014
   }
 
   "B380" should {
     "be none when period end is in same financial year" in new CorporationTaxCalculator {
-      financialYear2(HmrcAccountingPeriod(new CP1(new LocalDate(2014, 6, 1)), new CP2(new LocalDate(2014, 5, 31)))) shouldBe B380(None)
+      financialYear2(HmrcAccountingPeriod(new CP1(new LocalDate(2014, 6, 1)), new CP2(new LocalDate(2014, 5, 31)))) shouldBe None
     }
     "be the following year when period end in next financial year" in new CorporationTaxCalculator {
-      financialYear2(HmrcAccountingPeriod(new CP1(new LocalDate(2014, 6, 1)), new CP2(new LocalDate(2015, 5, 31)))) shouldBe B380(Some(2015))
+      financialYear2(HmrcAccountingPeriod(new CP1(new LocalDate(2014, 6, 1)), new CP2(new LocalDate(2015, 5, 31)))) shouldBe Some(2015)
     }
   }
 
   "B395 = B385v3 * B390v3" in new CorporationTaxCalculator {
-    calculateTax(B385(10), B390(BigDecimal("11.11"))) shouldBe B395(BigDecimal("111.1"))
+    calculateTaxForSecondFinancialYear(B385(10), B390(BigDecimal("11.11"))) shouldBe B395(BigDecimal("111.1"))
   }
 
   // These tests assume that delegate code is tested thoroughly by v2 tests
   "B340" in new CorporationTaxCalculator {
-    rateOfTaxFy1(new CP1(new LocalDate(2014, 4, 1))) shouldBe B340(0.21)
+    rateOfTaxFy1(new CP1(new LocalDate(2014, 4, 1))) shouldBe 0.21
   }
 
   "B390" in new CorporationTaxCalculator {
-    rateOfTaxFy2(new CP2(new LocalDate(2015, 4, 1))) shouldBe B390(0.20)
+    rateOfTaxFy2(new CP2(new LocalDate(2015, 4, 1))) shouldBe 0.20
   }
 
   "B335 apportioned profits chargeable FY1" in new CorporationTaxCalculator {

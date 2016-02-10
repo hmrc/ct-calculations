@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.ct600e.v3
 
-import uk.gov.hmrc.ct.box.{ValidatableBox, CtBoxIdentifier, CtOptionalInteger, Input}
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.box.{AnnualConstant, Calculated, CtBigDecimal, CtBoxIdentifier}
+import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
+import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 
-case class CP81Input(value: Option[Int]) extends CtBoxIdentifier(name = "Expenditure qualifying for first year allowance (FYA)") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
-  override def validate(boxRetriever: ComputationsBoxRetriever) = {
-    validateZeroOrPositiveInteger(this)
-  }
-}
+case class E1015(value: BigDecimal) extends CtBoxIdentifier("Second Financial Year Rate Of Tax") with CtBigDecimal with AnnualConstant
 
-object CP81Input {
+object E1015 extends CorporationTaxCalculator with Calculated[E1015, CT600EBoxRetriever] {
 
-  def apply(int: Int): CP81Input = CP81Input(Some(int))
-
+  override def calculate(fieldValueRetriever: CT600EBoxRetriever): E1015 = E1015(rateOfTaxFy2(fieldValueRetriever.retrieveE4))
 }

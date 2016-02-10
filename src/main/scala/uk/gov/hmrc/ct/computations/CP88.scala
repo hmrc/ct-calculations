@@ -16,11 +16,39 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.Validators.ComputationValidatableBox
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP88(value: Option[Int]) extends CtBoxIdentifier(name = "Annual Investment Allowance") with CtOptionalInteger with Input
+case class CP88(value: Option[Int]) extends CtBoxIdentifier(name = "Annual Investment Allowance") with CtOptionalInteger with Input with ComputationValidatableBox[ComputationsBoxRetriever] {
+  override def validate(boxRetriever: ComputationsBoxRetriever) = {
+    validateZeroOrPositiveInteger(this) ++
+      mandatoryIfCompanyIsTrading(boxRetriever, "CP88", value) ++
+      firstYearAllowanceNotGreaterThanMaxFYA(boxRetriever)
+  }
+
+  private def firstYearAllowanceNotGreaterThanMaxFYA(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    val expenditureQualifyingForFirstYearAllowanceInput: Int = retriever.retrieveCP81Input().orZero
+    val aiaThreshold: Int = retriever.retrieveCATO02().value
+
+    val maxAIA = Math.min(expenditureQualifyingForFirstYearAllowanceInput, aiaThreshold)
+
+    value match {
+      case Some(aiaClaimed) if aiaClaimed > maxAIA =>
+        Set(CtValidation(boxId = Some("CP88"), errorMessageKey = "error.CP88.annualInvestmentAllowanceExceeded"))
+      case _ =>
+        Set()
+    }
+  }
+}
 
 object CP88 {
 
-  def apply(value: Int): CP88 = CP88(Some(value))
+  def apply(value: Int): CP88 = new CP88(Some(value))
 }
+
+
+
+
+
+
