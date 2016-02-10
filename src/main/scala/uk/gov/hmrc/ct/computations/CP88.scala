@@ -24,14 +24,14 @@ case class CP88(value: Option[Int]) extends CtBoxIdentifier(name = "Annual Inves
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
     validateZeroOrPositiveInteger(this) ++
       mandatoryIfCompanyIsTrading(boxRetriever, "CP88", value) ++
-      firstYearAllowanceNotGreaterThanMaxFYA(boxRetriever)
+      annualInvestmentAllowanceNotGreaterThanMaxAIA(boxRetriever)
   }
 
-  private def firstYearAllowanceNotGreaterThanMaxFYA(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    val expenditureQualifyingForFirstYearAllowanceInput: Int = retriever.retrieveCP81Input().orZero
+  private def annualInvestmentAllowanceNotGreaterThanMaxAIA(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    val expenditureQualifyingAnnualInvestmentAllowance: Int = retriever.retrieveCP83().orZero
     val aiaThreshold: Int = retriever.retrieveCATO02().value
 
-    val maxAIA = Math.min(expenditureQualifyingForFirstYearAllowanceInput, aiaThreshold)
+    val maxAIA = Math.min(expenditureQualifyingAnnualInvestmentAllowance, aiaThreshold)
 
     value match {
       case Some(aiaClaimed) if aiaClaimed > maxAIA =>

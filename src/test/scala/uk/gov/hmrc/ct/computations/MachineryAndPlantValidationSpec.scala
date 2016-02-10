@@ -246,7 +246,7 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
 
     "validate correctly when not greater than the minimum of CATO02 (maxAIA) and CP83 (expenditureQualifyingAnnualInvestmentAllowance)" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
-        cp81Input = Some(11),
+        cp83 = Some(11),
         cato02 = 10
       )
 
@@ -255,7 +255,7 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
 
     "fails validation when greater than the minimum of CATO02 (maxAIA) and CP83 (expenditureQualifyingAnnualInvestmentAllowance)" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
-        cp81Input = Some(11),
+        cp83 = Some(11),
         cato02 = 10
       )
 
@@ -264,7 +264,7 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
 
     "fails validation when CATO02 (maxAIA) is the minimum" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
-        cp81Input = Some(10),
+        cp83 = Some(10),
         cato02 = 11
       )
 
