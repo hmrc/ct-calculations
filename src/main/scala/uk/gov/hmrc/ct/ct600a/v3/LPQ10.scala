@@ -22,6 +22,6 @@ import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 
 case class LPQ10(value: Option[Boolean]) extends CtBoxIdentifier(name = "Any other loans?") with CtOptionalBoolean with Input with ValidatableBox[CT600ABoxRetriever] {
 
-  def validate(boxRetriever: CT600ABoxRetriever) = if (boxRetriever.retrieveLPQ04().value.getOrElse(false)) validateAsMandatory(this) else Set()
+  def validate(boxRetriever: CT600ABoxRetriever) = if (boxRetriever.retrieveLPQ04().orFalse) validateAsMandatory(this) else Set()
 
 }
