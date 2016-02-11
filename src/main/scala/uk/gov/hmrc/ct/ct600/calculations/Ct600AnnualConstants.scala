@@ -85,6 +85,12 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
                                               upperRelevantAmount = BigDecimal("0"),
                                               reliefFraction = BigDecimal("0.00"),
                                               rateOfTax = BigDecimal("0.20"),
+                                              smallCompaniesRateOfTax = BigDecimal("0.20")),
+
+                  TaxYear(2016) -> CtConstants(lowerRelevantAmount = BigDecimal("0"),
+                                              upperRelevantAmount = BigDecimal("0"),
+                                              reliefFraction = BigDecimal("0.00"),
+                                              rateOfTax = BigDecimal("0.20"),
                                               smallCompaniesRateOfTax = BigDecimal("0.20"))
   )
 
