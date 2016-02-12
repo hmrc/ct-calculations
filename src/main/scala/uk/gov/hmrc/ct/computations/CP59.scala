@@ -27,7 +27,7 @@ object CP59 extends Calculated[CP59, ComputationsBoxRetriever] with TotalDeducti
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP59 = {
     totalDeductionsCalculation(cp58 = fieldValueRetriever.retrieveCP58(),
                                cp505 = fieldValueRetriever.retrieveCP505(),
-                               cp504 = fieldValueRetriever.retrieveCP504(),
+                               cp509 = fieldValueRetriever.retrieveCP509(),
                                cp55 = fieldValueRetriever.retrieveCP55(),
                                cp57 = fieldValueRetriever.retrieveCP57())
   }
