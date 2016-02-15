@@ -83,11 +83,19 @@ trait CtOptionalBigDecimal extends CtValue[Option[BigDecimal]] {
   self: CtBoxIdentifier =>
 
   def plus(other: BigDecimal): BigDecimal = {
-    value.getOrElse(BigDecimal(0.0)) + other
+    this.orZero + other
   }
 
   def minus(other: BigDecimal): BigDecimal = {
-    value.getOrElse(BigDecimal(0.0)) - other
+    this.orZero - other
+  }
+
+  def plus(other: CtBigDecimal): BigDecimal = {
+    this.orZero + other.value
+  }
+
+  def minus(other: CtBigDecimal): BigDecimal = {
+    this.orZero - other.value
   }
 
   def asInt: Option[Int] = value.map(_.toInt)

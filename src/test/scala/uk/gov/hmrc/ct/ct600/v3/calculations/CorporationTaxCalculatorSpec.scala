@@ -21,7 +21,6 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.ct600.calculations.CorporationTaxCalculatorParameters
 import uk.gov.hmrc.ct.ct600.v3._
-import uk.gov.hmrc.ct.ct600a.v3.A70
 
 class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
 
@@ -36,10 +35,10 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
 
   "B525 = MAX ( 0.00, B510v3 - B515v3 )" should {
     "return 0 where B510v3 - B515v3 is negative" in new CorporationTaxCalculator {
-      calculateSATaxPayable(B510(BigDecimal("1")), B515(BigDecimal("1.5"))) shouldBe B525(BigDecimal("0"))
+      calculateSATaxPayable(B510(BigDecimal("1")), B515(Some(BigDecimal("1.5")))) shouldBe B525(BigDecimal("0"))
     }
     "return difference where B510v3 - B515v3 is positive" in new CorporationTaxCalculator {
-      calculateSATaxPayable(B510(BigDecimal("1.5")), B515(BigDecimal("1.0"))) shouldBe B525(BigDecimal("0.5"))
+      calculateSATaxPayable(B510(BigDecimal("1.5")), B515(Some(BigDecimal("1.0")))) shouldBe B525(BigDecimal("0.5"))
     }
   }
 
@@ -92,31 +91,31 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
 
   "B520v3 = B515v3 - B510v3" should {
     "return result if non negative" in new CorporationTaxCalculator {
-      calculateIncomeTaxRepayable(B515(BigDecimal("5.5")), B510(BigDecimal("1.0"))) shouldBe B520(Some(BigDecimal("4.5")))
-      calculateIncomeTaxRepayable(B515(BigDecimal("1.0")), B510(BigDecimal("1.0"))) shouldBe B520(Some(BigDecimal(0)))
+      calculateIncomeTaxRepayable(B515(Some(BigDecimal("5.5"))), B510(BigDecimal("1.0"))) shouldBe B520(Some(BigDecimal("4.5")))
+      calculateIncomeTaxRepayable(B515(Some(BigDecimal("1.0"))), B510(BigDecimal("1.0"))) shouldBe B520(Some(BigDecimal(0)))
     }
     "not be present if result is negative" in new CorporationTaxCalculator {
-      calculateIncomeTaxRepayable(B515(BigDecimal("1.0")), B510(BigDecimal("1.1"))) shouldBe B520(None)
+      calculateIncomeTaxRepayable(B515(Some(BigDecimal("1.0"))), B510(BigDecimal("1.1"))) shouldBe B520(None)
     }
   }
 
   "B600v3 = B525v3 - B595v3" should {
     "return result if non negative" in new CorporationTaxCalculator {
-      calculateTotalTaxToPay(B525(BigDecimal("5.5")), B595(BigDecimal("1.0"))) shouldBe B600(Some(BigDecimal("4.5")))
-      calculateTotalTaxToPay(B525(BigDecimal("1.0")), B595(BigDecimal("1.0"))) shouldBe B600(Some(BigDecimal(0)))
+      calculateTotalTaxToPay(B525(BigDecimal("5.5")), B595(Some(BigDecimal("1.0")))) shouldBe B600(Some(BigDecimal("4.5")))
+      calculateTotalTaxToPay(B525(BigDecimal("1.0")), B595(Some(BigDecimal("1.0")))) shouldBe B600(Some(BigDecimal(0)))
     }
     "not be present if result is negative" in new CorporationTaxCalculator {
-      calculateTotalTaxToPay(B525(BigDecimal("1.0")), B595(BigDecimal("1.1"))) shouldBe B600(None)
+      calculateTotalTaxToPay(B525(BigDecimal("1.0")), B595(Some(BigDecimal("1.1")))) shouldBe B600(None)
     }
   }
 
   "B605v3 = B595v3 - B525v3" should {
     "return result if non negative" in new CorporationTaxCalculator {
-      calculateTaxOverpaid(B595(BigDecimal("5.5")), B525(BigDecimal("1.0"))) shouldBe B605(Some(BigDecimal("4.5")))
-      calculateTaxOverpaid(B595(BigDecimal("1.0")), B525(BigDecimal("1.0"))) shouldBe B605(Some(BigDecimal(0)))
+      calculateTaxOverpaid(B595(Some(BigDecimal("5.5"))), B525(BigDecimal("1.0"))) shouldBe B605(Some(BigDecimal("4.5")))
+      calculateTaxOverpaid(B595(Some(BigDecimal("1.0"))), B525(BigDecimal("1.0"))) shouldBe B605(Some(BigDecimal(0)))
     }
     "not be present if result is negative" in new CorporationTaxCalculator {
-      calculateTaxOverpaid(B595(BigDecimal("1.0")), B525(BigDecimal("1.1"))) shouldBe B605(None)
+      calculateTaxOverpaid(B595(Some(BigDecimal("1.0"))), B525(BigDecimal("1.1"))) shouldBe B605(None)
     }
   }
 

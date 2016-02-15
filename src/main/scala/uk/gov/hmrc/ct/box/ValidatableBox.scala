@@ -144,6 +144,14 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
+  protected def validateZeroOrPositiveBigDecimal(box: CtOptionalBigDecimal with CtBoxIdentifier): Set[CtValidation] = {
+    box.value match {
+      case Some(x) if x >= BigDecimal(0) => Set()
+      case Some(x) => Set(CtValidation(Some(box.id), s"error.${box.id}.mustBeZeroOrPositive"))
+      case _ => Set()
+    }
+  }
+
   protected def validateZeroOrPositiveInteger(box: CtOptionalInteger with CtBoxIdentifier): Set[CtValidation] = {
     box.value match {
       case Some(x) if x >= 0 => Set()
