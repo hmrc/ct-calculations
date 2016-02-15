@@ -16,12 +16,11 @@
 
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
-import uk.gov.hmrc.ct.box.{EndDate, StartDate, CtTypeConverters}
+import uk.gov.hmrc.ct.box.{CtTypeConverters, EndDate, StartDate}
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper._
 import uk.gov.hmrc.ct.ct600.calculations._
 import uk.gov.hmrc.ct.ct600.v3._
-import uk.gov.hmrc.ct.ct600a.v3.A70
 
 
 trait CorporationTaxCalculator extends CtTypeConverters {

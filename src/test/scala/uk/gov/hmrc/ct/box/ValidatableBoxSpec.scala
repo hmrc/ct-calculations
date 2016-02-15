@@ -259,6 +259,21 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
   }
 
+  "validateZeroOrPositiveBigDecimal" should {
+    "return error if number is negative" in {
+      validateZeroOrPositiveBigDecimal(testOptBigDecimalBox(Some(BigDecimal(-0.99)))) shouldBe Set(CtValidation(Some("testOptBigDecimalBox"), "error.testOptBigDecimalBox.mustBeZeroOrPositive"))
+    }
+
+    "return no errors if positive" in {
+      validateZeroOrPositiveBigDecimal(testOptBigDecimalBox(Some(BigDecimal(0)))) shouldBe Set()
+      validateZeroOrPositiveBigDecimal(testOptBigDecimalBox(Some(BigDecimal(0.99)))) shouldBe Set()
+    }
+
+    "return no errors if no value present" in {
+      validateZeroOrPositiveBigDecimal(testOptBigDecimalBox(None)) shouldBe Set()
+    }
+  }
+
   "validatePositiveInteger" should {
     "return error if number is negative" in {
       validateZeroOrPositiveInteger(testOptIntegerBox(Some(-1))) shouldBe Set(CtValidation(Some("testOptIntegerBox"), "error.testOptIntegerBox.mustBeZeroOrPositive"))
@@ -277,6 +292,7 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
 
   case class testOptBooleanBox(value: Option[Boolean]) extends CtBoxIdentifier("testBox") with CtOptionalBoolean{}
   case class testOptIntegerBox(value: Option[Int]) extends CtBoxIdentifier("testBox") with CtOptionalInteger{}
+  case class testOptBigDecimalBox(value: Option[BigDecimal]) extends CtBoxIdentifier("testBox") with CtOptionalBigDecimal{}
   case class testOptStringBox(value: Option[String]) extends CtBoxIdentifier("testBox") with CtOptionalString{}
   case class testStringBox(value: String) extends CtBoxIdentifier("testBox") with CtString{}
   case class testOptDateBox(value: Option[LocalDate]) extends CtBoxIdentifier("testBox") with CtOptionalDate{}
