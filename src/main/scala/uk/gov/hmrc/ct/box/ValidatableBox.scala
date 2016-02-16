@@ -180,9 +180,20 @@ trait ValidatableBox[T <: BoxRetriever] {
     else Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
   }
 
+  protected def validateOptionalStringByLength(boxId: String, box: CtOptionalString, min: Int, max: Int): Set[CtValidation] = {
+    box.value match {
+      case Some(x) => validateStringByLength(boxId, x, min, max)
+      case _ => Set()
+    }
+  }
+
   protected def validateStringByLength(boxId: String, box: CtString, min:Int, max:Int): Set[CtValidation] = {
-     if(box.value.nonEmpty && box.value.size < min || box.value.size > max) {
-       Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(min.toString,max.toString))))
-     } else Set()
+     validateStringByLength(boxId, box.value, min, max)
+  }
+
+  private def validateStringByLength(boxId: String, value: String, min: Int, max: Int): Set[CtValidation] = {
+    if (value.nonEmpty && value.size < min || value.size > max) {
+      Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(min.toString, max.toString))))
+    } else Set()
   }
 }

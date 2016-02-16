@@ -195,6 +195,31 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
   }
 
+  "validateOptionalStringByLength" should {
+    "pass if none" in {
+      validateOptionalStringByLength("testBox", testOptStringBox(None), 7, 8) shouldBe Set()
+    }
+    "pass if in range #1" in {
+      validateOptionalStringByLength("testBox", testOptStringBox(Some("1234567")), 7, 8) shouldBe Set()
+    }
+
+    "pass if in range #2" in {
+      validateOptionalStringByLength("testBox", testOptStringBox(Some("12345678")), 7, 8) shouldBe Set()
+    }
+
+    "pass if empty" in {
+      validateOptionalStringByLength("testBox", testOptStringBox(Some("")), 7, 8) shouldBe Set()
+    }
+
+    "return error if too short" in {
+      validateOptionalStringByLength("testBox", testOptStringBox(Some("123456")), 7, 8) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.text.sizeRange", Some(Seq("7","8"))))
+    }
+
+    "return error if too long" in {
+      validateOptionalStringByLength("testBox", testOptStringBox(Some("123456789")), 7, 8) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.text.sizeRange", Some(Seq("7","8"))))
+    }
+  }
+
   "validateAllFilledOrEmptyStrings" should {
     "pass if all strings non-empty" in {
       validateAllFilledOrEmptyStrings("testBox", Set(testStringBox("something"),testStringBox("something"))) shouldBe Set()
