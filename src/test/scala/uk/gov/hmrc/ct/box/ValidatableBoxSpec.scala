@@ -344,3 +344,4 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
 
   val regexString = "[0-9]{8}" // numbers only and 8 numbers long
 }
+
