@@ -20,12 +20,12 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 
-case class B955(value: Option[String]) extends CtBoxIdentifier("payee name")
-                                       with CtOptionalString with Input  with ValidatableBox[CT600BoxRetriever] {
+case class B960_1(value: Option[String]) extends CtBoxIdentifier("Payee Address Line 1")
+    with CtOptionalString with Input with ValidatableBox[CT600BoxRetriever] {
 
   def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    validateStringAsMandatoryIfPAYEEQ1False(boxRetriever, "B955", this) ++
-    validateOptionalStringByLength("B955" , this, 2, 56) ++
-    validateOptionalStringByRegex("B955", this, validNonForeignLessRestrictiveCharacters)
+    validateStringAsMandatoryIfPAYEEQ1False(boxRetriever, "B960_1", this)  ++
+    validateOptionalStringByLength("B960_1", this, 1, 28) ++
+    validateOptionalStringByRegex("B960_1", this, validNonForeignMoreRestrictiveCharacters)
   }
 }

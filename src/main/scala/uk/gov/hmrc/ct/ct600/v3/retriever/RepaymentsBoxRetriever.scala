@@ -39,6 +39,14 @@ trait RepaymentsBoxRetriever extends BoxRetriever {
 
   def retrieveB960(): B960
 
+  def retrieveB960_1(): B960_1
+
+  def retrieveB960_2(): B960_2
+
+  def retrieveB960_3(): B960_3
+
+  def retrieveB960_5(): B960_5
+
   def retrieveB965(): B965
 
   def retrieveB970(): B970
