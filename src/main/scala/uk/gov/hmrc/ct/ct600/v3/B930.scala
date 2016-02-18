@@ -24,7 +24,7 @@ case class B930(value: String) extends CtBoxIdentifier("account number")
 with CtString with Input with ValidatableBox[RepaymentsBoxRetriever] {
 
   def validate(boxRetriever: RepaymentsBoxRetriever): Set[CtValidation] = {
-    validateAllFilledOrEmptyStringsForBankDetails(boxRetriever,"B930") ++
-      validateStringByRegex("B930",this,AccountNumberValidChars)
+      validateAllFilledOrEmptyStringsForBankDetails(boxRetriever, "B930") ++
+      validateStringByRegex("B930", this, AccountNumberValidChars)
   }
 }

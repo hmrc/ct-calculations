@@ -22,7 +22,7 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
-import uk.gov.hmrc.ct.ct600.v3.retriever.{RepaymentsBoxRetriever, CT600BoxRetriever}
+import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600BoxRetriever, RepaymentsBoxRetriever}
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with ValidatableBox[BoxRetriever]{
@@ -311,6 +311,26 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
 
     "return no errors if no value present" in {
       validateZeroOrPositiveInteger(testOptIntegerBox(None)) shouldBe Set()
+    }
+  }
+
+  "validatePostcode" should {
+    "be happy if postcode is within length limits and matches regex" in {
+      validatePostcode("testbox", testOptStringBox(Some("NW1 9PP"))) shouldBe Set()
+      validatePostcode("testbox", testOptStringBox(Some("NW12 9PP"))) shouldBe Set()
+    }
+    "fail if postcode is too long" in {
+      validatePostcode("testBox", testOptStringBox(Some("NW12 99PP"))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.invalidPostcode"))
+      validatePostcode("testBox", testOptStringBox(Some("NW12999PP"))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.invalidPostcode"))
+    }
+    "fail if the space in the middle is missing ?!??!!" in {
+      validatePostcode("testBox", testOptStringBox(Some("NW19PP"))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.invalidPostcode"))
+      validatePostcode("testBox", testOptStringBox(Some("NW129PP"))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.invalidPostcode"))
+    }
+    "fail if postcode contains non standard characters" in {
+      validatePostcode("testBox", testOptStringBox(Some("NW1 }9PP"))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.invalidPostcode"))
+      validatePostcode("testBox", testOptStringBox(Some("NW1Ë 9PP"))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.invalidPostcode"))
+      validatePostcode("testBox", testOptStringBox(Some("Å©W1 9PP"))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.invalidPostcode"))
     }
   }
 

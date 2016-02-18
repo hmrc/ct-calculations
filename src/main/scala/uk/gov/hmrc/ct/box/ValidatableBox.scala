@@ -23,10 +23,15 @@ import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 trait ValidatableBox[T <: BoxRetriever] {
 
+
   val validNonForeignLessRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"!%\\*_\\+:@<>\\?=;]*"
   val validNonForeignMoreRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"]*"
   val SortCodeValidChars = """^[0-9]{6}$"""
   val AccountNumberValidChars = """^[0-9]{8}$"""
+
+  // Taken from PostCodeType on http://www.hmrc.gov.uk/schemas/core-v2-0.xsd
+  private val postCodeRegex = """(GIR 0AA)|((([A-Z][0-9][0-9]?)|(([A-Z][A-HJ-Y][0-9][0-9]?)|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2})"""
+
 
   def validate(boxRetriever: T): Set[CtValidation]
 
@@ -196,4 +201,23 @@ trait ValidatableBox[T <: BoxRetriever] {
       Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(min.toString, max.toString))))
     } else Set()
   }
+
+  def validatePostcode(boxId: String, box: CtOptionalString): Set[CtValidation] = {
+    validatePostcodeLength(boxId, box) ++ validatePostcodeRegex(boxId, box)
+  }
+
+  private def validatePostcodeLength(boxId: String, box: CtOptionalString): Set[CtValidation] = {
+    box.value match {
+      case Some(x) if x.nonEmpty && x.size < 6 || x.size > 8 => Set(CtValidation(Some(boxId), s"error.$boxId.invalidPostcode"))
+      case _ => Set()
+    }
+  }
+
+  private def validatePostcodeRegex(boxId: String, box: CtOptionalString): Set[CtValidation] = {
+    validateOptionalStringByRegex(boxId, box, postCodeRegex) match {
+      case x if x.isEmpty => Set()
+      case _ => Set(CtValidation(Some(boxId), s"error.$boxId.invalidPostcode"))
+    }
+  }
+
 }

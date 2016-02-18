@@ -24,6 +24,8 @@ case class B965(value: Option[String]) extends CtBoxIdentifier("nominee referenc
 with CtOptionalString with Input with ValidatableBox[CT600BoxRetriever] {
 
   def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    validateStringAsMandatoryIfPAYEEQ1False(boxRetriever,"B965",this)
+    validateStringAsMandatoryIfPAYEEQ1False(boxRetriever, "B965", this) ++
+    validateOptionalStringByLength("B965", this, 1, 20) ++
+    validateOptionalStringByRegex("B965", this, validNonForeignLessRestrictiveCharacters)
   }
 }
