@@ -120,7 +120,7 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever {
 
   def retrieveB107(): B107 = B107(retrieveCP248())
 
-  def retrieveB108(): B108 = B108(retrieveCP291())
+  def retrieveB108(): B108 = B108(retrieveCP247())
 
   def retrieveB118(): B118 = B118(retrieveCP251())
 
