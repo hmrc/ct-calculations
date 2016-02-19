@@ -21,6 +21,6 @@ import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 
 case class E55(value: Option[Int]) extends CtBoxIdentifier("Income Investment income – excluding any amounts included on form CT600") with CtOptionalInteger with Input with ValidatableBox[CT600EBoxRetriever] {
   override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = {
-    validateIntegerAsMandatory("E55", this)
+    validateZeroOrPositiveInteger(this)
   }
 }

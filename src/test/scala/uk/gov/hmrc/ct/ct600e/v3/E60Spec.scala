@@ -39,27 +39,27 @@ class E60Spec extends WordSpec with Matchers with MockitoSugar {
       "true when E60 == 0 and E100 is empty" in {
         when(boxRetriever.retrieveE60()).thenReturn(E60(Some(0)))
         when(boxRetriever.retrieveE100()).thenReturn(E100(None))
-        E60.validate(boxRetriever) shouldBe Set.empty
+        E60(Some(0)).validate(boxRetriever) shouldBe Set.empty
       }
       "true when E60 == 0 and E100 == 0" in {
         when(boxRetriever.retrieveE60()).thenReturn(E60(Some(0)))
         when(boxRetriever.retrieveE100()).thenReturn(E100(Some(0)))
-        E60.validate(boxRetriever) shouldBe Set.empty
+        E60(Some(0)).validate(boxRetriever) shouldBe Set.empty
       }
       "true when E60 > 0 and E100 > 0" in {
         when(boxRetriever.retrieveE60()).thenReturn(E60(Some(60)))
         when(boxRetriever.retrieveE100()).thenReturn(E100(Some(100)))
-        E60.validate(boxRetriever) shouldBe Set.empty
+        E60(Some(60)).validate(boxRetriever) shouldBe Set.empty
       }
       "false when E60 == 0 and E100 > 0" in {
         when(boxRetriever.retrieveE60()).thenReturn(E60(Some(0)))
         when(boxRetriever.retrieveE100()).thenReturn(E100(Some(100)))
-        E60.validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("E60"), errorMessageKey = "error.E60.must.be.positive.when.E100.positive"))
+        E60(Some(0)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("E60"), errorMessageKey = "error.E60.must.be.positive.when.E100.positive"))
       }
       "false when E60 empty and E100 > 0" in {
         when(boxRetriever.retrieveE60()).thenReturn(E60(None))
         when(boxRetriever.retrieveE100()).thenReturn(E100(Some(100)))
-        E60.validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("E60"), errorMessageKey = "error.E60.must.be.positive.when.E100.positive"))
+        E60(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("E60"), errorMessageKey = "error.E60.must.be.positive.when.E100.positive"))
       }
     }
   }
