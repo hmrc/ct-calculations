@@ -16,6 +16,14 @@
 
 package uk.gov.hmrc.ct.ct600e.v3
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalString, Input}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 
-case class E10(value: Option[String]) extends CtBoxIdentifier("Charity Commission registration number, or OSCR number (if applicable)") with CtOptionalString with Input
+case class E10(value: Option[String]) extends CtBoxIdentifier("Charity Commission registration number, or OSCR number (if applicable)") with CtOptionalString with Input with ValidatableBox[CT600EBoxRetriever] {
+
+  override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = value match {
+    case Some(v) if v.length < 6 || v.length > 8 || v.exists(!_.isDigit) => Set(CtValidation(Some("E10"), "error.E10.invalidRegNumber"))
+    case _ => Set()
+  }
+
+}
