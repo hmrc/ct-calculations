@@ -202,7 +202,7 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
         cp81Input = Some(49),
         cpAux1 = 51)
 
-      CP87Input(Some(101)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.firstYearAllowanceClaimExceedsAllowance"))
+      CP87Input(Some(101)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.firstYearAllowanceClaimExceedsAllowance", args = Some(Seq("100"))))
     }
 
     "validate because FYA defaults to 0 when not entered" in {
@@ -259,7 +259,7 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
         cato02 = 10
       )
 
-      CP88(Some(11)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP88"), errorMessageKey = "error.CP88.annualInvestmentAllowanceExceeded"))
+      CP88(Some(11)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP88"), errorMessageKey = "error.CP88.annualInvestmentAllowanceExceeded", args = Some(Seq("10"))))
     }
 
     "fails validation when CATO02 (maxAIA) is the minimum" in {
@@ -268,7 +268,7 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
         cato02 = 11
       )
 
-      CP88(Some(11)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP88"), errorMessageKey = "error.CP88.annualInvestmentAllowanceExceeded"))
+      CP88(Some(11)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP88"), errorMessageKey = "error.CP88.annualInvestmentAllowanceExceeded", args = Some(Seq("10"))))
     }
 
     "fail validation when trading but no value entered" in {
