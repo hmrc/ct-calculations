@@ -35,7 +35,7 @@ case class CP89(value: Option[Int]) extends CtBoxIdentifier(name = "Writing Down
 
     value match {
       case Some(writingDownAllowanceClaimedFromMainPool) if writingDownAllowanceClaimedFromMainPool > maxAllowance =>
-        Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded"))
+        Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded", Some(Seq(maxAllowance.toString))))
       case _ =>
         Set()
     }

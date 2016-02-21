@@ -311,7 +311,7 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       )
 
       CP89(549).validate(stubTestComputationsRetriever) shouldBe Set()
-      CP89(550).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded"))
+      CP89(550).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded", Some(Seq("549"))))
     }
 
     "validates when greater than MAX(0, MainPool% * ( CP78 (Main Pool brought forward) " +
@@ -327,7 +327,7 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       )
 
       CP89(15).validate(stubTestComputationsRetriever) shouldBe Set()
-      CP89(16).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded"))
+      CP89(16).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded", Some(Seq("15"))))
     }
 
     "validated when CP672 is large enough to make the total -ve and any +ve claim is made" in {
@@ -340,7 +340,7 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       )
 
       CP89(0).validate(stubTestComputationsRetriever) shouldBe Set()
-      CP89(1).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded"))
+      CP89(1).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded", Some(Seq("0"))))
     }
 
     "fail validation when trading but no value entered" in {
@@ -375,7 +375,7 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       )
 
       CP668(10).validate(stubTestComputationsRetriever) shouldBe Set()
-      CP668(11).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.specialRatePoolAllowanceExceeded"))
+      CP668(11).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.specialRatePoolAllowanceExceeded", Some(Seq("10"))))
      }
 
     "fails validation when CP667 is large enough to make the total -ve and any +ve claim is made" in {
@@ -387,7 +387,7 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       )
 
       CP668(0).validate(stubTestComputationsRetriever) shouldBe Set()
-      CP668(1).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.specialRatePoolAllowanceExceeded"))
+      CP668(1).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.specialRatePoolAllowanceExceeded", Some(Seq("0"))))
     }
 
     "fail validation when trading but no value entered" in {

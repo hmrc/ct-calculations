@@ -35,7 +35,7 @@ case class CP668(value: Option[Int]) extends CtBoxIdentifier(name = "Writing dow
 
     value match {
       case Some(writingDownAllowanceClaimedFromSpecialRatePool) if writingDownAllowanceClaimedFromSpecialRatePool > maxSP =>
-        Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.specialRatePoolAllowanceExceeded"))
+        Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.specialRatePoolAllowanceExceeded", Some(Seq(maxSP.toString))))
       case _ =>
         Set()
     }
