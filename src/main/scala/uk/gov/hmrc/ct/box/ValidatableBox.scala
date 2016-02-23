@@ -163,6 +163,13 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
+  protected def validatePositiveBigDecimal(box: CtOptionalBigDecimal with CtBoxIdentifier): Set[CtValidation] = {
+    box.value match {
+      case Some(x) if x <= 0 => Set(CtValidation(Some(box.id), s"error.${box.id}.mustBePositive"))
+      case _ => Set()
+    }
+  }
+
   protected def validatePositiveInteger(box: CtOptionalInteger with CtBoxIdentifier): Set[CtValidation] = {
     box.value match {
       case Some(x) if x <= 0 => Set(CtValidation(Some(box.id), s"error.${box.id}.mustBePositive"))
