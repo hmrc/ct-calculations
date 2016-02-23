@@ -35,7 +35,7 @@ case class CP88(value: Option[Int]) extends CtBoxIdentifier(name = "Annual Inves
 
     value match {
       case Some(aiaClaimed) if aiaClaimed > maxAIA =>
-        Set(CtValidation(boxId = Some("CP88"), errorMessageKey = "error.CP88.annualInvestmentAllowanceExceeded"))
+        Set(CtValidation(boxId = Some("CP88"), errorMessageKey = "error.CP88.annualInvestmentAllowanceExceeded", args = Some(Seq(maxAIA.toString))))
       case _ =>
         Set()
     }

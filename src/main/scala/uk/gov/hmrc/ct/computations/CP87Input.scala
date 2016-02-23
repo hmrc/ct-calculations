@@ -36,7 +36,7 @@ case class CP87Input(value: Option[Int]) extends CtBoxIdentifier(name = "First y
 
     value match {
       case Some(fyaClaimed) if fyaClaimed > maxFYA =>
-        Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.firstYearAllowanceClaimExceedsAllowance"))
+        Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.firstYearAllowanceClaimExceedsAllowance", args = Some(Seq(maxFYA.toString))))
       case _ =>
         Set()
     }
