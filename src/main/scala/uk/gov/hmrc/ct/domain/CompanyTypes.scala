@@ -36,6 +36,8 @@ object CompanyTypes {
 
   case object LimitedByGuaranteeCharity extends CompanyType(8)
 
+  case object LimitedBySharesCharity extends CompanyType(8)
+
   case object MembersVoluntaryLiquidation extends CompanyType(0)
 
   case object UnitTrust extends CompanyType(1)
