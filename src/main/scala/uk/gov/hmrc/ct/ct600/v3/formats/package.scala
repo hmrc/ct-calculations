@@ -88,13 +88,13 @@ package object formats {
 
   implicit val B755Format: Format[B755] = new OptionalIntegerFormat[B755](B755.apply)
 
-  implicit val B760Format: Format[B760] = new OptionalIntegerFormat[B760](B760.apply)
+  implicit val B760Format: Format[B760] = new IntegerFormat[B760](B760.apply)
 
-  implicit val B765Format: Format[B765] = new OptionalIntegerFormat[B765](B765.apply)
+  implicit val B765Format: Format[B765] = new IntegerFormat[B765](B765.apply)
 
-  implicit val B775Format: Format[B775] = new OptionalIntegerFormat[B775](B775.apply)
+  implicit val B775Format: Format[B775] = new IntegerFormat[B775](B775.apply)
 
-  implicit val B780Format: Format[B780] = new OptionalIntegerFormat[B780](B780.apply)
+  implicit val B780Format: Format[B780] = new IntegerFormat[B780](B780.apply)
 
   implicit val B860Format: Format[B860] = new OptionalIntegerFormat[B860](B860.apply)
 

@@ -157,9 +157,9 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def retrieveB700(): B700 = B700(retrieveCP670())
 
-  def retrieveB705(): B705
+  def retrieveB705(): B705 = B705(retrieveCP248())
 
-  def retrieveB710(): B710
+  def retrieveB710(): B710 = B710(retrieveCP247())
 
   def retrieveB735(): B735
 
@@ -167,13 +167,13 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def retrieveB755(): B755
 
-  def retrieveB760(): B760
+  def retrieveB760(): B760 = B760(retrieveCP251())
 
-  def retrieveB765(): B765
+  def retrieveB765(): B765 = B765(retrieveCP252())
 
-  def retrieveB775(): B775
+  def retrieveB775(): B775 = B775(retrieveCP253())
 
-  def retrieveB780(): B780
+  def retrieveB780(): B780 = B780(retrieveCP118())
 
   def retrieveB860(): B860
 
