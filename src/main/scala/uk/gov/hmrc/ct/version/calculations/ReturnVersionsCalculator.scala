@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
 import uk.gov.hmrc.ct.ct600e.v3.retriever.{CT600EBoxRetriever => V3CT600EBoxRetriever}
 import uk.gov.hmrc.ct.ct600e.v2.retriever.{CT600EBoxRetriever => V2CT600EBoxRetriever}
-import uk.gov.hmrc.ct.domain.CompanyTypes.{MembersClub, LimitedByGuaranteeCharity, Charity, UkTradingCompany}
+import uk.gov.hmrc.ct.domain.CompanyTypes._
 import uk.gov.hmrc.ct.version.CoHoAccounts.{CoHoMicroEntityAbridgedAccounts, CoHoMicroEntityAccounts, CoHoStatutoryAbbreviatedAccounts, CoHoStatutoryAccounts}
 import uk.gov.hmrc.ct.version.CoHoVersions.AccountsVersion1
 import uk.gov.hmrc.ct.version.HmrcReturns._
@@ -118,7 +118,12 @@ trait ReturnVersionsCalculator {
                               abridgedFiling: AbridgedFiling = AbridgedFiling(false),
                               abbreviatedAccountsFiling: AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false),
                               companyType: FilingCompanyType = FilingCompanyType(UkTradingCompany),
-                              charityAllExempt: Option[Boolean] = None): Set[Return] = {
+                              charityAllExempt: Option[Boolean] = None,
+                              charityNoIncome: Option[Boolean] = None): Set[Return] = {
+
+    if (isJointCharityFiling(companyType.value, hmrcFiling.value, coHoFiling.value)) {
+      throw new IllegalArgumentException(s"")
+    }
 
     val accountsVersion = AccountsVersion1
 
@@ -154,28 +159,34 @@ trait ReturnVersionsCalculator {
       case _ => Set.empty
     }
 
-    val ct600Returns = (hmrcFiling, apStartDate, companyType, charityAllExempt) match {
+    val ct600Returns = (hmrcFiling, apStartDate, companyType, charityAllExempt, charityNoIncome) match {
 
-      case (HMRCFiling(true), Some(startDate), FilingCompanyType(LimitedByGuaranteeCharity), Some(all)) =>
-        ct600ReturnsForCharity(startDate, false)
+      case (HMRCFiling(true), Some(startDate), FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedBySharesCharity), Some(all), _) =>
+        ct600ReturnsForCharity(startDate, false, false)
 
-      case (HMRCFiling(true), Some(startDate), FilingCompanyType(Charity), Some(all)) =>
-        ct600ReturnsForCharity(startDate, all)
+      case (HMRCFiling(true), Some(startDate), FilingCompanyType(Charity), Some(all), _) =>
+        ct600ReturnsForCharity(startDate, all, false)
 
-      case (HMRCFiling(true), Some(startDate), FilingCompanyType(MembersClub), _) =>
+      case (HMRCFiling(true), Some(startDate), FilingCompanyType(Charity), None, Some(noIncome)) =>
+        ct600ReturnsForCharity(startDate, false, noIncome)
+
+      case (HMRCFiling(true), Some(startDate), FilingCompanyType(MembersClub), _, _) =>
         ct600ReturnsForMembersClub(startDate)
 
-      case (HMRCFiling(true), Some(startDate), _, _) =>
+      case (HMRCFiling(true), Some(startDate), _, _, _) =>
         ct600ReturnsForCompany(startDate)
 
       case _ => Set.empty
     }
 
-    val compsReturns = (hmrcFiling, apStartDate, apEndDate, charityAllExempt, companyType) match {
-      case (HMRCFiling(true), _, _, Some(true), FilingCompanyType(Charity)) =>
+    val compsReturns = (hmrcFiling, apStartDate, apEndDate, charityAllExempt, charityNoIncome, companyType) match {
+      case (HMRCFiling(true), _, _, Some(true), _, FilingCompanyType(Charity)) =>
         Set.empty
 
-      case (HMRCFiling(true), Some(startDate), Some(endDate), _, _) =>
+      case (HMRCFiling(true), _, _, None, Some(true), FilingCompanyType(Charity)) =>
+        Set.empty
+
+      case (HMRCFiling(true), Some(startDate), Some(endDate), _, _, _) =>
         Set(Return(Computations, computationsVersionBasedOnDate(startDate, endDate)))
 
       case _ => Set.empty
@@ -183,6 +194,8 @@ trait ReturnVersionsCalculator {
 
     cohoReturn ++ hmrcAccounts ++ ct600Returns ++ compsReturns
   }
+
+//  private def notJointCharity(com)
 
   private def computationsVersionBasedOnDate(apStartDate: LocalDate, apEndDate: LocalDate): Version = {
     (apStartDate, apEndDate) match {
@@ -198,11 +211,12 @@ trait ReturnVersionsCalculator {
 
   private def ct600VersionBasedOnApStartDate(apStartDate: LocalDate): Version = if (apStartDate.isAfter(LocalDate.parse("2015-03-31"))) CT600Version3 else CT600Version2
 
-  private def ct600ReturnsForCharity(apStartDate: LocalDate, charityAllExempt: Boolean): Set[Return] = {
+  private def ct600ReturnsForCharity(apStartDate: LocalDate, charityAllExempt: Boolean, charityNoIncome: Boolean): Set[Return] = {
 
     val version = ct600VersionBasedOnApStartDate(apStartDate)
-    if (charityAllExempt) {
-      Set(Return(CT600e, version))
+    if (charityAllExempt || charityNoIncome) {
+      Set(Return(CT600e, version),
+          Return(CT600j, version))
     }
     else {
       Set(Return(CT600e, version),
@@ -222,5 +236,12 @@ trait ReturnVersionsCalculator {
     Set(Return(CT600, version),
         Return(CT600a, version),
         Return(CT600j, version))
+  }
+
+  private def isJointCharityFiling(companyType: CompanyType, hmrcFiling: Boolean, coHoFiling: Boolean): Boolean = {
+    (companyType, hmrcFiling, coHoFiling) match {
+      case (Charity | LimitedByGuaranteeCharity | LimitedBySharesCharity, true, true) => true
+      case _ => false
+    }
   }
 }
