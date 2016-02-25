@@ -121,7 +121,7 @@ trait ReturnVersionsCalculator {
                               charityAllExempt: Option[Boolean] = None,
                               charityNoIncome: Option[Boolean] = None): Set[Return] = {
 
-    if (isJointCharityFiling(companyType.value, hmrcFiling.value, coHoFiling.value)) {
+    if (isIllegalArguments(companyType.value, hmrcFiling.value, coHoFiling.value, microEntityFiling.value)) {
       throw new IllegalArgumentException(s"")
     }
 
@@ -238,9 +238,10 @@ trait ReturnVersionsCalculator {
         Return(CT600j, version))
   }
 
-  private def isJointCharityFiling(companyType: CompanyType, hmrcFiling: Boolean, coHoFiling: Boolean): Boolean = {
-    (companyType, hmrcFiling, coHoFiling) match {
-      case (Charity | LimitedByGuaranteeCharity | LimitedBySharesCharity, true, true) => true
+  private def isIllegalArguments(companyType: CompanyType, hmrcFiling: Boolean, coHoFiling: Boolean, microEntityFiling: Boolean): Boolean = {
+    (companyType, hmrcFiling, coHoFiling, microEntityFiling) match {
+      case (Charity | LimitedByGuaranteeCharity | LimitedBySharesCharity, true, true, _) => true
+      case (Charity | LimitedByGuaranteeCharity | LimitedBySharesCharity, _, _, true) => true
       case _ => false
     }
   }
