@@ -161,14 +161,11 @@ trait ReturnVersionsCalculator {
 
     val ct600Returns = (hmrcFiling, apStartDate, companyType, charityAllExempt, charityNoIncome) match {
 
-      case (HMRCFiling(true), Some(startDate), FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedBySharesCharity), Some(all), _) =>
-        ct600ReturnsForCharity(startDate, false, false)
-
-      case (HMRCFiling(true), Some(startDate), FilingCompanyType(Charity), Some(all), _) =>
-        ct600ReturnsForCharity(startDate, all, false)
-
       case (HMRCFiling(true), Some(startDate), FilingCompanyType(Charity), None, Some(noIncome)) =>
         ct600ReturnsForCharity(startDate, false, noIncome)
+
+      case (HMRCFiling(true), Some(startDate), FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedBySharesCharity) | FilingCompanyType(Charity), _, _) =>
+        ct600ReturnsForCharity(startDate, false, false)
 
       case (HMRCFiling(true), Some(startDate), FilingCompanyType(MembersClub), _, _) =>
         ct600ReturnsForMembersClub(startDate)
@@ -194,8 +191,6 @@ trait ReturnVersionsCalculator {
 
     cohoReturn ++ hmrcAccounts ++ ct600Returns ++ compsReturns
   }
-
-//  private def notJointCharity(com)
 
   private def computationsVersionBasedOnDate(apStartDate: LocalDate, apEndDate: LocalDate): Version = {
     (apStartDate, apEndDate) match {
