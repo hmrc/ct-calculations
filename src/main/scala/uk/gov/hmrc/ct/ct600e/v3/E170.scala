@@ -26,9 +26,11 @@ object E170 extends Calculated[E170, CT600EBoxRetriever] with CtTypeConverters {
     val e170a = boxRetriever.retrieveE170A()
     val e170b = boxRetriever.retrieveE170B()
 
-    (e170a.value, e170b.value) match {
-      case (None, None)  => E170(None)
-      case _ => E170(Some(e170a.plus(e170b)))
-    }
+    E170(
+      (e170a.value, e170b.value) match {
+        case (None, None)  => None
+        case _ => Some(e170a plus e170b)
+      }
+    )
   }
 }
