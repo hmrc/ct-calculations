@@ -164,6 +164,9 @@ trait ReturnVersionsCalculator {
       case (HMRCFiling(true), Some(startDate), FilingCompanyType(Charity), None, Some(noIncome)) =>
         ct600ReturnsForCharity(startDate, false, noIncome)
 
+      case (HMRCFiling(true), Some(startDate), FilingCompanyType(Charity), Some(all), None) =>
+        ct600ReturnsForCharity(startDate, all, false)
+
       case (HMRCFiling(true), Some(startDate), FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedBySharesCharity) | FilingCompanyType(Charity), _, _) =>
         ct600ReturnsForCharity(startDate, false, false)
 

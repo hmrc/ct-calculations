@@ -280,7 +280,6 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
     "for Non company charity filing" when {
       "return versions for all proceeds used for charitable purposes for AP starting before 2015-04-01" in new ReturnVersionsCalculator {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
-                                 Return(CT600, CT600Version2),
                                  Return(CT600e, CT600Version2),
                                  Return(CT600j, CT600Version2))
 
@@ -297,7 +296,6 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
       "return versions for all proceeds used for charitable purposes for AP starting on or after 2015-04-01" in new ReturnVersionsCalculator {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
-                                 Return(CT600, CT600Version3),
                                  Return(CT600e, CT600Version3),
                                  Return(CT600j, CT600Version3))
 
