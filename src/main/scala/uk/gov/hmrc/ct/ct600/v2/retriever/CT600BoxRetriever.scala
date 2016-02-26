@@ -133,4 +133,8 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever {
   def retrieveB174(): B174 = B174(retrieveCP278)
 
   def retrieveCATO04(): CATO04 = CATO04.calculate(this)
+
+  def retrieveB1000: B1000
+
+  def retrieveB1001: B1001 = B1001(this.retrieveAC1())
 }
