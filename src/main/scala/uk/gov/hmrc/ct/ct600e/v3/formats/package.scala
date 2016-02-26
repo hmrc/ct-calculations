@@ -92,7 +92,9 @@ package object formats {
 
   implicit val E165Format: Format[E165] = new OptionalBigDecimalFormat[E165](E165.apply)
 
-  implicit val E170Format: Format[E170] = new OptionalBigDecimalFormat[E170](E170.apply)
+  implicit val E170AFormat: Format[E170A] = new OptionalBigDecimalFormat[E170A](E170A.apply)
+
+  implicit val E170BFormat : Format[E170B] = new OptionalBigDecimalFormat[E170B](E170B.apply)
 
   implicit val E175Format: Format[E175] = new OptionalBigDecimalFormat[E175](E175.apply)
 

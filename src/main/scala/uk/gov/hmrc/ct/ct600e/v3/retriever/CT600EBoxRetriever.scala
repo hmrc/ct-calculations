@@ -97,7 +97,11 @@ trait CT600EBoxRetriever extends BoxRetriever {
 
   def retrieveE165(): E165
 
-  def retrieveE170(): E170
+  def retrieveE170(): E170 = E170.calculate(this)
+
+  def retrieveE170A() : E170A
+
+  def retrieveE170B() : E170B
 
   def retrieveE175(): E175
 
