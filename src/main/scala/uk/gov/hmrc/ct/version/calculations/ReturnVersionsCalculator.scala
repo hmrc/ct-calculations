@@ -37,18 +37,6 @@ trait ReturnVersionsCalculator {
   def doCalculation[A <: BoxRetriever](boxRetriever: A): Set[Return] = {
     boxRetriever match {
 
-      case br: V3CT600EBoxRetriever with ComputationsBoxRetriever with FilingAttributesBoxValueRetriever =>
-        calculateReturnVersions(apStartDate = Some(br.retrieveE3().value),
-                                apEndDate = Some(br.retrieveE4().value),
-                                coHoFiling = br.retrieveCompaniesHouseFiling(),
-                                hmrcFiling = br.retrieveHMRCFiling(),
-                                microEntityFiling = br.retrieveMicroEntityFiling(),
-                                statutoryAccountsFiling = br.retrieveStatutoryAccountsFiling(),
-                                abridgedFiling = br.retrieveAbridgedFiling(),
-                                abbreviatedAccountsFiling = br.retrieveAbbreviatedAccountsFiling(),
-                                companyType = br.retrieveCompanyType(),
-                                charityAllExempt = br.retrieveE20().value)
-
       case br: V3CT600EBoxRetriever with FilingAttributesBoxValueRetriever =>
         calculateReturnVersions(apStartDate = Some(br.retrieveE3().value),
                                 apEndDate = Some(br.retrieveE4().value),
@@ -59,19 +47,8 @@ trait ReturnVersionsCalculator {
                                 abridgedFiling = br.retrieveAbridgedFiling(),
                                 abbreviatedAccountsFiling = br.retrieveAbbreviatedAccountsFiling(),
                                 companyType = br.retrieveCompanyType(),
-                                charityAllExempt = br.retrieveE20().value)
-
-      case br: V2CT600EBoxRetriever with ComputationsBoxRetriever with FilingAttributesBoxValueRetriever =>
-        calculateReturnVersions(apStartDate = Some(br.retrieveE1021().value),
-                                apEndDate = Some(br.retrieveE1022().value),
-                                coHoFiling = br.retrieveCompaniesHouseFiling(),
-                                hmrcFiling = br.retrieveHMRCFiling(),
-                                microEntityFiling = br.retrieveMicroEntityFiling(),
-                                statutoryAccountsFiling = br.retrieveStatutoryAccountsFiling(),
-                                abridgedFiling = br.retrieveAbridgedFiling(),
-                                abbreviatedAccountsFiling = br.retrieveAbbreviatedAccountsFiling(),
-                                companyType = br.retrieveCompanyType(),
-                                charityAllExempt = br.retrieveE1011().value)
+                                charityAllExempt = br.retrieveE20().value,
+                                charityNoIncome = v3CharityNoIncome(br))
 
       case br: V2CT600EBoxRetriever with FilingAttributesBoxValueRetriever =>
         calculateReturnVersions(apStartDate = Some(br.retrieveE1021().value),
@@ -83,7 +60,8 @@ trait ReturnVersionsCalculator {
                                 abridgedFiling = br.retrieveAbridgedFiling(),
                                 abbreviatedAccountsFiling = br.retrieveAbbreviatedAccountsFiling(),
                                 companyType = br.retrieveCompanyType(),
-                                charityAllExempt = br.retrieveE1011().value)
+                                charityAllExempt = br.retrieveE1011().value,
+                                charityNoIncome = v2CharityNoIncome(br))
 
       case br: ComputationsBoxRetriever with FilingAttributesBoxValueRetriever =>
         calculateReturnVersions(apStartDate = Some(br.retrieveCP1().value),
@@ -241,6 +219,20 @@ trait ReturnVersionsCalculator {
       case (Charity | LimitedByGuaranteeCharity | LimitedBySharesCharity, true, true, _) => true
       case (Charity | LimitedByGuaranteeCharity | LimitedBySharesCharity, _, _, true) => true
       case _ => false
+    }
+  }
+
+  private def v3CharityNoIncome(br: V3CT600EBoxRetriever): Option[Boolean] = {
+    (br.retrieveE15().value, br.retrieveE20().value) match {
+      case (Some(true), None) => Some(true)
+      case _ => None
+    }
+  }
+
+  private def v2CharityNoIncome(br: V2CT600EBoxRetriever): Option[Boolean] = {
+    (br.retrieveE1010().value, br.retrieveE1011().value) match {
+      case (Some(true), None) => Some(true)
+      case _ => None
     }
   }
 }
