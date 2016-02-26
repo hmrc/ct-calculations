@@ -98,6 +98,14 @@ trait CtOptionalBigDecimal extends CtValue[Option[BigDecimal]] {
     this.orZero - other.value
   }
 
+  def plus(other: CtOptionalBigDecimal): BigDecimal = {
+    this.orZero + other.orZero
+  }
+
+  def minus(other: CtOptionalBigDecimal): BigDecimal = {
+    this.orZero - other.orZero
+  }
+
   def asInt: Option[Int] = value.map(_.toInt)
 
   def orZero: BigDecimal = {

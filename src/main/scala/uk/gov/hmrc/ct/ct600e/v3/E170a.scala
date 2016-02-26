@@ -19,17 +19,9 @@ package uk.gov.hmrc.ct.ct600e.v3
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 
-case class E170(value: Option[BigDecimal]) extends CtBoxIdentifier("Held at the end of the period (use accounts figures): Loans and non-trade debtors") with CtOptionalBigDecimal
+case class E170A(value: Option[BigDecimal]) extends CtBoxIdentifier("Held at the end of the period (use accounts figures): Loans") with CtOptionalBigDecimal with Input with ValidatableBox[CT600EBoxRetriever] {
 
-object E170 extends Calculated[E170, CT600EBoxRetriever] with CtTypeConverters {
-  override def calculate(boxRetriever: CT600EBoxRetriever) : E170 = {
-    val e170a = boxRetriever.retrieveE170A()
-    val e170b = boxRetriever.retrieveE170B()
+  override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = validateZeroOrPositiveBigDecimal(this)
 
-    E170(Some(1337))
-    (e170a.value, e170b.value) match {
-      case (None, None)  => E170(None)
-      case _ => E170(Some(e170a.plus(e170b)))
-    }
-  }
 }
+
