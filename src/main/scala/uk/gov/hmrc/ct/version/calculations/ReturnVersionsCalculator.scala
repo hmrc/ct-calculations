@@ -125,7 +125,7 @@ trait ReturnVersionsCalculator {
       case (HMRCFiling(true), MicroEntityFiling(true), _, _) =>
         Set(Return(HmrcMicroEntityAccounts, accountsVersion))
 
-      case (HMRCFiling(true), _, StatutoryAccountsFiling(false), FilingCompanyType(LimitedByGuaranteeCharity)) =>
+      case (HMRCFiling(true), _, StatutoryAccountsFiling(false), FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedBySharesCharity)) =>
         Set(Return(HmrcStatutoryAccounts, accountsVersion))
 
       case (HMRCFiling(true), _, StatutoryAccountsFiling(true), _) =>
@@ -138,6 +138,9 @@ trait ReturnVersionsCalculator {
     }
 
     val ct600Returns = (hmrcFiling, apStartDate, companyType, charityAllExempt, charityNoIncome) match {
+
+      case (HMRCFiling(true), Some(startDate), FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedBySharesCharity) | FilingCompanyType(Charity), None, None) =>
+        ct600ReturnsForCompany(startDate).filter(_.submission != CT600a)
 
       case (HMRCFiling(true), Some(startDate), FilingCompanyType(Charity), None, Some(noIncome)) =>
         ct600ReturnsForCharity(startDate, false, noIncome)
