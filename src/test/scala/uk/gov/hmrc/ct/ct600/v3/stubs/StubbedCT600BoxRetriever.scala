@@ -274,8 +274,6 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
 
   override def retrieveCP502(): CP502 = ???
 
-  override def retrieveCP81Input(): CP81Input = ???
-
   override def retrieveCP16(): CP16 = ???
 
   override def retrieveCP43(): CP43 = ???
@@ -323,4 +321,6 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def generateValues: Map[String, CtValue[_]] = ???
 
   override def retrieveB65(): B65 = ???
+
+  override def retrieveCP252(): CP252 = ???
 }

@@ -23,8 +23,12 @@ class TotalExpenditureQualifyingForTheFirstYearAllowanceCalculatorSpec extends W
 
   "TotalExpenditureQualifyingForTheFirstYearAllowanceCalculator" should {
     "calculate the total expenditure qualifying for the first year allowance with populated values" in new TotalExpenditureQualifyingForTheFirstYearAllowanceCalculator {
-      totalExpenditureQualifyingForTheFirstYearAllowance(cp79 = CP79(1),
-                                                         cp80 = CP80(2)) shouldBe CP81(3)
+      totalExpenditureQualifyingForTheFirstYearAllowance(cp79 = CP79(Some(1)),
+                                                         cp80 = CP80(Some(2))) shouldBe CP81(3)
+    }
+
+    "calculate the total expenditure qualifying for the first year allowance without values" in new TotalExpenditureQualifyingForTheFirstYearAllowanceCalculator {
+      totalExpenditureQualifyingForTheFirstYearAllowance(CP79(None), CP80(None)) shouldBe CP81(0)
     }
   }
 }
