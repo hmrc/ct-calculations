@@ -25,3 +25,8 @@ override def validate(boxRetriever: ComputationsBoxRetriever) = {
     validateZeroOrPositiveInteger(this)
   }
 }
+
+object CP80 {
+
+  def apply(value: Int): CP80 = CP80(Some(value))
+}

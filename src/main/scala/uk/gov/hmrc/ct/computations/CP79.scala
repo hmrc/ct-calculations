@@ -25,3 +25,8 @@ case class CP79(value: Option[Int]) extends CtBoxIdentifier(name = "Relevant fir
     validateZeroOrPositiveInteger(this)
   }
 }
+
+object CP79 {
+
+  def apply(value: Int): CP79 = CP79(Some(value))
+}
