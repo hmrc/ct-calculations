@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600e.v2
+package uk.gov.hmrc.ct.ct600.v2
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalBoolean, Input}
-import uk.gov.hmrc.ct.ct600e.v2.retriever.CT600EBoxRetriever
+import uk.gov.hmrc.ct.accounts.AC1
+import uk.gov.hmrc.ct.box.{Linked, CtBoxIdentifier, CtOptionalString, Input}
 
-case class E1012(value: Option[Boolean]) extends CtBoxIdentifier("Some not only charitable") with CtOptionalBoolean
+case class B1001(value: Option[String]) extends CtBoxIdentifier("CRN") with CtOptionalString
 
-object E1012 extends Calculated[E1012, CT600EBoxRetriever] {
-  override def calculate(boxRetriever: CT600EBoxRetriever): E1012 = {
-    E1012(boxRetriever.retrieveE1011().inverse)
+object B1001 extends Linked[AC1, B1001] {
+  override def apply(source: AC1): B1001 = {
+    B1001(source.value)
   }
 }

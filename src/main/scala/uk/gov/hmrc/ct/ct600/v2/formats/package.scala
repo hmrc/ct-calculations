@@ -184,4 +184,6 @@ package object formats {
   implicit val RSQ7Format: Format[RSQ7] = new BooleanFormat[RSQ7](RSQ7.apply)
 
   implicit val RSQ8Format: Format[RSQ8] = new BooleanFormat[RSQ8](RSQ8.apply)
+
+  implicit val B1000Format: Format[B1000] = new StringFormat[B1000](B1000.apply)
 }
