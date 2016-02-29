@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600e.v2
+package uk.gov.hmrc.ct.ct600e.v3
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalBoolean, Input}
-import uk.gov.hmrc.ct.ct600e.v2.retriever.CT600EBoxRetriever
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 
-case class E1012(value: Option[Boolean]) extends CtBoxIdentifier("Some not only charitable") with CtOptionalBoolean
+case class E170A(value: Option[BigDecimal]) extends CtBoxIdentifier("Held at the end of the period (use accounts figures): Loans") with CtOptionalBigDecimal with Input with ValidatableBox[CT600EBoxRetriever] {
 
-object E1012 extends Calculated[E1012, CT600EBoxRetriever] {
-  override def calculate(boxRetriever: CT600EBoxRetriever): E1012 = {
-    E1012(boxRetriever.retrieveE1011().inverse)
-  }
+  override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = validateZeroOrPositiveBigDecimal(this)
+
 }
+

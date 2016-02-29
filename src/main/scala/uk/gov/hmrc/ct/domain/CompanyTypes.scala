@@ -66,7 +66,7 @@ object CompanyTypes {
     UkTradingCompany, CompanyLimitedByGuarantee, CommunityAmateurSportsClub, CompanyInLiquidation,
     MembersClub, Charity, MembersVoluntaryLiquidation, UnitTrust, CloseInvestmentHoldingCompany,
     InvestmentTrustWithHousingInvestmentProfits, InsuranceCompany, PropertyManagementCompany,
-    RealEstateInvestmentTrust, PublicLimitedCompany, LimitedLiabilityPartnership, Ineligible, LimitedByGuaranteeCharity
+    RealEstateInvestmentTrust, PublicLimitedCompany, LimitedLiabilityPartnership, Ineligible, LimitedByGuaranteeCharity, LimitedBySharesCharity
   )
 
   implicit val reads: Reads[CompanyType] =
