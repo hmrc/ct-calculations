@@ -23,6 +23,6 @@ case class E1012(value: Option[Boolean]) extends CtBoxIdentifier("Some not only 
 
 object E1012 extends Calculated[E1012, CT600EBoxRetriever] {
   override def calculate(boxRetriever: CT600EBoxRetriever): E1012 = {
-    E1012(boxRetriever.retrieveE1011().value.map { e1011 => !e1011})
+    E1012(boxRetriever.retrieveE1011().inverse)
   }
 }
