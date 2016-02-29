@@ -28,3 +28,8 @@ case class CP252(value: Option[Int]) extends CtBoxIdentifier("Expenditure on des
     environmentFriendlyExpenditureCannotExceedRelevantFYAExpenditure(boxRetriever, this)
   }
 }
+
+object CP252 {
+
+  def apply(value: Int): CP252 = CP252(Some(value))
+}
