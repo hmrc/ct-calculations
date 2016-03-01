@@ -29,8 +29,8 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
   /*    CPQ8        Ceased Trading
         CP78        Written down value brought forward
         CP666       Written down value of Special Rate Pool brought forward
-        CP81_Input  Expenditure qualifying for first year allowance (FYA)
-        CP81        ""
+        CP79        First year allowance (FYA) expenditure
+        CP80        Other first year allowance expenditure
         CP82        Additions Qualifying for writing down allowance
         CP83        Expenditure qualifying for Annual Investment Allowance (AIA)
         CP84        Disposal proceeds
@@ -62,32 +62,32 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
         Table(
           ("Scenario",
             "LEC01",
-            "CPQ8", "CP78", "CP666", "CP81_Input", "CP82", "CP83", "CP667", "CP672", "CP87_Input","CP668", "CP670", "CP88", "CP89", "CP186", "CP91", "CP671", "CP92", "CP669"),
+            "CPQ8", "CP78", "CP666", "CP79", "CP80", "CP82", "CP83", "CP667", "CP672", "CP87_Input","CP668", "CP670", "CP88", "CP89", "CP186", "CP91", "CP671", "CP92", "CP669"),
 
           ("Scenario 1 - Company still trading, some AIA can be claimed from the main pool, no disposals were made, user claims some but not all they're entitled to.",
             List(mainRatePoolCar(100)),
-            Some(false), Some(50), None, Some(0), Some(15), Some(40), None, Some(0), Some(0),Some(0), Some(0), Some(0), Some(30), Some(30), None, None, Some(175), Some(0)),
+            Some(false), Some(50), None, Some(0), Some(0), Some(15), Some(40), None, Some(0), Some(0),Some(0), Some(0), Some(0), Some(30), Some(30), None, None, Some(175), Some(0)),
 
           ("Scenario 2 - Company still trading, some AIA, main pool allowance can be claimed from the main pool, there have been disposals on the main pool, but lower than the value of the pool. " +
             "User claims some of the allowance but not all they're entitled to.",
             List(mainRatePoolCar(100)),
-            Some(false), Some(50), None, Some(0), Some(15), Some(40), None, Some(48), Some(0), None, Some(0), Some(0), Some(21), Some(21), None, None, Some(136), Some(0)),
+            Some(false), Some(50), None, Some(0), Some(0), Some(15), Some(40), None, Some(48), Some(0), None, Some(0), Some(0), Some(21), Some(21), None, None, Some(136), Some(0)),
 
           ("Scenario 3 - Company still trading, some AIA, there have been disposals on the main pool, higher than the value of the pool " +
             "(there will be balancing charges). User can't claim anything from the main pool.",
             List(mainRatePoolCar(270)),
-            Some(false), Some(50), None, Some(0), Some(47), Some(69), None, Some(3000), Some(0),None, Some(0), Some(0), None, Some(0), Some(2564), Some(2564), Some(0), Some(0)),
+            Some(false), Some(50), None, Some(0), Some(0), Some(47), Some(69), None, Some(3000), Some(0),None, Some(0), Some(0), None, Some(0), Some(2564), Some(2564), Some(0), Some(0)),
 
           ("Scenario 4 - Company still trading, some AIA and FYA, there have been disposals on the main pool and secondary pool, " +
             "higher than the value of both pools (there will be balancing charges). User can't claim anything from the main pool.",
             List(mainRatePoolCar(270), specialRatePoolCar(594)),
-            Some(false), Some(11), Some(98), Some(31), Some(43), Some(77), Some(2111), Some(3500), Some(0), None, Some(1419), None, None, Some(0), Some(3068), Some(3068), Some(0), Some(0)),
+            Some(false), Some(11), Some(98), Some(31), Some(0),  Some(43), Some(77), Some(2111), Some(3500), Some(0), None, Some(1419), None, None, Some(0), Some(3068), Some(3068), Some(0), Some(0)),
 
           ("Scenario 5 - Company still trading, some AIA and FYA (also FYA cars), there have been disposals on the main pool and secondary pool, " +
             "the main disposals higher than the value of the main pool but the special rate disposals still leave some remaining special rate allowance " +
             "to be claimed (there will be only balancing charges on the main pool). user can't claim anything from the main pool but can claim from the secondary pool.",
             List(fyaRatePoolCar(25), mainRatePoolCar(50), specialRatePoolCar(600)),
-            Some(false), Some(11), Some(98), Some(31), Some(43), Some(77), Some(4), Some(3500), Some(21), Some(20), Some(0), Some(64), None, Some(85), Some(3348), Some(3348), Some(0), Some(674))
+            Some(false), Some(11), Some(98), Some(30), Some(1),  Some(43), Some(77), Some(4), Some(3500), Some(21), Some(20), Some(0), Some(64), None, Some(85), Some(3348), Some(3348), Some(0), Some(674))
         )
 
       forAll(companiesStillTrading) {
@@ -96,7 +96,8 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
          cpq8: Option[Boolean],
          cp78: Option[Int],
          cp666: Option[Int],
-         cp81_Input: Option[Int],
+         cp79: Option[Int],
+         cp80: Option[Int],
          cp82: Option[Int],
          cp83: Option[Int],
          cp667: Option[Int],
@@ -116,7 +117,8 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
             lec01 = lec01,
             cpq8 = cpq8,
             cp78 = cp78,
-            cp81Input = cp81_Input,
+            cp79 = cp79,
+            cp80 = cp80,
             cp82 = cp82,
             cp83 = cp83,
             cp87Input = cp87_Input,
@@ -127,9 +129,6 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
             cp668 = cp668,
             cp672 = cp672
           ) with StubbedAccountsBoxRetriever
-
-          assert(retriever.retrieveCP81().value equals cp81_Input.getOrElse(fail("Missing value for CP81 Input")), scenario)
-          assert(retriever.retrieveCP87().value equals cp87_Input.getOrElse(fail("Missing value for CP87 Input")), scenario)
 
           assert(retriever.retrieveCP91().value equals cp91, clue("CP91", retriever.retrieveCP91().value, cp91))
           assert(retriever.retrieveCP92().value equals cp92, clue("CP92", retriever.retrieveCP92().value, cp92))
@@ -145,17 +144,19 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
       Table(
         ("Scenario",
           "LEC01",
-          "CPQ8", "CP78", "CP666", "CP674", "CP81_Input", "CP82", "CP83", "CP84", "CP673",
+          "CPQ8", "CP78", "CP666", "CP674", "CP79", "CP80", "CP82", "CP83", "CP84", "CP673",
           "CP90", "CP186", "CP91", "CP671", "CP92", "CP669"),
 
         ("Scenario 6 - Company not trading, higher disposals than allowances: balancing charges.",
           List(fyaRatePoolCar(20), mainRatePoolCar(30), specialRatePoolCar(40)),
-          Some(true), Some(20), Some(30), Some(30),Some(0), None, None, Some(1000), Some(300),
+          Some(true),
+          Some(20), Some(30), Some(30),Some(0), None, None, None, Some(1000), Some(300),
           Some(0), Some(0), Some(1130), Some(1130), Some(0), Some(0)),
 
         ("Scenario 7 - Company not trading, lower disposals than allowances: balance allowances.",
           List(fyaRatePoolCar(20), mainRatePoolCar(30), specialRatePoolCar(40)),
-          Some(true), Some(500), Some(600), Some(1000),Some(0), None, None, Some(10), Some(5),
+          Some(true),
+          Some(500), Some(600), Some(1000),Some(0), None, None, None, Some(10), Some(5),
           Some(2175), Some(2175), Some(0), Some(0), Some(0), Some(0))
       )
 
@@ -167,7 +168,8 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
          cp78: Option[Int],
          cp666: Option[Int],
          cp674: Option[Int],
-         cp81_Input: Option[Int],
+         cp79: Option[Int],
+         cp80: Option[Int],
          cp82: Option[Int],
          cp83: Option[Int],
          cp84: Option[Int],
@@ -183,7 +185,8 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
             lec01 = lec01,
             cpq8 = cpq8,
             cp78 = cp78,
-            cp81Input = cp81_Input,
+            cp79 = cp79,
+            cp80 = cp80,
             cp82 = cp82,
             cp83 = cp83,
             cp84 = cp84,
@@ -192,15 +195,12 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
             cp674 = cp674
           ) with AccountsBoxRetriever
 
-          assert(retriever.retrieveCP81().value equals cp81_Input.getOrElse(fail("Missing value for CP81 Input")), scenario)
-
           assert(retriever.retrieveCP90().value equals cp90, clue("CP90", retriever.retrieveCP90().value, cp90))
           assert(retriever.retrieveCP91().value equals cp91, clue("CP91", retriever.retrieveCP91().value, cp91))
           assert(retriever.retrieveCP92().value equals cp92, clue("CP92", retriever.retrieveCP92().value, cp92))
           assert(retriever.retrieveCP186().value equals cp186, clue("CP186", retriever.retrieveCP186().value, cp186))
           assert(retriever.retrieveCP669().value equals cp669, clue("CP669", retriever.retrieveCP669().value, cp669))
           assert(retriever.retrieveCP671().value equals cp671, clue("CP671", retriever.retrieveCP671().value, cp671))
-
         }
       }
 
@@ -223,7 +223,8 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
   class TestComputationsRetriever(lec01: List[Car],
                                   cpq8: Option[Boolean],
                                   cp78: Option[Int] = None,
-                                  cp81Input: Option[Int] = None,
+                                  cp79: Option[Int] = None,
+                                  cp80: Option[Int] = None,
                                   cp82: Option[Int] = None,
                                   cp83: Option[Int] = None,
                                   cp84: Option[Int] = None,
@@ -248,7 +249,9 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
 
     override def retrieveCP666: CP666 = CP666(cp666)
 
-    override def retrieveCP81Input: CP81Input = CP81Input(cp81Input)
+    override def retrieveCP79: CP79 = CP79(cp79)
+
+    override def retrieveCP80: CP80 = CP80(cp80)
 
     override def retrieveCP82: CP82 = CP82(cp82)
 

@@ -23,5 +23,5 @@ case class B765(value: Int) extends CtBoxIdentifier("Designated environmentally 
 
 object B765 extends Linked[CP252, B765] {
 
-  override def apply(source: CP252): B765 = B765(source.value)
+  override def apply(source: CP252): B765 = B765(source.orZero)
 }

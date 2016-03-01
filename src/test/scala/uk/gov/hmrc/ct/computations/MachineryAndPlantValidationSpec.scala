@@ -24,7 +24,8 @@ import uk.gov.hmrc.ct.{CATO02, CATO20, CATO21, CATO22}
 class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
                                      cpq8: Option[Boolean] = None,
                                      cp78: Option[Int] = None,
-                                     cp81Input: Option[Int] = None,
+                                     cp79: Option[Int] = None,
+                                     cp80: Option[Int] = None,
                                      cp82: Option[Int] = None,
                                      cp83: Option[Int] = None,
                                      cp84: Option[Int] = None,
@@ -52,9 +53,11 @@ class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
 
   override def retrieveCP78: CP78 = CP78(cp78)
 
-  override def retrieveCP666: CP666 = CP666(cp666)
+  override def retrieveCP79: CP79 = CP79(cp79)
 
-  override def retrieveCP81Input: CP81Input = CP81Input(cp81Input)
+  override def retrieveCP80: CP80 = CP80(cp80)
+
+  override def retrieveCP666: CP666 = CP666(cp666)
 
   override def retrieveCP82: CP82 = CP82(cp82)
 
@@ -113,11 +116,19 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
     }
   }
 
-  "CP81Input " should {
+  "CP79" should {
     "validate if present and non-negative or if not present, otherwise fail" in {
-      CP81Input(Some(0)).validate(stubBoxRetriever) shouldBe Set()
-      CP81Input(None).validate(stubBoxRetriever) shouldBe Set()
-      CP81Input(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP81Input"), errorMessageKey = "error.CP81Input.mustBeZeroOrPositive"))
+      CP79(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP79(None).validate(stubBoxRetriever) shouldBe Set()
+      CP79(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP79"), errorMessageKey = "error.CP79.mustBeZeroOrPositive"))
+    }
+  }
+
+  "CP80" should {
+    "validate if present and non-negative or if not present, otherwise fail" in {
+      CP80(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP80(None).validate(stubBoxRetriever) shouldBe Set()
+      CP80(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP80"), errorMessageKey = "error.CP80.mustBeZeroOrPositive"))
     }
   }
 
@@ -150,6 +161,14 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       CP84(Some(0)).validate(stubBoxRetriever) shouldBe Set()
       CP84(None).validate(stubBoxRetriever) shouldBe Set()
       CP84(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP84"), errorMessageKey = "error.CP84.mustBeZeroOrPositive"))
+    }
+  }
+
+  "CP252" should {
+    "validate if present and non-negative or if not present, otherwise fail" in {
+      CP252(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP252(None).validate(stubBoxRetriever) shouldBe Set()
+      CP252(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP252"), errorMessageKey = "error.CP252.mustBeZeroOrPositive"))
     }
   }
 
@@ -190,7 +209,8 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
     "validate correctly when not greater than CP81  CPaux1" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
         cpq8 = Some(false),
-        cp81Input = Some(49),
+        cp79 = Some(20),
+        cp80 = Some(29),
         cpAux1 = 51)
 
       CP87Input(Some(100)).validate(stubTestComputationsRetriever) shouldBe Set()
@@ -199,7 +219,8 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
     "fail validation when greater than CP81  CPaux1" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
         cpq8 = Some(false),
-        cp81Input = Some(49),
+        cp79 = Some(20),
+        cp80 = Some(29),
         cpAux1 = 51)
 
       CP87Input(Some(101)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.firstYearAllowanceClaimExceedsAllowance", args = Some(Seq("100"))))
@@ -208,7 +229,8 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
     "validate because FYA defaults to 0 when not entered" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
         cpq8 = Some(true),
-        cp81Input = Some(49),
+        cp79 = Some(20),
+        cp80 = Some(29),
         cpAux1 = 51)
 
       CP87Input(None).validate(stubTestComputationsRetriever) shouldBe Set()
@@ -300,7 +322,9 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       "+ UnclaimedAIA_FYA (Unclaimed FYA and AIA amounts)) - CATO-2730" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
         cp78 = Some(2000),    // writtenDownValueBroughtForward
-        cp81Input = Some(50), // expenditureQualifyingForFirstYearAllowanceInput
+        cp79 = Some(20),
+        cp80 = Some(30),
+        // CP81 - calculated  // (sum of cp79 and cp80) expenditureQualifyingForFirstYearAllowanceInput
         cp82 = Some(2000),    // additionsQualifyingWritingDownAllowanceMainPool
         cp83 = Some(50),      // expenditureQualifyingAnnualInvestmentAllowance
         cp87Input = Some(50), // firstYearAllowanceClaimedInput

@@ -139,8 +139,6 @@ class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with Stub
 
   override def retrieveCPQ21(): CPQ21 = ???
 
-  override def retrieveCP81Input(): CP81Input = ???
-
   override def retrieveCP16(): CP16 = ???
 
   override def retrieveCP43(): CP43 = ???
@@ -184,6 +182,8 @@ class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with Stub
   override def retrieveCP48(): CP48 = ???
 
   override def retrieveCP27(): CP27 = ???
+
+  override def retrieveCP252(): CP252 = ???
 
   override def generateValues: Map[String, CtValue[_]] = ???
 }
