@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.ct600e.validations
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtInteger, Linked}
+import uk.gov.hmrc.ct.box.CtValidation
 
+trait ValidateRegisteredCharityNumber {
 
-case class CP251(value: Int) extends CtBoxIdentifier("Expenditure on machinery and plant qualifying for first year allowance") with CtInteger
+  def validate(value: Option[String], boxId: String): Set[CtValidation] = value match {
+    case Some(v) if v.length < 6 || v.length > 8 || v.exists(!_.isDigit) => Set(CtValidation(Some(boxId), s"error.$boxId.invalidRegNumber"))
+    case _ => Set()
+  }
 
-object CP251 extends Linked[CP81, CP251]{
-
-  override def apply(source: CP81): CP251 = CP251(source.value)
 }
