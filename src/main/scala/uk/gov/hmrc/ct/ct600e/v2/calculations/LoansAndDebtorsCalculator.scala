@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.ct.ct600e.v2.calculations
 
-import uk.gov.hmrc.ct.ct600e.v2.{E24e, E24e2, E24e1}
+import uk.gov.hmrc.ct.ct600e.v2.{E24e, E24eB, E24eA}
 
 trait LoansAndDebtorsCalculator {
-  def calculateFieldValue(e24e1: E24e1, e24e2: E24e2): E24e = {
-    val fields = Set(e24e1, e24e2)
+  def calculateFieldValue(e24eA: E24eA, e24eB: E24eB): E24e = {
+    val fields = Set(e24eA, e24eB)
     if (fields.exists(_.value.isDefined))
       E24e(Some(fields.map(_.orZero).sum))
     else

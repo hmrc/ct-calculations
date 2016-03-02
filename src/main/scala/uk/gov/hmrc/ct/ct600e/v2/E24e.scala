@@ -25,7 +25,7 @@ case class E24e(value: Option[Int]) extends CtBoxIdentifier("Loans and non-trade
 object E24e extends Calculated[E24e, CT600EBoxRetriever] with LoansAndDebtorsCalculator {
   override def calculate(boxRetriever: CT600EBoxRetriever): E24e =
     calculateFieldValue(
-      boxRetriever.retrieveE24e1(),
-      boxRetriever.retrieveE24e2()
+      boxRetriever.retrieveE24eA(),
+      boxRetriever.retrieveE24eB()
     )
 }
