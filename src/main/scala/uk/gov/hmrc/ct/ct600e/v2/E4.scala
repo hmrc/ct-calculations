@@ -16,6 +16,24 @@
 
 package uk.gov.hmrc.ct.ct600e.v2
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.ct600e.v2.retriever.CT600EBoxRetriever
 
-case class E4(value: Option[Int]) extends CtBoxIdentifier("Amounts overclaimed for period") with CtOptionalInteger with Input
+case class E4(value: Option[Int]) extends CtBoxIdentifier("Amounts overclaimed for period") with CtOptionalInteger with Input with ValidatableBox[CT600EBoxRetriever] {
+
+
+  override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = {
+    validateConditionalRequired(boxRetriever)
+  }
+
+  private def validateConditionalRequired(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = {
+    val e1 = boxRetriever.retrieveE1().orZero
+    val e2 = boxRetriever.retrieveE2().orZero
+
+    value match {
+      case None if e2 < e1 => Set(CtValidation(Some("E4"), s"error.E4.conditionalRequired"))
+      case _ => Set()
+    }
+  }
+}
+
