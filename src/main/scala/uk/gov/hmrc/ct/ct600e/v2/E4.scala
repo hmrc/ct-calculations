@@ -27,8 +27,8 @@ case class E4(value: Option[Int]) extends CtBoxIdentifier("Amounts overclaimed f
   }
 
   private def validateConditionalRequired(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = {
-    val e1 = boxRetriever.retrieveE1().value.getOrElse(0)
-    val e2 = boxRetriever.retrieveE2().value.getOrElse(0)
+    val e1 = boxRetriever.retrieveE1().orZero
+    val e2 = boxRetriever.retrieveE2().orZero
 
     value match {
       case None if e2 < e1 => Set(CtValidation(Some("E4"), s"error.E4.conditionalRequired"))

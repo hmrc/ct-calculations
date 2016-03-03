@@ -26,8 +26,8 @@ case class E1013(value: Option[Boolean]) extends CtBoxIdentifier("E3 Included Am
   }
 
   private def validateConditionalRequired(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = {
-    val e1 = boxRetriever.retrieveE1().value.getOrElse(0)
-    val e2 = boxRetriever.retrieveE2().value.getOrElse(0)
+    val e1 = boxRetriever.retrieveE1().orZero
+    val e2 = boxRetriever.retrieveE2().orZero
 
     value match {
       case None if e2 > e1 => Set(CtValidation(Some("E1013"), s"error.E1013.conditionalRequired"))
