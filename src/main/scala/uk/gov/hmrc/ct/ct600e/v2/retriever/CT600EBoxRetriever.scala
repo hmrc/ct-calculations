@@ -75,7 +75,11 @@ trait CT600EBoxRetriever extends BoxRetriever {
 
   def retrieveE23d(): E23d
 
-  def retrieveE24e(): E24e
+  def retrieveE24e(): E24e = E24e.calculate(this)
+
+  def retrieveE24eA(): E24eA
+
+  def retrieveE24eB(): E24eB
 
   def retrieveE25f(): E25f
 
