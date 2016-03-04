@@ -31,6 +31,7 @@ case class E3(value: Option[Int]) extends CtBoxIdentifier("Further repayment") w
 
     value match {
       case None if e2 > e1 => Set(CtValidation(Some("E3"), s"error.E3.conditionalRequired"))
+      case Some(x) if x < 1 => Set(CtValidation(Some("E3"), s"error.E3.outOfRange"))
       case _ => Set()
     }
   }
