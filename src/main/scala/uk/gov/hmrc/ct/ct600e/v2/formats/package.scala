@@ -79,7 +79,7 @@ package object formats {
   implicit val E24eFormat: Format[E24e] = new OptionalIntegerFormat[E24e](E24e.apply)
 
   implicit val E24e1Format: Format[E24eA] = new OptionalIntegerFormat[E24eA](E24eA.apply)
-  
+
   implicit val E24e2Format: Format[E24eB] = new OptionalIntegerFormat[E24eB](E24eB.apply)
 
   implicit val E25fFormat: Format[E25f] = new OptionalIntegerFormat[E25f](E25f.apply)
@@ -109,4 +109,8 @@ package object formats {
   implicit val E1022Format: Format[E1022] = new DateFormat[E1022](E1022.apply)
 
   implicit val E1023Format: Format[E1023] = new StringFormat[E1023](E1023.apply)
+
+  implicit val E1030Format: Format[E1030] = new OptionalStringFormat[E1030](E1030.apply)
+
+  implicit val E1031Format: Format[E1031] = new OptionalStringFormat[E1031](E1031.apply)
 }
