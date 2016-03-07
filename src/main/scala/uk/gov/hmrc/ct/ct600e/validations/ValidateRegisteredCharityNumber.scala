@@ -16,12 +16,12 @@
 
 package uk.gov.hmrc.ct.ct600e.validations
 
-import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.box.{CtOptionalString, CtBoxIdentifier, CtOptionalInteger, CtValidation}
 
 trait ValidateRegisteredCharityNumber {
 
-  def validate(value: Option[String], boxId: String): Set[CtValidation] = value match {
-    case Some(v) if v.length < 6 || v.length > 8 || v.exists(!_.isDigit) => Set(CtValidation(Some(boxId), s"error.$boxId.invalidRegNumber"))
+  def validateRegisteredCharityNumber(box: CtOptionalString with CtBoxIdentifier): Set[CtValidation] = box.value match {
+    case Some(v) if v.length < 6 || v.length > 8 || v.exists(!_.isDigit) => Set(CtValidation(Some(box.id), s"error.${box.id}.invalidRegNumber"))
     case _ => Set()
   }
 
