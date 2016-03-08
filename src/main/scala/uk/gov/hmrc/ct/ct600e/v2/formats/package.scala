@@ -84,7 +84,7 @@ package object formats {
 
   implicit val E25fFormat: Format[E25f] = new OptionalIntegerFormat[E25f](E25f.apply)
 
-  implicit val E26Format: Format[E26] = new OptionalBooleanFormat[E26](E26.apply)
+  implicit val E26Format: Format[E26] = new OptionalIntegerFormat[E26](E26.apply)
 
   implicit val E27Format: Format[E27] = new OptionalIntegerFormat[E27](E27.apply)
 
