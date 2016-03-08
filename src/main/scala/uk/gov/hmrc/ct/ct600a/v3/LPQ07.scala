@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ct.ct600a.v3
 
 import org.joda.time.LocalDate
+import uk.gov.hmrc.cato.time.DateHelper
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
@@ -24,7 +25,7 @@ case class LPQ07(value: Option[LocalDate]) extends CtBoxIdentifier(name = "When 
 
   def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
       validateDateAsMandatory("LPQ07", this) ++
-      validateDateAsBetweenInclusive("LPQ07", this, new LocalDate(), new LocalDate().plusYears(2))
+      validateDateAsBetweenInclusive("LPQ07", this, DateHelper.getLocalDate(), DateHelper.getLocalDate().plusYears(2))
   }
 
 }
