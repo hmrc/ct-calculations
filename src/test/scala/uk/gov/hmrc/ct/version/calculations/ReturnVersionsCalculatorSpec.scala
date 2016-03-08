@@ -451,7 +451,6 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
     "for HMRC only filing for a Company (limited by guarantee) that is a charity" when {
       "return versions where all proceeds used for charity for AP starting before 2015-04-01" in new ReturnVersionsCalculator {
         val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
-                                 Return(CT600, CT600Version2),
                                  Return(CT600e, CT600Version2),
                                  Return(CT600j, CT600Version2),
                                  Return(Computations, ComputationsCT20141001))
@@ -467,7 +466,6 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
       "return versions where all proceeds used for charity for AP starting after 2015-03-31" in new ReturnVersionsCalculator {
         val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
-                                 Return(CT600, CT600Version3),
                                  Return(CT600e, CT600Version3),
                                  Return(CT600j, CT600Version3),
                                  Return(Computations, ComputationsCT20150201))
@@ -566,7 +564,6 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return versions where all proceeds used for charity for AP starting before 2015-04-01" in new ReturnVersionsCalculator {
         val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
                                  Return(CT600e, CT600Version2),
-                                 Return(CT600, CT600Version2),
                                  Return(CT600j, CT600Version2),
                                  Return(Computations, ComputationsCT20141001))
 
@@ -582,7 +579,6 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return versions where all proceeds used for charity for AP starting after 2015-03-31" in new ReturnVersionsCalculator {
         val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
                                  Return(CT600e, CT600Version3),
-                                 Return(CT600, CT600Version3),
                                  Return(CT600j, CT600Version3),
                                  Return(Computations, ComputationsCT20150201))
 
@@ -598,6 +594,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return versions where NOT all proceeds used for charity for AP starting before 2015-04-01" in new ReturnVersionsCalculator {
         val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
                                  Return(CT600, CT600Version2),
+                                 Return(CT600a, CT600Version2),
                                  Return(CT600e, CT600Version2),
                                  Return(CT600j, CT600Version2),
                                  Return(Computations, ComputationsCT20141001))
@@ -614,6 +611,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return versions where NOT all proceeds used for charity for AP starting after 2015-03-31" in new ReturnVersionsCalculator {
         val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
                                  Return(CT600, CT600Version3),
+                                 Return(CT600a, CT600Version3),
                                  Return(CT600e, CT600Version3),
                                  Return(CT600j, CT600Version3),
                                  Return(Computations, ComputationsCT20150201))
@@ -627,7 +625,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                 charityAllExempt = Some(false)) shouldBe expectedResult
       }
 
-      "throw illegal argument exception for micro entity charity for AP starting before 2015-04-01" in new ReturnVersionsCalculator {
+      "throw illegal argument exception for micro entity charity" in new ReturnVersionsCalculator {
         intercept[IllegalArgumentException](
           calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
                                   apEndDate = Some(LocalDate.parse("2015-12-31")),
@@ -642,6 +640,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return versions when not claiming for AP starting before 2015-04-01" in new ReturnVersionsCalculator {
         val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
                                  Return(CT600, CT600Version2),
+                                 Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
                                  Return(Computations, ComputationsCT20141001))
 
@@ -660,6 +659,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return versions when not claiming for AP starting on or after 2015-04-01" in new ReturnVersionsCalculator {
         val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
                                  Return(CT600, CT600Version3),
+                                 Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
                                  Return(Computations, ComputationsCT20150201))
 

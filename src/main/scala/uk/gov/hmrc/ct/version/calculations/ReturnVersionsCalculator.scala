@@ -88,6 +88,51 @@ trait ReturnVersionsCalculator {
     }
   }
 
+  private def ct600ForLimitedBySharesCharity(ct600Version: Option[Version], charityAllExempt: Option[Boolean], charityNoIncome: Option[Boolean]) = {
+    (ct600Version, charityAllExempt, charityNoIncome) match {
+      case (Some(version), Some(true), _) => Set(Return(CT600e, version),
+                                                 Return(CT600j, version))
+      case (Some(version), _, Some(true)) => Set(Return(CT600e, version),
+                                                 Return(CT600j, version))
+      case (Some(version), Some(false), _) => Set(Return(CT600e, version),
+                                                  Return(CT600, version),
+                                                  Return(CT600a, version),
+                                                  Return(CT600j, version))
+      case (Some(version), _, _) => Set(Return(CT600, version),
+                                        Return(CT600a, version),
+                                        Return(CT600j, version))
+    }
+  }
+
+  private def ct600ForLimitedByGuaranteeCharity(ct600Version: Option[Version], charityAllExempt: Option[Boolean], charityNoIncome: Option[Boolean]) = {
+    (ct600Version, charityAllExempt, charityNoIncome) match {
+      case (Some(version), Some(true), _) => Set(Return(CT600e, version),
+                                                 Return(CT600j, version))
+      case (Some(version), _, Some(true)) => Set(Return(CT600e, version),
+                                                 Return(CT600j, version))
+      case (Some(version), Some(false), _) => Set(Return(CT600e, version),
+                                                  Return(CT600, version),
+                                                  Return(CT600j, version))
+      case (Some(version), _, _) => Set(Return(CT600, version),
+                                        Return(CT600j, version))
+    }
+  }
+
+  private def ct600ForCharity(ct600Version: Option[Version], charityAllExempt: Option[Boolean], charityNoIncome: Option[Boolean]) = {
+    (ct600Version, charityAllExempt, charityNoIncome) match {
+      case (Some(version), Some(true), _) => Set(Return(CT600e, version),
+                                                 Return(CT600j, version))
+      case (Some(version), _, Some(true)) => Set(Return(CT600e, version),
+                                                 Return(CT600j, version))
+      case (Some(version), Some(false), _) => Set(Return(CT600e, version),
+                                                  Return(CT600, version),
+                                                  Return(CT600j, version))
+      case (Some(version), _, _) => Set(Return(CT600, version),
+                                        Return(CT600j, version))
+    }
+  }
+
+
   def calculateReturnVersions(apStartDate: Option[LocalDate] = None, apEndDate: Option[LocalDate] = None,
                               coHoFiling: CompaniesHouseFiling = CompaniesHouseFiling(false),
                               hmrcFiling: HMRCFiling = HMRCFiling(false),
@@ -137,28 +182,18 @@ trait ReturnVersionsCalculator {
       case _ => Set.empty
     }
 
-    val ct600Returns = (hmrcFiling, apStartDate, companyType, charityAllExempt, charityNoIncome) match {
+    val ct600Version = apStartDate.map(ct600VersionBasedOnApStartDate)
 
-      case (HMRCFiling(true), Some(startDate), FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedBySharesCharity) | FilingCompanyType(Charity), None, None) =>
-        ct600ReturnsForCompany(startDate).filter(_.submission != CT600a)
-
-      case (HMRCFiling(true), Some(startDate), FilingCompanyType(Charity), None, Some(noIncome)) =>
-        ct600ReturnsForCharity(startDate, false, noIncome)
-
-      case (HMRCFiling(true), Some(startDate), FilingCompanyType(Charity), Some(all), None) =>
-        ct600ReturnsForCharity(startDate, all, false)
-
-      case (HMRCFiling(true), Some(startDate), FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedBySharesCharity) | FilingCompanyType(Charity), _, _) =>
-        ct600ReturnsForCharity(startDate, false, false)
-
-      case (HMRCFiling(true), Some(startDate), FilingCompanyType(MembersClub), _, _) =>
-        ct600ReturnsForMembersClub(startDate)
-
-      case (HMRCFiling(true), Some(startDate), _, _, _) =>
-        ct600ReturnsForCompany(startDate)
-
-      case _ => Set.empty
+    val ct600Returns = if (hmrcFiling == HMRCFiling(true)) {
+      companyType match {
+        case FilingCompanyType(LimitedBySharesCharity) => ct600ForLimitedBySharesCharity(ct600Version, charityAllExempt, charityNoIncome)
+        case FilingCompanyType(LimitedByGuaranteeCharity) => ct600ForLimitedByGuaranteeCharity(ct600Version, charityAllExempt, charityNoIncome)
+        case FilingCompanyType(Charity) => ct600ForCharity(ct600Version, charityAllExempt, charityNoIncome)
+        case FilingCompanyType(MembersClub) => ct600ReturnsForMembersClub(ct600Version.getOrElse(throw new IllegalStateException(s"Cannot have a hmrc filing without a version for CT600")))
+        case FilingCompanyType(_) => ct600ForCompany(ct600Version.getOrElse(throw new IllegalStateException(s"Cannot have a hmrc filing without a version for CT600")))
+      }
     }
+    else Set.empty
 
     val compsReturns = (hmrcFiling, apStartDate, apEndDate, charityAllExempt, charityNoIncome, companyType) match {
       case (HMRCFiling(true), _, _, Some(true), _, FilingCompanyType(Charity)) =>
@@ -190,28 +225,12 @@ trait ReturnVersionsCalculator {
 
   private def ct600VersionBasedOnApStartDate(apStartDate: LocalDate): Version = if (apStartDate.isAfter(LocalDate.parse("2015-03-31"))) CT600Version3 else CT600Version2
 
-  private def ct600ReturnsForCharity(apStartDate: LocalDate, charityAllExempt: Boolean, charityNoIncome: Boolean): Set[Return] = {
-
-    val version = ct600VersionBasedOnApStartDate(apStartDate)
-    if (charityAllExempt || charityNoIncome) {
-      Set(Return(CT600e, version),
-          Return(CT600j, version))
-    }
-    else {
-      Set(Return(CT600e, version),
-          Return(CT600, version),
-          Return(CT600j, version))
-    }
-  }
-
-  private def ct600ReturnsForMembersClub(apStartDate: LocalDate): Set[Return] = {
-    val version = ct600VersionBasedOnApStartDate(apStartDate)
+  private def ct600ReturnsForMembersClub(version: Version): Set[Return] = {
     Set(Return(CT600, version),
         Return(CT600j, version))
   }
 
-  private def ct600ReturnsForCompany(startDate: LocalDate): Set[Return] = {
-    val version = ct600VersionBasedOnApStartDate(startDate)
+  private def ct600ForCompany(version: Version): Set[Return] = {
     Set(Return(CT600, version),
         Return(CT600a, version),
         Return(CT600j, version))
