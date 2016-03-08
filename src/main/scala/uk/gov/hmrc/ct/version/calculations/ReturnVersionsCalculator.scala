@@ -196,10 +196,10 @@ trait ReturnVersionsCalculator {
     else Set.empty
 
     val compsReturns = (hmrcFiling, apStartDate, apEndDate, charityAllExempt, charityNoIncome, companyType) match {
-      case (HMRCFiling(true), _, _, Some(true), _, FilingCompanyType(Charity)) =>
+      case (HMRCFiling(true), _, _, Some(true), _, FilingCompanyType(Charity) | FilingCompanyType(LimitedByGuaranteeCharity) |FilingCompanyType(LimitedBySharesCharity)) =>
         Set.empty
 
-      case (HMRCFiling(true), _, _, None, Some(true), FilingCompanyType(Charity)) =>
+      case (HMRCFiling(true), _, _, None, Some(true), FilingCompanyType(Charity) | FilingCompanyType(LimitedByGuaranteeCharity) |FilingCompanyType(LimitedBySharesCharity)) =>
         Set.empty
 
       case (HMRCFiling(true), Some(startDate), Some(endDate), _, _, _) =>
