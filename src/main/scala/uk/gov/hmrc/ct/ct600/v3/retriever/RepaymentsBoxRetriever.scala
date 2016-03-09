@@ -50,4 +50,8 @@ trait RepaymentsBoxRetriever extends BoxRetriever {
   def retrieveB965(): B965
 
   def retrieveB970(): B970
+
+  def retrievePAYEEQ1(): PAYEEQ1
+
+  def retrieveREPAYMENTSQ1(): REPAYMENTSQ1
 }

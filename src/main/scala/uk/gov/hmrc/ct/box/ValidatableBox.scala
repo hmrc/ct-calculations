@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.box
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
-import uk.gov.hmrc.ct.ct600.v3.retriever.{RepaymentsBoxRetriever, CT600BoxRetriever}
+import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 trait ValidatableBox[T <: BoxRetriever] {
@@ -64,7 +64,7 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  protected def validateStringAsMandatoryIfPAYEEQ1False(boxRetriever: CT600BoxRetriever, boxId: String, box: CtOptionalString): Set[CtValidation] = {
+  protected def validateStringAsMandatoryIfPAYEEQ1False(boxRetriever: RepaymentsBoxRetriever, boxId: String, box: CtOptionalString): Set[CtValidation] = {
     val payeeq1 = boxRetriever.retrievePAYEEQ1()
     if (!payeeq1.value.getOrElse(true)) {
       validateStringAsMandatory(boxId, box)

@@ -22,6 +22,8 @@ import uk.gov.hmrc.ct.box.formats._
 
 package object formats {
 
+  implicit val B115Format: Format[B115] = new BooleanFormat[B115](B115.apply)
+
   implicit val E1Format: Format[E1] = new StringFormat[E1](E1.apply)
 
   implicit val E2Format: Format[E2] = new StringFormat[E2](E2.apply)
