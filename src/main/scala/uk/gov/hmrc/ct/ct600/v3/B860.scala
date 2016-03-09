@@ -17,10 +17,10 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.retriever.{RepaymentsBoxRetriever, CT600BoxRetriever}
 
-case class B860(value: Option[Int]) extends CtBoxIdentifier("Repayment amount upper bound") with CtOptionalInteger with Input with ValidatableBox[CT600BoxRetriever] {
-  override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
+case class B860(value: Option[Int]) extends CtBoxIdentifier("Repayment amount upper bound") with CtOptionalInteger with Input with ValidatableBox[RepaymentsBoxRetriever] {
+  override def validate(boxRetriever: RepaymentsBoxRetriever): Set[CtValidation] = {
     val repaymentsQ1 = boxRetriever.retrieveREPAYMENTSQ1()
 
     repaymentsQ1.value match {

@@ -17,10 +17,10 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600DeclarationBoxRetriever, CT600BoxRetriever}
 
 case class PAYEEQ1(value: Option[Boolean]) extends CtBoxIdentifier("Repayment to other than company ?")
-with CtOptionalBoolean with Input with ValidatableBox[CT600BoxRetriever] {
+with CtOptionalBoolean with Input with ValidatableBox[CT600DeclarationBoxRetriever] {
 
-  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = validateBooleanAsMandatory("PAYEEQ1", this)
+  def validate(boxRetriever: CT600DeclarationBoxRetriever): Set[CtValidation] = validateBooleanAsMandatory("PAYEEQ1", this)
 }

@@ -44,8 +44,6 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
 
   override def retrieveB45(): B45 = ???
 
-  override def retrievePAYEEQ1(): PAYEEQ1 = ???
-
   override def retrieveB780(): B780 = ???
 
   override def retrieveB690(): B690 = ???
@@ -61,8 +59,6 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def retrieveB85A(): B85A = ???
 
   override def retrieveB750(): B750 = ???
-
-  override def retrieveREPAYMENTSQ1(): REPAYMENTSQ1 = ???
 
   override def retrieveB150(): B150 = ???
 

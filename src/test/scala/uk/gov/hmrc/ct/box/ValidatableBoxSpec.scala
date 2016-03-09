@@ -254,7 +254,7 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
 
   "validateStringAsMandatoryIfPAYEEQ1False" should {
     "return is-required error if PAYEEQ1 is false" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[RepaymentsBoxRetriever]
       when(mockBoxRetriever.retrievePAYEEQ1()).thenReturn(PAYEEQ1(Some(false)))
 
       validateStringAsMandatoryIfPAYEEQ1False(mockBoxRetriever, "testBox",testOptStringBox(None)) shouldBe Set(CtValidation(Some("testBox"),"error.testBox.required"))
@@ -264,7 +264,7 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
 
     "do not return is-required error if PAYEEQ1 is true" in {
-      val mockBoxRetriever = mock[CT600BoxRetriever]
+      val mockBoxRetriever = mock[RepaymentsBoxRetriever]
       when(mockBoxRetriever.retrievePAYEEQ1()).thenReturn(PAYEEQ1(Some(true)))
 
       validateStringAsMandatoryIfPAYEEQ1False(mockBoxRetriever, "testBox",testOptStringBox(None)) shouldBe Set()
