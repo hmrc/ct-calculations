@@ -26,7 +26,11 @@ object CompanyTypes {
 
   case object CompanyLimitedByGuarantee extends CompanyType(0)
 
-  case object CommunityAmateurSportsClub extends CompanyType(0)
+  case object CASC extends CompanyType(0)
+
+  case object LimitedByGuaranteeCASC extends CompanyType(0)
+
+  case object LimitedBySharesCASC extends CompanyType(0)
 
   case object CompanyInLiquidation extends CompanyType(3)
 
@@ -63,8 +67,8 @@ object CompanyTypes {
   }
 
   val AllCompanyTypes = Seq(
-    UkTradingCompany, CompanyLimitedByGuarantee, CommunityAmateurSportsClub, CompanyInLiquidation,
-    MembersClub, Charity, MembersVoluntaryLiquidation, UnitTrust, CloseInvestmentHoldingCompany,
+    UkTradingCompany, CompanyLimitedByGuarantee, CASC, LimitedByGuaranteeCASC, LimitedBySharesCASC,
+    CompanyInLiquidation, MembersClub, Charity, MembersVoluntaryLiquidation, UnitTrust, CloseInvestmentHoldingCompany,
     InvestmentTrustWithHousingInvestmentProfits, InsuranceCompany, PropertyManagementCompany,
     RealEstateInvestmentTrust, PublicLimitedCompany, LimitedLiabilityPartnership, Ineligible, LimitedByGuaranteeCharity, LimitedBySharesCharity
   )
