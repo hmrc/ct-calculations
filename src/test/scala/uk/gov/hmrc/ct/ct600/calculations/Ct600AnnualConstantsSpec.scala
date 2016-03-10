@@ -66,10 +66,12 @@ class Ct600AnnualConstantsSpec extends WordSpec with Matchers {
       data.rateOfTax shouldBe BigDecimal("0.20")
     }
 
-    "exception when year greater than know years" in {
-      an[java.lang.IllegalArgumentException] should be thrownBy {
-        Ct600AnnualConstants.constantsForTaxYear(TaxYear(2999))
-      }
+    "return max year when asked for something ahead of explicitly supported years" in {
+      val data = Ct600AnnualConstants.constantsForTaxYear(TaxYear(2999))
+      data.lowerRelevantAmount shouldBe BigDecimal("0")
+      data.upperRelevantAmount shouldBe BigDecimal("0")
+      data.reliefFraction shouldBe BigDecimal("0.00")
+      data.rateOfTax shouldBe BigDecimal("0.20")
     }
   }
 }

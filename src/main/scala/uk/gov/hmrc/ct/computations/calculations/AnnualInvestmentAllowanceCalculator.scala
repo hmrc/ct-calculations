@@ -104,6 +104,7 @@ case class AnnualInvestmentAllowancePeriod(start: LocalDate, end: LocalDate, max
 object AnnualInvestmentAllowancePeriods {
 
   def apply() = Set(
+    AnnualInvestmentAllowancePeriod(start = new LocalDate(2017, 1, 1), end = new LocalDate(2999, 12, 31), maximumAllowed = 200000),
     AnnualInvestmentAllowancePeriod(start = new LocalDate(2016, 1, 1), end = new LocalDate(2016, 12, 31), maximumAllowed = 200000),
     AnnualInvestmentAllowancePeriod(start = new LocalDate(2014, 4, 1), end = new LocalDate(2015, 12, 31), maximumAllowed = 500000),
     AnnualInvestmentAllowancePeriod(start = new LocalDate(2013, 1, 1), end = new LocalDate(2014, 3, 31),  maximumAllowed = 250000),

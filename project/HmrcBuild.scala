@@ -32,7 +32,7 @@ private object BuildDependencies {
 
   object Compile {
     val playJson = "com.typesafe.play" %% "play-json" % "2.3.4" % "provided"
-    val catoTime = "uk.gov.hmrc" %% "cato-time" % "999-SNAPSHOT" % "provided"
+    val catoTime = "uk.gov.hmrc" %% "play-time" % "0.2.0" % "provided"
   }
 
   sealed abstract class Test(scope: String) {

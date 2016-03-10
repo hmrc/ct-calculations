@@ -87,7 +87,7 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
 
   "validateDateAsBlank" should {
     "return error if not blank" in {
-      validateDateAsBlank("testBox", testOptDateBox(Some(DateHelper.getLocalDate()))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.nonBlankValue"))
+      validateDateAsBlank("testBox", testOptDateBox(Some(DateHelper.now()))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.nonBlankValue"))
     }
 
     "return no errors if blank" in {

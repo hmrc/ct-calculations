@@ -25,7 +25,7 @@ case class LPQ07(value: Option[LocalDate]) extends CtBoxIdentifier(name = "When 
 
   def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
       validateDateAsMandatory("LPQ07", this) ++
-      validateDateAsBetweenInclusive("LPQ07", this, DateHelper.getLocalDate(), DateHelper.getLocalDate().plusYears(2))
+      validateDateAsBetweenInclusive("LPQ07", this, DateHelper.now(), DateHelper.now().plusYears(2))
   }
 
 }
