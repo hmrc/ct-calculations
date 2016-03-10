@@ -178,9 +178,6 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
       rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2015, 1, 1)), CP2(new LocalDate(2015, 12, 31))), b37 = B37(299999), b42 = B42(true), b39 = B39(None), b38 = B38(Some(2))) shouldBe BigDecimal("0.20")
     }
 
-    "throw an exception when constants are unavailable for specified years" in new Calc {
-      an [IllegalArgumentException] shouldBe thrownBy {rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2998, 8, 1)), CP2(new LocalDate(2999, 7, 31))), b37 = B37(300000), b42 = B42(true), b39 = B39(None), b38 = B38(None))}
-    }
   }
 
   "CorporationTaxCalculator - corporationTaxFy1 & corporationTaxFy2" should {

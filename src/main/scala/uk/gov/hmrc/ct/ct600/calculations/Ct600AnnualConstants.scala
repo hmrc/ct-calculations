@@ -109,6 +109,9 @@ trait Ct600AnnualConstants {
 
   def constantsForTaxYear(taxYear: TaxYear): CtConstants = {
     assert(taxYear.year >= minYear.year, s"Cannot operate on years before ${minYear.year}")
-    data.getOrElse(taxYear, throw new IllegalArgumentException(s"Tax year ${taxYear.year} not recognised for calculation"))
+    data.get(taxYear) match {
+      case Some(x) => x
+      case _ => data.get(Ct600AnnualConstants.maxYear).get
+    }
   }
 }

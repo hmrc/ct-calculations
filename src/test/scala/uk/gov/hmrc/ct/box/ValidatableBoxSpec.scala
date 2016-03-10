@@ -24,6 +24,7 @@ import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
 import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600BoxRetriever, RepaymentsBoxRetriever}
 import uk.gov.hmrc.ct.domain.ValidationConstants._
+import uk.gov.hmrc.cato.time.DateHelper
 
 class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with ValidatableBox[BoxRetriever]{
 
@@ -86,7 +87,7 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
 
   "validateDateAsBlank" should {
     "return error if not blank" in {
-      validateDateAsBlank("testBox", testOptDateBox(Some(new LocalDate()))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.nonBlankValue"))
+      validateDateAsBlank("testBox", testOptDateBox(Some(DateHelper.now()))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.nonBlankValue"))
     }
 
     "return no errors if blank" in {
