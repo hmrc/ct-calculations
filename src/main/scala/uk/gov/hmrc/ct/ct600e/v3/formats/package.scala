@@ -22,6 +22,8 @@ import uk.gov.hmrc.ct.box.formats._
 
 package object formats {
 
+  implicit val B115Format: Format[B115] = new BooleanFormat[B115](B115.apply)
+
   implicit val E1Format: Format[E1] = new StringFormat[E1](E1.apply)
 
   implicit val E2Format: Format[E2] = new StringFormat[E2](E2.apply)
@@ -98,9 +100,9 @@ package object formats {
 
   implicit val E175Format: Format[E175] = new OptionalBigDecimalFormat[E175](E175.apply)
 
-  implicit val E180Format: Format[E180] = new OptionalBooleanFormat[E180](E180.apply)
+  implicit val E180Format: Format[E180] = new OptionalIntegerFormat[E180](E180.apply)
 
-  implicit val E185Format: Format[E185] = new OptionalBigDecimalFormat[E185](E185.apply)
+  implicit val E185Format: Format[E185] = new OptionalIntegerFormat[E185](E185.apply)
 
   implicit val E190Format: Format[E190] = new OptionalIntegerFormat[E190](E190.apply)
 }

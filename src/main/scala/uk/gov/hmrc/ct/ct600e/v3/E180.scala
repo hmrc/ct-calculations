@@ -19,17 +19,19 @@ package uk.gov.hmrc.ct.ct600e.v3
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 
-case class E180(value: Option[Boolean]) extends CtBoxIdentifier("Qualifying investments and loans") with CtOptionalBoolean with Input
+/*
+ * Available values are:
+ * AllLoansAndInvestments = 1
+ * SomeLoansAndInvestments = 2
+ * NoLoansNorInvestments = 3
+ */
 
-object E180 extends ValidatableBox[CT600EBoxRetriever] {
+case class E180(value: Option[Int]) extends CtBoxIdentifier("Qualifying investments and loans") with CtOptionalInteger with Input with ValidatableBox[CT600EBoxRetriever] {
+  override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = validateAsMandatory(this)
+}
 
-  override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = {
-    import boxRetriever._
-    (retrieveE180(), retrieveE185()) match {
-      case (E180(None), _) => Set(CtValidation(boxId = Some("E180"), errorMessageKey = "error.E180.required"))
-      case (E180(Some(true)), E185(Some(_))) => Set(CtValidation(boxId = Some("E180"), errorMessageKey = "error.E180.cannot.be.true.when.E185.has.value"))
-      case _ => Set.empty
-    }
-  }
-
+object CharityLoansAndInvestments {
+  val AllLoansAndInvestments = 1
+  val SomeLoansAndInvestments = 2
+  val NoLoansNorInvestments = 3
 }

@@ -23,6 +23,8 @@ trait CT600EBoxRetriever extends BoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 
+  def retrieveB115(): B115 = B115(true)
+
   def retrieveE1(): E1
 
   def retrieveE2(): E2 = E2(retrieveUTR())
