@@ -33,5 +33,9 @@ class ExpenditureCalculatorSpec extends WordSpec with ExpenditureCalculator with
     "return sum of all boxes if all Expenditure boxes have values" in {
       calculateTotalExpenditure(e95 = E95(Some(95)), e100 = E100(Some(100)), e105 = E105(Some(105)), e110 = E110(Some(110)), e115 = E115(Some(115)), e120 = E120(Some(120))) shouldBe E125(Some(645))
     }
+
+    "return sum of all boxes if some Expenditure boxes have the same value" in {
+      calculateTotalExpenditure(e95 = E95(Some(95)), e100 = E100(Some(100)), e105 = E105(Some(95)), e110 = E110(Some(110)), e115 = E115(Some(115)), e120 = E120(Some(120))) shouldBe E125(Some(635))
+    }
   }
 }
