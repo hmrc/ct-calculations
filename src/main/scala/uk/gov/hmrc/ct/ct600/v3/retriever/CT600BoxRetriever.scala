@@ -22,7 +22,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.retriever.DeclarationBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
-import uk.gov.hmrc.ct.ct600j.v3.{B65, B140}
+import uk.gov.hmrc.ct.ct600j.v3.B140
 import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.B45
 

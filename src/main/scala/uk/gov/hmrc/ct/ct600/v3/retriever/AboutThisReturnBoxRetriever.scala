@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.ct600.v3._
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 import uk.gov.hmrc.ct.ct600e.v3.B115
 import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
-import uk.gov.hmrc.ct.ct600j.v3.{B140, B65}
+import uk.gov.hmrc.ct.ct600j.v3.B140
 
 trait AboutThisReturnBoxRetriever extends BoxRetriever {
 

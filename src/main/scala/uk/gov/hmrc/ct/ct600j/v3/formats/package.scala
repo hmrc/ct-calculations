@@ -18,10 +18,9 @@ package uk.gov.hmrc.ct.ct600j.v3
 
 import play.api.libs.json.Format
 import uk.gov.hmrc.ct.box.formats._
+import uk.gov.hmrc.ct.ct600.v3.B65
 
 package object formats {
-
-  implicit val B65Format: Format[B65] = new OptionalBooleanFormat[B65](B65.apply)
 
   implicit val J5Format: Format[J5] = new OptionalStringFormat[J5](J5.apply)
   implicit val J10Format: Format[J10] = new OptionalStringFormat[J10](J10.apply)
