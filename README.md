@@ -1,7 +1,7 @@
 
 ct-calculations
 ====
-[![Build Status](https://travis-ci.org/hmrc/ct-calculations.svg?branch=master)](https://travis-ci.org/hmrc/ct-calculations) [ ![Download](https://api.bintray.com/packages/hmrc/releases/ct-calculations/images/download.svg) ](https://bintray.com/hmrc/releases/play-events/_latestVersion)
+[![Build Status](https://travis-ci.org/hmrc/ct-calculations.svg?branch=master)](https://travis-ci.org/hmrc/ct-calculations) [ ![Download](https://api.bintray.com/packages/hmrc/releases/ct-calculations/images/download.svg) ](https://bintray.com/hmrc/releases/ct-calculations/_latestVersion)
 
 
 
