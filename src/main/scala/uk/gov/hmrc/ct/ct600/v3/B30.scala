@@ -22,7 +22,7 @@ import uk.gov.hmrc.ct.computations.CP1
 
 case class B30(value: LocalDate) extends CtBoxIdentifier(name = "AP Start date") with StartDate
 
-object B30 extends Linked[CP1, B30] {
+object B30 extends Linked[StartDate, B30] {
 
-  override def apply(source: CP1): B30 = B30(source.value)
+  override def apply(source: StartDate): B30 = B30(source.value)
 }

@@ -26,7 +26,7 @@ import uk.gov.hmrc.ct.ct600j.v3.{B65, B140}
 import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.B45
 
-trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBoxRetriever {
+trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBoxRetriever with AboutThisReturnBoxRetriever {
 
   self: AccountsBoxRetriever with FilingAttributesBoxValueRetriever =>
 
@@ -37,38 +37,6 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
   def retrieveB3(): B3 = B3(retrieveUTR())
 
   def retrieveB4(): B4 = B4(retrieveCompanyType())
-
-  def retrieveB30(): B30 = B30(retrieveCP1())
-
-  def retrieveB35(): B35 = B35(retrieveCP2())
-
-  def retrieveB40(): B40
-
-  def retrieveB45(): B45 = B45.calculate(this)
-
-  def retrieveB45Input(): B45Input
-
-  def retrieveB50(): B50 = B50.calculate(this)
-
-  def retrieveB80A(): B80A
-
-  def retrieveB85A(): B85A
-
-  def retrieveB90A(): B90A
-
-  def retrieveB55(): B55
-
-  def retrieveB65(): B65
-
-  def retrieveB95(): B95 = {
-    this match {
-      case r: CT600ABoxRetriever => B95(r.retrieveLPQ01)
-      case _ => B95(false)
-    }
-
-  }
-
-  def retrieveB140(): B140 = B140(retrieveB65())
 
   def retrieveB145(): B145 = B145(retrieveCP7())
 
