@@ -78,27 +78,27 @@ package object formats {
 
   implicit val E120Format: Format[E120] = new OptionalIntegerFormat[E120](E120.apply)
 
-  implicit val E130Format: Format[E130] = new OptionalBigDecimalFormat[E130](E130.apply)
+  implicit val E130Format: Format[E130] = new OptionalIntegerFormat[E130](E130.apply)
 
-  implicit val E135Format: Format[E135] = new OptionalBigDecimalFormat[E135](E135.apply)
+  implicit val E135Format: Format[E135] = new OptionalIntegerFormat[E135](E135.apply)
 
-  implicit val E140Format: Format[E140] = new OptionalBigDecimalFormat[E140](E140.apply)
+  implicit val E140Format: Format[E140] = new OptionalIntegerFormat[E140](E140.apply)
 
-  implicit val E145Format: Format[E145] = new OptionalBigDecimalFormat[E145](E145.apply)
+  implicit val E145Format: Format[E145] = new OptionalIntegerFormat[E145](E145.apply)
 
-  implicit val E150Format: Format[E150] = new OptionalBigDecimalFormat[E150](E150.apply)
+  implicit val E150Format: Format[E150] = new OptionalIntegerFormat[E150](E150.apply)
 
-  implicit val E155Format: Format[E155] = new OptionalBigDecimalFormat[E155](E155.apply)
+  implicit val E155Format: Format[E155] = new OptionalIntegerFormat[E155](E155.apply)
 
-  implicit val E160Format: Format[E160] = new OptionalBigDecimalFormat[E160](E160.apply)
+  implicit val E160Format: Format[E160] = new OptionalIntegerFormat[E160](E160.apply)
 
-  implicit val E165Format: Format[E165] = new OptionalBigDecimalFormat[E165](E165.apply)
+  implicit val E165Format: Format[E165] = new OptionalIntegerFormat[E165](E165.apply)
 
-  implicit val E170AFormat: Format[E170A] = new OptionalBigDecimalFormat[E170A](E170A.apply)
+  implicit val E170AFormat: Format[E170A] = new OptionalIntegerFormat[E170A](E170A.apply)
 
-  implicit val E170BFormat : Format[E170B] = new OptionalBigDecimalFormat[E170B](E170B.apply)
+  implicit val E170BFormat : Format[E170B] = new OptionalIntegerFormat[E170B](E170B.apply)
 
-  implicit val E175Format: Format[E175] = new OptionalBigDecimalFormat[E175](E175.apply)
+  implicit val E175Format: Format[E175] = new OptionalIntegerFormat[E175](E175.apply)
 
   implicit val E180Format: Format[E180] = new OptionalIntegerFormat[E180](E180.apply)
 
