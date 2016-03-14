@@ -68,8 +68,6 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
 
   override def retrieveB705(): B705 = ???
 
-  override def retrieveB860(): B860 = ???
-
   override def retrieveB755(): B755 = ???
 
   override def retrieveBFQ1(): BFQ1 = ???
