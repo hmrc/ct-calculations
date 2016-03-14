@@ -21,7 +21,7 @@ import uk.gov.hmrc.ct.ct600e.v2.{E24e, E24eB, E24eA}
 trait LoansAndDebtorsCalculator {
   def calculateFieldValue(e24eA: E24eA, e24eB: E24eB): E24e = {
     val fields = Seq(e24eA, e24eB)
-    
+
     if (fields.exists(_.value.isDefined))
       E24e(Some(fields.map(_.orZero).sum))
     else
