@@ -20,12 +20,12 @@ import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.BoxValues
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.B95
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.retriever.{AboutThisReturnBoxRetriever, CT600BoxRetriever}
 import uk.gov.hmrc.ct.ct600a.v3._
 
 trait CT600ABoxRetriever extends ComputationsBoxRetriever {
 
-  self: CT600BoxRetriever with AccountsBoxRetriever =>
+  self: CT600BoxRetriever with AccountsBoxRetriever with AboutThisReturnBoxRetriever =>
 
   def retrieveLP04(): LP04
 

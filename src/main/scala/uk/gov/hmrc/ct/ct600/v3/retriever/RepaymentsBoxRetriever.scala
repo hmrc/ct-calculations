@@ -21,6 +21,22 @@ import uk.gov.hmrc.ct.ct600.v3._
 
 trait RepaymentsBoxRetriever extends BoxRetriever {
 
+  def retrieveB860(): B860
+
+  def retrieveB865(): B865 = {
+    this match {
+      case br: CT600BoxRetriever => B865(br.retrieveB605())
+      case _ => B865(None)
+    }
+  }
+
+  def retrieveB870(): B870 = {
+    this match {
+      case br: CT600BoxRetriever => B870(br.retrieveB520())
+      case _ => B870(None)
+    }
+  }
+
   def retrieveB920(): B920
 
   def retrieveB925(): B925

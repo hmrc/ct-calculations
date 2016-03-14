@@ -17,12 +17,12 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.retriever.{AboutThisReturnBoxRetriever, CT600BoxRetriever}
 
 
 case class B55(value: Option[Boolean]) extends CtBoxIdentifier("This return contains estimated figures")
-  with CtOptionalBoolean with Input with ValidatableBox[CT600BoxRetriever] {
+  with CtOptionalBoolean with Input with ValidatableBox[AboutThisReturnBoxRetriever] {
 
-  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = validateBooleanAsMandatory("B55", this)
+  def validate(boxRetriever: AboutThisReturnBoxRetriever): Set[CtValidation] = validateBooleanAsMandatory("B55", this)
 
 }
