@@ -170,7 +170,10 @@ trait ReturnVersionsCalculator {
       case (HMRCFiling(true), MicroEntityFiling(true), _, _) =>
         Set(Return(HmrcMicroEntityAccounts, accountsVersion))
 
-      case (HMRCFiling(true), _, StatutoryAccountsFiling(false), FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedBySharesCharity)) =>
+      case (HMRCFiling(true), _, StatutoryAccountsFiling(true), FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedBySharesCharity)) =>
+        Set(Return(HmrcStatutoryAccounts, accountsVersion))
+
+      case (HMRCFiling(true), _, StatutoryAccountsFiling(true), FilingCompanyType(LimitedByGuaranteeCASC) | FilingCompanyType(LimitedBySharesCASC)) =>
         Set(Return(HmrcStatutoryAccounts, accountsVersion))
 
       case (HMRCFiling(true), _, StatutoryAccountsFiling(true), _) =>
@@ -186,9 +189,9 @@ trait ReturnVersionsCalculator {
 
     val ct600Returns = if (hmrcFiling == HMRCFiling(true)) {
       companyType match {
-        case FilingCompanyType(LimitedBySharesCharity) => ct600ForLimitedBySharesCharity(ct600Version, charityAllExempt, charityNoIncome)
-        case FilingCompanyType(LimitedByGuaranteeCharity) => ct600ForLimitedByGuaranteeCharity(ct600Version, charityAllExempt, charityNoIncome)
-        case FilingCompanyType(Charity) => ct600ForCharity(ct600Version, charityAllExempt, charityNoIncome)
+        case FilingCompanyType(LimitedBySharesCharity) | FilingCompanyType(LimitedBySharesCASC) => ct600ForLimitedBySharesCharity(ct600Version, charityAllExempt, charityNoIncome)
+        case FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedByGuaranteeCASC) => ct600ForLimitedByGuaranteeCharity(ct600Version, charityAllExempt, charityNoIncome)
+        case FilingCompanyType(Charity) | FilingCompanyType(CASC) => ct600ForCharity(ct600Version, charityAllExempt, charityNoIncome)
         case FilingCompanyType(MembersClub) => ct600ReturnsForMembersClub(ct600Version.getOrElse(throw new IllegalStateException(s"Cannot have a hmrc filing without a version for CT600")))
         case FilingCompanyType(_) => ct600ForCompany(ct600Version.getOrElse(throw new IllegalStateException(s"Cannot have a hmrc filing without a version for CT600")))
       }
@@ -199,7 +202,13 @@ trait ReturnVersionsCalculator {
       case (HMRCFiling(true), _, _, Some(true), _, FilingCompanyType(Charity) | FilingCompanyType(LimitedByGuaranteeCharity) |FilingCompanyType(LimitedBySharesCharity)) =>
         Set.empty
 
+      case (HMRCFiling(true), _, _, Some(true), _, FilingCompanyType(CASC) | FilingCompanyType(LimitedByGuaranteeCASC) |FilingCompanyType(LimitedBySharesCASC)) =>
+        Set.empty
+
       case (HMRCFiling(true), _, _, None, Some(true), FilingCompanyType(Charity) | FilingCompanyType(LimitedByGuaranteeCharity) |FilingCompanyType(LimitedBySharesCharity)) =>
+        Set.empty
+
+      case (HMRCFiling(true), _, _, None, Some(true), FilingCompanyType(CASC) | FilingCompanyType(LimitedByGuaranteeCASC) |FilingCompanyType(LimitedBySharesCASC)) =>
         Set.empty
 
       case (HMRCFiling(true), Some(startDate), Some(endDate), _, _, _) =>
@@ -238,8 +247,8 @@ trait ReturnVersionsCalculator {
 
   private def isIllegalArguments(companyType: CompanyType, hmrcFiling: Boolean, coHoFiling: Boolean, microEntityFiling: Boolean): Boolean = {
     (companyType, hmrcFiling, coHoFiling, microEntityFiling) match {
-      case (Charity | LimitedByGuaranteeCharity | LimitedBySharesCharity, true, true, _) => true
-      case (Charity | LimitedByGuaranteeCharity | LimitedBySharesCharity, _, _, true) => true
+      case (Charity | LimitedByGuaranteeCharity | LimitedBySharesCharity | CASC | LimitedByGuaranteeCASC | LimitedBySharesCASC, true, true, _) => true
+      case (Charity | LimitedByGuaranteeCharity | LimitedBySharesCharity | CASC | LimitedByGuaranteeCASC | LimitedBySharesCASC, _, _, true) => true
       case _ => false
     }
   }
