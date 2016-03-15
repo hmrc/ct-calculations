@@ -17,8 +17,20 @@
 package uk.gov.hmrc.ct.ct600e.v3
 
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.ct600e.v3.CharityLoansAndInvestments
 import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 
 case class E185(value: Option[Int]) extends CtBoxIdentifier("Held at the end of the period (use accounts figures): Value of any non-qualifying investments and loans") with CtOptionalInteger with Input with ValidatableBox[CT600EBoxRetriever] {
-  override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = validatePositiveInteger(this)
+  override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = {
+    if (boxRetriever.retrieveE180().value.contains(CharityLoansAndInvestments.SomeLoansAndInvestments)) {
+      value match {
+        case None => Set(CtValidation(Some(id), s"error.$id.required"))
+        case Some(x) if x == 0 => Set(CtValidation(Some(id), s"error.$id.required"))
+        case Some(x) if x < 0 => Set(CtValidation(Some(id), s"error.$id.mustBePositive"))
+        case _ => Set()
+      }
+    } else {
+      Set()
+    }
+  }
 }
