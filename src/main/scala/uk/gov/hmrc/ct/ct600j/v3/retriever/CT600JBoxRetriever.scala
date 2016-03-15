@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.ct600j.v3.retriever
 import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.{AboutThisReturnBoxRetriever, CT600BoxRetriever}
+import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 import uk.gov.hmrc.ct.ct600j.v3._
 
 trait CT600JBoxRetriever extends BoxRetriever {
@@ -28,6 +29,7 @@ trait CT600JBoxRetriever extends BoxRetriever {
   def retrieveJ1(): J1 = {
     this match {
       case br: CT600BoxRetriever => J1(br.retrieveB1())
+      case br: CT600EBoxRetriever => J1(br.retrieveE1().value)
       case _ => throw new IllegalStateException("Could not the company name")
     }
 
@@ -36,13 +38,14 @@ trait CT600JBoxRetriever extends BoxRetriever {
   def retrieveJ2(): J2 = {
     this match {
       case br: CT600BoxRetriever => J2(br.retrieveB3())
+      case br: CT600EBoxRetriever => J2(br.retrieveE2().value)
       case br: FilingAttributesBoxValueRetriever => J2(br.retrieveUTR().value)
     }
   }
 
   def retrieveJ3(): J3 = {
     this match {
-      case br: CT600BoxRetriever => J3(br.retrieveB30())
+      case br: AboutThisReturnBoxRetriever => J3(br.retrieveB30())
       case br: ComputationsBoxRetriever => J3(br.retrieveCP1().value)
       case _ => throw new IllegalStateException("Could not get the AP start date.")
     }
@@ -50,7 +53,7 @@ trait CT600JBoxRetriever extends BoxRetriever {
 
   def retrieveJ4(): J4 = {
     this match {
-      case br: CT600BoxRetriever => J4(br.retrieveB35())
+      case br: AboutThisReturnBoxRetriever => J4(br.retrieveB35())
       case br: ComputationsBoxRetriever => J4(br.retrieveCP2().value)
       case _ => throw new IllegalStateException("Could not get the AP end date.")
     }
