@@ -113,4 +113,6 @@ package object formats {
   implicit val E1030Format: Format[E1030] = new OptionalStringFormat[E1030](E1030.apply)
 
   implicit val E1031Format: Format[E1031] = new OptionalStringFormat[E1031](E1031.apply)
+
+  implicit val E1032Format: Format[E1032] = new OptionalDateFormat[E1032](E1032.apply)
 }
