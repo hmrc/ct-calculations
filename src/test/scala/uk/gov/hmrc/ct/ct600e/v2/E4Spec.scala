@@ -38,10 +38,10 @@ class E4Spec extends WordSpec with MockitoSugar with Matchers  {
       E4(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("E4"), "error.E4.conditionalRequired", None))
     }
 
-    "make E4 not required when E2 > E1" in {
+    "enforce E4 empty when E2 > E1" in {
       when(boxRetriever.retrieveE1()).thenReturn(E1(Some(1)))
       when(boxRetriever.retrieveE2()).thenReturn(E2(Some(2)))
-      E4(None).validate(boxRetriever) shouldBe Set()
+      E4(Some(1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("E4"), "error.E4.conditionalMustBeEmpty"))
     }
     "make E4 not required when E2 set but E1 empty" in {
       when(boxRetriever.retrieveE1()).thenReturn(E1(None))
