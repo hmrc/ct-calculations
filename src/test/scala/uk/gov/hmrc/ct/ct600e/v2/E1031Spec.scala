@@ -23,45 +23,45 @@ import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.ct600e.v2.retriever.CT600EBoxRetriever
 
 class E1031Spec extends WordSpec with MockitoSugar with Matchers {
-    "E1030 validate" should {
+    "E1031 validate" should {
       "not return error when all is good" in {
           val value = Some("test name")
           val mockBoxRetriever = mock[CT600EBoxRetriever]
-          when(mockBoxRetriever.retrieveE1030()).thenReturn(E1030(value))
+          when(mockBoxRetriever.retrieveE1031()).thenReturn(E1031(value))
       
-          E1030(value).validate(mockBoxRetriever) shouldBe Set()
+          E1031(value).validate(mockBoxRetriever) shouldBe Set()
         }
     
         "return error when is empty" in {
           val value: Option[String] = None
           val mockBoxRetriever = mock[CT600EBoxRetriever]
-          when(mockBoxRetriever.retrieveE1030()).thenReturn(E1030(value))
+          when(mockBoxRetriever.retrieveE1031()).thenReturn(E1031(value))
       
-          E1030(value).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("E1030"), "error.E1030.required"))
+          E1031(value).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("E1031"), "error.E1031.required"))
         }
     
         "return error when is too short" in {
           val value: Option[String] = Some("s")
           val mockBoxRetriever = mock[CT600EBoxRetriever]
-          when(mockBoxRetriever.retrieveE1030()).thenReturn(E1030(value))
+          when(mockBoxRetriever.retrieveE1031()).thenReturn(E1031(value))
       
-          E1030(value).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("E1030"), "error.E1030.text.sizeRange", Some(Seq("2", "56"))))
+          E1031(value).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("E1031"), "error.E1031.text.sizeRange", Some(Seq("2", "56"))))
         }
     
         "return error when is too long" in {
           val value: Option[String] = Some("123456789 123456789 123456789 123456789 123456789 1234567")
           val mockBoxRetriever = mock[CT600EBoxRetriever]
-          when(mockBoxRetriever.retrieveE1030()).thenReturn(E1030(value))
+          when(mockBoxRetriever.retrieveE1031()).thenReturn(E1031(value))
       
-          E1030(value).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("E1030"), "error.E1030.text.sizeRange", Some(Seq("2", "56"))))
+          E1031(value).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("E1031"), "error.E1031.text.sizeRange", Some(Seq("2", "56"))))
         }
     
         "return error when has invalid value" in {
           val value: Option[String] = Some("$%£")
           val mockBoxRetriever = mock[CT600EBoxRetriever]
-          when(mockBoxRetriever.retrieveE1030()).thenReturn(E1030(value))
+          when(mockBoxRetriever.retrieveE1031()).thenReturn(E1031(value))
 
-          E1030(value).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("E1030"), "error.E1030.regexFailure"))
+          E1031(value).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("E1031"), "error.E1031.regexFailure"))
         }
     }
   }
