@@ -25,7 +25,7 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600DeclarationBoxRetriever, Repaymen
 
 class B975Spec extends WordSpec with MockitoSugar with Matchers {
 
-  "B860 validate" should {
+  "B975 validate" should {
     "not return error when all is good" in {
       val value = Some("test name")
       val mockBoxRetriever = mock[CT600DeclarationBoxRetriever]
