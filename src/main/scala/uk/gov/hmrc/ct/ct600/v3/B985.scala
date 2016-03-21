@@ -21,5 +21,6 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600DeclarationBoxRetriever, CT600Box
 
 case class B985(value: Option[String]) extends CtBoxIdentifier("Declaration status") with CtOptionalString with Input with ValidatableBox[CT600DeclarationBoxRetriever] {
 
-  def validate(boxRetriever: CT600DeclarationBoxRetriever): Set[CtValidation] = validateStringAsMandatory("B985", this)
+  def validate(boxRetriever: CT600DeclarationBoxRetriever): Set[CtValidation] =
+    validateStringAsMandatory("B985", this) ++ validateOptionalStringByLength("B985", this, 2, 56) ++ validateOptionalStringByRegex("B985", this, validNonForeignLessRestrictiveCharacters)
 }
