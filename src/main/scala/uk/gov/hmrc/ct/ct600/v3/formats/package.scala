@@ -54,6 +54,8 @@ package object formats {
 
   implicit val B190Format: Format[B190] = new IntegerFormat[B190](B190.apply)
 
+  implicit val B205Format: Format[B205] = new OptionalIntegerFormat[B205](B205.apply)
+
   implicit val B235Format: Format[B235] = new IntegerFormat[B235](B235.apply)
 
   implicit val B275Format: Format[B275] = new IntegerFormat[B275](B275.apply)
