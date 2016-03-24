@@ -227,4 +227,7 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
+  def validateDeclarationNameOrStatus(boxId: String, box: CtOptionalString): Set[CtValidation] = {
+    validateStringAsMandatory(boxId, box) ++ validateOptionalStringByLength(boxId, box, 2, 56) ++ validateOptionalStringByRegex(boxId, box, validNonForeignLessRestrictiveCharacters)
+  }
 }
