@@ -20,5 +20,6 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 
 case class E30(value: Option[String]) extends CtBoxIdentifier("Claimer's name") with CtOptionalString with Input with ValidatableBox[CT600EBoxRetriever]{
-  override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = validateStringAsMandatory("E30", this)
+  override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] =
+    validateStringAsMandatory("E30", this) ++ validateOptionalStringByLength("E30", this, 2, 56) ++ validateOptionalStringByRegex("E30", this, validNonForeignLessRestrictiveCharacters)
 }
