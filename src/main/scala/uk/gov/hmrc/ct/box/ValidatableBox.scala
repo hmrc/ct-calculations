@@ -226,5 +226,4 @@ trait ValidatableBox[T <: BoxRetriever] {
       case _ => Set(CtValidation(Some(boxId), s"error.$boxId.invalidPostcode"))
     }
   }
-
 }
