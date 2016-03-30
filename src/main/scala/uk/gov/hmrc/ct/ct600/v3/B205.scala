@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600e.v2
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600e.v2.retriever.CT600EBoxRetriever
-import uk.gov.hmrc.ct.ct600e.validations.ValidateDeclarationNameOrStatus
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
+import uk.gov.hmrc.ct.computations.CP502
 
-case class E1031(value: Option[String]) extends CtBoxIdentifier("Claimer's status") with CtOptionalString with Input
-  with ValidatableBox[CT600EBoxRetriever] with ValidateDeclarationNameOrStatus[CT600EBoxRetriever] {
-  override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = validateDeclarationNameOrStatus("E1031", this)
+case class B205(value: Option[Int]) extends CtBoxIdentifier("Other income") with CtOptionalInteger
+
+object B205 extends Linked[CP502, B205] {
+
+  override def apply(source: CP502): B205 = B205(source.value)
 }

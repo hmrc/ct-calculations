@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600e.v2
+package uk.gov.hmrc.ct.ct600e.validations
 
-import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600e.v2.retriever.CT600EBoxRetriever
-import uk.gov.hmrc.ct.ct600e.validations.ValidateDeclarationNameOrStatus
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever
+import uk.gov.hmrc.ct.box.{CtOptionalString, CtValidation, ValidatableBox}
 
-case class E1031(value: Option[String]) extends CtBoxIdentifier("Claimer's status") with CtOptionalString with Input
-  with ValidatableBox[CT600EBoxRetriever] with ValidateDeclarationNameOrStatus[CT600EBoxRetriever] {
-  override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = validateDeclarationNameOrStatus("E1031", this)
+
+trait ValidateDeclarationNameOrStatus[T <: BoxRetriever] extends ValidatableBox[T] {
+  def validateDeclarationNameOrStatus(boxId: String, box: CtOptionalString): Set[CtValidation] = {
+    validateStringAsMandatory(boxId, box) ++ validateOptionalStringByLength(boxId, box, 2, 56) ++ validateOptionalStringByRegex(boxId, box, validNonForeignLessRestrictiveCharacters)
+  }
 }

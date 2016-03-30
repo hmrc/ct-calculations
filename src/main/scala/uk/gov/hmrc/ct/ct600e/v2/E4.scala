@@ -32,6 +32,7 @@ case class E4(value: Option[Int]) extends CtBoxIdentifier("Amounts overclaimed f
 
     value match {
       case None if e2 < e1 => Set(CtValidation(Some("E4"), s"error.E4.conditionalRequired"))
+      case Some(x) if e1 < e2 => Set(CtValidation(Some("E4"), s"error.E4.conditionalMustBeEmpty"))
       case Some(x) if x < 1 => Set(CtValidation(Some("E4"), s"error.E4.outOfRange"))
       case _ => Set()
     }
