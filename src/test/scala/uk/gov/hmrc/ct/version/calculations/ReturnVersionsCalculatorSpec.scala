@@ -275,6 +275,37 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           }
         }
       }
+      "return CT600A return for UK Trading Company V2" in new ReturnVersionsCalculator {
+            val versions = calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-01-01")),
+                                                   apEndDate = Some(LocalDate.parse("2015-12-31")),
+                                                   hmrcFiling = HMRCFiling(true),
+                                                   companyType = FilingCompanyType(UkTradingCompany))
+            versions.find( v => v.submission == CT600a).get.version shouldBe CT600Version2
+      }
+      "NOT return CT600A return for a limited by guarantee company V2" in new ReturnVersionsCalculator {
+        val versions = calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-01-01")),
+                                               apEndDate = Some(LocalDate.parse("2015-12-31")),
+                                               hmrcFiling = HMRCFiling(true),
+                                               companyType = FilingCompanyType(CompanyLimitedByGuarantee))
+
+        versions.find( v => v.submission == CT600a) shouldBe empty
+      }
+      "return CT600A return for UK Trading Company V3" in new ReturnVersionsCalculator {
+        val versions = calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
+                                                apEndDate = Some(LocalDate.parse("2015-12-31")),
+                                                hmrcFiling = HMRCFiling(true),
+                                                companyType = FilingCompanyType(UkTradingCompany))
+
+        versions.find( v => v.submission == CT600a).get.version shouldBe CT600Version3
+      }
+      "NOT return CT600A return for a limited by guarantee company V3" in new ReturnVersionsCalculator {
+        val versions = calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
+                                                apEndDate = Some(LocalDate.parse("2015-12-31")),
+                                                hmrcFiling = HMRCFiling(true),
+                                                companyType = FilingCompanyType(CompanyLimitedByGuarantee))
+
+        versions.find( v => v.submission == CT600a) shouldBe empty
+      }
     }
 
     "for Member Club filing" when {

@@ -118,6 +118,9 @@ trait ReturnVersionsCalculator {
     }
   }
 
+  private def ct600ForLimitedByGuaranteeCompany(ct600Version: Version) = Set(Return(CT600, ct600Version),
+                                                                             Return(CT600j, ct600Version))
+
   private def ct600ForCharity(ct600Version: Option[Version], charityAllExempt: Option[Boolean], charityNoIncome: Option[Boolean]) = {
     (ct600Version, charityAllExempt, charityNoIncome) match {
       case (Some(version), Some(true), _) => Set(Return(CT600e, version),
@@ -193,6 +196,7 @@ trait ReturnVersionsCalculator {
         case FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedByGuaranteeCASC) => ct600ForLimitedByGuaranteeCharity(ct600Version, charityAllExempt, charityNoIncome)
         case FilingCompanyType(Charity) | FilingCompanyType(CASC) => ct600ForCharity(ct600Version, charityAllExempt, charityNoIncome)
         case FilingCompanyType(MembersClub) => ct600ReturnsForMembersClub(ct600Version.getOrElse(throw new IllegalStateException(s"Cannot have a hmrc filing without a version for CT600")))
+        case FilingCompanyType(CompanyLimitedByGuarantee) => ct600ForLimitedByGuaranteeCompany(ct600Version.getOrElse(throw new IllegalStateException(s"Cannot have a hmrc filing without a version for CT600")))
         case FilingCompanyType(_) => ct600ForCompany(ct600Version.getOrElse(throw new IllegalStateException(s"Cannot have a hmrc filing without a version for CT600")))
       }
     }
