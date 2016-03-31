@@ -30,7 +30,7 @@ object E1035 extends CorporationTaxCalculator with Calculated[E1035, CT600EBoxRe
   override def calculate(fieldValueRetriever: CT600EBoxRetriever): E1035 =
     E1035(rateOfTaxFy1(HmrcAccountingPeriod(fieldValueRetriever.retrieveE1021(), fieldValueRetriever.retrieveE1022()),
                        B37(0),
-                       B42(None),
+                       B42(false),
                        B39(None),
                        B38(None)))
 }

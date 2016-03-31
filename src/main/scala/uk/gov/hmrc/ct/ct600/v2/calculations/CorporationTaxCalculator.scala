@@ -54,7 +54,7 @@ trait CorporationTaxCalculator extends CtTypeConverters with NumberRounding {
 
     val taxable = b38 + b37
     if (taxable > Ct600AnnualConstants.lowProfitsThreshold(b39.value) || taxable <= 0) rate
-    else if (b42.orFalse) constantsForTaxYear.smallCompaniesRateOfTax
+    else if (b42.value) constantsForTaxYear.smallCompaniesRateOfTax
     else rate
   }
 
@@ -83,7 +83,7 @@ trait CorporationTaxCalculator extends CtTypeConverters with NumberRounding {
   }
 
   def finalCorporationTaxChargeable(claimingMrr: B42, corporationTaxFy1: B46, corporationTaxFy2: B56, marginalReliefRate: B64): B70 = {
-    if (claimingMrr.orFalse) {
+    if (claimingMrr.value) {
       B70(corporationTaxNetOfMrr(corporationTaxFy1, corporationTaxFy2, marginalReliefRate).value)
     } else {
       B70(totalCorporationTaxChargeable(corporationTaxFy1, corporationTaxFy2).value)

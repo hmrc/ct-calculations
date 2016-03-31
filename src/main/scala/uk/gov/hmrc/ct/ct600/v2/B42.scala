@@ -16,6 +16,6 @@
 
 package uk.gov.hmrc.ct.ct600.v2
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, Input}
+import uk.gov.hmrc.ct.box.{CtBoolean, CtBoxIdentifier, Input}
 
-case class B42(value: Option[Boolean]) extends CtBoxIdentifier("MRR Claimed") with CtOptionalBoolean with Input
+case class B42(value: Boolean) extends CtBoxIdentifier("MRR Claimed") with CtBoolean with Input
