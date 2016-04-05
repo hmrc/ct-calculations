@@ -19,4 +19,4 @@ package uk.gov.hmrc.ct.accounts
 import uk.gov.hmrc.ct.box._
 
 case class AC13(value: Option[Int]) extends CtBoxIdentifier(name = "Previous Turnover/Sales")
-                                    with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input
+                                    with CtOptionalInteger with Input
