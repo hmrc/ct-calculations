@@ -46,22 +46,25 @@ trait ProfitOrLossCalculator {
   private def calculateMicroProfitAndLoss(turnover: Option[Int], otherIncome: Option[Int],
                                           rawMaterials: Option[Int], staffCosts: Option[Int],
                                           depreciation: Option[Int], otherCharges: Option[Int], tax: Option[Int]): Option[Int] = {
-    (turnover, otherIncome) match {
-      case (Some(t), Some(oi)) =>
-        Some((t + oi) - (rawMaterials.getOrElse(0) + staffCosts.getOrElse(0) + depreciation.getOrElse(0) + otherCharges.getOrElse(0) + tax.getOrElse(0)))
-      case _ => None
-    }
+    val additions = Seq(turnover, otherIncome).filterNot(_.isEmpty).map(_.getOrElse(0))
+    val deductions = Seq(rawMaterials, staffCosts, depreciation, otherCharges, tax).filterNot(_.isEmpty).map(_.getOrElse(0))
+
+    if (additions.nonEmpty || deductions.nonEmpty) {
+      Some(additions.sum - deductions.sum)
+    } else None
   }
 
   def calculateCurrentGrossProfitOrLoss(ac12: AC12, ac14: AC14, statutoryAccountsFiling: StatutoryAccountsFiling): AC16 = {
-    AC16(if (statutoryAccountsFiling.value) {
-      calculateProfitOrLoss(ac12.value, ac14.value)
-    }
-    else None)
+    AC16(
+      if (statutoryAccountsFiling.value) {
+        calculateProfitOrLoss(ac12.value, ac14.value)
+      }
+      else None
+    )
   }
 
   def calculatePreviousGrossProfitOrLoss(ac13: AC13, ac15: AC15, statutoryAccountsFiling: StatutoryAccountsFiling): AC17 = {
-    AC17 (
+    AC17(
       if (statutoryAccountsFiling.value) {
         calculateProfitOrLoss(ac13.value, ac15.value)
       }
