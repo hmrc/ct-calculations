@@ -205,6 +205,31 @@ class ProfitOrLossCalculatorSpec extends WordSpec with Matchers with ProfitOrLos
                                       ac421 = AC421(Some(30)), ac426 = AC426(Some(40)),
                                       ac35 = AC35(Some(50)), microEntityFiling = MicroEntityFiling(true)) shouldBe AC436(Some(1050))
       }
+
+      "return sum of everything else when ac13 is None" in {
+        calculatePreviousProfitOrLoss(ac13 = AC13(None), ac406 = AC406(Some(406)),
+          ac411 = AC411(Some(411)), ac416 = AC416(Some(416)),
+          ac421 = AC421(Some(421)), ac426 = AC426(Some(426)),
+          ac35 = AC35(None), microEntityFiling = MicroEntityFiling(true)) shouldBe AC436(Some(-1268))
+      }
+      "return sum of everything with large ac13" in {
+        calculatePreviousProfitOrLoss(ac13 = AC13(Some(24000)), ac406 = AC406(Some(406)),
+          ac411 = AC411(Some(411)), ac416 = AC416(Some(416)),
+          ac421 = AC421(Some(421)), ac426 = AC426(Some(426)),
+          ac35 = AC35(None), microEntityFiling = MicroEntityFiling(true)) shouldBe AC436(Some(22732))
+      }
+      "return sum of everything else when ac406 is None" in {
+        calculatePreviousProfitOrLoss(ac13 = AC13(Some(13)), ac406 = AC406(None),
+                                      ac411 = AC411(Some(411)), ac416 = AC416(Some(416)),
+                                      ac421 = AC421(Some(421)), ac426 = AC426(Some(426)),
+                                      ac35 = AC35(None), microEntityFiling = MicroEntityFiling(true)) shouldBe AC436(Some(-1661))
+      }
+      "return sum of everything else when ac13 and AC406 are None" in {
+        calculatePreviousProfitOrLoss(ac13 = AC13(None), ac406 = AC406(None),
+                                      ac411 = AC411(Some(411)), ac416 = AC416(Some(416)),
+                                      ac421 = AC421(Some(421)), ac426 = AC426(Some(426)),
+                                      ac35 = AC35(None), microEntityFiling = MicroEntityFiling(true)) shouldBe AC436(Some(-1674))
+      }
     }
 
     "calculateCurrentProfitOrLoss" when {
@@ -214,11 +239,35 @@ class ProfitOrLossCalculatorSpec extends WordSpec with Matchers with ProfitOrLos
                                       ac420 = AC420(None), ac425 = AC425(None),
                                       ac34 = AC34(None), microEntityFiling = MicroEntityFiling(false)) shouldBe AC435(None)
       }
-      "return None if micro entity accounts and ac12 and AC405 are None" in {
+      "return None if micro entity accounts and all fields are None" in {
         calculateCurrentProfitOrLoss(ac12 = AC12(None), ac405 = AC405(None),
                                       ac410 = AC410(None), ac415 = AC415(None),
                                       ac420 = AC420(None), ac425 = AC425(None),
                                       ac34 = AC34(None), microEntityFiling = MicroEntityFiling(true)) shouldBe AC435(None)
+      }
+      "return sum of everything else when ac12 is None" in {
+        calculateCurrentProfitOrLoss(ac12 = AC12(None), ac405 = AC405(Some(405)),
+                                      ac410 = AC410(Some(410)), ac415 = AC415(Some(415)),
+                                      ac420 = AC420(Some(420)), ac425 = AC425(Some(425)),
+                                      ac34 = AC34(None), microEntityFiling = MicroEntityFiling(true)) shouldBe AC435(Some(-1265))
+      }
+      "return sum of everything with large ac12" in {
+        calculateCurrentProfitOrLoss(ac12 = AC12(12000), ac405 = AC405(Some(405)),
+                                      ac410 = AC410(Some(410)), ac415 = AC415(Some(415)),
+                                      ac420 = AC420(Some(420)), ac425 = AC425(Some(425)),
+                                      ac34 = AC34(None), microEntityFiling = MicroEntityFiling(true)) shouldBe AC435(Some(10735))
+      }
+      "return sum of everything else when ac405 is None" in {
+        calculateCurrentProfitOrLoss(ac12 = AC12(12), ac405 = AC405(None),
+                                      ac410 = AC410(Some(410)), ac415 = AC415(Some(415)),
+                                      ac420 = AC420(Some(420)), ac425 = AC425(Some(425)),
+                                      ac34 = AC34(None), microEntityFiling = MicroEntityFiling(true)) shouldBe AC435(Some(-1658))
+      }
+      "return sum of everything else when ac12 and AC405 are None" in {
+        calculateCurrentProfitOrLoss(ac12 = AC12(None), ac405 = AC405(None),
+                                      ac410 = AC410(Some(410)), ac415 = AC415(Some(415)),
+                                      ac420 = AC420(Some(420)), ac425 = AC425(Some(425)),
+                                      ac34 = AC34(None), microEntityFiling = MicroEntityFiling(true)) shouldBe AC435(Some(-1670))
       }
       "return negative sum(AC415 -> AC34) if micro entity accounts and AC12 is 0 and AC405 is 0" in {
         calculateCurrentProfitOrLoss(ac12 = AC12(Some(0)), ac405 = AC405(Some(0)),

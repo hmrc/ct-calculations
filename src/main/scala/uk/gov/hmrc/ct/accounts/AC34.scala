@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input, MustBeNoneOrZeroOrPositive}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
 
-case class AC34(value: Option[Int]) extends CtBoxIdentifier(name = "Current Tax on profit or loss")
-                                    with CtOptionalInteger with Input
+case class AC34(value: Option[Int]) extends CtBoxIdentifier(name = "Current Tax on profit or loss") with CtOptionalInteger with Input
