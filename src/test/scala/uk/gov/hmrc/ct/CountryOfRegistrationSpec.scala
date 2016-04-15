@@ -24,6 +24,7 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 class CountryOfRegistrationSpec extends WordSpec with Matchers with MockitoSugar {
 
   val boxRetriever = mock[FilingAttributesBoxValueRetriever]
+
   "CountryOfRegistration" should {
     "pass validation if empty" in {
       CountryOfRegistration(None).validate(boxRetriever) shouldBe empty

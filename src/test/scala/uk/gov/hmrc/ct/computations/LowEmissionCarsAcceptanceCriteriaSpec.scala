@@ -276,6 +276,6 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
 
     override def retrieveCP668: CP668 = CP668(cp668)
 
-    override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration(Some("EW"))
+    override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration.EnglandWales
   }
 }
