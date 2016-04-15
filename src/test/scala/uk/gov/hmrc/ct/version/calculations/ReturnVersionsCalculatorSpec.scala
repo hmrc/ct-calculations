@@ -1267,5 +1267,5 @@ class ComputationsBoxRetrieverForTest extends StubbedComputationsBoxRetriever wi
 
   override def retrieveHMRCAmendment(): HMRCAmendment = HMRCAmendment(false)
 
-  override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration(Some("EW"))
+  override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration.EnglandWales
 }

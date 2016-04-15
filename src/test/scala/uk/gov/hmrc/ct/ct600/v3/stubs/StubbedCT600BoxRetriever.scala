@@ -318,5 +318,5 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
 
   override def retrieveCP252(): CP252 = ???
 
-  override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration(Some("NI"))
+  override def retrieveCountryOfRegistration(): CountryOfRegistration = ???
 }
