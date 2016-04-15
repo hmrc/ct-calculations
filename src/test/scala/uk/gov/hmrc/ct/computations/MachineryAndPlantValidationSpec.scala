@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.computations
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
-import uk.gov.hmrc.ct.{CATO02, CATO20, CATO21, CATO22}
+import uk.gov.hmrc.ct._
 
 class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
                                      cpq8: Option[Boolean] = None,
@@ -94,6 +94,8 @@ class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
   override def retrieveCPAux2: CPAux2 = CPAux2(cpAux2)
 
   override def retrieveCPAux3: CPAux3 = CPAux3(cpAux3)
+
+  override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration.Scotland
 }
 
 

@@ -25,7 +25,7 @@ import uk.gov.hmrc.ct.ct600a.v3._
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 import uk.gov.hmrc.ct.ct600j.v3._
 import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
-import uk.gov.hmrc.ct.{CATO11, CATO10, CATO12}
+import uk.gov.hmrc.ct.{CountryOfRegistration, CATO11, CATO10, CATO12}
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600DeclarationBoxRetriever, CT600BoxRetriever}
 
@@ -317,4 +317,6 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def retrieveB65(): B65 = ???
 
   override def retrieveCP252(): CP252 = ???
+
+  override def retrieveCountryOfRegistration(): CountryOfRegistration = ???
 }

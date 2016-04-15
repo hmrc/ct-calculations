@@ -94,6 +94,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           override def retrieveAbridgedFiling(): AbridgedFiling = AbridgedFiling(false)
           override def retrieveCompaniesHouseFiling(): CompaniesHouseFiling = CompaniesHouseFiling(true)
           override def retrieveHMRCFiling(): HMRCFiling = HMRCFiling(false)
+          override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration(Some("EW"))
         }
 
         ReturnVersionsCalculator.doCalculation(accountsBoxRetriever) shouldBe expectedResult
@@ -1265,4 +1266,6 @@ class ComputationsBoxRetrieverForTest extends StubbedComputationsBoxRetriever wi
   override def retrieveHMRCFiling(): HMRCFiling = HMRCFiling(true)
 
   override def retrieveHMRCAmendment(): HMRCAmendment = HMRCAmendment(false)
+
+  override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration.EnglandWales
 }

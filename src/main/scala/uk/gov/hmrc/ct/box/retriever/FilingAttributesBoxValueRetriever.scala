@@ -39,4 +39,6 @@ trait FilingAttributesBoxValueRetriever extends BoxRetriever {
   def retrieveStatutoryAccountsFiling(): StatutoryAccountsFiling
 
   def retrieveUTR(): UTR
+
+  def retrieveCountryOfRegistration(): CountryOfRegistration
 }

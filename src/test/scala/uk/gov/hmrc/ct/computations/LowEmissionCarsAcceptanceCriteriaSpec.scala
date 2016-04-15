@@ -20,6 +20,7 @@ import org.joda.time.LocalDate
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.CountryOfRegistration
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
@@ -274,5 +275,7 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
     override def retrieveCP89: CP89 = CP89(cp89)
 
     override def retrieveCP668: CP668 = CP668(cp668)
+
+    override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration.EnglandWales
   }
 }
