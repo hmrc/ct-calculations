@@ -26,7 +26,7 @@ class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
 
   "FilingAttributesBoxValueRetriever" should {
     "have 10 functions" in {
-      BoxValues.retrieveBoxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 10
+      BoxValues.retrieveBoxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 11
     }
 
     "get ct values" in {
@@ -44,6 +44,7 @@ class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
       result("CompaniesHouseFiling") shouldBe retriever.retrieveCompaniesHouseFiling()
       result("HMRCFiling") shouldBe retriever.retrieveHMRCFiling()
       result("HMRCAmendment") shouldBe retriever.retrieveHMRCAmendment()
+      result("CountryOfRegistration") shouldBe retriever.retrieveCountryOfRegistration()
     }
   }
 }
@@ -71,4 +72,6 @@ class FilingAttributesBoxValueRetrieverForTest extends FilingAttributesBoxValueR
   override def retrieveHMRCFiling(): HMRCFiling = HMRCFiling(true)
 
   override def retrieveHMRCAmendment(): HMRCAmendment = HMRCAmendment(false)
+
+  override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration.NorthernIreland
 }
