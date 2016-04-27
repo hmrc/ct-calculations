@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.ct600e.v3
 
-import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
@@ -29,7 +28,7 @@ class E40Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAft
 
   val boxRetriever = mock[CT600EBoxRetriever]
   val NOW = DateHelper.now()
-  val APEnd = NOW.plusMonths(1)
+  val APEnd = NOW.minusMonths(1)
 
   before{
     when(boxRetriever.retrieveE4()).thenReturn(E4(APEnd))
@@ -41,13 +40,13 @@ class E40Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAft
         E40(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("E40"), errorMessageKey = "error.E40.required"))
       }
 
-      val INVALID_DATE_ERROR_MESSAGE: Set[CtValidation] = Set(CtValidation(Some("E40"), s"error.E40.not.betweenInclusive", Some(Seq(toErrorArgsFormat(NOW), toErrorArgsFormat(APEnd)))))
+      val INVALID_DATE_ERROR_MESSAGE: Set[CtValidation] = Set(CtValidation(Some("E40"), s"error.E40.not.betweenInclusive", Some(Seq(toErrorArgsFormat(APEnd), toErrorArgsFormat(NOW)))))
 
-      "false when date before current date" in {
-        E40(Some(NOW.minusDays(1))).validate(boxRetriever) shouldBe INVALID_DATE_ERROR_MESSAGE
+      "false when date before AP end date" in {
+        E40(Some(APEnd.minusDays(1))).validate(boxRetriever) shouldBe INVALID_DATE_ERROR_MESSAGE
       }
-      "false when date after AP end date" in {
-        E40(Some(APEnd.plusDays(1))).validate(boxRetriever) shouldBe INVALID_DATE_ERROR_MESSAGE
+      "false when date after current date" in {
+        E40(Some(NOW.plusDays(1))).validate(boxRetriever) shouldBe INVALID_DATE_ERROR_MESSAGE
       }
       "true when date is current date" in {
         E40(Some(NOW)).validate(boxRetriever) shouldBe Set()
@@ -56,7 +55,7 @@ class E40Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAft
         E40(Some(APEnd)).validate(boxRetriever) shouldBe Set()
       }
       "true when date is between now and AP end date" in {
-        E40(Some(NOW.plusDays(1))).validate(boxRetriever) shouldBe Set()
+        E40(Some(APEnd.plusDays(1))).validate(boxRetriever) shouldBe Set()
       }
     }
   }
