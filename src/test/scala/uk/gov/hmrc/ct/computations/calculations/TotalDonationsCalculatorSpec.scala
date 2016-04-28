@@ -24,14 +24,14 @@ class TotalDonationsCalculatorSpec extends WordSpec with Matchers {
   "TotalDonationsCalculator" should {
     "return 0 if didCompanyMakeDonations is false" in new TotalDonationsCalculator {
       val totalDonations = calculateTotalDonations(
-        cpq21 = CPQ21(value = false),
+        cpq21 = CPQ21(value = Some(false)),
         cp301 = CP301(Some(100)),
         cp302 = CP302(Some(200)))
       totalDonations shouldBe CP999(0)
     }
     "return sum values if didCompanyMakeDonations is true" in new TotalDonationsCalculator {
       val totalDonations = calculateTotalDonations(
-        cpq21 = CPQ21(value = true),
+        cpq21 = CPQ21(value = Some(true)),
         cp301 = CP301(Some(100)),
         cp302 = CP302(Some(200)))
       totalDonations shouldBe CP999(300)

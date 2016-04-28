@@ -26,8 +26,8 @@ trait TotalDonationsCalculator extends CtTypeConverters {
                               cp302: CP302): CP999 = {
 
     val result: Int = cpq21.value match {
-      case true => cp302 + cp301
-      case false => 0
+      case Some(true) => cp302 + cp301
+      case _ => 0
     }
     CP999(result)
   }
