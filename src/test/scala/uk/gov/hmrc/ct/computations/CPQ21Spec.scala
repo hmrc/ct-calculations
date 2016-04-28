@@ -26,11 +26,11 @@ class CPQ21Spec extends WordSpec with Matchers {
 
   "CPQ21 to json" should {
     "create valid json for true value" in {
-      val json = Json.toJson(CPQ21Holder(CPQ21(true)))
+      val json = Json.toJson(CPQ21Holder(CPQ21(Some(true))))
       json.toString shouldBe """{"cpq21":true}"""
     }
     "create valid json for false value" in {
-      val json = Json.toJson(CPQ21Holder(CPQ21(false)))
+      val json = Json.toJson(CPQ21Holder(CPQ21(Some(false))))
       json.toString shouldBe """{"cpq21":false}"""
     }
   }
@@ -38,11 +38,11 @@ class CPQ21Spec extends WordSpec with Matchers {
   "CPQ21 from json" should {
     "create true from valid json" in {
       val json = Json.parse("""{"cpq21":true}""")
-      Json.fromJson[CPQ21Holder](json).get shouldBe CPQ21Holder(cpq21 = CPQ21(true))
+      Json.fromJson[CPQ21Holder](json).get shouldBe CPQ21Holder(cpq21 = CPQ21(Some(true)))
     }
     "create false from valid json" in {
       val json = Json.parse("""{"cpq21":false}""")
-      Json.fromJson[CPQ21Holder](json).get shouldBe CPQ21Holder(cpq21 = CPQ21(false))
+      Json.fromJson[CPQ21Holder](json).get shouldBe CPQ21Holder(cpq21 = CPQ21(Some(false)))
     }
   }
 
