@@ -364,7 +364,7 @@ package object formats {
 
   implicit val cpq20Format: Format[CPQ20] = new OptionalBooleanFormat[CPQ20](CPQ20.apply)
 
-  implicit val cpq21Format: Format[CPQ21] = new BooleanFormat[CPQ21](CPQ21.apply)
+  implicit val cpq21Format: Format[CPQ21] = new OptionalBooleanFormat[CPQ21](CPQ21.apply)
 
   implicit val carFormatter = Json.format[Car]
 
