@@ -137,6 +137,16 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
   }
 
+  "validateIntegerAsBlank" should {
+    "return no errors if no value present" in {
+      validateIntegerAsBlank("testBox", testOptIntegerBox(None)) shouldBe Set()
+    }
+
+    "return validation error if non empty" in {
+      validateIntegerAsBlank("testBox", testOptIntegerBox(Some(0))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.nonBlankValue"))
+    }
+  }
+
   "validateNumberRange" should {
     "return error if number too small" in {
       validateIntegerRange("testBox", testOptIntegerBox(Some(0)), min = 1, max = 2) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.outOfRange", Some(Seq("1","2"))))

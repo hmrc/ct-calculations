@@ -26,11 +26,18 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.{RepaymentsBoxRetriever, CT600BoxRetrie
 class B860Spec extends WordSpec with MockitoSugar with Matchers {
 
   "B860 validate" should {
-    "not return errors when REPAYMENTSQ1 is true" in {
+    "not return errors when REPAYMENTSQ1 is true and B860 is empty" in {
       val mockBoxRetriever = mock[RepaymentsBoxRetriever]
       when(mockBoxRetriever.retrieveREPAYMENTSQ1()).thenReturn(REPAYMENTSQ1(Some(true)))
 
       B860(None).validate(mockBoxRetriever) shouldBe Set()
+    }
+
+    "return error when REPAYMENTSQ1 is true and B860 is not empty" in {
+      val mockBoxRetriever = mock[RepaymentsBoxRetriever]
+      when(mockBoxRetriever.retrieveREPAYMENTSQ1()).thenReturn(REPAYMENTSQ1(Some(true)))
+
+      B860(Some(100)).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("B860"), "error.B860.nonBlankValue"))
     }
 
     "not return errors when REPAYMENTSQ1 is false and B860 is valid" in {
