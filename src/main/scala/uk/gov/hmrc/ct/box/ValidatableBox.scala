@@ -139,6 +139,13 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
+  protected def validateIntegerAsBlank(boxId: String, box: CtOptionalInteger): Set[CtValidation] = {
+    box.value match {
+      case None => Set()
+      case _ => Set(CtValidation(Some(boxId), s"error.$boxId.nonBlankValue"))
+    }
+  }
+
   protected def validateIntegerRange(boxId: String, box: CtOptionalInteger, min: Int = 0, max: Int): Set[CtValidation] = {
     box.value match {
       case Some(x) => {
