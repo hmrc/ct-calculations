@@ -31,7 +31,11 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever {
 
   def retrieveB39(): B39
 
-  def retrieveB42(): B42
+  def retrieveB42a(): B42a
+
+  def retrieveB42b(): B42b
+
+  def retrieveB42(): B42 = B42.calculate(this)
 
   def retrieveB84(): B84
 

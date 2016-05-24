@@ -21,6 +21,7 @@ import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 trait StubbedFilingAttributesBoxValueRetriever extends FilingAttributesBoxValueRetriever {
+
   override def retrieveProductName(): ProductName = ???
 
   override def retrieveCompanyType(): FilingCompanyType = ???
@@ -42,4 +43,6 @@ trait StubbedFilingAttributesBoxValueRetriever extends FilingAttributesBoxValueR
   override def generateValues: Map[String, CtValue[_]] = ???
 
   override def retrieveUTR(): UTR = ???
+
+  override def retrieveCountryOfRegistration(): CountryOfRegistration = ???
 }
