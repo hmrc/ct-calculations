@@ -23,8 +23,9 @@ case class B860(value: Option[Int]) extends CtBoxIdentifier("Repayment amount up
   override def validate(boxRetriever: RepaymentsBoxRetriever): Set[CtValidation] = {
     val repaymentsQ1 = boxRetriever.retrieveREPAYMENTSQ1()
 
-    repaymentsQ1.value match {
-      case Some(false) => validateAsMandatory(this) ++ validateZeroOrPositiveInteger(this)
+    (repaymentsQ1.value, value) match {
+      case (Some(false), _) => validateAsMandatory(this) ++ validateZeroOrPositiveInteger(this)
+      case (Some(true), Some(_)) => validateIntegerAsBlank("B860", this)
       case _ => Set()
     }
   }
