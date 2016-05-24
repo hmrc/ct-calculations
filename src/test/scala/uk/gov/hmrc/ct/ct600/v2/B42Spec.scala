@@ -16,59 +16,61 @@
 
 package uk.gov.hmrc.ct.ct600.v2
 
+import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.ct600.v2.stubs.StubbedCT600BoxRetriever
+import uk.gov.hmrc.ct.ct600.v2.retriever.CT600BoxRetriever
+import org.mockito.Mockito._
 
-class B42Spec extends WordSpec with Matchers {
+class B42Spec extends WordSpec with Matchers with MockitoSugar {
 
   "B42" should {
 
     "be false if both B42a and B42b are false" in {
 
-      val boxRetriever = new StubbedCT600BoxRetriever {
-        override def retrieveB42a(): B42a = B42a(Some(false))
-        override def retrieveB42b(): B42b = B42b(Some(false))
-      }
+      val boxRetriever = mock[CT600BoxRetriever]
+
+      when(boxRetriever.retrieveB42a()).thenReturn(B42a(Some(false)))
+      when(boxRetriever.retrieveB42b()).thenReturn(B42b(Some(false)))
 
       B42.calculate(boxRetriever).value shouldBe false
     }
 
     "be false if both B42a and B42b are None" in {
 
-      val boxRetriever = new StubbedCT600BoxRetriever {
-        override def retrieveB42a(): B42a = B42a(None)
-        override def retrieveB42b(): B42b = B42b(None)
-      }
+      val boxRetriever = mock[CT600BoxRetriever]
+
+      when(boxRetriever.retrieveB42a()).thenReturn(B42a(None))
+      when(boxRetriever.retrieveB42b()).thenReturn(B42b(None))
 
       B42.calculate(boxRetriever).value shouldBe false
     }
 
     "be true if B42a is true" in {
 
-      val boxRetriever = new StubbedCT600BoxRetriever {
-        override def retrieveB42a(): B42a = B42a(Some(true))
-        override def retrieveB42b(): B42b = B42b(Some(false))
-      }
+      val boxRetriever = mock[CT600BoxRetriever]
+
+      when(boxRetriever.retrieveB42a()).thenReturn(B42a(Some(true)))
+      when(boxRetriever.retrieveB42b()).thenReturn(B42b(Some(false)))
 
       B42.calculate(boxRetriever).value shouldBe true
     }
 
     "be true if B42b is true" in {
 
-      val boxRetriever = new StubbedCT600BoxRetriever {
-        override def retrieveB42a(): B42a = B42a(None)
-        override def retrieveB42b(): B42b = B42b(Some(true))
-      }
+      val boxRetriever = mock[CT600BoxRetriever]
+
+      when(boxRetriever.retrieveB42a()).thenReturn(B42a(None))
+      when(boxRetriever.retrieveB42b()).thenReturn(B42b(Some(true)))
 
       B42.calculate(boxRetriever).value shouldBe true
     }
 
     "be true if both B42a and B42b is true" in {
 
-      val boxRetriever = new StubbedCT600BoxRetriever {
-        override def retrieveB42a(): B42a = B42a(Some(true))
-        override def retrieveB42b(): B42b = B42b(Some(true))
-      }
+      val boxRetriever = mock[CT600BoxRetriever]
+
+      when(boxRetriever.retrieveB42a()).thenReturn(B42a(Some(true)))
+      when(boxRetriever.retrieveB42b()).thenReturn(B42b(Some(true)))
 
       B42.calculate(boxRetriever).value shouldBe true
     }
