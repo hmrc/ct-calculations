@@ -21,7 +21,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP501(value: Option[Int]) extends CtBoxIdentifier(name = "Gross income from property") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
 
-  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = validateZeroOrPositiveInteger(this)
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = validateIntegerRange("CP501", this, 0, 5200)
 
 }
 
