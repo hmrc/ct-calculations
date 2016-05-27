@@ -49,6 +49,10 @@ object HmrcReturns {
     override def key(): String = "HmrcStatutoryAccounts"
   }
 
+  case object HmrcAbridgedAccounts extends ReturnType with Accounts {
+    override def key(): String = "HmrcAbridgedAccounts"
+  }
+
   val returns: Set[ReturnType] = Set(Computations, CT600, CT600a, CT600e, CT600j, HmrcMicroEntityAccounts, HmrcStatutoryAccounts, HmrcUploadedAccounts)
 
   def fromKey(key: String): ReturnType = {

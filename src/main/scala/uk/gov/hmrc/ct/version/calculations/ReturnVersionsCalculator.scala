@@ -18,14 +18,15 @@ package uk.gov.hmrc.ct.version.calculations
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct._
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
 import uk.gov.hmrc.ct.ct600e.v3.retriever.{CT600EBoxRetriever => V3CT600EBoxRetriever}
 import uk.gov.hmrc.ct.ct600e.v2.retriever.{CT600EBoxRetriever => V2CT600EBoxRetriever}
 import uk.gov.hmrc.ct.domain.CompanyTypes._
-import uk.gov.hmrc.ct.version.CoHoAccounts.{CoHoMicroEntityAbridgedAccounts, CoHoMicroEntityAccounts, CoHoStatutoryAbbreviatedAccounts, CoHoStatutoryAccounts}
-import uk.gov.hmrc.ct.version.CoHoVersions.AccountsVersion1
+import uk.gov.hmrc.ct.version.CoHoAccounts._
+import uk.gov.hmrc.ct.version.CoHoVersions.{AccountsVersion2, AccountsVersion1}
 import uk.gov.hmrc.ct.version.HmrcReturns._
 import uk.gov.hmrc.ct.version.HmrcVersions._
 import uk.gov.hmrc.ct.version.{Version, Return}
@@ -37,8 +38,9 @@ trait ReturnVersionsCalculator {
   def doCalculation[A <: BoxRetriever](boxRetriever: A): Set[Return] = {
     boxRetriever match {
 
-      case br: V3CT600EBoxRetriever with FilingAttributesBoxValueRetriever =>
-        calculateReturnVersions(apStartDate = Some(br.retrieveE3().value),
+      case br: V3CT600EBoxRetriever with AccountsBoxRetriever with FilingAttributesBoxValueRetriever =>
+        calculateReturnVersions(poaStartDate = br.retrieveAC3().value,
+                                apStartDate = Some(br.retrieveE3().value),
                                 apEndDate = Some(br.retrieveE4().value),
                                 coHoFiling = br.retrieveCompaniesHouseFiling(),
                                 hmrcFiling = br.retrieveHMRCFiling(),
@@ -50,8 +52,9 @@ trait ReturnVersionsCalculator {
                                 charityAllExempt = br.retrieveE20().value,
                                 charityNoIncome = v3CharityNoIncome(br))
 
-      case br: V2CT600EBoxRetriever with FilingAttributesBoxValueRetriever =>
-        calculateReturnVersions(apStartDate = Some(br.retrieveE1021().value),
+      case br: V2CT600EBoxRetriever with AccountsBoxRetriever with FilingAttributesBoxValueRetriever =>
+        calculateReturnVersions(poaStartDate = br.retrieveAC3().value,
+                                apStartDate = Some(br.retrieveE1021().value),
                                 apEndDate = Some(br.retrieveE1022().value),
                                 coHoFiling = br.retrieveCompaniesHouseFiling(),
                                 hmrcFiling = br.retrieveHMRCFiling(),
@@ -63,8 +66,9 @@ trait ReturnVersionsCalculator {
                                 charityAllExempt = br.retrieveE1011().value,
                                 charityNoIncome = v2CharityNoIncome(br))
 
-      case br: ComputationsBoxRetriever with FilingAttributesBoxValueRetriever =>
-        calculateReturnVersions(apStartDate = Some(br.retrieveCP1().value),
+      case br: ComputationsBoxRetriever with AccountsBoxRetriever with FilingAttributesBoxValueRetriever =>
+        calculateReturnVersions(poaStartDate = br.retrieveAC3().value,
+                                apStartDate = Some(br.retrieveCP1().value),
                                 apEndDate = Some(br.retrieveCP2().value),
                                 coHoFiling = br.retrieveCompaniesHouseFiling(),
                                 hmrcFiling = br.retrieveHMRCFiling(),
@@ -74,8 +78,9 @@ trait ReturnVersionsCalculator {
                                 abbreviatedAccountsFiling = br.retrieveAbbreviatedAccountsFiling(),
                                 companyType = br.retrieveCompanyType())
 
-      case br: FilingAttributesBoxValueRetriever =>
-        calculateReturnVersions(apStartDate = None,
+      case br: FilingAttributesBoxValueRetriever with AccountsBoxRetriever =>
+        calculateReturnVersions(poaStartDate = br.retrieveAC3().value,
+                                apStartDate = None,
                                 apEndDate = None,
                                 coHoFiling = br.retrieveCompaniesHouseFiling(),
                                 hmrcFiling = br.retrieveHMRCFiling(),
@@ -136,7 +141,8 @@ trait ReturnVersionsCalculator {
   }
 
 
-  def calculateReturnVersions(apStartDate: Option[LocalDate] = None, apEndDate: Option[LocalDate] = None,
+  def calculateReturnVersions(poaStartDate: LocalDate,
+                              apStartDate: Option[LocalDate] = None, apEndDate: Option[LocalDate] = None,
                               coHoFiling: CompaniesHouseFiling = CompaniesHouseFiling(false),
                               hmrcFiling: HMRCFiling = HMRCFiling(false),
                               microEntityFiling: MicroEntityFiling = MicroEntityFiling(false),
@@ -151,38 +157,55 @@ trait ReturnVersionsCalculator {
       throw new IllegalArgumentException(s"")
     }
 
-    val accountsVersion = AccountsVersion1
+    val accountsVersion = {
+      poaStartDate match {
+        case poaStart if poaStart.compareTo(new LocalDate(2016, 1, 1)) >= 0 => AccountsVersion2
+        case _ => AccountsVersion1
+      }
+    }
 
-    val cohoReturn: Set[Return] = (coHoFiling, microEntityFiling, statutoryAccountsFiling, abridgedFiling, abbreviatedAccountsFiling) match {
-      case (CompaniesHouseFiling(true), MicroEntityFiling(true), _, AbridgedFiling(false), _) =>
+    val cohoReturn: Set[Return] = (accountsVersion, coHoFiling, microEntityFiling, statutoryAccountsFiling, abridgedFiling, abbreviatedAccountsFiling) match {
+      case (AccountsVersion1, CompaniesHouseFiling(true), MicroEntityFiling(true), _, AbridgedFiling(false), _) =>
         Set(Return(CoHoMicroEntityAccounts, accountsVersion))
 
-      case (CompaniesHouseFiling(true), MicroEntityFiling(true), _, AbridgedFiling(true), _) =>
+      case (AccountsVersion1, CompaniesHouseFiling(true), MicroEntityFiling(true), _, AbridgedFiling(true), _) =>
         Set(Return(CoHoMicroEntityAbridgedAccounts, accountsVersion))
 
-      case (CompaniesHouseFiling(true), _, StatutoryAccountsFiling(true), _, AbbreviatedAccountsFiling(false)) =>
+      case (AccountsVersion1, CompaniesHouseFiling(true), _, StatutoryAccountsFiling(true), _, AbbreviatedAccountsFiling(false)) =>
         Set(Return(CoHoStatutoryAccounts, accountsVersion))
 
-      case (CompaniesHouseFiling(true), _, StatutoryAccountsFiling(true), _, AbbreviatedAccountsFiling(true)) =>
+      case (AccountsVersion1, CompaniesHouseFiling(true), _, StatutoryAccountsFiling(true), _, AbbreviatedAccountsFiling(true)) =>
         Set(Return(CoHoStatutoryAbbreviatedAccounts, accountsVersion))
+
+      case (AccountsVersion2, CompaniesHouseFiling(true), MicroEntityFiling(true), _, _, _) =>
+        Set(Return(CoHoMicroEntityAccounts, accountsVersion))
+
+      case (AccountsVersion2, CompaniesHouseFiling(true), _, StatutoryAccountsFiling(true), _, _) =>
+        Set(Return(CoHoStatutoryAccounts, accountsVersion))
+
+      case (AccountsVersion2, CompaniesHouseFiling(true), _, _, AbridgedFiling(true), _) =>
+        Set(Return(CoHoAbridgedAccounts, accountsVersion))
 
       case _ => Set.empty
     }
 
-    val hmrcAccounts = (hmrcFiling, microEntityFiling, statutoryAccountsFiling, companyType) match {
-      case (HMRCFiling(true), MicroEntityFiling(true), _, _) =>
+    val hmrcAccounts = (accountsVersion, hmrcFiling, microEntityFiling, abridgedFiling, statutoryAccountsFiling, companyType) match {
+      case (AccountsVersion2, HMRCFiling(true), _, AbridgedFiling(true), _, _) =>
+        Set(Return(HmrcAbridgedAccounts, accountsVersion))
+
+      case (_, HMRCFiling(true), MicroEntityFiling(true), _, _, _) =>
         Set(Return(HmrcMicroEntityAccounts, accountsVersion))
 
-      case (HMRCFiling(true), _, StatutoryAccountsFiling(true), FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedBySharesCharity)) =>
+      case (_, HMRCFiling(true), _, _, StatutoryAccountsFiling(true), FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedBySharesCharity)) =>
         Set(Return(HmrcStatutoryAccounts, accountsVersion))
 
-      case (HMRCFiling(true), _, StatutoryAccountsFiling(true), FilingCompanyType(LimitedByGuaranteeCASC) | FilingCompanyType(LimitedBySharesCASC)) =>
+      case (_, HMRCFiling(true), _, _, StatutoryAccountsFiling(true), FilingCompanyType(LimitedByGuaranteeCASC) | FilingCompanyType(LimitedBySharesCASC)) =>
         Set(Return(HmrcStatutoryAccounts, accountsVersion))
 
-      case (HMRCFiling(true), _, StatutoryAccountsFiling(true), _) =>
+      case (_, HMRCFiling(true), _, _, StatutoryAccountsFiling(true), _) =>
         Set(Return(HmrcStatutoryAccounts, accountsVersion))
 
-      case (HMRCFiling(true), MicroEntityFiling(false), StatutoryAccountsFiling(false), _) =>
+      case (_, HMRCFiling(true), MicroEntityFiling(false), _, StatutoryAccountsFiling(false), _) =>
         Set(Return(HmrcUploadedAccounts, UploadedAccounts))
 
       case _ => Set.empty
