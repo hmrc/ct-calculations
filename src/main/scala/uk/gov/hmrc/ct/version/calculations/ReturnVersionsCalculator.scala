@@ -141,7 +141,7 @@ trait ReturnVersionsCalculator {
   }
 
 
-  def calculateReturnVersions(poaStartDate: LocalDate,
+  def calculateReturnVersions(poaStartDate: LocalDate = AnyRef,
                               apStartDate: Option[LocalDate] = None, apEndDate: Option[LocalDate] = None,
                               coHoFiling: CompaniesHouseFiling = CompaniesHouseFiling(false),
                               hmrcFiling: HMRCFiling = HMRCFiling(false),
@@ -158,10 +158,10 @@ trait ReturnVersionsCalculator {
     }
 
     val accountsVersion = {
-      poaStartDate match {
-        case poaStart if poaStart.compareTo(new LocalDate(2016, 1, 1)) >= 0 => AccountsVersion2
-        case _ => AccountsVersion1
-      }
+      if (poaStartDate.compareTo(new LocalDate(2016, 1, 1)) >= 0)
+        AccountsVersion2
+      else
+        AccountsVersion1
     }
 
     val cohoReturn: Set[Return] = (accountsVersion, coHoFiling, microEntityFiling, statutoryAccountsFiling, abridgedFiling, abbreviatedAccountsFiling) match {
