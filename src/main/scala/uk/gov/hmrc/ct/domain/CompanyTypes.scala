@@ -66,6 +66,10 @@ object CompanyTypes {
     override def toString: String = this.getClass.getSimpleName.filterNot(_ == '$')
   }
 
+  def getCompanyTypeFromString(coTypeString: String) = {
+
+  }
+
   val AllCompanyTypes = Seq(
     UkTradingCompany, CompanyLimitedByGuarantee, CASC, LimitedByGuaranteeCASC, LimitedBySharesCASC,
     CompanyInLiquidation, MembersClub, Charity, MembersVoluntaryLiquidation, UnitTrust, CloseInvestmentHoldingCompany,
@@ -81,5 +85,6 @@ object CompanyTypes {
   }
 
   private val registeredTypes: Map[String, CompanyType] = AllCompanyTypes.map(t => t.productPrefix -> t).toMap
+
 
 }

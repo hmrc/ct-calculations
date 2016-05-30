@@ -76,7 +76,9 @@ trait ReturnVersionsCalculator {
                                 statutoryAccountsFiling = br.retrieveStatutoryAccountsFiling(),
                                 abridgedFiling = br.retrieveAbridgedFiling(),
                                 abbreviatedAccountsFiling = br.retrieveAbbreviatedAccountsFiling(),
-                                companyType = br.retrieveCompanyType())
+                                companyType = br.retrieveCompanyType(),
+                                charityAllExempt = None,
+                                charityNoIncome = None)
 
       case br: FilingAttributesBoxValueRetriever with AccountsBoxRetriever =>
         calculateReturnVersions(poaStartDate = br.retrieveAC3().value,
@@ -88,7 +90,10 @@ trait ReturnVersionsCalculator {
                                 statutoryAccountsFiling = br.retrieveStatutoryAccountsFiling(),
                                 abridgedFiling = br.retrieveAbridgedFiling(),
                                 abbreviatedAccountsFiling = br.retrieveAbbreviatedAccountsFiling(),
-                                companyType = br.retrieveCompanyType())
+                                companyType = br.retrieveCompanyType(),
+                                charityAllExempt = None,
+                                charityNoIncome = None)
+
       case _ => throw new IllegalArgumentException("The box retriever passed in must implement FilingAttributesBoxValueRetriever")
     }
   }
@@ -141,28 +146,28 @@ trait ReturnVersionsCalculator {
   }
 
 
-  def calculateReturnVersions(poaStartDate: LocalDate = AnyRef,
-                              apStartDate: Option[LocalDate] = None, apEndDate: Option[LocalDate] = None,
-                              coHoFiling: CompaniesHouseFiling = CompaniesHouseFiling(false),
-                              hmrcFiling: HMRCFiling = HMRCFiling(false),
-                              microEntityFiling: MicroEntityFiling = MicroEntityFiling(false),
-                              statutoryAccountsFiling: StatutoryAccountsFiling = StatutoryAccountsFiling(false),
-                              abridgedFiling: AbridgedFiling = AbridgedFiling(false),
-                              abbreviatedAccountsFiling: AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false),
-                              companyType: FilingCompanyType = FilingCompanyType(UkTradingCompany),
-                              charityAllExempt: Option[Boolean] = None,
-                              charityNoIncome: Option[Boolean] = None): Set[Return] = {
+  protected def calculateReturnVersions(poaStartDate: LocalDate,
+                              apStartDate: Option[LocalDate], apEndDate: Option[LocalDate],
+                              coHoFiling: CompaniesHouseFiling,
+                              hmrcFiling: HMRCFiling,
+                              microEntityFiling: MicroEntityFiling,
+                              statutoryAccountsFiling: StatutoryAccountsFiling,
+                              abridgedFiling: AbridgedFiling,
+                              abbreviatedAccountsFiling: AbbreviatedAccountsFiling,
+                              companyType: FilingCompanyType,
+                              charityAllExempt: Option[Boolean],
+                              charityNoIncome: Option[Boolean]): Set[Return] = {
 
     if (isIllegalArguments(companyType.value, hmrcFiling.value, coHoFiling.value, microEntityFiling.value)) {
       throw new IllegalArgumentException(s"")
     }
 
-    val accountsVersion = {
-      if (poaStartDate.compareTo(new LocalDate(2016, 1, 1)) >= 0)
-        AccountsVersion2
-      else
-        AccountsVersion1
-    }
+    val poaOnOrAfterFrs102Date = poaStartDate.compareTo(new LocalDate(2016, 1, 1)) >= 0
+
+    val accountsVersion = if (poaOnOrAfterFrs102Date) AccountsVersion2 else AccountsVersion1
+
+    val uploadedAccountsVersion = if (poaOnOrAfterFrs102Date) UploadedAccounts2 else UploadedAccounts1
+
 
     val cohoReturn: Set[Return] = (accountsVersion, coHoFiling, microEntityFiling, statutoryAccountsFiling, abridgedFiling, abbreviatedAccountsFiling) match {
       case (AccountsVersion1, CompaniesHouseFiling(true), MicroEntityFiling(true), _, AbridgedFiling(false), _) =>
@@ -196,6 +201,7 @@ trait ReturnVersionsCalculator {
       case (_, HMRCFiling(true), MicroEntityFiling(true), _, _, _) =>
         Set(Return(HmrcMicroEntityAccounts, accountsVersion))
 
+        // TODO - remove next 2 cases (and companyType parameter) because there is no variation with companyType ??
       case (_, HMRCFiling(true), _, _, StatutoryAccountsFiling(true), FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedBySharesCharity)) =>
         Set(Return(HmrcStatutoryAccounts, accountsVersion))
 
@@ -206,7 +212,7 @@ trait ReturnVersionsCalculator {
         Set(Return(HmrcStatutoryAccounts, accountsVersion))
 
       case (_, HMRCFiling(true), MicroEntityFiling(false), _, StatutoryAccountsFiling(false), _) =>
-        Set(Return(HmrcUploadedAccounts, UploadedAccounts))
+        Set(Return(HmrcUploadedAccounts, uploadedAccountsVersion))
 
       case _ => Set.empty
     }

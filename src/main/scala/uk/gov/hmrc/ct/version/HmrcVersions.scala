@@ -38,8 +38,12 @@ object HmrcVersions {
     override def name: String = "ct-2013-07-21"
   }
 
-  case object UploadedAccounts extends Version {
+  case object UploadedAccounts1 extends Version {
     override def name: String = "uploaded-1.0"
+  }
+
+  case object UploadedAccounts2 extends Version {
+    override def name: String = "uploaded-2.0"
   }
 
 }
