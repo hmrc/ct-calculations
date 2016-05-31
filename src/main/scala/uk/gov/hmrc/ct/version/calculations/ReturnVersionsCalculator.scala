@@ -162,7 +162,7 @@ trait ReturnVersionsCalculator {
       throw new IllegalArgumentException(s"")
     }
 
-    val isOnOrAfterFrs102And105Date = poaStartDate.compareTo(new LocalDate(2016, 1, 1)) >= 0
+    val isOnOrAfterFrs102And105Date = !poaStartDate.isBefore(new LocalDate(2016, 1, 1))
 
     val cohoReturn: Set[Return] = (isOnOrAfterFrs102And105Date, coHoFiling, microEntityFiling, statutoryAccountsFiling, abridgedFiling, abbreviatedAccountsFiling) match {
       case (false, CompaniesHouseFiling(true), MicroEntityFiling(true), _, AbridgedFiling(false), _) =>

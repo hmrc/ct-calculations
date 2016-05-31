@@ -277,58 +277,58 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
       "return HMRC version for micro accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRS105),
-          Return(CT600, CT600Version2),
-          Return(CT600a, CT600Version2),
-          Return(CT600j, CT600Version2),
-          Return(Computations, ComputationsCT20141001))
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20150201))
 
         calculateReturnVersions(
           poaStartDate = new LocalDate(2016, 1, 1),
-          apStartDate = Some(LocalDate.parse("2015-03-31")),
-          apEndDate = Some(LocalDate.parse("2015-12-31")),
+          apStartDate = Some(LocalDate.parse("2016-01-01")),
+          apEndDate = Some(LocalDate.parse("2016-01-01")),
           hmrcFiling = HMRCFiling(true),
           microEntityFiling = MicroEntityFiling(true)) shouldBe expectedResult
       }
 
       "return HMRC version for abridged accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcAbridgedAccounts, FRS102),
-          Return(CT600, CT600Version2),
-          Return(CT600a, CT600Version2),
-          Return(CT600j, CT600Version2),
-          Return(Computations, ComputationsCT20141001))
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20150201))
 
         calculateReturnVersions(
           poaStartDate = new LocalDate(2016, 1, 1),
-          apStartDate = Some(LocalDate.parse("2015-03-31")),
-          apEndDate = Some(LocalDate.parse("2015-12-31")),
+          apStartDate = Some(LocalDate.parse("2016-01-01")),
+          apEndDate = Some(LocalDate.parse("2016-01-01")),
           hmrcFiling = HMRCFiling(true),
           abridgedFiling = AbridgedFiling(true)) shouldBe expectedResult
       }
 
       "return HMRC version for full statutory accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcStatutoryAccounts, FRS102),
-          Return(CT600, CT600Version2),
-          Return(CT600a, CT600Version2),
-          Return(CT600j, CT600Version2),
-          Return(Computations, ComputationsCT20141001))
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20150201))
         calculateReturnVersions(
           poaStartDate = new LocalDate(2016, 1, 3),
-          apStartDate = Some(LocalDate.parse("2015-03-31")),
-          apEndDate = Some(LocalDate.parse("2015-12-31")),
+          apStartDate = Some(LocalDate.parse("2016-01-03")),
+          apEndDate = Some(LocalDate.parse("2016-01-03")),
           hmrcFiling = HMRCFiling(true),
           statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe expectedResult
       }
 
       "return HMRC versions for uploaded accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
-          Return(CT600, CT600Version2),
-          Return(CT600a, CT600Version2),
-          Return(CT600j, CT600Version2),
-          Return(Computations, ComputationsCT20141001))
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20150201))
         calculateReturnVersions(
           poaStartDate = new LocalDate(2016, 1, 2),
-          apStartDate = Some(LocalDate.parse("2015-03-31")),
-          apEndDate = Some(LocalDate.parse("2015-12-31")),
+          apStartDate = Some(LocalDate.parse("2016-01-02")),
+          apEndDate = Some(LocalDate.parse("2016-01-02")),
           hmrcFiling = HMRCFiling(true),
           microEntityFiling = MicroEntityFiling(false),
           abridgedFiling = AbridgedFiling(false),
