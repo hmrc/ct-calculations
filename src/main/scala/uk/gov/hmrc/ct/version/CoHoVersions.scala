@@ -21,4 +21,7 @@ object CoHoVersions {
   case object AccountsVersion1 extends Version {
     override def name: String = "v1.0"
   }
+  case object AccountsVersion2 extends Version {
+    override def name: String = "v2.0"
+  }
 }

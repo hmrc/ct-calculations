@@ -38,6 +38,10 @@ object CoHoAccounts {
     override def fullVersion: Accounts = CoHoStatutoryAccounts
   }
 
+  case object CoHoAbridgedAccounts extends Accounts {
+    override def key(): String = "CoHoAbridgedAccounts"
+  }
+
   val returns: Set[ReturnType] = Set(CoHoMicroEntityAccounts, CoHoMicroEntityAbridgedAccounts, CoHoStatutoryAccounts, CoHoStatutoryAbbreviatedAccounts)
 
   def fromKey(key: String): ReturnType = {
