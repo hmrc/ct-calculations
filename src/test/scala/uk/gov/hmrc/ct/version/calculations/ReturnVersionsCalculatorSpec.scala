@@ -38,7 +38,7 @@ import uk.gov.hmrc.ct.version.{Return, Version}
 
 class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
-    "Return Versions Calculator" should {
+  "Return Versions Calculator" should {
     "for CoHo only filing" when {
       "return accounts version for full Micro entity accounts" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(CoHoMicroEntityAccounts, AccountsVersion1))

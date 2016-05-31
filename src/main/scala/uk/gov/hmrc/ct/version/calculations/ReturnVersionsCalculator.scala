@@ -162,10 +162,11 @@ trait ReturnVersionsCalculator {
       throw new IllegalArgumentException(s"")
     }
 
-    val accountsVersion = if (poaStartDate.compareTo(new LocalDate(2016, 1, 1)) >= 0)
-      AccountsVersion2
-    else
-      AccountsVersion1
+    val accountsVersion =
+      if (poaStartDate.compareTo(new LocalDate(2016, 1, 1)) >= 0)
+        AccountsVersion2
+      else
+        AccountsVersion1
 
     val cohoReturn: Set[Return] = (accountsVersion, coHoFiling, microEntityFiling, statutoryAccountsFiling, abridgedFiling, abbreviatedAccountsFiling) match {
       case (AccountsVersion1, CompaniesHouseFiling(true), MicroEntityFiling(true), _, AbridgedFiling(false), _) =>
