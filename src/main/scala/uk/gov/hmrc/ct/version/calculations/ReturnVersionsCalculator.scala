@@ -162,57 +162,48 @@ trait ReturnVersionsCalculator {
       throw new IllegalArgumentException(s"")
     }
 
-    val poaOnOrAfterFrs102Date = poaStartDate.compareTo(new LocalDate(2016, 1, 1)) >= 0
-
-    val accountsVersion = if (poaOnOrAfterFrs102Date) AccountsVersion2 else AccountsVersion1
-
-    val uploadedAccountsVersion = if (poaOnOrAfterFrs102Date) UploadedAccounts2 else UploadedAccounts1
-
+    val accountsVersion = if (poaStartDate.compareTo(new LocalDate(2016, 1, 1)) >= 0)
+      AccountsVersion2
+    else
+      AccountsVersion1
 
     val cohoReturn: Set[Return] = (accountsVersion, coHoFiling, microEntityFiling, statutoryAccountsFiling, abridgedFiling, abbreviatedAccountsFiling) match {
       case (AccountsVersion1, CompaniesHouseFiling(true), MicroEntityFiling(true), _, AbridgedFiling(false), _) =>
-        Set(Return(CoHoMicroEntityAccounts, accountsVersion))
+        Set(Return(CoHoMicroEntityAccounts, AccountsVersion1))
 
       case (AccountsVersion1, CompaniesHouseFiling(true), MicroEntityFiling(true), _, AbridgedFiling(true), _) =>
-        Set(Return(CoHoMicroEntityAbridgedAccounts, accountsVersion))
+        Set(Return(CoHoMicroEntityAbridgedAccounts, AccountsVersion1))
 
       case (AccountsVersion1, CompaniesHouseFiling(true), _, StatutoryAccountsFiling(true), _, AbbreviatedAccountsFiling(false)) =>
-        Set(Return(CoHoStatutoryAccounts, accountsVersion))
+        Set(Return(CoHoStatutoryAccounts, AccountsVersion1))
 
       case (AccountsVersion1, CompaniesHouseFiling(true), _, StatutoryAccountsFiling(true), _, AbbreviatedAccountsFiling(true)) =>
-        Set(Return(CoHoStatutoryAbbreviatedAccounts, accountsVersion))
+        Set(Return(CoHoStatutoryAbbreviatedAccounts, AccountsVersion1))
 
       case (AccountsVersion2, CompaniesHouseFiling(true), MicroEntityFiling(true), _, _, _) =>
-        Set(Return(CoHoMicroEntityAccounts, accountsVersion))
+        Set(Return(CoHoMicroEntityAccounts, AccountsVersion2))
 
       case (AccountsVersion2, CompaniesHouseFiling(true), _, StatutoryAccountsFiling(true), _, _) =>
-        Set(Return(CoHoStatutoryAccounts, accountsVersion))
+        Set(Return(CoHoStatutoryAccounts, AccountsVersion2))
 
       case (AccountsVersion2, CompaniesHouseFiling(true), _, _, AbridgedFiling(true), _) =>
-        Set(Return(CoHoAbridgedAccounts, accountsVersion))
+        Set(Return(CoHoAbridgedAccounts, AccountsVersion2))
 
       case _ => Set.empty
     }
 
     val hmrcAccounts = (accountsVersion, hmrcFiling, microEntityFiling, abridgedFiling, statutoryAccountsFiling, companyType) match {
       case (AccountsVersion2, HMRCFiling(true), _, AbridgedFiling(true), _, _) =>
-        Set(Return(HmrcAbridgedAccounts, accountsVersion))
+        Set(Return(HmrcAbridgedAccounts, AccountsVersion2))
 
       case (_, HMRCFiling(true), MicroEntityFiling(true), _, _, _) =>
         Set(Return(HmrcMicroEntityAccounts, accountsVersion))
-
-        // TODO - remove next 2 cases (and companyType parameter) because there is no variation with companyType ??
-      case (_, HMRCFiling(true), _, _, StatutoryAccountsFiling(true), FilingCompanyType(LimitedByGuaranteeCharity) | FilingCompanyType(LimitedBySharesCharity)) =>
-        Set(Return(HmrcStatutoryAccounts, accountsVersion))
-
-      case (_, HMRCFiling(true), _, _, StatutoryAccountsFiling(true), FilingCompanyType(LimitedByGuaranteeCASC) | FilingCompanyType(LimitedBySharesCASC)) =>
-        Set(Return(HmrcStatutoryAccounts, accountsVersion))
 
       case (_, HMRCFiling(true), _, _, StatutoryAccountsFiling(true), _) =>
         Set(Return(HmrcStatutoryAccounts, accountsVersion))
 
       case (_, HMRCFiling(true), MicroEntityFiling(false), _, StatutoryAccountsFiling(false), _) =>
-        Set(Return(HmrcUploadedAccounts, uploadedAccountsVersion))
+        Set(Return(HmrcUploadedAccounts, UploadedAccounts))
 
       case _ => Set.empty
     }
