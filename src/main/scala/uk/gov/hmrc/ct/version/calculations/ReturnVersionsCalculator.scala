@@ -26,7 +26,7 @@ import uk.gov.hmrc.ct.ct600e.v3.retriever.{CT600EBoxRetriever => V3CT600EBoxRetr
 import uk.gov.hmrc.ct.ct600e.v2.retriever.{CT600EBoxRetriever => V2CT600EBoxRetriever}
 import uk.gov.hmrc.ct.domain.CompanyTypes._
 import uk.gov.hmrc.ct.version.CoHoAccounts._
-import uk.gov.hmrc.ct.version.CoHoVersions.{AccountsVersion2, AccountsVersion1}
+import uk.gov.hmrc.ct.version.CoHoVersions.{FRS105, FRS102, FRSSE2008}
 import uk.gov.hmrc.ct.version.HmrcReturns._
 import uk.gov.hmrc.ct.version.HmrcVersions._
 import uk.gov.hmrc.ct.version.{Version, Return}
@@ -162,48 +162,54 @@ trait ReturnVersionsCalculator {
       throw new IllegalArgumentException(s"")
     }
 
-    val accountsVersion =
-      if (poaStartDate.compareTo(new LocalDate(2016, 1, 1)) >= 0)
-        AccountsVersion2
-      else
-        AccountsVersion1
+    val isOnOrAfterFrs102And105Date = poaStartDate.compareTo(new LocalDate(2016, 1, 1)) >= 0
 
-    val cohoReturn: Set[Return] = (accountsVersion, coHoFiling, microEntityFiling, statutoryAccountsFiling, abridgedFiling, abbreviatedAccountsFiling) match {
-      case (AccountsVersion1, CompaniesHouseFiling(true), MicroEntityFiling(true), _, AbridgedFiling(false), _) =>
-        Set(Return(CoHoMicroEntityAccounts, AccountsVersion1))
+    val cohoReturn: Set[Return] = (isOnOrAfterFrs102And105Date, coHoFiling, microEntityFiling, statutoryAccountsFiling, abridgedFiling, abbreviatedAccountsFiling) match {
+      case (false, CompaniesHouseFiling(true), MicroEntityFiling(true), _, AbridgedFiling(false), _) =>
+        Set(Return(CoHoMicroEntityAccounts, FRSSE2008))
 
-      case (AccountsVersion1, CompaniesHouseFiling(true), MicroEntityFiling(true), _, AbridgedFiling(true), _) =>
-        Set(Return(CoHoMicroEntityAbridgedAccounts, AccountsVersion1))
+      case (false, CompaniesHouseFiling(true), MicroEntityFiling(true), _, AbridgedFiling(true), _) =>
+        Set(Return(CoHoMicroEntityAbridgedAccounts, FRSSE2008))
 
-      case (AccountsVersion1, CompaniesHouseFiling(true), _, StatutoryAccountsFiling(true), _, AbbreviatedAccountsFiling(false)) =>
-        Set(Return(CoHoStatutoryAccounts, AccountsVersion1))
+      case (false, CompaniesHouseFiling(true), _, StatutoryAccountsFiling(true), _, AbbreviatedAccountsFiling(false)) =>
+        Set(Return(CoHoStatutoryAccounts, FRSSE2008))
 
-      case (AccountsVersion1, CompaniesHouseFiling(true), _, StatutoryAccountsFiling(true), _, AbbreviatedAccountsFiling(true)) =>
-        Set(Return(CoHoStatutoryAbbreviatedAccounts, AccountsVersion1))
+      case (false, CompaniesHouseFiling(true), _, StatutoryAccountsFiling(true), _, AbbreviatedAccountsFiling(true)) =>
+        Set(Return(CoHoStatutoryAbbreviatedAccounts, FRSSE2008))
 
-      case (AccountsVersion2, CompaniesHouseFiling(true), MicroEntityFiling(true), _, _, _) =>
-        Set(Return(CoHoMicroEntityAccounts, AccountsVersion2))
+      case (true, CompaniesHouseFiling(true), MicroEntityFiling(true), _, _, _) =>
+        Set(Return(CoHoMicroEntityAccounts, FRS105))
 
-      case (AccountsVersion2, CompaniesHouseFiling(true), _, StatutoryAccountsFiling(true), _, _) =>
-        Set(Return(CoHoStatutoryAccounts, AccountsVersion2))
+      case (true, CompaniesHouseFiling(true), _, StatutoryAccountsFiling(true), _, _) =>
+        Set(Return(CoHoStatutoryAccounts, FRS102))
 
-      case (AccountsVersion2, CompaniesHouseFiling(true), _, _, AbridgedFiling(true), _) =>
-        Set(Return(CoHoAbridgedAccounts, AccountsVersion2))
+      case (true, CompaniesHouseFiling(true), _, _, AbridgedFiling(true), _) =>
+        Set(Return(CoHoAbridgedAccounts, FRS102))
 
       case _ => Set.empty
     }
 
-    val hmrcAccounts = (accountsVersion, hmrcFiling, microEntityFiling, abridgedFiling, statutoryAccountsFiling) match {
-      case (AccountsVersion2, HMRCFiling(true), _, AbridgedFiling(true), _) =>
-        Set(Return(HmrcAbridgedAccounts, AccountsVersion2))
+    val hmrcAccounts = (isOnOrAfterFrs102And105Date, hmrcFiling, microEntityFiling, abridgedFiling, statutoryAccountsFiling) match {
 
-      case (_, HMRCFiling(true), MicroEntityFiling(true), _, _) =>
-        Set(Return(HmrcMicroEntityAccounts, accountsVersion))
+      case (false, HMRCFiling(true), MicroEntityFiling(true), _, _) =>
+        Set(Return(HmrcMicroEntityAccounts, FRSSE2008))
 
-      case (_, HMRCFiling(true), _, _, StatutoryAccountsFiling(true)) =>
-        Set(Return(HmrcStatutoryAccounts, accountsVersion))
+      case (false, HMRCFiling(true), _, _, StatutoryAccountsFiling(true)) =>
+        Set(Return(HmrcStatutoryAccounts, FRSSE2008))
 
-      case (_, HMRCFiling(true), MicroEntityFiling(false), _, StatutoryAccountsFiling(false)) =>
+      case (false, HMRCFiling(true), MicroEntityFiling(false), _, StatutoryAccountsFiling(false)) =>
+        Set(Return(HmrcUploadedAccounts, UploadedAccounts))
+
+      case (true, HMRCFiling(true), MicroEntityFiling(true), _, _) =>
+        Set(Return(HmrcMicroEntityAccounts, FRS105))
+
+      case (true, HMRCFiling(true), _, AbridgedFiling(true), _) =>
+        Set(Return(HmrcAbridgedAccounts, FRS102))
+
+      case (true, HMRCFiling(true), _, _, StatutoryAccountsFiling(true)) =>
+        Set(Return(HmrcStatutoryAccounts, FRS102))
+
+      case (true, HMRCFiling(true), MicroEntityFiling(false), AbridgedFiling(false), StatutoryAccountsFiling(false)) =>
         Set(Return(HmrcUploadedAccounts, UploadedAccounts))
 
       case _ => Set.empty

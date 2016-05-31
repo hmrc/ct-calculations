@@ -31,7 +31,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes._
 import uk.gov.hmrc.ct.version.CoHoAccounts._
-import uk.gov.hmrc.ct.version.CoHoVersions.{AccountsVersion2, AccountsVersion1}
+import uk.gov.hmrc.ct.version.CoHoVersions.{FRS105, FRS102, FRSSE2008}
 import uk.gov.hmrc.ct.version.HmrcReturns._
 import uk.gov.hmrc.ct.version.HmrcVersions._
 import uk.gov.hmrc.ct.version.{Return, Version}
@@ -41,33 +41,33 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
   "Return Versions Calculator" should {
     "for CoHo only filing" when {
       "return accounts version for full Micro entity accounts" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoMicroEntityAccounts, AccountsVersion1))
+        val expectedResult = Set(Return(CoHoMicroEntityAccounts, FRSSE2008))
         calculateReturnVersions(coHoFiling = CompaniesHouseFiling(true),
                                 microEntityFiling = MicroEntityFiling(true)) shouldBe expectedResult
       }
 
       "return accounts version for abridged Micro entity accounts" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoMicroEntityAbridgedAccounts, AccountsVersion1))
+        val expectedResult = Set(Return(CoHoMicroEntityAbridgedAccounts, FRSSE2008))
         calculateReturnVersions(coHoFiling = CompaniesHouseFiling(true),
                                 microEntityFiling = MicroEntityFiling(true),
                                 abridgedFiling = AbridgedFiling(true)) shouldBe expectedResult
       }
 
       "return accounts version for full statutory accounts" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoStatutoryAccounts, AccountsVersion1))
+        val expectedResult = Set(Return(CoHoStatutoryAccounts, FRSSE2008))
         calculateReturnVersions(coHoFiling = CompaniesHouseFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe expectedResult
       }
 
       "return accounts version for abbreviated statutory accounts" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoStatutoryAbbreviatedAccounts, AccountsVersion1))
+        val expectedResult = Set(Return(CoHoStatutoryAbbreviatedAccounts, FRSSE2008))
         calculateReturnVersions(coHoFiling = CompaniesHouseFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true),
                                 abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe expectedResult
       }
 
       "return accounts version for abbreviated statutory accounts for LimitedByGuaranteeCharity" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoStatutoryAbbreviatedAccounts, AccountsVersion1))
+        val expectedResult = Set(Return(CoHoStatutoryAbbreviatedAccounts, FRSSE2008))
         calculateReturnVersions(coHoFiling = CompaniesHouseFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true),
                                 abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true),
@@ -75,7 +75,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return accounts version for full statutory accounts for LimitedByGuaranteeCharity" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoStatutoryAccounts, AccountsVersion1))
+        val expectedResult = Set(Return(CoHoStatutoryAccounts, FRSSE2008))
         calculateReturnVersions(coHoFiling = CompaniesHouseFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true),
                                 abbreviatedAccountsFiling = AbbreviatedAccountsFiling(false),
@@ -83,7 +83,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return accounts version for Micro entity accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoMicroEntityAccounts, AccountsVersion2))
+        val expectedResult = Set(Return(CoHoMicroEntityAccounts, FRS105))
         calculateReturnVersions(
           poaStartDate = new LocalDate(2016, 1, 1),
           coHoFiling = CompaniesHouseFiling(true),
@@ -92,7 +92,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return accounts version for abridged statutory accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoAbridgedAccounts, AccountsVersion2))
+        val expectedResult = Set(Return(CoHoAbridgedAccounts, FRS102))
         calculateReturnVersions(
           poaStartDate = new LocalDate(2016, 1, 2),
           coHoFiling = CompaniesHouseFiling(true),
@@ -101,7 +101,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return accounts version for full statutory accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoStatutoryAccounts, AccountsVersion2))
+        val expectedResult = Set(Return(CoHoStatutoryAccounts, FRS102))
         calculateReturnVersions(
           poaStartDate = new LocalDate(2016, 1, 3),
           coHoFiling = CompaniesHouseFiling(true),
@@ -110,7 +110,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "match successfully for AccountsBoxRetriever" in {
-        val expectedResult = Set(Return(CoHoMicroEntityAccounts, AccountsVersion1))
+        val expectedResult = Set(Return(CoHoMicroEntityAccounts, FRSSE2008))
 
         val accountsBoxRetriever = new StubbedAccountsBoxRetriever with StubbedFilingAttributesBoxValueRetriever {
 
@@ -130,9 +130,9 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
       "match successfully for ComputationsBoxRetriever" in {
         val expectedResult = Set(Return(CT600j, CT600Version2),
-                                 Return(HmrcMicroEntityAccounts, AccountsVersion1),
+                                 Return(HmrcMicroEntityAccounts, FRSSE2008),
                                  Return(CT600a, CT600Version2),
-                                 Return(CoHoMicroEntityAccounts, AccountsVersion1),
+                                 Return(CoHoMicroEntityAccounts, FRSSE2008),
                                  Return(Computations, ComputationsCT20141001),
                                  Return(CT600, CT600Version2))
 
@@ -144,7 +144,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
     "for HMRC only filing" when {
       "return HMRC version for full Micro entity accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
@@ -156,7 +156,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                 microEntityFiling = MicroEntityFiling(true)) shouldBe expectedResult
       }
       "return HMRC version for full Micro entity accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
@@ -169,7 +169,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return HMRC version for abridged Micro entity accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
@@ -182,7 +182,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return HMRC version for abridged Micro entity accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
@@ -195,7 +195,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return HMRC version for full statutory accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
@@ -207,7 +207,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return HMRC version for full statutory accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
@@ -219,7 +219,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return HMRC versions for abbreviated statutory accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
@@ -232,7 +232,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return HMRC versions for abbreviated statutory accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
@@ -275,8 +275,23 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                 abbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)) shouldBe expectedResult
       }
 
+      "return HMRC version for micro accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRS105),
+          Return(CT600, CT600Version2),
+          Return(CT600a, CT600Version2),
+          Return(CT600j, CT600Version2),
+          Return(Computations, ComputationsCT20141001))
+
+        calculateReturnVersions(
+          poaStartDate = new LocalDate(2016, 1, 1),
+          apStartDate = Some(LocalDate.parse("2015-03-31")),
+          apEndDate = Some(LocalDate.parse("2015-12-31")),
+          hmrcFiling = HMRCFiling(true),
+          microEntityFiling = MicroEntityFiling(true)) shouldBe expectedResult
+      }
+
       "return HMRC version for abridged accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcAbridgedAccounts, AccountsVersion2),
+        val expectedResult = Set(Return(HmrcAbridgedAccounts, FRS102),
           Return(CT600, CT600Version2),
           Return(CT600a, CT600Version2),
           Return(CT600j, CT600Version2),
@@ -288,6 +303,20 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           apEndDate = Some(LocalDate.parse("2015-12-31")),
           hmrcFiling = HMRCFiling(true),
           abridgedFiling = AbridgedFiling(true)) shouldBe expectedResult
+      }
+
+      "return HMRC version for full statutory accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRS102),
+          Return(CT600, CT600Version2),
+          Return(CT600a, CT600Version2),
+          Return(CT600j, CT600Version2),
+          Return(Computations, ComputationsCT20141001))
+        calculateReturnVersions(
+          poaStartDate = new LocalDate(2016, 1, 3),
+          apStartDate = Some(LocalDate.parse("2015-03-31")),
+          apEndDate = Some(LocalDate.parse("2015-12-31")),
+          hmrcFiling = HMRCFiling(true),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe expectedResult
       }
 
       "return HMRC versions for uploaded accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
@@ -305,20 +334,6 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           abridgedFiling = AbridgedFiling(false),
           statutoryAccountsFiling = StatutoryAccountsFiling(false),
           abbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)) shouldBe expectedResult
-      }
-
-      "return HMRC version for full statutory accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion2),
-          Return(CT600, CT600Version2),
-          Return(CT600a, CT600Version2),
-          Return(CT600j, CT600Version2),
-          Return(Computations, ComputationsCT20141001))
-        calculateReturnVersions(
-          poaStartDate = new LocalDate(2016, 1, 3),
-          apStartDate = Some(LocalDate.parse("2015-03-31")),
-          apEndDate = Some(LocalDate.parse("2015-12-31")),
-          hmrcFiling = HMRCFiling(true),
-          statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe expectedResult
       }
     }
 
@@ -698,7 +713,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
     "for HMRC only filing for a Company (limited by guarantee) that is a charity" when {
       "return versions where all proceeds used for charity for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600e, CT600Version2),
                                  Return(CT600j, CT600Version2))
 
@@ -712,7 +727,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return versions where all proceeds used for charity for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600e, CT600Version3),
                                  Return(CT600j, CT600Version3))
 
@@ -726,7 +741,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return versions where NOT all proceeds used for charity for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600e, CT600Version2),
                                  Return(CT600j, CT600Version2),
@@ -742,7 +757,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return versions where NOT all proceeds used for charity for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600e, CT600Version3),
                                  Return(CT600j, CT600Version3),
@@ -769,7 +784,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
         )
       }
       "return versions when not claiming for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600j, CT600Version2),
                                  Return(Computations, ComputationsCT20141001))
@@ -788,7 +803,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                 charityNoIncome = None) shouldBe expectedResult
       }
       "return versions when not claiming for AP starting on or after 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600j, CT600Version3),
                                  Return(Computations, ComputationsCT20150201))
@@ -810,7 +825,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
     "for HMRC only filing for a Company (limited by guarantee) that is a CASC" when {
       "return versions where all proceeds used for charity for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600e, CT600Version2),
                                  Return(CT600j, CT600Version2))
 
@@ -824,7 +839,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return versions where all proceeds used for charity for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600e, CT600Version3),
                                  Return(CT600j, CT600Version3))
 
@@ -838,7 +853,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return versions where NOT all proceeds used for charity for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600e, CT600Version2),
                                  Return(CT600j, CT600Version2),
@@ -854,7 +869,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return versions where NOT all proceeds used for charity for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600e, CT600Version3),
                                  Return(CT600j, CT600Version3),
@@ -881,7 +896,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
         )
       }
       "return versions when not claiming for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600j, CT600Version2),
                                  Return(Computations, ComputationsCT20141001))
@@ -900,7 +915,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                 charityNoIncome = None) shouldBe expectedResult
       }
       "return versions when not claiming for AP starting on or after 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600j, CT600Version3),
                                  Return(Computations, ComputationsCT20150201))
@@ -922,7 +937,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
     "for HMRC only filing for a Company (limited by shares) that is a charity" when {
       "return versions where all proceeds used for charity for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600e, CT600Version2),
                                  Return(CT600j, CT600Version2))
 
@@ -936,7 +951,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return versions where all proceeds used for charity for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600e, CT600Version3),
                                  Return(CT600j, CT600Version3))
 
@@ -950,7 +965,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return versions where NOT all proceeds used for charity for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600a, CT600Version2),
                                  Return(CT600e, CT600Version2),
@@ -967,7 +982,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return versions where NOT all proceeds used for charity for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600a, CT600Version3),
                                  Return(CT600e, CT600Version3),
@@ -996,7 +1011,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return versions when not claiming for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
@@ -1016,7 +1031,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                 charityNoIncome = None) shouldBe expectedResult
       }
       "return versions when not claiming for AP starting on or after 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
@@ -1039,7 +1054,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
     "for HMRC only filing for a Company (limited by shares) that is a CASC" when {
       "return versions where all proceeds used for charity for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600e, CT600Version2),
                                  Return(CT600j, CT600Version2))
 
@@ -1053,7 +1068,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return versions where all proceeds used for charity for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600e, CT600Version3),
                                  Return(CT600j, CT600Version3))
 
@@ -1067,7 +1082,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return versions where NOT all proceeds used for charity for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600a, CT600Version2),
                                  Return(CT600e, CT600Version2),
@@ -1084,7 +1099,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return versions where NOT all proceeds used for charity for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600a, CT600Version3),
                                  Return(CT600e, CT600Version3),
@@ -1113,7 +1128,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return versions when not claiming for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
@@ -1133,7 +1148,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                 charityNoIncome = None) shouldBe expectedResult
       }
       "return versions when not claiming for AP starting on or after 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
@@ -1198,8 +1213,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
     "for Joint filing" when {
       "return versions for full Micro entity accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, AccountsVersion1),
-                                 Return(CoHoMicroEntityAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
+                                 Return(CoHoMicroEntityAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
@@ -1212,8 +1227,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                 microEntityFiling = MicroEntityFiling(true)) shouldBe expectedResult
       }
       "return versions for full Micro entity accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, AccountsVersion1),
-                                 Return(CoHoMicroEntityAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
+                                 Return(CoHoMicroEntityAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
@@ -1227,8 +1242,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return versions for abridged Micro entity accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, AccountsVersion1),
-                                 Return(CoHoMicroEntityAbridgedAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
+                                 Return(CoHoMicroEntityAbridgedAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
@@ -1242,8 +1257,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return HMRC version for abridged Micro entity accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, AccountsVersion1),
-                                 Return(CoHoMicroEntityAbridgedAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
+                                 Return(CoHoMicroEntityAbridgedAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
@@ -1257,8 +1272,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return HMRC version for full statutory accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
-                                 Return(CoHoStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+                                 Return(CoHoStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
@@ -1271,8 +1286,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return HMRC version for full statutory accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
-                                 Return(CoHoStatutoryAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+                                 Return(CoHoStatutoryAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
@@ -1285,8 +1300,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return HMRC version for abbreviated statutory accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
-                                 Return(CoHoStatutoryAbbreviatedAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+                                 Return(CoHoStatutoryAbbreviatedAccounts, FRSSE2008),
                                  Return(CT600, CT600Version2),
                                  Return(CT600a, CT600Version2),
                                  Return(CT600j, CT600Version2),
@@ -1300,8 +1315,8 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
 
       "return HMRC version for abbreviated statutory accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, AccountsVersion1),
-                                 Return(CoHoStatutoryAbbreviatedAccounts, AccountsVersion1),
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+                                 Return(CoHoStatutoryAbbreviatedAccounts, FRSSE2008),
                                  Return(CT600, CT600Version3),
                                  Return(CT600a, CT600Version3),
                                  Return(CT600j, CT600Version3),
