@@ -192,17 +192,17 @@ trait ReturnVersionsCalculator {
       case _ => Set.empty
     }
 
-    val hmrcAccounts = (accountsVersion, hmrcFiling, microEntityFiling, abridgedFiling, statutoryAccountsFiling, companyType) match {
-      case (AccountsVersion2, HMRCFiling(true), _, AbridgedFiling(true), _, _) =>
+    val hmrcAccounts = (accountsVersion, hmrcFiling, microEntityFiling, abridgedFiling, statutoryAccountsFiling) match {
+      case (AccountsVersion2, HMRCFiling(true), _, AbridgedFiling(true), _) =>
         Set(Return(HmrcAbridgedAccounts, AccountsVersion2))
 
-      case (_, HMRCFiling(true), MicroEntityFiling(true), _, _, _) =>
+      case (_, HMRCFiling(true), MicroEntityFiling(true), _, _) =>
         Set(Return(HmrcMicroEntityAccounts, accountsVersion))
 
-      case (_, HMRCFiling(true), _, _, StatutoryAccountsFiling(true), _) =>
+      case (_, HMRCFiling(true), _, _, StatutoryAccountsFiling(true)) =>
         Set(Return(HmrcStatutoryAccounts, accountsVersion))
 
-      case (_, HMRCFiling(true), MicroEntityFiling(false), _, StatutoryAccountsFiling(false), _) =>
+      case (_, HMRCFiling(true), MicroEntityFiling(false), _, StatutoryAccountsFiling(false)) =>
         Set(Return(HmrcUploadedAccounts, UploadedAccounts))
 
       case _ => Set.empty
