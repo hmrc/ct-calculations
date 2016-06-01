@@ -29,7 +29,7 @@ case class B45(value: Option[Boolean]) extends CtBoxIdentifier("Are you owed a r
   with CtOptionalBoolean {
 }
 
-object B45 extends Calculated[B45, AboutThisReturnBoxRetriever] with CorporationTaxCalculator{
+object B45 extends Calculated[B45, AboutThisReturnBoxRetriever] with CorporationTaxCalculator {
 
   override def calculate(fieldValueRetriever: AboutThisReturnBoxRetriever): B45 = {
     fieldValueRetriever match {
