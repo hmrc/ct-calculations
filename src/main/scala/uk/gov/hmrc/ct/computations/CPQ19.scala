@@ -26,12 +26,18 @@ case class CPQ19(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you 
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
-    (retrieveCATO01().value, retrieveCP118().value, value) match {
+
+    val cpq19Error: Set[CtValidation] = (retrieveCPQ17().value, value) match {
+      case (Some(_), Some(_)) => Set(CtValidation(Some("CPQ19"), "error.CPQ19.cannot.exist.cpq17"))
+      case _ => Set.empty
+    }
+
+    ((retrieveCATO01().value, retrieveCP118().value, value) match {
       case (nonTradingProfit, loss, None) if nonTradingProfit > 0 && loss > 0 => Set(CtValidation(Some("CPQ19"), "error.CPQ19.required"))
       case (nonTradingProfit, loss, Some(_)) if nonTradingProfit > 0 && loss == 0 => Set(CtValidation(Some("CPQ19"), "error.CPQ19.cannot.exist.cp118"))
       case (nonTradingProfit, loss, Some(_)) if nonTradingProfit == 0 && loss > 0 => Set(CtValidation(Some("CPQ19"), "error.CPQ19.cannot.exist.cato01"))
       case (nonTradingProfit, loss, Some(_)) if nonTradingProfit == 0 && loss == 0 => Set(CtValidation(Some("CPQ19"), "error.CPQ19.cannot.exist"))
-      case _ => Set.empty
-    }
+      case _ => Set.empty[CtValidation]
+    }) ++ cpq19Error
   }
 }
