@@ -16,6 +16,22 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, Input}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CPQ19(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you wish to claim your trading losses for this period against your profits for this period?") with CtOptionalBoolean with Input
+case class CPQ19(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you wish to claim your trading losses for this period against your profits for this period?")
+  with CtOptionalBoolean
+  with Input
+  with ValidatableBox[ComputationsBoxRetriever] {
+
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    import boxRetriever._
+    (retrieveCATO01().value, retrieveCP118().value, value) match {
+      case (profit, loss, None) if profit > 0 && loss > 0 => Set(CtValidation(Some("CPQ19"), "error.CPQ19.required"))
+      case (profit, loss, Some(_)) if profit > 0 && loss == 0 => Set(CtValidation(Some("CPQ19"), "error.CPQ19.cannot.exist.cp118"))
+      case (profit, loss, Some(_)) if profit == 0 && loss > 0 => Set(CtValidation(Some("CPQ19"), "error.CPQ19.cannot.exist.cato01"))
+      case (profit, loss, Some(_)) if profit == 0 && loss == 0 => Set(CtValidation(Some("CPQ19"), "error.CPQ19.cannot.exist"))
+      case _ => Set.empty
+    }
+  }
+}
