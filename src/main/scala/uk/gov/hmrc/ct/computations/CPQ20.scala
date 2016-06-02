@@ -17,12 +17,14 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CPQ20(value: Option[Boolean]) extends CtBoxIdentifier(name = "Is the company claiming to carry losses of this period back to an earlier period")
   with CtOptionalBoolean
   with Input
-  with ValidatableBox[ComputationsBoxRetriever] {
+  with ValidatableBox[ComputationsBoxRetriever]
+  with TradingLossesValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
@@ -32,25 +34,13 @@ case class CPQ20(value: Option[Boolean]) extends CtBoxIdentifier(name = "Is the 
       case (None, Some(true), cp118, cato01) if moreLossesThanNonTradeProfit(cp118, cato01) => requiredError
       case (None, None, cp118, cato01) if moreLossesThanNonTradeProfit(cp118, cato01) && cato01 == 0 => requiredError
 
-      case (Some(_), None, cp118, cato01) if noLosses(cp118, cato01) => cannotExistError
-      case (Some(true), Some(true), cp118, cato01) if lossesLessThanNonTradeProfit(cp118, cato01) => cannotExistError
+      case (Some(_), None, cp118, cato01) if noLossesWithNonTradingProfit(cp118, cato01) => cannotExistError
+      case (Some(true), Some(true), cp118, cato01) if allLossesOffsetByNonTradingProfit(cp118, cato01) => cannotExistError
       case (Some(_), Some(false), _, _) => cannotExistError
-      case (Some(false), _, cp118, cato01) if lossesLessThanNonTradeProfit(cp118, cato01) => cannotExistError
+      case (Some(false), _, cp118, cato01) if allLossesOffsetByNonTradingProfit(cp118, cato01) => cannotExistError
 
       case _ => Set.empty
     }
-  }
-
-  private def lossesLessThanNonTradeProfit(cp118: Int, cato01: Int): Boolean = {
-    cp118 <= cato01
-  }
-
-  private def noLosses(cp118: Int, cato01: Int): Boolean = {
-    cp118 == 0 && cato01 >= 0
-  }
-
-  private def moreLossesThanNonTradeProfit(cp118: Int, cato01: Int): Boolean = {
-    cp118 > cato01
   }
 }
 
