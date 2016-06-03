@@ -53,25 +53,6 @@ class CPQ18Spec extends WordSpec with Matchers with MockitoSugar {
         CPQ18(None).validate(retriever) shouldBe Set(CtValidation(Some("CPQ18"), "error.CPQ18.required"))
       }
 
-      "fail validation when TP no NTP CP284 > CP117, CPQ17 = true and CPQ18 true" in new SetUpboxRetriever {
-
-        when(retriever.retrieveCP117()).thenReturn(CP117(1))
-        when(retriever.retrieveCP284()).thenReturn(CP284(Some(2)))
-        when(retriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
-        when(retriever.retrieveCPQ18()).thenReturn(CPQ18(Some(true)))
-        CPQ18(None).validate(retriever) shouldBe Set(CtValidation(Some("CPQ18"), "error.CPQ18.required"))
-      }
-
-      "fail validation when TP with NTP CP284 + CATO01 > 0, CPQ17 = true and CPQ18 true" in new SetUpboxRetriever {
-
-        when(retriever.retrieveCP117()).thenReturn(CP117(1))
-        when(retriever.retrieveCP284()).thenReturn(CP284(Some(1)))
-        when(retriever.retrieveCATO01()).thenReturn(CATO01(1))
-        when(retriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
-        when(retriever.retrieveCPQ18()).thenReturn(CPQ18(Some(true)))
-        CPQ18(None).validate(retriever) shouldBe Set(CtValidation(Some("CPQ18"), "error.CPQ18.required"))
-      }
-
       "pass validation  when TP no NTP CP284 == CP117, CPQ17 = true" in new SetUpboxRetriever {
 
         when(retriever.retrieveCP117()).thenReturn(CP117(1))
@@ -86,15 +67,6 @@ class CPQ18Spec extends WordSpec with Matchers with MockitoSugar {
         when(retriever.retrieveCP118()).thenReturn(CP118(1))
         when(retriever.retrieveCPQ20()).thenReturn(CPQ20(Some(true)))
         CPQ18(None).validate(retriever) shouldBe empty
-      }
-
-      "fail validation when TL with NTP CPQ19 = true, CP118 - CATO01 < 0, CPQ18 = true" in new SetUpboxRetriever {
-
-        when(retriever.retrieveCP118()).thenReturn(CP118(1))
-        when(retriever.retrieveCATO01()).thenReturn(CATO01(2))
-        when(retriever.retrieveCPQ18()).thenReturn(CPQ18(Some(true)))
-        when(retriever.retrieveCPQ19()).thenReturn(CPQ19(Some(true)))
-        CPQ18(None).validate(retriever) shouldBe Set(CtValidation(Some("CPQ18"), "error.CPQ18.required"))
       }
     }
 
@@ -140,22 +112,20 @@ class CPQ18Spec extends WordSpec with Matchers with MockitoSugar {
         CPQ18(Some(true)).validate(retriever) shouldBe empty
       }
 
-      "pass validation when TP no NTP CP284 > CP117, CPQ17 = true and CPQ18 true" in new SetUpboxRetriever {
+      "pass validation when TP no NTP CP284 > CP117, CPQ17 = true" in new SetUpboxRetriever {
 
         when(retriever.retrieveCP117()).thenReturn(CP117(1))
         when(retriever.retrieveCP284()).thenReturn(CP284(Some(2)))
         when(retriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
-        when(retriever.retrieveCPQ18()).thenReturn(CPQ18(Some(true)))
         CPQ18(Some(true)).validate(retriever) shouldBe empty
       }
 
-      "pass validation when TP with NTP CP284 + CATO01 > 0, CPQ17 = true and CPQ18 true" in new SetUpboxRetriever {
+      "pass validation when TP with NTP CP284 + CATO01 > 0, CPQ17 = true" in new SetUpboxRetriever {
 
         when(retriever.retrieveCP117()).thenReturn(CP117(1))
         when(retriever.retrieveCP284()).thenReturn(CP284(Some(1)))
         when(retriever.retrieveCATO01()).thenReturn(CATO01(1))
         when(retriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
-        when(retriever.retrieveCPQ18()).thenReturn(CPQ18(Some(true)))
         CPQ18(Some(true)).validate(retriever) shouldBe empty
       }
 
@@ -164,7 +134,6 @@ class CPQ18Spec extends WordSpec with Matchers with MockitoSugar {
         when(retriever.retrieveCP117()).thenReturn(CP117(1))
         when(retriever.retrieveCP284()).thenReturn(CP284(Some(1)))
         when(retriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
-        when(retriever.retrieveCPQ18()).thenReturn(CPQ18(Some(true)))
         CPQ18(Some(true)).validate(retriever) shouldBe Set(CtValidation(Some("CPQ18"), "error.CPQ18.cannot.exist"))
       }
 
@@ -175,11 +144,10 @@ class CPQ18Spec extends WordSpec with Matchers with MockitoSugar {
         CPQ18(Some(true)).validate(retriever) shouldBe Set(CtValidation(Some("CPQ18"), "error.CPQ18.cannot.exist"))
       }
 
-      "pass vaildation when TL with NTP CPQ19 = true, CP118 - CATO01 < 0, CPQ18 = true" in new SetUpboxRetriever {
+      "pass vaildation when TL with NTP CPQ19 = true, CP118 - CATO01 < 0" in new SetUpboxRetriever {
 
         when(retriever.retrieveCP118()).thenReturn(CP118(1))
         when(retriever.retrieveCATO01()).thenReturn(CATO01(2))
-        when(retriever.retrieveCPQ18()).thenReturn(CPQ18(Some(true)))
         when(retriever.retrieveCPQ19()).thenReturn(CPQ19(Some(true)))
         CPQ18(Some(true)).validate(retriever) shouldBe empty
       }
@@ -232,7 +200,6 @@ class CPQ18Spec extends WordSpec with Matchers with MockitoSugar {
         when(retriever.retrieveCP117()).thenReturn(CP117(1))
         when(retriever.retrieveCP284()).thenReturn(CP284(Some(2)))
         when(retriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
-        when(retriever.retrieveCPQ18()).thenReturn(CPQ18(Some(true)))
         CPQ18(Some(false)).validate(retriever) shouldBe empty
       }
 
@@ -242,7 +209,6 @@ class CPQ18Spec extends WordSpec with Matchers with MockitoSugar {
         when(retriever.retrieveCP284()).thenReturn(CP284(Some(1)))
         when(retriever.retrieveCATO01()).thenReturn(CATO01(1))
         when(retriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
-        when(retriever.retrieveCPQ18()).thenReturn(CPQ18(Some(true)))
         CPQ18(Some(false)).validate(retriever) shouldBe empty
       }
 
@@ -251,7 +217,6 @@ class CPQ18Spec extends WordSpec with Matchers with MockitoSugar {
         when(retriever.retrieveCP117()).thenReturn(CP117(1))
         when(retriever.retrieveCP284()).thenReturn(CP284(Some(1)))
         when(retriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
-        when(retriever.retrieveCPQ18()).thenReturn(CPQ18(Some(true)))
         CPQ18(Some(false)).validate(retriever) shouldBe Set(CtValidation(Some("CPQ18"), "error.CPQ18.cannot.exist"))
       }
 
@@ -266,7 +231,6 @@ class CPQ18Spec extends WordSpec with Matchers with MockitoSugar {
 
         when(retriever.retrieveCP118()).thenReturn(CP118(1))
         when(retriever.retrieveCATO01()).thenReturn(CATO01(2))
-        when(retriever.retrieveCPQ18()).thenReturn(CPQ18(Some(true)))
         when(retriever.retrieveCPQ19()).thenReturn(CPQ19(Some(true)))
         CPQ18(Some(false)).validate(retriever) shouldBe empty
       }
