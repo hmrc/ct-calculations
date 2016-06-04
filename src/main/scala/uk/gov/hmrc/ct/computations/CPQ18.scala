@@ -38,19 +38,27 @@ case class CPQ18(value: Option[Boolean]) extends CtBoxIdentifier(name = "Claim a
 
   private def validateWhenEmpty(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
 
-    Set(checkRequired(answeredNoToTradingLossesNotUsedFromPreviousPeriod),
-        checkRequired(answeredNoToCurrentTradingLossesAgainstNonTradingProfit),
-        checkRequired(And(notAnsweredTradingLossesNotUsedFromPreviousPeriod, notAnsweredCurrentTradingLossesAgainstNonTradingProfit, noTradingLoss, noTradingProfit, hasNonTradingProfit))).flatMap { predicate =>
+    Set(
+      checkRequired(answeredNoToTradingLossesNotUsedFromPreviousPeriod),
+      checkRequired(answeredNoToCurrentTradingLossesAgainstNonTradingProfit),
+      checkRequired(And(notAnsweredTradingLossesNotUsedFromPreviousPeriod,
+                        notAnsweredCurrentTradingLossesAgainstNonTradingProfit,
+                        noTradingLoss, noTradingProfit, hasNonTradingProfit))
+    ).flatMap { predicate =>
       predicate(boxRetriever)
     }
   }
 
   private def validateWhenPopulated(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     Set(
-      checkCannotExist(And(answeredYesToTradingLossesNotUsedFromPreviousPeriod, noTradingLoss, noNonTradingProfit, netTradingProfitEqualsTradingProfit)),
-      checkCannotExist(And(answeredYesToTradingLossesNotUsedFromPreviousPeriod, noTradingLoss, Or(noTradingProfit, netTradingProfitPlusNonTradingProfitEqualsZero))),
-      checkCannotExist(And(answeredYesToCurrentTradingLossesAgainstNonTradingProfit, noTradingLoss, nonTradingProfitNotGreaterThanTradingLoss)),
-      checkCannotExist(And(notAnsweredCurrentTradingLossesAgainstNonTradingProfit, notAnsweredTradingLossesNotUsedFromPreviousPeriod, noNonTradingProfit))
+      checkCannotExist(And(answeredYesToTradingLossesNotUsedFromPreviousPeriod, noTradingLoss,
+                           noNonTradingProfit, netTradingProfitEqualsTradingProfit)),
+      checkCannotExist(And(answeredYesToTradingLossesNotUsedFromPreviousPeriod, noTradingLoss,
+                           Or(noTradingProfit, netTradingProfitPlusNonTradingProfitEqualsZero))),
+      checkCannotExist(And(answeredYesToCurrentTradingLossesAgainstNonTradingProfit, noTradingLoss,
+                           nonTradingProfitNotGreaterThanTradingLoss)),
+      checkCannotExist(And(notAnsweredCurrentTradingLossesAgainstNonTradingProfit,
+                           notAnsweredTradingLossesNotUsedFromPreviousPeriod, noNonTradingProfit))
     ).flatMap { predicate =>
       predicate(boxRetriever)
     }
