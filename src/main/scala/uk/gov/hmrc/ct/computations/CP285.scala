@@ -17,6 +17,31 @@
 package uk.gov.hmrc.ct.computations
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalDate, Input}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP285(value: Option[LocalDate]) extends CtBoxIdentifier(name = "End date of accounting period from which trading loss is being brought back") with CtOptionalDate with Input
+case class CP285(value: Option[LocalDate]) extends CtBoxIdentifier(name = "End date of accounting period from which trading loss is being brought back")
+  with CtOptionalDate
+  with Input
+  with ValidatableBox[ComputationsBoxRetriever]
+  with TradingLossesValidation {
+
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    if (value.isEmpty) {
+      Set(
+        requiredIf("CP285") { boxRetriever: ComputationsBoxRetriever => boxRetriever.retrieveCPQ18().value == Some(true) } _
+      ).flatMap { predicate =>
+        predicate(boxRetriever)
+      }
+    }
+    else {
+      val cp2 = boxRetriever.retrieveCP2().value
+      val providedDate = value.getOrElse(throw new IllegalStateException("The value of CP285 is empty and that does not appear to be possible."))
+      if (providedDate.isAfter(cp2) && !providedDate.isAfter(cp2.plusYears(1)))
+        Set.empty
+      else Set(CtValidation(Some("CP285"), "error.CP285.date.outside.range"))
+    }
+
+  }
+}
