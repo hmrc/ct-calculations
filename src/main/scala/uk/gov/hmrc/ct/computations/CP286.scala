@@ -31,17 +31,13 @@ case class CP286(value: Option[Int]) extends CtBoxIdentifier(name = "Losses clai
   with TradingLossesCP286MaximumCalculator {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    import boxRetriever._
-
-    validateMoneyRange("CP286", min = 0, max = calculateMaximumCP286(retrieveCP117(), retrieveCATO01(), retrieveCP998(), retrieveCP281())) ++
-    (
-      boxRetriever.retrieveCPQ18().value match {
-        case Some(false) if value.nonEmpty =>
-                  Set(CtValidation(Some("CP286"), "error.CP286.cannot.exist"))
-        case Some(true) if value.isEmpty =>
-                  Set(CtValidation(Some("CP286"), "error.CP286.required"))
-        case _ => Set.empty
-      }
-    )
+    collectErrors(
+      Set(
+        requiredIf("CP286") { boxRetriever: ComputationsBoxRetriever => value.isEmpty && boxRetriever.retrieveCPQ18().value == Some(true) },
+        cannotExistIf("CP286") { boxRetriever: ComputationsBoxRetriever => value.nonEmpty && boxRetriever.retrieveCPQ18().value == Some(false) },
+        exceedsMax("CP286")(value, calculateMaximumCP286(boxRetriever.retrieveCP117(), boxRetriever.retrieveCATO01(), boxRetriever.retrieveCP998(), boxRetriever.retrieveCP281())),
+        belowMin("CP286")(value, 0)
+      )
+    )(boxRetriever)
   }
 }

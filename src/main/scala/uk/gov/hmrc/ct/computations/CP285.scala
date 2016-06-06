@@ -28,20 +28,20 @@ case class CP285(value: Option[LocalDate]) extends CtBoxIdentifier(name = "End d
   with TradingLossesValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    if (value.isEmpty) {
-      Set(
-        requiredIf("CP285") { boxRetriever: ComputationsBoxRetriever => boxRetriever.retrieveCPQ18().value == Some(true) } _
-      ).flatMap { predicate =>
-        predicate(boxRetriever)
-      }
-    }
-    else {
-      val cp2 = boxRetriever.retrieveCP2().value
-      val providedDate = value.getOrElse(throw new IllegalStateException("The value of CP285 is empty and that does not appear to be possible."))
-      if (providedDate.isAfter(cp2) && !providedDate.isAfter(cp2.plusYears(1)))
-        Set.empty
-      else Set(CtValidation(Some("CP285"), "error.CP285.date.outside.range"))
-    }
-
+      collectErrors(Set(
+        requiredIf("CP285") { boxRetriever: ComputationsBoxRetriever =>
+          value.isEmpty && boxRetriever.retrieveCPQ18().value == Some(true)
+        } _,
+        { boxRetriever: ComputationsBoxRetriever =>
+          if (value.nonEmpty) {
+            val providedDate = value.getOrElse(throw new IllegalStateException("The value of CP285 is empty and that does not appear to be possible."))
+            val cp2 = boxRetriever.retrieveCP2().value
+            if (providedDate.isAfter(cp2) && !providedDate.isAfter(cp2.plusYears(1)))
+              Set.empty
+            else Set(CtValidation(Some("CP285"), "error.CP285.date.outside.range"))
+          }
+          else Set.empty
+        }
+      ))(boxRetriever)
   }
 }
