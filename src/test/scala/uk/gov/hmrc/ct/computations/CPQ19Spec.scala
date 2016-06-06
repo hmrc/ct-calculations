@@ -102,7 +102,7 @@ class CPQ19Spec extends WordSpec with Matchers with MockitoSugar {
 
         when(boxRetriever.retrieveCATO01()).thenReturn(CATO01(10))
         when(boxRetriever.retrieveCP118()).thenReturn(CP118(10))
-        CPQ19(Some(false)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ19"), "error.CPQ19.cannot.exist"))
+        CPQ19(Some(false)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ19"), "error.CPQ19.cannot.exist.cpq17"))
       }
     }
   }

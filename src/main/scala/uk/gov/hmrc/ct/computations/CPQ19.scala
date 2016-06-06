@@ -29,11 +29,6 @@ case class CPQ19(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
 
-    val cpq19Error: Set[CtValidation] = (retrieveCPQ17().value, value) match {
-      case (Some(_), Some(_)) => Set(CtValidation(Some("CPQ19"), "error.CPQ19.cannot.exist"))
-      case _ => Set.empty
-    }
-
     val valueEmpty = {
       retriever: ComputationsBoxRetriever => value.isEmpty
     }
@@ -42,15 +37,19 @@ case class CPQ19(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you 
       retriever: ComputationsBoxRetriever => value.nonEmpty
     }
 
-    val errors = Set(
-      requiredIf("CPQ19")(And(hasTradingLoss, hasNonTradingProfit, valueEmpty)) _,
-      cannotExistIf("CPQ19")(And(hasNonTradingProfit, noTradingLoss, valuePopulated)) _,
-      cannotExistIf("CPQ19")(And(noNonTradingProfit, hasTradingLoss, valuePopulated)) _,
-      cannotExistIf("CPQ19")(And(noNonTradingProfit, noTradingLoss, valuePopulated)) _
-    ).flatMap { p =>
-      p(boxRetriever)
-    }
+    val errors = collectErrors(Set(
+      requiredIf()(And(hasTradingLoss, hasNonTradingProfit, valueEmpty)) _,
+      cannotExistIf()(And(hasNonTradingProfit, noTradingLoss, valuePopulated)) _,
+      cannotExistIf()(And(noNonTradingProfit, hasTradingLoss, valuePopulated)) _,
+      cannotExistIf()(And(noNonTradingProfit, noTradingLoss, valuePopulated)) _,
+      { boxRetriever: ComputationsBoxRetriever =>
+        (retrieveCPQ17().value, value) match {
+          case (Some(_), Some(_)) => Set(CtValidation(Some(boxId), "error.CPQ19.cannot.exist.cpq17"))
+          case _ => Set.empty
+        }
+      }
+    ))(boxRetriever)
 
-    errors ++ cpq19Error
+    errors
   }
 }
