@@ -116,28 +116,28 @@ trait TradingLossesValidation {
     predicates.exists { p => p(boxRetriever)}
   }
 
-  protected def requiredIf(boxId: String)(predicate: (ComputationsBoxRetriever) => Boolean)(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+  protected def requiredIf(boxId: String = boxId)(predicate: (ComputationsBoxRetriever) => Boolean)(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     if (predicate(boxRetriever))
       Set(CtValidation(Some(boxId), s"error.$boxId.required"))
     else
       Set.empty
   }
 
-  protected def exceedsMax(boxId: String)(value: Option[Int], max: Int = MAX_MONEY_AMOUNT_ALLOWED)(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+  protected def exceedsMax(boxId: String = boxId)(value: Option[Int], max: Int = MAX_MONEY_AMOUNT_ALLOWED)(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     value match {
       case (Some(v)) if v > max => Set(CtValidation(Some(boxId), s"error.$boxId.exceeds.max"))
       case _ => Set.empty
     }
   }
 
-  protected def belowMin(boxId: String)(value: Option[Int], min: Int = MIN_MONEY_AMOUNT_ALLOWED)(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+  protected def belowMin(boxId: String = boxId)(value: Option[Int], min: Int = MIN_MONEY_AMOUNT_ALLOWED)(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     value match {
       case (Some(v)) if v < min => Set(CtValidation(Some(boxId), s"error.$boxId.below.min"))
       case _ => Set.empty
     }
   }
 
-  protected def cannotExistIf(boxId: String)(predicate: (ComputationsBoxRetriever) => Boolean)(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+  protected def cannotExistIf(boxId: String = boxId)(predicate: (ComputationsBoxRetriever) => Boolean)(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     if (predicate(boxRetriever))
       Set(CtValidation(Some(boxId), s"error.$boxId.cannot.exist"))
     else

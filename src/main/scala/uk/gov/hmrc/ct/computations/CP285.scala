@@ -29,7 +29,7 @@ case class CP285(value: Option[LocalDate]) extends CtBoxIdentifier(name = "End d
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
       collectErrors(Set(
-        requiredIf("CP285") { boxRetriever: ComputationsBoxRetriever =>
+        requiredIf() { boxRetriever: ComputationsBoxRetriever =>
           value.isEmpty && boxRetriever.retrieveCPQ18().value == Some(true)
         } _,
         { boxRetriever: ComputationsBoxRetriever =>
@@ -38,7 +38,7 @@ case class CP285(value: Option[LocalDate]) extends CtBoxIdentifier(name = "End d
             val cp2 = boxRetriever.retrieveCP2().value
             if (providedDate.isAfter(cp2) && !providedDate.isAfter(cp2.plusYears(1)))
               Set.empty
-            else Set(CtValidation(Some("CP285"), "error.CP285.date.outside.range"))
+            else Set(CtValidation(Some(boxId), "error.CP285.date.outside.range"))
           }
           else Set.empty
         }

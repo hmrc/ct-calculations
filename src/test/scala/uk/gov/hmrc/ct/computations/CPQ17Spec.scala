@@ -55,11 +55,11 @@ class CPQ17Spec extends WordSpec with Matchers with MockitoSugar {
     "when true" when {
       "fail validation when CPQ19 is false" in {
         when(boxRetriever.retrieveCPQ19()).thenReturn(CPQ19(Some(false)))
-        CPQ17(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ17"), "error.CPQ17.cannot.exist"))
+        CPQ17(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ17"), "error.CPQ17.cannot.exist.cpq19"))
       }
       "fail validation when CPQ19 is true" in {
         when(boxRetriever.retrieveCPQ19()).thenReturn(CPQ19(Some(true)))
-        CPQ17(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ17"), "error.CPQ17.cannot.exist"))
+        CPQ17(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ17"), "error.CPQ17.cannot.exist.cpq19"))
       }
       "pass validation when CPQ19 is empty, CP117 > 0" in {
         when(boxRetriever.retrieveCPQ19()).thenReturn(CPQ19(None))
@@ -70,11 +70,11 @@ class CPQ17Spec extends WordSpec with Matchers with MockitoSugar {
     "when false" when {
       "fail validation when CPQ19 is false" in {
         when(boxRetriever.retrieveCPQ19()).thenReturn(CPQ19(Some(false)))
-        CPQ17(Some(false)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ17"), "error.CPQ17.cannot.exist"))
+        CPQ17(Some(false)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ17"), "error.CPQ17.cannot.exist.cpq19"))
       }
       "fail validation when CPQ19 is true" in {
         when(boxRetriever.retrieveCPQ19()).thenReturn(CPQ19(Some(true)))
-        CPQ17(Some(false)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ17"), "error.CPQ17.cannot.exist"))
+        CPQ17(Some(false)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ17"), "error.CPQ17.cannot.exist.cpq19"))
       }
       "pass validation when CPQ19 is empty, CP117 > 0" in {
         when(boxRetriever.retrieveCPQ19()).thenReturn(CPQ19(None))
