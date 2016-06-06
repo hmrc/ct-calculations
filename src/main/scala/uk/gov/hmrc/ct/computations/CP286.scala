@@ -17,7 +17,6 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.box.validation.OptionalMoneyValidation
 import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.calculations.TradingLossesCP286MaximumCalculator
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
@@ -27,7 +26,6 @@ case class CP286(value: Option[Int]) extends CtBoxIdentifier(name = "Losses clai
   with Input
   with ValidatableBox[ComputationsBoxRetriever]
   with TradingLossesValidation
-  with OptionalMoneyValidation
   with TradingLossesCP286MaximumCalculator {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {

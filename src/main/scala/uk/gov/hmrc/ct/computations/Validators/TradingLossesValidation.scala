@@ -22,6 +22,8 @@ import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 trait TradingLossesValidation {
 
+  protected val boxId = getClass.getSimpleName
+
   protected def allLossesOffsetByNonTradingProfit(cp118: Int, cato01: Int): Boolean = {
     cp118 <= cato01
   }

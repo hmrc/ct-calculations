@@ -17,7 +17,6 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.box.validation.OptionalMoneyValidation
 import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
@@ -25,19 +24,16 @@ case class CP281(value: Option[Int]) extends CtBoxIdentifier("Losses brought for
   with CtOptionalInteger
   with Input
   with ValidatableBox[ComputationsBoxRetriever]
-  with OptionalMoneyValidation
   with TradingLossesValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    validateMoneyRange("CP281", min = 1) ++
-      (
-        (boxRetriever.retrieveCPQ17().value, value) match {
-          case (None, Some(_)) => Set(CtValidation(Some("CP281"), "error.CP281.cannot.exist"))
-          case (Some(true), None) => Set(CtValidation(Some("CP281"), "error.CP281.required"))
-          case (Some(false), Some(_)) => Set(CtValidation(Some("CP281"), "error.CP281.cannot.exist"))
-          case _ => Set.empty
-        }
-      )
+
+    collectErrors(Set(
+      requiredIf(boxId) { boxRetriever: ComputationsBoxRetriever => value.isEmpty && boxRetriever.retrieveCPQ17().value == Some(true) },
+      cannotExistIf(boxId) { boxRetriever: ComputationsBoxRetriever => value.nonEmpty && !boxRetriever.retrieveCPQ17().orFalse },
+      exceedsMax(boxId)(value),
+      belowMin(boxId)(value, min = 1)
+    ))(boxRetriever)
   }
 }
 

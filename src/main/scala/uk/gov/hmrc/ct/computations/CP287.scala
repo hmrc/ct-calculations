@@ -17,25 +17,26 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP287(value: Option[Int]) extends CtBoxIdentifier(name = "Amount of loss carried back to earlier periods")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[ComputationsBoxRetriever] {
+  with ValidatableBox[ComputationsBoxRetriever]
+  with TradingLossesValidation {
 
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
     val max = retrieveCP118().value - retrieveCP998().orZero
 
-    (value, retrieveCPQ20().value, max) match {
-      case (None, Some(true), _) => Set(CtValidation(Some("CP287"), "error.CP287.required"))
-      case (Some(lossCarriedBack), Some(true), limit) if lossCarriedBack > limit => Set(CtValidation(Some("CP287"), "error.CP287.exceeds.max"))
-      case (Some(_), Some(false) | None, _) => Set(CtValidation(Some("CP287"), "error.CP287.cannot.exist"))
-
-      case _ => Set.empty
-    }
+    collectErrors(Set(
+      requiredIf("CP287") { boxRetriever: ComputationsBoxRetriever => value.isEmpty && boxRetriever.retrieveCPQ20().value == Some(true) },
+      cannotExistIf("CP287") { boxRetriever: ComputationsBoxRetriever => value.nonEmpty && !boxRetriever.retrieveCPQ20().orFalse },
+      exceedsMax("CP287")(value, max),
+      belowMin("CP287")(value, 1)
+    ))(boxRetriever)
   }
 }
 
