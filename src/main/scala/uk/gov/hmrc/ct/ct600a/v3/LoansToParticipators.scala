@@ -49,7 +49,7 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
 case class Loan ( id: String,
                   name: String,
                   amount: Int,
-                  amountBefore06042016: Option[Int],
+                  amountBefore06042016: Int,
                   repaymentWithin9Months: Option[Repayment] = None,
                   otherRepayments: List[Repayment] = List.empty,
                   writeOffs: List[WriteOff] = List.empty) {
@@ -88,7 +88,7 @@ case class Loan ( id: String,
 
 }
 
-case class Repayment(id: String, amount: Int, amountBefore06042016: Option[Int], date: LocalDate, endDateOfAP: Option[LocalDate] = None) extends LoansDateRules {
+case class Repayment(id: String, amount: Int, amountBefore06042016: Int, date: LocalDate, endDateOfAP: Option[LocalDate] = None) extends LoansDateRules {
 
   val repaymentWithin9monthsErrorCode = "repaymentWithin9Months"
   val repaymentAfter9MonthsErrorCode = "otherRepayment"
