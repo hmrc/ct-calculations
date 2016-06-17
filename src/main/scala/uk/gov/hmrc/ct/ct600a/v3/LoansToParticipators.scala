@@ -59,7 +59,7 @@ case class Loan ( id: String,
       validateLoan(invalidLoanNameUnique(loansToParticipators), "error.loan.uniqueName") ++
       validateLoan(invalidLoanAmount, "error.loan.amount.value") ++
       validateLoan(invalidBalancedAmount, "error.loan.unbalanced", balancedAmountArgs) ++
-      validateLoan(invalidLoanBefore06042016, "error.before06042016.amount.value", Some(Seq(amount.toString))) ++
+      validateLoan(invalidLoanBefore06042016, "error.loan.amountBefore06042016.value", Some(Seq(amount.toString))) ++
       repaymentWithin9Months.map(_.validateWithin9Months(boxRetriever, id)).getOrElse(Set()) ++
       otherRepayments.foldRight(Set[CtValidation]())((repayment, tail) => repayment.validateAfter9Months(boxRetriever, id) ++ tail) ++
       writeOffs.foldRight(Set[CtValidation]())((writeOff, tail) => writeOff.validate(boxRetriever, id) ++ tail)
