@@ -236,6 +236,21 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
     "should return correct profit for FY2" in new Calc {
       calculateApportionedProfitsChargeableFy2(CorporationTaxCalculatorParameters(CP295(365), period)).value shouldBe BigDecimal("122")
     }
+
+    "should return the correct value for apportioned profit FY1 rounded half up" in new Calc {
+      val twoDayPeriod = HmrcAccountingPeriod(CP1(new LocalDate(2016, 3, 31)), CP2(new LocalDate(2016, 4, 1)))
+
+      calculateApportionedProfitsChargeableFy1(CorporationTaxCalculatorParameters(CP295(11), twoDayPeriod)).value shouldBe BigDecimal("6")
+    }
+
+    "should return FY1 and FY2 portions which add up to the total" in new Calc {
+      val splitPeriod = HmrcAccountingPeriod(CP1(new LocalDate(2015, 6, 1)), CP2(new LocalDate(2016, 5, 31)))
+
+      for(total <- 1 to 10000 by 11) {
+        calculateApportionedProfitsChargeableFy2(CorporationTaxCalculatorParameters(CP295(total), splitPeriod)).value +
+          calculateApportionedProfitsChargeableFy1(CorporationTaxCalculatorParameters(CP295(total), splitPeriod)).value shouldBe BigDecimal(total.toString)
+      }
+    }
   }
 
   "CorporationTaxCalculator - calculateApportionedProfitsChargeableFy1 & calculateApportionedProfitsChargeableFy2 for period matching a single financial year" should {
