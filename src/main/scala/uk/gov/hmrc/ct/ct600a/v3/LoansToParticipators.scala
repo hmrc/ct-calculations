@@ -75,7 +75,7 @@ case class Loan ( id: String,
 
   private def invalidBalancedAmount: Boolean = amount < totalAmountRepaymentsAndWriteOffs
 
-  private def invalidLoanBefore06042016: Boolean = amountBefore06042016 >= 0 && amountBefore06042016 <= amount
+  private def invalidLoanBefore06042016: Boolean = amountBefore06042016 < 0 || amountBefore06042016 > amount
 
   def totalAmountRepaymentsAndWriteOffs: Int =
     repaymentWithin9Months.map(_.amount).getOrElse(0) + otherRepayments.foldRight(0)((h, t) => h.amount + t) + writeOffs.foldRight(0)((h, t) => h.amount + t)
@@ -121,7 +121,7 @@ case class Repayment(id: String, amount: Int, amountBefore06042016: Int, date: L
 
   private def invalidRepaymentAmount: Boolean = amount < MIN_MONEY_AMOUNT_ALLOWED || amount > MAX_MONEY_AMOUNT_ALLOWED
 
-  private def invalidRepaymentBefore06042016Amount: Boolean = amountBefore06042016 >= 0 && amountBefore06042016 <= amount
+  private def invalidRepaymentBefore06042016Amount: Boolean = amountBefore06042016 < 0 || amountBefore06042016 > amount
 
   def validateRepayment(invalid: Boolean, errorPrefix: String, errorMsg: String, errorArgs: Option[Seq[String]], loanId: String): Set[CtValidation] = {
     invalid match {
