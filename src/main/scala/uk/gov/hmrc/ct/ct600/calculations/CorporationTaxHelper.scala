@@ -31,17 +31,14 @@ object CorporationTaxHelper extends CtTypeConverters with NumberRounding {
     val fy1: Int = fallsInFinancialYear(params.accountingPeriod.start.value)
     val fy1Result = calculateApportionedProfitsChargeableForYear(fy1, params, constantsForTaxYear(TaxYear(fy1)))
 
-    roundedToIntHalfDown(fy1Result)
+    roundedToIntHalfUp(fy1Result)
   }
 
   def calculateApportionedProfitsChargeableFy2(params: CorporationTaxCalculatorParameters): Int = {
     validateAccountingPeriod(params.accountingPeriod)
 
     if (accountingPeriodSpansTwoFinancialYears(params.accountingPeriod)) {
-      val fy2 = fallsInFinancialYear(params.accountingPeriod.end.value)
-      val fy2Result = calculateApportionedProfitsChargeableForYear(fy2, params, constantsForTaxYear(TaxYear(fy2)))
-      roundedToIntHalfUp(fy2Result)
-
+      params.profitsChargeableToCT - calculateApportionedProfitsChargeableFy1(params)
     } else {
       0
     }
