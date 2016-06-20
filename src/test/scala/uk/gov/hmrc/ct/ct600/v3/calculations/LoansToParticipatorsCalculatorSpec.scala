@@ -87,7 +87,7 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
     val reliefDueNowOnLoanTable = Table(
       ("expectedValue", "repaymentDate"),
       (true,            Some(Repayment(id = "1", amount = 1, date = new LocalDate("2014-09-30")))),
-      (false,           Some(Repayment(id = "1", amount = 1, date = new LocalDate("2014-10-01"), someDate("2014-12-31")))), // illegal state - boolean says yes but repayment is outside 9 months
+      (false,           Some(Repayment(id = "1", amount = 1, date = new LocalDate("2014-10-01"), endDateOfAP = someDate("2014-12-31")))), // illegal state - boolean says yes but repayment is outside 9 months
       (false,           Some(Repayment(id = "1", amount = 1, date = new LocalDate("2013-12-31")))) // illegal state - boolean says yes but repayment is outside 9 months
     )
     "correctly calculate whether relief is due now for loans repaid within 9 months of end of AP" in new LoansToParticipatorsCalculator {
@@ -123,12 +123,12 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
       (None, LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = Some(Repayment(id = "1", amount = 1, date = new LocalDate("2012-12-31")))) :: Nil)),  // illegal state - boolean says yes but repaid before AP end
       (Some(1), LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = Some(Repayment(id = "1", amount = 1, date = new LocalDate("2013-01-01")))) :: Nil)),  // ok
       (Some(1), LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = Some(Repayment(id = "1", amount = 1, date = new LocalDate("2013-09-30")))) :: Nil)), // ok
-      (None, LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = Some(Repayment(id = "1", amount = 1, date = new LocalDate("2013-10-01"), someDate("2013-12-31")))) :: Nil)), // repaid after 9 month period
+      (None, LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = Some(Repayment(id = "1", amount = 1, date = new LocalDate("2013-10-01"), endDateOfAP = someDate("2013-12-31")))) :: Nil)), // repaid after 9 month period
       (None, LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = None) :: Nil)), // No repayment within 9 months
       (Some(4), LoansToParticipators(loans =
           Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = Some(Repayment(id = "1", amount = 1, date = new LocalDate("2013-01-01")))) ::
           Loan(id = "1", name = "Frodo", amount = 456, repaymentWithin9Months = Some(Repayment(id = "1", amount = 2, date = new LocalDate("2012-12-31")))) ::
-          Loan(id = "1", name = "Smaug", amount = 99999999, repaymentWithin9Months = Some(Repayment(id = "1", amount = 2, date = new LocalDate("2013-10-01"), someDate("2013-12-31")))) ::
+          Loan(id = "1", name = "Smaug", amount = 99999999, repaymentWithin9Months = Some(Repayment(id = "1", amount = 2, date = new LocalDate("2013-10-01"), endDateOfAP = someDate("2013-12-31")))) ::
           Loan(id = "1", name = "Gandalf", amount = 789, repaymentWithin9Months = Some(Repayment(id = "1", amount = 3, date = new LocalDate("2013-09-30")))) :: Nil))
     )
     "correctly calculate A30 (A4v2) using loan repayments made between the end of the accounting period and 9months and 1 day later" in new LoansToParticipatorsCalculator {

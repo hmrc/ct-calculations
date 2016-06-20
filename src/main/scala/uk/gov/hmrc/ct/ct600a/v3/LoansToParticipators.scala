@@ -49,7 +49,7 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
 case class Loan ( id: String,
                   name: String,
                   amount: Int,
-                  amountBefore06042016: Int,
+                  amountBefore06042016: Int = 0,
                   repaymentWithin9Months: Option[Repayment] = None,
                   otherRepayments: List[Repayment] = List.empty,
                   writeOffs: List[WriteOff] = List.empty) {
@@ -91,7 +91,7 @@ case class Loan ( id: String,
 
 }
 
-case class Repayment(id: String, amount: Int, amountBefore06042016: Int, date: LocalDate, endDateOfAP: Option[LocalDate] = None) extends LoansDateRules {
+case class Repayment(id: String, amount: Int, amountBefore06042016: Int = 0, date: LocalDate, endDateOfAP: Option[LocalDate] = None) extends LoansDateRules {
 
   val repaymentWithin9monthsErrorCode = "repaymentWithin9Months"
   val repaymentAfter9MonthsErrorCode = "otherRepayment"
@@ -99,7 +99,7 @@ case class Repayment(id: String, amount: Int, amountBefore06042016: Int, date: L
   def validateAfter9Months(boxRetriever: CT600ABoxRetriever, loanId: String): Set[CtValidation] = {
     validateRepayment(invalidDateAfter9Months(boxRetriever), repaymentAfter9MonthsErrorCode, s"error.$repaymentAfter9MonthsErrorCode.date.range", errorArgsOtherRepaymentsDate(boxRetriever), loanId) ++
     validateRepayment(invalidRepaymentAmount, repaymentAfter9MonthsErrorCode, s"error.$repaymentAfter9MonthsErrorCode.amount.value", None, loanId) ++
-      validateRepayment(invalidRepaymentBefore06042016AmountAfter9Months, repaymentAfter9MonthsErrorCode, s"error.$repaymentAfter9MonthsErrorCode.beforeApril2016Amount.value", Some(Seq(amount.toString)), loanId)
+      validateRepayment(invalidRepaymentBefore06042016AmountAfter9Months, repaymentAfter9MonthsErrorCode, s"error.$repaymentAfter9MonthsErrorCode.beforeApril2016Amount.value", Some(Seq(amount.toString)), loanId) ++
     validateRepayment(invalidApEndDateRequired, repaymentAfter9MonthsErrorCode, s"error.$repaymentAfter9MonthsErrorCode.apEndDate.required", None, loanId) ++
     validateRepayment(invalidApEndDateRange(boxRetriever), repaymentAfter9MonthsErrorCode, s"error.$repaymentAfter9MonthsErrorCode.apEndDate.range", errorArgsOtherRepaymentsApEndDate(boxRetriever), loanId)
   }
