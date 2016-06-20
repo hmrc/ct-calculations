@@ -156,13 +156,14 @@ case class Repayment(id: String, amount: Int, amountBefore06042016: Int = 0, dat
     Some(Seq(toErrorArgsFormat(currentAPEndDate(boxRetriever))))
 }
 
-case class WriteOff(id: String, amount: Int, date: LocalDate, endDateOfAP : Option[LocalDate] = None) extends LoansDateRules {
+case class WriteOff(id: String, amount: Int, amountBefore06042016: Int = 0, date: LocalDate, endDateOfAP : Option[LocalDate] = None) extends LoansDateRules {
 
   private val writeOffErrorCode = "writeOff"
 
   def validate(boxRetriever: CT600ABoxRetriever, loanId: String): Set[CtValidation] = {
     validateWriteOff(invalidDate(boxRetriever), s"error.$writeOffErrorCode.date.range", errorArgsWriteOffDate(boxRetriever), loanId) ++
     validateWriteOff(invalidWriteOffAmount, s"error.$writeOffErrorCode.amount.value", None, loanId) ++
+    validateWriteOff(invalidWriteOffAmountBefore06042016, s"error.$writeOffErrorCode.beforeApril2016Amount.value", Some(Seq(amount.toString)), loanId) ++
     validateWriteOff(invalidApEndDateRequired(boxRetriever), s"error.$writeOffErrorCode.apEndDate.required", None, loanId) ++
     validateWriteOff(invalidApEndDateRange(boxRetriever), s"error.$writeOffErrorCode.apEndDate.range", errorArgsWriteOffApEndDate(boxRetriever), loanId)
   }
@@ -170,6 +171,8 @@ case class WriteOff(id: String, amount: Int, date: LocalDate, endDateOfAP : Opti
   private def invalidDate(boxRetriever: CT600ABoxRetriever): Boolean = !(date.isAfter(currentAPEndDate(boxRetriever)) && date.isBefore(DateHelper.now().plusDays(1).toDateTimeAtStartOfDay.toLocalDate))
 
   private def invalidWriteOffAmount: Boolean = amount < MIN_MONEY_AMOUNT_ALLOWED || amount > MAX_MONEY_AMOUNT_ALLOWED
+
+  private def invalidWriteOffAmountBefore06042016: Boolean = amountBefore06042016 < 0 || amountBefore06042016 > amount
 
   private def invalidApEndDateRequired(boxRetriever: CT600ABoxRetriever): Boolean = {
     date.isAfter(currentAPEndDatePlus9Months(boxRetriever)) match {
