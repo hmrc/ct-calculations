@@ -369,21 +369,18 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       CP89(1).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded", Some(Seq("0"))))
     }
 
-    "fail validation when trading but no value entered" in {
-      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
-
-      CP89(None).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.fieldMustHaveValueIfTrading"))
-    }
     "validate when ceased trading but no value entered" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(true))
 
       CP89(None).validate(stubTestComputationsRetriever) shouldBe Set()
     }
+
     "validate when ceased trading not set" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever()
 
       CP89(None).validate(stubTestComputationsRetriever) shouldBe Set()
     }
+
     "fails validation when negative" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
 
@@ -416,11 +413,6 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       CP668(1).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.specialRatePoolAllowanceExceeded", Some(Seq("0"))))
     }
 
-    "fail validation when trading but no value entered" in {
-      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
-
-      CP668(None).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.fieldMustHaveValueIfTrading"))
-    }
     "validate when ceased trading but no value entered" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(true))
 
@@ -430,11 +422,6 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever()
 
       CP668(None).validate(stubTestComputationsRetriever) shouldBe Set()
-    }
-    "fails validation when negative" in {
-      val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
-
-      CP668(-1).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP668"), errorMessageKey = "error.CP668.mustBeZeroOrPositive"))
     }
   }
 }
