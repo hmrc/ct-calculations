@@ -59,8 +59,8 @@ case class Loan ( id: String,
     validateLoan(invalidLoanNameUnique(loansToParticipators), "error.loan.uniqueName") ++
     validateLoan(invalidLoanAmount, "error.loan.amount.value") ++
     validateLoan(invalidBalancedAmount, "error.loan.unbalanced", balancedAmountArgs) ++
-    validateLoan(invalidLoanBefore06042016, "error.loan.beforeApril2016Amount.value", Some(Seq(amount.toString))) ++
-    validateLoan(invalidBalancedAmountBeforeApril2016, "error.loan.unbalanced.beforeApril2016Amount", balancedBeforeApril2016AmountArgs) ++
+    validateLoan(invalidLoanBeforeApril2016Amount, "error.loan.beforeApril2016Amount.value", Some(Seq(amount.toString))) ++
+    validateLoan(invalidBalancedBeforeApril2016Amount, "error.loan.unbalanced.beforeApril2016Amount", balancedBeforeApril2016AmountArgs) ++
     repaymentWithin9Months.map(_.validateWithin9Months(boxRetriever, id)).getOrElse(Set()) ++
     otherRepayments.foldRight(Set[CtValidation]())((repayment, tail) => repayment.validateAfter9Months(boxRetriever, id) ++ tail) ++
     writeOffs.foldRight(Set[CtValidation]())((writeOff, tail) => writeOff.validate(boxRetriever, id) ++ tail)
@@ -76,9 +76,9 @@ case class Loan ( id: String,
 
   private def invalidBalancedAmount: Boolean = amount < totalAmountRepaymentsAndWriteOffs
 
-  private def invalidBalancedAmountBeforeApril2016: Boolean = amountBefore06042016 < totalAmountBeforeApril2016RepaymentsAndWriteOffs
+  private def invalidBalancedBeforeApril2016Amount: Boolean = amountBefore06042016 < totalAmountBeforeApril2016RepaymentsAndWriteOffs
 
-  private def invalidLoanBefore06042016: Boolean = amountBefore06042016 < 0 || amountBefore06042016 > amount
+  private def invalidLoanBeforeApril2016Amount: Boolean = amountBefore06042016 < 0 || amountBefore06042016 > amount
 
   def totalAmountRepaymentsAndWriteOffs: Int =
     repaymentWithin9Months.map(_.amount).getOrElse(0) + otherRepayments.foldRight(0)((h, t) => h.amount + t) + writeOffs.foldRight(0)((h, t) => h.amount + t)
