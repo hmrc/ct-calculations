@@ -35,12 +35,12 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
   val validLoan = Loan(id = "1",
     name = "Smurfette",
     amount = 200,
-    amountBefore06042016 = 0)
+    amountBefore06042016 = None)
 
   val validRepaymentWithin9Months = Repayment(
     id = "3",
     amount = 50,
-    amountBefore06042016 = 0,
+    amountBefore06042016 = None,
     date = currentAPEndDate.plusDays(3)
   )
 
@@ -48,7 +48,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     id = "4",
     amount = 50,
     date = currentAPEndDate.plusMonths(10),
-    amountBefore06042016 = 0,
+    amountBefore06042016 = None,
     endDateOfAP = Some(currentAPEndDate.plusYears(1))
   )
 
@@ -108,7 +108,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "be happy if a loan has a valid amountBefore06042016" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = validLoan.amount - 1 )))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = Some(validLoan.amount - 1))))
 
       val errors = l2pBox.validate(boxRetriever)
 
@@ -116,7 +116,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if a loan has an amountBefore06042016 greater then amount" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = validLoan.amount + 1 )))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = Some(validLoan.amount + 1))))
 
       val errors = l2pBox.validate(boxRetriever)
 
@@ -126,7 +126,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if a loan has a negative amountBefore06042016" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = -1 )))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = Some(-1))))
 
       val errors = l2pBox.validate(boxRetriever)
 
@@ -210,7 +210,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "be happy if repaymentWithin9Months has valid amountBefore06042016" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = 100, repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBefore06042016 = validRepaymentWithin9Months.amount - 1)))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = Some(100), repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBefore06042016 = Some(validRepaymentWithin9Months.amount - 1))))))
 
       val errors = l2pBox.validate(boxRetriever)
 
@@ -218,7 +218,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if a repaymentWithin9Months has a negative amountBefore06042016" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBefore06042016 = -1)))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBefore06042016 = Some(-1))))))
 
       val errors = l2pBox.validate(boxRetriever)
 
@@ -228,8 +228,8 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if a repaymentWithin9Months has an amountBefore06042016 greater then amount" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = 100,
-        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBefore06042016 = validRepaymentWithin9Months.amount + 1))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = Some(100),
+        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBefore06042016 = Some(validRepaymentWithin9Months.amount + 1)))
       )))
 
       val errors = l2pBox.validate(boxRetriever)
@@ -262,7 +262,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "be happy if a repaymentAfter9Months has a valid amountBefore06042016" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = 100, otherRepayments = List(validRepaymentAfter9Months.copy(amountBefore06042016 = validRepaymentAfter9Months.amount - 1)))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = Some(100), otherRepayments = List(validRepaymentAfter9Months.copy(amountBefore06042016 = Some(validRepaymentAfter9Months.amount - 1))))))
 
       val errors = l2pBox.validate(boxRetriever)
 
@@ -270,7 +270,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if a repaymentAfter9Months has an amountBefore06042016 greater then amount" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = 100, otherRepayments = List(validRepaymentAfter9Months.copy(amountBefore06042016 = validRepaymentAfter9Months.amount + 1)))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = Some(100), otherRepayments = List(validRepaymentAfter9Months.copy(amountBefore06042016 = Some(validRepaymentAfter9Months.amount + 1))))))
 
       val errors = l2pBox.validate(boxRetriever)
 
@@ -280,7 +280,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if a repaymentAfter9Months has a negative amountBefore06042016" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months.copy(amountBefore06042016 = -1)))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(validRepaymentAfter9Months.copy(amountBefore06042016 = Some(-1))))))
 
       val errors = l2pBox.validate(boxRetriever)
 
@@ -404,7 +404,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "be happy if a writeoff has a valid amountBefore06042016" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = 100, writeOffs = List(validWriteOff.copy(amountBefore06042016 = validWriteOff.amount - 1)))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = Some(100), writeOffs = List(validWriteOff.copy(amountBefore06042016 = Some(validWriteOff.amount - 1))))))
 
       val errors = l2pBox.validate(boxRetriever)
 
@@ -412,7 +412,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if a writeoff has an amountBefore06042016 greater then amount" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = 100, writeOffs = List(validWriteOff.copy(amountBefore06042016 = validWriteOff.amount + 1)))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = Some(100), writeOffs = List(validWriteOff.copy(amountBefore06042016 = Some(validWriteOff.amount + 1))))))
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
@@ -421,7 +421,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if a writeoff has a negative amountBefore06042016" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(writeOffs = List(validWriteOff.copy(amountBefore06042016 = -1)))))
+      val l2pBox = LoansToParticipators(List(validLoan.copy(writeOffs = List(validWriteOff.copy(amountBefore06042016 = Some(-1))))))
 
       val errors = l2pBox.validate(boxRetriever)
       errors.size shouldBe 1
@@ -519,10 +519,10 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
     "not allow total of repayments and write offs amounts before April 2016 to exceed the one in Loan" in {
       val l2pBox = LoansToParticipators(List(validLoan.copy(
-        amountBefore06042016 = 20,
-        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBefore06042016 = 5)),
-        otherRepayments = List(validRepaymentAfter9Months.copy(amountBefore06042016 = 10)),
-        writeOffs = List(validWriteOff.copy(amountBefore06042016 = 6))
+        amountBefore06042016 = Some(20),
+        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBefore06042016 = Some(5))),
+        otherRepayments = List(validRepaymentAfter9Months.copy(amountBefore06042016 = Some(10))),
+        writeOffs = List(validWriteOff.copy(amountBefore06042016 = Some(6)))
       )))
 
       val errors = l2pBox.validate(boxRetriever)
@@ -534,10 +534,10 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
     "allow total of repayments and write offs amounts before April 2016 to be equal to the one in Loan" in {
       val l2pBox = LoansToParticipators(List(validLoan.copy(
-        amountBefore06042016 = 20,
-        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBefore06042016 = 5)),
-        otherRepayments = List(validRepaymentAfter9Months.copy(amountBefore06042016 = 10)),
-        writeOffs = List(validWriteOff.copy(amountBefore06042016 = 5))
+        amountBefore06042016 = Some(20),
+        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBefore06042016 = Some(5))),
+        otherRepayments = List(validRepaymentAfter9Months.copy(amountBefore06042016 = Some(10))),
+        writeOffs = List(validWriteOff.copy(amountBefore06042016 = Some(5)))
       )))
 
       val errors = l2pBox.validate(boxRetriever)
@@ -547,15 +547,30 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
     "allow total of repayments and write offs amounts before April 2016 to be less to the one in Loan" in {
       val l2pBox = LoansToParticipators(List(validLoan.copy(
-        amountBefore06042016 = 200,
-        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBefore06042016 = 5)),
-        otherRepayments = List(validRepaymentAfter9Months.copy(amountBefore06042016 = 10)),
-        writeOffs = List(validWriteOff.copy(amountBefore06042016 = 0))
+        amountBefore06042016 = Some(200),
+        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBefore06042016 = Some(5))),
+        otherRepayments = List(validRepaymentAfter9Months.copy(amountBefore06042016 = Some(10))),
+        writeOffs = List(validWriteOff.copy(amountBefore06042016 = Some(0)))
       )))
 
       val errors = l2pBox.validate(boxRetriever)
 
       errors shouldBe empty
+    }
+
+    "not allow total of repayments and write offs amounts before April 2016 to be less then a None Loan amount" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(
+        amountBefore06042016 = None,
+        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBefore06042016 = Some(1))),
+        otherRepayments = List(validRepaymentAfter9Months.copy(amountBefore06042016 = Some(4))),
+        writeOffs = List(validWriteOff.copy(amountBefore06042016 = Some(2)))
+      )))
+
+      val errors = l2pBox.validate(boxRetriever)
+
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "loan.1.error.loan.unbalanced.beforeApril2016Amount"
     }
 
     "return an error if there is no loans and LPQ01 is true" in {
