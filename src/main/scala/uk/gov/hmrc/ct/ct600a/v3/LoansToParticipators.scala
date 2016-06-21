@@ -89,8 +89,12 @@ case class Loan ( id: String,
     repaymentWithin9Months.map(_.amount).getOrElse(0) + otherRepayments.foldRight(0)((h, t) => h.amount + t) + writeOffs.foldRight(0)((h, t) => h.amount + t)
 
   def totalAmountBeforeApril2016RepaymentsAndWriteOffs: Int = {
-    val allAmountsBeforeApril2016: List[Option[Int]] = repaymentWithin9Months.flatMap(_.amountBefore06042016) :: (otherRepayments.map(_.amountBefore06042016) ::: writeOffs.map(_.amountBefore06042016))
-    allAmountsBeforeApril2016.flatten.sum
+
+    val repaymentBefore2016Total: Int = repaymentWithin9Months.flatMap(_.amountBefore06042016).sum
+    val otherRepaymentBefore2016Total: Int = otherRepayments.flatMap(_.amountBefore06042016).sum
+    val writeOffBefore2016Total: Int = writeOffs.flatMap(_.amountBefore06042016).sum
+
+    repaymentBefore2016Total + otherRepaymentBefore2016Total + writeOffBefore2016Total
   }
 
   private def balancedAmountArgs: Option[Seq[String]] = Some(Seq(totalAmountRepaymentsAndWriteOffs.toString, amount.toString))
