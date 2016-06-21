@@ -78,8 +78,8 @@ case class Loan ( id: String,
 
   private def invalidBalancedBeforeApril2016Amount: Boolean = {
     amountBefore06042016 match {
-      case None => totalAmountBeforeApril2016RepaymentsAndWriteOffs > 0
-      case _ => totalAmountBeforeApril2016RepaymentsAndWriteOffs > amountBefore06042016.get
+      case Some(am) => totalAmountBeforeApril2016RepaymentsAndWriteOffs > am
+      case _ => totalAmountBeforeApril2016RepaymentsAndWriteOffs > 0
     }
   }
 
