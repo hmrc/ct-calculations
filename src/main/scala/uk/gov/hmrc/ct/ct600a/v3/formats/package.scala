@@ -27,7 +27,7 @@ package object formats {
 
   implicit val a5Format: Format[A5] = new OptionalBooleanFormat[A5](A5.apply)
 
-//  implicit val a15Format: Format[A15] = new OptionalIntegerFormat[A15](A15.apply)
+  implicit val a15Format: Format[A15] = new OptionalIntegerFormat[A15](A15.apply)
 
   implicit val a20Format: Format[A20] = new OptionalBigDecimalFormat[A20](A20.apply)
 
