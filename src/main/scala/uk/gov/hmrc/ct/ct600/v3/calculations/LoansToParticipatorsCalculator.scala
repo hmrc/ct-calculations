@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
+import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations.CP2
 import uk.gov.hmrc.ct.ct600.v3._
@@ -23,6 +24,9 @@ import uk.gov.hmrc.ct.ct600a.v3._
 
 trait LoansToParticipatorsCalculator extends CtTypeConverters {
 
+  val LoansRateBeforeApril2016 = 0.25
+  val LoansRateAfterApril2016 = 0.35
+  
   def calculateLPQ01(lpq04: LPQ04, lpq10: LPQ10, a5: A5, lpq03: LPQ03): LPQ01 = {
     (lpq04.value, lpq10.value, a5.value, lpq03.value) match {
       case (Some(true), Some(true), _, _) => LPQ01(true)
@@ -34,37 +38,31 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
 
   // CHRIS cardinality 1..1 - cannot be null
   def calculateA15(loans2p: LoansToParticipators): A15 = {
-    val sumOfLoanAmounts: Int = loans2p.loans.flatMap(l => Some(l.amount)).sum
+    val sumOfLoanAmounts: Int = (loans2p.loans.map(_.amount)).sum
     A15(Some(sumOfLoanAmounts))
   }
 
   // CHRIS cardinality 1..1 - cannot be null
-  def calculateA20(a15: A15): A20 = {
-    A20(a15.value.map(x => BigDecimal(x * 0.25)))
+  def calculateA20(a15: A15, loans2p: LoansToParticipators): A20 = {
+    val amountsBeforeApril2016: Int = loans2p.loans.flatMap(_.amountBefore06042016).sum
+    val value = (a15.value) match {
+      case None => None
+      case Some(amount) => Some(BigDecimal(amount - amountsBeforeApril2016) * LoansRateAfterApril2016 + BigDecimal(amountsBeforeApril2016) * LoansRateBeforeApril2016)
+    }
+    A20(value)
   }
 
   // CHRIS cardinality 0..1 - can be null
   def calculateA30(cp2: CP2, loans2p: LoansToParticipators): A30 = {
-    val validLoans: List[Loan] = loans2p.loans.filter { loan =>
-      loan.repaymentWithin9Months match {
-        case Some(r: Repayment) if r.isReliefEarlierThanDue(cp2.value) => true
-        case _ => false
-      }
-    }
-    val sumOfRepayments: Int = validLoans.map(_.repaymentWithin9Months match {
-      case Some(x: Repayment) => x.amount
-      case _ => 0
-    }).sum
+    val validLoans: List[Loan] = loansWithValidRepaymentsWihin9Months(loans2p.loans, cp2.value)
+    val sumOfRepayments: Int = validLoans.map(_.repaymentWithin9Months.get.amount).sum
     if (validLoans.isEmpty) A30(None) else A30(Some(sumOfRepayments))
   }
 
   // CHRIS cardinality is 0..1 - so can be null
   def calculateA35(cp2: CP2, loans2p: LoansToParticipators): A35 = {
-    val validWriteOffs: List[WriteOff] = loans2p.loans.flatMap(loan =>
-      loan.writeOffs.filter(writeOff =>
-        writeOff.isReliefEarlierThanDue(cp2.value))
-    )
-    val writeOffs: Int = validWriteOffs.map(w => w.amount).sum
+    val validWriteOffs = validWriteOffsWithin9Months(loans2p.loans, cp2.value)
+    val writeOffs: Int = validWriteOffs.map(_.amount).sum
     if (validWriteOffs.isEmpty) A35(None) else A35(Some(writeOffs))
   }
 
@@ -76,8 +74,27 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   }
 
   // CHRIS cardinality 1..1 - cannot be empty
-  def calculateA45(a40: A40): A45 = {
-    A45(a40.value.map(x => BigDecimal(x * 0.25)))
+  def calculateA45(a40: A40, loans2p: LoansToParticipators, cp2: CP2): A45 = {
+    val validLoans: List[Loan] = loansWithValidRepaymentsWihin9Months(loans2p.loans, cp2.value)
+    val repaymentsAmountsBeforeApril2016: List[Int] = for {
+      loan<-validLoans
+      repayment <- loan.repaymentWithin9Months
+      amount <- repayment.amountBefore06042016
+    } yield amount
+
+    val validWriteOffs = validWriteOffsWithin9Months(loans2p.loans, cp2.value)
+    val writeOffsBeforeApril2016: List[Int] = for {
+      writeOff <- validWriteOffs
+      amount <- writeOff.amountBefore06042016
+    } yield amount
+
+    val amountBeforeApril2016 = repaymentsAmountsBeforeApril2016.sum + writeOffsBeforeApril2016.sum
+
+    val value = a40.value match {
+      case None => None
+      case Some(amount) => Some(BigDecimal(amount - amountBeforeApril2016) * LoansRateAfterApril2016 + BigDecimal(amountBeforeApril2016) * LoansRateBeforeApril2016)
+    }
+    A45(value)
   }
 
   // CHRIS cardinality 0..1 - can be null
@@ -121,11 +138,11 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
 
   // CHRIS cardinality 1..1 - cannot be null
   def calculateA70(a65: A65): A70 = {
-    A70(a65.value.map(x => BigDecimal(x * 0.25)))
+    A70(a65.value.map(x => BigDecimal(x * LoansRateBeforeApril2016)))
   }
 
   def calculateA70Inverse(a65Inverse: A65Inverse): A70Inverse = {
-    A70Inverse(a65Inverse.value.map(x => BigDecimal(x * 0.25)))
+    A70Inverse(a65Inverse.value.map(x => BigDecimal(x * LoansRateBeforeApril2016)))
   }
 
   def calculateA75(a15: A15, lp04: LP04): A75 = {
@@ -147,6 +164,18 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   def calculateB485(a70: A70): B485 = a70.value match {
     case Some(x) if x > 0 => B485(true)
     case _ => B485(false)
+  }
+
+  private def loansWithValidRepaymentsWihin9Months(loans: List[Loan], date: LocalDate): List[Loan] = for {
+    loan <- loans
+    repayment <-loan.repaymentWithin9Months if repayment.isReliefEarlierThanDue(date)
+  } yield loan
+
+  private def validWriteOffsWithin9Months(loans: List[Loan], date: LocalDate): List[WriteOff] = {
+    for {
+      loan <- loans
+      writeOff <- loan.writeOffs if writeOff.isReliefEarlierThanDue(date)
+    } yield writeOff
   }
 
 }

@@ -79,8 +79,18 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
     }
 
     "correctly calculate A20 (A3v2)" in new LoansToParticipatorsCalculator {
-      calculateA20(A15(Some(1))) shouldBe A20(Some(0.25))
-      calculateA20(A15(Some(333))) shouldBe A20(Some(83.25))
+
+      val loans2p_None = LoansToParticipators(loan(amountBefore06042016 = None))
+      val loans2p_0 = LoansToParticipators(loan(amountBefore06042016 = Some(0)))
+      val loans2p_1 = LoansToParticipators(loan(amountBefore06042016 = Some(1)))
+      val loans2p_3 = LoansToParticipators(loan(amountBefore06042016 = Some(3)))
+      val loasn2p_4 = LoansToParticipators(loans = loans2p_None.loans ::: loans2p_0.loans ::: loans2p_1.loans ::: loans2p_3.loans ::: Nil)
+      
+      calculateA20(A15(Some(1)), loans2p_None) shouldBe A20(Some(0.35))
+      calculateA20(A15(Some(1)), loans2p_0) shouldBe A20(Some(0.35))
+      calculateA20(A15(Some(1)), loans2p_1) shouldBe A20(Some(0.25))
+      calculateA20(A15(Some(10)), loans2p_3) shouldBe A20(Some(3.2))
+      calculateA20(A15(Some(333)),loasn2p_4 ) shouldBe A20(Some(116.15))
     }
 
 
@@ -129,6 +139,7 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
           Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = Some(Repayment(id = "1", amount = 1, date = new LocalDate("2013-01-01")))) ::
           Loan(id = "1", name = "Frodo", amount = 456, repaymentWithin9Months = Some(Repayment(id = "1", amount = 2, date = new LocalDate("2012-12-31")))) ::
           Loan(id = "1", name = "Smaug", amount = 99999999, repaymentWithin9Months = Some(Repayment(id = "1", amount = 2, date = new LocalDate("2013-10-01"), endDateOfAP = someDate("2013-12-31")))) ::
+          Loan(id = "1", name = "Smaug", amount = 99999999, repaymentWithin9Months = None) ::
           Loan(id = "1", name = "Gandalf", amount = 789, repaymentWithin9Months = Some(Repayment(id = "1", amount = 3, date = new LocalDate("2013-09-30")))) :: Nil))
     )
     "correctly calculate A30 (A4v2) using loan repayments made between the end of the accounting period and 9months and 1 day later" in new LoansToParticipatorsCalculator {
@@ -168,8 +179,19 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
     }
 
     "correctly calculate A45 (A7v2)" in new LoansToParticipatorsCalculator {
-      calculateA45(A40(Some(1))) shouldBe A45(Some(0.25))
-      calculateA45(A40(Some(333))) shouldBe A45(Some(83.25))
+
+      val l2p_None = LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = None) :: Nil) // illegal state - boolean says yes but repaid before AP end
+      val l2p_Invalid = LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = Some(Repayment(id = "1", amount = 1, date = new LocalDate("2012-12-31"))), writeOffs = List(WriteOff("123", 1, None, new LocalDate("2012-12-31")))) ::
+                                                    Loan(id = "1", name = "Bilbo", amount = 375, writeOffs = List(WriteOff("123", 1, None, new LocalDate("2013-10-01"), someDate("2013-12-31")))) :: Nil) // not valid repayments and writeoffs
+      val l2p_1 = LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = Some(Repayment(id = "1", amount = 4, amountBefore06042016 = Some(3), date = new LocalDate("2013-01-01"))), writeOffs = List(WriteOff("123", 7, amountBefore06042016 = Some(2), new LocalDate("2013-01-01")))) :: Nil)  // ok
+      val l2p_2 = LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = Some(Repayment(id = "1", amount = 4, amountBefore06042016 = Some(300), date = new LocalDate("2013-01-01"))), writeOffs = List(WriteOff("123", 7, amountBefore06042016 = Some(33), new LocalDate("2013-01-01")))) :: Nil)  // ok
+
+      val cp2 = CP2(new LocalDate("2012-12-31"))
+      calculateA45(A40(Some(1)), l2p_None, cp2) shouldBe A45(Some(0.35))
+      calculateA45(A40(Some(1)), l2p_Invalid, cp2) shouldBe A45(Some(0.35))
+      calculateA45(A40(Some(333)), l2p_None, cp2) shouldBe A45(Some(116.55))
+      calculateA45(A40(Some(333)), l2p_1, cp2) shouldBe A45(Some(116.05))
+      calculateA45(A40(Some(333)), l2p_2, cp2) shouldBe A45(Some(83.25))
     }
 
 //    total of repayments made after (APend + 9months)
@@ -396,6 +418,8 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
     }
 
   }
+  
+  def loan(amountBefore06042016: Option[Int]) = Loan(id = "1", name = "Bilbo", amount = 1, amountBefore06042016 = amountBefore06042016) :: Nil
 
 
 }
