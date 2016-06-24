@@ -421,8 +421,38 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
     }
 
     "correctly calculate A70Inverse" in new LoansToParticipatorsCalculator {
-      calculateA70Inverse(A65Inverse(Some(1))) shouldBe A70Inverse(Some(0.25))
-      calculateA70Inverse(A65Inverse(Some(333))) shouldBe A70Inverse(Some(83.25))
+
+      val l2p_invalid = LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, otherRepayments =
+        List(Repayment(id = "1", amount = 1, date = new LocalDate("2014-05-31"), endDateOfAP = someDate("2014-12-31"))))))
+      val l2p_invalid2 = LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123,
+          otherRepayments = List(Repayment(id = "1", amount = 1, date = new LocalDate("2014-06-01"), endDateOfAP = None)))))
+      val l2p_1 = LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123,
+          otherRepayments = List(Repayment(id = "1", amount = 1, amountBefore06042016 = Some(330), date = new LocalDate("2014-10-01"), endDateOfAP = someDate("2014-12-31"))),
+          writeOffs = List(
+            WriteOff("123", 1, Some(1), new LocalDate("2014-10-01"), someDate("2014-12-31")),
+            WriteOff("456", 2, Some(1), new LocalDate("2014-10-01"), someDate("2014-12-31")),
+            WriteOff("789", 5, Some(1), new LocalDate("2014-10-01"), someDate("2014-12-31"))))))
+      val l2p_2 = LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123,
+        otherRepayments = List(Repayment(id = "1", amount = 1, amountBefore06042016 = None, date = new LocalDate("2014-10-01"), endDateOfAP = someDate("2014-12-31"))),
+        writeOffs = List(
+          WriteOff("123", 1, Some(0), new LocalDate("2014-10-01"), someDate("2014-12-31")),
+          WriteOff("456", 2, None, new LocalDate("2014-10-01"), someDate("2014-12-31")),
+          WriteOff("789", 5, None, new LocalDate("2014-10-01"), someDate("2014-12-31"))))))
+      val l2p_3 = LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123,
+        otherRepayments = List(Repayment(id = "1", amount = 1, amountBefore06042016 = Some(10), date = new LocalDate("2014-10-01"), endDateOfAP = someDate("2014-12-31"))),
+        writeOffs = List(
+          WriteOff("123", 1, Some(0), new LocalDate("2014-10-01"), someDate("2014-12-31")),
+          WriteOff("456", 2, Some(5), new LocalDate("2014-10-01"), someDate("2014-12-31")),
+          WriteOff("789", 5, Some(0), new LocalDate("2014-10-01"), someDate("2014-12-31"))))))
+
+      val apEndDate = CP2(new LocalDate("2013-12-31"))
+
+      calculateA70Inverse(A65Inverse(Some(1)), l2p_invalid, apEndDate, LPQ07(someDate("2015-06-01"))) shouldBe A70Inverse(Some(0.35))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid, apEndDate, LPQ07(someDate("2015-10-01"))) shouldBe A70Inverse(Some(116.55))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid2, apEndDate, LPQ07(someDate("2014-01-01"))) shouldBe A70Inverse(Some(116.55))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_1, apEndDate, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(83.25))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_2, apEndDate, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(116.55))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_3, apEndDate, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(115.05))
     }
 
     "correctly calculate A75 (A12v2), total outstanding loans" in new LoansToParticipatorsCalculator {
