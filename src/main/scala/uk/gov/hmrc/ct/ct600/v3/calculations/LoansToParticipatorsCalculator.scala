@@ -92,8 +92,9 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   }
 
   def calculateA55Inverse(apEndDate: CP2, loans2p: LoansToParticipators, filingDate: LPQ07): A55Inverse = {
-    val validRepayments: List[Repayment] = loans2p.loans.flatMap(_.otherRepayments.filter(_.isLaterReliefNotYetDue(apEndDate.value, filingDate)))
-    if (validRepayments.isEmpty) A55Inverse(None) else A55Inverse(Some(validRepayments.foldLeft(0)(_ + _.amount)))
+    val validRepayments: List[Repayment] = validRepaymentsWithLaterReliefNotYetDue(loans2p.loans, apEndDate.value, filingDate)
+    val totalRepayments: Int = validRepayments.map(_.amount).sum
+    if (validRepayments.isEmpty) A55Inverse(None) else A55Inverse(Some(totalRepayments))
   }
 
   //CHRIS cardinality 0..1 - can be null
@@ -104,11 +105,9 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   }
 
   def calculateA60Inverse(cp2: CP2, loans2p: LoansToParticipators, filingDate: LPQ07): A60Inverse = {
-    val validWriteOffs: List[WriteOff] = loans2p.loans.flatMap(loan =>
-      loan.writeOffs.filter(writeOff =>
-        writeOff.isLaterReliefNotYetDue(cp2.value, filingDate))
-    )
-    if(validWriteOffs.isEmpty) A60Inverse(None) else A60Inverse(Some(validWriteOffs.flatMap(w => Some(w.amount)).sum))
+    val validWriteOffs: List[WriteOff] = vailidWriteOffWithLaterReliefNotYetDue(loans2p.loans, cp2.value, filingDate)
+    val totalWriteOffs: Int = validWriteOffs.map(_.amount).sum
+    if(validWriteOffs.isEmpty) A60Inverse(None) else A60Inverse(Some(totalWriteOffs))
   }
 
   def calculateA65(a55: A55, a60: A60): A65 = {
@@ -136,8 +135,16 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
     A70(value)
   }
 
-  def calculateA70Inverse(a65Inverse: A65Inverse): A70Inverse = {
-    A70Inverse(a65Inverse.value.map(x => BigDecimal(x * LoansRateBeforeApril2016)))
+  def calculateA70Inverse(a65Inverse: A65Inverse, loans2p: LoansToParticipators, cp2: CP2, filingDate: LPQ07): A70Inverse = {
+    val validRepayments: List[Repayment] = validRepaymentsWithLaterReliefNotYetDue(loans2p.loans, cp2.value, filingDate)
+    val totalRepaymentsBeforeApril2016 = validRepayments.flatMap(_.amountBefore06042016).sum
+
+    val validWriteOffs: List[WriteOff] = vailidWriteOffWithLaterReliefNotYetDue(loans2p.loans, cp2.value, filingDate)
+    val totalWriteOffsBeforeApril2016 = validWriteOffs.flatMap(_.amountBefore06042016).sum
+
+    val amountBeforeApril2016 = totalRepaymentsBeforeApril2016 + totalWriteOffsBeforeApril2016
+    val value = calculate(a65Inverse.value, amountBeforeApril2016)
+    A70Inverse(value)
   }
 
   def calculateA75(a15: A15, lp04: LP04): A75 = {
@@ -174,11 +181,21 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   private def validRepaymentsWithLaterReliefNowDue(loans: List[Loan], apEndDate: LocalDate, filingDate: LPQ07): List[Repayment] = for{
       loan <- loans
       repayment <- loan.otherRepayments if repayment.isLaterReliefNowDue(apEndDate, filingDate)
-    } yield repayment
+  } yield repayment
+
+  private def validRepaymentsWithLaterReliefNotYetDue(loans: List[Loan], apEndDate: LocalDate, filingDate: LPQ07): List[Repayment] = for{
+      loan <- loans
+      repayment <- loan.otherRepayments if repayment.isLaterReliefNotYetDue(apEndDate, filingDate)
+  } yield repayment
 
   private def vailidWriteOffWithLaterReliefNowDue(loans: List[Loan], apEndDate: LocalDate, filingDate: LPQ07): List[WriteOff] = for {
       loan <- loans
       writeOff <- loan.writeOffs if writeOff.isLaterReliefNowDue(apEndDate, filingDate)
+  } yield writeOff
+
+  private def vailidWriteOffWithLaterReliefNotYetDue(loans: List[Loan], apEndDate: LocalDate, filingDate: LPQ07): List[WriteOff] = for {
+      loan <- loans
+      writeOff <- loan.writeOffs if writeOff.isLaterReliefNotYetDue(apEndDate, filingDate)
   } yield writeOff
 
   private def calculate(amountOpt: Option[Int], amountsBeforeApril2016: Int) = {
