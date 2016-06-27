@@ -142,8 +142,8 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
     val validWriteOffs: List[WriteOff] = vailidWriteOffWithLaterReliefNotYetDue(loans2p.loans, cp2.value, filingDate)
     val sumOflWriteOffsBeforeApril2016 = validWriteOffs.flatMap(_.amountBefore06042016).sum
 
-    val amountOfA70InverseBeforeApril2016 = sumOfRepaymentsBeforeApril2016 + sumOflWriteOffsBeforeApril2016
-    val value = calculate(a65Inverse.value, amountOfA70InverseBeforeApril2016)
+    val amountOfA65InverseBeforeApril2016 = sumOfRepaymentsBeforeApril2016 + sumOflWriteOffsBeforeApril2016
+    val value = calculate(a65Inverse.value, amountOfA65InverseBeforeApril2016)
     A70Inverse(value)
   }
 
