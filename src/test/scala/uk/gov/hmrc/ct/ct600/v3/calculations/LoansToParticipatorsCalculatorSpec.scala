@@ -153,7 +153,7 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
 
     val a35Table = Table(
       ("expectedValue", "loans2p"),
-      (None, LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 100, writeOffs = List(WriteOff("123", 1, None, new LocalDate("2012-12-31")))) :: Nil)), // too early
+      (None, LoansToParticipators(loans =  Loan(id = "1", name = "Bilbo",amount = 100, writeOffs = List(WriteOff("123", 1, None, new LocalDate("2012-12-31")))) :: Nil)), // too early
       (Some(1), LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 200, writeOffs = List(WriteOff("123", 1, None, new LocalDate("2013-01-01")))) :: Nil)),  // ok
       (Some(1), LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 250, writeOffs = List(WriteOff("123", 1, None, new LocalDate("2013-09-30")))) :: Nil)), // ok
       (None, LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 375, writeOffs = List(WriteOff("123", 1, None, new LocalDate("2013-10-01"), someDate("2013-12-31")))) :: Nil)),  // too late
