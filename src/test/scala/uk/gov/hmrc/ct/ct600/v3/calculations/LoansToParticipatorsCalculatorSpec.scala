@@ -78,19 +78,38 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
       }
     }
 
-    "correctly calculate A20 (A3v2)" in new LoansToParticipatorsCalculator {
+    "correctly calculate A20 (A3v2) applying old tax rate for accounting periods ending before 6 April 2016" in new LoansToParticipatorsCalculator {
+
+      val unusedLoans = LoansToParticipators()
+      val before6April2016 = CP2(new LocalDate("2014-12-31"))
+
+      calculateA20(A15(Some(1)), unusedLoans, before6April2016) shouldBe A20(Some(0.25))
+      calculateA20(A15(Some(333)), unusedLoans, before6April2016) shouldBe A20(Some(83.25))
+    }
+
+    "correctly calculate A20 (A3v2) applying new tax rate for accounting periods ending on or after 6 April 2016" in new LoansToParticipatorsCalculator {
 
       val loans2p_None = LoansToParticipators(loan(amountBefore06042016 = None))
       val loans2p_0 = LoansToParticipators(loan(amountBefore06042016 = Some(0)))
       val loans2p_1 = LoansToParticipators(loan(amountBefore06042016 = Some(1)))
       val loans2p_3 = LoansToParticipators(loan(amountBefore06042016 = Some(3)))
       val loasn2p_4 = LoansToParticipators(loans = loans2p_None.loans ::: loans2p_0.loans ::: loans2p_1.loans ::: loans2p_3.loans ::: Nil)
-      
-      calculateA20(A15(Some(1)), loans2p_None) shouldBe A20(Some(0.35))
-      calculateA20(A15(Some(1)), loans2p_0) shouldBe A20(Some(0.35))
-      calculateA20(A15(Some(1)), loans2p_1) shouldBe A20(Some(0.25))
-      calculateA20(A15(Some(10)), loans2p_3) shouldBe A20(Some(3.2))
-      calculateA20(A15(Some(333)),loasn2p_4 ) shouldBe A20(Some(116.15))
+
+      val after6April2016 = CP2(new LocalDate("2016-12-31"))
+
+      calculateA20(A15(Some(1)), loans2p_None, after6April2016) shouldBe A20(Some(0.35))
+      calculateA20(A15(Some(1)), loans2p_0, after6April2016) shouldBe A20(Some(0.35))
+      calculateA20(A15(Some(1)), loans2p_1, after6April2016) shouldBe A20(Some(0.25))
+      calculateA20(A15(Some(10)), loans2p_3, after6April2016) shouldBe A20(Some(3.2))
+      calculateA20(A15(Some(333)),loasn2p_4, after6April2016 ) shouldBe A20(Some(116.15))
+
+      val on6April2016 = CP2(new LocalDate("2016-04-06"))
+
+      calculateA20(A15(Some(1)), loans2p_None, on6April2016) shouldBe A20(Some(0.35))
+      calculateA20(A15(Some(1)), loans2p_0, on6April2016) shouldBe A20(Some(0.35))
+      calculateA20(A15(Some(1)), loans2p_1, on6April2016) shouldBe A20(Some(0.25))
+      calculateA20(A15(Some(10)), loans2p_3, on6April2016) shouldBe A20(Some(3.2))
+      calculateA20(A15(Some(333)),loasn2p_4, on6April2016 ) shouldBe A20(Some(116.15))
     }
 
 
@@ -178,20 +197,37 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
       calculateA40(A30(Some(4)), A35(None)) shouldBe A40(Some(4))
     }
 
-    "correctly calculate A45 (A7v2)" in new LoansToParticipatorsCalculator {
+    "correctly calculate A45 (A7v2) applying old tax rate for accounting periods ending before 6 April 2016" in new LoansToParticipatorsCalculator {
+
+      val unusedLoans = LoansToParticipators()
+      val before6April2016 = CP2(new LocalDate("2014-12-31"))
+
+      calculateA45(A40(Some(1)), unusedLoans, before6April2016) shouldBe A45(Some(0.25))
+      calculateA45(A40(Some(333)), unusedLoans, before6April2016) shouldBe A45(Some(83.25))
+    }
+
+    "correctly calculate A45 (A7v2) applying new tax rate for accounting periods ending on or after 6 April 2016" in new LoansToParticipatorsCalculator {
 
       val l2p_None = LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = None) :: Nil) // illegal state - boolean says yes but repaid before AP end
       val l2p_Invalid = LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = Some(Repayment(id = "1", amount = 1, date = new LocalDate("2012-12-31"))), writeOffs = List(WriteOff("123", 1, None, new LocalDate("2012-12-31")))) ::
                                                     Loan(id = "1", name = "Bilbo", amount = 375, writeOffs = List(WriteOff("123", 1, None, new LocalDate("2013-10-01"), someDate("2013-12-31")))) :: Nil) // not valid repayments and writeoffs
-      val l2p_1 = LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = Some(Repayment(id = "1", amount = 4, amountBefore06042016 = Some(3), date = new LocalDate("2013-01-01"))), writeOffs = List(WriteOff("123", 7, amountBefore06042016 = Some(2), new LocalDate("2013-01-01")))) :: Nil)  // ok
-      val l2p_2 = LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = Some(Repayment(id = "1", amount = 4, amountBefore06042016 = Some(300), date = new LocalDate("2013-01-01"))), writeOffs = List(WriteOff("123", 7, amountBefore06042016 = Some(33), new LocalDate("2013-01-01")))) :: Nil)  // ok
+      val l2p_1 = LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = Some(Repayment(id = "1", amount = 4, amountBefore06042016 = Some(3), date = new LocalDate("2017-01-01"))), writeOffs = List(WriteOff("123", 7, amountBefore06042016 = Some(2), new LocalDate("2017-01-01")))) :: Nil)  // ok
+      val l2p_2 = LoansToParticipators(loans = Loan(id = "1", name = "Bilbo", amount = 123, repaymentWithin9Months = Some(Repayment(id = "1", amount = 4, amountBefore06042016 = Some(300), date = new LocalDate("2017-01-01"))), writeOffs = List(WriteOff("123", 7, amountBefore06042016 = Some(33), new LocalDate("2017-01-01")))) :: Nil)  // ok
 
-      val cp2 = CP2(new LocalDate("2012-12-31"))
-      calculateA45(A40(Some(1)), l2p_None, cp2) shouldBe A45(Some(0.35))
-      calculateA45(A40(Some(1)), l2p_Invalid, cp2) shouldBe A45(Some(0.35))
-      calculateA45(A40(Some(333)), l2p_None, cp2) shouldBe A45(Some(116.55))
-      calculateA45(A40(Some(333)), l2p_1, cp2) shouldBe A45(Some(116.05))
-      calculateA45(A40(Some(333)), l2p_2, cp2) shouldBe A45(Some(83.25))
+      val after6April2016 = CP2(new LocalDate("2016-12-31"))
+      calculateA45(A40(Some(1)), l2p_None, after6April2016) shouldBe A45(Some(0.35))
+      calculateA45(A40(Some(1)), l2p_Invalid, after6April2016) shouldBe A45(Some(0.35))
+      calculateA45(A40(Some(333)), l2p_None, after6April2016) shouldBe A45(Some(116.55))
+      calculateA45(A40(Some(333)), l2p_1, after6April2016) shouldBe A45(Some(116.05))
+      calculateA45(A40(Some(333)), l2p_2, after6April2016) shouldBe A45(Some(83.25))
+
+      val on6April2016 = CP2(new LocalDate("2016-04-06"))
+      calculateA45(A40(Some(1)), l2p_None, on6April2016) shouldBe A45(Some(0.35))
+      calculateA45(A40(Some(1)), l2p_Invalid, on6April2016) shouldBe A45(Some(0.35))
+      calculateA45(A40(Some(333)), l2p_None, on6April2016) shouldBe A45(Some(116.55))
+      calculateA45(A40(Some(333)), l2p_1, on6April2016) shouldBe A45(Some(116.05))
+      calculateA45(A40(Some(333)), l2p_2, on6April2016) shouldBe A45(Some(83.25))
+
     }
 
 //    total of repayments made after (APend + 9months)
@@ -384,7 +420,15 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
       calculateA65Inverse(A55Inverse(Some(4)), A60Inverse(None)) shouldBe A65Inverse(Some(4))
     }
 
-    "correctly calculate A70 (A11v2)" in new LoansToParticipatorsCalculator {
+    "correctly calculate A70 (A11v2) applying old tax rate for accounting periods ending before 6 April 2016" in new LoansToParticipatorsCalculator {
+
+      val before6April2016 = CP2(new LocalDate("2014-12-31"))
+
+      calculateA70(A65(Some(1)), null, before6April2016, null) shouldBe A70(Some(0.25))
+      calculateA70(A65(Some(333)), null, before6April2016, null) shouldBe A70(Some(83.25))
+    }
+
+    "correctly calculate A70 (A11v2) applying new tax rate for accounting periods ending on or after 6 April 2016" in new LoansToParticipatorsCalculator {
 
       val l2p_invalid = LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, otherRepayments =
         List(Repayment(id = "1", amount = 1, date = new LocalDate("2013-08-31"), endDateOfAP = someDate("2013-12-31"))))))  //illegal state - not >9months after AP end
@@ -408,19 +452,35 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
           WriteOff("789", 5, None, new LocalDate("2014-12-31"), someDate("2014-12-31"))))))
 
 
-      val apEndDate = CP2(new LocalDate("2012-12-31"))
+      val after6April2016 = CP2(new LocalDate("2016-12-31"))
+//      calculateA70(A65(Some(1)), l2p_invalid, after6April2016, LPQ07(someDate("2014-10-01"))) shouldBe A70(Some(0.35))
+//      calculateA70(A65(Some(333)), l2p_invalid, after6April2016, LPQ07(someDate("2014-10-01"))) shouldBe A70(Some(116.55))
+//      calculateA70(A65(Some(333)), l2p_invalid2, after6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70(Some(116.55))
+//      calculateA70(A65(Some(333)), l2p_1, after6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70(Some(116.55))
+//      calculateA70(A65(Some(333)), l2p_1, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(83.25))
+//      calculateA70(A65(Some(333)), l2p_2, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(116.55))
+      calculateA70(A65(Some(333)), l2p_3, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(115.05))
 
-      calculateA70(A65(Some(1)), l2p_invalid, apEndDate, LPQ07(someDate("2014-10-01"))) shouldBe A70(Some(0.35))
-      calculateA70(A65(Some(333)), l2p_invalid, apEndDate, LPQ07(someDate("2014-10-01"))) shouldBe A70(Some(116.55))
-      calculateA70(A65(Some(333)), l2p_invalid2, apEndDate, LPQ07(someDate("2014-01-01"))) shouldBe A70(Some(116.55))
-      calculateA70(A65(Some(333)), l2p_1, apEndDate, LPQ07(someDate("2014-01-01"))) shouldBe A70(Some(116.55))
-      calculateA70(A65(Some(333)), l2p_1, apEndDate, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(83.25))
-      calculateA70(A65(Some(333)), l2p_2, apEndDate, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(116.55))
-      calculateA70(A65(Some(333)), l2p_3, apEndDate, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(115.05))
+      val on6April2016 = CP2(new LocalDate("2016-04-06"))
+      calculateA70(A65(Some(1)), l2p_invalid, on6April2016, LPQ07(someDate("2014-10-01"))) shouldBe A70(Some(0.35))
+      calculateA70(A65(Some(333)), l2p_invalid, on6April2016, LPQ07(someDate("2014-10-01"))) shouldBe A70(Some(116.55))
+      calculateA70(A65(Some(333)), l2p_invalid2, on6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70(Some(116.55))
+      calculateA70(A65(Some(333)), l2p_1, on6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70(Some(116.55))
+      calculateA70(A65(Some(333)), l2p_1, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(83.25))
+      calculateA70(A65(Some(333)), l2p_2, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(116.55))
+      calculateA70(A65(Some(333)), l2p_3, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(115.05))
 
     }
 
-    "correctly calculate A70Inverse" in new LoansToParticipatorsCalculator {
+    "correctly calculate A70Inverse applying old tax rate for accounting periods ending before 6 April 2016" in new LoansToParticipatorsCalculator {
+
+      val before6April2016 = CP2(new LocalDate("2014-12-31"))
+
+      calculateA70Inverse(A65Inverse(Some(1)), null, before6April2016, null) shouldBe A70Inverse(Some(0.25))
+      calculateA70Inverse(A65Inverse(Some(333)), null, before6April2016, null) shouldBe A70Inverse(Some(83.25))
+    }
+
+    "correctly calculate A70Inverse applying new tax rate for accounting periods ending on or after 6 April 2016" in new LoansToParticipatorsCalculator {
 
       val l2p_invalid = LoansToParticipators(loans = List(Loan(id = "1", name = "Bilbo", amount = 123, otherRepayments =
         List(Repayment(id = "1", amount = 1, date = new LocalDate("2014-05-31"), endDateOfAP = someDate("2014-12-31"))))))
@@ -445,14 +505,21 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
           WriteOff("456", 2, Some(5), new LocalDate("2014-10-01"), someDate("2014-12-31")),
           WriteOff("789", 5, Some(0), new LocalDate("2014-10-01"), someDate("2014-12-31"))))))
 
-      val apEndDate = CP2(new LocalDate("2013-12-31"))
+      val after6April2016 = CP2(new LocalDate("2016-12-31"))
+      calculateA70Inverse(A65Inverse(Some(1)), l2p_invalid, after6April2016, LPQ07(someDate("2015-06-01"))) shouldBe A70Inverse(Some(0.35))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70Inverse(Some(116.55))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid2, after6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70Inverse(Some(116.55))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_1, after6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(83.25))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_2, after6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(116.55))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_3, after6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(115.05))
 
-      calculateA70Inverse(A65Inverse(Some(1)), l2p_invalid, apEndDate, LPQ07(someDate("2015-06-01"))) shouldBe A70Inverse(Some(0.35))
-      calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid, apEndDate, LPQ07(someDate("2015-10-01"))) shouldBe A70Inverse(Some(116.55))
-      calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid2, apEndDate, LPQ07(someDate("2014-01-01"))) shouldBe A70Inverse(Some(116.55))
-      calculateA70Inverse(A65Inverse(Some(333)), l2p_1, apEndDate, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(83.25))
-      calculateA70Inverse(A65Inverse(Some(333)), l2p_2, apEndDate, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(116.55))
-      calculateA70Inverse(A65Inverse(Some(333)), l2p_3, apEndDate, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(115.05))
+      val on6April2016 = CP2(new LocalDate("2016-04-06"))
+      calculateA70Inverse(A65Inverse(Some(1)), l2p_invalid, on6April2016, LPQ07(someDate("2015-06-01"))) shouldBe A70Inverse(Some(0.35))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70Inverse(Some(116.55))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid2, on6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70Inverse(Some(116.55))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_1, on6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(83.25))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_2, on6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(116.55))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_3, on6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(115.05))
     }
 
     "correctly calculate A75 (A12v2), total outstanding loans" in new LoansToParticipatorsCalculator {
