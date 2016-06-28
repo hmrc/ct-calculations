@@ -25,7 +25,7 @@ import uk.gov.hmrc.ct.ct600a.v3._
 trait LoansToParticipatorsCalculator extends CtTypeConverters {
 
   val LoansRateBeforeApril2016 = 0.25
-  val LoansRateAfterApril2016 = 0.35
+  val LoansRateAfterApril2016 = 0.325
   val DateOFNewTaxRateForLoans = new LocalDate(2016, 4, 6)
 
   def calculateLPQ01(lpq04: LPQ04, lpq10: LPQ10, a5: A5, lpq03: LPQ03): LPQ01 = {
