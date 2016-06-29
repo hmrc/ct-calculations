@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.computations.retriever
 
 import uk.gov.hmrc.ct._
-import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frsse2008.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, BoxValues}
 import uk.gov.hmrc.ct.computations._
 
