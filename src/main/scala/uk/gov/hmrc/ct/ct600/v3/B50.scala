@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frsse2008.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtBoolean, Calculated, CtBoxIdentifier}
 import uk.gov.hmrc.ct.ct600.calculations.PeriodOfAccountsCalculator
 

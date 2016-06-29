@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3.stubs
 
-import uk.gov.hmrc.ct.accounts.stubs.StubbedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.stubs.StubbedFilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
