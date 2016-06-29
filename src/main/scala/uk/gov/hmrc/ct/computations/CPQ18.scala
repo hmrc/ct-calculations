@@ -21,10 +21,10 @@ import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CPQ18(value: Option[Boolean]) extends CtBoxIdentifier(name = "Claim any trading losses carried back from a later period against profits in this period.")
-  with CtOptionalBoolean
-  with Input
-  with ValidatableBox[ComputationsBoxRetriever]
-  with TradingLossesValidation {
+                                         with CtOptionalBoolean
+                                         with Input
+                                         with ValidatableBox[ComputationsBoxRetriever]
+                                         with TradingLossesValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     if (value.isEmpty)
