@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs10x.retriever
 
 import uk.gov.hmrc.ct.box.retriever.{FilingAttributesBoxValueRetriever, BoxRetriever, BoxValues}
 
-trait AccountsBoxRetriever extends BoxRetriever {
+trait Frs10xAccountsBoxRetriever extends BoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 

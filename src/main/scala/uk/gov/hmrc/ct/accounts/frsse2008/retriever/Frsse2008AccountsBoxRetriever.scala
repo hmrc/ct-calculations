@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.accounts.frsse2008.retriever
 import uk.gov.hmrc.ct.accounts.frsse2008._
 import uk.gov.hmrc.ct.box.retriever.{FilingAttributesBoxValueRetriever, BoxRetriever, BoxValues}
 
-trait AccountsBoxRetriever extends BoxRetriever {
+trait Frsse2008AccountsBoxRetriever extends BoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 
