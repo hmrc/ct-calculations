@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.version.calculations
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600e.v2.retriever.{CT600EBoxRetriever => V2CT600EBoxRetriever}
@@ -37,7 +38,7 @@ trait ReturnVersionsCalculator {
   def doCalculation[A <: BoxRetriever](boxRetriever: A): Set[Return] = {
     boxRetriever match {
 
-      case br: V3CT600EBoxRetriever with Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever =>
+      case br: V3CT600EBoxRetriever with AccountsBoxRetriever with FilingAttributesBoxValueRetriever =>
         calculateReturnVersions(poaStartDate = br.retrieveAC3().value,
                                 apStartDate = Some(br.retrieveE3().value),
                                 apEndDate = Some(br.retrieveE4().value),
@@ -51,7 +52,7 @@ trait ReturnVersionsCalculator {
                                 charityAllExempt = br.retrieveE20().value,
                                 charityNoIncome = v3CharityNoIncome(br))
 
-      case br: V2CT600EBoxRetriever with Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever =>
+      case br: V2CT600EBoxRetriever with AccountsBoxRetriever with FilingAttributesBoxValueRetriever =>
         calculateReturnVersions(poaStartDate = br.retrieveAC3().value,
                                 apStartDate = Some(br.retrieveE1021().value),
                                 apEndDate = Some(br.retrieveE1022().value),
@@ -65,7 +66,7 @@ trait ReturnVersionsCalculator {
                                 charityAllExempt = br.retrieveE1011().value,
                                 charityNoIncome = v2CharityNoIncome(br))
 
-      case br: ComputationsBoxRetriever with Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever =>
+      case br: ComputationsBoxRetriever with AccountsBoxRetriever with FilingAttributesBoxValueRetriever =>
         calculateReturnVersions(poaStartDate = br.retrieveAC3().value,
                                 apStartDate = Some(br.retrieveCP1().value),
                                 apEndDate = Some(br.retrieveCP2().value),
@@ -79,7 +80,7 @@ trait ReturnVersionsCalculator {
                                 charityAllExempt = None,
                                 charityNoIncome = None)
 
-      case br: FilingAttributesBoxValueRetriever with Frsse2008AccountsBoxRetriever =>
+      case br: FilingAttributesBoxValueRetriever with AccountsBoxRetriever =>
         calculateReturnVersions(poaStartDate = br.retrieveAC3().value,
                                 apStartDate = None,
                                 apEndDate = None,
