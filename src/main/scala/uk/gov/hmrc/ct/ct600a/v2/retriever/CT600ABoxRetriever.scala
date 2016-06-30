@@ -17,12 +17,13 @@
 package uk.gov.hmrc.ct.ct600a.v2.retriever
 
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600a.v2._
 
 trait CT600ABoxRetriever extends ComputationsBoxRetriever {
 
-  self: Frsse2008AccountsBoxRetriever =>
+  self: AccountsBoxRetriever =>
 
   def retrieveLPQ03(): LPQ03
 
