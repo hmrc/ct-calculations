@@ -18,8 +18,7 @@ package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.{Days, LocalDate}
 import play.api.libs.json.{Format, Json}
-import uk.gov.hmrc.ct.accounts.frsse2008.AC12
-import uk.gov.hmrc.ct.accounts.{AC3, AC4}
+import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4}
 import uk.gov.hmrc.ct.computations._
 
 import scala.math.BigDecimal.RoundingMode

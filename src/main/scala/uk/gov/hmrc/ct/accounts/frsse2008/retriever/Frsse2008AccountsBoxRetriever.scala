@@ -24,8 +24,6 @@ trait Frsse2008AccountsBoxRetriever extends BoxRetriever with AccountsBoxRetriev
 
   self: FilingAttributesBoxValueRetriever =>
 
-  def retrieveAC12(): AC12
-
   def retrieveAC13(): AC13
 
   def retrieveAC14(): AC14

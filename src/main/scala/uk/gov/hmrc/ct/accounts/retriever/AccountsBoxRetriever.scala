@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.retriever
 
-import uk.gov.hmrc.ct.accounts.{AC1, AC3, AC4}
+import uk.gov.hmrc.ct.accounts.{AC12, AC1, AC3, AC4}
 import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
 
 trait AccountsBoxRetriever extends BoxRetriever {
@@ -28,5 +28,7 @@ trait AccountsBoxRetriever extends BoxRetriever {
   def retrieveAC3(): AC3
   
   def retrieveAC4(): AC4
+
+  def retrieveAC12(): AC12
 
 }
