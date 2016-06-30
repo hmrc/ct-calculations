@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.ct600.v3.retriever
 
-import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever

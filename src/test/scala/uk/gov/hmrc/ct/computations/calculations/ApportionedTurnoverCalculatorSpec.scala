@@ -19,8 +19,9 @@ package uk.gov.hmrc.ct.computations.calculations
 import org.joda.time.LocalDate
 
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.{AC4, AC3}
 
-import uk.gov.hmrc.ct.accounts.frsse2008.{AC3, AC4, AC12}
+import uk.gov.hmrc.ct.accounts.frsse2008.AC12
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
 
 class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {

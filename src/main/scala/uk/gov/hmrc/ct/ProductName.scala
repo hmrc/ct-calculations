@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct
 
-import uk.gov.hmrc.ct.box.{CtBoolean, CtBoxIdentifier, CtString, Input}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtString, Input}
 
 @deprecated("This is a CATO specific property that is no longer required.")
 case class ProductName(value: String) extends CtBoxIdentifier("Product Name") with CtString with Input

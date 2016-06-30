@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs10x.retriever
 
 
-import uk.gov.hmrc.ct.box.retriever.{FilingAttributesBoxValueRetriever, BoxRetriever, BoxValues}
+import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
 
 trait Frs10xAccountsBoxRetriever extends BoxRetriever {
 

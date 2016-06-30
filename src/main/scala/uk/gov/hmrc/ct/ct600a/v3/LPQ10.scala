@@ -17,7 +17,6 @@
 package uk.gov.hmrc.ct.ct600a.v3
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 
 case class LPQ10(value: Option[Boolean]) extends CtBoxIdentifier(name = "Any other loans?") with CtOptionalBoolean with Input with ValidatableBox[CT600ABoxRetriever] {

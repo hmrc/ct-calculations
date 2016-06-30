@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtBoolean}
+import uk.gov.hmrc.ct.box.{Calculated, CtBoolean, CtBoxIdentifier}
 import uk.gov.hmrc.ct.computations.calculations.LowEmissionCarsCalculator
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 

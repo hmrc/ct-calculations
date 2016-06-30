@@ -16,6 +16,6 @@
 
 package uk.gov.hmrc.ct
 
-import uk.gov.hmrc.ct.box.{CtString, Input, CtBoxIdentifier}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtString, Input}
 
 case class UTR(value: String) extends CtBoxIdentifier(name = "Unique Taxpayer Reference") with CtString with Input

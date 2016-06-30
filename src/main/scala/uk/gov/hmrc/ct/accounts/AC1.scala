@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frsse2008
+package uk.gov.hmrc.ct.accounts
 
-import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.{Input, CtDate, CtBoxIdentifier}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalString, Input}
 
-case class AC4(value: LocalDate) extends CtBoxIdentifier("Current Period of Accounts End Date") with CtDate with Input
+case class AC1(value: Option[String]) extends CtBoxIdentifier(name = "Company Registration Number") with CtOptionalString with Input

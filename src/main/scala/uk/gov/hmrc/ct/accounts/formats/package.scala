@@ -17,8 +17,7 @@
 package uk.gov.hmrc.ct.accounts
 
 import play.api.libs.json.Format
-import uk.gov.hmrc.ct.accounts.frsse2008.{AC4, AC3, AC1}
-import uk.gov.hmrc.ct.box.formats.{OptionalBooleanFormat, OptionalIntegerFormat, OptionalStringFormat, OptionalDateFormat, DateFormat}
+import uk.gov.hmrc.ct.box.formats.{DateFormat, OptionalStringFormat}
 
 package object formats {
 

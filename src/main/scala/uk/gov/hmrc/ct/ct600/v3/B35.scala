@@ -18,7 +18,6 @@ package uk.gov.hmrc.ct.ct600.v3
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, EndDate, Linked}
-import uk.gov.hmrc.ct.computations.CP2
 
 case class B35(value: LocalDate) extends CtBoxIdentifier(name = "AP end date") with EndDate
 

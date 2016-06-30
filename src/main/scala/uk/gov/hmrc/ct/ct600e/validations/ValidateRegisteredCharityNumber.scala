@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600e.validations
 
-import uk.gov.hmrc.ct.box.{CtOptionalString, CtBoxIdentifier, CtOptionalInteger, CtValidation}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalString, CtValidation}
 
 trait ValidateRegisteredCharityNumber {
 

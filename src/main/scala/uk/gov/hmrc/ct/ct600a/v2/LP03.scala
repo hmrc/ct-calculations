@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.ct600a.v2
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.{Input, CtBoxIdentifier, CtValue}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtValue, Input}
 import uk.gov.hmrc.ct.ct600a.v2.formats.Loans
 
 

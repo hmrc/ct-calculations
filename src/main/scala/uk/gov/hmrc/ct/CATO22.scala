@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct
 
-import uk.gov.hmrc.ct.box.{Calculated, NotInPdf, CtBigDecimal, CtBoxIdentifier}
+import uk.gov.hmrc.ct.box.{Calculated, CtBigDecimal, CtBoxIdentifier, NotInPdf}
 import uk.gov.hmrc.ct.computations.calculations.PoolPercentageCalculator
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frsse2008
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input, MustBeNoneOrZeroOrPositive}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
 
 case class AC20(value: Option[Int]) extends CtBoxIdentifier(name = "Current Administrative Expenses")
                                     with CtOptionalInteger with Input

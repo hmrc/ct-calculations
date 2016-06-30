@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.accounts.frsse2008
 
-import uk.gov.hmrc.ct.accounts.frsse2008.AC436._
 import uk.gov.hmrc.ct.accounts.frsse2008.calculations.ProfitOrLossCalculator
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
