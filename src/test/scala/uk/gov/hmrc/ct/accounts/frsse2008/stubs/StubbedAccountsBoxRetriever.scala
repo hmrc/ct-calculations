@@ -17,11 +17,11 @@
 package uk.gov.hmrc.ct.accounts.frsse2008.stubs
 
 import uk.gov.hmrc.ct.accounts.frsse2008._
-import uk.gov.hmrc.ct.accounts.frsse2008.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-trait StubbedAccountsBoxRetriever extends AccountsBoxRetriever {
+trait StubbedAccountsBoxRetriever extends Frsse2008AccountsBoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 

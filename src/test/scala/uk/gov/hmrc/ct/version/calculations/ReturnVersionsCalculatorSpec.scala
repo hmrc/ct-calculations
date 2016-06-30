@@ -21,7 +21,7 @@ import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.accounts.frsse2008._
-import uk.gov.hmrc.ct.accounts.frsse2008.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
@@ -1366,7 +1366,7 @@ class ReturnVersionsCalculatorWithDefaults extends  ReturnVersionsCalculator {
 
 class ComputationsBoxRetrieverForTest extends StubbedComputationsBoxRetriever with StubbedFilingAttributesBoxValueRetriever {
 
-  self: AccountsBoxRetriever =>
+  self: Frsse2008AccountsBoxRetriever =>
 
   override def retrieveCP1(): CP1 = CP1(LocalDate.parse("2015-03-31"))
 
