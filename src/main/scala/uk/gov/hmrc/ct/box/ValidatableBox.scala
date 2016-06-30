@@ -26,6 +26,7 @@ trait ValidatableBox[T <: BoxRetriever] {
 
   val validNonForeignLessRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"!%\\*_\\+:@<>\\?=;]*"
   val validNonForeignMoreRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"]*"
+  val validCoHoCharacters = "[A-Za-z\\-'\\. \\,]*" // Based on the comment from CATO-3881
   val SortCodeValidChars = """^[0-9]{6}$"""
   val AccountNumberValidChars = """^[0-9]{8}$"""
 

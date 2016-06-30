@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.retriever
+package uk.gov.hmrc.ct.accounts.frs10x
 
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.box._
 
-import uk.gov.hmrc.ct.accounts.frs10x._
-import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, BoxValues, FilingAttributesBoxValueRetriever}
-
-trait Frs10xAccountsBoxRetriever extends BoxRetriever {
-
-  self: FilingAttributesBoxValueRetriever =>
-
-  def retrieveAC8051(): AC8051
-
-  def retrieveAC8052(): AC8052
-
-  def retrieveAC8053(): AC8053
-
-  def retrieveAC8054(): AC8054
+case class AC8052(value: Option[String]) extends CtBoxIdentifier(name = "Political and charitable donations") with CtOptionalString with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
+    validateOptionalStringByLength("AC8052", this, 0, 20000) ++ validateOptionalStringByRegex("AC8052", this, validCoHoCharacters)
 }
