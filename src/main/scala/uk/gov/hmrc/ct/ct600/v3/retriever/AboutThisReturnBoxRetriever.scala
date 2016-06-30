@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ct.ct600.v3.retriever
 
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
@@ -27,7 +28,7 @@ import uk.gov.hmrc.ct.ct600j.v3.B140
 
 trait AboutThisReturnBoxRetriever extends BoxRetriever {
 
-  self: Frsse2008AccountsBoxRetriever =>
+  self: AccountsBoxRetriever =>
 
   def retrieveB30(): B30 = {
     this match {
