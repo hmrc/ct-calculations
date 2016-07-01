@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600j.v3
+package uk.gov.hmrc.ct.accounts.frs10x
 
-import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
-import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
+import play.api.libs.json.Format
+import uk.gov.hmrc.ct.box.formats.OptionalStringFormat
 
-trait TaxAvoidanceBoxRetrieverForTest extends CT600BoxRetriever with CT600JBoxRetriever with Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever
+package object formats {
+  implicit val ac8051Format: Format[AC8051] = new OptionalStringFormat[AC8051](AC8051.apply)
+  implicit val ac8052Format: Format[AC8052] = new OptionalStringFormat[AC8052](AC8052.apply)
+  implicit val ac8053Format: Format[AC8053] = new OptionalStringFormat[AC8053](AC8053.apply)
+  implicit val ac8054Format: Format[AC8054] = new OptionalStringFormat[AC8054](AC8054.apply)
+}

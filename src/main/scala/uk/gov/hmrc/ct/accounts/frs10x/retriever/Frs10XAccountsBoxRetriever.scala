@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600j.v3
+package uk.gov.hmrc.ct.accounts.frs10x.retriever
 
-import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
-import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 
-trait TaxAvoidanceBoxRetrieverForTest extends CT600BoxRetriever with CT600JBoxRetriever with Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.accounts.frs10x._
+import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, BoxValues, FilingAttributesBoxValueRetriever}
+
+trait Frs10xAccountsBoxRetriever extends BoxRetriever {
+
+  self: FilingAttributesBoxValueRetriever =>
+
+  def retrieveAC8051(): AC8051
+
+  def retrieveAC8052(): AC8052
+
+  def retrieveAC8053(): AC8053
+
+  def retrieveAC8054(): AC8054
+}

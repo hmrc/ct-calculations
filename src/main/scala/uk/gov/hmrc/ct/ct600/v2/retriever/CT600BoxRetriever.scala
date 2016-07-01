@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.ct600.v2.retriever
 
 import uk.gov.hmrc.ct.CATO04
-import uk.gov.hmrc.ct.accounts.frsse2008.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.BoxValues
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v2._
@@ -25,7 +25,7 @@ import uk.gov.hmrc.ct.ct600a.v2.retriever.CT600ABoxRetriever
 
 trait CT600BoxRetriever extends ComputationsBoxRetriever {
 
-  self: AccountsBoxRetriever =>
+  self: Frsse2008AccountsBoxRetriever =>
 
   def retrieveB38(): B38
 

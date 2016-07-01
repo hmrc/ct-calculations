@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600j.v3
+package uk.gov.hmrc.ct.accounts.frs10x
 
-import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
-import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.box._
 
-trait TaxAvoidanceBoxRetrieverForTest extends CT600BoxRetriever with CT600JBoxRetriever with Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever
+case class AC8054(value: Option[String]) extends CtBoxIdentifier(name = "Company policy on disabled employees") with CtOptionalString with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
+    validateOptionalStringByLength("AC8054", this, 0, 20000) ++ validateOptionalStringByRegex("AC8054", this, validCoHoCharacters)
+}

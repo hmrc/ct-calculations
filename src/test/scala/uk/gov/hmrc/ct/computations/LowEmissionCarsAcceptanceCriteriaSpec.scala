@@ -21,7 +21,7 @@ import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.CountryOfRegistration
-import uk.gov.hmrc.ct.accounts.frsse2008.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
 
@@ -194,7 +194,7 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
             cp666 = cp666,
             cp673 = cp673,
             cp674 = cp674
-          ) with AccountsBoxRetriever
+          ) with Frsse2008AccountsBoxRetriever
 
           assert(retriever.retrieveCP90().value equals cp90, clue("CP90", retriever.retrieveCP90().value, cp90))
           assert(retriever.retrieveCP91().value equals cp91, clue("CP91", retriever.retrieveCP91().value, cp91))
@@ -240,7 +240,7 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
                                   cp674: Option[Int] = None
                                    ) extends StubbedComputationsBoxRetriever {
 
-    self: AccountsBoxRetriever =>
+    self: Frsse2008AccountsBoxRetriever =>
 
     override def retrieveLEC01: LEC01 = LEC01(lec01)
 
