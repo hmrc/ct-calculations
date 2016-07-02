@@ -27,12 +27,4 @@ case class CPQ10(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did you
   with AllowancesQuestionsValidation {
 
   def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = validateAgainstCPQ7(boxRetriever, "CPQ10", value)
-
-//  {
-//    (boxRetriever.retrieveCPQ7(), value) match {
-//      case (CPQ7(Some(true)), None) => validateBooleanAsMandatory(this.getClass.getSimpleName, this)
-//      case (CPQ7(Some(false)), Some(true)) => Set(CtValidation(Some(this.getClass.getSimpleName), s"error.${this.getClass.getSimpleName}.notClaiming.required"))
-//      case _ => Set.empty
-//    }
-//  }
 }
