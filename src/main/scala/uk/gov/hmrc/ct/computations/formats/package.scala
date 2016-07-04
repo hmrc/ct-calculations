@@ -19,8 +19,6 @@ package uk.gov.hmrc.ct.computations
 import play.api.libs.json.{Format, Json}
 import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.formats._
-import uk.gov.hmrc.ct.computations.formats.Cars
-import uk.gov.hmrc.ct.ct600a.v2.{LP02, Loan}
 
 package object formats {
 

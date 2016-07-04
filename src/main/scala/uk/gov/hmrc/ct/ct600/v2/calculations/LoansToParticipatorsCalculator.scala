@@ -18,7 +18,6 @@ package uk.gov.hmrc.ct.ct600.v2.calculations
 
 import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations.CP2
-import uk.gov.hmrc.ct.ct600a.v2.formats._
 import uk.gov.hmrc.ct.ct600.v2._
 import uk.gov.hmrc.ct.ct600a.v2._
 

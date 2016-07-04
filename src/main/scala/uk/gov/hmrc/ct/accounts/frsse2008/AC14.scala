@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frsse2008
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input, MustBeNoneOrZeroOrPositive}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
 
 case class AC14(value: Option[Int]) extends CtBoxIdentifier(name = "Current Cost of sales")
                                     with CtOptionalInteger with Input

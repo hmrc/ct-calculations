@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input, MustBeNoneOrZeroOrPositive}
+import play.api.libs.json.Format
+import uk.gov.hmrc.ct.box.formats.{OptionalIntegerFormat, DateFormat, OptionalStringFormat}
 
-case class CP7(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover/Sales") with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input
+package object formats {
 
-object CP7 {
+  implicit val ac1Format: Format[AC1] = new OptionalStringFormat[AC1](AC1.apply)
+  implicit val ac3Format: Format[AC3] = new DateFormat[AC3](AC3.apply)
+  implicit val ac4Format: Format[AC4] = new DateFormat[AC4](AC4.apply)
+  implicit val ac12Format: Format[AC12] = new OptionalIntegerFormat[AC12](AC12.apply)
 
-  def apply(value: Int): CP7 = CP7(Some(value))
 }

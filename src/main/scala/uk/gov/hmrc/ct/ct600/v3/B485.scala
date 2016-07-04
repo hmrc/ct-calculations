@@ -16,9 +16,8 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtBoolean, Calculated, CtBoxIdentifier}
+import uk.gov.hmrc.ct.box.{Calculated, CtBoolean, CtBoxIdentifier}
 import uk.gov.hmrc.ct.ct600.v3.calculations.LoansToParticipatorsCalculator
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 
 case class B485(value: Boolean) extends CtBoxIdentifier("Put an 'X' in box 485 if you completed box A70 in the supplementary pages CT600A") with CtBoolean

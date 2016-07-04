@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{Linked, CtOptionalBigDecimal, CtBoxIdentifier}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBigDecimal, Linked}
 
 case class B870(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "Income Tax repayment owed") with CtOptionalBigDecimal
 

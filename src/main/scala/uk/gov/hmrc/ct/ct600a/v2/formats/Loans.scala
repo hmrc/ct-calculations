@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.ct600a.v2.formats
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.ct.ct600a.v2.{LP03, LP02}
+import uk.gov.hmrc.ct.ct600a.v2.{LP02, LP03}
 
 object Loans {
 

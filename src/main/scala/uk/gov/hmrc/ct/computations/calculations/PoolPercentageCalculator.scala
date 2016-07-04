@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.{Days, LocalDate}
-import uk.gov.hmrc.ct.computations.{CP2, CP1}
+import uk.gov.hmrc.ct.computations.{CP1, CP2}
 
 import scala.math.BigDecimal.RoundingMode
 

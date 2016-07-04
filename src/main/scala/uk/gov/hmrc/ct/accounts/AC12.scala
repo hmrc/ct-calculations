@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input, MustBeNoneOrZeroOrPositive}
+import uk.gov.hmrc.ct.box._
 
-case class CP7(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover/Sales") with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input
+case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turnover/Sales") with CtOptionalInteger with Input
 
-object CP7 {
+object AC12 {
 
-  def apply(value: Int): CP7 = CP7(Some(value))
+  def apply(value: Int): AC12 = AC12(Some(value))
 }

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frsse2008
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input, MustBeNoneOrZeroOrPositive}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
 
 case class AC28(value: Option[Int]) extends CtBoxIdentifier(name = "Current Interest receivable and similar income")
                                     with CtOptionalInteger with Input

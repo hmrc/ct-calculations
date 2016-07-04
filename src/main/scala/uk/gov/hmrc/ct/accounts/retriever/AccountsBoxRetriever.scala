@@ -14,9 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frsse2008
+package uk.gov.hmrc.ct.accounts.retriever
 
-import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.{Input, CtDate, CtBoxIdentifier}
+import uk.gov.hmrc.ct.accounts.{AC12, AC1, AC3, AC4}
+import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
 
-case class AC3(value: LocalDate) extends CtBoxIdentifier("Current Period of Accounts Start Date") with CtDate with Input
+trait AccountsBoxRetriever extends BoxRetriever {
+
+  self: FilingAttributesBoxValueRetriever =>
+
+  def retrieveAC1(): AC1
+
+  def retrieveAC3(): AC3
+  
+  def retrieveAC4(): AC4
+
+  def retrieveAC12(): AC12
+
+}

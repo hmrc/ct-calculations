@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600j.v3
 
-import uk.gov.hmrc.ct.box.{CtString, Linked, CtBoxIdentifier}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtString, Linked}
 import uk.gov.hmrc.ct.ct600.v3.B1
 
 

@@ -18,13 +18,11 @@ package uk.gov.hmrc.ct.ct600.v2.calculations
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.CtTypeConverters
-import uk.gov.hmrc.ct.computations.{CP295, HmrcAccountingPeriod}
-import uk.gov.hmrc.ct.ct600.calculations._
-import AccountingPeriodHelper._
-import Ct600AnnualConstants._
-import uk.gov.hmrc.ct.ct600.v2.calculations._
-import uk.gov.hmrc.ct.ct600.v2._
+import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
 import uk.gov.hmrc.ct.ct600._
+import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper._
+import uk.gov.hmrc.ct.ct600.calculations._
+import uk.gov.hmrc.ct.ct600.v2._
 
 trait CorporationTaxCalculator extends CtTypeConverters with NumberRounding {
 

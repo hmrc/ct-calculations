@@ -17,12 +17,10 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.{CP287, CPAux1}
-import uk.gov.hmrc.ct.computations.CPAux1._
-import uk.gov.hmrc.ct.computations.calculations.LowEmissionCarsCalculator
+import uk.gov.hmrc.ct.computations.CP287
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
-import uk.gov.hmrc.ct.ct600.v3.retriever.{AboutThisReturnBoxRetriever, CT600BoxRetriever}
+import uk.gov.hmrc.ct.ct600.v3.retriever.AboutThisReturnBoxRetriever
 
 
 case class B45(value: Option[Boolean]) extends CtBoxIdentifier("Are you owed a repayment for an earlier period?")
