@@ -68,7 +68,10 @@ class TradingLossesCP286MaximumCalculatorSpec extends WordSpec with Matchers {
     ("Tl, No TP with NTP, losses greater than NTP and cp998 is None",       0,          600,    None,         None,          600),
 
     ("TP 1000, NTP 500, previous loss 2000",                                1000,       500,    None,         Some(2000),    500),
-    ("TL 500, NTP 1000",                                                    0,          1000,   Some(500),    None,          500)
+    ("TL 500, NTP 1000",                                                    0,          1000,   Some(500),    None,          500),
+
+    ("TP with no NTP, CP998 or CP281 empty",                                500099,     0,      None,         None,          500099),
+    ("TP with NTP, CP998 or CP281 empty",                                   500099,     10000,  None,         None,          510099)
   )
 
   "TradingLossesCP286Maximum" should {
