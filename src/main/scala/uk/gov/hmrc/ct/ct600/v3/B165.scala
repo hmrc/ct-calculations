@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtInteger, CtBoxIdentifier, Linked}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtInteger, Linked}
 import uk.gov.hmrc.ct.computations.CP258
 
 case class B165(value: Int) extends CtBoxIdentifier(name = "Net trading profits") with CtInteger

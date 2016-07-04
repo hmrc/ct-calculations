@@ -19,7 +19,6 @@ package uk.gov.hmrc.ct.ct600a.v3
 import org.joda.time.LocalDate
 import uk.gov.hmrc.cato.time.DateHelper
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 import uk.gov.hmrc.ct.ct600a.v3.formats.LoansFormatter
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._

@@ -17,19 +17,12 @@
 package uk.gov.hmrc.ct.accounts.frsse2008.retriever
 
 import uk.gov.hmrc.ct.accounts.frsse2008._
-import uk.gov.hmrc.ct.box.retriever.{FilingAttributesBoxValueRetriever, BoxRetriever, BoxValues}
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
 
-trait Frsse2008AccountsBoxRetriever extends BoxRetriever {
+trait Frsse2008AccountsBoxRetriever extends BoxRetriever with AccountsBoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
-
-  def retrieveAC1(): AC1
-
-  def retrieveAC3(): AC3
-  
-  def retrieveAC4(): AC4
-
-  def retrieveAC12(): AC12
 
   def retrieveAC13(): AC13
 

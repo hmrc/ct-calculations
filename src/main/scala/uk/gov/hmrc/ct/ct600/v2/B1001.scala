@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.ct.ct600.v2
 
-import uk.gov.hmrc.ct.accounts.frsse2008.AC1
-import uk.gov.hmrc.ct.box.{Linked, CtBoxIdentifier, CtOptionalString, Input}
+import uk.gov.hmrc.ct.accounts.AC1
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalString, Linked}
 
 case class B1001(value: Option[String]) extends CtBoxIdentifier("CRN") with CtOptionalString
 

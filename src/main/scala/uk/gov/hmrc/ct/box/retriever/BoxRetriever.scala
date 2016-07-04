@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.box.retriever
 
-import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox, CtValue}
+import uk.gov.hmrc.ct.box.{CtValidation, CtValue, ValidatableBox}
 
 trait BoxRetriever {
 

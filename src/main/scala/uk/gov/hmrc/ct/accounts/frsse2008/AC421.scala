@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frsse2008
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input, MustBeNoneOrZeroOrPositive}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
 
 case class AC421(value: Option[Int]) extends CtBoxIdentifier(name = "Previous Depreciation and other amounts written off assets")
                                     with CtOptionalInteger with Input

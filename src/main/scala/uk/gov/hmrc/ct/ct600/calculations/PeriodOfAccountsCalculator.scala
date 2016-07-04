@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.calculations
 
-import uk.gov.hmrc.ct.accounts.frsse2008.{AC3, AC4}
+import uk.gov.hmrc.ct.accounts.{AC3, AC4}
 
 trait PeriodOfAccountsCalculator {
   

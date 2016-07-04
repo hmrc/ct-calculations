@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.ct600e.v3
 
 import uk.gov.hmrc.ct.UTR
-import uk.gov.hmrc.ct.box.{Linked, Input, CtString, CtBoxIdentifier}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtString, Linked}
 
 case class E2(value: String) extends CtBoxIdentifier("Tax Reference - UTR") with CtString
 

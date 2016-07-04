@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{ValidatableBox, CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input, ValidatableBox}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP82(value: Option[Int]) extends CtBoxIdentifier(name = "Additions qualifying for writing down allowance") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {

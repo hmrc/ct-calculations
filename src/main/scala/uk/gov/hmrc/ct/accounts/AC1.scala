@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frsse2008
+package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalString, Input}
 
-case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turnover/Sales") with CtOptionalInteger with Input
-
-object AC12 {
-
-  def apply(value: Int): AC12 = AC12(Some(value))
-}
+case class AC1(value: Option[String]) extends CtBoxIdentifier(name = "Company Registration Number") with CtOptionalString with Input

@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.ct.accounts.frsse2008.calculations
 
+import uk.gov.hmrc.ct.accounts.AC12
+import uk.gov.hmrc.ct.accounts.frsse2008._
 import uk.gov.hmrc.ct.box.CtOptionalInteger
 import uk.gov.hmrc.ct.{MicroEntityFiling, StatutoryAccountsFiling}
-import uk.gov.hmrc.ct.accounts.frsse2008._
 
 trait ProfitOrLossCalculator {
 

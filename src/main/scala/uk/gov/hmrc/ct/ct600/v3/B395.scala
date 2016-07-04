@@ -17,8 +17,8 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box.{Calculated, CtBigDecimal, CtBoxIdentifier}
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 // was B56
 case class B395(value: BigDecimal) extends CtBoxIdentifier("Tax FY2") with CtBigDecimal

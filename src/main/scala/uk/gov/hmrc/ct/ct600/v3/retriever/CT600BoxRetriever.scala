@@ -16,19 +16,15 @@
 
 package uk.gov.hmrc.ct.ct600.v3.retriever
 
-import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.retriever.{FilingAttributesBoxValueRetriever, BoxValues}
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.ct600.retriever.DeclarationBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
-import uk.gov.hmrc.ct.ct600j.v3.B140
-import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
-import uk.gov.hmrc.ct.ct600.v3.B45
 
 trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBoxRetriever with AboutThisReturnBoxRetriever {
 
-  self: Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever =>
+  self: AccountsBoxRetriever with FilingAttributesBoxValueRetriever =>
 
   def retrieveB1(): B1
 

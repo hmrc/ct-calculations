@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600e.v2.calculations
 
-import uk.gov.hmrc.ct.ct600e.v2.{E24e, E24eB, E24eA}
+import uk.gov.hmrc.ct.ct600e.v2.{E24e, E24eA, E24eB}
 
 trait LoansAndDebtorsCalculator {
   def calculateFieldValue(e24eA: E24eA, e24eB: E24eB): E24e = {
