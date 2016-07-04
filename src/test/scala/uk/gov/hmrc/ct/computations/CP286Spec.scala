@@ -89,6 +89,13 @@ class CP286Spec extends WordSpec with Matchers with MockitoSugar {
         }
         box.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP286"), "error.CP286.cannot.exist"))
       }
+      "fail validation when CPQ18 is empty and has value" in {
+        when(boxRetriever.retrieveCPQ18()).thenReturn(CPQ18(None))
+        val box = new CP286(Some(90)) {
+          override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp998: CP998, cp281: CP281) = 90
+        }
+        box.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP286"), "error.CP286.cannot.exist"))
+      }
     }
   }
 }
