@@ -53,6 +53,9 @@ case class CPQ18(value: Option[Boolean]) extends CtBoxIdentifier(name = "Claim a
     Set(
       checkCannotExist(And(answeredYesToTradingLossesNotUsedFromPreviousPeriod, noTradingLoss,
                            noNonTradingProfit, netTradingProfitEqualsTradingProfit)),
+      checkCannotExist(And(answeredYesToCurrentTradingLossesAgainstNonTradingProfit,
+                           answeredYesToCurrentTradingLossesAgainstToPreviousPeriod, hasTradingLoss,
+                           hasNonTradingProfit)),
       checkCannotExist(And(answeredYesToTradingLossesNotUsedFromPreviousPeriod, noTradingLoss,
                            Or(noTradingProfit, netTradingProfitPlusNonTradingProfitEqualsZero))),
       checkCannotExist(And(answeredYesToCurrentTradingLossesAgainstNonTradingProfit, noTradingLoss,

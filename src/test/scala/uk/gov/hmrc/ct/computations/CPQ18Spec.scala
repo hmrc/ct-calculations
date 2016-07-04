@@ -105,7 +105,7 @@ class CPQ18Spec extends WordSpec with Matchers with MockitoSugar {
         CPQ18(Some(true)).validate(retriever) shouldBe empty
       }
 
-      "fail validation when CPQ19 is true and CPQ17 is not defined" in new SetUpboxRetriever {
+      "fail validation when true and CPQ19 is true and CPQ17 is not defined" in new SetUpboxRetriever {
 
         when(retriever.retrieveCPQ19()).thenReturn(CPQ19(Some(true)))
         CPQ18(Some(true)).validate(retriever) shouldBe Set(CtValidation(Some("CPQ18"), "error.CPQ18.cannot.exist"))
@@ -116,7 +116,7 @@ class CPQ18Spec extends WordSpec with Matchers with MockitoSugar {
         CPQ18(Some(true)).validate(retriever) shouldBe Set(CtValidation(Some("CPQ18"), "error.CPQ18.cannot.exist"))
       }
 
-      "fail validation when CPQ20 is true and CP118 == 0" in new SetUpboxRetriever {
+      "fail validation when true and CPQ20 is true and CP118 == 0" in new SetUpboxRetriever {
 
         when(retriever.retrieveCPQ20()).thenReturn(CPQ20(Some(true)))
         CPQ18(Some(true)).validate(retriever) shouldBe Set(CtValidation(Some("CPQ18"), "error.CPQ18.cannot.exist"))
@@ -191,6 +191,18 @@ class CPQ18Spec extends WordSpec with Matchers with MockitoSugar {
       "fail validation when CPQ19 is true and CPQ17 is not defined" in new SetUpboxRetriever {
 
         when(retriever.retrieveCPQ19()).thenReturn(CPQ19(Some(true)))
+        CPQ18(Some(false)).validate(retriever) shouldBe Set(CtValidation(Some("CPQ18"), "error.CPQ18.cannot.exist"))
+      }
+
+      "fail validation when CPQ19 is true and CPQ17 is not defined and boxes as per scenario" in new SetUpboxRetriever {
+
+        when(retriever.retrieveCPQ19()).thenReturn(CPQ19(Some(true)))
+        when(retriever.retrieveCPQ20()).thenReturn(CPQ20(Some(true)))
+        when(retriever.retrieveCP287()).thenReturn(CP287(Some(10000)))
+        when(retriever.retrieveCP288()).thenReturn(CP288(Some(13404)))
+        when(retriever.retrieveCATO01()).thenReturn(CATO01(1300))
+        when(retriever.retrieveCP118()).thenReturn(CP118(24704))
+        when(retriever.retrieveCP117()).thenReturn(CP117(0))
         CPQ18(Some(false)).validate(retriever) shouldBe Set(CtValidation(Some("CPQ18"), "error.CPQ18.cannot.exist"))
       }
 

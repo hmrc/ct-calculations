@@ -56,6 +56,10 @@ trait TradingLossesValidation {
     retriever: ComputationsBoxRetriever => retriever.retrieveCPQ19().value == Some(true)
   }
 
+  protected val answeredYesToCurrentTradingLossesAgainstToPreviousPeriod = {
+    retriever: ComputationsBoxRetriever => retriever.retrieveCPQ20().value == Some(true)
+  }
+
   protected val notAnsweredCurrentTradingLossesAgainstNonTradingProfit = {
     retriever: ComputationsBoxRetriever => retriever.retrieveCPQ19().value.isEmpty
   }
