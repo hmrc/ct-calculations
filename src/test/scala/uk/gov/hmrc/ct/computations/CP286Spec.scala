@@ -73,14 +73,14 @@ class CP286Spec extends WordSpec with Matchers with MockitoSugar {
         val box = new CP286(Some(90)) {
           override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp998: CP998, cp281: CP281) = 89
         }
-        box.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP286"), "error.CP286.exceeds.max"))
+        box.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP286"), "error.CP286.exceeds.max", Some(Seq("89"))))
       }
       "fail validation when CPQ18 is true and value < 0" in {
         when(boxRetriever.retrieveCPQ18()).thenReturn(CPQ18(Some(true)))
         val box = new CP286(Some(-1)) {
           override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp998: CP998, cp281: CP281) = 89
         }
-        box.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP286"), "error.CP286.below.min"))
+        box.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP286"), "error.CP286.below.min", Some(Seq("0"))))
       }
       "fail validation when CPQ18 is false and has value" in {
         when(boxRetriever.retrieveCPQ18()).thenReturn(CPQ18(Some(false)))

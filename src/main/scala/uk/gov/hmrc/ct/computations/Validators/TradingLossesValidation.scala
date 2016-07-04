@@ -129,14 +129,14 @@ trait TradingLossesValidation {
 
   protected def exceedsMax(boxId: String = boxId)(value: Option[Int], max: Int = MAX_MONEY_AMOUNT_ALLOWED)(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     value match {
-      case (Some(v)) if v > max => Set(CtValidation(Some(boxId), s"error.$boxId.exceeds.max"))
+      case (Some(v)) if v > max => Set(CtValidation(Some(boxId), s"error.$boxId.exceeds.max", Some(Seq(max.toString))))
       case _ => Set.empty
     }
   }
 
   protected def belowMin(boxId: String = boxId)(value: Option[Int], min: Int = MIN_MONEY_AMOUNT_ALLOWED)(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     value match {
-      case (Some(v)) if v < min => Set(CtValidation(Some(boxId), s"error.$boxId.below.min"))
+      case (Some(v)) if v < min => Set(CtValidation(Some(boxId), s"error.$boxId.below.min", Some(Seq(min.toString))))
       case _ => Set.empty
     }
   }

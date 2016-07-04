@@ -52,15 +52,15 @@ class CP281Spec extends WordSpec with Matchers with MockitoSugar {
       }
       "fail validation when CPQ17 is true and value > max" in {
         when(boxRetriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
-        CP281(Some(ValidationConstants.MAX_MONEY_AMOUNT_ALLOWED + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP281"), "error.CP281.exceeds.max"))
+        CP281(Some(ValidationConstants.MAX_MONEY_AMOUNT_ALLOWED + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP281"), "error.CP281.exceeds.max", Some(Seq("99999999"))))
       }
       "fail validation when CPQ17 is true and value == zero" in {
         when(boxRetriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
-        CP281(Some(0)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP281"), "error.CP281.below.min"))
+        CP281(Some(0)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP281"), "error.CP281.below.min", Some(Seq("1"))))
       }
       "fail validation when CPQ17 is true and value < zero" in {
         when(boxRetriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
-        CP281(Some(-1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP281"), "error.CP281.below.min"))
+        CP281(Some(-1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP281"), "error.CP281.below.min", Some(Seq("1"))))
       }
       "fail validation when CPQ17 is false and value non empty" in {
         when(boxRetriever.retrieveCPQ17()).thenReturn(CPQ17(Some(false)))

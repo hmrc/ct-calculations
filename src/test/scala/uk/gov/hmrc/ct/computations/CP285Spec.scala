@@ -74,12 +74,12 @@ class CP285Spec extends WordSpec with Matchers with MockitoSugar {
       "fail validation when value more than a year after CP2" in {
         when(boxRetriever.retrieveCPQ18()).thenReturn(CPQ18(Some(true)))
         when(boxRetriever.retrieveCP2()).thenReturn(CP2(new LocalDate("2015-03-31")))
-        CP285(someDate("2016-04-01")).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP285"), "error.CP285.date.outside.range"))
+        CP285(someDate("2016-04-01")).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP285"), "error.CP285.date.outside.range", Some(Seq("01/04/2015", "31/03/2016"))))
       }
       "fail validation when value is not after CP2" in {
         when(boxRetriever.retrieveCPQ18()).thenReturn(CPQ18(Some(true)))
         when(boxRetriever.retrieveCP2()).thenReturn(CP2(new LocalDate("2015-03-31")))
-        CP285(someDate("2015-03-31")).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP285"), "error.CP285.date.outside.range"))
+        CP285(someDate("2015-03-31")).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP285"), "error.CP285.date.outside.range", Some(Seq("01/04/2015", "31/03/2016"))))
       }
     }
   }

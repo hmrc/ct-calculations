@@ -65,7 +65,7 @@ class CP287Spec extends WordSpec with Matchers with MockitoSugar {
         when(boxRetriever.retrieveCP118()).thenReturn(CP118(100))
         when(boxRetriever.retrieveCP998()).thenReturn(CP998(Some(10)))
         when(boxRetriever.retrieveCPQ20()).thenReturn(CPQ20(Some(true)))
-        CP287(Some(91)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP287"), "error.CP287.exceeds.max"))
+        CP287(Some(91)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP287"), "error.CP287.exceeds.max", Some(List("90"))))
       }
       "fail validation when CPQ20 is false" in {
         when(boxRetriever.retrieveCP118()).thenReturn(CP118(100))
