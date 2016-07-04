@@ -24,6 +24,8 @@ trait Frs10xAccountsBoxRetriever extends BoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 
+  def retrieveAC8023(): AC8023
+
   def retrieveAC8051(): AC8051
 
   def retrieveAC8052(): AC8052
