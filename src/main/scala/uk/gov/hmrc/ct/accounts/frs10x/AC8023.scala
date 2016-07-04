@@ -16,13 +16,10 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x
 
-import play.api.libs.json.Format
-import uk.gov.hmrc.ct.box.formats.{OptionalBooleanFormat, OptionalStringFormat}
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.box._
 
-package object formats {
-  implicit val ac8023Format: Format[AC8023] = new OptionalBooleanFormat[AC8023](AC8023.apply)
-  implicit val ac8051Format: Format[AC8051] = new OptionalStringFormat[AC8051](AC8051.apply)
-  implicit val ac8052Format: Format[AC8052] = new OptionalStringFormat[AC8052](AC8052.apply)
-  implicit val ac8053Format: Format[AC8053] = new OptionalStringFormat[AC8053](AC8053.apply)
-  implicit val ac8054Format: Format[AC8054] = new OptionalStringFormat[AC8054](AC8054.apply)
+case class AC8023(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file a directors' report to HMRC?") with CtOptionalBoolean with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
+    validateBooleanAsMandatory("AC8023", this)
 }
