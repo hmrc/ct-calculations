@@ -38,7 +38,7 @@ trait ApportionedTurnoverCalculator {
                                                 cp1: CP1,
                                                 cp2: CP2,
                                                 ac12: AC12): AP2 = {
-    AP2(apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12).duringAccountingPeriod)
+    AP2(None, apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12).duringAccountingPeriod)
   }
 
   def turnoverApportionedAfterAccountingPeriod(ac3: AC3,

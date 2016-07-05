@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.box
 
-import uk.gov.hmrc.ct.box._
+trait InputWithDefault[T] {
 
-case class AP2(inputValue: Option[Int], defaultValue: Option[Int]) extends CtBoxIdentifier(name = "Turnover apportioned during accounting period") with CtOptionalInteger with InputWithDefault[Int] {
+  self: CtValue[Option[T]] =>
 
-  override def value: Option[Int] = inputValue orElse defaultValue
-}
+  def defaultValue: Option[T]
 
-object AP2 {
+  def inputValue: Option[T]
 
-  def apply(inputValue: Option[Int]): AP2 = AP2(inputValue = inputValue, defaultValue = None)
+  def inputProvided: Boolean = inputValue.nonEmpty
 }
