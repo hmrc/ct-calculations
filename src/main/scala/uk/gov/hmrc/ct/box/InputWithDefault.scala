@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct.box
 
-import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
+trait InputWithDefault[T] {
 
-case class PAYEEQ1(value: Option[Boolean]) extends CtBoxIdentifier("Repayment to than company?")
-with CtOptionalBoolean with Input with ValidatableBox[RepaymentsBoxRetriever] {
+  self: CtValue[Option[T]] =>
 
-  def validate(boxRetriever: RepaymentsBoxRetriever): Set[CtValidation] = validateBooleanAsMandatory("PAYEEQ1", this)
+  def defaultValue: Option[T]
+
+  def inputValue: Option[T]
+
+  def inputProvided: Boolean = inputValue.nonEmpty
+
+  def value: Option[T] = inputValue orElse defaultValue
 }
