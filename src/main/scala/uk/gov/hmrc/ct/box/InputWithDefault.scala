@@ -25,4 +25,6 @@ trait InputWithDefault[T] {
   def inputValue: Option[T]
 
   def inputProvided: Boolean = inputValue.nonEmpty
+
+  def value: Option[T] = inputValue orElse defaultValue
 }
