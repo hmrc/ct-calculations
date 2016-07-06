@@ -16,10 +16,13 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x
 
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file P&L to Companies House?") with CtOptionalBoolean with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
-    validateBooleanAsMandatory("ACQ8161", this)
+case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file P&L to Companies House?") with CtOptionalBoolean with Input with ValidatableBox[FilingAttributesBoxValueRetriever] {
+  override def validate(boxRetriever: FilingAttributesBoxValueRetriever): Set[CtValidation] =
+    if (!boxRetriever.retrieveCompaniesHouseFiling().value)
+      Set.empty
+    else
+      validateBooleanAsMandatory("ACQ8161", this)
 }
