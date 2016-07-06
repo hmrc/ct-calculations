@@ -14,25 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.retriever
+package uk.gov.hmrc.ct.accounts.frs10x
 
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-import uk.gov.hmrc.ct.accounts.frs10x._
-import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
-
-trait Frs10xAccountsBoxRetriever extends BoxRetriever {
-
-  self: FilingAttributesBoxValueRetriever =>
-
-  def retrieveAC8023(): AC8023
-
-  def retrieveAC8051(): AC8051
-
-  def retrieveAC8052(): AC8052
-
-  def retrieveAC8053(): AC8053
-
-  def retrieveAC8054(): AC8054
-
-  def retrieveACQ8161(): ACQ8161
+case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file P&L to Companies House?") with CtOptionalBoolean with Input with ValidatableBox[FilingAttributesBoxValueRetriever] {
+  override def validate(boxRetriever: FilingAttributesBoxValueRetriever): Set[CtValidation] =
+    if (boxRetriever.retrieveCompaniesHouseFiling().value)
+      validateBooleanAsMandatory("ACQ8161", this)
+    else
+      Set.empty
 }
