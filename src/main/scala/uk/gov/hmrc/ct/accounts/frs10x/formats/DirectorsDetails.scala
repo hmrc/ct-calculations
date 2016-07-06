@@ -14,27 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.retriever
+package uk.gov.hmrc.ct.accounts.frs10x.formats
 
+import play.api.libs.json.Json
+import uk.gov.hmrc.ct.accounts.frs10x.DirectorsDetails
+import uk.gov.hmrc.ct.ct600a.v3.LoansToParticipators
 
-import uk.gov.hmrc.ct.accounts.frs10x._
-import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, BoxValues, FilingAttributesBoxValueRetriever}
-
-trait Frs10xAccountsBoxRetriever extends BoxRetriever {
-
-  self: FilingAttributesBoxValueRetriever =>
-
-  def retrieveDirectorsDetails(): DirectorsDetails
+object DirectorsDetailsFormatter {
   
-  def retrieveAC8023(): AC8023
-  
-  def retrieveAC8051(): AC8051
+  def DirectorsDetailsFromJsonString(json: String): DirectorsDetails = Json.fromJson[DirectorsDetails](Json.parse(json)).get
 
-  def retrieveAC8052(): AC8052
+  def toJsonString(directorsDetails: DirectorsDetails): String =  Json.toJson(directorsDetails).toString()
 
-  def retrieveAC8053(): AC8053
-
-  def retrieveAC8054(): AC8054
-
-  def retrieveACQ8161(): ACQ8161
+  def asBoxString(directorsDetails: DirectorsDetails): Option[String] = Some(toJsonString(directorsDetails))
 }
