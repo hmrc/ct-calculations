@@ -21,11 +21,11 @@ import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 
-case class DirectorsDetails(loans: List[DirectorDetails] = List.empty) extends CtBoxIdentifier(name = "Loans to participators.") with CtValue[List[DirectorDetails]] with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
+case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty) extends CtBoxIdentifier(name = "Loans to participators.") with CtValue[List[DirectorDetails]] with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
 
-  def +(other: DirectorsDetails): DirectorsDetails = new DirectorsDetails(loans ++ other.loans)
+  def +(other: DirectorsDetails): DirectorsDetails = new DirectorsDetails(directorsDetails ++ other.directorsDetails)
 
-  override def value = loans
+  override def value = directorsDetails
 
   override def asBoxString = DirectorsDetailsFormatter.asBoxString(this)
 
