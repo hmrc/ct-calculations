@@ -62,6 +62,8 @@ trait Frs10xAccountsBoxRetriever extends BoxRetriever {
 
   def retrieveAC37(): AC37 = AC37.calculate(this)
 
+  def retrieveAC8021(): AC8021
+
   def retrieveAC8023(): AC8023
 
   def retrieveAC8051(): AC8051
