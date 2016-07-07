@@ -16,19 +16,28 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x
 
+import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs10x.abridged._
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
-/**
-  * Created by jamesdwilliams1 on 06/07/2016.
-  */
 trait AccountsMoneyValidationFixture extends WordSpec with Matchers with MockitoSugar {
 
   val boxRetriever: Frs10xAccountsBoxRetriever = mock[Frs10xAccountsBoxRetriever]
 
+  def setUpMocks(): Unit = {
+    when(boxRetriever.retrieveAC16()).thenReturn(AC16(Some(16)))
+    when(boxRetriever.retrieveAC18()).thenReturn(AC18(Some(18)))
+    when(boxRetriever.retrieveAC20()).thenReturn(AC20(Some(20)))
+    when(boxRetriever.retrieveAC28()).thenReturn(AC28(Some(28)))
+    when(boxRetriever.retrieveAC30()).thenReturn(AC30(Some(30)))
+    when(boxRetriever.retrieveAC34()).thenReturn(AC34(Some(34)))
+  }
+
   def testAccountsMoneyValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[Frs10xAccountsBoxRetriever]): Unit = {
+    setUpMocks()
     s"$boxId" should {
       "be valid when 0" in {
         builder(Some(0)).validate(boxRetriever) shouldBe empty
