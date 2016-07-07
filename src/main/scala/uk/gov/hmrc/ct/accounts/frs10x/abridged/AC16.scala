@@ -29,8 +29,16 @@ case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
     val fieldValidation = validateMoney("AC16")
     import boxRetriever._
-    val aFieldHasAValue = (value orElse retrieveAC18().value orElse retrieveAC20().value orElse retrieveAC28().value orElse retrieveAC30().value orElse retrieveAC34().value).nonEmpty
-    if (fieldValidation.isEmpty && !aFieldHasAValue) {
+    val anyProfitOrLossFieldHasAValue =
+      (value orElse
+        retrieveAC18().value orElse
+        retrieveAC20().value orElse
+        retrieveAC28().value orElse
+        retrieveAC30().value orElse
+        retrieveAC34().value)
+        .nonEmpty
+
+    if (fieldValidation.isEmpty && !anyProfitOrLossFieldHasAValue) {
       Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
     } else {
       fieldValidation
