@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.AccountsMoneyValidation
+import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidation, AccountsPreviousPeriodValidation}
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
@@ -24,7 +24,10 @@ case class AC17(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
   with CtOptionalInteger
   with Input
   with ValidatableBox[Frs10xAccountsBoxRetriever]
-  with AccountsMoneyValidation {
+  with AccountsMoneyValidation
+  with AccountsPreviousPeriodValidation {
 
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = validateMoney("AC17")
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
+    validateInputAllowed("AC17", boxRetriever.retrieveAC205()) ++  validateMoney("AC17")
+  }
 }

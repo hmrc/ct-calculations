@@ -20,7 +20,7 @@ import org.joda.time.LocalDate
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct._
-import uk.gov.hmrc.ct.accounts.AC3
+import uk.gov.hmrc.ct.accounts.{AC205, AC206, AC3}
 import uk.gov.hmrc.ct.accounts.frsse2008._
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
@@ -32,7 +32,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes._
 import uk.gov.hmrc.ct.version.CoHoAccounts._
-import uk.gov.hmrc.ct.version.CoHoVersions.{FRS105, FRS102, FRSSE2008}
+import uk.gov.hmrc.ct.version.CoHoVersions.{FRS102, FRS105, FRSSE2008}
 import uk.gov.hmrc.ct.version.HmrcReturns._
 import uk.gov.hmrc.ct.version.HmrcVersions._
 import uk.gov.hmrc.ct.version.{Return, Version}
@@ -1390,4 +1390,8 @@ class ComputationsBoxRetrieverForTest extends StubbedComputationsBoxRetriever wi
   override def retrieveHMRCAmendment(): HMRCAmendment = HMRCAmendment(false)
 
   override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration.EnglandWales
+
+  override def retrieveAC205(): AC205 = ???
+
+  override def retrieveAC206(): AC206 = ???
 }

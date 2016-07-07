@@ -14,9 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frsse2008
+package uk.gov.hmrc.ct.accounts
 
-import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalDate, Input}
+import uk.gov.hmrc.ct.box.{CtValidation, CtValue}
 
-case class AC205(value: Option[LocalDate]) extends CtBoxIdentifier("Previous Period of Accounts Start Date") with CtOptionalDate with Input
+trait AccountsPreviousPeriodValidation {
+
+  self: CtValue[Option[Int]] =>
+
+  def validateInputAllowed(boxId: String, ac205: AC205): Set[CtValidation] = {
+    (value, ac205.value) match {
+      case (Some(x), None) => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.cannot.exist"))
+      case _ => Set.empty
+    }
+  }
+}

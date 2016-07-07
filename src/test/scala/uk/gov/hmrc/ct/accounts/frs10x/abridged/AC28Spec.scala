@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.frs10x.AccountsMoneyValidationFixture
+import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockRetriever}
 
-class AC28Spec extends AccountsMoneyValidationFixture {
+class AC28Spec extends AccountsMoneyValidationFixture with MockRetriever {
 
   testAccountsMoneyValidation("AC28", AC28.apply)
 }

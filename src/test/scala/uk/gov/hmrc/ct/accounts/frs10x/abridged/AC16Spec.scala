@@ -17,10 +17,10 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import org.mockito.Mockito._
-import uk.gov.hmrc.ct.accounts.frs10x.AccountsMoneyValidationFixture
+import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC16Spec extends AccountsMoneyValidationFixture {
+class AC16Spec extends AccountsMoneyValidationFixture with MockRetriever {
 
   testAccountsMoneyValidation("AC16", AC16.apply)
 

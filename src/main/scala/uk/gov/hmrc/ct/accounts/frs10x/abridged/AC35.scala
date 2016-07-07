@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.AccountsMoneyValidation
+import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidation, AccountsPreviousPeriodValidation}
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
@@ -24,7 +24,9 @@ case class AC35(value: Option[Int]) extends CtBoxIdentifier(name = "Tax on profi
   with CtOptionalInteger
   with Input
   with ValidatableBox[Frs10xAccountsBoxRetriever]
-  with AccountsMoneyValidation {
+  with AccountsMoneyValidation
+  with AccountsPreviousPeriodValidation {
 
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = validateMoney("AC35")
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
+        validateInputAllowed("AC35", boxRetriever.retrieveAC205()) ++ validateMoney("AC35")
 }

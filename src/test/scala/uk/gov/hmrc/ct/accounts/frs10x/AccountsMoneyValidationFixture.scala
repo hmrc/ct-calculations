@@ -16,16 +16,18 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x
 
+import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.AC205
 import uk.gov.hmrc.ct.accounts.frs10x.abridged._
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
 trait AccountsMoneyValidationFixture extends WordSpec with Matchers with MockitoSugar {
 
-  val boxRetriever: Frs10xAccountsBoxRetriever = mock[Frs10xAccountsBoxRetriever]
+  self: MockRetriever =>
 
   def setUpMocks(): Unit = {
     when(boxRetriever.retrieveAC16()).thenReturn(AC16(Some(16)))
@@ -34,6 +36,7 @@ trait AccountsMoneyValidationFixture extends WordSpec with Matchers with Mockito
     when(boxRetriever.retrieveAC28()).thenReturn(AC28(Some(28)))
     when(boxRetriever.retrieveAC30()).thenReturn(AC30(Some(30)))
     when(boxRetriever.retrieveAC34()).thenReturn(AC34(Some(34)))
+    when(boxRetriever.retrieveAC205()).thenReturn(AC205(Some(new LocalDate())))
   }
 
   def testAccountsMoneyValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[Frs10xAccountsBoxRetriever]): Unit = {
