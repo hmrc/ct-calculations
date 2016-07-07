@@ -25,7 +25,7 @@ case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you
     val coHoFiling = boxRetriever.retrieveCompaniesHouseFiling().value
     val hmrcFiling = boxRetriever.retrieveHMRCFiling().value
     val microEntityFiling = boxRetriever.retrieveMicroEntityFiling().value
-    val fileDRToHmrc = boxRetriever.retrieveAC8023().value.contains(true)
+    val fileDRToHmrc = boxRetriever.retrieveAC8023().orFalse
 
     // This field is required if filing non micro-entity Joint or to CoHo only
     // or when filing Joint micro-entity AND answered "true" to "AC8023".
