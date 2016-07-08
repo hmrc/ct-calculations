@@ -200,6 +200,11 @@ trait ValidatableBox[T <: BoxRetriever] {
     else Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
   }
 
+  def validateStringByRegex(boxId: String, value: String, regex: String): Set[CtValidation] = {
+    if (value.matches(regex)) Set()
+    else Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+  }
+
   protected def validateOptionalStringByLength(boxId: String, box: CtOptionalString, min: Int, max: Int): Set[CtValidation] = {
     box.value match {
       case Some(x) => validateStringByLength(boxId, x, min, max)
@@ -211,7 +216,7 @@ trait ValidatableBox[T <: BoxRetriever] {
      validateStringByLength(boxId, box.value, min, max)
   }
 
-  private def validateStringByLength(boxId: String, value: String, min: Int, max: Int): Set[CtValidation] = {
+  def validateStringByLength(boxId: String, value: String, min: Int, max: Int): Set[CtValidation] = {
     if (value.nonEmpty && value.size < min || value.size > max) {
       Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(min.toString, max.toString))))
     } else Set()

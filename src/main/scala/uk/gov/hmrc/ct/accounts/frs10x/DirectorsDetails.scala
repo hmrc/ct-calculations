@@ -30,7 +30,7 @@ case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty
   override def asBoxString = DirectorsDetailsFormatter.asBoxString(this)
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
-    Set()
+    directorsDetails.foldRight(Set[CtValidation]())((dd, tail) => dd.validate(boxRetriever) ++ tail)
   }
 //
 //  def validateLoanRequired(boxRetriever: CT600ABoxRetriever): Set[CtValidation] = {
@@ -41,6 +41,8 @@ case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty
 //  }
 }
 
-case class DirectorDetails ( id: String,
-                  AC8001: String) {
+case class DirectorDetails ( id: String, AC8001: String) extends ValidatableBox[Frs10xAccountsBoxRetriever] {
+
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
+    validateStringByLength(id, AC8001, 1, 40) ++ validateStringByRegex(id, AC8001, validCoHoCharacters)
 }
