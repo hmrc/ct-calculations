@@ -30,7 +30,10 @@ case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty
   override def asBoxString = DirectorsDetailsFormatter.asBoxString(this)
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
-    directorsDetails.foldRight(Set[CtValidation]())((dd, tail) => dd.validate(boxRetriever) ++ tail)
+    val result = directorsDetails.foldRight(Set[CtValidation]())((dd, tail) => dd.validate(boxRetriever) ++ tail)
+    println("VALIDATION")
+    println(result.mkString(" "))
+    result
   }
 //
 //  def validateLoanRequired(boxRetriever: CT600ABoxRetriever): Set[CtValidation] = {
