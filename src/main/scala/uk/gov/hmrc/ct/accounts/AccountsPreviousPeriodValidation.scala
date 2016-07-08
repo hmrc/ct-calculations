@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.retriever
+package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.accounts._
-import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
+import uk.gov.hmrc.ct.box.{CtValidation, CtValue}
 
-trait AccountsBoxRetriever extends BoxRetriever {
+trait AccountsPreviousPeriodValidation {
 
-  self: FilingAttributesBoxValueRetriever =>
+  self: CtValue[Option[Int]] =>
 
-  def retrieveAC1(): AC1
-
-  def retrieveAC3(): AC3
-  
-  def retrieveAC4(): AC4
-
-  def retrieveAC12(): AC12
-
-  def retrieveAC205(): AC205
-
-  def retrieveAC206(): AC206
-
+  def validateInputAllowed(boxId: String, ac205: AC205): Set[CtValidation] = {
+    (value, ac205.value) match {
+      case (Some(x), None) => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.cannot.exist"))
+      case _ => Set.empty
+    }
+  }
 }

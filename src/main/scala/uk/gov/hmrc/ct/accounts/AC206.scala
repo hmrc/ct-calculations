@@ -14,25 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.retriever
+package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.accounts._
-import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
+import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalDate, Input}
 
-trait AccountsBoxRetriever extends BoxRetriever {
-
-  self: FilingAttributesBoxValueRetriever =>
-
-  def retrieveAC1(): AC1
-
-  def retrieveAC3(): AC3
-  
-  def retrieveAC4(): AC4
-
-  def retrieveAC12(): AC12
-
-  def retrieveAC205(): AC205
-
-  def retrieveAC206(): AC206
-
-}
+case class AC206(value: Option[LocalDate]) extends CtBoxIdentifier("Previous Period of Accounts End Date") with CtOptionalDate with Input

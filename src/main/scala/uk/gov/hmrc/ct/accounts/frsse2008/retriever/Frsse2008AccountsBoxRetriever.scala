@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.accounts.frsse2008._
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
 
-trait Frsse2008AccountsBoxRetriever extends BoxRetriever with AccountsBoxRetriever {
+trait Frsse2008AccountsBoxRetriever extends AccountsBoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 
@@ -101,8 +101,4 @@ trait Frsse2008AccountsBoxRetriever extends BoxRetriever with AccountsBoxRetriev
   def retrieveAC435(): AC435 = AC435.calculate(this)
 
   def retrieveAC436(): AC436 = AC436.calculate(this)
-
-  def retrieveAC205(): AC205
-
-  def retrieveAC206(): AC206
 }

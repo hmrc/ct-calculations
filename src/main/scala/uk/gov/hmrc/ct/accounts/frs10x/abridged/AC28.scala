@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x
+package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
+import uk.gov.hmrc.ct.accounts.AccountsMoneyValidation
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-case class AC8023(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file a directors' report to HMRC?") with CtOptionalBoolean with Input with ValidatableBox[FilingAttributesBoxValueRetriever] {
-  override def validate(boxRetriever: FilingAttributesBoxValueRetriever): Set[CtValidation] =
-    if (boxRetriever.retrieveHMRCFiling().value && boxRetriever.retrieveMicroEntityFiling().value)
-      validateBooleanAsMandatory("AC8023", this)
-    else
-      Set.empty
+case class AC28(value: Option[Int]) extends CtBoxIdentifier(name = "Interest receivable and similar income (current PoA)")
+  with CtOptionalInteger
+  with Input
+  with ValidatableBox[Frs10xAccountsBoxRetriever]
+  with AccountsMoneyValidation {
+
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = validateMoney("AC28")
 }

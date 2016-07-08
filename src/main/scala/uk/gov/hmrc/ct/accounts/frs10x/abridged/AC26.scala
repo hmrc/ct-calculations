@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x
+package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.OperatingProfitOrLossCalculator
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-case class AC8023(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file a directors' report to HMRC?") with CtOptionalBoolean with Input with ValidatableBox[FilingAttributesBoxValueRetriever] {
-  override def validate(boxRetriever: FilingAttributesBoxValueRetriever): Set[CtValidation] =
-    if (boxRetriever.retrieveHMRCFiling().value && boxRetriever.retrieveMicroEntityFiling().value)
-      validateBooleanAsMandatory("AC8023", this)
-    else
-      Set.empty
+case class AC26(value: Int) extends CtBoxIdentifier(name = "Operating profit or loss (current PoA)") with CtInteger
+
+object AC26 extends Calculated[AC26, Frs10xAccountsBoxRetriever] with OperatingProfitOrLossCalculator {
+
+  override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC26 = {
+    import boxRetriever._
+    calculateAC26(retrieveAC16(), retrieveAC18(), retrieveAC20())
+  }
 }
+
