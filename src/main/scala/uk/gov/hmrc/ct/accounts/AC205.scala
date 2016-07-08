@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.abridged
+package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, AccountsPreviousPeriodValidationFixture, MockRetriever}
+import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalDate, Input}
 
-class AC31Spec extends AccountsMoneyValidationFixture with AccountsPreviousPeriodValidationFixture with MockRetriever {
-
-  testAccountsMoneyValidation("AC31", AC31.apply)
-
-  testAccountsPreviousPoAValidation("AC31", AC31.apply)
-}
+case class AC205(value: Option[LocalDate]) extends CtBoxIdentifier("Previous Period of Accounts Start Date") with CtOptionalDate with Input
