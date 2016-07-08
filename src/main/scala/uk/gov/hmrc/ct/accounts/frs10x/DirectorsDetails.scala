@@ -47,5 +47,5 @@ case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty
 case class DirectorDetails ( id: String, AC8001: String) extends ValidatableBox[Frs10xAccountsBoxRetriever] {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
-    validateStringByLength(id, AC8001, 1, 40) ++ validateStringByRegex(id, AC8001, validCoHoCharacters)
+    validateStringByLength("AC8001", AC8001, 1, 40) ++ validateStringByRegex("AC8001", AC8001, validCoHoCharacters)
 }

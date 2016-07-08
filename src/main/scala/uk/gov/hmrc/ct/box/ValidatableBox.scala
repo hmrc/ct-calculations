@@ -207,17 +207,23 @@ trait ValidatableBox[T <: BoxRetriever] {
 
   protected def validateOptionalStringByLength(boxId: String, box: CtOptionalString, min: Int, max: Int): Set[CtValidation] = {
     box.value match {
-      case Some(x) => validateStringByLength(boxId, x, min, max)
+      case Some(x) => validateNotEmptyStringByLength(boxId, x, min, max)
       case _ => Set()
     }
   }
 
   protected def validateStringByLength(boxId: String, box: CtString, min:Int, max:Int): Set[CtValidation] = {
-     validateStringByLength(boxId, box.value, min, max)
+     validateNotEmptyStringByLength(boxId, box.value, min, max)
+  }
+
+  def validateNotEmptyStringByLength(boxId: String, value: String, min: Int, max: Int): Set[CtValidation] = {
+    if (value.nonEmpty && value.size < min || value.size > max) {
+      Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(min.toString, max.toString))))
+    } else Set()
   }
 
   def validateStringByLength(boxId: String, value: String, min: Int, max: Int): Set[CtValidation] = {
-    if (value.nonEmpty && value.size < min || value.size > max) {
+    if (value.size < min || value.size > max) {
       Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(min.toString, max.toString))))
     } else Set()
   }
