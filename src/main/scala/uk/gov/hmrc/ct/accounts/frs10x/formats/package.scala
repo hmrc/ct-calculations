@@ -20,6 +20,7 @@ import play.api.libs.json.{Format, Json}
 import uk.gov.hmrc.ct.box.formats.{OptionalBooleanFormat, OptionalStringFormat}
 
 package object formats {
+
   implicit val ac8023Format: Format[AC8023] = new OptionalBooleanFormat[AC8023](AC8023.apply)
   implicit val ac8051Format: Format[AC8051] = new OptionalStringFormat[AC8051](AC8051.apply)
   implicit val ac8052Format: Format[AC8052] = new OptionalStringFormat[AC8052](AC8052.apply)
@@ -28,6 +29,7 @@ package object formats {
   implicit val acq8161Format: Format[ACQ8161] = new OptionalBooleanFormat[ACQ8161](ACQ8161.apply)
 
   implicit val directorDetailsFormat = Json.format[DirectorDetails]
+  implicit val secretaryFormat = Json.format[Secretary]
   implicit val directorsDetailsFormat: Format[DirectorsDetails] = Json.format[DirectorsDetails]
 
 }
