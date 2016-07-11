@@ -29,7 +29,7 @@ package object formats {
   implicit val acq8161Format: Format[ACQ8161] = new OptionalBooleanFormat[ACQ8161](ACQ8161.apply)
 
   implicit val directorDetailsFormat = Json.format[DirectorDetails]
-  implicit val secretaryFormat = Json.format[Secretary]
+  implicit val acAC8033Format: Format[AC8033] = new OptionalStringFormat[AC8033](AC8033.apply)
   implicit val directorsDetailsFormat: Format[DirectorsDetails] = Json.format[DirectorsDetails]
 
 }

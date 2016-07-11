@@ -22,7 +22,7 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 
 
-case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty, secretary: Option[Secretary] = None) extends CtBoxIdentifier(name = "Directors Details.") with CtValue[List[DirectorDetails]] with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
+case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty, secretary: Option[AC8033] = None) extends CtBoxIdentifier(name = "Directors Details.") with CtValue[List[DirectorDetails]] with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
 
   override def value = directorsDetails
 
@@ -49,6 +49,8 @@ case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty
       case _ => Set.empty
     }
   }
+
+
 }
 
 case class DirectorDetails (id: String, AC8001: String) extends ValidatableBox[Frs10xAccountsBoxRetriever] {
@@ -57,7 +59,8 @@ case class DirectorDetails (id: String, AC8001: String) extends ValidatableBox[F
     validateStringByLength("AC8001", AC8001, 1, 40) ++ validateStringByRegex("AC8001", AC8001, validCoHoCharacters)
 }
 
-case class Secretary (AC8033: String) extends ValidatableBox[Frs10xAccountsBoxRetriever] {
+case class AC8033(value: Option[String]) extends CtBoxIdentifier(name = "Secretary") with CtOptionalString with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = Set()
 }
+
