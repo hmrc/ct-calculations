@@ -23,7 +23,7 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
 
   "DirectorsDetails" should {
 
-    "validate AC8001 successfully when no validation errors are present" in {
+    "validate successfully when no validation errors are present" in {
 
       val directorDetails = DirectorDetails("444", "luke")
       val directorsDetails = DirectorsDetails(List(directorDetails))
@@ -33,7 +33,7 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
       directorsDetails.validate(null) shouldBe expectedError
     }
 
-    "validate AC8001 director name length" in {
+    "validate director name length" in {
 
       val directorDetails = DirectorDetails("444", "")
       val directorsDetails = DirectorsDetails(List(directorDetails))
@@ -43,7 +43,17 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
       directorsDetails.validate(null) shouldBe expectedError
     }
 
-    "validate AC8001 director name characters" in {
+    "validate director name length more than 40 chars" in {
+
+      val directorDetails = DirectorDetails("444", "a" * 41)
+      val directorsDetails = DirectorsDetails(List(directorDetails))
+
+      val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.text.sizeRange", Some(List("1", "40"))))
+      directorDetails.validate(null) shouldBe expectedError
+      directorsDetails.validate(null) shouldBe expectedError
+    }
+
+    "validate director name characters" in {
 
       val directorDetails = DirectorDetails("444", "??")
       val directorsDetails = DirectorsDetails(List(directorDetails))
@@ -52,6 +62,28 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
       directorDetails.validate(null) shouldBe expectedError
       directorsDetails.validate(null) shouldBe expectedError
     }
+
+    "validate at least one director name present" in {
+
+      val directorsDetails = DirectorsDetails(List())
+
+      val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.required", None))
+      directorsDetails.validate(null) shouldBe expectedError
+    }
+
+    "validate at most 12 director names" in {
+
+      val directors = for {
+        i <- ('A' to 'Z').toList
+        d = DirectorDetails("444", s"director$i")
+      } yield d
+
+      val directorsDetails = DirectorsDetails(directors)
+
+      val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.atMost12", None))
+      directorsDetails.validate(null) shouldBe expectedError
+    }
+
 
 
   }
