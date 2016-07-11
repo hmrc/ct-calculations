@@ -22,15 +22,14 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 
 
-case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty, secretary: Option[AC8033] = None) extends CtBoxIdentifier(name = "Directors Details.") with CtValue[List[DirectorDetails]] with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
+case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty) extends CtBoxIdentifier(name = "Directors Details.") with CtValue[List[DirectorDetails]] with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
 
   override def value = directorsDetails
 
   override def asBoxString = DirectorsDetailsFormatter.asBoxString(this)
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
-    validateDirectorRequired() ++
-    validateAtMost12Directors() ++
+    validateDirectorRequired() ++ validateAtMost12Directors() ++ validateDirectorsUnique() ++
     directorsDetails.foldRight(Set[CtValidation]())((dd, tail) => dd.validate(boxRetriever) ++ tail)
   }
 
@@ -51,9 +50,11 @@ case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty
   }
 
   def validateDirectorsUnique(): Set[CtValidation] = {
-    val names = directorsDetails.map(_.AC8001)
-    directorsDetails.size != names match {
-      case true => Set(CtValidation(Some("AC8001"), "error.AC8001.atMost12", None))
+
+    val uniqueNames = directorsDetails.map(_.AC8001).toSet
+
+    directorsDetails.size != uniqueNames.size match {
+      case true => Set(CtValidation(Some("AC8001"), "error.AC8001.unique", None))
       case false => Set.empty
     }
   }

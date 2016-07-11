@@ -28,9 +28,7 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
       val directorDetails = DirectorDetails("444", "luke")
       val directorsDetails = DirectorsDetails(List(directorDetails))
 
-      val expectedError = Set()
-      directorDetails.validate(null) shouldBe expectedError
-      directorsDetails.validate(null) shouldBe expectedError
+      directorsDetails.validate(null) shouldBe empty
     }
 
     "validate director name length" in {
@@ -39,7 +37,6 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
       val directorsDetails = DirectorsDetails(List(directorDetails))
 
       val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.text.sizeRange", Some(List("1", "40"))))
-      directorDetails.validate(null) shouldBe expectedError
       directorsDetails.validate(null) shouldBe expectedError
     }
 
@@ -49,7 +46,6 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
       val directorsDetails = DirectorsDetails(List(directorDetails))
 
       val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.text.sizeRange", Some(List("1", "40"))))
-      directorDetails.validate(null) shouldBe expectedError
       directorsDetails.validate(null) shouldBe expectedError
     }
 
@@ -59,7 +55,6 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
       val directorsDetails = DirectorsDetails(List(directorDetails))
 
       val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.regexFailure", None))
-      directorDetails.validate(null) shouldBe expectedError
       directorsDetails.validate(null) shouldBe expectedError
     }
 
@@ -84,7 +79,13 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
       directorsDetails.validate(null) shouldBe expectedError
     }
 
+    "validate duplicate director names" in {
 
+      val directorsDetails = DirectorsDetails(List(DirectorDetails("444", "Jack"), DirectorDetails("555", "Jack")))
+
+      val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.unique", None))
+      directorsDetails.validate(null) shouldBe expectedError
+    }
 
   }
 }
