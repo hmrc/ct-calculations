@@ -20,6 +20,7 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.computations.CP287
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
@@ -49,6 +50,18 @@ class RSQ2Spec extends WordSpec with Matchers with MockitoSugar {
       when(boxRetriever.retrieveCP287()).thenReturn(CP287(Some(0)))
 
       RSQ2(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("RSQ2"), "error.RSQ2.required"))
+    }
+
+    "return a mandatory error if no input value populated, and not a computations box retriever" in {
+      val boxRetriever = mock[BoxRetriever]
+
+      RSQ2(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("RSQ2"), "error.RSQ2.required"))
+    }
+
+    "return no error if input value populated, and not a computations box retriever" in {
+      val boxRetriever = mock[BoxRetriever]
+
+      RSQ2(Some(false)).validate(boxRetriever) shouldBe empty
     }
 
     "return a box should not exist error if there is an input value populated and CP287 has a value" in {
