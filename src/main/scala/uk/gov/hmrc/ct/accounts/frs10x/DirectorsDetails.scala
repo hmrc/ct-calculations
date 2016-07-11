@@ -50,6 +50,13 @@ case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty
     }
   }
 
+  def validateDirectorsUnique(): Set[CtValidation] = {
+    val names = directorsDetails.map(_.AC8001)
+    directorsDetails.size != names match {
+      case true => Set(CtValidation(Some("AC8001"), "error.AC8001.atMost12", None))
+      case false => Set.empty
+    }
+  }
 
 }
 
@@ -59,8 +66,5 @@ case class DirectorDetails (id: String, AC8001: String) extends ValidatableBox[F
     validateStringByLength("AC8001", AC8001, 1, 40) ++ validateStringByRegex("AC8001", AC8001, validCoHoCharacters)
 }
 
-case class AC8033(value: Option[String]) extends CtBoxIdentifier(name = "Secretary") with CtOptionalString with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
 
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = Set()
-}
 

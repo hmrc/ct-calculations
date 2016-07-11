@@ -14,29 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.retriever
+package uk.gov.hmrc.ct.accounts.frs10x
 
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.box._
 
-import uk.gov.hmrc.ct.accounts.frs10x._
-import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, BoxValues, FilingAttributesBoxValueRetriever}
+case class AC8033(value: Option[String]) extends CtBoxIdentifier(name = "Secretary") with CtOptionalString with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
 
-trait Frs10xAccountsBoxRetriever extends BoxRetriever {
-
-  self: FilingAttributesBoxValueRetriever =>
-
-  def retrieveDirectorsDetails(): DirectorsDetails
-
-  def retrieveAC8033(): AC8033
-
-  def retrieveAC8023(): AC8023
-  
-  def retrieveAC8051(): AC8051
-
-  def retrieveAC8052(): AC8052
-
-  def retrieveAC8053(): AC8053
-
-  def retrieveAC8054(): AC8054
-
-  def retrieveACQ8161(): ACQ8161
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = Set()
 }
