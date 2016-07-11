@@ -22,15 +22,37 @@ import uk.gov.hmrc.ct.box.CtValidation
 class DirectorsDetailsSpec extends WordSpec with Matchers {
 
   "DirectorsDetails" should {
-    "correctly validate AC8001 director name is present" in {
+
+    "validate AC8001 successfully when no validation errors are present" in {
+
+      val directorDetails = DirectorDetails("444", "luke")
+      val directorsDetails = DirectorsDetails(List(directorDetails))
+
+      val expectedError = Set()
+      directorDetails.validate(null) shouldBe expectedError
+      directorsDetails.validate(null) shouldBe expectedError
+    }
+
+    "validate AC8001 director name length" in {
 
       val directorDetails = DirectorDetails("444", "")
-      val directorsDet = DirectorsDetails(List(directorDetails))
+      val directorsDetails = DirectorsDetails(List(directorDetails))
 
       val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.text.sizeRange", Some(List("1", "40"))))
       directorDetails.validate(null) shouldBe expectedError
-      directorsDet.validate(null) shouldBe expectedError
+      directorsDetails.validate(null) shouldBe expectedError
     }
+
+    "validate AC8001 director name characters" in {
+
+      val directorDetails = DirectorDetails("444", "??")
+      val directorsDetails = DirectorsDetails(List(directorDetails))
+
+      val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.regexFailure", None))
+      directorDetails.validate(null) shouldBe expectedError
+      directorsDetails.validate(null) shouldBe expectedError
+    }
+
 
   }
 }
