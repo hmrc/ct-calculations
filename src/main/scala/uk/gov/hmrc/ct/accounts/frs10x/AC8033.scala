@@ -21,5 +21,7 @@ import uk.gov.hmrc.ct.box._
 
 case class AC8033(value: Option[String]) extends CtBoxIdentifier(name = "Secretary") with CtOptionalString with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
 
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = Set()
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
+    validateOptionalStringByLength("AC8033", this, 1, 40) ++ validateOptionalStringByRegex("AC8033", this, validCoHoCharacters)
+  }
 }
