@@ -62,7 +62,7 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
 
       val directorsDetails = DirectorsDetails(List())
 
-      val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.required", None))
+      val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.global.atLeast1", None))
       directorsDetails.validate(null) shouldBe expectedError
     }
 
@@ -75,7 +75,7 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
 
       val directorsDetails = DirectorsDetails(directors)
 
-      val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.atMost12", None))
+      val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.global.atMost12", None))
       directorsDetails.validate(null) shouldBe expectedError
     }
 
