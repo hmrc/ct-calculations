@@ -21,8 +21,7 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file P&L to Companies House?") with CtOptionalBoolean with Input with ValidatableBox[FilingAttributesBoxValueRetriever] {
   override def validate(boxRetriever: FilingAttributesBoxValueRetriever): Set[CtValidation] =
-    if (boxRetriever.retrieveCompaniesHouseFiling().value)
+    assuming (boxRetriever.retrieveCompaniesHouseFiling().value) {
       validateBooleanAsMandatory("ACQ8161", this)
-    else
-      Set.empty
+    }
 }

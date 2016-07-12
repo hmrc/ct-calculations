@@ -67,18 +67,17 @@ trait ValidatableBox[T <: BoxRetriever] {
 
   protected def validateStringAsMandatoryIfPAYEEQ1False(boxRetriever: RepaymentsBoxRetriever, boxId: String, box: CtOptionalString): Set[CtValidation] = {
     val payeeq1 = boxRetriever.retrievePAYEEQ1()
-    if (!payeeq1.value.getOrElse(true)) {
+
+    assuming (!payeeq1.value.getOrElse(true)) {
       validateStringAsMandatory(boxId, box)
-    } else Set()
+    }
   }
 
   protected def validateAllFilledOrEmptyStrings(boxId: String, allBoxes: Set[CtString]): Set[CtValidation] = {
     val allEmpty = allBoxes.count(_.value.isEmpty) == allBoxes.size
     val allNonEmpty = allBoxes.count(_.value.nonEmpty) == allBoxes.size
 
-    if(allEmpty || allNonEmpty) {
-      Set()
-    } else {
+    assumingNot(allEmpty || allNonEmpty) {
       Set(CtValidation(Some(boxId), s"error.$boxId.allornone"))
     }
   }
@@ -150,8 +149,9 @@ trait ValidatableBox[T <: BoxRetriever] {
   protected def validateIntegerRange(boxId: String, box: CtOptionalInteger, min: Int = 0, max: Int): Set[CtValidation] = {
     box.value match {
       case Some(x) => {
-        if (min <= x && x <= max) Set()
-        else Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(min.toString,max.toString))))
+        assumingNot (min <= x && x <= max) {
+           Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(min.toString,max.toString))))
+        }
       }
       case _ => Set()
     }
@@ -188,21 +188,24 @@ trait ValidatableBox[T <: BoxRetriever] {
   protected def validateOptionalStringByRegex(boxId: String, box: CtOptionalString, regex: String): Set[CtValidation] = {
     box.value match {
       case Some(x) if x.nonEmpty => {
-        if (x.matches(regex)) Set()
-        else Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+        assumingNot (x.matches(regex)) {
+          Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+        }
       }
       case _ => Set()
     }
   }
 
   protected def validateStringByRegex(boxId: String, box: CtString, regex: String): Set[CtValidation] = {
-    if (box.value.isEmpty || box.value.matches(regex)) Set()
-    else Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+    assumingNot (box.value.isEmpty || box.value.matches(regex)) {
+      Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+    }
   }
 
   def validateStringByRegex(boxId: String, value: String, regex: String): Set[CtValidation] = {
-    if (value.matches(regex)) Set()
-    else Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+    assumingNot (value.matches(regex)) {
+      Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+    }
   }
 
   protected def validateOptionalStringByLength(boxId: String, box: CtOptionalString, min: Int, max: Int): Set[CtValidation] = {
@@ -217,15 +220,15 @@ trait ValidatableBox[T <: BoxRetriever] {
   }
 
   def validateNotEmptyStringByLength(boxId: String, value: String, min: Int, max: Int): Set[CtValidation] = {
-    if (value.nonEmpty && value.size < min || value.size > max) {
+    assuming (value.nonEmpty && value.size < min || value.size > max) {
       Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(min.toString, max.toString))))
-    } else Set()
+    }
   }
 
   def validateStringByLength(boxId: String, value: String, min: Int, max: Int): Set[CtValidation] = {
-    if (value.size < min || value.size > max) {
+    assuming (value.size < min || value.size > max) {
       Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(min.toString, max.toString))))
-    } else Set()
+    }
   }
 
   def validatePostcode(boxId: String, box: CtOptionalString): Set[CtValidation] = {
@@ -244,5 +247,13 @@ trait ValidatableBox[T <: BoxRetriever] {
       case x if x.isEmpty => Set()
       case _ => Set(CtValidation(Some(boxId), s"error.$boxId.invalidPostcode"))
     }
+  }
+
+  object assuming {
+    def apply(condition: => Boolean)(validations: => Set[CtValidation]): Set[CtValidation] = if(condition) validations else Set()
+  }
+
+  object assumingNot {
+    def apply(condition: => Boolean)(validations: => Set[CtValidation]): Set[CtValidation] = if(!condition) validations else Set()
   }
 }

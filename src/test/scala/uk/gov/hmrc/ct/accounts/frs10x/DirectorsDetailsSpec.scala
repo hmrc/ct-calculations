@@ -16,10 +16,17 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x
 
+import org.mockito.Mockito._
+import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
-class DirectorsDetailsSpec extends WordSpec with Matchers {
+class DirectorsDetailsSpec extends WordSpec with MockitoSugar with Matchers {
+
+  val mockBoxRetriever = mock[Frs10xAccountsBoxRetriever]
+  when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(true)))
+
 
   "DirectorsDetails" should {
 
@@ -28,7 +35,7 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
       val directorDetails = DirectorDetails("444", "luke")
       val directorsDetails = DirectorsDetails(List(directorDetails))
 
-      directorsDetails.validate(null) shouldBe empty
+      directorsDetails.validate(mockBoxRetriever) shouldBe empty
     }
 
     "validate director name length" in {
@@ -37,7 +44,7 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
       val directorsDetails = DirectorsDetails(List(directorDetails))
 
       val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.text.sizeRange", Some(List("1", "40"))))
-      directorsDetails.validate(null) shouldBe expectedError
+      directorsDetails.validate(mockBoxRetriever) shouldBe expectedError
     }
 
     "validate director name length more than 40 chars" in {
@@ -46,7 +53,7 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
       val directorsDetails = DirectorsDetails(List(directorDetails))
 
       val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.text.sizeRange", Some(List("1", "40"))))
-      directorsDetails.validate(null) shouldBe expectedError
+      directorsDetails.validate(mockBoxRetriever) shouldBe expectedError
     }
 
     "validate director name characters" in {
@@ -55,15 +62,23 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
       val directorsDetails = DirectorsDetails(List(directorDetails))
 
       val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.regexFailure", None))
-      directorsDetails.validate(null) shouldBe expectedError
+      directorsDetails.validate(mockBoxRetriever) shouldBe expectedError
     }
 
-    "validate at least one director name present" in {
+    "validate at least one director name present is enabled when AC8023 is true" in {
 
       val directorsDetails = DirectorsDetails(List())
 
       val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.global.atLeast1", None))
-      directorsDetails.validate(null) shouldBe expectedError
+      directorsDetails.validate(mockBoxRetriever) shouldBe expectedError
+    }
+
+    "validate at least one director name present is disabled when AC8023 is false" in {
+      when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(false)))
+
+      val directorsDetails = DirectorsDetails(List())
+
+      directorsDetails.validate(mockBoxRetriever) shouldBe empty
     }
 
     "validate at most 12 director names" in {
@@ -76,7 +91,7 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
       val directorsDetails = DirectorsDetails(directors)
 
       val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.global.atMost12", None))
-      directorsDetails.validate(null) shouldBe expectedError
+      directorsDetails.validate(mockBoxRetriever) shouldBe expectedError
     }
 
     "validate duplicate director names" in {
@@ -84,7 +99,7 @@ class DirectorsDetailsSpec extends WordSpec with Matchers {
       val directorsDetails = DirectorsDetails(List(DirectorDetails("444", "Jack"), DirectorDetails("555", "Jack")))
 
       val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.unique", None))
-      directorsDetails.validate(null) shouldBe expectedError
+      directorsDetails.validate(mockBoxRetriever) shouldBe expectedError
     }
 
   }

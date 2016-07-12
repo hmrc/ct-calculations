@@ -36,16 +36,13 @@ case class CP285(value: Option[LocalDate]) extends CtBoxIdentifier(name = "End d
       } _,
       cannotExistIf() { boxRetriever: ComputationsBoxRetriever => value.nonEmpty && !boxRetriever.retrieveCPQ18().orFalse },
       { boxRetriever: ComputationsBoxRetriever =>
-        if (value.nonEmpty) {
+        assuming (value.nonEmpty) {
           val providedDate = value.getOrElse(throw new IllegalStateException("The value of CP285 is empty and that does not appear to be possible."))
           val cp2 = boxRetriever.retrieveCP2().value
-          if (providedDate.isAfter(cp2) && !providedDate.isAfter(cp2.plusYears(1)))
-            Set.empty
-          else {
+          assumingNot (providedDate.isAfter(cp2) && !providedDate.isAfter(cp2.plusYears(1))) {
             Set(CtValidation(Some(boxId), "error.CP285.date.outside.range", Some(Seq(cp2.plusDays(1).toString(DateFormat), cp2.plusYears(1).toString(DateFormat)))))
           }
         }
-        else Set.empty
       }
     ))(boxRetriever)
   }

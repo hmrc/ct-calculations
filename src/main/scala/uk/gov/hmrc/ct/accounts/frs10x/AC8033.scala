@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs10x
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC8033(value: Option[String]) extends CtBoxIdentifier(name = "Secretary") with CtOptionalString with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
+case class AC8033(value: Option[String]) extends CtBoxIdentifier(name = "Secretary name") with CtOptionalString with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
     validateOptionalStringByLength("AC8033", this, 1, 40) ++ validateOptionalStringByRegex("AC8033", this, validCoHoCharacters)

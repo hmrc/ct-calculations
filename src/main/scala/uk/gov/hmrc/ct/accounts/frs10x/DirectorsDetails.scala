@@ -29,16 +29,18 @@ case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty
   override def asBoxString = DirectorsDetailsFormatter.asBoxString(this)
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
-    validateDirectorRequired() ++ validateAtMost12Directors() ++ validateDirectorsUnique() ++
+    validateDirectorRequired(boxRetriever) ++ validateAtMost12Directors() ++ validateDirectorsUnique() ++
     directorsDetails.foldRight(Set[CtValidation]())((dd, tail) => dd.validate(boxRetriever) ++ tail)
   }
 
   def +(other: DirectorsDetails): DirectorsDetails = new DirectorsDetails(directorsDetails ++ other.directorsDetails)
 
-  def validateDirectorRequired(): Set[CtValidation] = {
-    directorsDetails match {
-      case Nil => Set(CtValidation(Some("AC8001"), "error.AC8001.global.atLeast1", None))
-      case _ => Set.empty
+  def validateDirectorRequired(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
+
+    val shouldFileDirectorsReport = boxRetriever.retrieveAC8023().value.getOrElse(false)
+
+    assuming (shouldFileDirectorsReport && directorsDetails.isEmpty) {
+      Set(CtValidation(Some("AC8001"), "error.AC8001.global.atLeast1", None))
     }
   }
 
