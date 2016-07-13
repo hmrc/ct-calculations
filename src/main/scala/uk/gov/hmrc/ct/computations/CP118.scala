@@ -20,7 +20,8 @@ import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger, MustBeZeroOrP
 import uk.gov.hmrc.ct.computations.calculations.AdjustedTradingProfitOrLossCalculator
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP118(value: Int) extends CtBoxIdentifier(name = "Adjusted Trading Loss") with CtInteger with MustBeZeroOrPositive
+case class
+CP118(value: Int) extends CtBoxIdentifier(name = "Adjusted Trading Loss") with CtInteger with MustBeZeroOrPositive
 
 object CP118 extends Calculated[CP118, ComputationsBoxRetriever] with AdjustedTradingProfitOrLossCalculator {
 

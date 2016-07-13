@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frsse2008.stubs
 
-import uk.gov.hmrc.ct.accounts.{AC12, AC4, AC3, AC1}
+import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frsse2008._
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValue
@@ -44,8 +44,6 @@ trait StubbedAccountsBoxRetriever extends Frsse2008AccountsBoxRetriever {
 
   override def retrieveAC21(): AC21 = ???
 
-  override def retrieveAC206(): AC206 = ???
-
   override def retrieveAC39(): AC39 = ???
 
   override def retrieveAC18(): AC18 = ???
@@ -59,8 +57,6 @@ trait StubbedAccountsBoxRetriever extends Frsse2008AccountsBoxRetriever {
   override def retrieveAC3(): AC3 = ???
 
   override def retrieveAC29(): AC29 = ???
-
-  override def retrieveAC205(): AC205 = ???
 
   override def retrieveAC14(): AC14 = ???
 
@@ -91,6 +87,10 @@ trait StubbedAccountsBoxRetriever extends Frsse2008AccountsBoxRetriever {
   override def retrieveAC425(): AC425 = ???
 
   override def retrieveAC426(): AC426 = ???
+
+  override def retrieveAC206(): AC206 = ???
+
+  override def retrieveAC205(): AC205 = ???
 
   override def generateValues: Map[String, CtValue[_]] = ???
 }

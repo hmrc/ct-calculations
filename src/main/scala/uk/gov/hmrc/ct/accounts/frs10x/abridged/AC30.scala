@@ -14,9 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frsse2008
+package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalDate, Input}
+import uk.gov.hmrc.ct.accounts.AccountsMoneyValidation
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.box._
 
-case class AC206(value: Option[LocalDate]) extends CtBoxIdentifier("Previous Period of Accounts End Date") with CtOptionalDate with Input
+case class AC30(value: Option[Int]) extends CtBoxIdentifier(name = "Interest payable and similar income (current PoA)")
+  with CtOptionalInteger
+  with Input
+  with ValidatableBox[Frs10xAccountsBoxRetriever]
+  with AccountsMoneyValidation {
+
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = validateMoney("AC30")
+}

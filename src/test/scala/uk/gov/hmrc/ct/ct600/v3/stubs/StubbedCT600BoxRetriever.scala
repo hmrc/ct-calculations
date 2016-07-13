@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3.stubs
 
+import uk.gov.hmrc.ct.accounts.{AC205, AC206}
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.stubs.StubbedFilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations._
@@ -25,9 +26,9 @@ import uk.gov.hmrc.ct.ct600a.v3._
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 import uk.gov.hmrc.ct.ct600j.v3._
 import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
-import uk.gov.hmrc.ct.{CountryOfRegistration, CATO11, CATO10, CATO12}
+import uk.gov.hmrc.ct.{CATO10, CATO11, CATO12, CountryOfRegistration}
 import uk.gov.hmrc.ct.box.CtValue
-import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600DeclarationBoxRetriever, CT600BoxRetriever}
+import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600BoxRetriever, CT600DeclarationBoxRetriever}
 
 class StubbedCT600BoxRetriever extends CT600BoxRetriever
                                   with StubbedAccountsBoxRetriever
@@ -319,4 +320,8 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def retrieveCP252(): CP252 = ???
 
   override def retrieveCountryOfRegistration(): CountryOfRegistration = ???
+
+  override def retrieveAC205(): AC205 = ???
+
+  override def retrieveAC206(): AC206 = ???
 }

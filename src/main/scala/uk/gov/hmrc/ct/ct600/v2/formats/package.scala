@@ -175,17 +175,15 @@ package object formats {
 
   implicit val RDQ2Format: Format[RDQ2] = new BooleanFormat[RDQ2](RDQ2.apply)
 
-  implicit val RSQ1Format: Format[RSQ1] = new BooleanFormat[RSQ1](RSQ1.apply)
+  implicit val RSQ1Format: Format[RSQ1] = new OptionalBooleanFormat[RSQ1](RSQ1.apply)
 
-  implicit val RSQ2Format: Format[RSQ2] = new BooleanFormat[RSQ2](RSQ2.apply)
+  implicit val RSQ2Format: Format[RSQ2] = new OptionalBooleanFormat[RSQ2](RSQ2.apply)
 
-  implicit val RSQ3Format: Format[RSQ3] = new BooleanFormat[RSQ3](RSQ3.apply)
+  implicit val RSQ4Format: Format[RSQ4] = new OptionalBooleanFormat[RSQ4](RSQ4.apply)
 
-  implicit val RSQ4Format: Format[RSQ4] = new BooleanFormat[RSQ4](RSQ4.apply)
+  implicit val RSQ7Format: Format[RSQ7] = new OptionalBooleanFormat[RSQ7](RSQ7.apply)
 
-  implicit val RSQ7Format: Format[RSQ7] = new BooleanFormat[RSQ7](RSQ7.apply)
-
-  implicit val RSQ8Format: Format[RSQ8] = new BooleanFormat[RSQ8](RSQ8.apply)
+  implicit val RSQ8Format: Format[RSQ8] = new OptionalBooleanFormat[RSQ8](RSQ8.apply)
 
   implicit val B1000Format: Format[B1000] = new StringFormat[B1000](B1000.apply)
 }

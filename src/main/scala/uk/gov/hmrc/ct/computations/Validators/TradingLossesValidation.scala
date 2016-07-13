@@ -16,13 +16,11 @@
 
 package uk.gov.hmrc.ct.computations.Validators
 
-import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.box.{CtValidation, Validators}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 
-trait TradingLossesValidation {
-
-  protected val boxId = getClass.getSimpleName
+trait TradingLossesValidation extends Validators {
 
   protected def allLossesOffsetByNonTradingProfit(cp118: Int, cato01: Int): Boolean = {
     cp118 <= cato01
@@ -110,47 +108,5 @@ trait TradingLossesValidation {
 
   protected val noTradingProfitOrLoss = {
     And(noTradingProfit, noTradingLoss) _
-  }
-
-  protected def And(predicates: ((ComputationsBoxRetriever) => Boolean)*)(boxRetriever: ComputationsBoxRetriever): Boolean = {
-    !predicates.exists { p => !p(boxRetriever)}
-  }
-
-  protected def Or(predicates: ((ComputationsBoxRetriever) => Boolean)*)(boxRetriever: ComputationsBoxRetriever): Boolean = {
-    predicates.exists { p => p(boxRetriever)}
-  }
-
-  protected def requiredIf(boxId: String = boxId)(predicate: (ComputationsBoxRetriever) => Boolean)(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    if (predicate(boxRetriever))
-      Set(CtValidation(Some(boxId), s"error.$boxId.required"))
-    else
-      Set.empty
-  }
-
-  protected def exceedsMax(boxId: String = boxId)(value: Option[Int], max: Int = MAX_MONEY_AMOUNT_ALLOWED)(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    value match {
-      case (Some(v)) if v > max => Set(CtValidation(Some(boxId), s"error.$boxId.exceeds.max", Some(Seq(max.toString))))
-      case _ => Set.empty
-    }
-  }
-
-  protected def belowMin(boxId: String = boxId)(value: Option[Int], min: Int = MIN_MONEY_AMOUNT_ALLOWED)(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    value match {
-      case (Some(v)) if v < min => Set(CtValidation(Some(boxId), s"error.$boxId.below.min", Some(Seq(min.toString))))
-      case _ => Set.empty
-    }
-  }
-
-  protected def cannotExistIf(boxId: String = boxId)(predicate: (ComputationsBoxRetriever) => Boolean)(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    if (predicate(boxRetriever))
-      Set(CtValidation(Some(boxId), s"error.$boxId.cannot.exist"))
-    else
-      Set.empty
-  }
-
-  protected def collectErrors(predicates: Set[(ComputationsBoxRetriever) => Set[CtValidation]])(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    predicates.flatMap { predicate =>
-      predicate(boxRetriever)
-    }
   }
 }
