@@ -90,7 +90,7 @@ class DirectorsDetailsSpec extends WordSpec with MockitoSugar with Matchers {
 
       val directorsDetails = DirectorsDetails(directors)
 
-      val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.global.atMost12", None))
+      val expectedError = Set(CtValidation(Some("AC8001"), "error.AC8001.atMost12", None))
       directorsDetails.validate(mockBoxRetriever) shouldBe expectedError
     }
 

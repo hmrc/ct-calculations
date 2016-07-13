@@ -46,7 +46,7 @@ case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty
 
   def validateAtMost12Directors(): Set[CtValidation] = {
     directorsDetails.size match {
-      case n if n > 12 => Set(CtValidation(Some("AC8001"), "error.AC8001.global.atMost12", None))
+      case n if n > 12 => Set(CtValidation(Some("AC8001"), "error.AC8001.atMost12", None))
       case _ => Set.empty
     }
   }
