@@ -202,9 +202,9 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  def validateStringByRegex(boxId: String, value: String, regex: String): Set[CtValidation] = {
+  protected def validateStringByRegex(boxId: String, value: String, errorCodeBoxId: String, regex: String): Set[CtValidation] = {
     assumingNot (value.matches(regex)) {
-      Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+      Set(CtValidation(Some(boxId), s"error.$errorCodeBoxId.regexFailure"))
     }
   }
 
@@ -225,9 +225,9 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  def validateStringByLength(boxId: String, value: String, min: Int, max: Int): Set[CtValidation] = {
+  def validateStringByLength(boxId: String, value: String, errorCodeId: String, min: Int, max: Int): Set[CtValidation] = {
     assuming (value.size < min || value.size > max) {
-      Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(min.toString, max.toString))))
+      Set(CtValidation(Some(boxId), s"error.$errorCodeId.text.sizeRange", Some(Seq(min.toString, max.toString))))
     }
   }
 

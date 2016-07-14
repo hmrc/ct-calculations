@@ -40,13 +40,13 @@ case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty
     val shouldFileDirectorsReport = boxRetriever.retrieveAC8023().value.getOrElse(false)
 
     assuming (shouldFileDirectorsReport && directorsDetails.isEmpty) {
-      Set(CtValidation(Some("AC8001"), "error.AC8001.global.atLeast1", None))
+      Set(CtValidation(Some("AC8001"), "error.DirectorsDetails.AC8001.global.atLeast1", None))
     }
   }
 
   def validateAtMost12Directors(): Set[CtValidation] = {
     directorsDetails.size match {
-      case n if n > 12 => Set(CtValidation(Some("AC8001"), "error.AC8001.atMost12", None))
+      case n if n > 12 => Set(CtValidation(Some("AC8001"), "error.DirectorsDetails.AC8001.atMost12", None))
       case _ => Set.empty
     }
   }
@@ -56,7 +56,7 @@ case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty
     val uniqueNames = directorsDetails.map(_.AC8001).toSet
 
     directorsDetails.size != uniqueNames.size match {
-      case true => Set(CtValidation(Some("AC8001"), "error.AC8001.unique", None))
+      case true => Set(CtValidation(Some("AC8001"), "error.DirectorsDetails.AC8001.unique", None))
       case false => Set.empty
     }
   }
@@ -66,7 +66,7 @@ case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty
 case class DirectorDetails (id: String, AC8001: String) extends ValidatableBox[Frs10xAccountsBoxRetriever] {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
-    validateStringByLength("AC8001", AC8001, 1, 40) ++ validateStringByRegex("AC8001", AC8001, validCoHoCharacters)
+    validateStringByLength("AC8001", AC8001, "DirectorsDetails.AC8001", 1, 40) ++ validateStringByRegex("AC8001", AC8001, "DirectorsDetails.AC8001", validCoHoCharacters)
 }
 
 
