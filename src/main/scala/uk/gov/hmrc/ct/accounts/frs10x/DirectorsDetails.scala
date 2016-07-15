@@ -33,8 +33,6 @@ case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty
     directorsDetails.foldRight(Set[CtValidation]())((dd, tail) => dd.validate(boxRetriever) ++ tail)
   }
 
-  def +(other: DirectorsDetails): DirectorsDetails = new DirectorsDetails(directorsDetails ++ other.directorsDetails)
-
   def validateDirectorRequired(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
 
     val shouldFileDirectorsReport = boxRetriever.retrieveAC8023().value.getOrElse(false)
