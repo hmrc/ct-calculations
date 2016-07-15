@@ -39,7 +39,7 @@ case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty
 
     val shouldFileDirectorsReport = boxRetriever.retrieveAC8023().value.getOrElse(false)
 
-    assuming (shouldFileDirectorsReport && directorsDetails.isEmpty) {
+    failIf (shouldFileDirectorsReport && directorsDetails.isEmpty) {
       Set(CtValidation(Some("AC8001"), "error.DirectorsDetails.AC8001.global.atLeast1", None))
     }
   }

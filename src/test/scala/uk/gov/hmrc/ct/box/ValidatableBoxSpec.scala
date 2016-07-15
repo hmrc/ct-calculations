@@ -345,25 +345,44 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
   }
 
-  "assuming" should {
-    "evaluate validations if condition is true" in {
+  "fail if" should {
+    "evaluate and return validation errors if condition is true" in {
 
-      val result = assuming (true) {
+      val result = failIf (true) {
         Set(CtValidation(None, "", None))
       }
 
-      result.size shouldBe 1
+      result shouldBe Set(CtValidation(None, "", None))
     }
 
-    "not evaluate validations if condition is false" in {
+    "return empy set if condition is false" in {
 
-      val result = assuming (false) {
+      val result = failIf (false) {
         Set(CtValidation(None, "", None))
       }
 
       result shouldBe empty
     }
 
+    "pass if" should {
+      "return empy set if condition is true" in {
+
+        val result = passIf(true) {
+          Set(CtValidation(None, "", None))
+        }
+
+        result shouldBe empty
+      }
+
+      " evaluate and return validation errors if condition is false" in {
+
+        val result = passIf(false) {
+          Set(CtValidation(None, "", None))
+        }
+
+        result shouldBe Set(CtValidation(None, "", None))
+      }
+    }
   }
 
 
