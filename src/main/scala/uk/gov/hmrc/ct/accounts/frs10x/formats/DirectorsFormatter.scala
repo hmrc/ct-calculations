@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct.accounts.frs10x.formats
 
-import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import play.api.libs.json.Json
+import uk.gov.hmrc.ct.accounts.frs10x.Directors
+import uk.gov.hmrc.ct.ct600a.v3.LoansToParticipators
 
-case class B620(value: Option[Int]) extends CtBoxIdentifier("Franked investment") with CtOptionalInteger with Input with ValidatableBox[CT600BoxRetriever] {
+object DirectorsFormatter {
+  
+  def DirectorsFromJsonString(json: String): Directors = Json.fromJson[Directors](Json.parse(json)).get
 
-  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    val bfq1 = boxRetriever.retrieveBFQ1()
+  def toJsonString(directors: Directors): String =  Json.toJson(directors).toString()
 
-    failIf (bfq1.value.getOrElse(false) && !this.value.isDefined) {
-      Set(CtValidation(Some("B620"), "error.B620.required"))
-    }
-  }
+  def asBoxString(directors: Directors): Option[String] = Some(toJsonString(directors))
 }
