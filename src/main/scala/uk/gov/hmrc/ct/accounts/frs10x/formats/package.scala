@@ -28,8 +28,8 @@ package object formats {
   implicit val ac8054Format: Format[AC8054] = new OptionalStringFormat[AC8054](AC8054.apply)
   implicit val acq8161Format: Format[ACQ8161] = new OptionalBooleanFormat[ACQ8161](ACQ8161.apply)
 
-  implicit val directorDetailsFormat = Json.format[DirectorDetails]
+  implicit val directorFormat = Json.format[Director]
+  implicit val directorsFormat: Format[Directors] = Json.format[Directors]
   implicit val acAC8033Format: Format[AC8033] = new OptionalStringFormat[AC8033](AC8033.apply)
-  implicit val directorsDetailsFormat: Format[DirectorsDetails] = Json.format[DirectorsDetails]
 
 }

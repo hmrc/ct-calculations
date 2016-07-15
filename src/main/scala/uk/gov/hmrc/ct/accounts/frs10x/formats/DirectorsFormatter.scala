@@ -17,14 +17,14 @@
 package uk.gov.hmrc.ct.accounts.frs10x.formats
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.ct.accounts.frs10x.DirectorsDetails
+import uk.gov.hmrc.ct.accounts.frs10x.Directors
 import uk.gov.hmrc.ct.ct600a.v3.LoansToParticipators
 
-object DirectorsDetailsFormatter {
+object DirectorsFormatter {
   
-  def DirectorsDetailsFromJsonString(json: String): DirectorsDetails = Json.fromJson[DirectorsDetails](Json.parse(json)).get
+  def DirectorsFromJsonString(json: String): Directors = Json.fromJson[Directors](Json.parse(json)).get
 
-  def toJsonString(directorsDetails: DirectorsDetails): String =  Json.toJson(directorsDetails).toString()
+  def toJsonString(directors: Directors): String =  Json.toJson(directors).toString()
 
-  def asBoxString(directorsDetails: DirectorsDetails): Option[String] = Some(toJsonString(directorsDetails))
+  def asBoxString(directors: Directors): Option[String] = Some(toJsonString(directors))
 }

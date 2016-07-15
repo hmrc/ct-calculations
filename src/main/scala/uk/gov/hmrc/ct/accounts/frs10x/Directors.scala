@@ -16,55 +16,55 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x
 
-import uk.gov.hmrc.ct.accounts.frs10x.formats.DirectorsDetailsFormatter
+import uk.gov.hmrc.ct.accounts.frs10x.formats.DirectorsFormatter
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 
 
-case class DirectorsDetails(directorsDetails: List[DirectorDetails] = List.empty) extends CtBoxIdentifier(name = "Directors Details.") with CtValue[List[DirectorDetails]] with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
+case class Directors(directors: List[Director] = List.empty) extends CtBoxIdentifier(name = "Directors.") with CtValue[List[Director]] with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
 
-  override def value = directorsDetails
+  override def value = directors
 
-  override def asBoxString = DirectorsDetailsFormatter.asBoxString(this)
+  override def asBoxString = DirectorsFormatter.asBoxString(this)
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
     validateDirectorRequired(boxRetriever) ++ validateAtMost12Directors() ++ validateDirectorsUnique() ++
-    directorsDetails.foldRight(Set[CtValidation]())((dd, tail) => dd.validate(boxRetriever) ++ tail)
+    directors.foldRight(Set[CtValidation]())((dd, tail) => dd.validate(boxRetriever) ++ tail)
   }
 
   def validateDirectorRequired(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
 
     val shouldFileDirectorsReport = boxRetriever.retrieveAC8023().value.getOrElse(false)
 
-    failIf (shouldFileDirectorsReport && directorsDetails.isEmpty) {
-      Set(CtValidation(Some("AC8001"), "error.DirectorsDetails.AC8001.global.atLeast1", None))
+    failIf (shouldFileDirectorsReport && directors.isEmpty) {
+      Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.global.atLeast1", None))
     }
   }
 
   def validateAtMost12Directors(): Set[CtValidation] = {
-    directorsDetails.size match {
-      case n if n > 12 => Set(CtValidation(Some("AC8001"), "error.DirectorsDetails.AC8001.atMost12", None))
+    directors.size match {
+      case n if n > 12 => Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.atMost12", None))
       case _ => Set.empty
     }
   }
 
   def validateDirectorsUnique(): Set[CtValidation] = {
 
-    val uniqueNames = directorsDetails.map(_.AC8001).toSet
+    val uniqueNames = directors.map(_.AC8001).toSet
 
-    directorsDetails.size != uniqueNames.size match {
-      case true => Set(CtValidation(Some("AC8001"), "error.DirectorsDetails.AC8001.unique", None))
+    directors.size != uniqueNames.size match {
+      case true => Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.unique", None))
       case false => Set.empty
     }
   }
 
 }
 
-case class DirectorDetails (id: String, AC8001: String) extends ValidatableBox[Frs10xAccountsBoxRetriever] {
+case class Director(id: String, AC8001: String) extends ValidatableBox[Frs10xAccountsBoxRetriever] {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
-    validateStringByLength("AC8001", AC8001, "DirectorsDetails.AC8001", 1, 40) ++ validateStringByRegex("AC8001", AC8001, "DirectorsDetails.AC8001", validCoHoCharacters)
+    validateStringByLength("AC8001", AC8001, "Directors.AC8001", 1, 40) ++ validateStringByRegex("AC8001", AC8001, "Directors.AC8001", validCoHoCharacters)
 }
 
 
