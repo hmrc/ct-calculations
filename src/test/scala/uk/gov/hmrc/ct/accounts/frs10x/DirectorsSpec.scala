@@ -18,13 +18,23 @@ package uk.gov.hmrc.ct.accounts.frs10x
 
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
+import org.scalatest.prop.TableDrivenPropertyChecks._
+import org.scalatest.prop.Tables.Table
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.{MicroEntityFiling, HMRCFiling, CompaniesHouseFiling}
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 class DirectorsSpec extends WordSpec with MockitoSugar with Matchers {
 
-  val mockBoxRetriever = mock[Frs10xAccountsBoxRetriever]
+  trait  MockableFrs10xBoxretrieverWithFilingAttributes extends Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever
+  val mockBoxRetriever = mock[MockableFrs10xBoxretrieverWithFilingAttributes]
+
+  when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+  when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(true))
+  when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(true))
+  when(mockBoxRetriever.retrieveAC8021()).thenReturn(AC8021(Some(true)))
   when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(true)))
 
 
@@ -73,12 +83,34 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers {
       directors.validate(mockBoxRetriever) shouldBe expectedError
     }
 
-    "validate at least one director name present is disabled when AC8023 is false" in {
-      when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(false)))
+    "validate under the correct conditions only" in {
 
       val directors = Directors(List())
 
-      directors.validate(mockBoxRetriever) shouldBe empty
+      val testTable = Table(
+        ("companiesHouseFiling",   "hmrcFiling",     "microEntityFiling",  "ac8021",         "ac8023",            "expectedResult"),
+        (true,                      true,             false,                None,             None,                 true),
+        (true,                      true,             true,                 None,             Some(true),           true),
+        (true,                      true,             true,                 None,             Some(false),          false),
+        (true,                      false,            false,                Some(true),       None,                 true),
+        (true,                      false,            false,                Some(false),      None,                 false),
+        (true,                      false,            true,                 Some(true),       None,                 true),
+        (true,                      false,            true,                 Some(false),      None,                 false),
+        (false,                     true,             false,                None,             None,                 true),
+        (false,                     true,             true,                 None,             Some(true),           true),
+        (false,                     true,             true,                 None,             Some(false),          false)
+      )
+
+      forAll(testTable) { (companiesHouseFiling: Boolean, hmrcFiling: Boolean, microEntityFiling: Boolean, ac8021: Option[Boolean], ac8023: Option[Boolean], expectedResult: Boolean) =>
+        when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(companiesHouseFiling))
+        when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(hmrcFiling))
+        when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(microEntityFiling))
+        when(mockBoxRetriever.retrieveAC8021()).thenReturn(AC8021(ac8021))
+        when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(ac8023))
+
+        directors.validate(mockBoxRetriever).size > 0 shouldBe expectedResult
+        directors.validate(mockBoxRetriever).exists(_.errorMessageKey.contains("atLeast1")) shouldBe expectedResult
+      }
     }
 
     "validate at most 12 director names" in {
