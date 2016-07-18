@@ -19,25 +19,34 @@ package uk.gov.hmrc.ct.accounts.frs10x
 import uk.gov.hmrc.ct.accounts.frs10x.formats.DirectorsFormatter
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-
-case class Directors(directors: List[Director] = List.empty) extends CtBoxIdentifier(name = "Directors.") with CtValue[List[Director]] with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
+case class Directors(directors: List[Director] = List.empty) extends CtBoxIdentifier(name = "Directors.") with CtValue[List[Director]] with Input with ValidatableBox[Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
 
   override def value = directors
 
   override def asBoxString = DirectorsFormatter.asBoxString(this)
 
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
-    validateDirectorRequired(boxRetriever) ++ validateAtMost12Directors() ++ validateDirectorsUnique() ++
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+    validateDirectorRequired(boxRetriever ) ++ validateAtMost12Directors() ++ validateDirectorsUnique() ++
     directors.foldRight(Set[CtValidation]())((dd, tail) => dd.validate(boxRetriever) ++ tail)
   }
 
-  def validateDirectorRequired(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
+  def directorsReportEnabled(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean = {
+    val isCoHoFiling = boxRetriever.retrieveCompaniesHouseFiling().value
+    val isHmrcFiling = boxRetriever.retrieveHMRCFiling().value
+    val isMicroEntityFiling = boxRetriever.retrieveMicroEntityFiling().value
+    val answeredYesToCoHoDirectorsReportQuestion = boxRetriever.retrieveAC8021().orFalse
+    val answeredYesToHmrcDirectorsReportQuestion = boxRetriever.retrieveAC8023().orFalse
 
-    val shouldFileDirectorsReport = boxRetriever.retrieveAC8023().value.getOrElse(false)
+    (isCoHoFiling, isHmrcFiling) match {
+      case (true, false) => answeredYesToCoHoDirectorsReportQuestion
+      case _ => !isMicroEntityFiling || answeredYesToHmrcDirectorsReportQuestion
+    }
+  }
 
-    failIf (shouldFileDirectorsReport && directors.isEmpty) {
+  def validateDirectorRequired(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+    failIf (directorsReportEnabled(boxRetriever) && directors.isEmpty) {
       Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.global.atLeast1", None))
     }
   }
