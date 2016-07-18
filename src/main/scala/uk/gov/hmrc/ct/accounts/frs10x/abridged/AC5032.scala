@@ -24,5 +24,11 @@ case class AC5032(value: Option[String]) extends CtBoxIdentifier(name = "Profit/
                                       with Input
                                       with ValidatableBox[Frs10xAccountsBoxRetriever] {
 
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = ???
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
+    (boxRetriever.retrieveAC32(), value) match {
+      case (AC32(None), Some(s)) => Set(CtValidation(Some("AC5032"), "error.AC5032.cannot.exist"))
+      case (AC32(Some(_)), Some(s)) if s.length > 20000 => Set(CtValidation(Some("AC5032"), "error.AC5032.max.length", Some(Seq("20,000"))))
+      case _ => Set.empty
+    }
+  }
 }
