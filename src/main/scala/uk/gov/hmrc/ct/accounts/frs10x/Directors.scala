@@ -18,10 +18,15 @@ package uk.gov.hmrc.ct.accounts.frs10x
 
 import uk.gov.hmrc.ct.accounts.frs10x.formats.DirectorsFormatter
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.validation.DirectorsReportEnabled
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-case class Directors(directors: List[Director] = List.empty) extends CtBoxIdentifier(name = "Directors.") with CtValue[List[Director]] with Input with ValidatableBox[Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
+case class Directors(directors: List[Director] = List.empty) extends CtBoxIdentifier(name = "Directors.")
+  with CtValue[List[Director]]
+  with Input
+  with ValidatableBox[Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever]
+  with DirectorsReportEnabled {
 
   override def value = directors
 
@@ -30,19 +35,6 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     validateDirectorRequired(boxRetriever ) ++ validateAtMost12Directors() ++ validateDirectorsUnique() ++
     directors.foldRight(Set[CtValidation]())((dd, tail) => dd.validate(boxRetriever) ++ tail)
-  }
-
-  def directorsReportEnabled(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean = {
-    val isCoHoFiling = boxRetriever.retrieveCompaniesHouseFiling().value
-    val isHmrcFiling = boxRetriever.retrieveHMRCFiling().value
-    val isMicroEntityFiling = boxRetriever.retrieveMicroEntityFiling().value
-    val answeredYesToCoHoDirectorsReportQuestion = boxRetriever.retrieveAC8021().orFalse
-    val answeredYesToHmrcDirectorsReportQuestion = boxRetriever.retrieveAC8023().orFalse
-
-    (isCoHoFiling, isHmrcFiling) match {
-      case (true, false) => answeredYesToCoHoDirectorsReportQuestion
-      case _ => !isMicroEntityFiling || answeredYesToHmrcDirectorsReportQuestion
-    }
   }
 
   def validateDirectorRequired(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
