@@ -16,17 +16,13 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.OperatingProfitOrLossCalculator
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC26(value: Option[Int]) extends CtBoxIdentifier(name = "Operating profit or loss (current PoA)") with CtOptionalInteger
+case class AC5032(value: Option[String]) extends CtBoxIdentifier(name = "Profit/(loss) before tax note")
+                                      with CtOptionalString
+                                      with Input
+                                      with ValidatableBox[Frs10xAccountsBoxRetriever] {
 
-object AC26 extends Calculated[AC26, Frs10xAccountsBoxRetriever] with OperatingProfitOrLossCalculator {
-
-  override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC26 = {
-    import boxRetriever._
-    calculateAC26(retrieveAC16(), retrieveAC18(), retrieveAC20())
-  }
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = ???
 }
-

@@ -21,10 +21,18 @@ import uk.gov.hmrc.ct.accounts.frs10x.abridged._
 trait ProfitOrLossBeforeTaxCalculator {
 
   def calculateAC32(aC26: AC26, aC28: AC28, aC30: AC30): AC32 = {
-    AC32(aC26.value + aC28.orZero - aC30.orZero)
+    (aC26.value, aC28.value, aC30.value) match {
+      case (None, None, None) => AC32(None)
+      case _ => AC32(Some(aC26.orZero + aC28.orZero - aC30.orZero))
+    }
+
   }
 
   def calculateAC33(aC27: AC27, aC29: AC29, aC31: AC31): AC33 = {
-    AC33(aC27.value + aC29.orZero - aC31.orZero)
+    (aC27.value, aC29.value, aC31.value) match {
+      case (None, None, None) => AC33(None)
+      case _ => AC33(Some(aC27.orZero + aC29.orZero - aC31.orZero))
+    }
+
   }
 }
