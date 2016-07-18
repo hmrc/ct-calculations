@@ -345,6 +345,46 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
   }
 
+  "fail if" should {
+    "evaluate and return validation errors if condition is true" in {
+
+      val result = failIf (true) {
+        Set(CtValidation(None, "", None))
+      }
+
+      result shouldBe Set(CtValidation(None, "", None))
+    }
+
+    "return empy set if condition is false" in {
+
+      val result = failIf (false) {
+        Set(CtValidation(None, "", None))
+      }
+
+      result shouldBe empty
+    }
+
+    "pass if" should {
+      "return empy set if condition is true" in {
+
+        val result = passIf(true) {
+          Set(CtValidation(None, "", None))
+        }
+
+        result shouldBe empty
+      }
+
+      " evaluate and return validation errors if condition is false" in {
+
+        val result = passIf(false) {
+          Set(CtValidation(None, "", None))
+        }
+
+        result shouldBe Set(CtValidation(None, "", None))
+      }
+    }
+  }
+
 
   case class testOptBooleanBox(value: Option[Boolean]) extends CtBoxIdentifier("testBox") with CtOptionalBoolean{}
   case class testOptIntegerBox(value: Option[Int]) extends CtBoxIdentifier("testBox") with CtOptionalInteger{}

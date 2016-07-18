@@ -76,9 +76,7 @@ trait ValidatableBox[T <: BoxRetriever] {
     val allEmpty = allBoxes.count(_.value.isEmpty) == allBoxes.size
     val allNonEmpty = allBoxes.count(_.value.nonEmpty) == allBoxes.size
 
-    if(allEmpty || allNonEmpty) {
-      Set()
-    } else {
+    passIf(allEmpty || allNonEmpty) {
       Set(CtValidation(Some(boxId), s"error.$boxId.allornone"))
     }
   }
@@ -150,8 +148,9 @@ trait ValidatableBox[T <: BoxRetriever] {
   protected def validateIntegerRange(boxId: String, box: CtOptionalInteger, min: Int = 0, max: Int): Set[CtValidation] = {
     box.value match {
       case Some(x) => {
-        if (min <= x && x <= max) Set()
-        else Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(min.toString,max.toString))))
+        passIf (min <= x && x <= max) {
+           Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(min.toString,max.toString))))
+        }
       }
       case _ => Set()
     }
@@ -188,33 +187,47 @@ trait ValidatableBox[T <: BoxRetriever] {
   protected def validateOptionalStringByRegex(boxId: String, box: CtOptionalString, regex: String): Set[CtValidation] = {
     box.value match {
       case Some(x) if x.nonEmpty => {
-        if (x.matches(regex)) Set()
-        else Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+        passIf (x.matches(regex)) {
+          Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+        }
       }
       case _ => Set()
     }
   }
 
   protected def validateStringByRegex(boxId: String, box: CtString, regex: String): Set[CtValidation] = {
-    if (box.value.isEmpty || box.value.matches(regex)) Set()
-    else Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+    passIf (box.value.isEmpty || box.value.matches(regex)) {
+      Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+    }
+  }
+
+  protected def validateStringByRegex(boxId: String, value: String, errorCodeBoxId: String, regex: String): Set[CtValidation] = {
+    passIf (value.matches(regex)) {
+      Set(CtValidation(Some(boxId), s"error.$errorCodeBoxId.regexFailure"))
+    }
   }
 
   protected def validateOptionalStringByLength(boxId: String, box: CtOptionalString, min: Int, max: Int): Set[CtValidation] = {
     box.value match {
-      case Some(x) => validateStringByLength(boxId, x, min, max)
+      case Some(x) => validateNotEmptyStringByLength(boxId, x, min, max)
       case _ => Set()
     }
   }
 
   protected def validateStringByLength(boxId: String, box: CtString, min:Int, max:Int): Set[CtValidation] = {
-     validateStringByLength(boxId, box.value, min, max)
+     validateNotEmptyStringByLength(boxId, box.value, min, max)
   }
 
-  private def validateStringByLength(boxId: String, value: String, min: Int, max: Int): Set[CtValidation] = {
-    if (value.nonEmpty && value.size < min || value.size > max) {
+  def validateNotEmptyStringByLength(boxId: String, value: String, min: Int, max: Int): Set[CtValidation] = {
+    failIf (value.nonEmpty && value.size < min || value.size > max) {
       Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(min.toString, max.toString))))
-    } else Set()
+    }
+  }
+
+  def validateStringByLength(boxId: String, value: String, errorCodeId: String, min: Int, max: Int): Set[CtValidation] = {
+    failIf (value.size < min || value.size > max) {
+      Set(CtValidation(Some(boxId), s"error.$errorCodeId.text.sizeRange", Some(Seq(min.toString, max.toString))))
+    }
   }
 
   def validatePostcode(boxId: String, box: CtOptionalString): Set[CtValidation] = {
@@ -233,5 +246,13 @@ trait ValidatableBox[T <: BoxRetriever] {
       case x if x.isEmpty => Set()
       case _ => Set(CtValidation(Some(boxId), s"error.$boxId.invalidPostcode"))
     }
+  }
+
+  object failIf {
+    def apply(condition: => Boolean)(validationErrors: => Set[CtValidation]): Set[CtValidation] = if(condition) validationErrors else Set()
+  }
+
+  object passIf {
+    def apply(condition: => Boolean)(validationErrors: => Set[CtValidation]): Set[CtValidation] = if(condition) Set() else validationErrors
   }
 }

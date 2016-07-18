@@ -98,7 +98,7 @@ case class Loan ( id: String,
 
   private def balancedAmountArgs: Option[Seq[String]] = Some(Seq(totalAmountRepaymentsAndWriteOffs.toString, amount.toString))
 
-  private def balancedBeforeApril2016AmountArgs: Option[Seq[String]] = Some(Seq(totalAmountBeforeApril2016RepaymentsAndWriteOffs.toString, amountBefore06042016.toString))
+  private def balancedBeforeApril2016AmountArgs: Option[Seq[String]] = Some(Seq(totalAmountBeforeApril2016RepaymentsAndWriteOffs.toString, amountBefore06042016.getOrElse(0).toString))
 
   def validateLoan(invalid: Boolean, errorMsg: String, errorArgs: Option[Seq[String]] = None): Set[CtValidation] = {
    invalid match {

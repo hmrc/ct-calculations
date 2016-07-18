@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct.accounts.frs10x
 
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-case class B620(value: Option[Int]) extends CtBoxIdentifier("Franked investment") with CtOptionalInteger with Input with ValidatableBox[CT600BoxRetriever] {
+case class AC8033(value: Option[String]) extends CtBoxIdentifier(name = "Secretary name") with CtOptionalString with Input with ValidatableBox[Frs10xAccountsBoxRetriever] {
 
-  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    val bfq1 = boxRetriever.retrieveBFQ1()
-
-    failIf (bfq1.value.getOrElse(false) && !this.value.isDefined) {
-      Set(CtValidation(Some("B620"), "error.B620.required"))
-    }
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
+    validateOptionalStringByLength("AC8033", this, 1, 40) ++ validateOptionalStringByRegex("AC8033", this, validCoHoCharacters)
   }
 }
