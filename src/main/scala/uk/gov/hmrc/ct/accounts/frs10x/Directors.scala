@@ -63,7 +63,11 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
 
 }
 
-case class Director(id: String, AC8001: String, appointed: Boolean, resigned: Boolean, appointmentDate: Option[LocalDate], resignationDate: Option[LocalDate]) extends ValidatableBox[Frs10xAccountsBoxRetriever] {
+case class Director(id: String, AC8001: String,
+                    appointed: Option[Boolean] = None,
+                    resigned: Option[Boolean] = None,
+                    appointmentDate: Option[LocalDate] = None,
+                    resignationDate: Option[LocalDate] = None) extends ValidatableBox[Frs10xAccountsBoxRetriever] {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
     validateStringByLength("AC8001", AC8001, "Directors.AC8001", 1, 40) ++ validateStringByRegex("AC8001", AC8001, "Directors.AC8001", validCoHoCharacters)
