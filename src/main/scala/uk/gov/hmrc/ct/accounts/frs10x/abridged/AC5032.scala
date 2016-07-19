@@ -16,17 +16,19 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.OperatingProfitOrLossCalculator
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC26(value: Option[Int]) extends CtBoxIdentifier(name = "Operating profit or loss (current PoA)") with CtOptionalInteger
+case class AC5032(value: Option[String]) extends CtBoxIdentifier(name = "Profit/(loss) before tax note")
+                                      with CtOptionalString
+                                      with Input
+                                      with ValidatableBox[Frs10xAccountsBoxRetriever] {
 
-object AC26 extends Calculated[AC26, Frs10xAccountsBoxRetriever] with OperatingProfitOrLossCalculator {
-
-  override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC26 = {
-    import boxRetriever._
-    calculateAC26(retrieveAC16(), retrieveAC18(), retrieveAC20())
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
+    (boxRetriever.retrieveAC32(), value) match {
+      case (AC32(None), Some(s)) => Set(CtValidation(Some("AC5032"), "error.AC5032.cannot.exist"))
+      case (AC32(Some(_)), Some(s)) if s.length > 20000 => Set(CtValidation(Some("AC5032"), "error.AC5032.max.length", Some(Seq("20,000"))))
+      case _ => Set.empty
+    }
   }
 }
-

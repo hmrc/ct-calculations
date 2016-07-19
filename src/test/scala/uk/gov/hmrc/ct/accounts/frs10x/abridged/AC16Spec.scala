@@ -124,7 +124,7 @@ class AC16Spec extends AccountsMoneyValidationFixture with MockRetriever {
         when(boxRetriever.retrieveAC28()).thenReturn(AC28(None))
         when(boxRetriever.retrieveAC30()).thenReturn(AC30(None))
         when(boxRetriever.retrieveAC34()).thenReturn(AC34(None))
-        AC16(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = None, errorMessageKey = "error.profit.loss.one.box.required"))
+        AC16(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = None, errorMessageKey = "error.abridged.profit.loss.one.box.required"))
       }
     }
   }

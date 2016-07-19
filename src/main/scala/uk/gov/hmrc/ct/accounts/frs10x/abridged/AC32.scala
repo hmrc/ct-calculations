@@ -18,9 +18,9 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.ProfitOrLossBeforeTaxCalculator
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger, CtOptionalInteger}
 
-case class AC32(value: Int) extends CtBoxIdentifier(name = "Profit or loss before tax (current PoA)") with CtInteger
+case class AC32(value: Option[Int]) extends CtBoxIdentifier(name = "Profit or loss before tax (current PoA)") with CtOptionalInteger
 
 object AC32 extends Calculated[AC32, Frs10xAccountsBoxRetriever] with ProfitOrLossBeforeTaxCalculator {
 
