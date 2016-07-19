@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x
 
+import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.accounts.frs10x.formats.DirectorsFormatter
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs10x.validation.DirectorsReportEnabled
@@ -62,7 +63,7 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
 
 }
 
-case class Director(id: String, AC8001: String) extends ValidatableBox[Frs10xAccountsBoxRetriever] {
+case class Director(id: String, AC8001: String, appointed: Boolean, resigned: Boolean, appointmentDate: Option[LocalDate], resignationDate: Option[LocalDate]) extends ValidatableBox[Frs10xAccountsBoxRetriever] {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
     validateStringByLength("AC8001", AC8001, "Directors.AC8001", 1, 40) ++ validateStringByRegex("AC8001", AC8001, "Directors.AC8001", validCoHoCharacters)
