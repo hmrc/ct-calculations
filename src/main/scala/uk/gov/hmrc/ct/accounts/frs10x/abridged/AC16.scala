@@ -39,7 +39,7 @@ case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
         .nonEmpty
 
     if (fieldValidation.isEmpty && !anyProfitOrLossFieldHasAValue) {
-      Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
+      Set(CtValidation(boxId = None, "error.abridged.profit.loss.one.box.required"))
     } else {
       fieldValidation
     }
