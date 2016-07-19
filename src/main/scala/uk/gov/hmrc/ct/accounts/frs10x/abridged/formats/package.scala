@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.box.formats.OptionalIntegerFormat
+import uk.gov.hmrc.ct.box.formats.{OptionalIntegerFormat, OptionalStringFormat}
 
 package object formats {
   implicit val ac16Format = new OptionalIntegerFormat[AC16](AC16.apply)
@@ -31,4 +31,5 @@ package object formats {
   implicit val ac31Format = new OptionalIntegerFormat[AC31](AC31.apply)
   implicit val ac34Format = new OptionalIntegerFormat[AC34](AC34.apply)
   implicit val ac35Format = new OptionalIntegerFormat[AC35](AC35.apply)
+  implicit val ac5032Format = new OptionalStringFormat[AC5032](AC5032.apply)
 }
