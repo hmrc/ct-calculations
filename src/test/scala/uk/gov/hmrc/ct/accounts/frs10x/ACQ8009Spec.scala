@@ -48,7 +48,7 @@ class ACQ8009Spec extends WordSpec with Matchers with MockitoSugar {
 
       val secretary = ACQ8009(None)
 
-      secretary.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("ACQ8009"),"error.ACQ8009.required",None))
+      secretary.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("ACQ8009"), "error.ACQ8009.required", None))
     }
 
     "no validate if no directors report" in {
