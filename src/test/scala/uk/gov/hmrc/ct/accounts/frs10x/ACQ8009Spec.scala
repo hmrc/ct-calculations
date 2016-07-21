@@ -35,7 +35,7 @@ class ACQ8009Spec extends WordSpec with Matchers with MockitoSugar {
   when(mockBoxRetriever.retrieveAC8021()).thenReturn(AC8021(Some(true)))
   when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(true)))
 
-  "AC8033 should" should {
+  "ACQ8009 should" should {
 
     "validate successfully when no errors present" in {
 
