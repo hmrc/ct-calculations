@@ -34,8 +34,20 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
   override def asBoxString = DirectorsFormatter.asBoxString(this)
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-    validateDirectorRequired(boxRetriever ) ++ validateAtMost12Directors() ++ validateDirectorsUnique() ++
+    validateDirectorRequired(boxRetriever ) ++
+      validateDirectorAppointmentsRequired(boxRetriever ) ++
+      validateAtMost12Directors() ++
+      validateDirectorsUnique() ++
     directors.foldRight(Set[CtValidation]())((dd, tail) => dd.validate(boxRetriever) ++ tail)
+  }
+
+  def validateDirectorAppointmentsRequired(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+    failIf (directorsReportEnabled(boxRetriever) &&
+      boxRetriever.retrieveACQ8003().value.getOrElse(false) &&
+      directors.forall(_.AC8005.getOrElse(false) == false)
+    ) {
+      Set(CtValidation(Some("AC8005"), "error.Directors.AC8005.global.atLeast1", None))
+    }
   }
 
   def validateDirectorRequired(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
