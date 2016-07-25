@@ -16,11 +16,13 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{MustBeNoneOrZeroOrPositive, CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.box._
 
-case class CP7(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover/Sales") with CtOptionalInteger with MustBeNoneOrZeroOrPositive with Input
+case class CP7(inputValue: Option[Int], defaultValue: Option[Int]) extends CtBoxIdentifier(name = "Turnover/Sales") with CtOptionalInteger with MustBeNoneOrZeroOrPositive with InputWithDefault[Int]
 
-object CP7 {
+object CP7 extends Linked[AP2, CP7] {
 
-  def apply(value: Int): CP7 = CP7(Some(value))
+  def apply(inputValue: Option[Int]): CP7 = CP7(inputValue = inputValue, defaultValue = None)
+
+  override def apply(source: AP2): CP7 = CP7(None, source.value)
 }

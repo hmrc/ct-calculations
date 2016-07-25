@@ -19,7 +19,6 @@ package uk.gov.hmrc.ct.ct600a.v3
 import org.joda.time.LocalDate
 import uk.gov.hmrc.cato.time.DateHelper
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 import uk.gov.hmrc.ct.ct600a.v3.formats.LoansFormatter
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
@@ -99,7 +98,7 @@ case class Loan ( id: String,
 
   private def balancedAmountArgs: Option[Seq[String]] = Some(Seq(totalAmountRepaymentsAndWriteOffs.toString, amount.toString))
 
-  private def balancedBeforeApril2016AmountArgs: Option[Seq[String]] = Some(Seq(totalAmountBeforeApril2016RepaymentsAndWriteOffs.toString, amountBefore06042016.toString))
+  private def balancedBeforeApril2016AmountArgs: Option[Seq[String]] = Some(Seq(totalAmountBeforeApril2016RepaymentsAndWriteOffs.toString, amountBefore06042016.getOrElse(0).toString))
 
   def validateLoan(invalid: Boolean, errorMsg: String, errorArgs: Option[Seq[String]] = None): Set[CtValidation] = {
    invalid match {

@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.ct600e.v2
 
 import uk.gov.hmrc.ct.box.{AnnualConstant, Calculated, CtBigDecimal, CtBoxIdentifier}
-import uk.gov.hmrc.ct.computations.{CP1, CP2, HmrcAccountingPeriod}
+import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
 import uk.gov.hmrc.ct.ct600.v2.calculations.CorporationTaxCalculator
 import uk.gov.hmrc.ct.ct600.v2.{B37, B38, B39, B42}
 import uk.gov.hmrc.ct.ct600e.v2.retriever.CT600EBoxRetriever

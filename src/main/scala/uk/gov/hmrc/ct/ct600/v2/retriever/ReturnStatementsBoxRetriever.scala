@@ -16,16 +16,19 @@
 
 package uk.gov.hmrc.ct.ct600.v2.retriever
 
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v2._
 
 trait ReturnStatementsBoxRetriever extends BoxRetriever {
 
+  self: AccountsBoxRetriever =>
+
   def retrieveRSQ1(): RSQ1
 
   def retrieveRSQ2(): RSQ2
 
-  def retrieveRSQ3(): RSQ3
+  def retrieveRSQ3(): RSQ3 = RSQ3.calculate(this)
 
   def retrieveRSQ4(): RSQ4
 

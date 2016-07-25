@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600e.v3.retriever
 
-import uk.gov.hmrc.ct.box.retriever.{FilingAttributesBoxValueRetriever, BoxValues, BoxRetriever}
+import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
 import uk.gov.hmrc.ct.ct600e.v3._
 
 trait CT600EBoxRetriever extends BoxRetriever {

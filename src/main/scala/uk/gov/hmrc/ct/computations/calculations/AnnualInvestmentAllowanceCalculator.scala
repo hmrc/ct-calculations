@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.joda.time.{Months, Days, LocalDate}
+import org.joda.time.{Days, LocalDate, Months}
 import uk.gov.hmrc.ct.CATO02
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
 

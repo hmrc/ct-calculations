@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600e.v3
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger}
 import uk.gov.hmrc.ct.ct600e.v3.calculations.ExpenditureCalculator
 import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 

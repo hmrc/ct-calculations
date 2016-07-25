@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtBigDecimal, Calculated, CtBoxIdentifier, CtInteger}
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
 import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.calculations.CorporationTaxCalculatorParameters

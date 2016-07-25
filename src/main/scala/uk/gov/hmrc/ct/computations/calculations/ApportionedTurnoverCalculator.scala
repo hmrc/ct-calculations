@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.{Days, LocalDate}
 import play.api.libs.json.{Format, Json}
-import uk.gov.hmrc.ct.accounts.{AC4, AC3, AC12}
+import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4}
 import uk.gov.hmrc.ct.computations._
 
 import scala.math.BigDecimal.RoundingMode
@@ -38,7 +38,7 @@ trait ApportionedTurnoverCalculator {
                                                 cp1: CP1,
                                                 cp2: CP2,
                                                 ac12: AC12): AP2 = {
-    AP2(apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12).duringAccountingPeriod)
+    AP2(None, apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12).duringAccountingPeriod)
   }
 
   def turnoverApportionedAfterAccountingPeriod(ac3: AC3,

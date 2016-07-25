@@ -16,11 +16,15 @@
 
 package uk.gov.hmrc.ct.computations
 
+import org.mockito.Mockito._
+import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
+import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.formats._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class CPQ8Spec extends WordSpec with Matchers {
+class CPQ8Spec extends WordSpec with Matchers with MockitoSugar {
 
   implicit val format = Json.format[CPQ8Holder]
 
@@ -43,6 +47,53 @@ class CPQ8Spec extends WordSpec with Matchers {
     "create false from valid json" in {
       val json = Json.parse("""{"cpq8":false}""")
       Json.fromJson[CPQ8Holder](json).get shouldBe CPQ8Holder(cpq8 = CPQ8(Some(false)))
+    }
+  }
+
+  "CPQ8" should {
+    val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
+    
+    "when empty" when {
+      "pass validation when CPQ7 is false" in {
+        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(Some(false)))
+        CPQ8(None).validate(boxRetriever) shouldBe empty
+      }
+      "pass validation when CPQ7 is empty" in {
+        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(None))
+        CPQ8(None).validate(boxRetriever) shouldBe empty
+      }
+      "fail validation when CPQ7 is true" in {
+        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(Some(true)))
+        CPQ8(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ8"), "error.CPQ8.required"))
+      }
+    }
+    "when false" when {
+      "pass validation when CPQ7 is false" in {
+        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(Some(false)))
+        CPQ8(Some(false)).validate(boxRetriever) shouldBe empty
+      }
+      "pass validation when CPQ7 is empty" in {
+        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(None))
+        CPQ8(Some(false)).validate(boxRetriever) shouldBe empty
+      }
+      "pass validation when CPQ7 is true" in {
+        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(Some(true)))
+        CPQ8(Some(false)).validate(boxRetriever) shouldBe empty
+      }
+    }
+    "when true" when {
+      "fail validation when CPQ7 is false" in {
+        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(Some(false)))
+        CPQ8(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ8"), "error.CPQ8.notClaiming.required"))
+      }
+      "pass validation when CPQ7 is empty" in {
+        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(None))
+        CPQ8(Some(true)).validate(boxRetriever) shouldBe empty
+      }
+      "pass validation when CPQ7 is true" in {
+        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(Some(true)))
+        CPQ8(Some(true)).validate(boxRetriever) shouldBe empty
+      }
     }
   }
 

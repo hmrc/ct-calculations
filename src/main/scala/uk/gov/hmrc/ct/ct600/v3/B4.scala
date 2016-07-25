@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.FilingCompanyType
-import uk.gov.hmrc.ct.box.{Linked, CtBoxIdentifier, CtString, Input}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtString, Linked}
 
 
 case class B4(value: String) extends CtBoxIdentifier(name = "Company Type") with CtString

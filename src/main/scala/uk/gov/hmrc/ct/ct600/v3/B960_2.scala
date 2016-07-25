@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.{RepaymentsBoxRetriever, CT600DeclarationBoxRetriever, CT600BoxRetriever}
+import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
 
 
 case class B960_2(value: Option[String]) extends CtBoxIdentifier("Payee Address Line 2")

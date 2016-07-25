@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.ct
 
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 case class CountryOfRegistration(value: Option[String]) extends CtBoxIdentifier("Country of registration") with CtOptionalString with Input with ValidatableBox[FilingAttributesBoxValueRetriever] {
 

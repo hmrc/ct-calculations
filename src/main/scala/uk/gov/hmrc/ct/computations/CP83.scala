@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{ValidatableBox, CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input, ValidatableBox}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP83(value: Option[Int]) extends CtBoxIdentifier(name = "Expenditure qualifying for annual investment allowance(AIA)")  with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {

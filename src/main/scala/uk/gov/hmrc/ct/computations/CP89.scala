@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{CtValidation, CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, CtValidation, Input}
 import uk.gov.hmrc.ct.computations.Validators.ComputationValidatableBox
 import uk.gov.hmrc.ct.computations.calculations.MachineryAndPlantCalculator
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever

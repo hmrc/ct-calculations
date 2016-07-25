@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{CtTypeConverters, CtBoxIdentifier, CtInteger, Linked}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtInteger, Linked}
 
 case class CP278(value: Int) extends CtBoxIdentifier("Expenditure on designated environmentally friendly machinery and plant") with CtInteger
 

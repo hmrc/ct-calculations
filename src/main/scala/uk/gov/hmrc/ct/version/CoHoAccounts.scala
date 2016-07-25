@@ -42,7 +42,7 @@ object CoHoAccounts {
     override def key(): String = "CoHoAbridgedAccounts"
   }
 
-  val returns: Set[ReturnType] = Set(CoHoMicroEntityAccounts, CoHoMicroEntityAbridgedAccounts, CoHoStatutoryAccounts, CoHoStatutoryAbbreviatedAccounts)
+  val returns: Set[ReturnType] = Set(CoHoMicroEntityAccounts, CoHoMicroEntityAbridgedAccounts, CoHoStatutoryAccounts, CoHoStatutoryAbbreviatedAccounts, CoHoAbridgedAccounts)
 
   def fromKey(key: String): ReturnType = {
     returns.find(_.key() == key).getOrElse(throw new IllegalArgumentException(s"Unknown key for CoHoAccounts: $key"))

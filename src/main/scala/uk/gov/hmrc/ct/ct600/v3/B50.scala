@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.{CtBoolean, Calculated, CtBoxIdentifier}
+import uk.gov.hmrc.ct.box.{Calculated, CtBoolean, CtBoxIdentifier}
 import uk.gov.hmrc.ct.ct600.calculations.PeriodOfAccountsCalculator
 
 case class B50(value: Boolean) extends CtBoxIdentifier("Making more then one return for this company") with CtBoolean

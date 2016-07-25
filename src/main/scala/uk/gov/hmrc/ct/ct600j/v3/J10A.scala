@@ -18,7 +18,6 @@ package uk.gov.hmrc.ct.ct600j.v3
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 
 case class J10A(value: Option[LocalDate]) extends SchemeDateBox {

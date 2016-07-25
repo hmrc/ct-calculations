@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtInteger, CtBoxIdentifier, Linked}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtInteger, Linked}
 import uk.gov.hmrc.ct.computations.CP264
 
 case class B295(value: Int) extends CtBoxIdentifier(name = "Total of deductions and reliefs") with CtInteger

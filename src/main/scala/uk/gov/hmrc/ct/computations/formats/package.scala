@@ -19,8 +19,6 @@ package uk.gov.hmrc.ct.computations
 import play.api.libs.json.{Format, Json}
 import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.formats._
-import uk.gov.hmrc.ct.computations.formats.Cars
-import uk.gov.hmrc.ct.ct600a.v2.{LP02, Loan}
 
 package object formats {
 
@@ -350,7 +348,7 @@ package object formats {
 
   implicit val cpq1000Format: Format[CPQ1000] = new OptionalBooleanFormat[CPQ1000](CPQ1000.apply)
 
-  implicit val cpq7Format: Format[CPQ7] = new BooleanFormat[CPQ7](CPQ7.apply)
+  implicit val cpq7Format: Format[CPQ7] = new OptionalBooleanFormat[CPQ7](CPQ7.apply)
 
   implicit val cpq8Format: Format[CPQ8] = new OptionalBooleanFormat[CPQ8](CPQ8.apply)
 

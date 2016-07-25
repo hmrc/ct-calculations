@@ -16,9 +16,8 @@
 
 package uk.gov.hmrc.ct.ct600e.v2
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input, _}
 import uk.gov.hmrc.ct.ct600e.v2.retriever.CT600EBoxRetriever
-import uk.gov.hmrc.ct.box._
 
 case class E26(value: Option[Int]) extends CtBoxIdentifier("Qualifying investments and loans") with CtOptionalInteger with Input with ValidatableBox[CT600EBoxRetriever] {
   override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = validateAsMandatory(this)
