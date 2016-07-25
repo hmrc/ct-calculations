@@ -123,7 +123,6 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
     }
 
     "validate duplicate director names" in {
-
       val directors = Directors(List(Director("444", "Jack"), Director("555", "Jack")))
 
       val expectedError = Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.unique", None))
@@ -132,7 +131,6 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
 
     "validate at least one director appointed if are-there-appointments question is yes" in {
       when(mockBoxRetriever.retrieveACQ8003()).thenReturn(ACQ8003(Some(true)))
-
       val directors = Directors(List(Director("444", "Jack"), Director("555", "Jill")))
 
       val expectedError = Set(CtValidation(Some("AC8005"), "error.Directors.AC8005.global.atLeast1", None))
@@ -153,6 +151,5 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
 
       directors.validate(mockBoxRetriever) shouldBe empty
     }
-
   }
 }
