@@ -21,10 +21,8 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
-import uk.gov.hmrc.ct.{MicroEntityFiling, HMRCFiling, CompaniesHouseFiling}
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling, MicroEntityFiling}
 
 class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
 
@@ -49,7 +47,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
       val director = Director("444", "")
       val directors = Directors(List(director))
 
-      val expectedError = Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.text.sizeRange", Some(List("1", "40"))))
+      val expectedError = Set(CtValidation(Some("ac8001"), "error.Directors.ac8001.text.sizeRange", Some(List("1", "40"))))
       directors.validate(mockBoxRetriever) shouldBe expectedError
     }
 
@@ -58,7 +56,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
       val director = Director("444", "a" * 41)
       val directors = Directors(List(director))
 
-      val expectedError = Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.text.sizeRange", Some(List("1", "40"))))
+      val expectedError = Set(CtValidation(Some("ac8001"), "error.Directors.ac8001.text.sizeRange", Some(List("1", "40"))))
       directors.validate(mockBoxRetriever) shouldBe expectedError
     }
 
@@ -67,7 +65,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
       val director = Director("444", "??")
       val directors = Directors(List(director))
 
-      val expectedError = Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.regexFailure", None))
+      val expectedError = Set(CtValidation(Some("ac8001"), "error.Directors.ac8001.regexFailure", None))
       directors.validate(mockBoxRetriever) shouldBe expectedError
     }
 
@@ -75,7 +73,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
 
       val directors = Directors(List())
 
-      val expectedError = Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.global.atLeast1", None))
+      val expectedError = Set(CtValidation(Some("ac8001"), "error.Directors.ac8001.global.atLeast1", None))
       directors.validate(mockBoxRetriever) shouldBe expectedError
     }
 
@@ -118,14 +116,14 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
 
       val directors = Directors(directorsList)
 
-      val expectedError = Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.atMost12", None))
+      val expectedError = Set(CtValidation(Some("ac8001"), "error.Directors.ac8001.atMost12", None))
       directors.validate(mockBoxRetriever) shouldBe expectedError
     }
 
     "validate duplicate director names" in {
       val directors = Directors(List(Director("444", "Jack"), Director("555", "Jack")))
 
-      val expectedError = Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.unique", None))
+      val expectedError = Set(CtValidation(Some("ac8001"), "error.Directors.ac8001.unique", None))
       directors.validate(mockBoxRetriever) shouldBe expectedError
     }
 
@@ -133,7 +131,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
       when(mockBoxRetriever.retrieveACQ8003()).thenReturn(ACQ8003(Some(true)))
       val directors = Directors(List(Director("444", "Jack"), Director("555", "Jill")))
 
-      val expectedError = Set(CtValidation(Some("AC8005"), "error.Directors.AC8005.global.atLeast1", None))
+      val expectedError = Set(CtValidation(Some("ac8005"), "error.Directors.ac8005.global.atLeast1", None))
       directors.validate(mockBoxRetriever) shouldBe expectedError
     }
 
