@@ -18,22 +18,20 @@ package uk.gov.hmrc.ct.accounts.frs10x
 
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling, MicroEntityFiling}
 
-class ACQ8009Spec extends WordSpec with Matchers with MockitoSugar {
+class ACQ8009Spec extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach {
 
-  trait  MockableFrs10xBoxretrieverWithFilingAttributes extends Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever
   val mockBoxRetriever = mock[MockableFrs10xBoxretrieverWithFilingAttributes]
 
-  when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-  when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(true))
-  when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(true))
-  when(mockBoxRetriever.retrieveAC8021()).thenReturn(AC8021(Some(true)))
-  when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(true)))
+  override def beforeEach = {
+    DirectorsMockSetup.setupDefaults(mockBoxRetriever)
+  }
+
 
   "ACQ8009 should" should {
 

@@ -20,23 +20,19 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
 import uk.gov.hmrc.ct.{MicroEntityFiling, HMRCFiling, CompaniesHouseFiling}
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-class DirectorsSpec extends WordSpec with MockitoSugar with Matchers {
+class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
 
-  trait  MockableFrs10xBoxretrieverWithFilingAttributes extends Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever
   val mockBoxRetriever = mock[MockableFrs10xBoxretrieverWithFilingAttributes]
 
-  when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-  when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(true))
-  when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(true))
-  when(mockBoxRetriever.retrieveAC8021()).thenReturn(AC8021(Some(true)))
-  when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(true)))
-
+  override def beforeEach = {
+    DirectorsMockSetup.setupDefaults(mockBoxRetriever)
+  }
 
   "Directors" should {
 
@@ -132,6 +128,30 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers {
 
       val expectedError = Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.unique", None))
       directors.validate(mockBoxRetriever) shouldBe expectedError
+    }
+
+    "validate at least one director appointed if are-there-appointments question is yes" in {
+      when(mockBoxRetriever.retrieveACQ8003()).thenReturn(ACQ8003(Some(true)))
+
+      val directors = Directors(List(Director("444", "Jack"), Director("555", "Jill")))
+
+      val expectedError = Set(CtValidation(Some("AC8005"), "error.Directors.AC8005.global.atLeast1", None))
+      directors.validate(mockBoxRetriever) shouldBe expectedError
+    }
+
+    "do not validate at least one director appointed if are-there-appointments question is no" in {
+
+      val directors = Directors(List(Director("444", "Jack"), Director("555", "Jill")))
+
+      directors.validate(mockBoxRetriever) shouldBe empty
+    }
+
+    "no error if at least one director appointed if are-there-appointments question is yes" in {
+      when(mockBoxRetriever.retrieveACQ8003()).thenReturn(ACQ8003(Some(true)))
+
+      val directors = Directors(List(Director("444", "Jack", AC8005 = Some(true)), Director("555", "Jill")))
+
+      directors.validate(mockBoxRetriever) shouldBe empty
     }
 
   }
