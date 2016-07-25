@@ -35,13 +35,13 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     validateDirectorRequired(boxRetriever ) ++
-      validateDirectorAppointmentsRequired(boxRetriever ) ++
+      validateAtLeastDirectorIsAppointedIfAppointmentsIsYes(boxRetriever ) ++
       validateAtMost12Directors() ++
       validateDirectorsUnique() ++
     directors.foldRight(Set[CtValidation]())((dd, tail) => dd.validate(boxRetriever) ++ tail)
   }
 
-  def validateDirectorAppointmentsRequired(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+  def validateAtLeastDirectorIsAppointedIfAppointmentsIsYes(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     failIf (directorsReportEnabled(boxRetriever) &&
       boxRetriever.retrieveACQ8003().value.getOrElse(false) &&
       directors.forall(_.AC8005.getOrElse(false) == false)
@@ -72,15 +72,14 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
       case false => Set.empty
     }
   }
-
 }
 
 case class Director(id: String,
-                    AC8001: String,                 // name
-                    AC8005: Option[Boolean] = None, // appointed
-                    AC8011: Option[Boolean] = None, // resigned
+                    AC8001: String,                   // name
+                    AC8005: Option[Boolean] = None,   // appointed
+                    AC8011: Option[Boolean] = None,   // resigned
                     AC8007: Option[LocalDate] = None, // appointed date
-                    AC8013: Option[LocalDate] = None // resignation date
+                    AC8013: Option[LocalDate] = None  // resignation date
                      ) extends ValidatableBox[Frs10xAccountsBoxRetriever] {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
