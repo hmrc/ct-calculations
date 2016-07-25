@@ -34,17 +34,18 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
   override def asBoxString = DirectorsFormatter.asBoxString(this)
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-    validateDirectorRequired(boxRetriever ) ++
-      validateAtLeastOneDirectorIsAppointedIfAppointmentsIsYes(boxRetriever ) ++
+    validateDirectorRequired(boxRetriever) ++
+      validateAtLeastOneDirectorIsAppointedIfAppointmentsIsYes(boxRetriever) ++
       validateAtMost12Directors() ++
       validateDirectorsUnique() ++
     directors.foldRight(Set[CtValidation]())((dd, tail) => dd.validate(boxRetriever) ++ tail)
   }
 
   def validateAtLeastOneDirectorIsAppointedIfAppointmentsIsYes(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-    failIf (directorsReportEnabled(boxRetriever) &&
+    failIf (
+      directorsReportEnabled(boxRetriever) &&
       boxRetriever.retrieveACQ8003().value.getOrElse(false) &&
-      directors.forall(_.AC8005.getOrElse(false) == false)
+      directors.forall(_.ac8005.getOrElse(false) == false)
     ) {
       Set(CtValidation(Some("AC8005"), "error.Directors.AC8005.global.atLeast1", None))
     }
@@ -65,7 +66,7 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
 
   def validateDirectorsUnique(): Set[CtValidation] = {
 
-    val uniqueNames = directors.map(_.AC8001).toSet
+    val uniqueNames = directors.map(_.ac8001).toSet
 
     directors.size != uniqueNames.size match {
       case true => Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.unique", None))
@@ -75,15 +76,15 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
 }
 
 case class Director(id: String,
-                    AC8001: String,                   // name
-                    AC8005: Option[Boolean] = None,   // appointed
-                    AC8011: Option[Boolean] = None,   // resigned
-                    AC8007: Option[LocalDate] = None, // appointed date
-                    AC8013: Option[LocalDate] = None  // resignation date
+                    ac8001: String,                   // name
+                    ac8005: Option[Boolean] = None,   // appointed
+                    ac8011: Option[Boolean] = None,   // resigned
+                    ac8007: Option[LocalDate] = None, // appointed date
+                    ac8013: Option[LocalDate] = None  // resignation date
                      ) extends ValidatableBox[Frs10xAccountsBoxRetriever] {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
-    validateStringByLength("AC8001", AC8001, "Directors.AC8001", 1, 40) ++ validateStringByRegex("AC8001", AC8001, "Directors.AC8001", validCoHoCharacters)
+    validateStringByLength("AC8001", ac8001, "Directors.AC8001", 1, 40) ++ validateStringByRegex("AC8001", ac8001, "Directors.AC8001", validCoHoCharacters)
 }
 
 
