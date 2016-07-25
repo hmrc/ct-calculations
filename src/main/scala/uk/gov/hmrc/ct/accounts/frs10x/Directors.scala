@@ -35,13 +35,13 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     validateDirectorRequired(boxRetriever ) ++
-      validateAtLeastDirectorIsAppointedIfAppointmentsIsYes(boxRetriever ) ++
+      validateAtLeastOneDirectorIsAppointedIfAppointmentsIsYes(boxRetriever ) ++
       validateAtMost12Directors() ++
       validateDirectorsUnique() ++
     directors.foldRight(Set[CtValidation]())((dd, tail) => dd.validate(boxRetriever) ++ tail)
   }
 
-  def validateAtLeastDirectorIsAppointedIfAppointmentsIsYes(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+  def validateAtLeastOneDirectorIsAppointedIfAppointmentsIsYes(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     failIf (directorsReportEnabled(boxRetriever) &&
       boxRetriever.retrieveACQ8003().value.getOrElse(false) &&
       directors.forall(_.AC8005.getOrElse(false) == false)
