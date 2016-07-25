@@ -47,19 +47,19 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
       boxRetriever.retrieveACQ8003().value.getOrElse(false) &&
       directors.forall(_.ac8005.getOrElse(false) == false)
     ) {
-      Set(CtValidation(Some("AC8005"), "error.Directors.AC8005.global.atLeast1", None))
+      Set(CtValidation(Some("ac8005"), "error.Directors.ac8005.global.atLeast1", None))
     }
   }
 
   def validateDirectorRequired(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     failIf (directorsReportEnabled(boxRetriever) && directors.isEmpty) {
-      Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.global.atLeast1", None))
+      Set(CtValidation(Some("ac8001"), "error.Directors.ac8001.global.atLeast1", None))
     }
   }
 
   def validateAtMost12Directors(): Set[CtValidation] = {
     directors.size match {
-      case n if n > 12 => Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.atMost12", None))
+      case n if n > 12 => Set(CtValidation(Some("ac8001"), "error.Directors.ac8001.atMost12", None))
       case _ => Set.empty
     }
   }
@@ -69,7 +69,7 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
     val uniqueNames = directors.map(_.ac8001).toSet
 
     directors.size != uniqueNames.size match {
-      case true => Set(CtValidation(Some("AC8001"), "error.Directors.AC8001.unique", None))
+      case true => Set(CtValidation(Some("ac8001"), "error.Directors.ac8001.unique", None))
       case false => Set.empty
     }
   }
@@ -84,7 +84,7 @@ case class Director(id: String,
                      ) extends ValidatableBox[Frs10xAccountsBoxRetriever] {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
-    validateStringByLength("AC8001", ac8001, "Directors.AC8001", 1, 40) ++ validateStringByRegex("AC8001", ac8001, "Directors.AC8001", validCoHoCharacters)
+    validateStringByLength("ac8001", ac8001, "Directors.ac8001", 1, 40) ++ validateStringByRegex("ac8001", ac8001, "Directors.ac8001", validCoHoCharacters)
 }
 
 
