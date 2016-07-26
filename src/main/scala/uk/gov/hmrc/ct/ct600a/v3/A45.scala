@@ -26,6 +26,6 @@ with CtOptionalBigDecimal
 object A45 extends Calculated[A45, CT600ABoxRetriever] with LoansToParticipatorsCalculator {
 
  override def calculate(fieldValueRetriever: CT600ABoxRetriever): A45 = {
-  calculateA45(fieldValueRetriever.retrieveA40())
+  calculateA45(fieldValueRetriever.retrieveA40(), fieldValueRetriever.retrieveLoansToParticipators(), fieldValueRetriever.retrieveCP2())
  }
 }
