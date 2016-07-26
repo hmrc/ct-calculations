@@ -186,41 +186,47 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
     case _ => B485(false)
   }
 
-  private def validRepaymentsWithin9Months(loans: List[Loan], date: LocalDate): List[Repayment] = for {
-    loan <- loans
-    repayment <- loan.repaymentWithin9Months
-    if repayment.isReliefEarlierThanDue(date)
-  } yield repayment
+  private def validRepaymentsWithin9Months(loans: List[Loan], date: LocalDate): List[Repayment] =
+    for {
+      loan <- loans
+      repayment <- loan.repaymentWithin9Months
+      if repayment.isReliefEarlierThanDue(date)
+    } yield repayment
 
-  private def validWriteOffsWithin9Months(loans: List[Loan], date: LocalDate): List[WriteOff] = for {
+  private def validWriteOffsWithin9Months(loans: List[Loan], date: LocalDate): List[WriteOff] =
+    for {
       loan <- loans
       writeOff <- loan.writeOffs
       if writeOff.isReliefEarlierThanDue(date)
-  } yield writeOff
+    } yield writeOff
 
-  private def validRepaymentsWithLaterReliefNowDue(loans: List[Loan], apEndDate: LocalDate, filingDate: LPQ07): List[Repayment] = for{
+  private def validRepaymentsWithLaterReliefNowDue(loans: List[Loan], apEndDate: LocalDate, filingDate: LPQ07): List[Repayment] =
+    for{
       loan <- loans
       repayment <- loan.otherRepayments
       if repayment.isLaterReliefNowDue(apEndDate, filingDate)
-  } yield repayment
+    } yield repayment
 
-  private def validRepaymentsWithLaterReliefNotYetDue(loans: List[Loan], apEndDate: LocalDate, filingDate: LPQ07): List[Repayment] = for{
+  private def validRepaymentsWithLaterReliefNotYetDue(loans: List[Loan], apEndDate: LocalDate, filingDate: LPQ07): List[Repayment] =
+    for{
       loan <- loans
       repayment <- loan.otherRepayments
       if repayment.isLaterReliefNotYetDue(apEndDate, filingDate)
-  } yield repayment
+    } yield repayment
 
-  private def vailidWriteOffWithLaterReliefNowDue(loans: List[Loan], apEndDate: LocalDate, filingDate: LPQ07): List[WriteOff] = for {
+  private def vailidWriteOffWithLaterReliefNowDue(loans: List[Loan], apEndDate: LocalDate, filingDate: LPQ07): List[WriteOff] =
+    for {
       loan <- loans
       writeOff <- loan.writeOffs
       if writeOff.isLaterReliefNowDue(apEndDate, filingDate)
-  } yield writeOff
+    } yield writeOff
 
-  private def vailidWriteOffWithLaterReliefNotYetDue(loans: List[Loan], apEndDate: LocalDate, filingDate: LPQ07): List[WriteOff] = for {
+  private def vailidWriteOffWithLaterReliefNotYetDue(loans: List[Loan], apEndDate: LocalDate, filingDate: LPQ07): List[WriteOff] =
+    for {
       loan <- loans
       writeOff <- loan.writeOffs
       if writeOff.isLaterReliefNotYetDue(apEndDate, filingDate)
-  } yield writeOff
+    } yield writeOff
 
   private def amountAtOldTaxRate(amountOpt: Option[Int]) = {
     amountOpt match {
