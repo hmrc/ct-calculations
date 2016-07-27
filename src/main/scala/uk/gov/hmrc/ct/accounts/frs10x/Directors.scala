@@ -22,6 +22,7 @@ import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs10x.validation.DirectorsReportEnabled
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 case class Directors(directors: List[Director] = List.empty) extends CtBoxIdentifier(name = "Directors.")
   with CtValue[List[Director]]
@@ -84,7 +85,24 @@ case class Director(id: String,
                      ) extends ValidatableBox[Frs10xAccountsBoxRetriever] {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
-    validateStringByLength("ac8001", ac8001, "Directors.ac8001", 1, 40) ++ validateStringByRegex("ac8001", ac8001, "Directors.ac8001", validCoHoCharacters)
+    validateStringByLength("ac8001", ac8001, "Directors.ac8001", 1, 40) ++
+      validateStringByRegex("ac8001", ac8001, "Directors.ac8001", validCoHoCharacters) ++
+      validateAppointmentDateAsMandatoryWhenAppointed(boxRetriever) ++
+      validateAppointmentDateAsWithinPOA(boxRetriever)
+
+  def validateAppointmentDateAsMandatoryWhenAppointed(boxRetriever: Frs10xAccountsBoxRetriever) = {
+    (ac8005, ac8007) match {
+      case (Some(true), _) => validateDateAsMandatory(s"ac8007.$id", ac8007)
+      case _ => Set()
+    }
+  }
+  
+  def validateAppointmentDateAsWithinPOA(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
+    (ac8007, boxRetriever.retrieveAC3().value, boxRetriever.retrieveAC4().value) match {
+      case (Some(appDate), ac3, ac4) => validateDateAsBetweenInclusive(s"ac8007.$id", ac8007, ac3, ac4)
+      case _ => Set()
+    }
+  }
 }
 
 
