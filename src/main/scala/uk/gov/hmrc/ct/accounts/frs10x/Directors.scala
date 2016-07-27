@@ -92,14 +92,14 @@ case class Director(id: String,
 
   def validateAppointmentDateAsMandatoryWhenAppointed(boxRetriever: Frs10xAccountsBoxRetriever) = {
     (ac8005, ac8007) match {
-      case (Some(true), _) => validateDateAsMandatory(s"ac8007.$id", ac8007)
+      case (Some(true), _) => validateDateAsMandatory(s"ac8007.$id", ac8007, "ac8007")
       case _ => Set()
     }
   }
   
   def validateAppointmentDateAsWithinPOA(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
     (ac8007, boxRetriever.retrieveAC3().value, boxRetriever.retrieveAC4().value) match {
-      case (Some(appDate), ac3, ac4) => validateDateAsBetweenInclusive(s"ac8007.$id", ac8007, ac3, ac4)
+      case (Some(appDate), ac3, ac4) => validateDateAsBetweenInclusive(s"ac8007.$id", ac8007, ac3, ac4, "ac8007")
       case _ => Set()
     }
   }

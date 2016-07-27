@@ -100,12 +100,12 @@ trait ValidatableBox[T <: BoxRetriever] {
   }
 
   protected def validateDateAsMandatory(boxId: String, box: CtOptionalDate): Set[CtValidation] = {
-    validateDateAsMandatory(boxId, box.value): Set[CtValidation]
+    validateDateAsMandatory(boxId, box.value, boxId): Set[CtValidation]
   }
 
-  protected def validateDateAsMandatory(boxId: String, date: Option[LocalDate]): Set[CtValidation] = {
+  protected def validateDateAsMandatory(boxId: String, date: Option[LocalDate], messageId: String): Set[CtValidation] = {
     date match {
-      case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
+      case None => Set(CtValidation(Some(boxId), s"error.$messageId.required"))
       case _ => Set()
     }
   }
@@ -134,14 +134,14 @@ trait ValidatableBox[T <: BoxRetriever] {
   }
 
   protected def validateDateAsBetweenInclusive(boxId: String, box: CtOptionalDate, minDate: LocalDate, maxDate: LocalDate): Set[CtValidation] = {
-    validateDateAsBetweenInclusive(boxId, box.value, minDate, maxDate)
+    validateDateAsBetweenInclusive(boxId, box.value, minDate, maxDate, boxId)
   }
 
-  protected def validateDateAsBetweenInclusive(boxId: String, date: Option[LocalDate], minDate: LocalDate, maxDate: LocalDate): Set[CtValidation] = {
+  protected def validateDateAsBetweenInclusive(boxId: String, date: Option[LocalDate], minDate: LocalDate, maxDate: LocalDate, messageId: String): Set[CtValidation] = {
     date match {
       case None => Set()
       case Some(date) if date.isBefore(minDate.toDateTimeAtStartOfDay.toLocalDate) || date.isAfter(maxDate.plusDays(1).toDateTimeAtStartOfDay.minusSeconds(1).toLocalDate) =>
-        Set(CtValidation(Some(boxId), s"error.$boxId.not.betweenInclusive", Some(Seq(toErrorArgsFormat(minDate), toErrorArgsFormat(maxDate)))))
+        Set(CtValidation(Some(boxId), s"error.$messageId.not.betweenInclusive", Some(Seq(toErrorArgsFormat(minDate), toErrorArgsFormat(maxDate)))))
       case _ => Set()
     }
   }
