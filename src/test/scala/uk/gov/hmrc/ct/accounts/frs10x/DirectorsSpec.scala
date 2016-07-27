@@ -147,13 +147,13 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
       when(mockBoxRetriever.retrieveACQ8003()).thenReturn(ACQ8003(Some(true)))
       val directors = Directors(List(Director("444", "Jack", ac8005 = Some(true)), Director("555", "Jill")))
 
-      val expectedError = Set(CtValidation(Some("ac8007.444"), "error.ac8007.444.required", None))
+      val expectedError = Set(CtValidation(Some("ac8007.444"), "error.ac8007.required", None))
       directors.validate(mockBoxRetriever) shouldBe expectedError
     }
 
     "validate date within POA if appointed" in {
       when(mockBoxRetriever.retrieveACQ8003()).thenReturn(ACQ8003(Some(true)))
-      val expectedError = Set(CtValidation(Some("ac8007.444"), "error.ac8007.444.not.betweenInclusive", Some(List("6 April 2015", "5 April 2016"))))
+      val expectedError = Set(CtValidation(Some("ac8007.444"), "error.ac8007.not.betweenInclusive", Some(List("6 April 2015", "5 April 2016"))))
 
       val directors = Directors(List(Director("444", "Jack", ac8005 = Some(true), ac8007 = Some(new LocalDate(2015, 4, 5))), Director("555", "Jill")))
       directors.validate(mockBoxRetriever) shouldBe expectedError
