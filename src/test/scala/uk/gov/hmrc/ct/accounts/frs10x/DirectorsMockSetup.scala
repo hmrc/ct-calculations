@@ -41,6 +41,7 @@ object DirectorsMockSetup extends MockitoSugar {
     when (mockBoxRetriever.retrieveAC8023()).thenReturn (AC8023 (Some (true) ) )
 
     // no appointments response
-    when (mockBoxRetriever.retrieveACQ8003()).thenReturn (ACQ8003 (Some (false) ) )
+    when (mockBoxRetriever.retrieveACQ8003 () ).thenReturn (ACQ8003 (Some (false) ) )
+    when (mockBoxRetriever.retrieveACQ8009 () ).thenReturn (ACQ8009 (Some (false) ) )
   }
 }
