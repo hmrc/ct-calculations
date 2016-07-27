@@ -85,5 +85,7 @@ trait Frs10xAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def retrieveAC8054(): AC8054
 
+  def retrieveAC8899(): AC8899
+
   def retrieveACQ8161(): ACQ8161
 }
