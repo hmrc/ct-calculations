@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.ct.box
 
+import java.text.NumberFormat
+
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
@@ -227,6 +229,13 @@ trait ValidatableBox[T <: BoxRetriever] {
   def validateStringByLength(boxId: String, value: String, errorCodeId: String, min: Int, max: Int): Set[CtValidation] = {
     failIf (value.size < min || value.size > max) {
       Set(CtValidation(Some(boxId), s"error.$errorCodeId.text.sizeRange", Some(Seq(min.toString, max.toString))))
+    }
+  }
+
+  def validateStringMaxLength(boxId: String, value: String, max: Int): Set[CtValidation] = {
+    failIf (value.size > max) {
+      def commaForThousands(i: Int) = f"$i%,d"
+      Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(commaForThousands(max)))))
     }
   }
 
