@@ -23,8 +23,9 @@ import uk.gov.hmrc.ct.box._
 
 case class AC5052A(value: Option[Int]) extends CtBoxIdentifier(name = "Debtors due after more than one year") with CtOptionalInteger
                                                                                                               with Input
-                                                                                                              with ValidatableBox[Frs10xAccountsBoxRetriever] {
+                                                                                                              with ValidatableBox[Frs10xAccountsBoxRetriever]
+                                                                                                              with AccountsMoneyValidation {
 
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = validateIntegerRange("AC5052A", this, 0, 99999999)
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = validateMoney("AC5052A", min =  0)
 }
 

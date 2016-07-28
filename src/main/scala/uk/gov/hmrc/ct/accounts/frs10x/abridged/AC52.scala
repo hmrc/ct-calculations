@@ -16,14 +16,16 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
+import uk.gov.hmrc.ct.accounts.AccountsMoneyValidation
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 
 case class AC52(value: Option[Int]) extends CtBoxIdentifier(name = "Debtors") with CtOptionalInteger
                                                                               with Input
-                                                                              with ValidatableBox[Frs10xAccountsBoxRetriever] {
+                                                                              with ValidatableBox[Frs10xAccountsBoxRetriever]
+                                                                              with AccountsMoneyValidation {
 
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = validateIntegerRange("AC52", this, 0, 99999999)
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = validateMoney("AC52", min = 0)
 }
 

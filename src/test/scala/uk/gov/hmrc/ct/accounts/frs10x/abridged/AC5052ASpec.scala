@@ -19,37 +19,11 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockRetriever}
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC5052ASpec extends WordSpec with MockitoSugar with Matchers {
+class AC5052ASpec extends WordSpec with MockitoSugar with Matchers with MockRetriever with AccountsMoneyValidationFixture {
 
-  val boxRetriever = mock[Frs10xAccountsBoxRetriever]
-
-  "AC5052A" should {
-    "pass validation when empty" in {
-
-      AC5052A(None).validate(boxRetriever) shouldBe Set.empty
-    }
-    "pass validation when int between 0 and 99999999" in {
-
-      AC5052A(Some(6)).validate(boxRetriever) shouldBe Set.empty
-    }
-    "pass validation when int is 0" in {
-
-      AC5052A(Some(0)).validate(boxRetriever) shouldBe Set.empty
-    }
-    "pass validation when int is 99999999" in {
-
-      AC5052A(Some(99999999)).validate(boxRetriever) shouldBe Set.empty
-    }
-    "fail validation when int is bigger than 99999999" in {
-
-      AC5052A(Some(99999999 + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5052A"), "error.AC5052A.outOfRange", Some(List("0", "99999999"))))
-    }
-    "fail validation when int is negative" in {
-
-      AC5052A(Some(-4)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5052A"), "error.AC5052A.outOfRange", Some(List("0", "99999999"))))
-    }
-  }
+  testAccountsMoneyValidationWithMin("AC5052A", minValue = 0, AC5052A)
 }
