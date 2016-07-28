@@ -142,7 +142,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
       directors.validate(mockBoxRetriever) shouldBe empty
     }
 
-    "validate at least one director resigned if are-there-appointments question is yes" in {
+    "validate at least one director resigned if are-there-resignations question is yes" in {
       when(mockBoxRetriever.retrieveACQ8009()).thenReturn(ACQ8009(Some(true)))
       val directors = Directors(List(Director("444", "Jack"), Director("555", "Jill")))
 
