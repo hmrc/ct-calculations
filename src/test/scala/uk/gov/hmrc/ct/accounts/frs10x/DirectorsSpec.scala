@@ -135,6 +135,13 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
       directors.validate(mockBoxRetriever) shouldBe expectedError
     }
 
+    "no error if at least one director appointed if are-there-appointments question is yes" in {
+      when(mockBoxRetriever.retrieveACQ8003()).thenReturn(ACQ8003(Some(true)))
+      val directors = Directors(List(Director("444", "Jack", ac8005 = Some(true)), Director("555", "Jill")))
+
+      directors.validate(mockBoxRetriever) shouldBe empty
+    }
+
     "do not validate at least one director appointed if are-there-appointments question is no" in {
 
       val directors = Directors(List(Director("444", "Jack"), Director("555", "Jill")))
@@ -142,9 +149,17 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
       directors.validate(mockBoxRetriever) shouldBe empty
     }
 
-    "no error if at least one director appointed if are-there-appointments question is yes" in {
-      when(mockBoxRetriever.retrieveACQ8003()).thenReturn(ACQ8003(Some(true)))
-      val directors = Directors(List(Director("444", "Jack", ac8005 = Some(true)), Director("555", "Jill")))
+    "validate at least one director resigned if are-there-resignations question is yes" in {
+      when(mockBoxRetriever.retrieveACQ8009()).thenReturn(ACQ8009(Some(true)))
+      val directors = Directors(List(Director("444", "Jack"), Director("555", "Jill")))
+
+      val expectedError = Set(CtValidation(Some("ac8011"), "error.Directors.ac8011.global.atLeast1", None))
+      directors.validate(mockBoxRetriever) shouldBe expectedError
+    }
+
+    "no error if at least one director appointed if are-there-resignations question is yes" in {
+      when(mockBoxRetriever.retrieveACQ8009()).thenReturn(ACQ8009(Some(true)))
+      val directors = Directors(List(Director("444", "Jack", ac8011 = Some(true)), Director("555", "Jill")))
 
       directors.validate(mockBoxRetriever) shouldBe empty
     }
