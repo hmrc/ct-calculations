@@ -206,6 +206,24 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
   }
 
+  "validateStringMaxLength" should {
+    "pass if less than max" in {
+      validateStringMaxLength("testBox", "1234567", 8) shouldBe Set()
+    }
+
+    "pass if equal to max" in {
+      validateStringMaxLength("testBox", "12345678", 8) shouldBe Set()
+    }
+
+    "pass if empty" in {
+      validateStringMaxLength("testBox", "", 8) shouldBe Set()
+    }
+
+    "return error if too long with thousands formatted as commas" in {
+      validateStringMaxLength("testBox", "1" * 20001, 20000) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.max.length", Some(Seq("20,000"))))
+    }
+  }
+
   "validateOptionalStringByLength" should {
     "pass if none" in {
       validateOptionalStringByLength("testBox", testOptStringBox(None), 7, 8) shouldBe Set()
