@@ -142,7 +142,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
 
       directors.validate(mockBoxRetriever) shouldBe empty
     }
-    
+
     "do not validate at least one director appointed if are-there-appointments question is no" in {
       val directors = Directors(List(Director("444", "Jack"), Director("555", "Jill")))
 
