@@ -25,7 +25,7 @@ case class J5(value: Option[String]) extends SchemeReferenceNumberBox {
   override def validate(boxRetriever: CT600JBoxRetriever): Set[CtValidation] = {
     boxRetriever match {
       case r: CT600BoxRetriever =>
-        r.retrieveB140().value match {
+        r.b140().value match {
           case Some(true) => validateStringAsMandatory(id, this) ++ validateOptionalStringByRegex(id, this, taxAvoidanceSchemeNumberRegex)
           case _ => Set.empty
         }

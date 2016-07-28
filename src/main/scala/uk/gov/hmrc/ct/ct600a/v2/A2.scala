@@ -25,6 +25,6 @@ case class A2(value: Option[Int]) extends CtBoxIdentifier(name = "A2 Total Loans
 object A2 extends Calculated[A2, CT600ABoxRetriever] with LoansToParticipatorsCalculator {
 
   override def calculate(fieldValueRetriever: CT600ABoxRetriever): A2 = {
-    calculateA2(fieldValueRetriever.retrieveLP02())
+    calculateA2(fieldValueRetriever.lp02())
   }
 }

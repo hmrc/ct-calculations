@@ -28,27 +28,27 @@ class E27Spec extends WordSpec with MockitoSugar with Matchers  {
 
   "E4 validation" should {
     "make E27 required when E26 = 2" in {
-      when(boxRetriever.retrieveE26()).thenReturn(E26(Some(CharityLoansAndInvestments.SomeLoansAndInvestments)))
+      when(boxRetriever.e26()).thenReturn(E26(Some(CharityLoansAndInvestments.SomeLoansAndInvestments)))
       E27(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("E27"), "error.E27.required", None))
     }
 
     "don't validate E27 if E26 != 2" in {
-      when(boxRetriever.retrieveE26()).thenReturn(E26(Some(CharityLoansAndInvestments.AllLoansAndInvestments)))
+      when(boxRetriever.e26()).thenReturn(E26(Some(CharityLoansAndInvestments.AllLoansAndInvestments)))
       E27(None).validate(boxRetriever) shouldBe Set()
     }
 
     "return validation error if value is 0" in {
-      when(boxRetriever.retrieveE26()).thenReturn(E26(Some(CharityLoansAndInvestments.SomeLoansAndInvestments)))
+      when(boxRetriever.e26()).thenReturn(E26(Some(CharityLoansAndInvestments.SomeLoansAndInvestments)))
       E27(Some(0)).validate(boxRetriever) shouldBe Set(CtValidation(Some("E27"), "error.E27.required", None))
     }
 
     "return validation error if value is -1" in {
-      when(boxRetriever.retrieveE26()).thenReturn(E26(Some(CharityLoansAndInvestments.SomeLoansAndInvestments)))
+      when(boxRetriever.e26()).thenReturn(E26(Some(CharityLoansAndInvestments.SomeLoansAndInvestments)))
       E27(Some(-1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("E27"), "error.E27.mustBePositive", None))
     }
 
     "don't return validation error if value is over 0" in {
-      when(boxRetriever.retrieveE26()).thenReturn(E26(Some(CharityLoansAndInvestments.SomeLoansAndInvestments)))
+      when(boxRetriever.e26()).thenReturn(E26(Some(CharityLoansAndInvestments.SomeLoansAndInvestments)))
       E27(Some(1)).validate(boxRetriever) shouldBe Set()
     }
   }

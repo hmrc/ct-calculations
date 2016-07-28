@@ -20,25 +20,23 @@ import uk.gov.hmrc.ct._
 
 trait FilingAttributesBoxValueRetriever extends BoxRetriever {
 
-  def retrieveProductName(): ProductName
+  def companyType(): FilingCompanyType
 
-  def retrieveCompanyType(): FilingCompanyType
+  def abbreviatedAccountsFiling(): AbbreviatedAccountsFiling
 
-  def retrieveAbbreviatedAccountsFiling(): AbbreviatedAccountsFiling
+  def abridgedFiling(): AbridgedFiling
 
-  def retrieveAbridgedFiling(): AbridgedFiling
+  def companiesHouseFiling(): CompaniesHouseFiling
 
-  def retrieveCompaniesHouseFiling(): CompaniesHouseFiling
+  def hmrcFiling(): HMRCFiling
 
-  def retrieveHMRCFiling(): HMRCFiling
+  def hmrcAmendment(): HMRCAmendment
 
-  def retrieveHMRCAmendment(): HMRCAmendment
+  def microEntityFiling(): MicroEntityFiling
 
-  def retrieveMicroEntityFiling(): MicroEntityFiling
+  def statutoryAccountsFiling(): StatutoryAccountsFiling
 
-  def retrieveStatutoryAccountsFiling(): StatutoryAccountsFiling
+  def utr(): UTR
 
-  def retrieveUTR(): UTR
-
-  def retrieveCountryOfRegistration(): CountryOfRegistration
+  def countryOfRegistration(): CountryOfRegistration
 }

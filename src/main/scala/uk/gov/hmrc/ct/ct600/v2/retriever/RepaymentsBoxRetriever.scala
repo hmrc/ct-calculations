@@ -21,35 +21,35 @@ import uk.gov.hmrc.ct.ct600.v2._
 
 trait RepaymentsBoxRetriever extends BoxRetriever {
 
-  def retrieveB139(): B139
+  def b139(): B139
 
-  def retrieveB140(): B140
+  def b140(): B140
 
-  def retrieveB149(): B149
+  def b149(): B149
 
-  def retrieveB150(): B150
+  def b150(): B150
 
-  def retrieveB151(): B151
+  def b151(): B151
 
-  def retrieveB152(): B152
+  def b152(): B152
 
-  def retrieveB153(): B153
+  def b153(): B153
 
-  def retrieveB156(): B156
+  def b156(): B156
 
-  def retrieveB1571(): B1571
+  def b1571(): B1571
 
-  def retrieveB1572(): B1572
+  def b1572(): B1572
 
-  def retrieveB1573(): B1573
+  def b1573(): B1573
 
-  def retrieveB1574(): B1574
+  def b1574(): B1574
 
-  def retrieveB1575(): B1575
+  def b1575(): B1575
 
-  def retrieveB158(): B158
+  def b158(): B158
 
-  def retrieveRDQ1(): RDQ1
+  def rdq1(): RDQ1
 
-  def retrieveRDQ2(): RDQ2
+  def rdq2(): RDQ2
 }

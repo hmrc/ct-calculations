@@ -26,8 +26,8 @@ case class B950(value: Option[String]) extends CtBoxIdentifier("Company name") w
 object B950 extends Calculated[B950, BoxRetriever] {
   override def calculate(boxRetriever: BoxRetriever): B950 = {
     boxRetriever match {
-      case br: CT600BoxRetriever => B950(Some(br.retrieveB1().value))
-      case br: CT600EBoxRetriever => B950(Some(br.retrieveE1().value))
+      case br: CT600BoxRetriever => B950(Some(br.b1().value))
+      case br: CT600EBoxRetriever => B950(Some(br.e1().value))
       case _ => throw new IllegalStateException(s"Could not find the company name from the supplied retriever: $boxRetriever")
     }
   }

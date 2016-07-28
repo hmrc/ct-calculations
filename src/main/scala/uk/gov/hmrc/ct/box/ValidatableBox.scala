@@ -66,7 +66,7 @@ trait ValidatableBox[T <: BoxRetriever] {
   }
 
   protected def validateStringAsMandatoryIfPAYEEQ1False(boxRetriever: RepaymentsBoxRetriever, boxId: String, box: CtOptionalString): Set[CtValidation] = {
-    val payeeq1 = boxRetriever.retrievePAYEEQ1()
+    val payeeq1 = boxRetriever.payeeQ1()
     if (!payeeq1.value.getOrElse(true)) {
       validateStringAsMandatory(boxId, box)
     } else Set()
@@ -83,10 +83,10 @@ trait ValidatableBox[T <: BoxRetriever] {
 
   protected def validateAllFilledOrEmptyStringsForBankDetails(boxRetriever: RepaymentsBoxRetriever, boxId: String): Set[CtValidation] = {
     val bankDetailsBoxGroup:Set[CtString] = Set(
-      boxRetriever.retrieveB920(),
-      boxRetriever.retrieveB925(),
-      boxRetriever.retrieveB930(),
-      boxRetriever.retrieveB935()
+      boxRetriever.b920(),
+      boxRetriever.b925(),
+      boxRetriever.b930(),
+      boxRetriever.b935()
     )
     validateAllFilledOrEmptyStrings(boxId, bankDetailsBoxGroup)
   }

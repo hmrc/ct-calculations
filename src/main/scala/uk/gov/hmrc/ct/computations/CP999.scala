@@ -25,8 +25,8 @@ case class CP999(value: Int) extends CtBoxIdentifier(name = "Total Donations") w
 object CP999 extends Calculated[CP999, ComputationsBoxRetriever] with TotalDonationsCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP999 = {
-    calculateTotalDonations(cpq21 = fieldValueRetriever.retrieveCPQ21(),
-      cp301 = fieldValueRetriever.retrieveCP301(),
-      cp302 = fieldValueRetriever.retrieveCP302())
+    calculateTotalDonations(cpq21 = fieldValueRetriever.cpQ21(),
+      cp301 = fieldValueRetriever.cp301(),
+      cp302 = fieldValueRetriever.cp302())
   }
 }

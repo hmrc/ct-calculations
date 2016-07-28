@@ -26,6 +26,6 @@ object B56 extends CorporationTaxCalculator with Calculated[B56, CT600BoxRetriev
 
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B56 =
     corporationTaxFy2(
-      fieldValueRetriever.retrieveB54(),
-      fieldValueRetriever.retrieveB55())
+      fieldValueRetriever.b54(),
+      fieldValueRetriever.b55())
 }

@@ -26,6 +26,6 @@ case class E1033(value: Int) extends CtBoxIdentifier("First Financial Year") wit
 object E1033 extends CorporationTaxCalculator with Calculated[E1033, CT600EBoxRetriever] {
 
   override def calculate(fieldValueRetriever: CT600EBoxRetriever): E1033 = {
-    E1033(financialYear1(HmrcAccountingPeriod(fieldValueRetriever.retrieveE1021(), fieldValueRetriever.retrieveE1022)))
+    E1033(financialYear1(HmrcAccountingPeriod(fieldValueRetriever.e1021(), fieldValueRetriever.e1022)))
   }
 }

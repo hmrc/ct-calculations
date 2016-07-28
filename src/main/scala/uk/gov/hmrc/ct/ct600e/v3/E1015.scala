@@ -24,5 +24,5 @@ case class E1015(value: BigDecimal) extends CtBoxIdentifier("Second Financial Ye
 
 object E1015 extends CorporationTaxCalculator with Calculated[E1015, CT600EBoxRetriever] {
 
-  override def calculate(fieldValueRetriever: CT600EBoxRetriever): E1015 = E1015(rateOfTaxFy2(fieldValueRetriever.retrieveE4))
+  override def calculate(fieldValueRetriever: CT600EBoxRetriever): E1015 = E1015(rateOfTaxFy2(fieldValueRetriever.e4))
 }

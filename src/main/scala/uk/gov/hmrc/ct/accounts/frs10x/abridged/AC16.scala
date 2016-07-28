@@ -31,11 +31,11 @@ case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
     import boxRetriever._
     val anyProfitOrLossFieldHasAValue =
       (value orElse
-        retrieveAC18().value orElse
-        retrieveAC20().value orElse
-        retrieveAC28().value orElse
-        retrieveAC30().value orElse
-        retrieveAC34().value)
+        ac18().value orElse
+        ac20().value orElse
+        ac28().value orElse
+        ac30().value orElse
+        ac34().value)
         .nonEmpty
 
     if (fieldValidation.isEmpty && !anyProfitOrLossFieldHasAValue) {

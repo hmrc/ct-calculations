@@ -26,6 +26,6 @@ case class A7(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "A7 Reli
 object A7 extends Calculated[A7, CT600ABoxRetriever] with LoansToParticipatorsCalculator {
 
   override def calculate(fieldValueRetriever: CT600ABoxRetriever): A7 = {
-    calculateA7(fieldValueRetriever.retrieveA6())
+    calculateA7(fieldValueRetriever.a6())
   }
 }

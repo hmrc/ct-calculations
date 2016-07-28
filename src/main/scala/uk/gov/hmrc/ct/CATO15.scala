@@ -25,8 +25,8 @@ case class CATO15(value: Int) extends CtBoxIdentifier(name = "Property Expenses"
 object CATO15 extends Calculated[CATO15, ComputationsBoxRetriever] with ExpensesCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CATO15 = {
-    calculatePropertyExpenses(cp22 = fieldValueRetriever.retrieveCP22(),
-                              cp23 = fieldValueRetriever.retrieveCP23(),
-                              cp24 = fieldValueRetriever.retrieveCP24())
+    calculatePropertyExpenses(cp22 = fieldValueRetriever.cp22(),
+                              cp23 = fieldValueRetriever.cp23(),
+                              cp24 = fieldValueRetriever.cp24())
   }
 }

@@ -26,6 +26,6 @@ case class A6(value: Option[Int]) extends CtBoxIdentifier(name = "A6 - Total amo
 object A6 extends Calculated[A6, CT600ABoxRetriever] with LoansToParticipatorsCalculator {
 
   override def calculate(fieldValueRetriever: CT600ABoxRetriever): A6 = {
-    calculateA6(fieldValueRetriever.retrieveA4(), fieldValueRetriever.retrieveA5())
+    calculateA6(fieldValueRetriever.a4(), fieldValueRetriever.a5())
   }
 }

@@ -28,5 +28,5 @@ case class AC35(value: Option[Int]) extends CtBoxIdentifier(name = "Tax on profi
   with AccountsPreviousPeriodValidation {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
-        validateInputAllowed("AC35", boxRetriever.retrieveAC205()) ++ validateMoney("AC35")
+        validateInputAllowed("AC35", boxRetriever.ac205()) ++ validateMoney("AC35")
 }

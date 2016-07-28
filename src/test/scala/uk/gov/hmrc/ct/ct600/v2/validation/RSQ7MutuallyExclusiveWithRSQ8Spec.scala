@@ -31,8 +31,8 @@ class RSQ7MutuallyExclusiveWithRSQ8Spec extends WordSpec with Matchers with Mock
 
       val retriever = mock[ReturnStatementsBoxRetriever]
 
-      when(retriever.retrieveRSQ7()).thenReturn(RSQ7(None))
-      when(retriever.retrieveRSQ8()).thenReturn(RSQ8(None))
+      when(retriever.rsq7()).thenReturn(RSQ7(None))
+      when(retriever.rsq8()).thenReturn(RSQ8(None))
 
       validateMutualExclusivity(retriever) shouldBe empty
     }
@@ -41,8 +41,8 @@ class RSQ7MutuallyExclusiveWithRSQ8Spec extends WordSpec with Matchers with Mock
 
       val retriever = mock[ReturnStatementsBoxRetriever]
 
-      when(retriever.retrieveRSQ7()).thenReturn(RSQ7(Some(true)))
-      when(retriever.retrieveRSQ8()).thenReturn(RSQ8(Some(true)))
+      when(retriever.rsq7()).thenReturn(RSQ7(Some(true)))
+      when(retriever.rsq8()).thenReturn(RSQ8(Some(true)))
 
       val expectedErrors = Set(CtValidation(Some("RSQ7"), "error.RSQ7.mutuallyExclusive"), CtValidation(Some("RSQ8"), "error.RSQ8.mutuallyExclusive"))
       validateMutualExclusivity(retriever) shouldBe expectedErrors
@@ -52,8 +52,8 @@ class RSQ7MutuallyExclusiveWithRSQ8Spec extends WordSpec with Matchers with Mock
 
       val retriever = mock[ReturnStatementsBoxRetriever]
 
-      when(retriever.retrieveRSQ7()).thenReturn(RSQ7(Some(false)))
-      when(retriever.retrieveRSQ8()).thenReturn(RSQ8(Some(true)))
+      when(retriever.rsq7()).thenReturn(RSQ7(Some(false)))
+      when(retriever.rsq8()).thenReturn(RSQ8(Some(true)))
 
       validateMutualExclusivity(retriever) shouldBe Set.empty
     }
@@ -62,8 +62,8 @@ class RSQ7MutuallyExclusiveWithRSQ8Spec extends WordSpec with Matchers with Mock
 
       val retriever = mock[ReturnStatementsBoxRetriever]
 
-      when(retriever.retrieveRSQ7()).thenReturn(RSQ7(Some(true)))
-      when(retriever.retrieveRSQ8()).thenReturn(RSQ8(None))
+      when(retriever.rsq7()).thenReturn(RSQ7(Some(true)))
+      when(retriever.rsq8()).thenReturn(RSQ8(None))
 
       validateMutualExclusivity(retriever) shouldBe Set.empty
     }

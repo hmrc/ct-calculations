@@ -26,7 +26,7 @@ case class B345(value: BigDecimal) extends CtBoxIdentifier("Tax FY1") with CtBig
 object B345 extends CorporationTaxCalculator with Calculated[B345, CT600BoxRetriever] {
 
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B345 = {
-    calculateTaxForFirstFinancialYear(fieldValueRetriever.retrieveB335(), fieldValueRetriever.retrieveB340())
+    calculateTaxForFirstFinancialYear(fieldValueRetriever.b335(), fieldValueRetriever.b340())
   }
 
 }

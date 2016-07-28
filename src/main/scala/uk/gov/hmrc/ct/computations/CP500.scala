@@ -24,7 +24,7 @@ case class CP500(value: Int) extends CtBoxIdentifier(name = "Total Expenses") wi
 object CP500 extends Calculated[CP500, ComputationsBoxRetriever] {
 
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP500 = {
-    CP500(boxRetriever.retrieveCP39().value - boxRetriever.retrieveCP40().value)
+    CP500(boxRetriever.cp39().value - boxRetriever.cp40().value)
   }
 
 }

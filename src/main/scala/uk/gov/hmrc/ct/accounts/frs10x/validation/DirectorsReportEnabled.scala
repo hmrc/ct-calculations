@@ -21,11 +21,11 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 trait DirectorsReportEnabled {
   def directorsReportEnabled(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean = {
-    val isCoHoFiling = boxRetriever.retrieveCompaniesHouseFiling().value
-    val isHmrcFiling = boxRetriever.retrieveHMRCFiling().value
-    val isMicroEntityFiling = boxRetriever.retrieveMicroEntityFiling().value
-    val answeredYesToCoHoDirectorsReportQuestion = boxRetriever.retrieveAC8021().orFalse
-    val answeredYesToHmrcDirectorsReportQuestion = boxRetriever.retrieveAC8023().orFalse
+    val isCoHoFiling = boxRetriever.companiesHouseFiling().value
+    val isHmrcFiling = boxRetriever.hmrcFiling().value
+    val isMicroEntityFiling = boxRetriever.microEntityFiling().value
+    val answeredYesToCoHoDirectorsReportQuestion = boxRetriever.ac8021().orFalse
+    val answeredYesToHmrcDirectorsReportQuestion = boxRetriever.ac8023().orFalse
 
     (isCoHoFiling, isHmrcFiling) match {
       case (true, false) => answeredYesToCoHoDirectorsReportQuestion

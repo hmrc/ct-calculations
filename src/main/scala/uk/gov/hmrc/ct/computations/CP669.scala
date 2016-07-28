@@ -27,12 +27,12 @@ object CP669 extends Calculated[CP669, ComputationsBoxRetriever] with LowEmissio
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP669 = {
 
     calculateSpecialRatePoolWrittenDownValueCarriedForward(
-      fieldValueRetriever.retrieveCPQ8(),
-      fieldValueRetriever.retrieveCP666(),
-      fieldValueRetriever.retrieveCP667(),
-      fieldValueRetriever.retrieveCP668(),
-      fieldValueRetriever.retrieveCP670(),
-      fieldValueRetriever.retrieveCPAux3()
+      fieldValueRetriever.cpQ8(),
+      fieldValueRetriever.cp666(),
+      fieldValueRetriever.cp667(),
+      fieldValueRetriever.cp668(),
+      fieldValueRetriever.cp670(),
+      fieldValueRetriever.cpAux3()
     )
 
   }

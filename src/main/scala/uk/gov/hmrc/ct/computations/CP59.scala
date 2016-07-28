@@ -25,10 +25,10 @@ case class CP59(value: Int) extends CtBoxIdentifier(name = "Total deductions") w
 object CP59 extends Calculated[CP59, ComputationsBoxRetriever] with TotalDeductionsCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP59 = {
-    totalDeductionsCalculation(cp58 = fieldValueRetriever.retrieveCP58(),
-                               cp505 = fieldValueRetriever.retrieveCP505(),
-                               cp509 = fieldValueRetriever.retrieveCP509(),
-                               cp55 = fieldValueRetriever.retrieveCP55(),
-                               cp57 = fieldValueRetriever.retrieveCP57())
+    totalDeductionsCalculation(cp58 = fieldValueRetriever.cp58(),
+                               cp505 = fieldValueRetriever.cp505(),
+                               cp509 = fieldValueRetriever.cp509(),
+                               cp55 = fieldValueRetriever.cp55(),
+                               cp57 = fieldValueRetriever.cp57())
   }
 }

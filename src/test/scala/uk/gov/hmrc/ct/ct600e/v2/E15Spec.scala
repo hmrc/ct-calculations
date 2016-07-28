@@ -28,32 +28,32 @@ class E15Spec extends WordSpec with MockitoSugar with Matchers  {
 
   "E15 validation" should {
     "throw validation error when E7 > 0 and E15 < 0" in {
-      when(boxRetriever.retrieveE7()).thenReturn(E7(Some(1)))
+      when(boxRetriever.e7()).thenReturn(E7(Some(1)))
       E15(Some(-1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("E15"), "error.E15.mustBeZeroOrPositive"))
     }
 
     "don't throw validation error when E7 > 0 and E15 = 0" in {
-      when(boxRetriever.retrieveE7()).thenReturn(E7(Some(1)))
+      when(boxRetriever.e7()).thenReturn(E7(Some(1)))
       E15(Some(0)).validate(boxRetriever) shouldBe Set()
     }
 
     "don't throw validation error when E7 > 0 and E15 > 0" in {
-      when(boxRetriever.retrieveE7()).thenReturn(E7(Some(1)))
+      when(boxRetriever.e7()).thenReturn(E7(Some(1)))
       E15(Some(10)).validate(boxRetriever) shouldBe Set()
     }
 
     "don't throw validation error when E7 > 0 and E15 = None" in {
-      when(boxRetriever.retrieveE7()).thenReturn(E7(Some(1)))
+      when(boxRetriever.e7()).thenReturn(E7(Some(1)))
       E15(None).validate(boxRetriever) shouldBe Set()
     }
 
     "throw validation error when E7 = 0 and E15 != None" in {
-      when(boxRetriever.retrieveE7()).thenReturn(E7(Some(0)))
+      when(boxRetriever.e7()).thenReturn(E7(Some(0)))
       E15(Some(0)).validate(boxRetriever) shouldBe Set(CtValidation(Some("E15"), "error.E15.conditionalMustBeEmpty"))
     }
 
     "don't throw validation error when E7 = 0 and E15 = None" in {
-      when(boxRetriever.retrieveE7()).thenReturn(E7(Some(0)))
+      when(boxRetriever.e7()).thenReturn(E7(Some(0)))
       E15(None).validate(boxRetriever) shouldBe Set()
     }
   }

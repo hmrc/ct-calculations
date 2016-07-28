@@ -25,7 +25,7 @@ case class CP294(value: Int) extends CtBoxIdentifier(name = "Trading losses of t
 object CP294 extends Calculated[CP294, ComputationsBoxRetriever] with TradingLossesThisAndLaterPeriodCalculation {
   override def calculate(boxValueRetriever: ComputationsBoxRetriever): CP294 = {
     import boxValueRetriever._
-    tradingLosses(retrieveCP286(),
-                  retrieveCP998())
+    tradingLosses(cp286(),
+                  cp998())
   }
 }

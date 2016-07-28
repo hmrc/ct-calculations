@@ -115,15 +115,15 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
         val accountsBoxRetriever = new StubbedAccountsBoxRetriever with StubbedFilingAttributesBoxValueRetriever {
 
-          override def retrieveAbbreviatedAccountsFiling(): AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)
-          override def retrieveStatutoryAccountsFiling(): StatutoryAccountsFiling = StatutoryAccountsFiling(false)
-          override def retrieveMicroEntityFiling(): MicroEntityFiling = MicroEntityFiling(true)
-          override def retrieveCompanyType(): FilingCompanyType = FilingCompanyType(UkTradingCompany)
-          override def retrieveAbridgedFiling(): AbridgedFiling = AbridgedFiling(false)
-          override def retrieveCompaniesHouseFiling(): CompaniesHouseFiling = CompaniesHouseFiling(true)
-          override def retrieveHMRCFiling(): HMRCFiling = HMRCFiling(false)
-          override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration(Some("EW"))
-          override def retrieveAC3(): AC3 = AC3(new LocalDate(2015,3,30))
+          override def abbreviatedAccountsFiling(): AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)
+          override def statutoryAccountsFiling(): StatutoryAccountsFiling = StatutoryAccountsFiling(false)
+          override def microEntityFiling(): MicroEntityFiling = MicroEntityFiling(true)
+          override def companyType(): FilingCompanyType = FilingCompanyType(UkTradingCompany)
+          override def abridgedFiling(): AbridgedFiling = AbridgedFiling(false)
+          override def companiesHouseFiling(): CompaniesHouseFiling = CompaniesHouseFiling(true)
+          override def hmrcFiling(): HMRCFiling = HMRCFiling(false)
+          override def countryOfRegistration(): CountryOfRegistration = CountryOfRegistration(Some("EW"))
+          override def ac3(): AC3 = AC3(new LocalDate(2015,3,30))
         }
 
         ReturnVersionsCalculator.doCalculation(accountsBoxRetriever) shouldBe expectedResult
@@ -138,7 +138,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600, CT600Version2))
 
         ReturnVersionsCalculator.doCalculation(new ComputationsBoxRetrieverForTest with StubbedAccountsBoxRetriever {
-          override def retrieveAC3(): AC3 = AC3(new LocalDate(2015,3,30))
+          override def ac3(): AC3 = AC3(new LocalDate(2015,3,30))
         }) shouldBe expectedResult
       }
     }
@@ -1369,29 +1369,29 @@ class ComputationsBoxRetrieverForTest extends StubbedComputationsBoxRetriever wi
 
   self: Frsse2008AccountsBoxRetriever =>
 
-  override def retrieveCP1(): CP1 = CP1(LocalDate.parse("2015-03-31"))
+  override def cp1(): CP1 = CP1(LocalDate.parse("2015-03-31"))
 
-  override def retrieveCP2(): CP2 = CP2(LocalDate.parse("2015-12-31"))
+  override def cp2(): CP2 = CP2(LocalDate.parse("2015-12-31"))
 
-  override def retrieveCompanyType(): FilingCompanyType = FilingCompanyType(UkTradingCompany)
+  override def companyType(): FilingCompanyType = FilingCompanyType(UkTradingCompany)
 
-  override def retrieveAbbreviatedAccountsFiling(): AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)
+  override def abbreviatedAccountsFiling(): AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)
 
-  override def retrieveStatutoryAccountsFiling(): StatutoryAccountsFiling = StatutoryAccountsFiling(false)
+  override def statutoryAccountsFiling(): StatutoryAccountsFiling = StatutoryAccountsFiling(false)
 
-  override def retrieveMicroEntityFiling(): MicroEntityFiling = MicroEntityFiling(true)
+  override def microEntityFiling(): MicroEntityFiling = MicroEntityFiling(true)
 
-  override def retrieveAbridgedFiling(): AbridgedFiling = AbridgedFiling(false)
+  override def abridgedFiling(): AbridgedFiling = AbridgedFiling(false)
 
-  override def retrieveCompaniesHouseFiling(): CompaniesHouseFiling = CompaniesHouseFiling(true)
+  override def companiesHouseFiling(): CompaniesHouseFiling = CompaniesHouseFiling(true)
 
-  override def retrieveHMRCFiling(): HMRCFiling = HMRCFiling(true)
+  override def hmrcFiling(): HMRCFiling = HMRCFiling(true)
 
-  override def retrieveHMRCAmendment(): HMRCAmendment = HMRCAmendment(false)
+  override def hmrcAmendment(): HMRCAmendment = HMRCAmendment(false)
 
-  override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration.EnglandWales
+  override def countryOfRegistration(): CountryOfRegistration = CountryOfRegistration.EnglandWales
 
-  override def retrieveAC205(): AC205 = ???
+  override def ac205(): AC205 = ???
 
-  override def retrieveAC206(): AC206 = ???
+  override def ac206(): AC206 = ???
 }

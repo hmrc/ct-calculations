@@ -25,11 +25,11 @@ case class CP186(value: Option[Int]) extends CtBoxIdentifier(name = "Total Allow
 object CP186 extends Calculated[CP186, ComputationsBoxRetriever] with MachineryAndPlantCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP186 = {
-    computeTotalAllowancesClaimed(cpq8 = fieldValueRetriever.retrieveCPQ8(),
-                                  cp87 = fieldValueRetriever.retrieveCP87(),
-                                  cp88 = fieldValueRetriever.retrieveCP88(),
-                                  cp89 = fieldValueRetriever.retrieveCP89(),
-                                  cp90 = fieldValueRetriever.retrieveCP90())
+    computeTotalAllowancesClaimed(cpq8 = fieldValueRetriever.cpQ8(),
+                                  cp87 = fieldValueRetriever.cp87(),
+                                  cp88 = fieldValueRetriever.cp88(),
+                                  cp89 = fieldValueRetriever.cp89(),
+                                  cp90 = fieldValueRetriever.cp90())
   }
 
 }

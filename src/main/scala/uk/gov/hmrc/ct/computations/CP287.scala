@@ -29,11 +29,11 @@ case class CP287(value: Option[Int]) extends CtBoxIdentifier(name = "Amount of l
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
-    val max = retrieveCP118().value - retrieveCP998().orZero
+    val max = cp118().value - cp998().orZero
 
     collectErrors(Set(
-      requiredIf("CP287") { boxRetriever: ComputationsBoxRetriever => value.isEmpty && boxRetriever.retrieveCPQ20().value == Some(true) },
-      cannotExistIf("CP287") { boxRetriever: ComputationsBoxRetriever => value.nonEmpty && !boxRetriever.retrieveCPQ20().orFalse },
+      requiredIf("CP287") { boxRetriever: ComputationsBoxRetriever => value.isEmpty && boxRetriever.cpQ20().value == Some(true) },
+      cannotExistIf("CP287") { boxRetriever: ComputationsBoxRetriever => value.nonEmpty && !boxRetriever.cpQ20().orFalse },
       exceedsMax("CP287")(value, max),
       belowMin("CP287")(value, 1)
     ))(boxRetriever)

@@ -26,25 +26,24 @@ class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
 
   "FilingAttributesBoxValueRetriever" should {
     "have 10 functions" in {
-      BoxValues.retrieveBoxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 11
+      BoxValues.boxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 10
     }
 
     "get ct values" in {
 
       val retriever = new FilingAttributesBoxValueRetrieverForTest
       val result = BoxValues.generateValues(retriever)
-      result("ProductName") shouldBe retriever.retrieveProductName()
-      result("FilingCompanyType") shouldBe retriever.retrieveCompanyType()
-      result("UTR") shouldBe retriever.retrieveUTR()
+      result("FilingCompanyType") shouldBe retriever.companyType()
+      result("UTR") shouldBe retriever.utr()
 
-      result("AbbreviatedAccountsFiling") shouldBe retriever.retrieveAbbreviatedAccountsFiling()
-      result("StatutoryAccountsFiling") shouldBe retriever.retrieveStatutoryAccountsFiling()
-      result("MicroEntityFiling") shouldBe retriever.retrieveMicroEntityFiling()
-      result("AbridgedFiling") shouldBe retriever.retrieveAbridgedFiling()
-      result("CompaniesHouseFiling") shouldBe retriever.retrieveCompaniesHouseFiling()
-      result("HMRCFiling") shouldBe retriever.retrieveHMRCFiling()
-      result("HMRCAmendment") shouldBe retriever.retrieveHMRCAmendment()
-      result("CountryOfRegistration") shouldBe retriever.retrieveCountryOfRegistration()
+      result("AbbreviatedAccountsFiling") shouldBe retriever.abbreviatedAccountsFiling()
+      result("StatutoryAccountsFiling") shouldBe retriever.statutoryAccountsFiling()
+      result("MicroEntityFiling") shouldBe retriever.microEntityFiling()
+      result("AbridgedFiling") shouldBe retriever.abridgedFiling()
+      result("CompaniesHouseFiling") shouldBe retriever.companiesHouseFiling()
+      result("HMRCFiling") shouldBe retriever.hmrcFiling()
+      result("HMRCAmendment") shouldBe retriever.hmrcAmendment()
+      result("CountryOfRegistration") shouldBe retriever.countryOfRegistration()
     }
   }
 }
@@ -53,25 +52,23 @@ class FilingAttributesBoxValueRetrieverForTest extends FilingAttributesBoxValueR
 
   override def generateValues: Map[String, CtValue[_]] = ???
 
-  override def retrieveProductName(): ProductName = ProductName("productType")
+  override def companyType(): FilingCompanyType = FilingCompanyType(CompanyTypes.UkTradingCompany)
 
-  override def retrieveCompanyType(): FilingCompanyType = FilingCompanyType(CompanyTypes.UkTradingCompany)
+  override def utr(): UTR = UTR("123456")
 
-  override def retrieveUTR(): UTR = UTR("123456")
+  override def abbreviatedAccountsFiling(): AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)
 
-  override def retrieveAbbreviatedAccountsFiling(): AbbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)
+  override def statutoryAccountsFiling(): StatutoryAccountsFiling = StatutoryAccountsFiling(true)
 
-  override def retrieveStatutoryAccountsFiling(): StatutoryAccountsFiling = StatutoryAccountsFiling(true)
+  override def microEntityFiling(): MicroEntityFiling = MicroEntityFiling(false)
 
-  override def retrieveMicroEntityFiling(): MicroEntityFiling = MicroEntityFiling(false)
+  override def abridgedFiling(): AbridgedFiling = AbridgedFiling(false)
 
-  override def retrieveAbridgedFiling(): AbridgedFiling = AbridgedFiling(false)
+  override def companiesHouseFiling(): CompaniesHouseFiling = CompaniesHouseFiling(true)
 
-  override def retrieveCompaniesHouseFiling(): CompaniesHouseFiling = CompaniesHouseFiling(true)
+  override def hmrcFiling(): HMRCFiling = HMRCFiling(true)
 
-  override def retrieveHMRCFiling(): HMRCFiling = HMRCFiling(true)
+  override def hmrcAmendment(): HMRCAmendment = HMRCAmendment(false)
 
-  override def retrieveHMRCAmendment(): HMRCAmendment = HMRCAmendment(false)
-
-  override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration.NorthernIreland
+  override def countryOfRegistration(): CountryOfRegistration = CountryOfRegistration.NorthernIreland
 }

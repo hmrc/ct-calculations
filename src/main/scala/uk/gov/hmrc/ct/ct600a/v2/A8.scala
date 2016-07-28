@@ -27,6 +27,6 @@ object A8 extends Calculated[A8, CT600ABoxRetriever] with LoansToParticipatorsCa
 
   override def calculate(fieldValueRetriever: CT600ABoxRetriever): A8 = {
     import fieldValueRetriever._
-    calculateA8(retrieveCP2(), retrieveLP02(), retrieveLPQ07())
+    calculateA8(cp2(), lp02(), lpq07())
   }
 }

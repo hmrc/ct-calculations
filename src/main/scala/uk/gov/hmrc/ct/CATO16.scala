@@ -25,18 +25,18 @@ case class CATO16(value: Int) extends CtBoxIdentifier(name = "General Administra
 object CATO16 extends Calculated[CATO16, ComputationsBoxRetriever] with ExpensesCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CATO16 = {
-    calculateGeneralAdministrativeExpenses(cp25 = fieldValueRetriever.retrieveCP25(),
-                                           cp26 = fieldValueRetriever.retrieveCP26(),
-                                           cp27 = fieldValueRetriever.retrieveCP27(),
-                                           cp28 = fieldValueRetriever.retrieveCP28(),
-                                           cp29 = fieldValueRetriever.retrieveCP29(),
-                                           cp30 = fieldValueRetriever.retrieveCP30(),
-                                           cp31 = fieldValueRetriever.retrieveCP31(),
-                                           cp32 = fieldValueRetriever.retrieveCP32(),
-                                           cp33 = fieldValueRetriever.retrieveCP33(),
-                                           cp34 = fieldValueRetriever.retrieveCP34(),
-                                           cp35 = fieldValueRetriever.retrieveCP35(),
-                                           cp36 = fieldValueRetriever.retrieveCP36(),
-                                           cp37 = fieldValueRetriever.retrieveCP37())
+    calculateGeneralAdministrativeExpenses(cp25 = fieldValueRetriever.cp25(),
+                                           cp26 = fieldValueRetriever.cp26(),
+                                           cp27 = fieldValueRetriever.cp27(),
+                                           cp28 = fieldValueRetriever.cp28(),
+                                           cp29 = fieldValueRetriever.cp29(),
+                                           cp30 = fieldValueRetriever.cp30(),
+                                           cp31 = fieldValueRetriever.cp31(),
+                                           cp32 = fieldValueRetriever.cp32(),
+                                           cp33 = fieldValueRetriever.cp33(),
+                                           cp34 = fieldValueRetriever.cp34(),
+                                           cp35 = fieldValueRetriever.cp35(),
+                                           cp36 = fieldValueRetriever.cp36(),
+                                           cp37 = fieldValueRetriever.cp37())
   }
 }

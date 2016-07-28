@@ -26,6 +26,6 @@ object AC33 extends Calculated[AC33, Frs10xAccountsBoxRetriever] with ProfitOrLo
 
   override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC33 = {
     import boxRetriever._
-    calculateAC33(retrieveAC27(), retrieveAC29(), retrieveAC31())
+    calculateAC33(ac27(), ac29(), ac31())
   }
 }

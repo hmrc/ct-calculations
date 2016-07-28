@@ -25,8 +25,8 @@ case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Current Gros
 
 object AC16 extends Calculated[AC16, Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever] with ProfitOrLossCalculator {
   override def calculate(boxRetriever: Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever): AC16 = {
-    calculateCurrentGrossProfitOrLoss(ac12 = boxRetriever.retrieveAC12(),
-                                      ac14 = boxRetriever.retrieveAC14(),
-                                      statutoryAccountsFiling = boxRetriever.retrieveStatutoryAccountsFiling())
+    calculateCurrentGrossProfitOrLoss(ac12 = boxRetriever.ac12(),
+                                      ac14 = boxRetriever.ac14(),
+                                      statutoryAccountsFiling = boxRetriever.statutoryAccountsFiling())
   }
 }

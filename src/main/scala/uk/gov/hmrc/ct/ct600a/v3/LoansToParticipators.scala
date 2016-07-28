@@ -38,7 +38,7 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
   }
 
   def validateLoanRequired(boxRetriever: CT600ABoxRetriever): Set[CtValidation] = {
-    boxRetriever.retrieveLPQ03().value.getOrElse(false) match {
+    boxRetriever.lpq03().value.getOrElse(false) match {
       case true if loans.isEmpty => Set(CtValidation(Some("LoansToParticipators"), "error.loan.required", None))
       case _ => Set.empty
     }
@@ -151,9 +151,9 @@ case class Repayment(id: String, amount: Int, amountBefore06042016: Option[Int] 
     }
   }
 
-  def currentAPEndDatePlus9Months(boxRetriever: CT600ABoxRetriever): LocalDate = boxRetriever.retrieveCP2().value.plusMonths(9)
+  def currentAPEndDatePlus9Months(boxRetriever: CT600ABoxRetriever): LocalDate = boxRetriever.cp2().value.plusMonths(9)
 
-  def currentAPEndDate(boxRetriever: CT600ABoxRetriever): LocalDate = boxRetriever.retrieveCP2().value
+  def currentAPEndDate(boxRetriever: CT600ABoxRetriever): LocalDate = boxRetriever.cp2().value
 
   def earlierOfNowAndAPEndDatePlus9Months(boxRetriever: CT600ABoxRetriever): LocalDate = {
     currentAPEndDatePlus9Months(boxRetriever).isBefore(dateAtStartofToday) match {
@@ -208,15 +208,15 @@ case class WriteOff(id: String, amount: Int, amountBefore06042016: Option[Int] =
     }
   }
 
-  def currentAPEndDate(boxRetriever: CT600ABoxRetriever): LocalDate = boxRetriever.retrieveCP2().value
+  def currentAPEndDate(boxRetriever: CT600ABoxRetriever): LocalDate = boxRetriever.cp2().value
 
-  def currentAPEndDatePlus9Months(boxRetriever: CT600ABoxRetriever): LocalDate = boxRetriever.retrieveCP2().value.plusMonths(9)
+  def currentAPEndDatePlus9Months(boxRetriever: CT600ABoxRetriever): LocalDate = boxRetriever.cp2().value.plusMonths(9)
 
   def errorArgsWriteOffApEndDate(boxRetriever: CT600ABoxRetriever): Some[Seq[String]] =
-    Some(Seq(toErrorArgsFormat(boxRetriever.retrieveCP2().value)))
+    Some(Seq(toErrorArgsFormat(boxRetriever.cp2().value)))
 
   def errorArgsWriteOffDate(boxRetriever: CT600ABoxRetriever): Some[Seq[String]] =
-    Some(Seq(toErrorArgsFormat(boxRetriever.retrieveCP2().value.plusDays(1)), toErrorArgsFormat(DateHelper.now())))
+    Some(Seq(toErrorArgsFormat(boxRetriever.cp2().value.plusDays(1)), toErrorArgsFormat(DateHelper.now())))
 
 }
 

@@ -33,110 +33,110 @@ class AC8021Spec extends WordSpec with MockitoSugar with Matchers {
   "AC8021 validate" should {
     "return errors when filing is for CoHo and AC8021 is empty" in {
       val mockBoxRetriever = mock[TestBoxRetriever]
-      when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-      when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(false))
-      when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(false))
-      when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(false)))
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
+      when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
+      when(mockBoxRetriever.ac8023()).thenReturn(AC8023(Some(false)))
 
       AC8021(None).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("AC8021"), "error.AC8021.required"))
     }
 
     "not return errors when filing is for CoHo and AC8021 is true" in {
       val mockBoxRetriever = mock[TestBoxRetriever]
-      when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-      when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(false))
-      when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(false))
-      when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(false)))
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
+      when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
+      when(mockBoxRetriever.ac8023()).thenReturn(AC8023(Some(false)))
 
       AC8021(Some(true)).validate(mockBoxRetriever) shouldBe Set()
     }
 
     "not return errors when filing is for CoHo and AC8021 is false" in {
       val mockBoxRetriever = mock[TestBoxRetriever]
-      when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-      when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(false))
-      when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(false))
-      when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(false)))
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
+      when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
+      when(mockBoxRetriever.ac8023()).thenReturn(AC8023(Some(false)))
 
       AC8021(Some(false)).validate(mockBoxRetriever) shouldBe Set()
     }
 
     "return errors when filing is for Joint and AC8021 is empty" in {
       val mockBoxRetriever = mock[TestBoxRetriever]
-      when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-      when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(true))
-      when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(false))
-      when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(false)))
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
+      when(mockBoxRetriever.ac8023()).thenReturn(AC8023(Some(false)))
 
       AC8021(None).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("AC8021"), "error.AC8021.required"))
     }
 
     "not return errors when filing is for Joint and AC8021 is true" in {
       val mockBoxRetriever = mock[TestBoxRetriever]
-      when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-      when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(true))
-      when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(false))
-      when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(false)))
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
+      when(mockBoxRetriever.ac8023()).thenReturn(AC8023(Some(false)))
 
       AC8021(Some(true)).validate(mockBoxRetriever) shouldBe Set()
     }
 
     "not return errors when filing is for Joint and AC8021 is false" in {
       val mockBoxRetriever = mock[TestBoxRetriever]
-      when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-      when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(true))
-      when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(false))
-      when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(false)))
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
+      when(mockBoxRetriever.ac8023()).thenReturn(AC8023(Some(false)))
 
       AC8021(Some(false)).validate(mockBoxRetriever) shouldBe Set()
     }
 
     "return errors when filing is for Joint micro-entity, AC8023=true and AC8021 is empty" in {
       val mockBoxRetriever = mock[TestBoxRetriever]
-      when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-      when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(true))
-      when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(true))
-      when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(true)))
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(true))
+      when(mockBoxRetriever.ac8023()).thenReturn(AC8023(Some(true)))
 
       AC8021(None).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("AC8021"), "error.AC8021.required"))
     }
 
     "not return errors when filing is for Joint micro-entity, AC8023=false and AC8021 is empty" in {
       val mockBoxRetriever = mock[TestBoxRetriever]
-      when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-      when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(true))
-      when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(true))
-      when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(false)))
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(true))
+      when(mockBoxRetriever.ac8023()).thenReturn(AC8023(Some(false)))
 
       AC8021(None).validate(mockBoxRetriever) shouldBe Set()
     }
 
     "not return errors when filing is for Joint micro-entity, AC8023=true and AC8021 is true" in {
       val mockBoxRetriever = mock[TestBoxRetriever]
-      when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-      when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(true))
-      when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(true))
-      when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(true)))
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(true))
+      when(mockBoxRetriever.ac8023()).thenReturn(AC8023(Some(true)))
 
       AC8021(Some(true)).validate(mockBoxRetriever) shouldBe Set()
     }
 
     "not return errors when filing is for Joint micro-entity, AC8023=true and AC8021 is false" in {
       val mockBoxRetriever = mock[TestBoxRetriever]
-      when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-      when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(true))
-      when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(true))
-      when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(true)))
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(true))
+      when(mockBoxRetriever.ac8023()).thenReturn(AC8023(Some(true)))
 
       AC8021(Some(false)).validate(mockBoxRetriever) shouldBe Set()
     }
 
     "not return errors when filing is for HMRC and AC8021 is empty" in {
       val mockBoxRetriever = mock[TestBoxRetriever]
-      when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(false))
-      when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(true))
-      when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(false))
-      when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(false)))
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(false))
+      when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
+      when(mockBoxRetriever.ac8023()).thenReturn(AC8023(Some(false)))
 
       AC8021(None).validate(mockBoxRetriever) shouldBe Set()
     }

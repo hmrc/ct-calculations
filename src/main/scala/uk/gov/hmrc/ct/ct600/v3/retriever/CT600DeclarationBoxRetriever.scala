@@ -21,12 +21,12 @@ import uk.gov.hmrc.ct.ct600.v3.{B975, B980, B985, N092}
 
 trait CT600DeclarationBoxRetriever extends BoxRetriever {
 
-  def retrieveB975(): B975
+  def b975(): B975
 
-  def retrieveB985(): B985
+  def b985(): B985
 
-  def retrieveB980(): B980
+  def b980(): B980
 
-  def retrieveN092(): N092
+  def n092(): N092
 
 }

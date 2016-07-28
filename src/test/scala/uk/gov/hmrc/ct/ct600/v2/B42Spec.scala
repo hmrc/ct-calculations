@@ -29,8 +29,8 @@ class B42Spec extends WordSpec with Matchers with MockitoSugar {
 
       val boxRetriever = mock[CT600BoxRetriever]
 
-      when(boxRetriever.retrieveB42a()).thenReturn(B42a(Some(false)))
-      when(boxRetriever.retrieveB42b()).thenReturn(B42b(Some(false)))
+      when(boxRetriever.b42a()).thenReturn(B42a(Some(false)))
+      when(boxRetriever.b42b()).thenReturn(B42b(Some(false)))
 
       B42.calculate(boxRetriever).value shouldBe false
     }
@@ -39,8 +39,8 @@ class B42Spec extends WordSpec with Matchers with MockitoSugar {
 
       val boxRetriever = mock[CT600BoxRetriever]
 
-      when(boxRetriever.retrieveB42a()).thenReturn(B42a(None))
-      when(boxRetriever.retrieveB42b()).thenReturn(B42b(None))
+      when(boxRetriever.b42a()).thenReturn(B42a(None))
+      when(boxRetriever.b42b()).thenReturn(B42b(None))
 
       B42.calculate(boxRetriever).value shouldBe false
     }
@@ -49,8 +49,8 @@ class B42Spec extends WordSpec with Matchers with MockitoSugar {
 
       val boxRetriever = mock[CT600BoxRetriever]
 
-      when(boxRetriever.retrieveB42a()).thenReturn(B42a(Some(true)))
-      when(boxRetriever.retrieveB42b()).thenReturn(B42b(Some(false)))
+      when(boxRetriever.b42a()).thenReturn(B42a(Some(true)))
+      when(boxRetriever.b42b()).thenReturn(B42b(Some(false)))
 
       B42.calculate(boxRetriever).value shouldBe true
     }
@@ -59,8 +59,8 @@ class B42Spec extends WordSpec with Matchers with MockitoSugar {
 
       val boxRetriever = mock[CT600BoxRetriever]
 
-      when(boxRetriever.retrieveB42a()).thenReturn(B42a(None))
-      when(boxRetriever.retrieveB42b()).thenReturn(B42b(Some(true)))
+      when(boxRetriever.b42a()).thenReturn(B42a(None))
+      when(boxRetriever.b42b()).thenReturn(B42b(Some(true)))
 
       B42.calculate(boxRetriever).value shouldBe true
     }
@@ -69,8 +69,8 @@ class B42Spec extends WordSpec with Matchers with MockitoSugar {
 
       val boxRetriever = mock[CT600BoxRetriever]
 
-      when(boxRetriever.retrieveB42a()).thenReturn(B42a(Some(true)))
-      when(boxRetriever.retrieveB42b()).thenReturn(B42b(Some(true)))
+      when(boxRetriever.b42a()).thenReturn(B42a(Some(true)))
+      when(boxRetriever.b42b()).thenReturn(B42b(Some(true)))
 
       B42.calculate(boxRetriever).value shouldBe true
     }

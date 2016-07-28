@@ -51,8 +51,8 @@ class ACQ8009Spec extends WordSpec with Matchers with MockitoSugar with BeforeAn
 
     "no validate if no directors report" in {
 
-      when(mockBoxRetriever.retrieveAC8021()).thenReturn(AC8021(None))
-      when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(Some(false)))
+      when(mockBoxRetriever.ac8021()).thenReturn(AC8021(None))
+      when(mockBoxRetriever.ac8023()).thenReturn(AC8023(Some(false)))
 
       val secretary = ACQ8009(None)
 

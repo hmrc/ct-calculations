@@ -29,53 +29,53 @@ trait AboutThisReturnBoxRetriever extends BoxRetriever {
 
   self: AccountsBoxRetriever =>
 
-  def retrieveB30(): B30 = {
+  def b30(): B30 = {
     this match {
-      case computationsBoxRetriever: ComputationsBoxRetriever => B30(computationsBoxRetriever.retrieveCP1())
-      case charityRetriever: CT600EBoxRetriever => B30(charityRetriever.retrieveE3())
+      case computationsBoxRetriever: ComputationsBoxRetriever => B30(computationsBoxRetriever.cp1())
+      case charityRetriever: CT600EBoxRetriever => B30(charityRetriever.e3())
       case _ => throw new IllegalStateException(s"This box retriever [$this] does not have an AP start date.")
     }
   }
 
-  def retrieveB35(): B35 = {
+  def b35(): B35 = {
     this match {
-      case compsRet : ComputationsBoxRetriever => B35(compsRet.retrieveCP2())
-      case charityRetriever: CT600EBoxRetriever => B35(charityRetriever.retrieveE4())
+      case compsRet : ComputationsBoxRetriever => B35(compsRet.cp2())
+      case charityRetriever: CT600EBoxRetriever => B35(charityRetriever.e4())
       case _ => throw new IllegalStateException(s"This box retriever [$this] does not have an AP start date.")
     }
   }
 
-  def retrieveB40(): B40
+  def b40(): B40
 
-  def retrieveB45(): B45 = B45.calculate(this)
+  def b45(): B45 = B45.calculate(this)
 
-  def retrieveB45Input(): B45Input
+  def b45Input(): B45Input
 
-  def retrieveB50(): B50 = B50.calculate(this)
+  def b50(): B50 = B50.calculate(this)
 
-  def retrieveB55(): B55
+  def b55(): B55
 
-  def retrieveB65(): B65
+  def b65(): B65
 
-  def retrieveB80A(): B80A
+  def b80A(): B80A
 
-  def retrieveB85A(): B85A
+  def b85A(): B85A
 
-  def retrieveB90A(): B90A
+  def b90A(): B90A
 
-  def retrieveB95(): B95 = {
+  def b95(): B95 = {
     this match {
-      case r: CT600ABoxRetriever => B95(r.retrieveLPQ01)
+      case r: CT600ABoxRetriever => B95(r.lpq01)
       case _ => B95(false)
     }
   }
 
-  def retrieveB115(): B115 = {
+  def b115(): B115 = {
     this match {
       case r: CT600EBoxRetriever => B115(true)
       case _ => B115(false)
     }
   }
 
-  def retrieveB140(): B140 = B140(retrieveB65())
+  def b140(): B140 = B140(b65())
 }

@@ -25,167 +25,167 @@ import uk.gov.hmrc.ct.{CountryOfRegistration, CATO11, CATO12}
 
 class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with StubbedAccountsBoxRetriever with StubbedFilingAttributesBoxValueRetriever {
 
-  override def retrieveAP1(): AP1 = ???
+  override def ap1(): AP1 = ???
 
-  override def retrieveCP36(): CP36 = ???
+  override def cp36(): CP36 = ???
 
-  override def retrieveCP303(): CP303 = ???
+  override def cp303(): CP303 = ???
 
-  override def retrieveCP501(): CP501 = ???
+  override def cp501(): CP501 = ???
 
-  override def retrieveCP287(): CP287 = ???
+  override def cp287(): CP287 = ???
 
-  override def retrieveCP21(): CP21 = ???
+  override def cp21(): CP21 = ???
 
-  override def retrieveCP15(): CP15 = ???
+  override def cp15(): CP15 = ???
 
-  override def retrieveCPQ20(): CPQ20 = ???
+  override def cpQ20(): CPQ20 = ???
 
-  override def retrieveCP24(): CP24 = ???
+  override def cp24(): CP24 = ???
 
-  override def retrieveCP18(): CP18 = ???
+  override def cp18(): CP18 = ???
 
-  override def retrieveCP281(): CP281 = ???
+  override def cp281(): CP281 = ???
 
-  override def retrieveCP86(): CP86 = ???
+  override def cp86(): CP86 = ???
 
-  override def retrieveLEC01(): LEC01 = ???
+  override def lec01(): LEC01 = ???
 
-  override def retrieveAP2(): AP2 = ???
+  override def ap2(): AP2 = ???
 
-  override def retrieveCPQ17(): CPQ17 = ???
+  override def cpQ17(): CPQ17 = ???
 
-  override def retrieveCP674(): CP674 = ???
+  override def cp674(): CP674 = ???
 
-  override def retrieveCP668(): CP668 = ???
+  override def cp668(): CP668 = ???
 
-  override def retrieveCP80(): CP80 = ???
+  override def cp80(): CP80 = ???
 
-  override def retrieveCP89(): CP89 = ???
+  override def cp89(): CP89 = ???
 
-  override def retrieveCP53(): CP53 = ???
+  override def cp53(): CP53 = ???
 
-  override def retrieveCP302(): CP302 = ???
+  override def cp302(): CP302 = ???
 
-  override def retrieveCP35(): CP35 = ???
+  override def cp35(): CP35 = ???
 
-  override def retrieveCP83(): CP83 = ???
+  override def cp83(): CP83 = ???
 
-  override def retrieveCPQ1000(): CPQ1000 = ???
+  override def cpQ1000(): CPQ1000 = ???
 
-  override def retrieveCP503(): CP503 = ???
+  override def cp503(): CP503 = ???
 
-  override def retrieveCP23(): CP23 = ???
+  override def cp23(): CP23 = ???
 
-  override def retrieveCP91Input(): CP91Input = ???
+  override def cp91Input(): CP91Input = ???
 
-  override def retrieveCP17(): CP17 = ???
+  override def cp17(): CP17 = ???
 
-  override def retrieveCP667(): CP667 = ???
+  override def cp667(): CP667 = ???
 
-  override def retrieveCPQ19(): CPQ19 = ???
+  override def cpQ19(): CPQ19 = ???
 
-  override def retrieveCP47(): CP47 = ???
+  override def cp47(): CP47 = ???
 
-  override def retrieveCP673(): CP673 = ???
+  override def cp673(): CP673 = ???
 
-  override def retrieveCP26(): CP26 = ???
+  override def cp26(): CP26 = ???
 
-  override def retrieveCP32(): CP32 = ???
+  override def cp32(): CP32 = ???
 
-  override def retrieveCP20(): CP20 = ???
+  override def cp20(): CP20 = ???
 
-  override def retrieveCPQ8(): CPQ8 = ???
+  override def cpQ8(): CPQ8 = ???
 
-  override def retrieveCP286(): CP286 = ???
+  override def cp286(): CP286 = ???
 
-  override def retrieveCP82(): CP82 = ???
+  override def cp82(): CP82 = ???
 
-  override def retrieveCP29(): CP29 = ???
+  override def cp29(): CP29 = ???
 
-  override def retrieveCP8(): CP8 = ???
+  override def cp8(): CP8 = ???
 
-  override def retrieveCP85(): CP85 = ???
+  override def cp85(): CP85 = ???
 
-  override def retrieveCP79(): CP79 = ???
+  override def cp79(): CP79 = ???
 
-  override def retrieveCP46(): CP46 = ???
+  override def cp46(): CP46 = ???
 
-  override def retrieveCP2(): CP2 = ???
+  override def cp2(): CP2 = ???
 
-  override def retrieveCPQ10(): CPQ10 = ???
+  override def cpQ10(): CPQ10 = ???
 
-  override def retrieveCP52(): CP52 = ???
+  override def cp52(): CP52 = ???
 
-  override def retrieveCP88(): CP88 = ???
+  override def cp88(): CP88 = ???
 
-  override def retrieveCP34(): CP34 = ???
+  override def cp34(): CP34 = ???
 
-  override def retrieveCP49(): CP49 = ???
+  override def cp49(): CP49 = ???
 
-  override def retrieveCP55(): CP55 = ???
+  override def cp55(): CP55 = ???
 
-  override def retrieveCP87Input(): CP87Input = ???
+  override def cp87Input(): CP87Input = ???
 
-  override def retrieveCPQ7(): CPQ7 = ???
+  override def cpQ7(): CPQ7 = ???
 
-  override def retrieveCP301(): CP301 = ???
+  override def cp301(): CP301 = ???
 
-  override def retrieveCP28(): CP28 = ???
+  override def cp28(): CP28 = ???
 
-  override def retrieveCP22(): CP22 = ???
+  override def cp22(): CP22 = ???
 
-  override def retrieveCP502(): CP502 = ???
+  override def cp502(): CP502 = ???
 
-  override def retrieveCPQ21(): CPQ21 = ???
+  override def cpQ21(): CPQ21 = ???
 
-  override def retrieveCP16(): CP16 = ???
+  override def cp16(): CP16 = ???
 
-  override def retrieveCP43(): CP43 = ???
+  override def cp43(): CP43 = ???
 
-  override def retrieveCP37(): CP37 = ???
+  override def cp37(): CP37 = ???
 
-  override def retrieveCP31(): CP31 = ???
+  override def cp31(): CP31 = ???
 
-  override def retrieveCPQ18(): CPQ18 = ???
+  override def cpQ18(): CPQ18 = ???
 
-  override def retrieveCP19(): CP19 = ???
+  override def cp19(): CP19 = ???
 
-  override def retrieveCP1(): CP1 = ???
+  override def cp1(): CP1 = ???
 
-  override def retrieveCP672(): CP672 = ???
+  override def cp672(): CP672 = ???
 
-  override def retrieveCP666(): CP666 = ???
+  override def cp666(): CP666 = ???
 
-  override def retrieveCP25(): CP25 = ???
+  override def cp25(): CP25 = ???
 
-  override def retrieveCP285(): CP285 = ???
+  override def cp285(): CP285 = ???
 
-  override def retrieveCP78(): CP78 = ???
+  override def cp78(): CP78 = ???
 
-  override def retrieveCP7(): CP7 = ???
+  override def cp7(): CP7 = ???
 
-  override def retrieveCP84(): CP84 = ???
+  override def cp84(): CP84 = ???
 
-  override def retrieveCP57(): CP57 = ???
+  override def cp57(): CP57 = ???
 
-  override def retrieveCP30(): CP30 = ???
+  override def cp30(): CP30 = ???
 
-  override def retrieveAP3(): AP3 = ???
+  override def ap3(): AP3 = ???
 
-  override def retrieveCP51(): CP51 = ???
+  override def cp51(): CP51 = ???
 
-  override def retrieveCP510(): CP510 = ???
+  override def cp510(): CP510 = ???
 
-  override def retrieveCP33(): CP33 = ???
+  override def cp33(): CP33 = ???
 
-  override def retrieveCP48(): CP48 = ???
+  override def cp48(): CP48 = ???
 
-  override def retrieveCP27(): CP27 = ???
+  override def cp27(): CP27 = ???
 
-  override def retrieveCP252(): CP252 = ???
+  override def cp252(): CP252 = ???
 
   override def generateValues: Map[String, CtValue[_]] = ???
 
-  override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration.EnglandWales
+  override def countryOfRegistration(): CountryOfRegistration = CountryOfRegistration.EnglandWales
 }

@@ -25,6 +25,6 @@ case class CP509(value: Int) extends CtBoxIdentifier(name = "Net Income from pro
 object CP509 extends Calculated[CP509, ComputationsBoxRetriever] with IncomeFromPropertyCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP509 = {
-    netIncomeFromProperty( cp507 = fieldValueRetriever.retrieveCP507(), cp508 = fieldValueRetriever.retrieveCP508())
+    netIncomeFromProperty( cp507 = fieldValueRetriever.cp507(), cp508 = fieldValueRetriever.cp508())
   }
 }

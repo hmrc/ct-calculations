@@ -23,6 +23,6 @@ import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 case class J50A(value: Option[LocalDate]) extends SchemeDateBox{
 
   override def validate(boxRetriever: CT600JBoxRetriever): Set[CtValidation] =
-    validateSchemeDate(boxRetriever.retrieveJ45(), boxRetriever.retrieveJ45A(), boxRetriever.retrieveJ50())
+    validateSchemeDate(boxRetriever.j45(), boxRetriever.j45A(), boxRetriever.j50())
 
 }

@@ -97,11 +97,11 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
       )
 
       forAll(testTable) { (companiesHouseFiling: Boolean, hmrcFiling: Boolean, microEntityFiling: Boolean, ac8021: Option[Boolean], ac8023: Option[Boolean], expectedResult: Boolean) =>
-        when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(companiesHouseFiling))
-        when(mockBoxRetriever.retrieveHMRCFiling()).thenReturn(HMRCFiling(hmrcFiling))
-        when(mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn(MicroEntityFiling(microEntityFiling))
-        when(mockBoxRetriever.retrieveAC8021()).thenReturn(AC8021(ac8021))
-        when(mockBoxRetriever.retrieveAC8023()).thenReturn(AC8023(ac8023))
+        when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(companiesHouseFiling))
+        when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(hmrcFiling))
+        when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(microEntityFiling))
+        when(mockBoxRetriever.ac8021()).thenReturn(AC8021(ac8021))
+        when(mockBoxRetriever.ac8023()).thenReturn(AC8023(ac8023))
 
         directors.validate(mockBoxRetriever).size > 0 shouldBe expectedResult
         directors.validate(mockBoxRetriever).exists(_.errorMessageKey.contains("atLeast1")) shouldBe expectedResult
@@ -129,7 +129,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
     }
 
     "validate at least one director appointed if are-there-appointments question is yes" in {
-      when(mockBoxRetriever.retrieveACQ8003()).thenReturn(ACQ8003(Some(true)))
+      when(mockBoxRetriever.acQ8003()).thenReturn(ACQ8003(Some(true)))
       val directors = Directors(List(Director("444", "Jack"), Director("555", "Jill")))
 
       val expectedError = Set(CtValidation(Some("ac8005"), "error.Directors.ac8005.global.atLeast1", None))
@@ -137,7 +137,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
     }
 
     "no error if at least one director appointed if are-there-appointments question is yes" in {
-      when(mockBoxRetriever.retrieveACQ8003()).thenReturn(ACQ8003(Some(true)))
+      when(mockBoxRetriever.acQ8003()).thenReturn(ACQ8003(Some(true)))
       val directors = Directors(List(Director("444", "Jack", ac8005 = Some(true), ac8007 = Some(new LocalDate(2016, 4, 5))), Director("555", "Jill")))
 
       directors.validate(mockBoxRetriever) shouldBe empty
@@ -150,7 +150,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
     }
 
     "validate at least one director resigned if are-there-resignations question is yes" in {
-      when(mockBoxRetriever.retrieveACQ8009()).thenReturn(ACQ8009(Some(true)))
+      when(mockBoxRetriever.acQ8009()).thenReturn(ACQ8009(Some(true)))
       val directors = Directors(List(Director("444", "Jack"), Director("555", "Jill")))
 
       val expectedError = Set(CtValidation(Some("ac8011"), "error.Directors.ac8011.global.atLeast1", None))
@@ -158,14 +158,14 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
     }
 
     "no error if at least one director resigned if are-there-resignations question is yes" in {
-      when(mockBoxRetriever.retrieveACQ8009()).thenReturn(ACQ8009(Some(true)))
+      when(mockBoxRetriever.acQ8009()).thenReturn(ACQ8009(Some(true)))
       val directors = Directors(List(Director("444", "Jack", ac8011 = Some(true)), Director("555", "Jill")))
 
       directors.validate(mockBoxRetriever) shouldBe empty
     }
 
     "validate date present if appointed" in {
-      when(mockBoxRetriever.retrieveACQ8003()).thenReturn(ACQ8003(Some(true)))
+      when(mockBoxRetriever.acQ8003()).thenReturn(ACQ8003(Some(true)))
       val directors = Directors(List(Director("444", "Jack", ac8005 = Some(true)), Director("555", "Jill")))
 
       val expectedError = Set(CtValidation(Some("ac8007.444"), "error.ac8007.required", None))
@@ -173,7 +173,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
     }
 
     "validate date within POA if appointed" in {
-      when(mockBoxRetriever.retrieveACQ8003()).thenReturn(ACQ8003(Some(true)))
+      when(mockBoxRetriever.acQ8003()).thenReturn(ACQ8003(Some(true)))
       val expectedError = Set(CtValidation(Some("ac8007.444"), "error.ac8007.not.betweenInclusive", Some(List("6 April 2015", "5 April 2016"))))
 
       val directors = Directors(List(Director("444", "Jack", ac8005 = Some(true), ac8007 = Some(new LocalDate(2015, 4, 5))), Director("555", "Jill")))

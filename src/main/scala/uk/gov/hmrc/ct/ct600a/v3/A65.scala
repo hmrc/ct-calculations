@@ -26,6 +26,6 @@ with CtOptionalInteger
 object A65 extends Calculated[A65, CT600ABoxRetriever] with LoansToParticipatorsCalculator {
 
  override def calculate(fieldValueRetriever: CT600ABoxRetriever): A65 = {
-  calculateA65(fieldValueRetriever.retrieveA55(), fieldValueRetriever.retrieveA60())
+  calculateA65(fieldValueRetriever.a55(), fieldValueRetriever.a60())
  }
 }

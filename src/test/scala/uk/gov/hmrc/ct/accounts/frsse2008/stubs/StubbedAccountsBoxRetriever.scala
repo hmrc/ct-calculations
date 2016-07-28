@@ -26,71 +26,71 @@ trait StubbedAccountsBoxRetriever extends Frsse2008AccountsBoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 
-  override def retrieveAC1(): AC1 = ???
+  override def ac1(): AC1 = ???
 
-  override def retrieveAC19(): AC19 = ???
+  override def ac19(): AC19 = ???
 
-  override def retrieveAC31(): AC31 = ???
+  override def ac31(): AC31 = ???
 
-  override def retrieveAC34(): AC34 = ???
+  override def ac34(): AC34 = ???
 
-  override def retrieveAC13(): AC13 = ???
+  override def ac13(): AC13 = ???
 
-  override def retrieveAC28(): AC28 = ???
+  override def ac28(): AC28 = ???
 
-  override def retrieveAC4(): AC4 = ???
+  override def ac4(): AC4 = ???
 
-  override def retrieveAC22(): AC22 = ???
+  override def ac22(): AC22 = ???
 
-  override def retrieveAC21(): AC21 = ???
+  override def ac21(): AC21 = ???
 
-  override def retrieveAC39(): AC39 = ???
+  override def ac39(): AC39 = ???
 
-  override def retrieveAC18(): AC18 = ???
+  override def ac18(): AC18 = ???
 
-  override def retrieveAC30(): AC30 = ???
+  override def ac30(): AC30 = ???
 
-  override def retrieveAC12(): AC12 = ???
+  override def ac12(): AC12 = ???
 
-  override def retrieveAC15(): AC15 = ???
+  override def ac15(): AC15 = ???
 
-  override def retrieveAC3(): AC3 = ???
+  override def ac3(): AC3 = ???
 
-  override def retrieveAC29(): AC29 = ???
+  override def ac29(): AC29 = ???
 
-  override def retrieveAC14(): AC14 = ???
+  override def ac14(): AC14 = ???
 
-  override def retrieveAC20(): AC20 = ???
+  override def ac20(): AC20 = ???
 
-  override def retrieveAC35(): AC35 = ???
+  override def ac35(): AC35 = ???
 
-  override def retrieveAC38(): AC38 = ???
+  override def ac38(): AC38 = ???
 
-  override def retrieveAC23(): AC23 = ???
+  override def ac23(): AC23 = ???
 
-  override def retrieveAC405(): AC405 = ???
+  override def ac405(): AC405 = ???
 
-  override def retrieveAC406(): AC406 = ???
+  override def ac406(): AC406 = ???
 
-  override def retrieveAC410(): AC410 = ???
+  override def ac410(): AC410 = ???
 
-  override def retrieveAC411(): AC411 = ???
+  override def ac411(): AC411 = ???
 
-  override def retrieveAC415(): AC415 = ???
+  override def ac415(): AC415 = ???
 
-  override def retrieveAC416(): AC416 = ???
+  override def ac416(): AC416 = ???
 
-  override def retrieveAC420(): AC420 = ???
+  override def ac420(): AC420 = ???
 
-  override def retrieveAC421(): AC421 = ???
+  override def ac421(): AC421 = ???
 
-  override def retrieveAC425(): AC425 = ???
+  override def ac425(): AC425 = ???
 
-  override def retrieveAC426(): AC426 = ???
+  override def ac426(): AC426 = ???
 
-  override def retrieveAC206(): AC206 = ???
+  override def ac206(): AC206 = ???
 
-  override def retrieveAC205(): AC205 = ???
+  override def ac205(): AC205 = ???
 
   override def generateValues: Map[String, CtValue[_]] = ???
 }

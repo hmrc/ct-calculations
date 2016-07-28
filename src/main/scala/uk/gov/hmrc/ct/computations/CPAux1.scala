@@ -25,5 +25,5 @@ case class CPAux1(value: Int) extends CtBoxIdentifier("FYAPoolSum") with CtInteg
 object CPAux1 extends Calculated[CPAux1, ComputationsBoxRetriever] with LowEmissionCarsCalculator  {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CPAux1 =
-    CPAux1(getFYAPoolSum(fieldValueRetriever.retrieveLEC01()))
+    CPAux1(getFYAPoolSum(fieldValueRetriever.lec01()))
 }

@@ -26,5 +26,5 @@ case class B280(value: Boolean) extends CtBoxIdentifier("Amounts carried back fr
 object B280 extends CorporationTaxCalculator with Calculated[B280, ComputationsBoxRetriever] {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): B280 =
-    areAmountsCarriedBackFromLaterPeriods(fieldValueRetriever.retrieveCP286())
+    areAmountsCarriedBackFromLaterPeriods(fieldValueRetriever.cp286())
 }

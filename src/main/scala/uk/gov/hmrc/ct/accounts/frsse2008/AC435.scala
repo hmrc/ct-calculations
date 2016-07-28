@@ -25,9 +25,9 @@ case class AC435(value: Option[Int]) extends CtBoxIdentifier(name = "Current Pro
 
 object AC435 extends Calculated[AC435, Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever] with ProfitOrLossCalculator {
   override def calculate(boxRetriever: Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever): AC435 = {
-    calculateCurrentProfitOrLoss(ac12 = boxRetriever.retrieveAC12(), ac405 = boxRetriever.retrieveAC405(),
-                                 ac410 = boxRetriever.retrieveAC410(), ac415 = boxRetriever.retrieveAC415(),
-                                 ac420 = boxRetriever.retrieveAC420(), ac425 = boxRetriever.retrieveAC425(),
-                                 ac34 = boxRetriever.retrieveAC34(), boxRetriever.retrieveMicroEntityFiling())
+    calculateCurrentProfitOrLoss(ac12 = boxRetriever.ac12(), ac405 = boxRetriever.ac405(),
+                                 ac410 = boxRetriever.ac410(), ac415 = boxRetriever.ac415(),
+                                 ac420 = boxRetriever.ac420(), ac425 = boxRetriever.ac425(),
+                                 ac34 = boxRetriever.ac34(), boxRetriever.microEntityFiling())
   }
 }

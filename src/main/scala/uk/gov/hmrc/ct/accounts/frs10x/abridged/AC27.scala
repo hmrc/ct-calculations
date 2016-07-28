@@ -26,6 +26,6 @@ object AC27 extends Calculated[AC27, Frs10xAccountsBoxRetriever] with OperatingP
 
   override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC27 = {
     import boxRetriever._
-    calculateAC27(retrieveAC17(), retrieveAC19(), retrieveAC21())
+    calculateAC27(ac17(), ac19(), ac21())
   }
 }

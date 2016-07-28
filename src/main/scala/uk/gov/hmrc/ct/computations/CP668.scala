@@ -30,11 +30,11 @@ case class CP668(value: Option[Int]) extends CtBoxIdentifier(name = "Writing dow
   }
 
   private def specialRatePoolAllowanceRequired(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    val cp666: Int = retriever.retrieveCP666().orZero
-    val cp667: Int = retriever.retrieveCP667().orZero
-    val cpAux3 = retriever.retrieveCPAux3().value
+    val cp666: Int = retriever.cp666().orZero
+    val cp667: Int = retriever.cp667().orZero
+    val cpAux3 = retriever.cpAux3().value
 
-    (retriever.retrieveCPQ8().value, value) match {
+    (retriever.cpQ8().value, value) match {
       case (Some(false), None) if cpAux3 + cp666 > cp667 => Set(CtValidation(Some("CP668"), "error.CP668.specialRatePoolAllowanceRequired"))
       case (Some(false), Some(_)) if cpAux3 + cp666 > cp667 => validateZeroOrPositiveInteger(this)
       case _ => Set.empty
@@ -53,10 +53,10 @@ case class CP668(value: Option[Int]) extends CtBoxIdentifier(name = "Writing dow
   }
 
   private def calcSpecialRateAllowance(retriever: ComputationsBoxRetriever): Int = {
-    val writtenDownValueOfSpecialRatePoolBroughtForward: Int = retriever.retrieveCP666().orZero
-    val proceedsFromDisposalsFromSpecialRatePool: Int = retriever.retrieveCP667().orZero
-    val specialRatePoolPercentage: BigDecimal = retriever.retrieveCATO22().value
-    val cpAux3 = retriever.retrieveCPAux3().value
+    val writtenDownValueOfSpecialRatePoolBroughtForward: Int = retriever.cp666().orZero
+    val proceedsFromDisposalsFromSpecialRatePool: Int = retriever.cp667().orZero
+    val specialRatePoolPercentage: BigDecimal = retriever.cato22().value
+    val cpAux3 = retriever.cpAux3().value
 
     val allowance: BigDecimal = specialRatePoolPercentage * (
       writtenDownValueOfSpecialRatePoolBroughtForward
