@@ -28,6 +28,8 @@ trait StubbedAccountsBoxRetriever extends Frsse2008AccountsBoxRetriever {
 
   override def ac1(): AC1 = ???
 
+  override def ac2(): AC2 = ???
+
   override def ac19(): AC19 = ???
 
   override def ac31(): AC31 = ???

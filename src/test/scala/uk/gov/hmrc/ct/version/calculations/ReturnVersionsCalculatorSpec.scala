@@ -20,7 +20,7 @@ import org.joda.time.LocalDate
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct._
-import uk.gov.hmrc.ct.accounts.{AC205, AC206, AC3}
+import uk.gov.hmrc.ct.accounts.{AC2, AC205, AC206, AC3}
 import uk.gov.hmrc.ct.accounts.frsse2008._
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
@@ -124,6 +124,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           override def hmrcFiling(): HMRCFiling = HMRCFiling(false)
           override def countryOfRegistration(): CountryOfRegistration = CountryOfRegistration(Some("EW"))
           override def ac3(): AC3 = AC3(new LocalDate(2015,3,30))
+          override def ac2(): AC2 = AC2(Some("Random company name"))
         }
 
         ReturnVersionsCalculator.doCalculation(accountsBoxRetriever) shouldBe expectedResult
@@ -1394,4 +1395,6 @@ class ComputationsBoxRetrieverForTest extends StubbedComputationsBoxRetriever wi
   override def ac205(): AC205 = ???
 
   override def ac206(): AC206 = ???
+
+  override def ac2(): AC2 = ???
 }

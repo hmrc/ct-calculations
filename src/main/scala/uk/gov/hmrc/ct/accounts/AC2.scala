@@ -14,26 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.retriever
+package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.accounts._
-import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalString, Input}
 
-trait AccountsBoxRetriever extends BoxRetriever {
-
-  self: FilingAttributesBoxValueRetriever =>
-
-  def ac1(): AC1
-
-  def ac2(): AC2
-
-  def ac3(): AC3
-  
-  def ac4(): AC4
-
-  def ac12(): AC12
-
-  def ac205(): AC205
-
-  def ac206(): AC206
-}
+case class AC2(value: Option[String]) extends CtBoxIdentifier(name = "Company Name") with CtOptionalString with Input

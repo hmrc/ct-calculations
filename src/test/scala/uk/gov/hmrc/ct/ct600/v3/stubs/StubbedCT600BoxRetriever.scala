@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3.stubs
 
-import uk.gov.hmrc.ct.accounts.{AC205, AC206}
+import uk.gov.hmrc.ct.accounts.{AC2, AC205, AC206}
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.stubs.StubbedFilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations._
@@ -324,4 +324,6 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def ac205(): AC205 = ???
 
   override def ac206(): AC206 = ???
+
+  override def ac2(): AC2 = ???
 }
