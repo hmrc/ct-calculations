@@ -27,6 +27,6 @@ with CtOptionalBigDecimal
 object A11Inverse extends Calculated[A11Inverse, CT600ABoxRetriever] with LoansToParticipatorsCalculator {
 
   override def calculate(fieldValueRetriever: CT600ABoxRetriever): A11Inverse = {
-    calculateA11Inverse(fieldValueRetriever.retrieveA10Inverse())
+    calculateA11Inverse(fieldValueRetriever.a10Inverse())
   }
 }

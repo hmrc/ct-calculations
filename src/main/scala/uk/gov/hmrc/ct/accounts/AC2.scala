@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct
+package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtString, Input}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalString, Input}
 
-@deprecated("This is a CATO specific property that is no longer required.")
-case class ProductName(value: String) extends CtBoxIdentifier("Product Name") with CtString with Input
+case class AC2(value: Option[String]) extends CtBoxIdentifier(name = "Company Name") with CtOptionalString with Input

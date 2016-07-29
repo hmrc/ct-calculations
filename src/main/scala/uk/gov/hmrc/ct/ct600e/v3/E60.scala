@@ -23,7 +23,7 @@ case class E60(value: Option[Int]) extends CtBoxIdentifier("Income UK land and b
   override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
 
-    (retrieveE100(), retrieveE60()) match {
+    (e100(), e60()) match {
       case (_, e60) if e60.orZero < 0 => Set(CtValidation(boxId = Some("E60"), errorMessageKey = "error.E60.mustBeZeroOrPositive"))
       case (E100(Some(e100)), e60) if e100 > 0 && e60.orZero <= 0 => Set(CtValidation(boxId = Some("E60"), errorMessageKey = "error.E60.must.be.positive.when.E100.positive"))
       case _ => Set.empty

@@ -26,6 +26,6 @@ case class B340(value: BigDecimal) extends CtBoxIdentifier(name = "Rate Of Tax F
 object B340 extends CorporationTaxCalculator with Calculated[B340, CT600BoxRetriever] {
 
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B340 = {
-    B340(rateOfTaxFy1(fieldValueRetriever.retrieveCP1()))
+    B340(rateOfTaxFy1(fieldValueRetriever.cp1()))
   }
 }

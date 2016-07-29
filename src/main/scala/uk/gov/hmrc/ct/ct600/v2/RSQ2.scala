@@ -35,10 +35,10 @@ case class RSQ2(inputValue: Option[Boolean], defaultValue: Option[Boolean]) exte
   }
 
   private def CP287GreaterThenZeroAndHaveInputValue(retriever: ComputationsBoxRetriever) =
-    retriever.retrieveCP287().value.exists(_ > 0) && inputValue.isDefined
+    retriever.cp287().value.exists(_ > 0) && inputValue.isDefined
 
   private def CP287NotExistsAndNoInputValue(retriever: ComputationsBoxRetriever) =
-    !retriever.retrieveCP287().value.exists(_ > 0) && inputValue.isEmpty
+    !retriever.cp287().value.exists(_ > 0) && inputValue.isEmpty
 
 
 

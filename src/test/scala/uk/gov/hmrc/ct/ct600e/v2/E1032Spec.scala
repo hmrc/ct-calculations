@@ -31,7 +31,7 @@ class E1032Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndA
   val APEnd = NOW.minusMonths(1)
 
   before{
-    when(boxRetriever.retrieveE1022()).thenReturn(E1022(APEnd))
+    when(boxRetriever.e1022()).thenReturn(E1022(APEnd))
   }
 
   "E1032" should {

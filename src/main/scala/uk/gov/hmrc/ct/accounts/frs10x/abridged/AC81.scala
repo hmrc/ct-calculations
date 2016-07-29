@@ -25,7 +25,7 @@ case class AC81(value: Option[Int]) extends CtBoxIdentifier(name = "Total Shareh
   with CtOptionalInteger with AssetsEqualToSharesValidator {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
-    validateAssetsEqualToShares("AC81", boxRetriever.retrieveAC69())
+    validateAssetsEqualToShares("AC81", boxRetriever.ac69())
   }
 }
 
@@ -33,6 +33,6 @@ object AC81 extends Calculated[AC81, Frs10xAccountsBoxRetriever] with TotalShare
 
   override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC81 = {
     import boxRetriever._
-    calculatePreviousTotalShareholdersFunds(retrieveAC71(), retrieveAC77(), retrieveAC75())
+    calculatePreviousTotalShareholdersFunds(ac71(), ac77(), ac75())
   }
 }

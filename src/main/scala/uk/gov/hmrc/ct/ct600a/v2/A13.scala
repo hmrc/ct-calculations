@@ -26,8 +26,8 @@ case class A13(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "A13 - 
 object A13 extends Calculated[A13, CT600ABoxRetriever] with LoansToParticipatorsCalculator {
 
   override def calculate(fieldValueRetriever: CT600ABoxRetriever): A13 = {
-    calculateA13(a3 = fieldValueRetriever.retrieveA3(),
-                 a7 = fieldValueRetriever.retrieveA7(),
-                 a11 = fieldValueRetriever.retrieveA11())
+    calculateA13(a3 = fieldValueRetriever.a3(),
+                 a7 = fieldValueRetriever.a7(),
+                 a11 = fieldValueRetriever.a11())
   }
 }

@@ -25,7 +25,7 @@ case class LPQ01(value: Boolean) extends CtBoxIdentifier(name = "Declare loans t
 object LPQ01 extends Calculated[LPQ01, CT600ABoxRetriever] with LoansToParticipatorsCalculator {
 
   override def calculate(boxRetriever: CT600ABoxRetriever): LPQ01 = {
-    calculateLPQ01(boxRetriever.retrieveLPQ03, boxRetriever.retrieveLPQ04, boxRetriever.retrieveLPQ05)
+    calculateLPQ01(boxRetriever.lpq03, boxRetriever.lpq04, boxRetriever.lpq05)
   }
 
 }

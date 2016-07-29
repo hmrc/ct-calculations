@@ -29,45 +29,45 @@ class CP281Spec extends WordSpec with Matchers with MockitoSugar {
     val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
     "when empty" when {
       "pass validation when CPQ17 is empty" in {
-        when(boxRetriever.retrieveCPQ17()).thenReturn(CPQ17(None))
+        when(boxRetriever.cpQ17()).thenReturn(CPQ17(None))
         CP281(None).validate(boxRetriever) shouldBe empty
       }
       "pass validation when CPQ17 is false" in {
-        when(boxRetriever.retrieveCPQ17()).thenReturn(CPQ17(Some(false)))
+        when(boxRetriever.cpQ17()).thenReturn(CPQ17(Some(false)))
         CP281(None).validate(boxRetriever) shouldBe empty
       }
       "fail validation when CPQ17 is true" in {
-        when(boxRetriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
+        when(boxRetriever.cpQ17()).thenReturn(CPQ17(Some(true)))
         CP281(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP281"), "error.CP281.required"))
       }
     }
     "when has value" when {
       "pass validation when CPQ17 is true and value > 0" in {
-        when(boxRetriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
+        when(boxRetriever.cpQ17()).thenReturn(CPQ17(Some(true)))
         CP281(Some(1)).validate(boxRetriever) shouldBe empty
       }
       "pass validation when CPQ17 is true and value == max" in {
-        when(boxRetriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
+        when(boxRetriever.cpQ17()).thenReturn(CPQ17(Some(true)))
         CP281(Some(ValidationConstants.MAX_MONEY_AMOUNT_ALLOWED)).validate(boxRetriever) shouldBe empty
       }
       "fail validation when CPQ17 is true and value > max" in {
-        when(boxRetriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
+        when(boxRetriever.cpQ17()).thenReturn(CPQ17(Some(true)))
         CP281(Some(ValidationConstants.MAX_MONEY_AMOUNT_ALLOWED + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP281"), "error.CP281.exceeds.max", Some(Seq("99999999"))))
       }
       "fail validation when CPQ17 is true and value == zero" in {
-        when(boxRetriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
+        when(boxRetriever.cpQ17()).thenReturn(CPQ17(Some(true)))
         CP281(Some(0)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP281"), "error.CP281.below.min", Some(Seq("1"))))
       }
       "fail validation when CPQ17 is true and value < zero" in {
-        when(boxRetriever.retrieveCPQ17()).thenReturn(CPQ17(Some(true)))
+        when(boxRetriever.cpQ17()).thenReturn(CPQ17(Some(true)))
         CP281(Some(-1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP281"), "error.CP281.below.min", Some(Seq("1"))))
       }
       "fail validation when CPQ17 is false and value non empty" in {
-        when(boxRetriever.retrieveCPQ17()).thenReturn(CPQ17(Some(false)))
+        when(boxRetriever.cpQ17()).thenReturn(CPQ17(Some(false)))
         CP281(Some(1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP281"), "error.CP281.cannot.exist"))
       }
       "fail validation when CPQ17 is empty" in {
-        when(boxRetriever.retrieveCPQ17()).thenReturn(CPQ17(None))
+        when(boxRetriever.cpQ17()).thenReturn(CPQ17(None))
         CP281(Some(80)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP281"), "error.CP281.cannot.exist"))
       }
     }

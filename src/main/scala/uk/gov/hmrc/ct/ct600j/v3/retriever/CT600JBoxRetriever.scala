@@ -26,58 +26,58 @@ trait CT600JBoxRetriever extends BoxRetriever {
 
   self: AboutThisReturnBoxRetriever =>
 
-  def retrieveJ1(): J1 = {
+  def j1(): J1 = {
     this match {
-      case br: CT600BoxRetriever => J1(br.retrieveB1())
-      case br: CT600EBoxRetriever => J1(br.retrieveE1().value)
+      case br: CT600BoxRetriever => J1(br.b1())
+      case br: CT600EBoxRetriever => J1(br.e1().value)
       case _ => throw new IllegalStateException("Could not the company name")
     }
 
   }
 
-  def retrieveJ2(): J2 = {
+  def j2(): J2 = {
     this match {
-      case br: CT600BoxRetriever => J2(br.retrieveB3())
-      case br: CT600EBoxRetriever => J2(br.retrieveE2().value)
-      case br: FilingAttributesBoxValueRetriever => J2(br.retrieveUTR().value)
+      case br: CT600BoxRetriever => J2(br.b3())
+      case br: CT600EBoxRetriever => J2(br.e2().value)
+      case br: FilingAttributesBoxValueRetriever => J2(br.utr().value)
     }
   }
 
-  def retrieveJ3(): J3 = {
+  def j3(): J3 = {
     this match {
-      case br: AboutThisReturnBoxRetriever => J3(br.retrieveB30())
-      case br: ComputationsBoxRetriever => J3(br.retrieveCP1().value)
+      case br: AboutThisReturnBoxRetriever => J3(br.b30())
+      case br: ComputationsBoxRetriever => J3(br.cp1().value)
       case _ => throw new IllegalStateException("Could not get the AP start date.")
     }
   }
 
-  def retrieveJ4(): J4 = {
+  def j4(): J4 = {
     this match {
-      case br: AboutThisReturnBoxRetriever => J4(br.retrieveB35())
-      case br: ComputationsBoxRetriever => J4(br.retrieveCP2().value)
+      case br: AboutThisReturnBoxRetriever => J4(br.b35())
+      case br: ComputationsBoxRetriever => J4(br.cp2().value)
       case _ => throw new IllegalStateException("Could not get the AP end date.")
     }
   }
 
-  def retrieveJ5(): J5
-  def retrieveJ10(): J10
-  def retrieveJ15(): J15
-  def retrieveJ20(): J20
-  def retrieveJ25(): J25
-  def retrieveJ30(): J30
-  def retrieveJ35(): J35
-  def retrieveJ40(): J40
-  def retrieveJ45(): J45
-  def retrieveJ50(): J50
+  def j5(): J5
+  def j10(): J10
+  def j15(): J15
+  def j20(): J20
+  def j25(): J25
+  def j30(): J30
+  def j35(): J35
+  def j40(): J40
+  def j45(): J45
+  def j50(): J50
 
-  def retrieveJ5A(): J5A
-  def retrieveJ10A(): J10A
-  def retrieveJ15A(): J15A
-  def retrieveJ20A(): J20A
-  def retrieveJ25A(): J25A
-  def retrieveJ30A(): J30A
-  def retrieveJ35A(): J35A
-  def retrieveJ40A(): J40A
-  def retrieveJ45A(): J45A
-  def retrieveJ50A(): J50A
+  def j5A(): J5A
+  def j10A(): J10A
+  def j15A(): J15A
+  def j20A(): J20A
+  def j25A(): J25A
+  def j30A(): J30A
+  def j35A(): J35A
+  def j40A(): J40A
+  def j45A(): J45A
+  def j50A(): J50A
 }

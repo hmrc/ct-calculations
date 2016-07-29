@@ -30,7 +30,7 @@ case class CPQ20(value: Option[Boolean]) extends CtBoxIdentifier(name = "Is the 
     import boxRetriever._
     import CPQ20._
 
-    (value, retrieveCPQ19().value, retrieveCP118().value, retrieveCATO01().value) match {
+    (value, cpQ19().value, cp118().value, cato01().value) match {
       case (None, Some(true), cp118, cato01) if moreLossesThanNonTradeProfit(cp118, cato01) => requiredError
       case (None, None, cp118, cato01) if moreLossesThanNonTradeProfit(cp118, cato01) && cato01 == 0 => requiredError
 

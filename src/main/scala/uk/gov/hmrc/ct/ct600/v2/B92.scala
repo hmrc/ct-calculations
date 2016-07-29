@@ -25,6 +25,6 @@ case class B92(value: BigDecimal) extends CtBoxIdentifier("Corporation Tax outst
 object B92 extends CorporationTaxAlreadyPaidCalculator with Calculated[B92, CT600BoxRetriever]{
 
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B92 =
-    corporationTaxOutstanding(fieldValueRetriever.retrieveB86(),
-                              fieldValueRetriever.retrieveB91())
+    corporationTaxOutstanding(fieldValueRetriever.b86(),
+                              fieldValueRetriever.b91())
 }

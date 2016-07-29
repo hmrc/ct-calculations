@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.box.CtValue
 object BoxValues {
 
   def generateValues[T <: BoxRetriever](retriever: T): Map[String, CtValue[_]] = {
-    retrieveBoxIdFunctions(retriever.getClass).map { method =>
+    boxIdFunctions(retriever.getClass).map { method =>
       val boxName = method.getReturnType.getSimpleName
       method.invoke(retriever) match {
         case x: CtValue[_] => (boxName -> x)
@@ -31,13 +31,11 @@ object BoxValues {
     }.toMap
   }
 
-  def retrieveBoxIdFunctions(retrieverClass: Class[_]): Seq[Method] = retrieverClass.getMethods.filter(retrieveBoxMethod)
+  def boxIdFunctions(retrieverClass: Class[_]): Seq[Method] = retrieverClass.getMethods.filter(boxMethod)
 
-  protected def retrieveBoxMethod: (Method) => Boolean = x => isPublic(x) && isAnyRetrieveBoxMethod(x) && hasNoParameters(x) && returnsCatoValue(x)
+  protected def boxMethod: (Method) => Boolean = x => isPublic(x) && hasNoParameters(x) && returnsCatoValue(x)
 
   protected def hasNoParameters(method: Method): Boolean = method.getParameterTypes.isEmpty
-
-  protected def isAnyRetrieveBoxMethod(method: Method): Boolean = method.getName.startsWith("retrieve")
 
   protected def isPublic(method: Method): Boolean = Modifier.isPublic(method.getModifiers)
 

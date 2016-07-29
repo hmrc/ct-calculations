@@ -26,10 +26,10 @@ object LPQ01 extends Calculated[LPQ01, CT600ABoxRetriever] with LoansToParticipa
 
   override def calculate(boxRetriever: CT600ABoxRetriever): LPQ01 = {
     calculateLPQ01(
-      boxRetriever.retrieveLPQ04(),
-      boxRetriever.retrieveLPQ10(),
-      boxRetriever.retrieveA5(),
-      boxRetriever.retrieveLPQ03()
+      boxRetriever.lpq04(),
+      boxRetriever.lpq10(),
+      boxRetriever.a5(),
+      boxRetriever.lpq03()
     )
   }
 

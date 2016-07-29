@@ -131,12 +131,12 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
             cp672 = cp672
           ) with StubbedAccountsBoxRetriever
 
-          assert(retriever.retrieveCP91().value equals cp91, clue("CP91", retriever.retrieveCP91().value, cp91))
-          assert(retriever.retrieveCP92().value equals cp92, clue("CP92", retriever.retrieveCP92().value, cp92))
-          assert(retriever.retrieveCP186().value equals cp186, clue("CP186", retriever.retrieveCP186().value, cp186))
-          assert(retriever.retrieveCP669().value equals cp669, clue("CP669", retriever.retrieveCP669().value, cp669))
-          assert(retriever.retrieveCP670().value equals cp670, clue("CP670", retriever.retrieveCP670().value, cp670))
-          assert(retriever.retrieveCP671().value equals cp671, clue("CP671", retriever.retrieveCP671().value, cp671))
+          assert(retriever.cp91().value equals cp91, clue("CP91", retriever.cp91().value, cp91))
+          assert(retriever.cp92().value equals cp92, clue("CP92", retriever.cp92().value, cp92))
+          assert(retriever.cp186().value equals cp186, clue("CP186", retriever.cp186().value, cp186))
+          assert(retriever.cp669().value equals cp669, clue("CP669", retriever.cp669().value, cp669))
+          assert(retriever.cp670().value equals cp670, clue("CP670", retriever.cp670().value, cp670))
+          assert(retriever.cp671().value equals cp671, clue("CP671", retriever.cp671().value, cp671))
         }
       }
     }
@@ -196,12 +196,12 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
             cp674 = cp674
           ) with Frsse2008AccountsBoxRetriever
 
-          assert(retriever.retrieveCP90().value equals cp90, clue("CP90", retriever.retrieveCP90().value, cp90))
-          assert(retriever.retrieveCP91().value equals cp91, clue("CP91", retriever.retrieveCP91().value, cp91))
-          assert(retriever.retrieveCP92().value equals cp92, clue("CP92", retriever.retrieveCP92().value, cp92))
-          assert(retriever.retrieveCP186().value equals cp186, clue("CP186", retriever.retrieveCP186().value, cp186))
-          assert(retriever.retrieveCP669().value equals cp669, clue("CP669", retriever.retrieveCP669().value, cp669))
-          assert(retriever.retrieveCP671().value equals cp671, clue("CP671", retriever.retrieveCP671().value, cp671))
+          assert(retriever.cp90().value equals cp90, clue("CP90", retriever.cp90().value, cp90))
+          assert(retriever.cp91().value equals cp91, clue("CP91", retriever.cp91().value, cp91))
+          assert(retriever.cp92().value equals cp92, clue("CP92", retriever.cp92().value, cp92))
+          assert(retriever.cp186().value equals cp186, clue("CP186", retriever.cp186().value, cp186))
+          assert(retriever.cp669().value equals cp669, clue("CP669", retriever.cp669().value, cp669))
+          assert(retriever.cp671().value equals cp671, clue("CP671", retriever.cp671().value, cp671))
         }
       }
 
@@ -242,40 +242,40 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
 
     self: Frsse2008AccountsBoxRetriever =>
 
-    override def retrieveLEC01: LEC01 = LEC01(lec01)
+    override def lec01: LEC01 = LEC01(lec01)
 
-    override def retrieveCPQ8: CPQ8 = CPQ8(cpq8)
+    override def cpQ8: CPQ8 = CPQ8(cpq8)
 
-    override def retrieveCP78: CP78 = CP78(cp78)
+    override def cp78: CP78 = CP78(cp78)
 
-    override def retrieveCP666: CP666 = CP666(cp666)
+    override def cp666: CP666 = CP666(cp666)
 
-    override def retrieveCP79: CP79 = CP79(cp79)
+    override def cp79: CP79 = CP79(cp79)
 
-    override def retrieveCP80: CP80 = CP80(cp80)
+    override def cp80: CP80 = CP80(cp80)
 
-    override def retrieveCP82: CP82 = CP82(cp82)
+    override def cp82: CP82 = CP82(cp82)
 
-    override def retrieveCP83: CP83 = CP83(cp83)
+    override def cp83: CP83 = CP83(cp83)
 
-    override def retrieveCP84: CP84 = CP84(cp84)
+    override def cp84: CP84 = CP84(cp84)
 
-    override def retrieveCP667: CP667 = CP667(cp667)
+    override def cp667: CP667 = CP667(cp667)
 
-    override def retrieveCP672: CP672 = CP672(cp672)
+    override def cp672: CP672 = CP672(cp672)
 
-    override def retrieveCP673: CP673 = CP673(cp673)
+    override def cp673: CP673 = CP673(cp673)
 
-    override def retrieveCP674: CP674 = CP674(cp674)
+    override def cp674: CP674 = CP674(cp674)
 
-    override def retrieveCP87Input: CP87Input = CP87Input(cp87Input)
+    override def cp87Input: CP87Input = CP87Input(cp87Input)
 
-    override def retrieveCP88: CP88 = CP88(cp88)
+    override def cp88: CP88 = CP88(cp88)
 
-    override def retrieveCP89: CP89 = CP89(cp89)
+    override def cp89: CP89 = CP89(cp89)
 
-    override def retrieveCP668: CP668 = CP668(cp668)
+    override def cp668: CP668 = CP668(cp668)
 
-    override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration.EnglandWales
+    override def countryOfRegistration(): CountryOfRegistration = CountryOfRegistration.EnglandWales
   }
 }

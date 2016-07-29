@@ -25,11 +25,11 @@ case class CATO03(value: Int) extends CtBoxIdentifier(name = "Write down allowan
 object CATO03 extends Calculated[CATO03, ComputationsBoxRetriever] with WritingDownAllowanceCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CATO03 = {
-    super.calculate(cp1 = fieldValueRetriever.retrieveCP1(),
-                    cp2 = fieldValueRetriever.retrieveCP2(),
-                    cp78 = fieldValueRetriever.retrieveCP78(),
-                    cp82 = fieldValueRetriever.retrieveCP82(),
-                    cp84 = fieldValueRetriever.retrieveCP84(),
-                    cp88 = fieldValueRetriever.retrieveCP88())
+    super.calculate(cp1 = fieldValueRetriever.cp1(),
+                    cp2 = fieldValueRetriever.cp2(),
+                    cp78 = fieldValueRetriever.cp78(),
+                    cp82 = fieldValueRetriever.cp82(),
+                    cp84 = fieldValueRetriever.cp84(),
+                    cp88 = fieldValueRetriever.cp88())
   }
 }

@@ -30,10 +30,10 @@ case class CP89(value: Option[Int]) extends CtBoxIdentifier(name = "Writing Down
   }
 
   private def mainPoolAllowanceRequired(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    val cpq8 = boxRetriever.retrieveCPQ8().value
-    val cpAux2 = boxRetriever.retrieveCPAux2().value
-    val cp78 = boxRetriever.retrieveCP78().orZero
-    val cp672 = boxRetriever.retrieveCP672().orZero
+    val cpq8 = boxRetriever.cpQ8().value
+    val cpAux2 = boxRetriever.cpAux2().value
+    val cp78 = boxRetriever.cp78().orZero
+    val cp672 = boxRetriever.cp672().orZero
 
     (cpq8, value) match {
       case (Some(false), None) if cpAux2 + cp78 > cp672 => Set(CtValidation(Some("CP89"), "error.CP89.mainPoolAllowanceRequired"))
@@ -56,17 +56,17 @@ case class CP89(value: Option[Int]) extends CtBoxIdentifier(name = "Writing Down
 
   private def calcMainPoolAllowance(retriever: ComputationsBoxRetriever): Int = {
     val unclaimedFYA_AIA = unclaimedAIAFirstYearAllowance(
-      retriever.retrieveCP81(),
-      retriever.retrieveCP83(),
-      retriever.retrieveCP87(),
-      retriever.retrieveCP88(),
-      retriever.retrieveCPAux1())
+      retriever.cp81(),
+      retriever.cp83(),
+      retriever.cp87(),
+      retriever.cp88(),
+      retriever.cpAux1())
 
-    val cp78 = retriever.retrieveCP78().orZero
-    val cp82 = retriever.retrieveCP82().orZero
-    val cpAux2 = retriever.retrieveCPAux2()
-    val cp672 = retriever.retrieveCP672().orZero
-    val mainPoolPercentage: BigDecimal = retriever.retrieveCATO21().value
+    val cp78 = retriever.cp78().orZero
+    val cp82 = retriever.cp82().orZero
+    val cpAux2 = retriever.cpAux2()
+    val cp672 = retriever.cp672().orZero
+    val mainPoolPercentage: BigDecimal = retriever.cato21().value
 
     val allowance: BigDecimal = mainPoolPercentage * (cp78 + cp82 + cpAux2 - cp672 + unclaimedFYA_AIA) / BigDecimal(100)
 

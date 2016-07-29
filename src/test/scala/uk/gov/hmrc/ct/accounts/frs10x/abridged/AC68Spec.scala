@@ -23,10 +23,10 @@ import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 class AC68Spec extends ValidateAssetsEqualSharesSpec {
 
   override def addOtherBoxValue100Mock(mockRetriever: Frs10xAccountsBoxRetriever) =
-    when(mockRetriever.retrieveAC80()).thenReturn(AC80(Some(100)))
+    when(mockRetriever.ac80()).thenReturn(AC80(Some(100)))
 
   override def addOtherBoxValueNoneMock(mockRetriever: Frs10xAccountsBoxRetriever) =
-    when(mockRetriever.retrieveAC80()).thenReturn(AC80(None))
+    when(mockRetriever.ac80()).thenReturn(AC80(None))
 
   testAssetsEqualToSharesValidation("AC68", AC68.apply)
 }

@@ -22,6 +22,6 @@ import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 case class J25(value: Option[String]) extends SchemeReferenceNumberBox{
 
   override def validate(boxRetriever: CT600JBoxRetriever): Set[CtValidation] =
-    validateSchemeReferenceNumber(boxRetriever.retrieveJ20(), boxRetriever.retrieveJ20A(), boxRetriever.retrieveJ25A())
+    validateSchemeReferenceNumber(boxRetriever.j20(), boxRetriever.j20A(), boxRetriever.j25A())
 
 }

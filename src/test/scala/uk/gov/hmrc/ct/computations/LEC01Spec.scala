@@ -30,32 +30,32 @@ class LEC01Spec extends WordSpec with MockitoSugar with Matchers {
 
     "when empty" when {
       "pass validation when CPQ1000 is false" in {
-        when(boxRetriever.retrieveCPQ1000()).thenReturn(CPQ1000(Some(false)))
+        when(boxRetriever.cpQ1000()).thenReturn(CPQ1000(Some(false)))
         LEC01().validate(boxRetriever) shouldBe empty
       }
       "pass validation when CPQ1000 is empty" in {
-        when(boxRetriever.retrieveCPQ1000()).thenReturn(CPQ1000(None))
+        when(boxRetriever.cpQ1000()).thenReturn(CPQ1000(None))
         LEC01().validate(boxRetriever) shouldBe empty
       }
       "fail validation when CPQ1000 is true" in {
-        when(boxRetriever.retrieveCPQ1000()).thenReturn(CPQ1000(Some(true)))
+        when(boxRetriever.cpQ1000()).thenReturn(CPQ1000(Some(true)))
         LEC01().validate(boxRetriever) shouldBe Set(CtValidation(Some("LEC01"), "error.LEC01.required"))
       }
     }
     "when cars exist" when {
       val cars = List(Car("LG64 RDO", true, 26000, 12, new LocalDate("2015-04-01")))
       "fail validation when CPQ1000 is false" in {
-        when(boxRetriever.retrieveCPQ1000()).thenReturn(CPQ1000(Some(false)))
+        when(boxRetriever.cpQ1000()).thenReturn(CPQ1000(Some(false)))
         LEC01(cars).validate(boxRetriever) shouldBe Set(CtValidation(Some("LEC01"), "error.LEC01.cannot.exist"))
       }
 
       "fail validation when CPQ1000 is empty" in {
-        when(boxRetriever.retrieveCPQ1000()).thenReturn(CPQ1000(None))
+        when(boxRetriever.cpQ1000()).thenReturn(CPQ1000(None))
         LEC01(cars).validate(boxRetriever) shouldBe Set(CtValidation(Some("LEC01"), "error.LEC01.cannot.exist"))
       }
 
       "pass validation when CPQ1000 is true" in {
-        when(boxRetriever.retrieveCPQ1000()).thenReturn(CPQ1000(Some(true)))
+        when(boxRetriever.cpQ1000()).thenReturn(CPQ1000(Some(true)))
         LEC01(cars).validate(boxRetriever) shouldBe empty
       }
     }

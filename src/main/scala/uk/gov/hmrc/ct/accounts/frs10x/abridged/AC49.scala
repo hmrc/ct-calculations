@@ -26,6 +26,6 @@ object AC49 extends Calculated[AC49, Frs10xAccountsBoxRetriever] with TotalFixed
 
   override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC49 = {
     import boxRetriever._
-    calculatePreviousTotalFixedAssets(retrieveAC43(), retrieveAC45())
+    calculatePreviousTotalFixedAssets(ac43(), ac45())
   }
 }

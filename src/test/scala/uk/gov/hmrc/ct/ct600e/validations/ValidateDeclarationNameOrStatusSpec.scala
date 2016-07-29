@@ -30,7 +30,7 @@ class ValidateDeclarationNameOrStatusSpec extends WordSpec with MockitoSugar wit
           val mockBoxRetriever = mock[CT600EBoxRetriever]
           val box = E30(value)
 
-          when(mockBoxRetriever.retrieveE30()).thenReturn(box)
+          when(mockBoxRetriever.e30()).thenReturn(box)
       
           validateDeclarationNameOrStatus("E30", box) shouldBe Set()
         }
@@ -40,7 +40,7 @@ class ValidateDeclarationNameOrStatusSpec extends WordSpec with MockitoSugar wit
           val mockBoxRetriever = mock[CT600EBoxRetriever]
           val box = E30(value)
 
-          when(mockBoxRetriever.retrieveE30()).thenReturn(box)
+          when(mockBoxRetriever.e30()).thenReturn(box)
 
           validateDeclarationNameOrStatus("E30", box) shouldBe Set(CtValidation(Some("E30"), "error.E30.required"))
         }
@@ -50,7 +50,7 @@ class ValidateDeclarationNameOrStatusSpec extends WordSpec with MockitoSugar wit
           val mockBoxRetriever = mock[CT600EBoxRetriever]
           val box = E30(value)
 
-          when(mockBoxRetriever.retrieveE30()).thenReturn(box)
+          when(mockBoxRetriever.e30()).thenReturn(box)
 
           validateDeclarationNameOrStatus("E30", box) shouldBe Set(CtValidation(Some("E30"), "error.E30.text.sizeRange", Some(Seq("2", "56"))))
         }
@@ -60,7 +60,7 @@ class ValidateDeclarationNameOrStatusSpec extends WordSpec with MockitoSugar wit
           val mockBoxRetriever = mock[CT600EBoxRetriever]
           val box = E30(value)
 
-          when(mockBoxRetriever.retrieveE30()).thenReturn(box)
+          when(mockBoxRetriever.e30()).thenReturn(box)
 
           validateDeclarationNameOrStatus("E30", box) shouldBe Set(CtValidation(Some("E30"), "error.E30.text.sizeRange", Some(Seq("2", "56"))))
         }
@@ -70,7 +70,7 @@ class ValidateDeclarationNameOrStatusSpec extends WordSpec with MockitoSugar wit
           val mockBoxRetriever = mock[CT600EBoxRetriever]
           val box = E30(value)
 
-          when(mockBoxRetriever.retrieveE30()).thenReturn(box)
+          when(mockBoxRetriever.e30()).thenReturn(box)
 
           validateDeclarationNameOrStatus("E30", box) shouldBe Set(CtValidation(Some("E30"), "error.E30.regexFailure"))
         }

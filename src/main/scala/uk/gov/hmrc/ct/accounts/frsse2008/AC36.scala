@@ -24,7 +24,7 @@ case class AC36(value: Option[Int]) extends CtBoxIdentifier(name = "Current Prof
 
 object AC36 extends Calculated[AC36, Frsse2008AccountsBoxRetriever] with ProfitOrLossCalculator {
   override def calculate(boxRetriever: Frsse2008AccountsBoxRetriever): AC36 = {
-    calculateCurrentProfitOtLossAfterTax(ac32 = boxRetriever.retrieveAC32(),
-                                         ac34 = boxRetriever.retrieveAC34())
+    calculateCurrentProfitOtLossAfterTax(ac32 = boxRetriever.ac32(),
+                                         ac34 = boxRetriever.ac34())
   }
 }

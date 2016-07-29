@@ -26,7 +26,7 @@ object B86 extends Ct600FinalisationCalculator with Calculated[B86, CT600BoxRetr
 
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B86 =
     computeTaxPayable(
-        fieldValueRetriever.retrieveB70(),
-        fieldValueRetriever.retrieveB79(),
-        fieldValueRetriever.retrieveB84())
+        fieldValueRetriever.b70(),
+        fieldValueRetriever.b79(),
+        fieldValueRetriever.b84())
 }

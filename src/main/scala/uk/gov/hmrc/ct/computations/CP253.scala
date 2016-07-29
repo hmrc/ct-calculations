@@ -25,8 +25,8 @@ case class CP253(value: Int) extends CtBoxIdentifier(name = "Qualifying expendit
 object CP253 extends Calculated[CP253, ComputationsBoxRetriever] with QualifyingExpenditureOnMachineryCalculation {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP253 = {
-    qualifyingExpenditureCalculation(fieldValueRetriever.retrieveCP82(),
-                                     fieldValueRetriever.retrieveCP83())
+    qualifyingExpenditureCalculation(fieldValueRetriever.cp82(),
+                                     fieldValueRetriever.cp83())
   }
 
 }

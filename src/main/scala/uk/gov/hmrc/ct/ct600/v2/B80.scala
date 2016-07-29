@@ -26,6 +26,6 @@ case class B80(value: Option[Boolean]) extends CtBoxIdentifier(name = "B80 - Com
 object B80 extends Calculated[B80, CT600ABoxRetriever] {
 
   override def calculate(fieldValueRetriever: CT600ABoxRetriever): B80 = {
-    calculateB80(fieldValueRetriever.retrieveA11())
+    calculateB80(fieldValueRetriever.a11())
   }
 }

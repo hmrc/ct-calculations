@@ -26,6 +26,6 @@ case class B520(value: Option[BigDecimal]) extends CtBoxIdentifier("Income Tax R
 object B520 extends CorporationTaxCalculator with Calculated[B520, CT600BoxRetriever]{
 
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B520 = {
-    calculateIncomeTaxRepayable(fieldValueRetriever.retrieveB515(), fieldValueRetriever.retrieveB510())
+    calculateIncomeTaxRepayable(fieldValueRetriever.b515(), fieldValueRetriever.b510())
   }
 }

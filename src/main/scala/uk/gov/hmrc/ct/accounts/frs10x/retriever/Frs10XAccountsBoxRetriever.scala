@@ -27,143 +27,143 @@ trait Frs10xAccountsBoxRetriever extends AccountsBoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 
-  def retrieveAC16(): AC16
+  def ac16(): AC16
 
-  def retrieveAC17(): AC17
+  def ac17(): AC17
 
-  def retrieveAC18(): AC18
+  def ac18(): AC18
 
-  def retrieveAC19(): AC19
+  def ac19(): AC19
 
-  def retrieveAC20(): AC20
+  def ac20(): AC20
 
-  def retrieveAC21(): AC21
+  def ac21(): AC21
 
-  def retrieveAC26(): AC26 = AC26.calculate(this)
+  def ac26(): AC26 = AC26.calculate(this)
 
-  def retrieveAC27(): AC27 = AC27.calculate(this)
+  def ac27(): AC27 = AC27.calculate(this)
 
-  def retrieveAC28(): AC28
+  def ac28(): AC28
 
-  def retrieveAC29(): AC29
+  def ac29(): AC29
 
-  def retrieveAC30(): AC30
+  def ac30(): AC30
 
-  def retrieveAC31(): AC31
+  def ac31(): AC31
 
-  def retrieveAC32(): AC32 = AC32.calculate(this)
+  def ac32(): AC32 = AC32.calculate(this)
 
-  def retrieveAC33(): AC33 = AC33.calculate(this)
+  def ac33(): AC33 = AC33.calculate(this)
 
-  def retrieveAC34(): AC34
+  def ac34(): AC34
 
-  def retrieveAC35(): AC35
+  def ac35(): AC35
 
-  def retrieveAC36(): AC36 = AC36.calculate(this)
+  def ac36(): AC36 = AC36.calculate(this)
 
-  def retrieveAC37(): AC37 = AC37.calculate(this)
+  def ac37(): AC37 = AC37.calculate(this)
 
-  def retrieveAC42(): AC42
+  def ac42(): AC42
 
-  def retrieveAC43(): AC43
+  def ac43(): AC43
 
-  def retrieveAC44(): AC44
+  def ac44(): AC44
 
-  def retrieveAC45(): AC45
+  def ac45(): AC45
 
-  def retrieveAC48(): AC48 = AC48.calculate(this)
+  def ac48(): AC48 = AC48.calculate(this)
 
-  def retrieveAC49(): AC49 = AC49.calculate(this)
+  def ac49(): AC49 = AC49.calculate(this)
 
-  def retrieveAC50(): AC50
+  def ac50(): AC50
 
-  def retrieveAC51(): AC51
+  def ac51(): AC51
 
-  def retrieveAC52(): AC52
+  def ac52(): AC52
 
-  def retrieveAC53(): AC53
+  def ac53(): AC53
 
-  def retrieveAC54(): AC54
+  def ac54(): AC54
 
-  def retrieveAC55(): AC55
+  def ac55(): AC55
 
-  def retrieveAC56(): AC56 = AC56.calculate(this)
+  def ac56(): AC56 = AC56.calculate(this)
 
-  def retrieveAC57(): AC57 = AC57.calculate(this)
+  def ac57(): AC57 = AC57.calculate(this)
 
-  def retrieveAC58(): AC58
+  def ac58(): AC58
 
-  def retrieveAC59(): AC59
+  def ac59(): AC59
 
-  def retrieveAC60(): AC60 = AC60.calculate(this)
+  def ac60(): AC60 = AC60.calculate(this)
 
-  def retrieveAC61(): AC61 = AC61.calculate(this)
+  def ac61(): AC61 = AC61.calculate(this)
 
-  def retrieveAC62(): AC62 = AC62.calculate(this)
+  def ac62(): AC62 = AC62.calculate(this)
 
-  def retrieveAC63(): AC63 = AC63.calculate(this)
+  def ac63(): AC63 = AC63.calculate(this)
 
-  def retrieveAC64(): AC64
+  def ac64(): AC64
 
-  def retrieveAC65(): AC65
+  def ac65(): AC65
 
-  def retrieveAC66(): AC66
+  def ac66(): AC66
 
-  def retrieveAC67(): AC67
+  def ac67(): AC67
 
-  def retrieveAC68(): AC68 = AC68.calculate(this)
+  def ac68(): AC68 = AC68.calculate(this)
 
-  def retrieveAC69(): AC69 = AC69.calculate(this)
+  def ac69(): AC69 = AC69.calculate(this)
 
-  def retrieveAC70(): AC70
+  def ac70(): AC70
 
-  def retrieveAC71(): AC71
+  def ac71(): AC71
 
-  def retrieveAC74(): AC74
+  def ac74(): AC74
 
-  def retrieveAC75(): AC75
+  def ac75(): AC75
 
-  def retrieveAC76(): AC76
+  def ac76(): AC76
 
-  def retrieveAC77(): AC77
+  def ac77(): AC77
 
-  def retrieveAC80(): AC80 = AC80.calculate(this)
+  def ac80(): AC80 = AC80.calculate(this)
 
-  def retrieveAC81(): AC81 = AC81.calculate(this)
+  def ac81(): AC81 = AC81.calculate(this)
 
-  def retrieveAC1076(): AC1076
+  def ac1076(): AC1076
 
-  def retrieveAC1077(): AC1077
+  def ac1077(): AC1077
 
-  def retrieveAC1178(): AC1178
+  def ac1178(): AC1178
 
-  def retrieveAC1179(): AC1179
+  def ac1179(): AC1179
 
-  def retrieveAC5032(): AC5032
+  def ac5032(): AC5032
 
-  def retrieveAC5052A(): AC5052A
+  def ac5052A(): AC5052A
 
-  def retrieveAC5052B(): AC5052B
+  def ac5052B(): AC5052B
 
-  def retrieveAC8021(): AC8021
+  def ac8021(): AC8021
 
-  def retrieveDirectors(): Directors
+  def directors(): Directors
 
-  def retrieveAC8033(): AC8033
+  def ac8033(): AC8033
 
-  def retrieveAC8023(): AC8023
+  def ac8023(): AC8023
 
-  def retrieveACQ8003(): ACQ8003
+  def acQ8003(): ACQ8003
 
-  def retrieveACQ8009(): ACQ8009
+  def acQ8009(): ACQ8009
   
-  def retrieveAC8051(): AC8051
+  def ac8051(): AC8051
 
-  def retrieveAC8052(): AC8052
+  def ac8052(): AC8052
 
-  def retrieveAC8053(): AC8053
+  def ac8053(): AC8053
 
-  def retrieveAC8054(): AC8054
+  def ac8054(): AC8054
 
-  def retrieveACQ8161(): ACQ8161
+  def acQ8161(): ACQ8161
 }

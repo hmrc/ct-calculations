@@ -25,7 +25,7 @@ case class AC69(value: Option[Int]) extends CtBoxIdentifier(name = "Total net as
   with CtOptionalInteger with AssetsEqualToSharesValidator {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
-    validateAssetsEqualToShares("AC69", boxRetriever.retrieveAC81())
+    validateAssetsEqualToShares("AC69", boxRetriever.ac81())
   }
 }
 
@@ -33,6 +33,6 @@ object AC69 extends Calculated[AC69, Frs10xAccountsBoxRetriever] with TotalNetAs
 
   override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC69 = {
     import boxRetriever._
-    calculatePreviousTotalNetAssetsLiabilities(retrieveAC63(), retrieveAC65(), retrieveAC67(), retrieveAC1179())
+    calculatePreviousTotalNetAssetsLiabilities(ac63(), ac65(), ac67(), ac1179())
   }
 }

@@ -25,61 +25,61 @@ trait CT600ABoxRetriever extends ComputationsBoxRetriever {
 
   self: AccountsBoxRetriever =>
 
-  def retrieveLPQ03(): LPQ03
+  def lpq03(): LPQ03
 
-  def retrieveLPQ04(): LPQ04
+  def lpq04(): LPQ04
 
-  def retrieveLPQ05(): LPQ05
+  def lpq05(): LPQ05
 
-  def retrieveLPQ06(): LPQ06
+  def lpq06(): LPQ06
 
-  def retrieveLPQ07(): LPQ07
+  def lpq07(): LPQ07
 
-  def retrieveLPQ08(): LPQ08
+  def lpq08(): LPQ08
 
-  def retrieveLPQ09(): LPQ09
+  def lpq09(): LPQ09
 
-  def retrieveLPQ10(): LPQ10
+  def lpq10(): LPQ10
 
-  def retrieveLP02(): LP02
+  def lp02(): LP02
 
-  def retrieveLP03(): LP03
+  def lp03(): LP03
 
-  def retrieveLP04(): LP04
+  def lp04(): LP04
 
-  def retrieveLPQ01(): LPQ01 = LPQ01.calculate(this)
+  def lpq01(): LPQ01 = LPQ01.calculate(this)
 
-  def retrieveA1(): A1 = A1(retrieveLPQ09())
+  def a1(): A1 = A1(lpq09())
 
-  def retrieveA2() = A2.calculate(this)
+  def a2() = A2.calculate(this)
 
-  def retrieveA3() = A3.calculate(this)
+  def a3() = A3.calculate(this)
 
-  def retrieveA4() = A4.calculate(this)
+  def a4() = A4.calculate(this)
 
-  def retrieveA5() = A5.calculate(this)
+  def a5() = A5.calculate(this)
 
-  def retrieveA6() = A6.calculate(this)
+  def a6() = A6.calculate(this)
 
-  def retrieveA7() = A7.calculate(this)
+  def a7() = A7.calculate(this)
 
-  def retrieveA8() = A8.calculate(this)
+  def a8() = A8.calculate(this)
 
-  def retrieveA8Inverse() = A8Inverse.calculate(this)
+  def a8Inverse() = A8Inverse.calculate(this)
 
-  def retrieveA9() = A9.calculate(this)
+  def a9() = A9.calculate(this)
 
-  def retrieveA9Inverse() = A9Inverse.calculate(this)
+  def a9Inverse() = A9Inverse.calculate(this)
 
-  def retrieveA10() = A10.calculate(this)
+  def a10() = A10.calculate(this)
 
-  def retrieveA10Inverse() = A10Inverse.calculate(this)
+  def a10Inverse() = A10Inverse.calculate(this)
 
-  def retrieveA11() = A11.calculate(this)
+  def a11() = A11.calculate(this)
 
-  def retrieveA11Inverse() = A11Inverse.calculate(this)
+  def a11Inverse() = A11Inverse.calculate(this)
 
-  def retrieveA12() = A12.calculate(this)
+  def a12() = A12.calculate(this)
 
-  def retrieveA13() = A13.calculate(this)
+  def a13() = A13.calculate(this)
 }

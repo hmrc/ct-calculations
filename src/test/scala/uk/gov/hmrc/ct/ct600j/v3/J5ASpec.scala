@@ -32,21 +32,21 @@ class J5ASpec extends WordSpec with MockitoSugar with Matchers {
   "J5A validate" should {
     "not return errors when B140 is false" in {
       val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
-      when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(false)))
+      when(mockBoxRetriever.b140()).thenReturn(B140(Some(false)))
 
       J5A(None).validate(mockBoxRetriever) shouldBe Set()
     }
 
     "not return errors when B140 is true and J5A is valid" in {
       val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
-      when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
+      when(mockBoxRetriever.b140()).thenReturn(B140(Some(true)))
 
       J5A(Some(LocalDate.parse("2014-02-01"))).validate(mockBoxRetriever) shouldBe Set()
     }
 
     "return required error when B140 is true and J5 is blank" in {
       val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
-      when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
+      when(mockBoxRetriever.b140()).thenReturn(B140(Some(true)))
 
       J5A(None).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("J5A"), "error.J5A.required", None))
     }

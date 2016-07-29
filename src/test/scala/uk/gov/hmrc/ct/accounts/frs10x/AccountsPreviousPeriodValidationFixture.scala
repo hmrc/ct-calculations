@@ -37,19 +37,19 @@ trait AccountsPreviousPeriodValidationFixture extends WordSpec with Matchers wit
 
     s"$boxId" should {
       "pass validation when has valid value and AC205 is populated" in {
-        when(boxRetriever.retrieveAC205()).thenReturn(AC205(Some(new LocalDate("2015-01-01"))))
+        when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate("2015-01-01"))))
         builder(Some(1)).validate(boxRetriever) shouldBe empty
       }
       "pass validation when empty and AC205 is populated" in {
-        when(boxRetriever.retrieveAC205()).thenReturn(AC205(Some(new LocalDate("2015-01-01"))))
+        when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate("2015-01-01"))))
         builder(None).validate(boxRetriever) shouldBe empty
       }
       "pass validation when empty and AC205 is empty" in {
-        when(boxRetriever.retrieveAC205()).thenReturn(AC205(None))
+        when(boxRetriever.ac205()).thenReturn(AC205(None))
         builder(None).validate(boxRetriever) shouldBe empty
       }
       "fail validation when valid value and AC205 is empty" in {
-        when(boxRetriever.retrieveAC205()).thenReturn(AC205(None))
+        when(boxRetriever.ac205()).thenReturn(AC205(None))
         builder(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.cannot.exist"))
       }
     }

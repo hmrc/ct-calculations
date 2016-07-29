@@ -25,10 +25,10 @@ case class CP99(value: Int) extends CtBoxIdentifier("Trade net allowances") with
 object CP99 extends Calculated[CP99, ComputationsBoxRetriever] with SummaryCalculator  {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP99 =
-    calculateTradeNetAllowancesForSummary(fieldValueRetriever.retrieveCP186(),
-                                          fieldValueRetriever.retrieveCP668(),
-                                          fieldValueRetriever.retrieveCP674(),
-                                          fieldValueRetriever.retrieveCP91(),
-                                          fieldValueRetriever.retrieveCP670())
+    calculateTradeNetAllowancesForSummary(fieldValueRetriever.cp186(),
+                                          fieldValueRetriever.cp668(),
+                                          fieldValueRetriever.cp674(),
+                                          fieldValueRetriever.cp91(),
+                                          fieldValueRetriever.cp670())
 
 }

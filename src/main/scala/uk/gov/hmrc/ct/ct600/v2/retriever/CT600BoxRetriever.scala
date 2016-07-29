@@ -26,82 +26,82 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever {
 
   self: AccountsBoxRetriever =>
 
-  def retrieveB38(): B38
+  def b38(): B38
 
-  def retrieveB39(): B39
+  def b39(): B39
 
-  def retrieveB42a(): B42a
+  def b42a(): B42a
 
-  def retrieveB42b(): B42b
+  def b42b(): B42b
 
-  def retrieveB42(): B42 = B42.calculate(this)
+  def b42(): B42 = B42.calculate(this)
 
-  def retrieveB84(): B84
+  def b84(): B84
 
-  def retrieveB91(): B91
+  def b91(): B91
 
-  def retrieveB155(): B155
+  def b155(): B155
 
-  def retrieveB1(): B1 = B1(retrieveCP7)
+  def b1(): B1 = B1(cp7)
 
-  def retrieveB3(): B3 = B3(retrieveCP256())
+  def b3(): B3 = B3(cp256())
 
-  def retrieveB4(): B4 = B4(retrieveCP257())
+  def b4(): B4 = B4(cp257())
 
-  def retrieveB5(): B5 = B5(retrieveCP258())
+  def b5(): B5 = B5(cp258())
 
-  def retrieveB6(): B6 = B6(retrieveCP259())
+  def b6(): B6 = B6(cp259())
 
-  def retrieveB11(): B11 = B11(retrieveCP511())
+  def b11(): B11 = B11(cp511())
 
-  def retrieveB14(): B14 = B14(retrieveCP515())
+  def b14(): B14 = B14(cp515())
 
-  def retrieveB21(): B21 = B21(retrieveCP265())
+  def b21(): B21 = B21(cp265())
 
-  def retrieveB30(): B30 = B30(retrieveCP264())
+  def b30(): B30 = B30(cp264())
 
-  def retrieveB35(): B35 = B35(retrieveCP305())
+  def b35(): B35 = B35(cp305())
 
-  def retrieveB37(): B37 = B37(retrieveCP295())
+  def b37(): B37 = B37(cp295())
 
-  def retrieveB43(): B43 = B43.calculate(this)
+  def b43(): B43 = B43.calculate(this)
 
-  def retrieveB44(): B44 = B44.calculate(this)
+  def b44(): B44 = B44.calculate(this)
 
-  def retrieveB45(): B45 = B45.calculate(this)
+  def b45(): B45 = B45.calculate(this)
 
-  def retrieveB46(): B46 = B46.calculate(this)
+  def b46(): B46 = B46.calculate(this)
 
-  def retrieveB46R(): B46R = B46R.calculate(this)
+  def b46R(): B46R = B46R.calculate(this)
 
-  def retrieveB53(): B53 = B53.calculate(this)
+  def b53(): B53 = B53.calculate(this)
 
-  def retrieveB54(): B54 = B54.calculate(this)
+  def b54(): B54 = B54.calculate(this)
 
-  def retrieveB55(): B55 = B55.calculate(this)
+  def b55(): B55 = B55.calculate(this)
 
-  def retrieveB56(): B56 = B56.calculate(this)
+  def b56(): B56 = B56.calculate(this)
 
-  def retrieveB56R(): B56R = B56R.calculate(this)
+  def b56R(): B56R = B56R.calculate(this)
 
-  def retrieveB63(): B63 = B63.calculate(this)
+  def b63(): B63 = B63.calculate(this)
 
-  def retrieveB64(): B64 = B64(retrieveCATO04())
+  def b64(): B64 = B64(cato04())
 
-  def retrieveB65(): B65 = B65.calculate(this)
+  def b65(): B65 = B65.calculate(this)
 
-  def retrieveB70(): B70 = B70.calculate(this)
+  def b70(): B70 = B70.calculate(this)
 
-  def retrieveB78(): B78 = B78(retrieveB65())
+  def b78(): B78 = B78(b65())
 
-  def retrieveB79(): B79 = {
+  def b79(): B79 = {
     this match {
-      case r: CT600ABoxRetriever => B79(r.retrieveA13())
+      case r: CT600ABoxRetriever => B79(r.a13())
       case _ => B79(None)
     }
   }
 
-  def retrieveB80(): B80 = {
+  def b80(): B80 = {
     this match {
       case r: CT600ABoxRetriever => B80.calculate(r)
       case _ => B80(None)
@@ -109,35 +109,35 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever {
 
   }
 
-  def retrieveB85(): B85 = B85.calculate(this)
+  def b85(): B85 = B85.calculate(this)
 
-  def retrieveB86(): B86 = B86.calculate(this)
+  def b86(): B86 = B86.calculate(this)
 
-  def retrieveB92(): B92 = B92.calculate(this)
+  def b92(): B92 = B92.calculate(this)
 
-  def retrieveB93(): B93 = B93.calculate(this)
+  def b93(): B93 = B93.calculate(this)
 
-  def retrieveB105(): B105 = B105(retrieveCP668())
+  def b105(): B105 = B105(cp668())
 
-  def retrieveB106(): B106 = B106(retrieveCP670())
+  def b106(): B106 = B106(cp670())
 
-  def retrieveB107(): B107 = B107(retrieveCP248())
+  def b107(): B107 = B107(cp248())
 
-  def retrieveB108(): B108 = B108(retrieveCP247())
+  def b108(): B108 = B108(cp247())
 
-  def retrieveB118(): B118 = B118(retrieveCP251())
+  def b118(): B118 = B118(cp251())
 
-  def retrieveB121(): B121 = B121(retrieveCP253())
+  def b121(): B121 = B121(cp253())
 
-  def retrieveB122(): B122 = B122.calculate(this)
+  def b122(): B122 = B122.calculate(this)
 
-  def retrieveB172(): B172 = B172(retrieveCP88())
+  def b172(): B172 = B172(cp88())
 
-  def retrieveB174(): B174 = B174(retrieveCP278)
+  def b174(): B174 = B174(cp278)
 
-  def retrieveCATO04(): CATO04 = CATO04.calculate(this)
+  def cato04(): CATO04 = CATO04.calculate(this)
 
-  def retrieveB1000: B1000
+  def b1000: B1000
 
-  def retrieveB1001: B1001 = B1001(this.retrieveAC1())
+  def b1001: B1001 = B1001(this.ac1())
 }

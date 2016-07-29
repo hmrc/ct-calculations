@@ -24,6 +24,6 @@ case class E25(value: Option[Boolean]) extends CtBoxIdentifier("Some of the inco
 object E25 extends Calculated[E25, CT600EBoxRetriever] {
   override def calculate(boxRetriever: CT600EBoxRetriever): E25 = {
 
-    E25(boxRetriever.retrieveE20().inverse)
+    E25(boxRetriever.e20().inverse)
   }
 }

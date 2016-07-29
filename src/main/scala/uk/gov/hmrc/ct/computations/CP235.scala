@@ -25,7 +25,7 @@ case class CP235(value: Option[Int]) extends CtBoxIdentifier(name = "Losses aris
 object CP235 extends Calculated[CP235, ComputationsBoxRetriever] with SummaryLossesArisingThisPeriodCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP235 = {
-    summaryLossesArisingThisPeriodCalculation(cp118 = fieldValueRetriever.retrieveCP118())
+    summaryLossesArisingThisPeriodCalculation(cp118 = fieldValueRetriever.cp118())
   }
 
 }

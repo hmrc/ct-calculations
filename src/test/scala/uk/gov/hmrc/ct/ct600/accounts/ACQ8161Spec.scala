@@ -30,28 +30,28 @@ class ACQ8161Spec extends WordSpec with MockitoSugar with Matchers {
   "ACQ8161 validate" should {
     "return errors when filing is for CoHo and ACQ8161 is empty" in {
       val mockBoxRetriever = mock[FilingAttributesBoxValueRetriever]
-      when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
 
       ACQ8161(None).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("ACQ8161"), "error.ACQ8161.required"))
     }
 
     "not return errors when filing is for CoHo and ACQ8161 is true" in {
       val mockBoxRetriever = mock[FilingAttributesBoxValueRetriever]
-      when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
 
       ACQ8161(Some(true)).validate(mockBoxRetriever) shouldBe Set()
     }
 
     "not return errors when filing is for CoHo and ACQ8161 is false" in {
       val mockBoxRetriever = mock[FilingAttributesBoxValueRetriever]
-      when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
 
       ACQ8161(Some(false)).validate(mockBoxRetriever) shouldBe Set()
     }
 
     "not return errors when filing is not for CoHo and ACQ8161 is empty" in {
       val mockBoxRetriever = mock[FilingAttributesBoxValueRetriever]
-      when(mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn(CompaniesHouseFiling(false))
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(false))
 
       ACQ8161(None).validate(mockBoxRetriever) shouldBe Set()
     }

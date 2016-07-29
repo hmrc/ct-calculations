@@ -28,8 +28,8 @@ case class CP88(value: Option[Int]) extends CtBoxIdentifier(name = "Annual Inves
   }
 
   private def annualInvestmentAllowanceNotGreaterThanMaxAIA(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    val expenditureQualifyingAnnualInvestmentAllowance: Int = retriever.retrieveCP83().orZero
-    val aiaThreshold: Int = retriever.retrieveCATO02().value
+    val expenditureQualifyingAnnualInvestmentAllowance: Int = retriever.cp83().orZero
+    val aiaThreshold: Int = retriever.cato02().value
 
     val maxAIA = Math.min(expenditureQualifyingAnnualInvestmentAllowance, aiaThreshold)
 

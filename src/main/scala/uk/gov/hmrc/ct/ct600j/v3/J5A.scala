@@ -26,7 +26,7 @@ case class J5A(value: Option[LocalDate]) extends SchemeDateBox {
   override def validate(boxRetriever: CT600JBoxRetriever): Set[CtValidation] = {
     boxRetriever match {
       case r: CT600BoxRetriever =>
-        r.retrieveB140().value match {
+        r.b140().value match {
           case Some(true) => validateDateAsMandatory(id, this) ++ validateDateAsAfter(id, this, earliestSchemeDate)
           case _ => Set.empty
         }

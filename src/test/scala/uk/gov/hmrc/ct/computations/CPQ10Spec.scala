@@ -29,43 +29,43 @@ class CPQ10Spec extends WordSpec with Matchers with MockitoSugar {
   "CPQ10" should {
     "when empty" when {
       "pass validation when CPQ7 is false" in {
-        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(Some(false)))
+        when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(false)))
         CPQ10(None).validate(boxRetriever) shouldBe empty
       }
       "pass validation when CPQ7 is empty" in {
-        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(None))
+        when(boxRetriever.cpQ7()).thenReturn(CPQ7(None))
         CPQ10(None).validate(boxRetriever) shouldBe empty
       }
       "fail validation when CPQ7 is true" in {
-        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(Some(true)))
+        when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(true)))
         CPQ10(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ10"), "error.CPQ10.required"))
       }
     }
     "when false" when {
       "pass validation when CPQ7 is false" in {
-        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(Some(false)))
+        when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(false)))
         CPQ10(Some(false)).validate(boxRetriever) shouldBe empty
       }
       "pass validation when CPQ7 is empty" in {
-        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(None))
+        when(boxRetriever.cpQ7()).thenReturn(CPQ7(None))
         CPQ10(Some(false)).validate(boxRetriever) shouldBe empty
       }
       "pass validation when CPQ7 is true" in {
-        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(Some(true)))
+        when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(true)))
         CPQ10(Some(false)).validate(boxRetriever) shouldBe empty
       }
     }
     "when true" when {
       "fail validation when CPQ7 is false" in {
-        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(Some(false)))
+        when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(false)))
         CPQ10(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ10"), "error.CPQ10.notClaiming.required"))
       }
       "pass validation when CPQ7 is empty" in {
-        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(None))
+        when(boxRetriever.cpQ7()).thenReturn(CPQ7(None))
         CPQ10(Some(true)).validate(boxRetriever) shouldBe empty
       }
       "pass validation when CPQ7 is true" in {
-        when(boxRetriever.retrieveCPQ7()).thenReturn(CPQ7(Some(true)))
+        when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(true)))
         CPQ10(Some(true)).validate(boxRetriever) shouldBe empty
       }
     }

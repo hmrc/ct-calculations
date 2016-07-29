@@ -26,6 +26,6 @@ object AC57 extends Calculated[AC57, Frs10xAccountsBoxRetriever] with TotalCurre
 
   override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC57 = {
     import boxRetriever._
-    calculatePreviousTotalCurrentAssets(retrieveAC51(), retrieveAC53(), retrieveAC55())
+    calculatePreviousTotalCurrentAssets(ac51(), ac53(), ac55())
   }
 }

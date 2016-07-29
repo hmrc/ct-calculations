@@ -29,40 +29,40 @@ class J10Spec extends WordSpec with MockitoSugar with Matchers {
   "J10 validate" should {
     "not return errors when B140 is false" in {
       val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
-      when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(false)))
-      when(mockBoxRetriever.retrieveJ5()).thenReturn(J5(None))
-      when(mockBoxRetriever.retrieveJ5A()).thenReturn(J5A(None))
-      when(mockBoxRetriever.retrieveJ10A()).thenReturn(J10A(None))
+      when(mockBoxRetriever.b140()).thenReturn(B140(Some(false)))
+      when(mockBoxRetriever.j5()).thenReturn(J5(None))
+      when(mockBoxRetriever.j5A()).thenReturn(J5A(None))
+      when(mockBoxRetriever.j10A()).thenReturn(J10A(None))
 
       J10(None).validate(mockBoxRetriever) shouldBe Set()
     }
 
     "not return errors when B140 is true and J5 and J5A are present and J10A is valid" in {
       val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
-      when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
-      when(mockBoxRetriever.retrieveJ5()).thenReturn(J5(Some("12345678")))
-      when(mockBoxRetriever.retrieveJ5A()).thenReturn(J5A(Some(LocalDate.parse("2013-02-01"))))
-      when(mockBoxRetriever.retrieveJ10A()).thenReturn(J10A(None))
+      when(mockBoxRetriever.b140()).thenReturn(B140(Some(true)))
+      when(mockBoxRetriever.j5()).thenReturn(J5(Some("12345678")))
+      when(mockBoxRetriever.j5A()).thenReturn(J5A(Some(LocalDate.parse("2013-02-01"))))
+      when(mockBoxRetriever.j10A()).thenReturn(J10A(None))
 
       J10(Some("12345678")).validate(mockBoxRetriever) shouldBe Set()
     }
 
     "return required error when B140 is true and J10A is blank" in {
       val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
-      when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
-      when(mockBoxRetriever.retrieveJ5()).thenReturn(J5(Some("12345678")))
-      when(mockBoxRetriever.retrieveJ5A()).thenReturn(J5A(Some(LocalDate.parse("2013-02-01"))))
-      when(mockBoxRetriever.retrieveJ10A()).thenReturn(J10A(Some(LocalDate.parse("2013-02-01"))))
+      when(mockBoxRetriever.b140()).thenReturn(B140(Some(true)))
+      when(mockBoxRetriever.j5()).thenReturn(J5(Some("12345678")))
+      when(mockBoxRetriever.j5A()).thenReturn(J5A(Some(LocalDate.parse("2013-02-01"))))
+      when(mockBoxRetriever.j10A()).thenReturn(J10A(Some(LocalDate.parse("2013-02-01"))))
 
       J10(None).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("J10"), "error.J10.required", None))
     }
 
     "return regex error when B140 is true and J10A is invalid" in {
       val mockBoxRetriever = mock[TaxAvoidanceBoxRetrieverForTest]
-      when(mockBoxRetriever.retrieveB140()).thenReturn(B140(Some(true)))
-      when(mockBoxRetriever.retrieveJ5()).thenReturn(J5(Some("12345678")))
-      when(mockBoxRetriever.retrieveJ5A()).thenReturn(J5A(Some(LocalDate.parse("2013-02-01"))))
-      when(mockBoxRetriever.retrieveJ10A()).thenReturn(J10A(Some(LocalDate.parse("2013-02-01"))))
+      when(mockBoxRetriever.b140()).thenReturn(B140(Some(true)))
+      when(mockBoxRetriever.j5()).thenReturn(J5(Some("12345678")))
+      when(mockBoxRetriever.j5A()).thenReturn(J5A(Some(LocalDate.parse("2013-02-01"))))
+      when(mockBoxRetriever.j10A()).thenReturn(J10A(Some(LocalDate.parse("2013-02-01"))))
 
       J10(Some("xyz")).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("J10"), "error.J10.regexFailure", None))
     }

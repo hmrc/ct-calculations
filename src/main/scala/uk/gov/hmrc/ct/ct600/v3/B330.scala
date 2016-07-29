@@ -28,6 +28,6 @@ object B330 extends CorporationTaxCalculator with Calculated[B330, ComputationsB
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): B330 =
       B330(financialYear1(
-        HmrcAccountingPeriod(fieldValueRetriever.retrieveCP1(), fieldValueRetriever.retrieveCP2())
+        HmrcAccountingPeriod(fieldValueRetriever.cp1(), fieldValueRetriever.cp2())
       ))
 }

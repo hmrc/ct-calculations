@@ -26,7 +26,7 @@ object AC26 extends Calculated[AC26, Frs10xAccountsBoxRetriever] with OperatingP
 
   override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC26 = {
     import boxRetriever._
-    calculateAC26(retrieveAC16(), retrieveAC18(), retrieveAC20())
+    calculateAC26(ac16(), ac18(), ac20())
   }
 }
 

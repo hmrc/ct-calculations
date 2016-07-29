@@ -25,7 +25,7 @@ case class CP305(value: Int) extends CtBoxIdentifier(name = "Qualifying charitab
 object CP305 extends Calculated[CP305, ComputationsBoxRetriever] with SummaryCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP305 = {
-   calculateQualifyingCharitableDonations(fieldValueRetriever.retrieveCP301(), fieldValueRetriever.retrieveCP302())
+   calculateQualifyingCharitableDonations(fieldValueRetriever.cp301(), fieldValueRetriever.cp302())
   }
 
 }

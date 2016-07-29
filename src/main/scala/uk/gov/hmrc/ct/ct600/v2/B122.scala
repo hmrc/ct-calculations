@@ -25,6 +25,6 @@ case class B122(value: Option[Int]) extends CtBoxIdentifier("Trading losses aris
 object B122 extends Calculated[B122, ComputationsBoxRetriever] with SummaryLossesArisingThisPeriodCalculator{
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): B122 = {
-    summaryTradingLossesArisingCalculation(cp118 = fieldValueRetriever.retrieveCP118())
+    summaryTradingLossesArisingCalculation(cp118 = fieldValueRetriever.cp118())
   }
 }
