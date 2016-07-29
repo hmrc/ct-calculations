@@ -16,10 +16,17 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockRetriever}
+import uk.gov.hmrc.ct.accounts.AccountsMoneyValidation
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.box._
 
-class AC52Spec extends AccountsMoneyValidationFixture with MockRetriever {
+case class AC50(value: Option[Int]) extends CtBoxIdentifier(name = "Stocks (current PoA)")
+  with CtOptionalInteger
+  with Input
+  with ValidatableBox[Frs10xAccountsBoxRetriever]
+  with AccountsMoneyValidation {
 
-  testAccountsMoneyValidationWithMin("AC52", 0, AC52.apply)
-
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
+    validateMoney("AC50", min = 0)
+  }
 }

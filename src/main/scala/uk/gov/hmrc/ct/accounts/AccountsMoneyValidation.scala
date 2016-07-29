@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.box.{CtValidation, CtValue, ValidatableBox}
+import uk.gov.hmrc.ct.box.{CtValidation, CtValue}
 
 trait AccountsMoneyValidation {
 

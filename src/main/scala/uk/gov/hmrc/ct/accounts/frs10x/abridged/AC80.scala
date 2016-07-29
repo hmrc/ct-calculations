@@ -16,17 +16,23 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.AccountsMoneyValidation
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.TotalShareholdersFundsCalculator
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.validation.AssetsEqualToSharesValidator
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC52(value: Option[Int]) extends CtBoxIdentifier(name = "Debtors (current PoA)")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[Frs10xAccountsBoxRetriever]
-  with AccountsMoneyValidation {
+case class AC80(value: Option[Int]) extends CtBoxIdentifier(name = "Total Shareholders Funds (current PoA)")
+  with CtOptionalInteger with AssetsEqualToSharesValidator {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
-    validateMoney("AC52", min = 0)
+    validateAssetsEqualToShares("AC80", boxRetriever.retrieveAC68())
+  }
+}
+
+object AC80 extends Calculated[AC80, Frs10xAccountsBoxRetriever] with TotalShareholdersFundsCalculator {
+
+  override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC80 = {
+    import boxRetriever._
+    calculateCurrentTotalShareholdersFunds(retrieveAC70(), retrieveAC76(), retrieveAC74())
   }
 }

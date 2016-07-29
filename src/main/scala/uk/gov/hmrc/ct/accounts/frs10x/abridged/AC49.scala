@@ -16,10 +16,16 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockRetriever}
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.TotalFixedAssetsCalculator
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger}
 
-class AC52Spec extends AccountsMoneyValidationFixture with MockRetriever {
+case class AC49(value: Option[Int]) extends CtBoxIdentifier(name = "Total fixed assets (previous PoA)") with CtOptionalInteger
 
-  testAccountsMoneyValidationWithMin("AC52", 0, AC52.apply)
+object AC49 extends Calculated[AC49, Frs10xAccountsBoxRetriever] with TotalFixedAssetsCalculator {
 
+  override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC49 = {
+    import boxRetriever._
+    calculatePreviousTotalFixedAssets(retrieveAC43(), retrieveAC45())
+  }
 }

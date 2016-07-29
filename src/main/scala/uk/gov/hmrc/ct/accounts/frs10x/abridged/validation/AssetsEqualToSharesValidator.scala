@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.abridged
+package uk.gov.hmrc.ct.accounts.frs10x.abridged.validation
 
-import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockRetriever}
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, ValidatableBox}
 
-class AC52Spec extends AccountsMoneyValidationFixture with MockRetriever {
+trait AssetsEqualToSharesValidator extends ValidatableBox[Frs10xAccountsBoxRetriever] {
+  self: CtOptionalInteger =>
 
-  testAccountsMoneyValidationWithMin("AC52", 0, AC52.apply)
+  def validateAssetsEqualToShares(boxId: String, otherBox: CtOptionalInteger): Set[CtValidation] = {
+    failIf(value != otherBox.value) {
+      Set(CtValidation(Some(boxId), s"error.$boxId.assetsNotEqualToShares"))
+    }
+  }
 
 }

@@ -63,9 +63,83 @@ trait Frs10xAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def retrieveAC37(): AC37 = AC37.calculate(this)
 
-  def retrieveAC5032(): AC5032
+  def retrieveAC42(): AC42
+
+  def retrieveAC43(): AC43
+
+  def retrieveAC44(): AC44
+
+  def retrieveAC45(): AC45
+
+  def retrieveAC48(): AC48 = AC48.calculate(this)
+
+  def retrieveAC49(): AC49 = AC49.calculate(this)
+
+  def retrieveAC50(): AC50
+
+  def retrieveAC51(): AC51
 
   def retrieveAC52(): AC52
+
+  def retrieveAC53(): AC53
+
+  def retrieveAC54(): AC54
+
+  def retrieveAC55(): AC55
+
+  def retrieveAC56(): AC56 = AC56.calculate(this)
+
+  def retrieveAC57(): AC57 = AC57.calculate(this)
+
+  def retrieveAC58(): AC58
+
+  def retrieveAC59(): AC59
+
+  def retrieveAC60(): AC60 = AC60.calculate(this)
+
+  def retrieveAC61(): AC61 = AC61.calculate(this)
+
+  def retrieveAC62(): AC62 = AC62.calculate(this)
+
+  def retrieveAC63(): AC63 = AC63.calculate(this)
+
+  def retrieveAC64(): AC64
+
+  def retrieveAC65(): AC65
+
+  def retrieveAC66(): AC66
+
+  def retrieveAC67(): AC67
+
+  def retrieveAC68(): AC68 = AC68.calculate(this)
+
+  def retrieveAC69(): AC69 = AC69.calculate(this)
+
+  def retrieveAC70(): AC70
+
+  def retrieveAC71(): AC71
+
+  def retrieveAC74(): AC74
+
+  def retrieveAC75(): AC75
+
+  def retrieveAC76(): AC76
+
+  def retrieveAC77(): AC77
+
+  def retrieveAC80(): AC80 = AC80.calculate(this)
+
+  def retrieveAC81(): AC81 = AC81.calculate(this)
+
+  def retrieveAC1076(): AC1076
+
+  def retrieveAC1077(): AC1077
+
+  def retrieveAC1178(): AC1178
+
+  def retrieveAC1179(): AC1179
+
+  def retrieveAC5032(): AC5032
 
   def retrieveAC5052A(): AC5052A
 

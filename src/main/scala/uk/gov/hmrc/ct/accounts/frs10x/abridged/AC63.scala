@@ -16,17 +16,16 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.AccountsMoneyValidation
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.TotalAssetsLessCurrentLiabilitiesCalculator
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger}
 
-case class AC52(value: Option[Int]) extends CtBoxIdentifier(name = "Debtors (current PoA)")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[Frs10xAccountsBoxRetriever]
-  with AccountsMoneyValidation {
+case class AC63(value: Option[Int]) extends CtBoxIdentifier(name = "Total assets less current liabilities (previous PoA)") with CtOptionalInteger
 
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
-    validateMoney("AC52", min = 0)
+object AC63 extends Calculated[AC63, Frs10xAccountsBoxRetriever] with TotalAssetsLessCurrentLiabilitiesCalculator {
+
+  override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC63 = {
+    import boxRetriever._
+    calculatePreviousTotalAssetsLessCurrentLiabilities(retrieveAC61(), retrieveAC49())
   }
 }

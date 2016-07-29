@@ -16,10 +16,17 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockRetriever}
+import org.mockito.Mockito._
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.validation.ValidateAssetsEqualSharesSpec
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 
-class AC52Spec extends AccountsMoneyValidationFixture with MockRetriever {
+class AC80Spec extends ValidateAssetsEqualSharesSpec {
 
-  testAccountsMoneyValidationWithMin("AC52", 0, AC52.apply)
+  override def addOtherBoxValue100Mock(mockRetriever: Frs10xAccountsBoxRetriever) =
+    when(mockRetriever.retrieveAC68()).thenReturn(AC68(Some(100)))
 
+  override def addOtherBoxValueNoneMock(mockRetriever: Frs10xAccountsBoxRetriever) =
+    when(mockRetriever.retrieveAC68()).thenReturn(AC68(None))
+
+  testAssetsEqualToSharesValidation("AC80", AC80.apply)
 }
