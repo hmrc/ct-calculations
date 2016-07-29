@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.ct.box
 
+import java.text.NumberFormat
+
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
@@ -100,8 +102,12 @@ trait ValidatableBox[T <: BoxRetriever] {
   }
 
   protected def validateDateAsMandatory(boxId: String, box: CtOptionalDate): Set[CtValidation] = {
-    box.value match {
-      case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
+    validateDateAsMandatory(boxId, box.value, boxId): Set[CtValidation]
+  }
+
+  protected def validateDateAsMandatory(boxId: String, date: Option[LocalDate], messageId: String): Set[CtValidation] = {
+    date match {
+      case None => Set(CtValidation(Some(boxId), s"error.$messageId.required"))
       case _ => Set()
     }
   }
@@ -130,10 +136,14 @@ trait ValidatableBox[T <: BoxRetriever] {
   }
 
   protected def validateDateAsBetweenInclusive(boxId: String, box: CtOptionalDate, minDate: LocalDate, maxDate: LocalDate): Set[CtValidation] = {
-    box.value match {
+    validateDateAsBetweenInclusive(boxId, box.value, minDate, maxDate, boxId)
+  }
+
+  protected def validateDateAsBetweenInclusive(boxId: String, date: Option[LocalDate], minDate: LocalDate, maxDate: LocalDate, messageId: String): Set[CtValidation] = {
+    date match {
       case None => Set()
       case Some(date) if date.isBefore(minDate.toDateTimeAtStartOfDay.toLocalDate) || date.isAfter(maxDate.plusDays(1).toDateTimeAtStartOfDay.minusSeconds(1).toLocalDate) =>
-        Set(CtValidation(Some(boxId), s"error.$boxId.not.betweenInclusive", Some(Seq(toErrorArgsFormat(minDate), toErrorArgsFormat(maxDate)))))
+        Set(CtValidation(Some(boxId), s"error.$messageId.not.betweenInclusive", Some(Seq(toErrorArgsFormat(minDate), toErrorArgsFormat(maxDate)))))
       case _ => Set()
     }
   }
@@ -227,6 +237,13 @@ trait ValidatableBox[T <: BoxRetriever] {
   def validateStringByLength(boxId: String, value: String, errorCodeId: String, min: Int, max: Int): Set[CtValidation] = {
     failIf (value.size < min || value.size > max) {
       Set(CtValidation(Some(boxId), s"error.$errorCodeId.text.sizeRange", Some(Seq(min.toString, max.toString))))
+    }
+  }
+
+  def validateStringMaxLength(boxId: String, value: String, max: Int): Set[CtValidation] = {
+    failIf (value.size > max) {
+      def commaForThousands(i: Int) = f"$i%,d"
+      Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(commaForThousands(max)))))
     }
   }
 

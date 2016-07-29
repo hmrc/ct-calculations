@@ -141,6 +141,10 @@ trait Frs10xAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def retrieveAC5032(): AC5032
 
+  def retrieveAC5052A(): AC5052A
+
+  def retrieveAC5052B(): AC5052B
+
   def retrieveAC8021(): AC8021
 
   def retrieveDirectors(): Directors
