@@ -16,20 +16,17 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
+import org.mockito.Mockito._
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.validation.ValidateAssetsEqualSharesSpec
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
 
-case class AC5032(value: Option[String]) extends CtBoxIdentifier(name = "Profit/(loss) before tax note")
-                                      with CtOptionalString
-                                      with Input
-                                      with ValidatableBox[Frs10xAccountsBoxRetriever] {
+class AC68Spec extends ValidateAssetsEqualSharesSpec {
 
+  override def addOtherBoxValue100Mock(mockRetriever: Frs10xAccountsBoxRetriever) =
+    when(mockRetriever.ac80()).thenReturn(AC80(Some(100)))
 
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
-    (boxRetriever.ac32(), value) match {
-      case (AC32(None), Some(s)) => Set(CtValidation(Some("AC5032"), "error.AC5032.cannot.exist"))
-      case (AC32(Some(_)), Some(s)) => validateStringMaxLength("AC5032", s, 20000)
-      case _ => Set.empty
-    }
-  }
+  override def addOtherBoxValueNoneMock(mockRetriever: Frs10xAccountsBoxRetriever) =
+    when(mockRetriever.ac80()).thenReturn(AC80(None))
+
+  testAssetsEqualToSharesValidation("AC68", AC68.apply)
 }

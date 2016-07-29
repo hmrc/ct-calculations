@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts
+package uk.gov.hmrc.ct.accounts.frs10x.abridged.validation
 
-import uk.gov.hmrc.ct.box.{CtValidation, CtValue}
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, ValidatableBox}
 
-trait AccountsMoneyValidation {
+trait AssetsEqualToSharesValidator extends ValidatableBox[Frs10xAccountsBoxRetriever] {
+  self: CtOptionalInteger =>
 
-  self: CtValue[Option[Int]] =>
-
-  def validateMoney(boxId: String, min: Int = -99999999, max: Int = 99999999): Set[CtValidation] = {
-    value match {
-      case Some(x) if x < min => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min"))
-      case Some(x) if x > max => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max"))
-      case _ => Set.empty
+  def validateAssetsEqualToShares(boxId: String, otherBox: CtOptionalInteger): Set[CtValidation] = {
+    failIf(value != otherBox.value) {
+      Set(CtValidation(Some(boxId), s"error.$boxId.assetsNotEqualToShares"))
     }
   }
+
 }

@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts
+package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.box.{CtValidation, CtValue}
+import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockRetriever}
 
-trait AccountsMoneyValidation {
+class AC54Spec extends AccountsMoneyValidationFixture with MockRetriever {
 
-  self: CtValue[Option[Int]] =>
+  testAccountsMoneyValidationWithMin("AC54", 0, AC54.apply)
 
-  def validateMoney(boxId: String, min: Int = -99999999, max: Int = 99999999): Set[CtValidation] = {
-    value match {
-      case Some(x) if x < min => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min"))
-      case Some(x) if x > max => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max"))
-      case _ => Set.empty
-    }
-  }
 }

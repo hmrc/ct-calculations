@@ -16,20 +16,16 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.TotalFixedAssetsCalculator
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger}
 
-case class AC5032(value: Option[String]) extends CtBoxIdentifier(name = "Profit/(loss) before tax note")
-                                      with CtOptionalString
-                                      with Input
-                                      with ValidatableBox[Frs10xAccountsBoxRetriever] {
+case class AC48(value: Option[Int]) extends CtBoxIdentifier(name = "Total fixed assets (current PoA)") with CtOptionalInteger
 
+object AC48 extends Calculated[AC48, Frs10xAccountsBoxRetriever] with TotalFixedAssetsCalculator {
 
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
-    (boxRetriever.ac32(), value) match {
-      case (AC32(None), Some(s)) => Set(CtValidation(Some("AC5032"), "error.AC5032.cannot.exist"))
-      case (AC32(Some(_)), Some(s)) => validateStringMaxLength("AC5032", s, 20000)
-      case _ => Set.empty
-    }
+  override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC48 = {
+    import boxRetriever._
+    calculateCurrentTotalFixedAssets(ac42(), ac44())
   }
 }

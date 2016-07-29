@@ -16,20 +16,23 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.TotalNetAssetsLiabilitiesCalculator
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.validation.AssetsEqualToSharesValidator
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger, CtValidation}
 
-case class AC5032(value: Option[String]) extends CtBoxIdentifier(name = "Profit/(loss) before tax note")
-                                      with CtOptionalString
-                                      with Input
-                                      with ValidatableBox[Frs10xAccountsBoxRetriever] {
-
+case class AC68(value: Option[Int]) extends CtBoxIdentifier(name = "Total net assets or liabilities (current PoA)")
+  with CtOptionalInteger with AssetsEqualToSharesValidator {
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
-    (boxRetriever.ac32(), value) match {
-      case (AC32(None), Some(s)) => Set(CtValidation(Some("AC5032"), "error.AC5032.cannot.exist"))
-      case (AC32(Some(_)), Some(s)) => validateStringMaxLength("AC5032", s, 20000)
-      case _ => Set.empty
-    }
+    validateAssetsEqualToShares("AC68", boxRetriever.ac80())
+  }
+}
+
+object AC68 extends Calculated[AC68, Frs10xAccountsBoxRetriever] with TotalNetAssetsLiabilitiesCalculator {
+
+  override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC68 = {
+    import boxRetriever._
+    calculateCurrentTotalNetAssetsLiabilities(ac62(), ac64(), ac66(), ac1178())
   }
 }

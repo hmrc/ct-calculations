@@ -68,4 +68,28 @@ trait AccountsMoneyValidationFixture extends WordSpec with Matchers with Mockito
       }
     }
   }
+
+  def testAccountsMoneyValidationWithMin(boxId: String, minValue: Int, builder: (Option[Int]) => ValidatableBox[Frs10xAccountsBoxRetriever]): Unit = {
+    setUpMocks()
+    s"$boxId" should {
+      "be valid when minimum" in {
+        builder(Some(minValue)).validate(boxRetriever) shouldBe empty
+      }
+      "be valid when empty" in {
+        builder(None).validate(boxRetriever) shouldBe empty
+      }
+      "be valid when greater then min" in {
+        builder(Some(minValue + 1)).validate(boxRetriever) shouldBe empty
+      }
+      "be valid when positive but equals upper limit" in {
+        builder(Some(99999999)).validate(boxRetriever) shouldBe empty
+      }
+      "fail validation when less then min lower limit" in {
+        builder(Some(minValue - 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min"))
+      }
+      "fail validation when positive but above upper limit" in {
+        builder(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max"))
+      }
+    }
+  }
 }
