@@ -24,6 +24,8 @@ case class AC5052B(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
                                                                                                                                 with ValidatableBox[Frs10xAccountsBoxRetriever] {
 
 
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = validateStringMaxLength("AC5052B", value.getOrElse(""), 20000)
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
+    validateStringMaxLength("AC5052B", value.getOrElse(""), 20000) ++ validateOptionalStringByRegex("AC5052B", this, validCoHoCharacters)
+  }
 
 }
