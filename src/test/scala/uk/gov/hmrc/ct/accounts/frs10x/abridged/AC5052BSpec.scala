@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs10x.AC8033
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
@@ -48,6 +49,11 @@ class AC5052BSpec extends WordSpec with MockitoSugar with Matchers {
 
       val string = (1 to 20001).map(x => "a").mkString("")
       AC5052B(Some(string)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5052B"), "error.AC5052B.max.length", Some(Seq("20,000"))))
+    }
+
+    "fail validation if invalid characters" in {
+
+      AC5052B(Some("??")).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5052B"), "error.AC5052B.regexFailure", None))
     }
   }
 }
