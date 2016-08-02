@@ -16,17 +16,17 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidation, AccountsPreviousPeriodValidation}
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 case class AC19(value: Option[Int]) extends CtBoxIdentifier(name = "Distribution costs (previous PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[Frs10xAccountsBoxRetriever]
+  with ValidatableBox[AbridgedAccountsBoxRetriever]
   with AccountsMoneyValidation
   with AccountsPreviousPeriodValidation {
 
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] =
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
         validateInputAllowed("AC19", boxRetriever.ac205()) ++ validateMoney("AC19")
 }

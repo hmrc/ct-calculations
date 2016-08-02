@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.validation
 
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, ValidatableBox}
 
-trait AssetsEqualToSharesValidator extends ValidatableBox[Frs10xAccountsBoxRetriever] {
+trait AssetsEqualToSharesValidator extends ValidatableBox[AbridgedAccountsBoxRetriever] {
   self: CtOptionalInteger =>
 
   def validateAssetsEqualToShares(boxId: String, otherBox: CtOptionalInteger): Set[CtValidation] = {
