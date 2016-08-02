@@ -19,11 +19,11 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockRetriever}
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC5052ASpec extends WordSpec with MockitoSugar with Matchers with MockRetriever with AccountsMoneyValidationFixture {
+class AC5052ASpec extends WordSpec with MockitoSugar with Matchers with MockAbridgedAccountsRetriever with AccountsMoneyValidationFixture {
 
   testAccountsMoneyValidationWithMin("AC5052A", minValue = 0, AC5052A)
 }

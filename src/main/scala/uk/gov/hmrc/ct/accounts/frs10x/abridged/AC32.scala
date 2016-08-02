@@ -17,14 +17,14 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.ProfitOrLossBeforeTaxCalculator
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger, CtOptionalInteger}
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger}
 
 case class AC32(value: Option[Int]) extends CtBoxIdentifier(name = "Profit or loss before tax (current PoA)") with CtOptionalInteger
 
-object AC32 extends Calculated[AC32, Frs10xAccountsBoxRetriever] with ProfitOrLossBeforeTaxCalculator {
+object AC32 extends Calculated[AC32, AbridgedAccountsBoxRetriever] with ProfitOrLossBeforeTaxCalculator {
 
-  override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC32 = {
+  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC32 = {
     import boxRetriever._
     calculateAC32(ac26(), ac28(), ac30())
   }

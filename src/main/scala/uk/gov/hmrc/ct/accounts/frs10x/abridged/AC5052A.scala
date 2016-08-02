@@ -17,15 +17,15 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import uk.gov.hmrc.ct.accounts.AccountsMoneyValidation
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 
 case class AC5052A(value: Option[Int]) extends CtBoxIdentifier(name = "Debtors due after more than one year") with CtOptionalInteger
                                                                                                               with Input
-                                                                                                              with ValidatableBox[Frs10xAccountsBoxRetriever]
+                                                                                                              with ValidatableBox[AbridgedAccountsBoxRetriever]
                                                                                                               with AccountsMoneyValidation {
 
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = validateMoney("AC5052A", min =  0)
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = validateMoney("AC5052A", min =  0)
 }
 

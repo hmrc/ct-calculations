@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x
 
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs10x.validation.DirectorsReportEnabled
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box._
@@ -24,9 +24,9 @@ import uk.gov.hmrc.ct.box._
 case class ACQ8003(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did any of these people become a director in this period?")
   with CtOptionalBoolean
   with Input
-  with ValidatableBox[Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever]
+  with ValidatableBox[Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever]
   with DirectorsReportEnabled {
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] =
+  override def validate(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] =
     if (directorsReportEnabled(boxRetriever))
       validateBooleanAsMandatory("ACQ8003", this)
     else
