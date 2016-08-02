@@ -16,15 +16,15 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import org.scalatest.{Matchers, WordSpec}
-import org.scalatest.mock.MockitoSugar
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
-import uk.gov.hmrc.ct.box.CtValidation
 import org.mockito.Mockito._
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.box.CtValidation
 
 class AC5032Spec extends WordSpec with MockitoSugar with Matchers {
 
-  val boxRetriever = mock[Frs10xAccountsBoxRetriever]
+  val boxRetriever = mock[AbridgedAccountsBoxRetriever]
 
   "AC5032" should {
     "pass validation when empty" in {

@@ -22,12 +22,12 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.AC205
 import uk.gov.hmrc.ct.accounts.frs10x.abridged._
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
 trait AccountsMoneyValidationFixture extends WordSpec with Matchers with MockitoSugar {
 
-  self: MockRetriever =>
+  self: MockAbridgedAccountsRetriever =>
 
   def setUpMocks(): Unit = {
     when(boxRetriever.ac16()).thenReturn(AC16(Some(16)))
@@ -39,7 +39,7 @@ trait AccountsMoneyValidationFixture extends WordSpec with Matchers with Mockito
     when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate())))
   }
 
-  def testAccountsMoneyValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[Frs10xAccountsBoxRetriever]): Unit = {
+  def testAccountsMoneyValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
     setUpMocks()
     s"$boxId" should {
       "be valid when 0" in {
@@ -69,7 +69,7 @@ trait AccountsMoneyValidationFixture extends WordSpec with Matchers with Mockito
     }
   }
 
-  def testAccountsMoneyValidationWithMin(boxId: String, minValue: Int, builder: (Option[Int]) => ValidatableBox[Frs10xAccountsBoxRetriever]): Unit = {
+  def testAccountsMoneyValidationWithMin(boxId: String, minValue: Int, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
     setUpMocks()
     s"$boxId" should {
       "be valid when minimum" in {

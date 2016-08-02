@@ -17,21 +17,21 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.TotalNetAssetsLiabilitiesCalculator
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.validation.AssetsEqualToSharesValidator
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger, CtValidation}
 
 case class AC69(value: Option[Int]) extends CtBoxIdentifier(name = "Total net assets or liabilities (previous PoA)")
   with CtOptionalInteger with AssetsEqualToSharesValidator {
 
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     validateAssetsEqualToShares("AC69", boxRetriever.ac81())
   }
 }
 
-object AC69 extends Calculated[AC69, Frs10xAccountsBoxRetriever] with TotalNetAssetsLiabilitiesCalculator {
+object AC69 extends Calculated[AC69, AbridgedAccountsBoxRetriever] with TotalNetAssetsLiabilitiesCalculator {
 
-  override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC69 = {
+  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC69 = {
     import boxRetriever._
     calculatePreviousTotalNetAssetsLiabilities(ac63(), ac65(), ac67(), ac1179())
   }

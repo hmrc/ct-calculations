@@ -16,12 +16,12 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x
 
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file a directors' report to Companies House?") with CtOptionalBoolean with Input with ValidatableBox[Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
-  override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file a directors' report to Companies House?") with CtOptionalBoolean with Input with ValidatableBox[Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever] {
+  override def validate(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     val coHoFiling = boxRetriever.companiesHouseFiling().value
     val hmrcFiling = boxRetriever.hmrcFiling().value
     val microEntityFiling = boxRetriever.microEntityFiling().value

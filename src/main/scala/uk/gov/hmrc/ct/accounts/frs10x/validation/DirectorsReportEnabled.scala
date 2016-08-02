@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.validation
 
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 trait DirectorsReportEnabled {
-  def directorsReportEnabled(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean = {
+  def directorsReportEnabled(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean = {
     val isCoHoFiling = boxRetriever.companiesHouseFiling().value
     val isHmrcFiling = boxRetriever.hmrcFiling().value
     val isMicroEntityFiling = boxRetriever.microEntityFiling().value

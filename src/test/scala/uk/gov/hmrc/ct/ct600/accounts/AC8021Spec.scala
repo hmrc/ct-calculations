@@ -20,7 +20,7 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs10x.{AC8021, AC8023}
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling, MicroEntityFiling}
@@ -28,7 +28,7 @@ import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling, MicroEntityFiling}
 
 class AC8021Spec extends WordSpec with MockitoSugar with Matchers {
 
-  private trait TestBoxRetriever extends Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever
+  private trait TestBoxRetriever extends Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever
 
   "AC8021 validate" should {
     "return errors when filing is for CoHo and AC8021 is empty" in {

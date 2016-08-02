@@ -17,14 +17,14 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.TotalCurrentAssetsCalculator
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger}
 
 case class AC56(value: Option[Int]) extends CtBoxIdentifier(name = "Total current assets (current PoA)") with CtOptionalInteger
 
-object AC56 extends Calculated[AC56, Frs10xAccountsBoxRetriever] with TotalCurrentAssetsCalculator {
+object AC56 extends Calculated[AC56, AbridgedAccountsBoxRetriever] with TotalCurrentAssetsCalculator {
 
-  override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC56 = {
+  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC56 = {
     import boxRetriever._
     calculateCurrentTotalCurrentAssets(ac50(), ac52(), ac54())
   }

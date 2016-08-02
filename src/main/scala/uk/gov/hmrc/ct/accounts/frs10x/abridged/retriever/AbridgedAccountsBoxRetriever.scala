@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.retriever
+package uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever
 
-
-import uk.gov.hmrc.ct.accounts.frs10x._
 import uk.gov.hmrc.ct.accounts.frs10x.abridged._
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, BoxValues, FilingAttributesBoxValueRetriever}
-import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-trait Frs10xAccountsBoxRetriever extends AccountsBoxRetriever {
+trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 
@@ -145,25 +142,19 @@ trait Frs10xAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac5052B(): AC5052B
 
-  def ac8021(): AC8021
+  def ac7100(): AC7100
 
-  def directors(): Directors
+  def ac7200(): AC7200
 
-  def ac8033(): AC8033
+  def ac7300(): AC7300
 
-  def ac8023(): AC8023
+  def ac7400(): AC7400
 
-  def acQ8003(): ACQ8003
+  def ac7500(): AC7500
 
-  def acQ8009(): ACQ8009
-  
-  def ac8051(): AC8051
+  def ac7600(): AC7600
 
-  def ac8052(): AC8052
+  def ac7800(): AC7800
 
-  def ac8053(): AC8053
-
-  def ac8054(): AC8054
-
-  def acQ8161(): ACQ8161
+  def ac7900(): AC7900
 }
