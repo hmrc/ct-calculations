@@ -20,11 +20,11 @@ import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import uk.gov.hmrc.ct.accounts.{AC4, AC3}
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.{MicroEntityFiling, HMRCFiling, CompaniesHouseFiling}
 
-trait  MockableFrs10xBoxretrieverWithFilingAttributes extends Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever
+trait  MockableFrs10xBoxretrieverWithFilingAttributes extends Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever
 
 object DirectorsMockSetup extends MockitoSugar {
 

@@ -21,19 +21,19 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.AC205
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
 
-trait MockRetriever extends MockitoSugar {
-  val boxRetriever: Frs10xAccountsBoxRetriever = mock[Frs10xAccountsBoxRetriever]
+trait MockAbridgedAccountsRetriever extends MockitoSugar {
+  val boxRetriever: AbridgedAccountsBoxRetriever = mock[AbridgedAccountsBoxRetriever]
 }
 
 trait AccountsPreviousPeriodValidationFixture extends WordSpec with Matchers with MockitoSugar {
 
-  self: MockRetriever =>
+  self: MockAbridgedAccountsRetriever =>
 
-  def testAccountsPreviousPoAValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[Frs10xAccountsBoxRetriever]): Unit = {
+  def testAccountsPreviousPoAValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
 
     s"$boxId" should {
       "pass validation when has valid value and AC205 is populated" in {

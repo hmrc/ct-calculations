@@ -17,14 +17,14 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.TotalFixedAssetsCalculator
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger}
 
 case class AC48(value: Option[Int]) extends CtBoxIdentifier(name = "Total fixed assets (current PoA)") with CtOptionalInteger
 
-object AC48 extends Calculated[AC48, Frs10xAccountsBoxRetriever] with TotalFixedAssetsCalculator {
+object AC48 extends Calculated[AC48, AbridgedAccountsBoxRetriever] with TotalFixedAssetsCalculator {
 
-  override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC48 = {
+  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC48 = {
     import boxRetriever._
     calculateCurrentTotalFixedAssets(ac42(), ac44())
   }
