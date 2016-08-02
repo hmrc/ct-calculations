@@ -31,10 +31,10 @@ class CP668Spec extends WordSpec with Matchers with MockitoSugar {
 
       val mockBoxRetriever = setupMockRetriever
 
-      when(mockBoxRetriever.retrieveCPQ8()).thenReturn(CPQ8(Some(false)))
-      when(mockBoxRetriever.retrieveCPAux3()).thenReturn(CPAux3(50))
-      when(mockBoxRetriever.retrieveCP666()).thenReturn(CP666(50))
-      when(mockBoxRetriever.retrieveCP667()).thenReturn(CP667(50))
+      when(mockBoxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+      when(mockBoxRetriever.cpAux3()).thenReturn(CPAux3(50))
+      when(mockBoxRetriever.cp666()).thenReturn(CP666(50))
+      when(mockBoxRetriever.cp667()).thenReturn(CP667(50))
 
       CP668(None).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("CP668"), "error.CP668.specialRatePoolAllowanceRequired"))
     }
@@ -43,10 +43,10 @@ class CP668Spec extends WordSpec with Matchers with MockitoSugar {
 
       val mockBoxRetriever = setupMockRetriever
 
-      when(mockBoxRetriever.retrieveCPQ8()).thenReturn(CPQ8(Some(false)))
-      when(mockBoxRetriever.retrieveCPAux3()).thenReturn(CPAux3(50))
-      when(mockBoxRetriever.retrieveCP666()).thenReturn(CP666(50))
-      when(mockBoxRetriever.retrieveCP667()).thenReturn(CP667(50))
+      when(mockBoxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+      when(mockBoxRetriever.cpAux3()).thenReturn(CPAux3(50))
+      when(mockBoxRetriever.cp666()).thenReturn(CP666(50))
+      when(mockBoxRetriever.cp667()).thenReturn(CP667(50))
 
       CP668(0).validate(mockBoxRetriever) shouldBe empty
     }
@@ -55,10 +55,10 @@ class CP668Spec extends WordSpec with Matchers with MockitoSugar {
 
       val mockBoxRetriever = setupMockRetriever
 
-      when(mockBoxRetriever.retrieveCPQ8()).thenReturn(CPQ8(Some(false)))
-      when(mockBoxRetriever.retrieveCPAux3()).thenReturn(CPAux3(50))
-      when(mockBoxRetriever.retrieveCP666()).thenReturn(CP666(50))
-      when(mockBoxRetriever.retrieveCP667()).thenReturn(CP667(50))
+      when(mockBoxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+      when(mockBoxRetriever.cpAux3()).thenReturn(CPAux3(50))
+      when(mockBoxRetriever.cp666()).thenReturn(CP666(50))
+      when(mockBoxRetriever.cp667()).thenReturn(CP667(50))
 
       CP668(-20).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("CP668"), "error.CP668.mustBeZeroOrPositive"))
     }
@@ -67,10 +67,10 @@ class CP668Spec extends WordSpec with Matchers with MockitoSugar {
 
       val mockBoxRetriever = setupMockRetriever
 
-      when(mockBoxRetriever.retrieveCPQ8()).thenReturn(CPQ8(Some(true)))
-      when(mockBoxRetriever.retrieveCPAux3()).thenReturn(CPAux3(50))
-      when(mockBoxRetriever.retrieveCP666()).thenReturn(CP666(50))
-      when(mockBoxRetriever.retrieveCP667()).thenReturn(CP667(50))
+      when(mockBoxRetriever.cpQ8()).thenReturn(CPQ8(Some(true)))
+      when(mockBoxRetriever.cpAux3()).thenReturn(CPAux3(50))
+      when(mockBoxRetriever.cp666()).thenReturn(CP666(50))
+      when(mockBoxRetriever.cp667()).thenReturn(CP667(50))
 
       CP668(None).validate(mockBoxRetriever) shouldBe empty
     }
@@ -79,10 +79,10 @@ class CP668Spec extends WordSpec with Matchers with MockitoSugar {
 
       val mockBoxRetriever = setupMockRetriever
 
-      when(mockBoxRetriever.retrieveCPQ8()).thenReturn(CPQ8(Some(true)))
-      when(mockBoxRetriever.retrieveCPAux3()).thenReturn(CPAux3(50))
-      when(mockBoxRetriever.retrieveCP666()).thenReturn(CP666(50))
-      when(mockBoxRetriever.retrieveCP667()).thenReturn(CP667(50))
+      when(mockBoxRetriever.cpQ8()).thenReturn(CPQ8(Some(true)))
+      when(mockBoxRetriever.cpAux3()).thenReturn(CPAux3(50))
+      when(mockBoxRetriever.cp666()).thenReturn(CP666(50))
+      when(mockBoxRetriever.cp667()).thenReturn(CP667(50))
 
       CP668(-20).validate(mockBoxRetriever) shouldBe empty
     }
@@ -91,10 +91,10 @@ class CP668Spec extends WordSpec with Matchers with MockitoSugar {
 
       val mockBoxRetriever = setupMockRetriever
 
-      when(mockBoxRetriever.retrieveCPQ8()).thenReturn(CPQ8(None))
-      when(mockBoxRetriever.retrieveCPAux3()).thenReturn(CPAux3(50))
-      when(mockBoxRetriever.retrieveCP666()).thenReturn(CP666(50))
-      when(mockBoxRetriever.retrieveCP667()).thenReturn(CP667(50))
+      when(mockBoxRetriever.cpQ8()).thenReturn(CPQ8(None))
+      when(mockBoxRetriever.cpAux3()).thenReturn(CPAux3(50))
+      when(mockBoxRetriever.cp666()).thenReturn(CP666(50))
+      when(mockBoxRetriever.cp667()).thenReturn(CP667(50))
 
       CP668(None).validate(mockBoxRetriever) shouldBe empty
     }
@@ -103,10 +103,10 @@ class CP668Spec extends WordSpec with Matchers with MockitoSugar {
 
       val mockBoxRetriever = setupMockRetriever
 
-      when(mockBoxRetriever.retrieveCPQ8()).thenReturn(CPQ8(Some(false)))
-      when(mockBoxRetriever.retrieveCPAux3()).thenReturn(CPAux3(50))
-      when(mockBoxRetriever.retrieveCP666()).thenReturn(CP666(0))
-      when(mockBoxRetriever.retrieveCP667()).thenReturn(CP667(50))
+      when(mockBoxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+      when(mockBoxRetriever.cpAux3()).thenReturn(CPAux3(50))
+      when(mockBoxRetriever.cp666()).thenReturn(CP666(0))
+      when(mockBoxRetriever.cp667()).thenReturn(CP667(50))
 
       CP668(None).validate(mockBoxRetriever) shouldBe empty
     }
@@ -115,10 +115,10 @@ class CP668Spec extends WordSpec with Matchers with MockitoSugar {
 
       val mockBoxRetriever = setupMockRetriever
 
-      when(mockBoxRetriever.retrieveCPQ8()).thenReturn(CPQ8(Some(false)))
-      when(mockBoxRetriever.retrieveCPAux3()).thenReturn(CPAux3(50))
-      when(mockBoxRetriever.retrieveCP666()).thenReturn(CP666(50))
-      when(mockBoxRetriever.retrieveCP667()).thenReturn(CP667(100))
+      when(mockBoxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+      when(mockBoxRetriever.cpAux3()).thenReturn(CPAux3(50))
+      when(mockBoxRetriever.cp666()).thenReturn(CP666(50))
+      when(mockBoxRetriever.cp667()).thenReturn(CP667(100))
 
       CP668(None).validate(mockBoxRetriever) shouldBe empty
     }
@@ -128,7 +128,7 @@ class CP668Spec extends WordSpec with Matchers with MockitoSugar {
   private def setupMockRetriever: ComputationsBoxRetriever = {
     val mockRetriever = mock[ComputationsBoxRetriever]
 
-    when(mockRetriever.retrieveCATO22()).thenReturn(CATO22(0))
+    when(mockRetriever.cato22()).thenReturn(CATO22(0))
 
     mockRetriever
   }

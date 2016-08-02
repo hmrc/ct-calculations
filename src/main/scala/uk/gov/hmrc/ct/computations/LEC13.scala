@@ -25,9 +25,9 @@ case class LEC13(value: Boolean) extends CtBoxIdentifier("Disposals Less Than Ma
 object LEC13 extends Calculated[LEC13, ComputationsBoxRetriever] with LowEmissionCarsCalculator  {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): LEC13 =
-    LEC13(disposalsLessThanMainRatePool(fieldValueRetriever.retrieveLEC01(),
-      fieldValueRetriever.retrieveCP78(),
-      fieldValueRetriever.retrieveCP82(),
-      fieldValueRetriever.retrieveCP672()
+    LEC13(disposalsLessThanMainRatePool(fieldValueRetriever.lec01(),
+      fieldValueRetriever.cp78(),
+      fieldValueRetriever.cp82(),
+      fieldValueRetriever.cp672()
     ))
 }

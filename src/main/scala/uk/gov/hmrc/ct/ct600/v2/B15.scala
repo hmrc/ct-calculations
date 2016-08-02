@@ -24,7 +24,7 @@ case class B15(value: Int) extends CtBoxIdentifier(name = "Income within Sch D C
 //TODO
 object B15 extends Calculated[B15, CT600BoxRetriever] {
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B15 = {
-//    B15(fieldValueRetriever.retrieveB12() + fieldValueRetriever.retrieveB13() + fieldValueRetriever.retrieveB14())
+//    B15(fieldValueRetriever.b12() + fieldValueRetriever.b13() + fieldValueRetriever.b14())
     ???
   }
 

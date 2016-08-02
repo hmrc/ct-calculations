@@ -37,28 +37,28 @@ class E50Spec extends WordSpec with Matchers with MockitoSugar {
   "E50" should {
     "validate" when {
       "true when E50 == 0 and E95 is empty" in {
-        when(boxRetriever.retrieveE50()).thenReturn(E50(Some(0)))
-        when(boxRetriever.retrieveE95()).thenReturn(E95(None))
+        when(boxRetriever.e50()).thenReturn(E50(Some(0)))
+        when(boxRetriever.e95()).thenReturn(E95(None))
         E50(Some(0)).validate(boxRetriever) shouldBe Set.empty
       }
       "true when E50 == 0 and E95 == 0" in {
-        when(boxRetriever.retrieveE50()).thenReturn(E50(Some(0)))
-        when(boxRetriever.retrieveE95()).thenReturn(E95(Some(0)))
+        when(boxRetriever.e50()).thenReturn(E50(Some(0)))
+        when(boxRetriever.e95()).thenReturn(E95(Some(0)))
         E50(Some(0)).validate(boxRetriever) shouldBe Set.empty
       }
       "true when E50 > 0 and E95 > 0" in {
-        when(boxRetriever.retrieveE50()).thenReturn(E50(Some(60)))
-        when(boxRetriever.retrieveE95()).thenReturn(E95(Some(100)))
+        when(boxRetriever.e50()).thenReturn(E50(Some(60)))
+        when(boxRetriever.e95()).thenReturn(E95(Some(100)))
         E50(Some(60)).validate(boxRetriever) shouldBe Set.empty
       }
       "false when E50 == 0 and E95 > 0" in {
-        when(boxRetriever.retrieveE50()).thenReturn(E50(Some(0)))
-        when(boxRetriever.retrieveE95()).thenReturn(E95(Some(100)))
+        when(boxRetriever.e50()).thenReturn(E50(Some(0)))
+        when(boxRetriever.e95()).thenReturn(E95(Some(100)))
         E50(Some(0)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("E50"), errorMessageKey = "error.E50.must.be.positive.when.E95.positive"))
       }
       "false when E50 empty and E95 > 0" in {
-        when(boxRetriever.retrieveE50()).thenReturn(E50(None))
-        when(boxRetriever.retrieveE95()).thenReturn(E95(Some(100)))
+        when(boxRetriever.e50()).thenReturn(E50(None))
+        when(boxRetriever.e95()).thenReturn(E95(Some(100)))
         E50(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("E50"), errorMessageKey = "error.E50.must.be.positive.when.E95.positive"))
       }
     }

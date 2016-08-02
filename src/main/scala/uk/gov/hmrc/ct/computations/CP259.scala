@@ -25,6 +25,6 @@ case class CP259(value: Int) extends CtBoxIdentifier("Profits and gains from non
 object CP259 extends Calculated[CP259, ComputationsBoxRetriever] with SummaryCalculator  {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP259 =
-   calculateProfitsAndGainsFromNonTradingLoanRelationships(fieldValueRetriever.retrieveCP43())
+   calculateProfitsAndGainsFromNonTradingLoanRelationships(fieldValueRetriever.cp43())
 
 }

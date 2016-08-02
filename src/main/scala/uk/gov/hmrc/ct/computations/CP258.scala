@@ -25,6 +25,6 @@ case class CP258(value: Int) extends CtBoxIdentifier("Net trading and profession
 object CP258 extends Calculated[CP258, ComputationsBoxRetriever] with SummaryCalculator  {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP258 =
-    calculateNetTradingAndProfessionalProfits(fieldValueRetriever.retrieveCP256(), fieldValueRetriever.retrieveCP257())
+    calculateNetTradingAndProfessionalProfits(fieldValueRetriever.cp256(), fieldValueRetriever.cp257())
 
 }

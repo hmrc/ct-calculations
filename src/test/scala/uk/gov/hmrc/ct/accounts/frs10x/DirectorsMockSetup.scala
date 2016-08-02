@@ -30,18 +30,18 @@ object DirectorsMockSetup extends MockitoSugar {
 
   def setupDefaults(mockBoxRetriever: MockableFrs10xBoxretrieverWithFilingAttributes) = {
     // POA responses
-    when (mockBoxRetriever.retrieveAC3()).thenReturn (AC3(new LocalDate(2015, 4, 6)) )
-    when (mockBoxRetriever.retrieveAC4()).thenReturn (AC4(new LocalDate(2016, 4, 5)) )
+    when (mockBoxRetriever.ac3()).thenReturn (AC3(new LocalDate(2015, 4, 6)) )
+    when (mockBoxRetriever.ac4()).thenReturn (AC4(new LocalDate(2016, 4, 5)) )
 
     // directors report enabled responses
-    when (mockBoxRetriever.retrieveCompaniesHouseFiling()).thenReturn (CompaniesHouseFiling (true) )
-    when (mockBoxRetriever.retrieveHMRCFiling()).thenReturn (HMRCFiling (true) )
-    when (mockBoxRetriever.retrieveMicroEntityFiling()).thenReturn (MicroEntityFiling (true) )
-    when (mockBoxRetriever.retrieveAC8021()).thenReturn (AC8021 (Some (true) ) )
-    when (mockBoxRetriever.retrieveAC8023()).thenReturn (AC8023 (Some (true) ) )
+    when (mockBoxRetriever.companiesHouseFiling()).thenReturn (CompaniesHouseFiling (true) )
+    when (mockBoxRetriever.hmrcFiling()).thenReturn (HMRCFiling (true) )
+    when (mockBoxRetriever.microEntityFiling()).thenReturn (MicroEntityFiling (true) )
+    when (mockBoxRetriever.ac8021()).thenReturn (AC8021 (Some (true) ) )
+    when (mockBoxRetriever.ac8023()).thenReturn (AC8023 (Some (true) ) )
 
     // no appointments response
-    when (mockBoxRetriever.retrieveACQ8003 () ).thenReturn (ACQ8003 (Some (false) ) )
-    when (mockBoxRetriever.retrieveACQ8009 () ).thenReturn (ACQ8009 (Some (false) ) )
+    when (mockBoxRetriever.acQ8003 () ).thenReturn (ACQ8003 (Some (false) ) )
+    when (mockBoxRetriever.acQ8009 () ).thenReturn (ACQ8009 (Some (false) ) )
   }
 }

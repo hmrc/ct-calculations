@@ -28,29 +28,29 @@ class AC5032Spec extends WordSpec with MockitoSugar with Matchers {
 
   "AC5032" should {
     "pass validation when empty" in {
-      when(boxRetriever.retrieveAC32()).thenReturn(AC32(Some(1)))
+      when(boxRetriever.ac32()).thenReturn(AC32(Some(1)))
       AC5032(None).validate(boxRetriever) shouldBe Set.empty
     }
     "pass validation when empty string" in {
-      when(boxRetriever.retrieveAC32()).thenReturn(AC32(Some(1)))
+      when(boxRetriever.ac32()).thenReturn(AC32(Some(1)))
       AC5032(Some("")).validate(boxRetriever) shouldBe Set.empty
     }
     "pass validation when string" in {
-      when(boxRetriever.retrieveAC32()).thenReturn(AC32(Some(1)))
+      when(boxRetriever.ac32()).thenReturn(AC32(Some(1)))
       AC5032(Some("testing this like crazy")).validate(boxRetriever) shouldBe Set.empty
     }
     "pass validation when string is 20,000 characters long" in {
-      when(boxRetriever.retrieveAC32()).thenReturn(AC32(Some(1)))
+      when(boxRetriever.ac32()).thenReturn(AC32(Some(1)))
       val string = (1 to 20000).map(x => "a").mkString("")
       AC5032(Some(string)).validate(boxRetriever) shouldBe Set.empty
     }
     "fail validation when string is longer than 20,000 characters long" in {
-      when(boxRetriever.retrieveAC32()).thenReturn(AC32(Some(1)))
+      when(boxRetriever.ac32()).thenReturn(AC32(Some(1)))
       val string = (1 to 20001).map(x => "a").mkString("")
       AC5032(Some(string)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5032"), "error.AC5032.max.length", Some(Seq("20,000"))))
     }
     "fail validation when populated and AC32 is empty" in {
-      when(boxRetriever.retrieveAC32()).thenReturn(AC32(None))
+      when(boxRetriever.ac32()).thenReturn(AC32(None))
       AC5032(Some("testing")).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5032"), "error.AC5032.cannot.exist"))
     }
   }

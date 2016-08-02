@@ -32,9 +32,9 @@ case class CP286(value: Option[Int]) extends CtBoxIdentifier(name = "Losses clai
     val box = "CP286"
     collectErrors(
       Set(
-        requiredIf(box) { boxRetriever: ComputationsBoxRetriever => value.isEmpty && boxRetriever.retrieveCPQ18().value == Some(true) },
-        cannotExistIf(box) { boxRetriever: ComputationsBoxRetriever => value.nonEmpty && !boxRetriever.retrieveCPQ18().orFalse },
-        exceedsMax(box)(value, calculateMaximumCP286(boxRetriever.retrieveCP117(), boxRetriever.retrieveCATO01(), boxRetriever.retrieveCP998(), boxRetriever.retrieveCP281())),
+        requiredIf(box) { boxRetriever: ComputationsBoxRetriever => value.isEmpty && boxRetriever.cpQ18().value == Some(true) },
+        cannotExistIf(box) { boxRetriever: ComputationsBoxRetriever => value.nonEmpty && !boxRetriever.cpQ18().orFalse },
+        exceedsMax(box)(value, calculateMaximumCP286(boxRetriever.cp117(), boxRetriever.cato01(), boxRetriever.cp998(), boxRetriever.cp281())),
         belowMin(box)(value, 0)
       )
     )(boxRetriever)

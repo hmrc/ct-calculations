@@ -26,11 +26,11 @@ case class CATO04(value: BigDecimal) extends CtBoxIdentifier("Marginal Rate Reli
 object CATO04 extends Calculated[CATO04, CT600BoxRetriever] with MarginalRateReliefCalculator {
 
   override def calculate(boxRetriever: CT600BoxRetriever): CATO04 = {
-    computeMarginalRateRelief(b37 = boxRetriever.retrieveB37(),
-                              b44 = boxRetriever.retrieveB44(),
-                              b54 = boxRetriever.retrieveB54(),
-                              b38 = boxRetriever.retrieveB38(),
-                              b39 = boxRetriever.retrieveB39(),
-                              accountingPeriod = HmrcAccountingPeriod(boxRetriever.retrieveCP1(), boxRetriever.retrieveCP2()))
+    computeMarginalRateRelief(b37 = boxRetriever.b37(),
+                              b44 = boxRetriever.b44(),
+                              b54 = boxRetriever.b54(),
+                              b38 = boxRetriever.b38(),
+                              b39 = boxRetriever.b39(),
+                              accountingPeriod = HmrcAccountingPeriod(boxRetriever.cp1(), boxRetriever.cp2()))
   }
 }

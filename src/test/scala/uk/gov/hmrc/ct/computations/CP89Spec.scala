@@ -31,10 +31,10 @@ class CP89Spec extends WordSpec with Matchers with MockitoSugar {
 
       val mockRetriever = setupRetriever()
 
-      when(mockRetriever.retrieveCPQ8()).thenReturn(CPQ8(Some(false)))
-      when(mockRetriever.retrieveCPAux2()).thenReturn(CPAux2(50))
-      when(mockRetriever.retrieveCP78()).thenReturn(CP78(Some(50)))
-      when(mockRetriever.retrieveCP672()).thenReturn(CP672(Some(50)))
+      when(mockRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+      when(mockRetriever.cpAux2()).thenReturn(CPAux2(50))
+      when(mockRetriever.cp78()).thenReturn(CP78(Some(50)))
+      when(mockRetriever.cp672()).thenReturn(CP672(Some(50)))
 
       CP89(None).validate(mockRetriever) shouldBe Set(CtValidation(Some("CP89"), "error.CP89.mainPoolAllowanceRequired"))
     }
@@ -43,10 +43,10 @@ class CP89Spec extends WordSpec with Matchers with MockitoSugar {
 
       val mockRetriever = setupRetriever()
 
-      when(mockRetriever.retrieveCPQ8()).thenReturn(CPQ8(Some(false)))
-      when(mockRetriever.retrieveCPAux2()).thenReturn(CPAux2(50))
-      when(mockRetriever.retrieveCP78()).thenReturn(CP78(Some(50)))
-      when(mockRetriever.retrieveCP672()).thenReturn(CP672(Some(50)))
+      when(mockRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+      when(mockRetriever.cpAux2()).thenReturn(CPAux2(50))
+      when(mockRetriever.cp78()).thenReturn(CP78(Some(50)))
+      when(mockRetriever.cp672()).thenReturn(CP672(Some(50)))
 
       CP89(Some(0)).validate(mockRetriever) shouldBe Set.empty
     }
@@ -55,10 +55,10 @@ class CP89Spec extends WordSpec with Matchers with MockitoSugar {
 
       val mockRetriever = setupRetriever()
 
-      when(mockRetriever.retrieveCPQ8()).thenReturn(CPQ8(Some(false)))
-      when(mockRetriever.retrieveCPAux2()).thenReturn(CPAux2(50))
-      when(mockRetriever.retrieveCP78()).thenReturn(CP78(Some(50)))
-      when(mockRetriever.retrieveCP672()).thenReturn(CP672(Some(50)))
+      when(mockRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+      when(mockRetriever.cpAux2()).thenReturn(CPAux2(50))
+      when(mockRetriever.cp78()).thenReturn(CP78(Some(50)))
+      when(mockRetriever.cp672()).thenReturn(CP672(Some(50)))
 
       CP89(Some(-20)).validate(mockRetriever) shouldBe Set(CtValidation(Some("CP89"), "error.CP89.mustBeZeroOrPositive"))
     }
@@ -67,10 +67,10 @@ class CP89Spec extends WordSpec with Matchers with MockitoSugar {
 
       val mockRetriever = setupRetriever()
 
-      when(mockRetriever.retrieveCPQ8()).thenReturn(CPQ8(Some(true)))
-      when(mockRetriever.retrieveCPAux2()).thenReturn(CPAux2(50))
-      when(mockRetriever.retrieveCP78()).thenReturn(CP78(Some(50)))
-      when(mockRetriever.retrieveCP672()).thenReturn(CP672(Some(50)))
+      when(mockRetriever.cpQ8()).thenReturn(CPQ8(Some(true)))
+      when(mockRetriever.cpAux2()).thenReturn(CPAux2(50))
+      when(mockRetriever.cp78()).thenReturn(CP78(Some(50)))
+      when(mockRetriever.cp672()).thenReturn(CP672(Some(50)))
 
       CP89(None).validate(mockRetriever) shouldBe empty
     }
@@ -79,10 +79,10 @@ class CP89Spec extends WordSpec with Matchers with MockitoSugar {
 
       val mockRetriever = setupRetriever()
 
-      when(mockRetriever.retrieveCPQ8()).thenReturn(CPQ8(Some(false)))
-      when(mockRetriever.retrieveCPAux2()).thenReturn(CPAux2(25))
-      when(mockRetriever.retrieveCP78()).thenReturn(CP78(Some(25)))
-      when(mockRetriever.retrieveCP672()).thenReturn(CP672(Some(50)))
+      when(mockRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+      when(mockRetriever.cpAux2()).thenReturn(CPAux2(25))
+      when(mockRetriever.cp78()).thenReturn(CP78(Some(25)))
+      when(mockRetriever.cp672()).thenReturn(CP672(Some(50)))
 
       CP89(None).validate(mockRetriever) shouldBe empty
     }
@@ -91,10 +91,10 @@ class CP89Spec extends WordSpec with Matchers with MockitoSugar {
 
       val mockRetriever = setupRetriever()
 
-      when(mockRetriever.retrieveCPQ8()).thenReturn(CPQ8(Some(false)))
-      when(mockRetriever.retrieveCPAux2()).thenReturn(CPAux2(25))
-      when(mockRetriever.retrieveCP78()).thenReturn(CP78(Some(25)))
-      when(mockRetriever.retrieveCP672()).thenReturn(CP672(Some(100)))
+      when(mockRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+      when(mockRetriever.cpAux2()).thenReturn(CPAux2(25))
+      when(mockRetriever.cp78()).thenReturn(CP78(Some(25)))
+      when(mockRetriever.cp672()).thenReturn(CP672(Some(100)))
 
       CP89(None).validate(mockRetriever) shouldBe empty
     }
@@ -103,10 +103,10 @@ class CP89Spec extends WordSpec with Matchers with MockitoSugar {
 
       val mockRetriever = setupRetriever()
 
-      when(mockRetriever.retrieveCPQ8()).thenReturn(CPQ8(Some(true)))
-      when(mockRetriever.retrieveCPAux2()).thenReturn(CPAux2(50))
-      when(mockRetriever.retrieveCP78()).thenReturn(CP78(Some(25)))
-      when(mockRetriever.retrieveCP672()).thenReturn(CP672(Some(50)))
+      when(mockRetriever.cpQ8()).thenReturn(CPQ8(Some(true)))
+      when(mockRetriever.cpAux2()).thenReturn(CPAux2(50))
+      when(mockRetriever.cp78()).thenReturn(CP78(Some(25)))
+      when(mockRetriever.cp672()).thenReturn(CP672(Some(50)))
 
       CP89(-20).validate(mockRetriever) shouldBe empty
     }
@@ -116,13 +116,13 @@ class CP89Spec extends WordSpec with Matchers with MockitoSugar {
   private def setupRetriever(): ComputationsBoxRetriever = {
     val mockRetriever = mock[ComputationsBoxRetriever]
 
-    when(mockRetriever.retrieveCP81()).thenReturn(CP81(0))
-    when(mockRetriever.retrieveCP82()).thenReturn(CP82(0))
-    when(mockRetriever.retrieveCP83()).thenReturn(CP83(0))
-    when(mockRetriever.retrieveCP87()).thenReturn(CP87(0))
-    when(mockRetriever.retrieveCP88()).thenReturn(CP88(0))
-    when(mockRetriever.retrieveCPAux1()).thenReturn(CPAux1(0))
-    when(mockRetriever.retrieveCATO21()).thenReturn(CATO21(0))
+    when(mockRetriever.cp81()).thenReturn(CP81(0))
+    when(mockRetriever.cp82()).thenReturn(CP82(0))
+    when(mockRetriever.cp83()).thenReturn(CP83(0))
+    when(mockRetriever.cp87()).thenReturn(CP87(0))
+    when(mockRetriever.cp88()).thenReturn(CP88(0))
+    when(mockRetriever.cpAux1()).thenReturn(CPAux1(0))
+    when(mockRetriever.cato21()).thenReturn(CATO21(0))
 
     mockRetriever
   }

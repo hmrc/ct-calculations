@@ -31,7 +31,7 @@ class RSQ2Spec extends WordSpec with Matchers with MockitoSugar {
     "return no error if input value populated and CP287 has no value" in {
       val boxRetriever = mock[ComputationsBoxRetriever]
 
-      when(boxRetriever.retrieveCP287()).thenReturn(CP287(None))
+      when(boxRetriever.cp287()).thenReturn(CP287(None))
 
       RSQ2(Some(true)).validate(boxRetriever) shouldBe empty
     }
@@ -39,7 +39,7 @@ class RSQ2Spec extends WordSpec with Matchers with MockitoSugar {
     "return a mandatory error if no input value populated and CP287 has no value" in {
       val boxRetriever = mock[ComputationsBoxRetriever]
 
-      when(boxRetriever.retrieveCP287()).thenReturn(CP287(None))
+      when(boxRetriever.cp287()).thenReturn(CP287(None))
 
       RSQ2(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("RSQ2"), "error.RSQ2.required"))
     }
@@ -47,7 +47,7 @@ class RSQ2Spec extends WordSpec with Matchers with MockitoSugar {
     "return a mandatory error if no input value populated and CP287 has value 0" in {
       val boxRetriever = mock[ComputationsBoxRetriever]
 
-      when(boxRetriever.retrieveCP287()).thenReturn(CP287(Some(0)))
+      when(boxRetriever.cp287()).thenReturn(CP287(Some(0)))
 
       RSQ2(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("RSQ2"), "error.RSQ2.required"))
     }
@@ -67,7 +67,7 @@ class RSQ2Spec extends WordSpec with Matchers with MockitoSugar {
     "return a box should not exist error if there is an input value populated and CP287 has a value" in {
       val boxRetriever = mock[ComputationsBoxRetriever]
 
-      when(boxRetriever.retrieveCP287()).thenReturn(CP287(Some(10)))
+      when(boxRetriever.cp287()).thenReturn(CP287(Some(10)))
 
       RSQ2(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(Some("RSQ2"), "error.RSQ2.cannot.exist"))
     }
@@ -75,7 +75,7 @@ class RSQ2Spec extends WordSpec with Matchers with MockitoSugar {
     "return no error if there is no input value populated and CP287 has a value" in {
       val boxRetriever = mock[ComputationsBoxRetriever]
 
-      when(boxRetriever.retrieveCP287()).thenReturn(CP287(Some(10)))
+      when(boxRetriever.cp287()).thenReturn(CP287(Some(10)))
 
       RSQ2(None).validate(boxRetriever) shouldBe empty
     }
@@ -83,7 +83,7 @@ class RSQ2Spec extends WordSpec with Matchers with MockitoSugar {
     "return no error if there is an input value populated and CP287 has a value of 0" in {
       val boxRetriever = mock[ComputationsBoxRetriever]
 
-      when(boxRetriever.retrieveCP287()).thenReturn(CP287(Some(0)))
+      when(boxRetriever.cp287()).thenReturn(CP287(Some(0)))
 
       RSQ2(Some(false)).validate(boxRetriever) shouldBe empty
     }

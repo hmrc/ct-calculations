@@ -43,8 +43,6 @@ package object formats {
 
   implicit val cato16Format: Format[CATO16] = new IntegerFormat[CATO16](CATO16.apply)
 
-  implicit val productNameFormat: Format[ProductName] = new StringFormat[ProductName](ProductName.apply)
-
   implicit val companyTypeFormat: Format[FilingCompanyType] = Json.format[FilingCompanyType]
 
   implicit val abbreviatedAccountsFilingFormat: Format[AbbreviatedAccountsFiling] = new BooleanFormat[AbbreviatedAccountsFiling](AbbreviatedAccountsFiling.apply)

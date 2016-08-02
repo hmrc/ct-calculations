@@ -25,13 +25,13 @@ case class CP117(value: Int) extends CtBoxIdentifier(name = "Adjusted Trading Pr
 object CP117 extends Calculated[CP117, ComputationsBoxRetriever] with AdjustedTradingProfitOrLossCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP117 = {
-    calculateAdjustedTradingProfit(cp44 = fieldValueRetriever.retrieveCP44(),
-                                   cp54 = fieldValueRetriever.retrieveCP54(),
-                                   cp59 = fieldValueRetriever.retrieveCP59(),
-                                   cp186 = fieldValueRetriever.retrieveCP186(),
-                                   cp91 = fieldValueRetriever.retrieveCP91(),
-                                   cp670 = fieldValueRetriever.retrieveCP670(),
-                                   cp668 = fieldValueRetriever.retrieveCP668())
+    calculateAdjustedTradingProfit(cp44 = fieldValueRetriever.cp44(),
+                                   cp54 = fieldValueRetriever.cp54(),
+                                   cp59 = fieldValueRetriever.cp59(),
+                                   cp186 = fieldValueRetriever.cp186(),
+                                   cp91 = fieldValueRetriever.cp91(),
+                                   cp670 = fieldValueRetriever.cp670(),
+                                   cp668 = fieldValueRetriever.cp668())
   }
 
 }

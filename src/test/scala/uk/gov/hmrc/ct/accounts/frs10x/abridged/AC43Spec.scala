@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct
+package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtString, Input}
+import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockRetriever}
 
-@deprecated("This is a CATO specific property that is no longer required.")
-case class ProductName(value: String) extends CtBoxIdentifier("Product Name") with CtString with Input
+class AC43Spec extends AccountsMoneyValidationFixture with MockRetriever {
+
+  testAccountsMoneyValidationWithMin("AC43", 0, AC43.apply)
+
+}

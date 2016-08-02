@@ -31,8 +31,8 @@ object B45 extends Calculated[B45, AboutThisReturnBoxRetriever] with Corporation
 
   override def calculate(fieldValueRetriever: AboutThisReturnBoxRetriever): B45 = {
     fieldValueRetriever match {
-      case computationsBoxRetriever: ComputationsBoxRetriever =>  defaultSetIfLossCarriedForward(fieldValueRetriever.retrieveB45Input(), computationsBoxRetriever.retrieveCP287())
-      case _ =>  defaultSetIfLossCarriedForward(fieldValueRetriever.retrieveB45Input(), CP287(None))
+      case computationsBoxRetriever: ComputationsBoxRetriever =>  defaultSetIfLossCarriedForward(fieldValueRetriever.b45Input(), computationsBoxRetriever.cp287())
+      case _ =>  defaultSetIfLossCarriedForward(fieldValueRetriever.b45Input(), CP287(None))
     }
   }
 }

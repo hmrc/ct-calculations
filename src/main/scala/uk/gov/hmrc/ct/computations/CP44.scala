@@ -25,10 +25,10 @@ case class CP44(value: Int) extends CtBoxIdentifier(name = "Profit or losses bef
 object CP44 extends Calculated[CP44, ComputationsBoxRetriever] with ProfitAndLossCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP44 = {
-    calculateGrossProfitOrLossBeforeTax(cp14 = fieldValueRetriever.retrieveCP14(),
-                                        cp40 = fieldValueRetriever.retrieveCP40(),
-                                        cp43 =fieldValueRetriever.retrieveCP43(),
-                                        cp509 =fieldValueRetriever.retrieveCP509(),
-                                        cp502 = fieldValueRetriever.retrieveCP502())
+    calculateGrossProfitOrLossBeforeTax(cp14 = fieldValueRetriever.cp14(),
+                                        cp40 = fieldValueRetriever.cp40(),
+                                        cp43 =fieldValueRetriever.cp43(),
+                                        cp509 =fieldValueRetriever.cp509(),
+                                        cp502 = fieldValueRetriever.cp502())
   }
 }

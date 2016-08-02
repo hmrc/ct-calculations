@@ -25,6 +25,6 @@ case class CP289(value: Option[Int]) extends CtBoxIdentifier(name = "Adjusted tr
 object CP289 extends Calculated[CP289, ComputationsBoxRetriever] with AdjustedTradingProfitCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP289 = {
-    adjustedTradingProfitCalculation(cp117 = fieldValueRetriever.retrieveCP117())
+    adjustedTradingProfitCalculation(cp117 = fieldValueRetriever.cp117())
   }
 }

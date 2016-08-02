@@ -25,7 +25,7 @@ case class CP290(value: Option[Int]) extends CtBoxIdentifier(name = "Adjusted Tr
 object CP290 extends Calculated[CP290, ComputationsBoxRetriever] with LossesBroughtForwardAgainstTradingProfitCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP290 = {
-    lossesBroughtForwardUsedAgainstTradingProfitForProfitsChargeable(fieldValueRetriever.retrieveCP283())
+    lossesBroughtForwardUsedAgainstTradingProfitForProfitsChargeable(fieldValueRetriever.cp283())
   }
 
 }

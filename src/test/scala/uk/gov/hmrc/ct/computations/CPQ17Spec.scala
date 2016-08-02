@@ -29,24 +29,24 @@ class CPQ17Spec extends WordSpec with Matchers with MockitoSugar {
     val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
 
     "when empty" when {
-      when(boxRetriever.retrieveCPQ19()).thenReturn(CPQ19(None))
+      when(boxRetriever.cpQ19()).thenReturn(CPQ19(None))
       "pass validation when CP117 == zero" in {
-        when(boxRetriever.retrieveCP117()).thenReturn(CP117(0))
+        when(boxRetriever.cp117()).thenReturn(CP117(0))
         CPQ17(None).validate(boxRetriever) shouldBe empty
       }
       "fail validation when CP117 > 0" in {
-        when(boxRetriever.retrieveCP117()).thenReturn(CP117(10))
+        when(boxRetriever.cp117()).thenReturn(CP117(10))
         CPQ17(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ17"), "error.CPQ17.required"))
       }
     }
     "when true" when {
-      when(boxRetriever.retrieveCPQ19()).thenReturn(CPQ19(None))
+      when(boxRetriever.cpQ19()).thenReturn(CPQ19(None))
       "fail validation when CP117 is zero" in {
-        when(boxRetriever.retrieveCP117()).thenReturn(CP117(0))
+        when(boxRetriever.cp117()).thenReturn(CP117(0))
         CPQ17(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ17"), "error.CPQ17.cannot.exist"))
       }
       "pass validation when CP117 > zero" in {
-        when(boxRetriever.retrieveCP117()).thenReturn(CP117(10))
+        when(boxRetriever.cp117()).thenReturn(CP117(10))
         CPQ17(Some(true)).validate(boxRetriever) shouldBe empty
       }
     }
@@ -54,31 +54,31 @@ class CPQ17Spec extends WordSpec with Matchers with MockitoSugar {
 
     "when true" when {
       "fail validation when CPQ19 is false" in {
-        when(boxRetriever.retrieveCPQ19()).thenReturn(CPQ19(Some(false)))
+        when(boxRetriever.cpQ19()).thenReturn(CPQ19(Some(false)))
         CPQ17(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ17"), "error.CPQ17.cannot.exist.cpq19"))
       }
       "fail validation when CPQ19 is true" in {
-        when(boxRetriever.retrieveCPQ19()).thenReturn(CPQ19(Some(true)))
+        when(boxRetriever.cpQ19()).thenReturn(CPQ19(Some(true)))
         CPQ17(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ17"), "error.CPQ17.cannot.exist.cpq19"))
       }
       "pass validation when CPQ19 is empty, CP117 > 0" in {
-        when(boxRetriever.retrieveCPQ19()).thenReturn(CPQ19(None))
-        when(boxRetriever.retrieveCP117()).thenReturn(CP117(10))
+        when(boxRetriever.cpQ19()).thenReturn(CPQ19(None))
+        when(boxRetriever.cp117()).thenReturn(CP117(10))
         CPQ17(Some(true)).validate(boxRetriever) shouldBe empty
       }
     }
     "when false" when {
       "fail validation when CPQ19 is false" in {
-        when(boxRetriever.retrieveCPQ19()).thenReturn(CPQ19(Some(false)))
+        when(boxRetriever.cpQ19()).thenReturn(CPQ19(Some(false)))
         CPQ17(Some(false)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ17"), "error.CPQ17.cannot.exist.cpq19"))
       }
       "fail validation when CPQ19 is true" in {
-        when(boxRetriever.retrieveCPQ19()).thenReturn(CPQ19(Some(true)))
+        when(boxRetriever.cpQ19()).thenReturn(CPQ19(Some(true)))
         CPQ17(Some(false)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ17"), "error.CPQ17.cannot.exist.cpq19"))
       }
       "pass validation when CPQ19 is empty, CP117 > 0" in {
-        when(boxRetriever.retrieveCPQ19()).thenReturn(CPQ19(None))
-        when(boxRetriever.retrieveCP117()).thenReturn(CP117(10))
+        when(boxRetriever.cpQ19()).thenReturn(CPQ19(None))
+        when(boxRetriever.cp117()).thenReturn(CP117(10))
         CPQ17(Some(false)).validate(boxRetriever) shouldBe empty
       }
     }

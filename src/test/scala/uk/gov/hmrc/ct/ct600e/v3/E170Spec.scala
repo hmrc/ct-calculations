@@ -28,20 +28,20 @@ class E170Spec extends WordSpec with Matchers with MockitoSugar {
   "E170" should {
     "calculate" when {
       "both E170A and E170B has a value" in {
-        when(boxRetriever.retrieveE170A()).thenReturn(E170A(Some(337)))
-        when(boxRetriever.retrieveE170B()).thenReturn(E170B(Some(1000)))
+        when(boxRetriever.e170A()).thenReturn(E170A(Some(337)))
+        when(boxRetriever.e170B()).thenReturn(E170B(Some(1000)))
         E170.calculate(boxRetriever) shouldBe E170(Some(1337))
       }
       "either E170A or E170B has a value" in {
-        when(boxRetriever.retrieveE170A()).thenReturn(E170A(Some(337)))
-        when(boxRetriever.retrieveE170B()).thenReturn(E170B(None))
+        when(boxRetriever.e170A()).thenReturn(E170A(Some(337)))
+        when(boxRetriever.e170B()).thenReturn(E170B(None))
         E170.calculate(boxRetriever) shouldBe E170(Some(337))
       }
     }
     "return none" when{
       "both E170A and E170B is None" in {
-        when(boxRetriever.retrieveE170A()).thenReturn(E170A(None))
-        when(boxRetriever.retrieveE170B()).thenReturn(E170B(None))
+        when(boxRetriever.e170A()).thenReturn(E170A(None))
+        when(boxRetriever.e170B()).thenReturn(E170B(None))
         E170.calculate(boxRetriever) shouldBe E170(None)
       }
     }

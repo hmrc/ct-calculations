@@ -25,7 +25,7 @@ trait AllowancesQuestionsValidation {
   self: CtOptionalBoolean with ValidatableBox[ComputationsBoxRetriever] =>
 
   def validateAgainstCPQ7(boxRetriever: ComputationsBoxRetriever, boxId: String, value: Option[Boolean]): Set[CtValidation] = {
-    (boxRetriever.retrieveCPQ7(), value) match {
+    (boxRetriever.cpQ7(), value) match {
       case (CPQ7(Some(true)), None) => validateBooleanAsMandatory(boxId, this)
       case (CPQ7(Some(false)), Some(true)) => Set(CtValidation(Some(boxId), s"error.$boxId.notClaiming.required"))
       case _ => Set.empty

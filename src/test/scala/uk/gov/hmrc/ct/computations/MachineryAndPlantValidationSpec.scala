@@ -47,55 +47,55 @@ class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
                                      cpAux3: Int = 0
                                       ) extends StubbedComputationsBoxRetriever {
 
-  override def retrieveLEC01: LEC01 = LEC01(lec01)
+  override def lec01: LEC01 = LEC01(lec01)
 
-  override def retrieveCPQ8: CPQ8 = CPQ8(cpq8)
+  override def cpQ8: CPQ8 = CPQ8(cpq8)
 
-  override def retrieveCP78: CP78 = CP78(cp78)
+  override def cp78: CP78 = CP78(cp78)
 
-  override def retrieveCP79: CP79 = CP79(cp79)
+  override def cp79: CP79 = CP79(cp79)
 
-  override def retrieveCP80: CP80 = CP80(cp80)
+  override def cp80: CP80 = CP80(cp80)
 
-  override def retrieveCP666: CP666 = CP666(cp666)
+  override def cp666: CP666 = CP666(cp666)
 
-  override def retrieveCP82: CP82 = CP82(cp82)
+  override def cp82: CP82 = CP82(cp82)
 
-  override def retrieveCP83: CP83 = CP83(cp83)
+  override def cp83: CP83 = CP83(cp83)
 
-  override def retrieveCP84: CP84 = CP84(cp84)
+  override def cp84: CP84 = CP84(cp84)
 
-  override def retrieveCP667: CP667 = CP667(cp667)
+  override def cp667: CP667 = CP667(cp667)
 
-  override def retrieveCP672: CP672 = CP672(cp672)
+  override def cp672: CP672 = CP672(cp672)
 
-  override def retrieveCP673: CP673 = CP673(cp673)
+  override def cp673: CP673 = CP673(cp673)
 
-  override def retrieveCP674: CP674 = CP674(cp674)
+  override def cp674: CP674 = CP674(cp674)
 
-  override def retrieveCP87Input: CP87Input = CP87Input(cp87Input)
+  override def cp87Input: CP87Input = CP87Input(cp87Input)
 
-  override def retrieveCP88: CP88 = CP88(cp88)
+  override def cp88: CP88 = CP88(cp88)
 
-  override def retrieveCP89: CP89 = CP89(cp89)
+  override def cp89: CP89 = CP89(cp89)
 
-  override def retrieveCP668: CP668 = CP668(cp668)
+  override def cp668: CP668 = CP668(cp668)
 
-  override def retrieveCATO02: CATO02 = CATO02(cato02)
+  override def cato02: CATO02 = CATO02(cato02)
 
-  override def retrieveCATO20: CATO20 = CATO20(cato20)
+  override def cato20: CATO20 = CATO20(cato20)
 
-  override def retrieveCATO21: CATO21 = CATO21(cato21)
+  override def cato21: CATO21 = CATO21(cato21)
 
-  override def retrieveCATO22: CATO22 = CATO22(cato22)
+  override def cato22: CATO22 = CATO22(cato22)
 
-  override def retrieveCPAux1: CPAux1 = CPAux1(cpAux1)
+  override def cpAux1: CPAux1 = CPAux1(cpAux1)
 
-  override def retrieveCPAux2: CPAux2 = CPAux2(cpAux2)
+  override def cpAux2: CPAux2 = CPAux2(cpAux2)
 
-  override def retrieveCPAux3: CPAux3 = CPAux3(cpAux3)
+  override def cpAux3: CPAux3 = CPAux3(cpAux3)
 
-  override def retrieveCountryOfRegistration(): CountryOfRegistration = CountryOfRegistration.Scotland
+  override def countryOfRegistration(): CountryOfRegistration = CountryOfRegistration.Scotland
 }
 
 

@@ -25,6 +25,6 @@ case class B50(value: Boolean) extends CtBoxIdentifier("Making more then one ret
 object B50 extends Calculated[B50, AccountsBoxRetriever] with PeriodOfAccountsCalculator {
 
   override def calculate(boxRetriever: AccountsBoxRetriever) =
-    B50(isLongPeriodOfAccounts(boxRetriever.retrieveAC3(), boxRetriever.retrieveAC4()))
+    B50(isLongPeriodOfAccounts(boxRetriever.ac3(), boxRetriever.ac4()))
 
 }

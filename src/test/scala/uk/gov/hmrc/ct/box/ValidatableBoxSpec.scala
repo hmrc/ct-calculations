@@ -206,6 +206,24 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
   }
 
+  "validateStringMaxLength" should {
+    "pass if less than max" in {
+      validateStringMaxLength("testBox", "1234567", 8) shouldBe Set()
+    }
+
+    "pass if equal to max" in {
+      validateStringMaxLength("testBox", "12345678", 8) shouldBe Set()
+    }
+
+    "pass if empty" in {
+      validateStringMaxLength("testBox", "", 8) shouldBe Set()
+    }
+
+    "return error if too long with thousands formatted as commas" in {
+      validateStringMaxLength("testBox", "1" * 20001, 20000) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.max.length", Some(Seq("20,000"))))
+    }
+  }
+
   "validateOptionalStringByLength" should {
     "pass if none" in {
       validateOptionalStringByLength("testBox", testOptStringBox(None), 7, 8) shouldBe Set()
@@ -248,17 +266,17 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
   "validateAllFilledOrEmptyStringsForBankDetails" should {
     "return error if mixing empty and non-empty" in {
       val mockBoxRetriever = mock[RepaymentsBoxRetriever]
-      when(mockBoxRetriever.retrieveB920()).thenReturn(B920(""))
-      when(mockBoxRetriever.retrieveB925()).thenReturn(B925(""))
-      when(mockBoxRetriever.retrieveB930()).thenReturn(B930(""))
-      when(mockBoxRetriever.retrieveB935()).thenReturn(B935("something"))
+      when(mockBoxRetriever.b920()).thenReturn(B920(""))
+      when(mockBoxRetriever.b925()).thenReturn(B925(""))
+      when(mockBoxRetriever.b930()).thenReturn(B930(""))
+      when(mockBoxRetriever.b935()).thenReturn(B935("something"))
 
       validateAllFilledOrEmptyStringsForBankDetails(mockBoxRetriever, "testBox") shouldBe Set(CtValidation(Some("testBox"),"error.testBox.allornone"))
 
-      verify(mockBoxRetriever).retrieveB920()
-      verify(mockBoxRetriever).retrieveB925()
-      verify(mockBoxRetriever).retrieveB930()
-      verify(mockBoxRetriever).retrieveB935()
+      verify(mockBoxRetriever).b920()
+      verify(mockBoxRetriever).b925()
+      verify(mockBoxRetriever).b930()
+      verify(mockBoxRetriever).b935()
       verifyNoMoreInteractions(mockBoxRetriever)
     }
   }
@@ -266,21 +284,21 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
   "validateStringAsMandatoryIfPAYEEQ1False" should {
     "return is-required error if PAYEEQ1 is false" in {
       val mockBoxRetriever = mock[RepaymentsBoxRetriever]
-      when(mockBoxRetriever.retrievePAYEEQ1()).thenReturn(PAYEEQ1(Some(false)))
+      when(mockBoxRetriever.payeeQ1()).thenReturn(PAYEEQ1(Some(false)))
 
       validateStringAsMandatoryIfPAYEEQ1False(mockBoxRetriever, "testBox",testOptStringBox(None)) shouldBe Set(CtValidation(Some("testBox"),"error.testBox.required"))
 
-      verify(mockBoxRetriever).retrievePAYEEQ1()
+      verify(mockBoxRetriever).payeeQ1()
       verifyNoMoreInteractions(mockBoxRetriever)
     }
 
     "do not return is-required error if PAYEEQ1 is true" in {
       val mockBoxRetriever = mock[RepaymentsBoxRetriever]
-      when(mockBoxRetriever.retrievePAYEEQ1()).thenReturn(PAYEEQ1(Some(true)))
+      when(mockBoxRetriever.payeeQ1()).thenReturn(PAYEEQ1(Some(true)))
 
       validateStringAsMandatoryIfPAYEEQ1False(mockBoxRetriever, "testBox",testOptStringBox(None)) shouldBe Set()
 
-      verify(mockBoxRetriever).retrievePAYEEQ1()
+      verify(mockBoxRetriever).payeeQ1()
       verifyNoMoreInteractions(mockBoxRetriever)
     }
   }

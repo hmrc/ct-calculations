@@ -22,27 +22,25 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 trait StubbedFilingAttributesBoxValueRetriever extends FilingAttributesBoxValueRetriever {
 
-  override def retrieveProductName(): ProductName = ???
+  override def companyType(): FilingCompanyType = ???
 
-  override def retrieveCompanyType(): FilingCompanyType = ???
+  override def abbreviatedAccountsFiling(): AbbreviatedAccountsFiling = ???
 
-  override def retrieveAbbreviatedAccountsFiling(): AbbreviatedAccountsFiling = ???
+  override def statutoryAccountsFiling(): StatutoryAccountsFiling = ???
 
-  override def retrieveStatutoryAccountsFiling(): StatutoryAccountsFiling = ???
+  override def microEntityFiling(): MicroEntityFiling = ???
 
-  override def retrieveMicroEntityFiling(): MicroEntityFiling = ???
+  override def abridgedFiling(): AbridgedFiling = ???
 
-  override def retrieveAbridgedFiling(): AbridgedFiling = ???
+  override def hmrcFiling(): HMRCFiling = ???
 
-  override def retrieveHMRCFiling(): HMRCFiling = ???
+  override def hmrcAmendment(): HMRCAmendment = ???
 
-  override def retrieveHMRCAmendment(): HMRCAmendment = ???
-
-  override def retrieveCompaniesHouseFiling(): CompaniesHouseFiling = ???
+  override def companiesHouseFiling(): CompaniesHouseFiling = ???
 
   override def generateValues: Map[String, CtValue[_]] = ???
 
-  override def retrieveUTR(): UTR = ???
+  override def utr(): UTR = ???
 
-  override def retrieveCountryOfRegistration(): CountryOfRegistration = ???
+  override def countryOfRegistration(): CountryOfRegistration = ???
 }

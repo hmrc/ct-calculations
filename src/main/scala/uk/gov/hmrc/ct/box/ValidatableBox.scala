@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.ct.box
 
+import java.text.NumberFormat
+
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
@@ -66,7 +68,7 @@ trait ValidatableBox[T <: BoxRetriever] {
   }
 
   protected def validateStringAsMandatoryIfPAYEEQ1False(boxRetriever: RepaymentsBoxRetriever, boxId: String, box: CtOptionalString): Set[CtValidation] = {
-    val payeeq1 = boxRetriever.retrievePAYEEQ1()
+    val payeeq1 = boxRetriever.payeeQ1()
     if (!payeeq1.value.getOrElse(true)) {
       validateStringAsMandatory(boxId, box)
     } else Set()
@@ -83,10 +85,10 @@ trait ValidatableBox[T <: BoxRetriever] {
 
   protected def validateAllFilledOrEmptyStringsForBankDetails(boxRetriever: RepaymentsBoxRetriever, boxId: String): Set[CtValidation] = {
     val bankDetailsBoxGroup:Set[CtString] = Set(
-      boxRetriever.retrieveB920(),
-      boxRetriever.retrieveB925(),
-      boxRetriever.retrieveB930(),
-      boxRetriever.retrieveB935()
+      boxRetriever.b920(),
+      boxRetriever.b925(),
+      boxRetriever.b930(),
+      boxRetriever.b935()
     )
     validateAllFilledOrEmptyStrings(boxId, bankDetailsBoxGroup)
   }
@@ -235,6 +237,13 @@ trait ValidatableBox[T <: BoxRetriever] {
   def validateStringByLength(boxId: String, value: String, errorCodeId: String, min: Int, max: Int): Set[CtValidation] = {
     failIf (value.size < min || value.size > max) {
       Set(CtValidation(Some(boxId), s"error.$errorCodeId.text.sizeRange", Some(Seq(min.toString, max.toString))))
+    }
+  }
+
+  def validateStringMaxLength(boxId: String, value: String, max: Int): Set[CtValidation] = {
+    failIf (value.size > max) {
+      def commaForThousands(i: Int) = f"$i%,d"
+      Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(commaForThousands(max)))))
     }
   }
 

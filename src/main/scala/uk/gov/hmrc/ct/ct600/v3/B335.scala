@@ -30,8 +30,8 @@ object B335 extends CorporationTaxCalculator with Calculated[B335, ComputationsB
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): B335 = {
       calculateApportionedProfitsChargeableFy1(
         CorporationTaxCalculatorParameters(
-          fieldValueRetriever.retrieveCP295(),
-          HmrcAccountingPeriod(fieldValueRetriever.retrieveCP1(), fieldValueRetriever.retrieveCP2())
+          fieldValueRetriever.cp295(),
+          HmrcAccountingPeriod(fieldValueRetriever.cp1(), fieldValueRetriever.cp2())
         )
       )
   }

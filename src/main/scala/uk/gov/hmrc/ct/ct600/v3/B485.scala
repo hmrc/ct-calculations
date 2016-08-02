@@ -25,7 +25,7 @@ case class B485(value: Boolean) extends CtBoxIdentifier("Put an 'X' in box 485 i
 object B485 extends Calculated[B485, CT600ABoxRetriever] with LoansToParticipatorsCalculator {
 
   override def calculate(fieldValueRetriever: CT600ABoxRetriever): B485 = {
-    calculateB485(fieldValueRetriever.retrieveA70())
+    calculateB485(fieldValueRetriever.a70())
   }
 
 }

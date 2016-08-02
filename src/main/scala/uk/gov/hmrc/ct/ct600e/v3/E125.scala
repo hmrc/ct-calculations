@@ -25,12 +25,12 @@ case class E125(value: Option[Int]) extends CtBoxIdentifier("Expenditure: Total 
 object E125 extends Calculated[E125, CT600EBoxRetriever] with ExpenditureCalculator {
   override def calculate(boxRetriever: CT600EBoxRetriever): E125 = {
     calculateTotalExpenditure(
-      e95 = boxRetriever.retrieveE95(),
-      e100 = boxRetriever.retrieveE100(),
-      e105 = boxRetriever.retrieveE105(),
-      e110 = boxRetriever.retrieveE110(),
-      e115 = boxRetriever.retrieveE115(),
-      e120 = boxRetriever.retrieveE120()
+      e95 = boxRetriever.e95(),
+      e100 = boxRetriever.e100(),
+      e105 = boxRetriever.e105(),
+      e110 = boxRetriever.e110(),
+      e115 = boxRetriever.e115(),
+      e120 = boxRetriever.e120()
     )
   }
 }

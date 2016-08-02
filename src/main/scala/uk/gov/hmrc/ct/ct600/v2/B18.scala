@@ -24,7 +24,7 @@ case class B18(value: Int) extends CtBoxIdentifier(name = " Net chargeable gains
 object B18 extends Calculated[B18, CT600BoxRetriever] {
 
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B18 = {
-//    B18(fieldValueRetriever.retrieveB16() - fieldValueRetriever.retrieveB17())
+//    B18(fieldValueRetriever.b16() - fieldValueRetriever.b17())
     ???
   }
 }

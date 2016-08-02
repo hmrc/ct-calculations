@@ -25,13 +25,13 @@ case class CP92(value: Option[Int]) extends CtBoxIdentifier(name = "Written down
 object CP92 extends Calculated[CP92, ComputationsBoxRetriever] with MachineryAndPlantCalculator {
 
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP92 = {
-    writtenDownValue(cpq8 = boxRetriever.retrieveCPQ8(),
-                     cp78 = boxRetriever.retrieveCP78(),
-                     cp82 = boxRetriever.retrieveCP82(),
-                     cp89 = boxRetriever.retrieveCP89(),
-                     cp91 = boxRetriever.retrieveCP91(),
-                     cp672 = boxRetriever.retrieveCP672(),
-                     cato20 = boxRetriever.retrieveCATO20(),
-                     cpAux2 = boxRetriever.retrieveCPAux2())
+    writtenDownValue(cpq8 = boxRetriever.cpQ8(),
+                     cp78 = boxRetriever.cp78(),
+                     cp82 = boxRetriever.cp82(),
+                     cp89 = boxRetriever.cp89(),
+                     cp91 = boxRetriever.cp91(),
+                     cp672 = boxRetriever.cp672(),
+                     cato20 = boxRetriever.cato20(),
+                     cpAux2 = boxRetriever.cpAux2())
   }
 }

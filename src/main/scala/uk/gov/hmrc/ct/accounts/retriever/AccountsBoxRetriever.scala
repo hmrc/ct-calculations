@@ -23,16 +23,17 @@ trait AccountsBoxRetriever extends BoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 
-  def retrieveAC1(): AC1
+  def ac1(): AC1
 
-  def retrieveAC3(): AC3
+  def ac2(): AC2
+
+  def ac3(): AC3
   
-  def retrieveAC4(): AC4
+  def ac4(): AC4
 
-  def retrieveAC12(): AC12
+  def ac12(): AC12
 
-  def retrieveAC205(): AC205
+  def ac205(): AC205
 
-  def retrieveAC206(): AC206
-
+  def ac206(): AC206
 }

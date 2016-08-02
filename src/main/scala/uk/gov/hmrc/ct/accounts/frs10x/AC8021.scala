@@ -22,10 +22,10 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file a directors' report to Companies House?") with CtOptionalBoolean with Input with ValidatableBox[Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-    val coHoFiling = boxRetriever.retrieveCompaniesHouseFiling().value
-    val hmrcFiling = boxRetriever.retrieveHMRCFiling().value
-    val microEntityFiling = boxRetriever.retrieveMicroEntityFiling().value
-    val fileDRToHmrc = boxRetriever.retrieveAC8023().orFalse
+    val coHoFiling = boxRetriever.companiesHouseFiling().value
+    val hmrcFiling = boxRetriever.hmrcFiling().value
+    val microEntityFiling = boxRetriever.microEntityFiling().value
+    val fileDRToHmrc = boxRetriever.ac8023().orFalse
 
     // This field is required if filing non micro-entity Joint or to CoHo only
     // or when filing Joint micro-entity AND answered "true" to "AC8023".

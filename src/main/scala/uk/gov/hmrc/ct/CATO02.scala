@@ -26,8 +26,8 @@ case class CATO02(value: Int) extends CtBoxIdentifier(name = "Maximum Annual Inv
 object CATO02 extends Calculated[CATO02, ComputationsBoxRetriever] with AnnualInvestmentAllowanceCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CATO02 = {
-    maximum(cp1 = fieldValueRetriever.retrieveCP1(),
-            cp2 = fieldValueRetriever.retrieveCP2(),
+    maximum(cp1 = fieldValueRetriever.cp1(),
+            cp2 = fieldValueRetriever.cp2(),
             allowableAmounts = AnnualInvestmentAllowancePeriods())
   }
 }

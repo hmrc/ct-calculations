@@ -30,13 +30,13 @@ trait AccountsMoneyValidationFixture extends WordSpec with Matchers with Mockito
   self: MockRetriever =>
 
   def setUpMocks(): Unit = {
-    when(boxRetriever.retrieveAC16()).thenReturn(AC16(Some(16)))
-    when(boxRetriever.retrieveAC18()).thenReturn(AC18(Some(18)))
-    when(boxRetriever.retrieveAC20()).thenReturn(AC20(Some(20)))
-    when(boxRetriever.retrieveAC28()).thenReturn(AC28(Some(28)))
-    when(boxRetriever.retrieveAC30()).thenReturn(AC30(Some(30)))
-    when(boxRetriever.retrieveAC34()).thenReturn(AC34(Some(34)))
-    when(boxRetriever.retrieveAC205()).thenReturn(AC205(Some(new LocalDate())))
+    when(boxRetriever.ac16()).thenReturn(AC16(Some(16)))
+    when(boxRetriever.ac18()).thenReturn(AC18(Some(18)))
+    when(boxRetriever.ac20()).thenReturn(AC20(Some(20)))
+    when(boxRetriever.ac28()).thenReturn(AC28(Some(28)))
+    when(boxRetriever.ac30()).thenReturn(AC30(Some(30)))
+    when(boxRetriever.ac34()).thenReturn(AC34(Some(34)))
+    when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate())))
   }
 
   def testAccountsMoneyValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[Frs10xAccountsBoxRetriever]): Unit = {
@@ -62,6 +62,30 @@ trait AccountsMoneyValidationFixture extends WordSpec with Matchers with Mockito
       }
       "fail validation when negative but below lower limit" in {
         builder(Some(-100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min"))
+      }
+      "fail validation when positive but above upper limit" in {
+        builder(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max"))
+      }
+    }
+  }
+
+  def testAccountsMoneyValidationWithMin(boxId: String, minValue: Int, builder: (Option[Int]) => ValidatableBox[Frs10xAccountsBoxRetriever]): Unit = {
+    setUpMocks()
+    s"$boxId" should {
+      "be valid when minimum" in {
+        builder(Some(minValue)).validate(boxRetriever) shouldBe empty
+      }
+      "be valid when empty" in {
+        builder(None).validate(boxRetriever) shouldBe empty
+      }
+      "be valid when greater then min" in {
+        builder(Some(minValue + 1)).validate(boxRetriever) shouldBe empty
+      }
+      "be valid when positive but equals upper limit" in {
+        builder(Some(99999999)).validate(boxRetriever) shouldBe empty
+      }
+      "fail validation when less then min lower limit" in {
+        builder(Some(minValue - 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min"))
       }
       "fail validation when positive but above upper limit" in {
         builder(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max"))

@@ -24,6 +24,6 @@ case class B510(value: BigDecimal) extends CtBoxIdentifier("Tax chargeable") wit
 
 object B510 extends CorporationTaxCalculator with Calculated[B510, CT600BoxRetriever] {
   override def calculate(boxRetriever: CT600BoxRetriever): B510 = {
-    calculateTaxChargeable(boxRetriever.retrieveB475(), boxRetriever.retrieveB480())
+    calculateTaxChargeable(boxRetriever.b475(), boxRetriever.b480())
   }
 }

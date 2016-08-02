@@ -25,8 +25,8 @@ case class B65(value: BigDecimal) extends CtBoxIdentifier("Corporation Tax net o
 object B65 extends CorporationTaxCalculator with Calculated[B65, CT600BoxRetriever]{
 
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B65 =
-    corporationTaxNetOfMrr(fieldValueRetriever.retrieveB46(),
-                           fieldValueRetriever.retrieveB56(),
-                           fieldValueRetriever.retrieveB64()
+    corporationTaxNetOfMrr(fieldValueRetriever.b46(),
+                           fieldValueRetriever.b56(),
+                           fieldValueRetriever.b64()
     )
 }

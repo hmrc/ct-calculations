@@ -24,6 +24,6 @@ case class AC41(value: Option[Int]) extends CtBoxIdentifier(name = "Previous Net
 
 object AC41 extends Calculated[AC41, Frsse2008AccountsBoxRetriever] with ProfitOrLossCalculator {
   override def calculate(boxRetriever: Frsse2008AccountsBoxRetriever): AC41 = {
-    calculatePreviousNetBalance(boxRetriever.retrieveAC37(), boxRetriever.retrieveAC39())
+    calculatePreviousNetBalance(boxRetriever.ac37(), boxRetriever.ac39())
   }
 }

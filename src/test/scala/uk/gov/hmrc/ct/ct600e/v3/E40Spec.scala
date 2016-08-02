@@ -31,7 +31,7 @@ class E40Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAft
   val APEnd = NOW.minusMonths(1)
 
   before{
-    when(boxRetriever.retrieveE4()).thenReturn(E4(APEnd))
+    when(boxRetriever.e4()).thenReturn(E4(APEnd))
   }
 
   "E40" should {

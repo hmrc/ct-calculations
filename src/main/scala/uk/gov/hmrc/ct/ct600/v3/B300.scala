@@ -25,5 +25,5 @@ case class B300(value: Int) extends CtBoxIdentifier("Profits chargeable to Corpo
 object B300 extends CorporationTaxCalculator with Calculated[B300, CT600BoxRetriever] {
 
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B300 =
-    calculateProfitsChargeableToCorporationTax(fieldValueRetriever.retrieveB235(), fieldValueRetriever.retrieveB275())
+    calculateProfitsChargeableToCorporationTax(fieldValueRetriever.b235(), fieldValueRetriever.b275())
 }

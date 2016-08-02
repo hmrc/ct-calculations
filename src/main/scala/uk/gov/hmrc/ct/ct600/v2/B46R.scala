@@ -25,6 +25,6 @@ case class B46R(value: Int) extends CtBoxIdentifier("Tax rounded") with CtIntege
 object B46R extends CorporationTaxCalculator with Calculated[B46R, CT600BoxRetriever] {
 
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B46R =
-    corporationTaxFy1RoundedHalfDown(fieldValueRetriever.retrieveB46())
+    corporationTaxFy1RoundedHalfDown(fieldValueRetriever.b46())
 
 }

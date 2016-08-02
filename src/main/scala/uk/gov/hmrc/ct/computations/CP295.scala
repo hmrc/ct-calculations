@@ -25,9 +25,9 @@ case class CP295(value: Int) extends CtBoxIdentifier(name = "Profits chargeable 
 object CP295 extends Calculated[CP295, ComputationsBoxRetriever] with NetProfitsChargeableToCtCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP295 = {
-    calculateNetProfitsChargeableToCt(fieldValueRetriever.retrieveCP293(),
-      fieldValueRetriever.retrieveCP294(),
-      fieldValueRetriever.retrieveCP999())
+    calculateNetProfitsChargeableToCt(fieldValueRetriever.cp293(),
+      fieldValueRetriever.cp294(),
+      fieldValueRetriever.cp999())
   }
 
 }

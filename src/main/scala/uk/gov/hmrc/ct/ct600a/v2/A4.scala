@@ -25,6 +25,6 @@ case class A4(value: Option[Int]) extends CtBoxIdentifier(name = "A4 - Amount re
 object A4 extends Calculated[A4, CT600ABoxRetriever] with LoansToParticipatorsCalculator {
 
   override def calculate(fieldValueRetriever: CT600ABoxRetriever): A4 = {
-    calculateA4(fieldValueRetriever.retrieveCP2(), fieldValueRetriever.retrieveLP02())
+    calculateA4(fieldValueRetriever.cp2(), fieldValueRetriever.lp02())
   }
 }
