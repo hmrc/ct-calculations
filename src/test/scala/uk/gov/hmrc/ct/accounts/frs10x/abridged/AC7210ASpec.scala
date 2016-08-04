@@ -24,9 +24,13 @@ import uk.gov.hmrc.ct.box.CtValidation
 
 class AC7210ASpec extends WordSpec with MockitoSugar with Matchers with MockAbridgedAccountsRetriever with AccountsMoneyValidationFixture {
 
-  when(boxRetriever.ac7200()).thenReturn(AC7200(Some(true)))
-  when(boxRetriever.ac7210B()).thenReturn(AC7210B(Some(123)))
-  testAccountsMoneyValidationWithMin("AC7210A", minValue = 0, AC7210A)
+  def testBasicMoneyValidation(): Unit = {
+    when(boxRetriever.ac7200()).thenReturn(AC7200(Some(true)))
+    when(boxRetriever.ac7210B()).thenReturn(AC7210B(Some(123)))
+    testAccountsMoneyValidationWithMin("AC7210A", minValue = 0, AC7210A)
+  }
+
+  testBasicMoneyValidation()
 
   "AC7210A" should {
     "when AC7210B is empty" when {
@@ -59,6 +63,34 @@ class AC7210ASpec extends WordSpec with MockitoSugar with Matchers with MockAbri
         when(boxRetriever.ac7200()).thenReturn(AC7200(Some(true)))
         when(boxRetriever.ac7210B()).thenReturn(AC7210B(None))
         AC7210A(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.abridged.additional.dividend.note.one.box.required"))
+      }
+    }
+
+    "when AC7210B is populated" when {
+      "pass validation if AC7210A has a value AC7200 is true" in {
+        when(boxRetriever.ac7200()).thenReturn(AC7200(Some(true)))
+        when(boxRetriever.ac7210B()).thenReturn(AC7210B(Some(1234)))
+        AC7210A(Some(1224)).validate(boxRetriever) shouldBe empty
+      }
+      "pass validation if AC7210A is empty and AC7200 is false" in {
+        when(boxRetriever.ac7200()).thenReturn(AC7200(Some(false)))
+        when(boxRetriever.ac7210B()).thenReturn(AC7210B(Some(1234)))
+        AC7210A(None).validate(boxRetriever) shouldBe empty
+      }
+      "pass validation if AC7210A is empty and AC7200 is empty" in {
+        when(boxRetriever.ac7200()).thenReturn(AC7200(None))
+        when(boxRetriever.ac7210B()).thenReturn(AC7210B(Some(1234)))
+        AC7210A(None).validate(boxRetriever) shouldBe empty
+      }
+      "fail validation if AC7210A has a value AC7200 is false" in {
+        when(boxRetriever.ac7200()).thenReturn(AC7200(Some(false)))
+        when(boxRetriever.ac7210B()).thenReturn(AC7210B(Some(1234)))
+        AC7210A(Some(1224)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7210A"), "error.AC7210A.cannot.exist"))
+      }
+      "fail validation if AC7210A has a value AC7200 is empty" in {
+        when(boxRetriever.ac7200()).thenReturn(AC7200(None))
+        when(boxRetriever.ac7210B()).thenReturn(AC7210B(Some(1234)))
+        AC7210A(Some(1224)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7210A"), "error.AC7210A.cannot.exist"))
       }
     }
   }
