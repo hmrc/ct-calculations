@@ -24,8 +24,8 @@ trait AccountsMoneyValidation {
 
   def validateMoney(boxId: String, min: Int = -99999999, max: Int = 99999999): Set[CtValidation] = {
     value match {
-      case Some(x) if x < min => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min"))
-      case Some(x) if x > max => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max"))
+      case Some(x) if x < min => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(min.toString, max.toString))))
+      case Some(x) if x > max => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", Some(Seq(min.toString, max.toString))))
       case _ => Set.empty
     }
   }

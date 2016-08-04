@@ -61,10 +61,10 @@ trait AccountsMoneyValidationFixture extends WordSpec with Matchers with Mockito
         builder(Some(99999999)).validate(boxRetriever) shouldBe empty
       }
       "fail validation when negative but below lower limit" in {
-        builder(Some(-100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min"))
+        builder(Some(-100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq("-99999999", "99999999"))))
       }
       "fail validation when positive but above upper limit" in {
-        builder(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max"))
+        builder(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", Some(Seq("-99999999", "99999999"))))
       }
     }
   }
@@ -85,10 +85,10 @@ trait AccountsMoneyValidationFixture extends WordSpec with Matchers with Mockito
         builder(Some(99999999)).validate(boxRetriever) shouldBe empty
       }
       "fail validation when less then min lower limit" in {
-        builder(Some(minValue - 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min"))
+        builder(Some(minValue - 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(minValue.toString, "99999999"))))
       }
       "fail validation when positive but above upper limit" in {
-        builder(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max"))
+        builder(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", Some(Seq(minValue.toString, "99999999"))))
       }
     }
   }

@@ -58,7 +58,7 @@ class AC16Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsR
         when(boxRetriever.ac28()).thenReturn(AC28(Some(28)))
         when(boxRetriever.ac30()).thenReturn(AC30(Some(30)))
         when(boxRetriever.ac34()).thenReturn(AC34(Some(34)))
-        AC16(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("AC16"), "error.AC16.above.max"))
+        AC16(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("AC16"), "error.AC16.above.max", Some(Seq("-99999999", "99999999"))))
       }
       "pass validation if AC16 and 1 field has a valid value" in {
         when(boxRetriever.ac18()).thenReturn(AC18(Some(18)))
@@ -66,7 +66,7 @@ class AC16Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsR
         when(boxRetriever.ac28()).thenReturn(AC28(None))
         when(boxRetriever.ac30()).thenReturn(AC30(None))
         when(boxRetriever.ac34()).thenReturn(AC34(None))
-        AC16(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("AC16"), "error.AC16.above.max"))
+        AC16(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("AC16"), "error.AC16.above.max", Some(Seq("-99999999", "99999999"))))
       }
       "pass validation if 1 field has a valid value" in {
         when(boxRetriever.ac18()).thenReturn(AC18(None))
@@ -74,7 +74,7 @@ class AC16Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsR
         when(boxRetriever.ac28()).thenReturn(AC28(None))
         when(boxRetriever.ac30()).thenReturn(AC30(None))
         when(boxRetriever.ac34()).thenReturn(AC34(None))
-        AC16(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("AC16"), "error.AC16.above.max"))
+        AC16(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("AC16"), "error.AC16.above.max", Some(Seq("-99999999", "99999999"))))
       }
     }
     "AC16 is empty" when {

@@ -45,11 +45,11 @@ class AC70Spec extends WordSpec with Matchers with MockAbridgedAccountsRetriever
     }
 
     "fail validation when less then 1" in {
-      AC70(Some(0)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC70"), "error.AC70.below.min"))
+      AC70(Some(0)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC70"), "error.AC70.below.min", Some(Seq("1", "99999999"))))
     }
 
     "fail validation when positive but above upper limit" in {
-      AC70(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC70"), "error.AC70.above.max"))
+      AC70(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC70"), "error.AC70.above.max", Some(Seq("1", "99999999"))))
     }
 
   }
