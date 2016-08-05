@@ -24,12 +24,17 @@ case class AC7210B(value: Option[Int]) extends CtBoxIdentifier(name = "Dividends
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with AccountsMoneyValidation {
+  with Validators[AbridgedAccountsBoxRetriever] {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    failIf {
-      value.nonEmpty && !boxRetriever.ac7200().orFalse
-    }(Set(CtValidation(Some("AC7210B"), "error.AC7210B.cannot.exist"))) ++
-    validateMoney("AC7210B", min = 0)
+    collectErrors(
+      Set(
+        cannotExistIf() {
+          retriever =>
+            value.nonEmpty && (!retriever.ac7200().orFalse || retriever.ac205().value.isEmpty)
+        },
+        validateMoney()(value, min = 0)
+      )
+    )(boxRetriever)
   }
 }
