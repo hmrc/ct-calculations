@@ -29,10 +29,7 @@ case class AC7210B(value: Option[Int]) extends CtBoxIdentifier(name = "Dividends
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       Set(
-        cannotExistIf() {
-          retriever =>
-            value.nonEmpty && (!retriever.ac7200().orFalse || retriever.ac205().value.isEmpty)
-        },
+        cannotExistIf() { retriever => value.nonEmpty && (!retriever.ac7200().orFalse || retriever.ac205().value.isEmpty) },
         validateMoney()(value, min = 0)
       )
     )(boxRetriever)

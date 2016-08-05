@@ -52,7 +52,7 @@ trait Validators[B <: BoxRetriever] {
     }
   }
 
-  protected def validate(boxId: String = boxId)(predicate: (B) => Boolean, errors: Set[CtValidation])(boxRetriever: B): Set[CtValidation] = {
+  protected def validate(boxId: String = boxId)(predicate: (B) => Boolean)(errors: Set[CtValidation])(boxRetriever: B): Set[CtValidation] = {
     if (predicate(boxRetriever))
       errors
     else
@@ -79,5 +79,9 @@ trait Validators[B <: BoxRetriever] {
       predicate(boxRetriever)
     }
   }
+
+  protected def nonEmpty(value: Option[_])(retriever: B): Boolean = value.nonEmpty
+
+  protected def isEmpty(value: Option[_])(retriever: B): Boolean = value.isEmpty
 
 }

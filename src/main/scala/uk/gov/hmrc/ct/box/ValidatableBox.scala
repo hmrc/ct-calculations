@@ -16,15 +16,12 @@
 
 package uk.gov.hmrc.ct.box
 
-import java.text.NumberFormat
-
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 trait ValidatableBox[T <: BoxRetriever] {
-
 
   val validNonForeignLessRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"!%\\*_\\+:@<>\\?=;]*"
   val validNonForeignMoreRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"]*"
@@ -34,7 +31,6 @@ trait ValidatableBox[T <: BoxRetriever] {
 
   // Taken from PostCodeType on http://www.hmrc.gov.uk/schemas/core-v2-0.xsd
   private val postCodeRegex = """(GIR 0AA)|((([A-Z][0-9][0-9]?)|(([A-Z][A-HJ-Y][0-9][0-9]?)|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2})"""
-
 
   def validate(boxRetriever: T): Set[CtValidation]
 
