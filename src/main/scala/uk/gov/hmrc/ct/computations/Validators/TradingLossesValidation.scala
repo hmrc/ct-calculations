@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.box.{CtValidation, Validators}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 
-trait TradingLossesValidation extends Validators {
+trait TradingLossesValidation extends Validators[ComputationsBoxRetriever] {
 
   protected def allLossesOffsetByNonTradingProfit(cp118: Int, cato01: Int): Boolean = {
     cp118 <= cato01

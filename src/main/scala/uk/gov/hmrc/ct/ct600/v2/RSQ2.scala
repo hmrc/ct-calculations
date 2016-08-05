@@ -21,7 +21,7 @@ import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class RSQ2(inputValue: Option[Boolean], defaultValue: Option[Boolean]) extends CtBoxIdentifier
-  with CtOptionalBoolean with InputWithDefault[Boolean] with ValidatableBox[BoxRetriever] with Validators {
+  with CtOptionalBoolean with InputWithDefault[Boolean] with ValidatableBox[BoxRetriever] with Validators[ComputationsBoxRetriever] {
 
   override def validate(boxRetriever: BoxRetriever): Set[CtValidation] = {
     boxRetriever match {
@@ -39,9 +39,6 @@ case class RSQ2(inputValue: Option[Boolean], defaultValue: Option[Boolean]) exte
 
   private def CP287NotExistsAndNoInputValue(retriever: ComputationsBoxRetriever) =
     !retriever.cp287().value.exists(_ > 0) && inputValue.isEmpty
-
-
-
 }
 
 object RSQ2 {
