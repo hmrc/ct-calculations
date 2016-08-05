@@ -25,7 +25,10 @@ case class AC5052B(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
 
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    validateStringMaxLength("AC5052B", value.getOrElse(""), 20000) ++ validateOptionalStringByRegex("AC5052B", this, validCoHoCharacters)
+    (boxRetriever.ac52, value) match {
+      case (AC52(None), Some(s)) => Set(CtValidation(Some("AC5052B"), "error.AC5052B.cannot.exist"))
+      case (AC52(Some(_)), Some(s)) => validateStringMaxLength("AC5052B", value.getOrElse(""), 20000) ++ validateOptionalStringByRegex("AC5052B", this, validCoHoCharacters)
+      case _ => Set.empty
+    }
   }
-
 }
