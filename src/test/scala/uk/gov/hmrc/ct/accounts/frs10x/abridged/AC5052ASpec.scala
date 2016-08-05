@@ -18,12 +18,21 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC5052ASpec extends WordSpec with MockitoSugar with Matchers with MockAbridgedAccountsRetriever with AccountsMoneyValidationFixture {
+class AC5052ASpec extends WordSpec with MockitoSugar with Matchers with MockAbridgedAccountsRetriever with AccountsMoneyValidationFixture with BeforeAndAfter {
+
+  before {
+    when(boxRetriever.ac52).thenReturn(AC52(Some(33)))
+  }
 
   testAccountsMoneyValidationWithMin("AC5052A", minValue = 0, AC5052A)
+
+  "fail validation when populated and AC52 is empty" in {
+    when(boxRetriever.ac52()).thenReturn(AC52(None))
+    AC5052A(Some(4)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5052A"), "error.AC5052A.cannot.exist"))
+  }
 }
