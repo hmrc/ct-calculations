@@ -29,7 +29,7 @@ case class AC70(value: Option[Int]) extends CtBoxIdentifier(name = "Called up sh
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       () => validateAsMandatory(this),
-      validateMoney()(value, min = 1)
+      validateMoney(value, min = 1)
     )
   }
 }

@@ -31,8 +31,8 @@ case class CP285(value: Option[LocalDate]) extends CtBoxIdentifier(name = "End d
     val DateFormat = "dd/MM/yyyy"
 
     collectErrors(
-      requiredIf() { value.isEmpty && boxRetriever.cpQ18().value == Some(true) } ,
-      cannotExistIf() { value.nonEmpty && !boxRetriever.cpQ18().orFalse },
+      requiredIf({ value.isEmpty && boxRetriever.cpQ18().value == Some(true) }) ,
+      cannotExistIf(value.nonEmpty && !boxRetriever.cpQ18().orFalse),
       { () =>
         failIf (value.nonEmpty) {
           val providedDate = value.getOrElse(throw new IllegalStateException("The value of CP285 is empty and that does not appear to be possible."))

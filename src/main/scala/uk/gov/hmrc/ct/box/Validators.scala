@@ -34,28 +34,28 @@ trait Validators {
     existsTruePredicate
   }
 
-  protected def requiredIf(boxId: String = boxId)(predicate: => Boolean)(): Set[CtValidation] = {
+  protected def requiredIf(predicate: => Boolean)(): Set[CtValidation] = {
       if (predicate)
         Set(CtValidation(Some(boxId), s"error.$boxId.required"))
       else
         Set.empty
   }
 
-  protected def exceedsMax(boxId: String = boxId)(value: Option[Int], max: Int = MAX_MONEY_AMOUNT_ALLOWED)(): Set[CtValidation] = {
+  protected def exceedsMax(value: Option[Int], max: Int = MAX_MONEY_AMOUNT_ALLOWED)(): Set[CtValidation] = {
     value match {
       case (Some(v)) if v > max => Set(CtValidation(Some(boxId), s"error.$boxId.exceeds.max", Some(Seq(max.toString))))
       case _ => Set.empty
     }
   }
 
-  protected def belowMin(boxId: String = boxId)(value: Option[Int], min: Int = MIN_MONEY_AMOUNT_ALLOWED)(): Set[CtValidation] = {
+  protected def belowMin(value: Option[Int], min: Int = MIN_MONEY_AMOUNT_ALLOWED)(): Set[CtValidation] = {
     value match {
       case (Some(v)) if v < min => Set(CtValidation(Some(boxId), s"error.$boxId.below.min", Some(Seq(min.toString))))
       case _ => Set.empty
     }
   }
 
-  protected def validateMoney(boxId: String = boxId)(value: Option[Int], min: Int = -99999999, max: Int = 99999999)(): Set[CtValidation] = {
+  protected def validateMoney(value: Option[Int], min: Int = -99999999, max: Int = 99999999)(): Set[CtValidation] = {
     value match {
       case Some(x) if x < min => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(min.toString, max.toString))))
       case Some(x) if x > max => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", Some(Seq(min.toString, max.toString))))
@@ -63,7 +63,7 @@ trait Validators {
     }
   }
 
-  protected def cannotExistIf(boxId: String = boxId)(predicate: => Boolean)(): Set[CtValidation] = {
+  protected def cannotExistIf(predicate: => Boolean)(): Set[CtValidation] = {
     if (predicate)
       Set(CtValidation(Some(boxId), s"error.$boxId.cannot.exist"))
     else

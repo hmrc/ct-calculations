@@ -30,6 +30,6 @@ case class AC21(value: Option[Int]) extends CtBoxIdentifier(name = "Administrati
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
     collectErrors(
       validateInputAllowed("AC21", boxRetriever.ac205()),
-      validateMoney()(value)
+      validateMoney(value)
     )
 }

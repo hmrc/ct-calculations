@@ -27,7 +27,7 @@ case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
   with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    val fieldValidation = validateMoney()(value)
+    val fieldValidation = validateMoney(value)
     import boxRetriever._
     val anyProfitOrLossFieldHasAValue =
       (value orElse

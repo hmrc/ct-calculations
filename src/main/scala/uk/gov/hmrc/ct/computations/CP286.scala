@@ -29,12 +29,11 @@ case class CP286(value: Option[Int]) extends CtBoxIdentifier(name = "Losses clai
   with TradingLossesCP286MaximumCalculator {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    val box = "CP286"
     collectErrors(
-        requiredIf(box) { value.isEmpty && boxRetriever.cpQ18().value == Some(true) },
-        cannotExistIf(box) { value.nonEmpty && !boxRetriever.cpQ18().orFalse },
-        exceedsMax(box)(value, calculateMaximumCP286(boxRetriever.cp117(), boxRetriever.cato01(), boxRetriever.cp998(), boxRetriever.cp281())),
-        belowMin(box)(value, 0)
+        requiredIf(value.isEmpty && boxRetriever.cpQ18().value == Some(true)),
+        cannotExistIf(value.nonEmpty && !boxRetriever.cpQ18().orFalse),
+        exceedsMax(value, calculateMaximumCP286(boxRetriever.cp117(), boxRetriever.cato01(), boxRetriever.cp998(), boxRetriever.cp281())),
+        belowMin(value, 0)
     )
   }
 }

@@ -28,7 +28,7 @@ case class AC5032(value: Option[String]) extends CtBoxIdentifier(name = "Profit/
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      cannotExistIf()(value.isDefined && !boxRetriever.ac32().value.isDefined),
+      cannotExistIf(value.isDefined && !boxRetriever.ac32().value.isDefined),
       () => validateStringMaxLength("AC5032", value.getOrElse(""), 20000)
     )
   }

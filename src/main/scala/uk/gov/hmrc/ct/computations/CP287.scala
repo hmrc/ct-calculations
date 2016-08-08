@@ -32,15 +32,14 @@ case class CP287(value: Option[Int]) extends CtBoxIdentifier(name = "Amount of l
     val max = cp118().value - cp998().orZero
 
     collectErrors(
-      requiredIf("CP287") { value.isEmpty && boxRetriever.cpQ20().value == Some(true) },
-      cannotExistIf("CP287") { value.nonEmpty && !boxRetriever.cpQ20().orFalse },
-      exceedsMax("CP287")(value, max),
-      belowMin("CP287")(value, 1)
+      requiredIf(value.isEmpty && boxRetriever.cpQ20().value == Some(true)),
+      cannotExistIf({ value.nonEmpty && !boxRetriever.cpQ20().orFalse }),
+      exceedsMax(value, max),
+      belowMin(value, 1)
     )
   }
 }
 
 object CP287 {
-
   def apply(int: Int): CP287 = CP287(Some(int))
 }

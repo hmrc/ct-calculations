@@ -28,6 +28,6 @@ case class AC28(value: Option[Int]) extends CtBoxIdentifier(name = "Interest rec
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
     collectErrors(
-      validateMoney()(value)
+      validateMoney(value)
     )
 }
