@@ -52,14 +52,14 @@ trait Validators {
     }
   }
 
-  protected def validate(boxId: String = boxId)(predicate: (B) => Boolean)(errors: Set[CtValidation])(boxRetriever: B): Set[CtValidation] = {
-    if (predicate(boxRetriever))
+  protected def validate(boxId: String = boxId)(predicate: => Boolean)(errors: Set[CtValidation])(): Set[CtValidation] = {
+    if (predicate)
       errors
     else
       Set.empty
   }
 
-  protected def validateMoney(boxId: String = boxId)(value: Option[Int], min: Int = -99999999, max: Int = 99999999)(boxRetriever: B): Set[CtValidation] = {
+  protected def validateMoney(boxId: String = boxId)(value: Option[Int], min: Int = -99999999, max: Int = 99999999)(): Set[CtValidation] = {
     value match {
       case Some(x) if x < min => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(min.toString, max.toString))))
       case Some(x) if x > max => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", Some(Seq(min.toString, max.toString))))
@@ -80,8 +80,8 @@ trait Validators {
     }.toSet
   }
 
-  protected def nonEmpty(value: Option[_])(retriever: B): Boolean = value.nonEmpty
+  protected def nonEmpty(value: Option[_]): Boolean = value.nonEmpty
 
-  protected def isEmpty(value: Option[_])(retriever: B): Boolean = value.isEmpty
+  protected def isEmpty(value: Option[_]): Boolean = value.isEmpty
 
 }
