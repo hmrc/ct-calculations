@@ -30,9 +30,7 @@ with Validators {
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors (
-      cannotExistIf() (
-        () => value.nonEmpty && !boxRetriever.ac52().value.isDefined
-      ),
+      cannotExistIf() { value.nonEmpty && !boxRetriever.ac52().value.isDefined },
       () => validateMoney("AC5052A", min = 0)
     )
 
