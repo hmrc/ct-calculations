@@ -28,15 +28,15 @@ case class CPQ17(value: Option[Boolean]) extends CtBoxIdentifier(name = "Trading
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
 
-    collectErrors(Set(
-      requiredIf() { boxRetriever: ComputationsBoxRetriever => value.isEmpty && boxRetriever.cp117().value > 0 },
-      cannotExistIf() { boxRetriever: ComputationsBoxRetriever => value.nonEmpty && boxRetriever.cp117().value == 0 },
-      { boxRetriever: ComputationsBoxRetriever =>
+    collectErrors(
+      requiredIf() { () => value.isEmpty && boxRetriever.cp117().value > 0 },
+      cannotExistIf() { () => value.nonEmpty && boxRetriever.cp117().value == 0 },
+      { () =>
         (value, boxRetriever.cpQ19().value) match {
           case (Some(_), Some(_)) => Set(CtValidation(Some(boxId), "error.CPQ17.cannot.exist.cpq19"))
           case _ => Set.empty
         }
       }
-    ))(boxRetriever)
+    )
   }
 }

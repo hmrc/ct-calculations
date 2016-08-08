@@ -16,97 +16,96 @@
 
 package uk.gov.hmrc.ct.computations.Validators
 
-import uk.gov.hmrc.ct.box.{CtValidation, Validators}
+import uk.gov.hmrc.ct.box.{Validators}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.domain.ValidationConstants._
 
-trait TradingLossesValidation extends Validators[ComputationsBoxRetriever] {
-
-  protected def allLossesOffsetByNonTradingProfit(cp118: Int, cato01: Int): Boolean = {
+trait TradingLossesValidation extends Validators {
+  
+   def allLossesOffsetByNonTradingProfit(cp118: Int, cato01: Int): Boolean = {
     cp118 <= cato01
   }
 
-  protected def noLossesWithNonTradingProfit(cp118: Int, cato01: Int): Boolean = {
+   def noLossesWithNonTradingProfit(cp118: Int, cato01: Int): Boolean = {
     cp118 == 0 && cato01 >= 0
   }
 
-  protected def moreLossesThanNonTradeProfit(cp118: Int, cato01: Int): Boolean = {
+   def moreLossesThanNonTradeProfit(cp118: Int, cato01: Int): Boolean = {
     cp118 > cato01
   }
 
-  protected val answeredNoToTradingLossesNotUsedFromPreviousPeriod = {
-    retriever: ComputationsBoxRetriever => retriever.cpQ17().value == Some(false)
+   def answeredNoToTradingLossesNotUsedFromPreviousPeriod(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cpQ17().value == Some(false)
   }
 
-  protected val answeredYesToTradingLossesNotUsedFromPreviousPeriod = {
-    retriever: ComputationsBoxRetriever => retriever.cpQ17().value == Some(true)
+   def answeredYesToTradingLossesNotUsedFromPreviousPeriod(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cpQ17().value == Some(true)
   }
 
-  protected val notAnsweredTradingLossesNotUsedFromPreviousPeriod = {
-    retriever: ComputationsBoxRetriever => retriever.cpQ17().value.isEmpty
+   def notAnsweredTradingLossesNotUsedFromPreviousPeriod(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cpQ17().value.isEmpty
   }
 
-  protected val answeredNoToCurrentTradingLossesAgainstNonTradingProfit = {
-    retriever: ComputationsBoxRetriever => retriever.cpQ19().value == Some(false)
+   def answeredNoToCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cpQ19().value == Some(false)
   }
 
-  protected val answeredYesToCurrentTradingLossesAgainstNonTradingProfit = {
-    retriever: ComputationsBoxRetriever => retriever.cpQ19().value == Some(true)
+   def answeredYesToCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cpQ19().value == Some(true)
   }
 
-  protected val answeredYesToCurrentTradingLossesAgainstToPreviousPeriod = {
-    retriever: ComputationsBoxRetriever => retriever.cpQ20().value == Some(true)
+   def answeredYesToCurrentTradingLossesAgainstToPreviousPeriod(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cpQ20().value == Some(true)
   }
 
-  protected val notAnsweredCurrentTradingLossesAgainstNonTradingProfit = {
-    retriever: ComputationsBoxRetriever => retriever.cpQ19().value.isEmpty
+   def notAnsweredCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cpQ19().value.isEmpty
   }
 
-  protected val netTradingProfitGreaterThanTradingProfit = {
-    retriever: ComputationsBoxRetriever => retriever.cp284().orZero > retriever.cp117().value
+   def netTradingProfitGreaterThanTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
+    boxRetriever.cp284().orZero > boxRetriever.cp117().value
   }
 
-  protected val netTradingProfitEqualsTradingProfit = {
-    retriever: ComputationsBoxRetriever => retriever.cp284().orZero == retriever.cp117().value
+   def netTradingProfitEqualsTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cp284().orZero == boxRetriever.cp117().value
   }
 
-  protected val netTradingProfitPlusNonTradingProfitGreaterThanZero = {
-    retriever: ComputationsBoxRetriever => retriever.cp284().orZero + retriever.cato01().value > 0
+   def netTradingProfitPlusNonTradingProfitGreaterThanZero(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cp284().orZero + boxRetriever.cato01().value > 0
   }
 
-  protected val nonTradingProfitNotGreaterThanTradingLoss = {
-    retriever: ComputationsBoxRetriever => retriever.cp118().value <= retriever.cato01().value
+   def nonTradingProfitNotGreaterThanTradingLoss(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cp118().value <= boxRetriever.cato01().value
   }
 
-  protected val netTradingProfitPlusNonTradingProfitEqualsZero = {
-    retriever: ComputationsBoxRetriever => retriever.cp284().orZero + retriever.cato01().value == 0
+   def netTradingProfitPlusNonTradingProfitEqualsZero(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cp284().orZero + boxRetriever.cato01().value == 0
   }
 
-  protected val hasTradingLoss = {
-    retriever: ComputationsBoxRetriever => retriever.cp118().value > 0
+  def hasTradingLoss(boxRetriever: ComputationsBoxRetriever)()  = {
+    boxRetriever.cp118().value > 0
   }
 
-  protected val hasTradingProfit = {
-    retriever: ComputationsBoxRetriever => retriever.cp117().value > 0
+   def hasTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cp117().value > 0
   }
 
-  protected val noTradingLoss = {
-    retriever: ComputationsBoxRetriever => retriever.cp118().value == 0
+   def noTradingLoss(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cp118().value == 0
   }
 
-  protected val noTradingProfit = {
-    retriever: ComputationsBoxRetriever => retriever.cp117().value == 0
+   def noTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cp117().value == 0
   }
 
-  protected val noNonTradingProfit = {
-    retriever: ComputationsBoxRetriever => retriever.cato01().value == 0
+   def noNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cato01().value == 0
   }
 
-  protected val hasNonTradingProfit = {
-    retriever: ComputationsBoxRetriever => retriever.cato01().value > 0
+   def hasNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
+     boxRetriever.cato01().value > 0
   }
 
-  protected val noTradingProfitOrLoss = {
-    And(noTradingProfit, noTradingLoss) _
+   def noTradingProfitOrLoss(boxRetriever: ComputationsBoxRetriever)() = {
+    And(noTradingProfit(boxRetriever), noTradingLoss(boxRetriever))
   }
 }

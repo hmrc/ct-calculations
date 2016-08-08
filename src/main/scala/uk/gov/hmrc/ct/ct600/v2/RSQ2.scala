@@ -21,23 +21,25 @@ import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class RSQ2(inputValue: Option[Boolean], defaultValue: Option[Boolean]) extends CtBoxIdentifier
-  with CtOptionalBoolean with InputWithDefault[Boolean] with ValidatableBox[BoxRetriever] with Validators[ComputationsBoxRetriever] {
+  with CtOptionalBoolean with InputWithDefault[Boolean] with ValidatableBox[BoxRetriever] with Validators {
 
   override def validate(boxRetriever: BoxRetriever): Set[CtValidation] = {
     boxRetriever match {
       case compsRetriever: ComputationsBoxRetriever => {
-        cannotExistIf()(CP287GreaterThenZeroAndHaveInputValue)(compsRetriever) ++
-          requiredIf()(CP287NotExistsAndNoInputValue)(compsRetriever)
+        collectErrors(
+          cannotExistIf()(CP287GreaterThenZeroAndHaveInputValue(compsRetriever)),
+          requiredIf()(CP287NotExistsAndNoInputValue(compsRetriever))
+        )
       }
       case _ => validateAsMandatory(this) //Charities may not have Computations, but still need to validate as mandatory
     }
 
   }
 
-  private def CP287GreaterThenZeroAndHaveInputValue(retriever: ComputationsBoxRetriever) =
+  private def CP287GreaterThenZeroAndHaveInputValue(retriever: ComputationsBoxRetriever)() =
     retriever.cp287().value.exists(_ > 0) && inputValue.isDefined
 
-  private def CP287NotExistsAndNoInputValue(retriever: ComputationsBoxRetriever) =
+  private def CP287NotExistsAndNoInputValue(retriever: ComputationsBoxRetriever)() =
     !retriever.cp287().value.exists(_ > 0) && inputValue.isEmpty
 }
 

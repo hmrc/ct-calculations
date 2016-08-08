@@ -24,32 +24,27 @@ case class CPQ19(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you 
   with CtOptionalBoolean
   with Input
   with ValidatableBox[ComputationsBoxRetriever]
-  with TradingLossesValidation {
+  with TradingLossesValidation
+  with Validators {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
 
-    val valueEmpty = {
-      retriever: ComputationsBoxRetriever => value.isEmpty
-    }
+    val valueEmpty = () => value.isEmpty
+    val valuePopulated = () => value.nonEmpty
 
-    val valuePopulated = {
-      retriever: ComputationsBoxRetriever => value.nonEmpty
-    }
-
-    val errors = collectErrors(Set(
-      requiredIf()(And(hasTradingLoss, hasNonTradingProfit, valueEmpty)) _,
-      cannotExistIf()(And(hasNonTradingProfit, noTradingLoss, valuePopulated)) _,
-      cannotExistIf()(And(noNonTradingProfit, hasTradingLoss, valuePopulated)) _,
-      cannotExistIf()(And(noNonTradingProfit, noTradingLoss, valuePopulated)) _,
-      { boxRetriever: ComputationsBoxRetriever =>
+    collectErrors(
+      requiredIf()(And(hasTradingLoss(boxRetriever), hasNonTradingProfit(boxRetriever), valueEmpty)),
+      cannotExistIf()(And(hasNonTradingProfit(boxRetriever), noTradingLoss(boxRetriever), valuePopulated)) ,
+      cannotExistIf()(And(noNonTradingProfit(boxRetriever), hasTradingLoss(boxRetriever), valuePopulated)) ,
+      cannotExistIf()(And(noNonTradingProfit(boxRetriever), noTradingLoss(boxRetriever), valuePopulated)) ,
+      { () =>
         (cpQ17().value, value) match {
           case (Some(_), Some(_)) => Set(CtValidation(Some(boxId), "error.CPQ19.cannot.exist.cpq17"))
           case _ => Set.empty
         }
       }
-    ))(boxRetriever)
+    )
 
-    errors
   }
 }
