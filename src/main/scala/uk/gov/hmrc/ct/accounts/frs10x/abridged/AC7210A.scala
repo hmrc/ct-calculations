@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.AccountsMoneyValidation
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
@@ -24,15 +23,17 @@ case class AC7210A(value: Option[Int]) extends CtBoxIdentifier(name = "Dividends
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with AccountsMoneyValidation {
+  with Validators[AbridgedAccountsBoxRetriever] {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
-    failIf {
-      value.nonEmpty && !boxRetriever.ac7200.orFalse
-    }(Set(CtValidation(Some("AC7210A"), "error.AC7210A.cannot.exist"))) ++
-    validateMoney("AC7210A", min = 0) ++ failIf {
-      value.isEmpty && boxRetriever.ac7200.orFalse && boxRetriever.ac7210B().value.isEmpty
-    }(Set(CtValidation(None, "error.abridged.additional.dividend.note.one.box.required")))
+    collectErrors(
+      Set(
+        cannotExistIf() { retriever => value.nonEmpty && !retriever.ac7200().orFalse },
+        validateMoney()(value, min = 0),
+        validate()(retriever => value.isEmpty && retriever.ac7200.orFalse && retriever.ac7210B().value.isEmpty)
+                  (Set(CtValidation(None, "error.abridged.additional.dividend.note.one.box.required")))
+      )
+    )(boxRetriever)
   }
 }
