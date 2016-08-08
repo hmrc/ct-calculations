@@ -24,11 +24,14 @@ trait Validators {
   protected val boxId = getClass.getSimpleName
 
   protected def And(predicates: (() => Boolean)*)(): Boolean = {
-     !predicates.exists { p => !p()}
+
+    def allPredicatesTrue = predicates.forall {predicate => predicate()}
+    allPredicatesTrue
   }
 
   protected def Or(predicates: (() => Boolean)*)(): Boolean = {
-     predicates.exists { p => p()}
+    def existsTruePredicate = predicates.exists(predicate => predicate())
+    existsTruePredicate
   }
 
   protected def requiredIf(boxId: String = boxId)(predicate: => Boolean)(): Set[CtValidation] = {
@@ -52,13 +55,6 @@ trait Validators {
     }
   }
 
-  protected def validate(boxId: String = boxId)(predicate: => Boolean)(errors: Set[CtValidation])(): Set[CtValidation] = {
-    if (predicate)
-      errors
-    else
-      Set.empty
-  }
-
   protected def validateMoney(boxId: String = boxId)(value: Option[Int], min: Int = -99999999, max: Int = 99999999)(): Set[CtValidation] = {
     value match {
       case Some(x) if x < min => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(min.toString, max.toString))))
@@ -74,14 +70,17 @@ trait Validators {
       Set.empty
   }
 
-  protected def collectErrors(predicates: (() => Set[CtValidation])*): Set[CtValidation] = {
-    predicates.flatMap { predicate =>
-      predicate()
-    }.toSet
-  }
+  protected def failIf(condition: => Boolean)(validationErrors: => Set[CtValidation])(): Set[CtValidation] = if(condition) validationErrors else Set()
+
+  protected def passIf(condition: => Boolean)(validationErrors: => Set[CtValidation])(): Set[CtValidation] = if(condition) Set() else validationErrors
 
   protected def nonEmpty(value: Option[_]): Boolean = value.nonEmpty
 
   protected def isEmpty(value: Option[_]): Boolean = value.isEmpty
 
+  protected def collectErrors(predicates: (() => Set[CtValidation])*): Set[CtValidation] = {
+    predicates.flatMap { predicate =>
+      predicate()
+    }.toSet
+  }
 }

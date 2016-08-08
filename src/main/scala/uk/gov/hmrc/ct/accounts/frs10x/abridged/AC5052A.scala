@@ -28,12 +28,10 @@ case class AC5052A(value: Option[Int]) extends CtBoxIdentifier(name = "Debtors d
 with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-
     collectErrors (
       cannotExistIf() { value.nonEmpty && !boxRetriever.ac52().value.isDefined },
       validateMoney()(value, min = 0)
     )
-
   }
 }
 

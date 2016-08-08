@@ -24,9 +24,11 @@ case class AC54(value: Option[Int]) extends CtBoxIdentifier(name = "Cash at bank
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with AccountsMoneyValidation {
+  with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    validateMoney("AC54", min = 0)
+    collectErrors(
+      validateMoney()(value, min = 0)
+    )
   }
 }

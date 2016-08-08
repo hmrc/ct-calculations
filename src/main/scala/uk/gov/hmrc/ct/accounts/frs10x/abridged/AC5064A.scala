@@ -20,6 +20,10 @@ import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 case class AC5064A(value: Option[String]) extends CtBoxIdentifier(name = "Balance sheet - Creditors after 1 year note.") with CtOptionalString with Input with ValidatableBox[Frs10xDirectorsBoxRetriever] {
+
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever): Set[CtValidation] =
-    validateOptionalStringByLength("AC5064A", this, 0, 20000) ++ validateOptionalStringByRegex("AC5064A", this, validCoHoCharacters)
+    collectErrors (
+      () => validateOptionalStringByLength("AC5064A", this, 0, 20000),
+      () => validateOptionalStringByRegex("AC5064A", this, validCoHoCharacters)
+    )
 }

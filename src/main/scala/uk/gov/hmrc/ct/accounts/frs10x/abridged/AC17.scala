@@ -24,10 +24,13 @@ case class AC17(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with AccountsMoneyValidation
-  with AccountsPreviousPeriodValidation {
+  with AccountsPreviousPeriodValidation
+  with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    validateInputAllowed("AC17", boxRetriever.ac205()) ++  validateMoney("AC17")
+    collectErrors (
+      validateInputAllowed("AC17", boxRetriever.ac205()),
+      validateMoney()(value)
+    )
   }
 }

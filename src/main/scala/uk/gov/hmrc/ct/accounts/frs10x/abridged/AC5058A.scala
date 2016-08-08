@@ -19,7 +19,11 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC5058A(value: Option[String]) extends CtBoxIdentifier(name = "Balance sheet - Creditors within 1 year note.") with CtOptionalString with Input with ValidatableBox[AbridgedAccountsBoxRetriever] {
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
-    validateOptionalStringByLength("AC5058A", this, 0, 20000) ++ validateOptionalStringByRegex("AC5058A", this, validCoHoCharacters)
+case class AC5058A(value: Option[String]) extends CtBoxIdentifier(name = "Balance sheet - Creditors within 1 year note.") with CtOptionalString with Input with ValidatableBox[AbridgedAccountsBoxRetriever] with Validators{
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors (
+      () => validateOptionalStringByLength("AC5058A", this, 0, 20000),
+      () => validateOptionalStringByRegex("AC5058A", this, validCoHoCharacters)
+    )
+  }
 }

@@ -31,7 +31,7 @@ case class CP285(value: Option[LocalDate]) extends CtBoxIdentifier(name = "End d
     val DateFormat = "dd/MM/yyyy"
 
     collectErrors(
-      requiredIf() { value.isEmpty && boxRetriever.cpQ18().value == Some(true)} ,
+      requiredIf() { value.isEmpty && boxRetriever.cpQ18().value == Some(true) } ,
       cannotExistIf() { value.nonEmpty && !boxRetriever.cpQ18().orFalse },
       { () =>
         failIf (value.nonEmpty) {

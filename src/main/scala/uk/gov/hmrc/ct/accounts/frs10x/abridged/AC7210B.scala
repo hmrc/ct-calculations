@@ -31,6 +31,5 @@ case class AC7210B(value: Option[Int]) extends CtBoxIdentifier(name = "Dividends
         cannotExistIf() { value.nonEmpty && (!boxRetriever.ac7200().orFalse || boxRetriever.ac205().value.isEmpty) },
         validateMoney()(value, min = 0)
     )
-
   }
 }

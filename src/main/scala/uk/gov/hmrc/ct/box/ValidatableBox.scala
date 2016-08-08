@@ -21,7 +21,7 @@ import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 
-trait ValidatableBox[T <: BoxRetriever] {
+trait ValidatableBox[T <: BoxRetriever] extends Validators {
 
   val validNonForeignLessRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"!%\\*_\\+:@<>\\?=;]*"
   val validNonForeignMoreRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"]*"
@@ -261,11 +261,4 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  object failIf {
-    def apply(condition: => Boolean)(validationErrors: => Set[CtValidation]): Set[CtValidation] = if(condition) validationErrors else Set()
-  }
-
-  object passIf {
-    def apply(condition: => Boolean)(validationErrors: => Set[CtValidation]): Set[CtValidation] = if(condition) Set() else validationErrors
-  }
 }

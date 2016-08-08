@@ -24,9 +24,13 @@ case class AC31(value: Option[Int]) extends CtBoxIdentifier(name = "Interest pay
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with AccountsMoneyValidation
+  with Validators
   with AccountsPreviousPeriodValidation {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
-        validateInputAllowed("AC31", boxRetriever.ac205()) ++ validateMoney("AC31")
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateInputAllowed("AC31", boxRetriever.ac205()),
+      validateMoney()(value)
+    )
+  }
 }
