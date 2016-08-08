@@ -52,6 +52,21 @@ trait Validators[B <: BoxRetriever] {
     }
   }
 
+  protected def validate(boxId: String = boxId)(predicate: (B) => Boolean)(errors: Set[CtValidation])(boxRetriever: B): Set[CtValidation] = {
+    if (predicate(boxRetriever))
+      errors
+    else
+      Set.empty
+  }
+
+  protected def validateMoney(boxId: String = boxId)(value: Option[Int], min: Int = -99999999, max: Int = 99999999)(boxRetriever: B): Set[CtValidation] = {
+    value match {
+      case Some(x) if x < min => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(min.toString, max.toString))))
+      case Some(x) if x > max => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", Some(Seq(min.toString, max.toString))))
+      case _ => Set.empty
+    }
+  }
+
   protected def cannotExistIf(boxId: String = boxId)(predicate: (B) => Boolean)(boxRetriever: B): Set[CtValidation] = {
     if (predicate(boxRetriever))
       Set(CtValidation(Some(boxId), s"error.$boxId.cannot.exist"))
@@ -64,4 +79,9 @@ trait Validators[B <: BoxRetriever] {
       predicate(boxRetriever)
     }
   }
+
+  protected def nonEmpty(value: Option[_])(retriever: B): Boolean = value.nonEmpty
+
+  protected def isEmpty(value: Option[_])(retriever: B): Boolean = value.isEmpty
+
 }
