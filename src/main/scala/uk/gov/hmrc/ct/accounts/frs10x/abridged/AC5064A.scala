@@ -16,20 +16,16 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 case class AC5064A(value: Option[String]) extends CtBoxIdentifier(name = "Balance sheet - Creditors after 1 year note.") with CtOptionalString with Input with ValidatableBox[AbridgedAccountsBoxRetriever] {
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
-      validateOptionalStringByLength("AC5064A", this, 0, 20000),
+      cannotExistIf(value.isDefined && !boxRetriever.ac64().value.isDefined),
+      validateStringMaxLength("AC5064A", value.getOrElse(""), 20000),
       validateOptionalStringByRegex("AC5064A", this, validCoHoCharacters)
     )
-
-    (boxRetriever.ac64(), value) match {
-      case (AC64(None), Some(s)) => Set(CtValidation(Some("AC5064A"), "error.AC5064A.cannot.exist"))
-      case (AC64(Some(_)), Some(s)) => validateStringMaxLength("AC5064A", s, 20000) ++ validateOptionalStringByRegex("AC5064A", this, validCoHoCharacters)
-      case _ => Set.empty
-    }
   }
 }

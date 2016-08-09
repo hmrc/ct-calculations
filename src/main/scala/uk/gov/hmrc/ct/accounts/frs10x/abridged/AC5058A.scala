@@ -23,16 +23,9 @@ case class AC5058A(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
-      cannotExistIf()
-        validateStringMaxLength("AC5058A", s, 20000),
+      cannotExistIf(value.isDefined && !boxRetriever.ac58().value.isDefined) ,
+      validateStringMaxLength("AC5058A", value.getOrElse(""), 20000),
       validateOptionalStringByRegex("AC5058A", this, validCoHoCharacters)
     )
-
-
-    (boxRetriever.ac58(), value) match {
-      case (AC58(None), Some(s)) => Set(CtValidation(Some("AC5058A"), "error.AC5058A.cannot.exist"))
-      case (AC58(Some(_)), Some(s)) => validateStringMaxLength("AC5058A", s, 20000) ++ validateOptionalStringByRegex("AC5058A", this, validCoHoCharacters)
-      case _ => Set.empty
-    }
   }
 }
