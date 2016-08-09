@@ -19,47 +19,43 @@ package uk.gov.hmrc.ct.box
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 
-trait Validators[B <: BoxRetriever] {
+trait Validators {
 
   protected val boxId = getClass.getSimpleName
 
-  protected def And(predicates: ((B) => Boolean)*)(boxRetriever: B): Boolean = {
-    !predicates.exists { p => !p(boxRetriever)}
+  protected def And(predicates: (() => Boolean)*)(): Boolean = {
+
+    def allPredicatesTrue = predicates.forall {predicate => predicate()}
+    allPredicatesTrue
   }
 
-  protected def Or(predicates: ((B) => Boolean)*)(boxRetriever: B): Boolean = {
-    predicates.exists { p => p(boxRetriever)}
+  protected def Or(predicates: (() => Boolean)*)(): Boolean = {
+    def existsTruePredicate = predicates.exists(predicate => predicate())
+    existsTruePredicate
   }
 
-  protected def requiredIf(boxId: String = boxId)(predicate: (B) => Boolean)(boxRetriever: B): Set[CtValidation] = {
-    if (predicate(boxRetriever))
-      Set(CtValidation(Some(boxId), s"error.$boxId.required"))
-    else
-      Set.empty
+  protected def requiredIf(predicate: => Boolean)(): Set[CtValidation] = {
+      if (predicate)
+        Set(CtValidation(Some(boxId), s"error.$boxId.required"))
+      else
+        Set.empty
   }
 
-  protected def exceedsMax(boxId: String = boxId)(value: Option[Int], max: Int = MAX_MONEY_AMOUNT_ALLOWED)(boxRetriever: B): Set[CtValidation] = {
+  protected def exceedsMax(value: Option[Int], max: Int = MAX_MONEY_AMOUNT_ALLOWED)(): Set[CtValidation] = {
     value match {
       case (Some(v)) if v > max => Set(CtValidation(Some(boxId), s"error.$boxId.exceeds.max", Some(Seq(max.toString))))
       case _ => Set.empty
     }
   }
 
-  protected def belowMin(boxId: String = boxId)(value: Option[Int], min: Int = MIN_MONEY_AMOUNT_ALLOWED)(boxRetriever: B): Set[CtValidation] = {
+  protected def belowMin(value: Option[Int], min: Int = MIN_MONEY_AMOUNT_ALLOWED)(): Set[CtValidation] = {
     value match {
       case (Some(v)) if v < min => Set(CtValidation(Some(boxId), s"error.$boxId.below.min", Some(Seq(min.toString))))
       case _ => Set.empty
     }
   }
 
-  protected def validate(boxId: String = boxId)(predicate: (B) => Boolean)(errors: Set[CtValidation])(boxRetriever: B): Set[CtValidation] = {
-    if (predicate(boxRetriever))
-      errors
-    else
-      Set.empty
-  }
-
-  protected def validateMoney(boxId: String = boxId)(value: Option[Int], min: Int = -99999999, max: Int = 99999999)(boxRetriever: B): Set[CtValidation] = {
+  protected def validateMoney(value: Option[Int], min: Int = -99999999, max: Int = 99999999)(): Set[CtValidation] = {
     value match {
       case Some(x) if x < min => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(min.toString, max.toString))))
       case Some(x) if x > max => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", Some(Seq(min.toString, max.toString))))
@@ -67,21 +63,24 @@ trait Validators[B <: BoxRetriever] {
     }
   }
 
-  protected def cannotExistIf(boxId: String = boxId)(predicate: (B) => Boolean)(boxRetriever: B): Set[CtValidation] = {
-    if (predicate(boxRetriever))
+  protected def cannotExistIf(predicate: => Boolean)(): Set[CtValidation] = {
+    if (predicate)
       Set(CtValidation(Some(boxId), s"error.$boxId.cannot.exist"))
     else
       Set.empty
   }
 
-  protected def collectErrors(predicates: Set[(B) => Set[CtValidation]])(boxRetriever: B): Set[CtValidation] = {
+  protected def failIf(condition: => Boolean)(validationErrors: => Set[CtValidation])(): Set[CtValidation] = if(condition) validationErrors else Set()
+
+  protected def passIf(condition: => Boolean)(validationErrors: => Set[CtValidation])(): Set[CtValidation] = if(condition) Set() else validationErrors
+
+  protected def nonEmpty(value: Option[_]): Boolean = value.nonEmpty
+
+  protected def isEmpty(value: Option[_]): Boolean = value.isEmpty
+
+  protected def collectErrors(predicates: (() => Set[CtValidation])*): Set[CtValidation] = {
     predicates.flatMap { predicate =>
-      predicate(boxRetriever)
-    }
+      predicate()
+    }.toSet
   }
-
-  protected def nonEmpty(value: Option[_])(retriever: B): Boolean = value.nonEmpty
-
-  protected def isEmpty(value: Option[_])(retriever: B): Boolean = value.isEmpty
-
 }

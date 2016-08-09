@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.AccountsMoneyValidation
+
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
@@ -24,14 +24,12 @@ case class AC7210B(value: Option[Int]) extends CtBoxIdentifier(name = "Dividends
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators[AbridgedAccountsBoxRetriever] {
+  with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      Set(
-        cannotExistIf() { retriever => value.nonEmpty && (!retriever.ac7200().orFalse || retriever.ac205().value.isEmpty) },
-        validateMoney()(value, min = 0)
-      )
-    )(boxRetriever)
+        cannotExistIf(value.nonEmpty && (!boxRetriever.ac7200().orFalse || boxRetriever.ac205().value.isEmpty)),
+        validateMoney(value, min = 0)
+    )
   }
 }

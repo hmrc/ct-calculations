@@ -31,16 +31,15 @@ case class CP287(value: Option[Int]) extends CtBoxIdentifier(name = "Amount of l
     import boxRetriever._
     val max = cp118().value - cp998().orZero
 
-    collectErrors(Set(
-      requiredIf("CP287") { boxRetriever: ComputationsBoxRetriever => value.isEmpty && boxRetriever.cpQ20().value == Some(true) },
-      cannotExistIf("CP287") { boxRetriever: ComputationsBoxRetriever => value.nonEmpty && !boxRetriever.cpQ20().orFalse },
-      exceedsMax("CP287")(value, max),
-      belowMin("CP287")(value, 1)
-    ))(boxRetriever)
+    collectErrors(
+      requiredIf(value.isEmpty && boxRetriever.cpQ20().value == Some(true)),
+      cannotExistIf({ value.nonEmpty && !boxRetriever.cpQ20().orFalse }),
+      exceedsMax(value, max),
+      belowMin(value, 1)
+    )
   }
 }
 
 object CP287 {
-
   def apply(int: Int): CP287 = CP287(Some(int))
 }

@@ -21,11 +21,15 @@ import uk.gov.hmrc.ct.box._
 
 case class AC5052B(value: Option[String]) extends CtBoxIdentifier(name = "Balance sheet notes debtors additional information") with CtOptionalString
                                                                                                                                 with Input
-                                                                                                                                with ValidatableBox[AbridgedAccountsBoxRetriever] {
+                                                                                                                                with ValidatableBox[AbridgedAccountsBoxRetriever]
+                                                                                                                                with Validators {
 
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    validateStringMaxLength("AC5052B", value.getOrElse(""), 20000) ++ validateOptionalStringByRegex("AC5052B", this, validCoHoCharacters)
+    collectErrors (
+      cannotExistIf(value.nonEmpty && !boxRetriever.ac52().value.isDefined),
+      validateStringMaxLength("AC5052B", value.getOrElse(""), 20000),
+      validateOptionalStringByRegex("AC5052B", this, validCoHoCharacters)
+    )
   }
-
 }

@@ -17,16 +17,20 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidation, AccountsPreviousPeriodValidation}
+import uk.gov.hmrc.ct.accounts.{AccountsPreviousPeriodValidation}
 import uk.gov.hmrc.ct.box._
 
 case class AC31(value: Option[Int]) extends CtBoxIdentifier(name = "Interest payable and similar income (previous PoA)")
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with AccountsMoneyValidation
+  with Validators
   with AccountsPreviousPeriodValidation {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
-        validateInputAllowed("AC31", boxRetriever.ac205()) ++ validateMoney("AC31")
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateInputAllowed("AC31", boxRetriever.ac205()),
+      validateMoney(value)
+    )
+  }
 }

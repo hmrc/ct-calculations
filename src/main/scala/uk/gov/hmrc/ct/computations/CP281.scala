@@ -28,12 +28,12 @@ case class CP281(value: Option[Int]) extends CtBoxIdentifier("Losses brought for
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
 
-    collectErrors(Set(
-      requiredIf() { boxRetriever: ComputationsBoxRetriever => value.isEmpty && boxRetriever.cpQ17().value == Some(true) },
-      cannotExistIf() { boxRetriever: ComputationsBoxRetriever => value.nonEmpty && !boxRetriever.cpQ17().orFalse },
-      exceedsMax()(value),
-      belowMin()(value, min = 1)
-    ))(boxRetriever)
+    collectErrors(
+      requiredIf(value.isEmpty && boxRetriever.cpQ17().value == Some(true)),
+      cannotExistIf(value.nonEmpty && !boxRetriever.cpQ17().orFalse),
+      exceedsMax(value),
+      belowMin(value, min = 1)
+    )
   }
 }
 

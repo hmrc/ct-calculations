@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.AccountsMoneyValidation
+
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
@@ -24,9 +24,12 @@ case class AC70(value: Option[Int]) extends CtBoxIdentifier(name = "Called up sh
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with AccountsMoneyValidation {
+  with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    validateMoney("AC70", min = 1) ++ validateAsMandatory(this)
+    collectErrors(
+      validateAsMandatory(this),
+      validateMoney(value, min = 1)
+    )
   }
 }

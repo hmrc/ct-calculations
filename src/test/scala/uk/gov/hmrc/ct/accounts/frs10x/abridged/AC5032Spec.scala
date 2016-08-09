@@ -41,12 +41,12 @@ class AC5032Spec extends WordSpec with MockitoSugar with Matchers {
     }
     "pass validation when string is 20,000 characters long" in {
       when(boxRetriever.ac32()).thenReturn(AC32(Some(1)))
-      val string = (1 to 20000).map(x => "a").mkString("")
+      val string = "a" * 20000
       AC5032(Some(string)).validate(boxRetriever) shouldBe Set.empty
     }
     "fail validation when string is longer than 20,000 characters long" in {
       when(boxRetriever.ac32()).thenReturn(AC32(Some(1)))
-      val string = (1 to 20001).map(x => "a").mkString("")
+      val string = "a" * 20001
       AC5032(Some(string)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5032"), "error.AC5032.max.length", Some(Seq("20,000"))))
     }
     "fail validation when populated and AC32 is empty" in {

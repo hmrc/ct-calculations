@@ -23,17 +23,15 @@ case class AC7210A(value: Option[Int]) extends CtBoxIdentifier(name = "Dividends
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators[AbridgedAccountsBoxRetriever] {
+  with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      Set(
-        cannotExistIf() { retriever => value.nonEmpty && !retriever.ac7200().orFalse },
-        validateMoney()(value, min = 0),
-        validate()(retriever => value.isEmpty && retriever.ac7200.orFalse && retriever.ac7210B().value.isEmpty)
+        cannotExistIf(value.nonEmpty && !boxRetriever.ac7200().orFalse ),
+        validateMoney(value, min = 0),
+        failIf(value.isEmpty && boxRetriever.ac7200.orFalse && boxRetriever.ac7210B().value.isEmpty)
                   (Set(CtValidation(None, "error.abridged.additional.dividend.note.one.box.required")))
       )
-    )(boxRetriever)
   }
 }

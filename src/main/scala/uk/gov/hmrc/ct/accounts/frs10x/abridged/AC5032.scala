@@ -22,14 +22,14 @@ import uk.gov.hmrc.ct.box._
 case class AC5032(value: Option[String]) extends CtBoxIdentifier(name = "Profit/(loss) before tax note")
                                       with CtOptionalString
                                       with Input
-                                      with ValidatableBox[AbridgedAccountsBoxRetriever] {
+                                      with ValidatableBox[AbridgedAccountsBoxRetriever]
+                                      with Validators {
 
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    (boxRetriever.ac32(), value) match {
-      case (AC32(None), Some(s)) => Set(CtValidation(Some("AC5032"), "error.AC5032.cannot.exist"))
-      case (AC32(Some(_)), Some(s)) => validateStringMaxLength("AC5032", s, 20000)
-      case _ => Set.empty
-    }
+    collectErrors(
+      cannotExistIf(value.isDefined && !boxRetriever.ac32().value.isDefined),
+      validateStringMaxLength("AC5032", value.getOrElse(""), 20000)
+    )
   }
 }

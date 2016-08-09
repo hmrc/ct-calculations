@@ -21,7 +21,7 @@ import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 
-trait ValidatableBox[T <: BoxRetriever] {
+trait ValidatableBox[T <: BoxRetriever] extends Validators {
 
   val validNonForeignLessRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"!%\\*_\\+:@<>\\?=;]*"
   val validNonForeignMoreRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"]*"
@@ -34,21 +34,21 @@ trait ValidatableBox[T <: BoxRetriever] {
 
   def validate(boxRetriever: T): Set[CtValidation]
 
-  protected def validateBooleanAsMandatory(boxId: String, box: CtOptionalBoolean): Set[CtValidation] = {
+  protected def validateBooleanAsMandatory(boxId: String, box: CtOptionalBoolean)(): Set[CtValidation] = {
     box.value match {
       case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
       case _ => Set()
     }
   }
 
-  protected def validateIntegerAsMandatory(boxId: String, box: CtOptionalInteger): Set[CtValidation] = {
+  protected def validateIntegerAsMandatory(boxId: String, box: CtOptionalInteger)(): Set[CtValidation] = {
     box.value match {
       case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
       case _ => Set()
     }
   }
 
-  protected def validateStringAsMandatory(boxId: String, box: CtOptionalString): Set[CtValidation] = {
+  protected def validateStringAsMandatory(boxId: String, box: CtOptionalString)(): Set[CtValidation] = {
     box.value match {
       case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
       case Some(x) if x.isEmpty => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
@@ -56,21 +56,21 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  protected def validateAsMandatory[U](box: CtValue[U] with CtBoxIdentifier): Set[CtValidation] = {
+  protected def validateAsMandatory[U](box: CtValue[U] with CtBoxIdentifier)(): Set[CtValidation] = {
     box.value match {
       case None => Set(CtValidation(Some(box.id), s"error.${box.id}.required"))
       case _ => Set()
     }
   }
 
-  protected def validateStringAsMandatoryIfPAYEEQ1False(boxRetriever: RepaymentsBoxRetriever, boxId: String, box: CtOptionalString): Set[CtValidation] = {
+  protected def validateStringAsMandatoryIfPAYEEQ1False(boxRetriever: RepaymentsBoxRetriever, boxId: String, box: CtOptionalString)(): Set[CtValidation] = {
     val payeeq1 = boxRetriever.payeeQ1()
     if (!payeeq1.value.getOrElse(true)) {
       validateStringAsMandatory(boxId, box)
     } else Set()
   }
 
-  protected def validateAllFilledOrEmptyStrings(boxId: String, allBoxes: Set[CtString]): Set[CtValidation] = {
+  protected def validateAllFilledOrEmptyStrings(boxId: String, allBoxes: Set[CtString])(): Set[CtValidation] = {
     val allEmpty = allBoxes.count(_.value.isEmpty) == allBoxes.size
     val allNonEmpty = allBoxes.count(_.value.nonEmpty) == allBoxes.size
 
@@ -79,7 +79,7 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  protected def validateAllFilledOrEmptyStringsForBankDetails(boxRetriever: RepaymentsBoxRetriever, boxId: String): Set[CtValidation] = {
+  protected def validateAllFilledOrEmptyStringsForBankDetails(boxRetriever: RepaymentsBoxRetriever, boxId: String)(): Set[CtValidation] = {
     val bankDetailsBoxGroup:Set[CtString] = Set(
       boxRetriever.b920(),
       boxRetriever.b925(),
@@ -89,7 +89,7 @@ trait ValidatableBox[T <: BoxRetriever] {
     validateAllFilledOrEmptyStrings(boxId, bankDetailsBoxGroup)
   }
 
-  protected def validateStringAsBlank(boxId: String, box: CtOptionalString): Set[CtValidation] = {
+  protected def validateStringAsBlank(boxId: String, box: CtOptionalString)(): Set[CtValidation] = {
     box.value match {
       case None => Set()
       case Some(x) if x.isEmpty => Set()
@@ -97,25 +97,25 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  protected def validateDateAsMandatory(boxId: String, box: CtOptionalDate): Set[CtValidation] = {
+  protected def validateDateAsMandatory(boxId: String, box: CtOptionalDate)(): Set[CtValidation] = {
     validateDateAsMandatory(boxId, box.value, boxId): Set[CtValidation]
   }
 
-  protected def validateDateAsMandatory(boxId: String, date: Option[LocalDate], messageId: String): Set[CtValidation] = {
+  protected def validateDateAsMandatory(boxId: String, date: Option[LocalDate], messageId: String)(): Set[CtValidation] = {
     date match {
       case None => Set(CtValidation(Some(boxId), s"error.$messageId.required"))
       case _ => Set()
     }
   }
 
-  protected def validateDateAsBlank(boxId: String, box: CtOptionalDate): Set[CtValidation] = {
+  protected def validateDateAsBlank(boxId: String, box: CtOptionalDate)(): Set[CtValidation] = {
     box.value match {
       case None => Set()
       case _ => Set(CtValidation(Some(boxId), s"error.$boxId.nonBlankValue"))
     }
   }
 
-  protected def validateDateAsBefore(boxId: String, box: CtOptionalDate, dateToCompare: LocalDate): Set[CtValidation] = {
+  protected def validateDateAsBefore(boxId: String, box: CtOptionalDate, dateToCompare: LocalDate)(): Set[CtValidation] = {
     box.value match {
       case None => Set()
       case Some(date) if date.isBefore(dateToCompare) => Set()
@@ -123,7 +123,7 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  protected def validateDateAsAfter(boxId: String, box: CtOptionalDate, dateToCompare: LocalDate): Set[CtValidation] = {
+  protected def validateDateAsAfter(boxId: String, box: CtOptionalDate, dateToCompare: LocalDate)(): Set[CtValidation] = {
     box.value match {
       case None => Set()
       case Some(date) if date.isAfter(dateToCompare) => Set()
@@ -131,11 +131,11 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  protected def validateDateAsBetweenInclusive(boxId: String, box: CtOptionalDate, minDate: LocalDate, maxDate: LocalDate): Set[CtValidation] = {
+  protected def validateDateAsBetweenInclusive(boxId: String, box: CtOptionalDate, minDate: LocalDate, maxDate: LocalDate)(): Set[CtValidation] = {
     validateDateAsBetweenInclusive(boxId, box.value, minDate, maxDate, boxId)
   }
 
-  protected def validateDateAsBetweenInclusive(boxId: String, date: Option[LocalDate], minDate: LocalDate, maxDate: LocalDate, messageId: String): Set[CtValidation] = {
+  protected def validateDateAsBetweenInclusive(boxId: String, date: Option[LocalDate], minDate: LocalDate, maxDate: LocalDate, messageId: String)(): Set[CtValidation] = {
     date match {
       case None => Set()
       case Some(date) if date.isBefore(minDate.toDateTimeAtStartOfDay.toLocalDate) || date.isAfter(maxDate.plusDays(1).toDateTimeAtStartOfDay.minusSeconds(1).toLocalDate) =>
@@ -144,14 +144,14 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  protected def validateIntegerAsBlank(boxId: String, box: CtOptionalInteger): Set[CtValidation] = {
+  protected def validateIntegerAsBlank(boxId: String, box: CtOptionalInteger)(): Set[CtValidation] = {
     box.value match {
       case None => Set()
       case _ => Set(CtValidation(Some(boxId), s"error.$boxId.nonBlankValue"))
     }
   }
 
-  protected def validateIntegerRange(boxId: String, box: CtOptionalInteger, min: Int = 0, max: Int): Set[CtValidation] = {
+  protected def validateIntegerRange(boxId: String, box: CtOptionalInteger, min: Int = 0, max: Int)(): Set[CtValidation] = {
     box.value match {
       case Some(x) => {
         passIf (min <= x && x <= max) {
@@ -162,35 +162,35 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  protected def validateZeroOrPositiveBigDecimal(box: CtOptionalBigDecimal with CtBoxIdentifier): Set[CtValidation] = {
+  protected def validateZeroOrPositiveBigDecimal(box: CtOptionalBigDecimal with CtBoxIdentifier)(): Set[CtValidation] = {
     box.value match {
       case Some(x) if x < BigDecimal(0) => Set(CtValidation(Some(box.id), s"error.${box.id}.mustBeZeroOrPositive"))
       case _ => Set()
     }
   }
 
-  protected def validateZeroOrPositiveInteger(box: CtOptionalInteger with CtBoxIdentifier): Set[CtValidation] = {
+  protected def validateZeroOrPositiveInteger(box: CtOptionalInteger with CtBoxIdentifier)(): Set[CtValidation] = {
     box.value match {
       case Some(x) if x < 0 => Set(CtValidation(Some(box.id), s"error.${box.id}.mustBeZeroOrPositive"))
       case _ => Set()
     }
   }
 
-  protected def validatePositiveBigDecimal(box: CtOptionalBigDecimal with CtBoxIdentifier): Set[CtValidation] = {
+  protected def validatePositiveBigDecimal(box: CtOptionalBigDecimal with CtBoxIdentifier)(): Set[CtValidation] = {
     box.value match {
       case Some(x) if x <= 0 => Set(CtValidation(Some(box.id), s"error.${box.id}.mustBePositive"))
       case _ => Set()
     }
   }
 
-  protected def validatePositiveInteger(box: CtOptionalInteger with CtBoxIdentifier): Set[CtValidation] = {
+  protected def validatePositiveInteger(box: CtOptionalInteger with CtBoxIdentifier)(): Set[CtValidation] = {
     box.value match {
       case Some(x) if x <= 0 => Set(CtValidation(Some(box.id), s"error.${box.id}.mustBePositive"))
       case _ => Set()
     }
   }
 
-  protected def validateOptionalStringByRegex(boxId: String, box: CtOptionalString, regex: String): Set[CtValidation] = {
+  protected def validateOptionalStringByRegex(boxId: String, box: CtOptionalString, regex: String)(): Set[CtValidation] = {
     box.value match {
       case Some(x) if x.nonEmpty => {
         passIf (x.matches(regex)) {
@@ -201,49 +201,49 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  protected def validateStringByRegex(boxId: String, box: CtString, regex: String): Set[CtValidation] = {
+  protected def validateStringByRegex(boxId: String, box: CtString, regex: String)(): Set[CtValidation] = {
     passIf (box.value.isEmpty || box.value.matches(regex)) {
       Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
     }
   }
 
-  protected def validateStringByRegex(boxId: String, value: String, errorCodeBoxId: String, regex: String): Set[CtValidation] = {
+  protected def validateStringByRegex(boxId: String, value: String, errorCodeBoxId: String, regex: String)(): Set[CtValidation] = {
     passIf (value.matches(regex)) {
       Set(CtValidation(Some(boxId), s"error.$errorCodeBoxId.regexFailure"))
     }
   }
 
-  protected def validateOptionalStringByLength(boxId: String, box: CtOptionalString, min: Int, max: Int): Set[CtValidation] = {
+  protected def validateOptionalStringByLength(boxId: String, box: CtOptionalString, min: Int, max: Int)(): Set[CtValidation] = {
     box.value match {
       case Some(x) => validateNotEmptyStringByLength(boxId, x, min, max)
       case _ => Set()
     }
   }
 
-  protected def validateStringByLength(boxId: String, box: CtString, min:Int, max:Int): Set[CtValidation] = {
+  protected def validateStringByLength(boxId: String, box: CtString, min:Int, max:Int)(): Set[CtValidation] = {
      validateNotEmptyStringByLength(boxId, box.value, min, max)
   }
 
-  def validateNotEmptyStringByLength(boxId: String, value: String, min: Int, max: Int): Set[CtValidation] = {
+  def validateNotEmptyStringByLength(boxId: String, value: String, min: Int, max: Int)(): Set[CtValidation] = {
     failIf (value.nonEmpty && value.size < min || value.size > max) {
       Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(min.toString, max.toString))))
     }
   }
 
-  def validateStringByLength(boxId: String, value: String, errorCodeId: String, min: Int, max: Int): Set[CtValidation] = {
+  def validateStringByLength(boxId: String, value: String, errorCodeId: String, min: Int, max: Int)(): Set[CtValidation] = {
     failIf (value.size < min || value.size > max) {
       Set(CtValidation(Some(boxId), s"error.$errorCodeId.text.sizeRange", Some(Seq(min.toString, max.toString))))
     }
   }
 
-  def validateStringMaxLength(boxId: String, value: String, max: Int): Set[CtValidation] = {
+  def validateStringMaxLength(boxId: String, value: String, max: Int)(): Set[CtValidation] = {
     failIf (value.size > max) {
       def commaForThousands(i: Int) = f"$i%,d"
       Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(commaForThousands(max)))))
     }
   }
 
-  def validatePostcode(boxId: String, box: CtOptionalString): Set[CtValidation] = {
+  def validatePostcode(boxId: String, box: CtOptionalString)(): Set[CtValidation] = {
     validatePostcodeLength(boxId, box) ++ validatePostcodeRegex(boxId, box)
   }
 
@@ -261,11 +261,4 @@ trait ValidatableBox[T <: BoxRetriever] {
     }
   }
 
-  object failIf {
-    def apply(condition: => Boolean)(validationErrors: => Set[CtValidation]): Set[CtValidation] = if(condition) validationErrors else Set()
-  }
-
-  object passIf {
-    def apply(condition: => Boolean)(validationErrors: => Set[CtValidation]): Set[CtValidation] = if(condition) Set() else validationErrors
-  }
 }

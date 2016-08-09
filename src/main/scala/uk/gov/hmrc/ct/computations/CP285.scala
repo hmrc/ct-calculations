@@ -30,12 +30,10 @@ case class CP285(value: Option[LocalDate]) extends CtBoxIdentifier(name = "End d
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     val DateFormat = "dd/MM/yyyy"
 
-    collectErrors(Set(
-      requiredIf() { boxRetriever: ComputationsBoxRetriever =>
-        value.isEmpty && boxRetriever.cpQ18().value == Some(true)
-      } _,
-      cannotExistIf() { boxRetriever: ComputationsBoxRetriever => value.nonEmpty && !boxRetriever.cpQ18().orFalse },
-      { boxRetriever: ComputationsBoxRetriever =>
+    collectErrors(
+      requiredIf({ value.isEmpty && boxRetriever.cpQ18().value == Some(true) }) ,
+      cannotExistIf(value.nonEmpty && !boxRetriever.cpQ18().orFalse),
+      { () =>
         failIf (value.nonEmpty) {
           val providedDate = value.getOrElse(throw new IllegalStateException("The value of CP285 is empty and that does not appear to be possible."))
           val cp2 = boxRetriever.cp2().value
@@ -44,6 +42,6 @@ case class CP285(value: Option[LocalDate]) extends CtBoxIdentifier(name = "End d
           }
         }
       }
-    ))(boxRetriever)
+    )
   }
 }
