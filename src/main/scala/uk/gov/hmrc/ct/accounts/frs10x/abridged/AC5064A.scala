@@ -23,7 +23,7 @@ case class AC5064A(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
 
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever): Set[CtValidation] =
     collectErrors (
-      () => validateOptionalStringByLength("AC5064A", this, 0, 20000),
-      () => validateOptionalStringByRegex("AC5064A", this, validCoHoCharacters)
+      validateOptionalStringByLength("AC5064A", this, 0, 20000),
+      validateOptionalStringByRegex("AC5064A", this, validCoHoCharacters)
     )
 }
