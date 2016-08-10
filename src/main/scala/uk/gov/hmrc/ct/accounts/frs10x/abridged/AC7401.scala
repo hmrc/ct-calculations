@@ -26,7 +26,7 @@ with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
-      cannotExistIf(boxRetriever.ac7400().value.getOrElse(false)),
+      cannotExistIf(!boxRetriever.ac7400().value.getOrElse(false) && value.nonEmpty),
 
       failIf (boxRetriever.ac7400().value.getOrElse(false)) (
         collectErrors (
