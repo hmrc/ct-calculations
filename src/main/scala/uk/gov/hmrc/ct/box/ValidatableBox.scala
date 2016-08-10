@@ -207,7 +207,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
-  protected def validateStringByRegex(boxId: String, value: String, errorCodeBoxId: String, regex: String)(): Set[CtValidation] = {
+  protected def validateRawStringByRegex(boxId: String, value: String, errorCodeBoxId: String, regex: String)(): Set[CtValidation] = {
     passIf (value.matches(regex)) {
       Set(CtValidation(Some(boxId), s"error.$errorCodeBoxId.regexFailure"))
     }
