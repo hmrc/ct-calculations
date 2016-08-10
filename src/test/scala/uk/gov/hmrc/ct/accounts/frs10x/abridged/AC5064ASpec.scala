@@ -19,36 +19,23 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC5064ASpec extends WordSpec with MockitoSugar with Matchers {
+class AC5064ASpec extends WordSpec
+  with MockitoSugar
+  with Matchers
+  with MockAbridgedAccountsRetriever
+  with AccountsFreeTextValidationFixture {
 
-  val boxRetriever = mock[AbridgedAccountsBoxRetriever]
+  override def setUpMocks(): Unit = {
+    when(boxRetriever.ac64()).thenReturn(AC64(Some(100)))
+  }
+
+  testAccountsCharacterLimitValidation("AC5064A", 20000, AC5064A)
+  testAccountsRegexValidation("AC5064A", AC5064A)
 
   "AC5064A" should {
-    "pass validation when empty" in {
-      when(boxRetriever.ac64()).thenReturn(AC64(Some(1)))
-      AC5064A(None).validate(boxRetriever) shouldBe Set.empty
-    }
-    "pass validation when empty string" in {
-      when(boxRetriever.ac64()).thenReturn(AC64(Some(1)))
-      AC5064A(Some("")).validate(boxRetriever) shouldBe Set.empty
-    }
-    "pass validation when string" in {
-      when(boxRetriever.ac64()).thenReturn(AC64(Some(1)))
-      AC5064A(Some("testing this like crazy")).validate(boxRetriever) shouldBe Set.empty
-    }
-    "pass validation when string is 20,000 characters long" in {
-      when(boxRetriever.ac64()).thenReturn(AC64(Some(1)))
-      val string = (1 to 20000).map(x => "a").mkString("")
-      AC5064A(Some(string)).validate(boxRetriever) shouldBe Set.empty
-    }
-    "fail validation when string is longer than 20,000 characters long" in {
-      when(boxRetriever.ac64()).thenReturn(AC64(Some(1)))
-      val string = (1 to 20001).map(x => "a").mkString("")
-      AC5064A(Some(string)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5064A"), "error.AC5064A.max.length", Some(Seq("20,000"))))
-    }
     "fail validation when populated and AC64 is empty" in {
       when(boxRetriever.ac64()).thenReturn(AC64(None))
       AC5064A(Some("testing")).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5064A"), "error.AC5064A.cannot.exist"))
