@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import com.sun.xml.internal.ws.developer.MemberSubmissionAddressing.Validation
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
@@ -25,28 +24,17 @@ with Input
 with ValidatableBox[AbridgedAccountsBoxRetriever]
 with Validators {
 
-  def collectErrorsIf(boxRetriever: AbridgedAccountsBoxRetriever, ifCondition: Boolean, conditions: Set[CtValidation])(): Set[CtValidation] = {
-    failIf(ifCondition) (
-      conditions
-    )
-  }
-
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
       cannotExistIf(boxRetriever.ac7400().value.getOrElse(false)),
 
-      collectErrorsIf(boxRetriever,
-        boxRetriever.ac7400().value.getOrElse(false),
+      failIf (boxRetriever.ac7400().value.getOrElse(false)) (
         collectErrors (
-          validateStringMaxLength("AC7401", value.getOrElse(""), 20000),
+          validateStringAsMandatory("AC7401", this),
+          validateOptionalStringByLength("AC7401", this, 1, 20000),
           validateOptionalStringByRegex("AC7401", this, validCoHoCharacters)
         )
       )
     )
   }
 }
-
-/*
-        (ac7400 && validateStringMaxLength) ||
-        (ac7400 && validateOptionalStringByRegex)
- */
