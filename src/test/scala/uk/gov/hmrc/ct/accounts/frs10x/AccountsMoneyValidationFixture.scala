@@ -29,6 +29,9 @@ trait AccountsMoneyValidationFixture extends WordSpec with Matchers with Mockito
 
   self: MockAbridgedAccountsRetriever =>
 
+  val STANDARD_MIN = -99999999
+  val STANDARD_MAX = 99999999
+
   def setUpMocks(): Unit = {
     when(boxRetriever.ac16()).thenReturn(AC16(Some(16)))
     when(boxRetriever.ac18()).thenReturn(AC18(Some(18)))
@@ -40,56 +43,43 @@ trait AccountsMoneyValidationFixture extends WordSpec with Matchers with Mockito
   }
 
   def testAccountsMoneyValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
-    setUpMocks()
-    s"$boxId" should {
-      "be valid when 0" in {
-        builder(Some(0)).validate(boxRetriever) shouldBe empty
-      }
-      "be valid when empty" in {
-        builder(None).validate(boxRetriever) shouldBe empty
-      }
-      "be valid when negative" in {
-        builder(Some(-1)).validate(boxRetriever) shouldBe empty
-      }
-      "be valid when negative and equals lower limit" in {
-        builder(Some(-99999999)).validate(boxRetriever) shouldBe empty
-      }
-      "be valid when positive" in {
-        builder(Some(1)).validate(boxRetriever) shouldBe empty
-      }
-      "be valid when positive but equals upper limit" in {
-        builder(Some(99999999)).validate(boxRetriever) shouldBe empty
-      }
-      "fail validation when negative but below lower limit" in {
-        builder(Some(-100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq("-99999999", "99999999"))))
-      }
-      "fail validation when positive but above upper limit" in {
-        builder(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", Some(Seq("-99999999", "99999999"))))
-      }
-    }
+    doTests(boxId, STANDARD_MIN, STANDARD_MAX, builder, testEmpty = true)
   }
 
   def testAccountsMoneyValidationWithMin(boxId: String, minValue: Int, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
+    doTests(boxId, minValue, STANDARD_MAX, builder, testEmpty = true)
+  }
+
+  def testAccountsMoneyValidationWithMinMaxIgnoringEmptyTest(boxId: String, minValue: Int, maxValue: Int, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
+    doTests(boxId, minValue, maxValue, builder, testEmpty = false)
+  }
+
+  private def doTests(boxId: String, minValue: Int, maxValue: Int, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever], testEmpty: Boolean): Unit = {
     setUpMocks()
     s"$boxId" should {
       "be valid when minimum" in {
         builder(Some(minValue)).validate(boxRetriever) shouldBe empty
       }
       "be valid when empty" in {
-        builder(None).validate(boxRetriever) shouldBe empty
+        if(testEmpty) {
+          builder(None).validate(boxRetriever) shouldBe empty
+        } else {
+          assert(true)
+        }
       }
       "be valid when greater then min" in {
         builder(Some(minValue + 1)).validate(boxRetriever) shouldBe empty
       }
       "be valid when positive but equals upper limit" in {
-        builder(Some(99999999)).validate(boxRetriever) shouldBe empty
+        builder(Some(maxValue)).validate(boxRetriever) shouldBe empty
       }
       "fail validation when less then min lower limit" in {
-        builder(Some(minValue - 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(minValue.toString, "99999999"))))
+        builder(Some(minValue - 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(minValue.toString, maxValue.toString))))
       }
       "fail validation when positive but above upper limit" in {
-        builder(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", Some(Seq(minValue.toString, "99999999"))))
+        builder(Some(maxValue + 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", Some(Seq(minValue.toString, maxValue.toString))))
       }
     }
   }
+
 }
