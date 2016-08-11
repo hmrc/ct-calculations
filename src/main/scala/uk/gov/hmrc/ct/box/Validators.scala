@@ -41,6 +41,13 @@ trait Validators {
         Set.empty
   }
 
+  protected def requireIf(predicate: => Boolean)(boxId:String)(): Set[CtValidation] = {
+    if (predicate)
+      Set(CtValidation(Some(boxId), s"error.$boxId.required"))
+    else
+      Set.empty
+  }
+
   protected def exceedsMax(value: Option[Int], max: Int = MAX_MONEY_AMOUNT_ALLOWED)(): Set[CtValidation] = {
     value match {
       case (Some(v)) if v > max => Set(CtValidation(Some(boxId), s"error.$boxId.exceeds.max", Some(Seq(max.toString))))
