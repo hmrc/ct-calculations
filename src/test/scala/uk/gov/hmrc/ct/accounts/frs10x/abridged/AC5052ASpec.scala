@@ -31,8 +31,8 @@ class AC5052ASpec extends WordSpec with MockitoSugar with Matchers with MockAbri
 
   testAccountsMoneyValidationWithMin("AC5052A", minValue = 0, AC5052A)
 
-  "fail validation when populated and AC52 is empty" in {
+  "returns AC52 required validation error when AC5052A populated and AC52 is empty" in {
     when(boxRetriever.ac52()).thenReturn(AC52(None))
-    AC5052A(Some(4)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5052A"), "error.AC5052A.cannot.exist"))
-  }
+    AC5052A(Some(4)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC52"), "error.AC52.required"))
+   }
 }
