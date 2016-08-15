@@ -25,15 +25,33 @@ class AC106Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
   override def setUpMocks() = {
     super.setUpMocks()
     when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
+    when(boxRetriever.ac106A()).thenReturn(AC106A(None))
+    when(boxRetriever.ac107()).thenReturn(AC107(None))
   }
 
   testAccountsMoneyValidationWithMinMaxIgnoringEmptyTest("AC106", 0, 99999, AC106.apply)
 
   "AC106" should {
 
-    "validate with no errors when blank and AC7300 is true" in {
+    "validate with global error when blank, AC106A blank, AC107 blank and AC7300 is true" in {
 
       when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
+
+      AC106(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.abridged.additional.employees.note.one.box.required"))
+    }
+
+    "not throw any errors when blank, AC106A has a value, AC107 blank and AC7300 is true" in {
+
+      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
+      when(boxRetriever.ac106A()).thenReturn(AC106A(Some("A note")))
+
+      AC106(None).validate(boxRetriever) shouldBe empty
+    }
+    
+    "not throw any errors when blank, AC106A blank, AC107 has a value and AC7300 is true" in {
+
+      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
+      when(boxRetriever.ac107()).thenReturn(AC107(Some(20)))
 
       AC106(None).validate(boxRetriever) shouldBe empty
     }
