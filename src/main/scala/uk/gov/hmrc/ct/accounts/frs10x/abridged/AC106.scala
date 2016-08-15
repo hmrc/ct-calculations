@@ -31,7 +31,6 @@ case class AC106(value: Option[Int]) extends CtBoxIdentifier(name = "Average num
 
     collectErrors(
       cannotExistIf(!noteSelectedForInclusion && value.nonEmpty),
-      requiredIf(noteSelectedForInclusion && value.isEmpty),
       validateMoney(value, min = 0, max = 99999)
     )
   }

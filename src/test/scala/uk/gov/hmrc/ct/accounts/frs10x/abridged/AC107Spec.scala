@@ -32,59 +32,51 @@ class AC107Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
 
   "AC107" should {
 
-    "validate with mandatory error when Previous PoA exists and AC7300 is true" in {
+    "have no errors if blank and  AC7300 is true" in {
 
       when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
 
-      AC107(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC107"), "error.AC107.required"))
+      AC107(None).validate(boxRetriever) shouldBe empty
     }
 
-    "not validate with any errors when Previous PoA exists, AC7300 is true and AC107 has a value" in {
+    "not validate with any errors when AC7300 is true and AC107 has a value" in {
 
       when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
 
       AC107(Some(10)).validate(boxRetriever) shouldBe empty
     }
 
-    "not validate with any errors when Previous PoA exists, AC7300 is false and AC107 has no value" in {
+    "not validate with any errors when AC7300 is false and AC107 has no value" in {
 
       when(boxRetriever.ac7300()).thenReturn(AC7300(Some(false)))
 
       AC107(None).validate(boxRetriever) shouldBe empty
     }
 
-    "not validate with any errors when Previous PoA exists, AC7300 is None and AC107 has no value" in {
+    "not validate with any errors when AC7300 is None and AC107 has no value" in {
       when(boxRetriever.ac7300()).thenReturn(AC7300(None))
 
       AC107(None).validate(boxRetriever) shouldBe empty
     }
 
-    "validate with should not return exist error when Previous PoA exists, AC7300 is None and AC107 has a value" in {
+    "validate with should return exist error when AC7300 is None and AC107 has a value" in {
       when(boxRetriever.ac7300()).thenReturn(AC7300(None))
 
       AC107(Some(100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC107"), "error.AC107.cannot.exist"))
     }
 
-    "validate with should not return exist error when Previous PoA exists, AC7300 is false and AC107 has a value" in {
+    "validate with should return exist error when AC7300 is false and AC107 has a value" in {
       when(boxRetriever.ac7300()).thenReturn(AC7300(Some(false)))
 
       AC107(Some(100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC107"), "error.AC107.cannot.exist"))
     }
 
-    "validate with should not return exist error when AC7300 is true, AC107 has a value and Previous PoA is empty" in {
+    "validate with should return exist error when AC7300 is true, AC107 has a value and Previous PoA is empty" in {
       when(boxRetriever.ac205()).thenReturn(AC205(None))
       when(boxRetriever.ac7300()).thenReturn(AC7300(Some(false)))
 
       AC107(Some(100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC107"), "error.AC107.cannot.exist"))
     }
-
-    "validate with should not return mandatory error when AC7300 is true, AC107 is empty and Previous PoA is empty" in {
-      when(boxRetriever.ac205()).thenReturn(AC205(None))
-      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
-
-      AC107(None).validate(boxRetriever) shouldBe empty
-    }
-
   }
 
 }
