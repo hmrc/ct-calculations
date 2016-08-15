@@ -31,11 +31,11 @@ class AC106Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
 
   "AC106" should {
 
-    "validate with mandatory error when AC7300 is true" in {
+    "validate with no errors when blank and AC7300 is true" in {
 
       when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
 
-      AC106(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC106"), "error.AC106.required"))
+      AC106(None).validate(boxRetriever) shouldBe empty
     }
 
     "not validate with any errors when AC7300 is true and AC106 has a value" in {
