@@ -170,7 +170,11 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac7600(): AC7600
 
+  def ac7601(): AC7601
+
   def ac7800(): AC7800
 
   def ac7900(): AC7900
+
+  def ac7901(): AC7901
 }
