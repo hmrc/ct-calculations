@@ -23,6 +23,7 @@ import uk.gov.hmrc.ct.accounts.frs10x.validation.DirectorsReportEnabled
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
+import uk.gov.hmrc.ct.box.ValidatableBox._
 
 case class Directors(directors: List[Director] = List.empty) extends CtBoxIdentifier(name = "Directors.")
   with CtValue[List[Director]]
@@ -97,7 +98,7 @@ case class Director(id: String,
 
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever): Set[CtValidation] =
     validateStringByLength("ac8001", ac8001, "Directors.ac8001", 1, 40) ++
-      validateRawStringByRegex("ac8001", ac8001, "Directors.ac8001", validCoHoCharacters) ++
+      validateRawStringByRegex("ac8001", ac8001, "Directors.ac8001", ValidCoHoCharacters) ++
       validateAppointmentDateAsMandatoryWhenAppointed(boxRetriever) ++
       validateAppointmentDateAsWithinPOA(boxRetriever) ++
       validateResignationDateAsMandatoryWhenResigned(boxRetriever) ++

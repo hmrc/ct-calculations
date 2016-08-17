@@ -25,6 +25,8 @@ import uk.gov.hmrc.ct.ct600.v3._
 import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600BoxRetriever, RepaymentsBoxRetriever}
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 import uk.gov.hmrc.cato.time.DateHelper
+import uk.gov.hmrc.ct.box.ValidatableBox._
+
 
 class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with ValidatableBox[BoxRetriever]{
 
@@ -220,7 +222,7 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
 
     "return error if too long with thousands formatted as commas" in {
-      validateStringMaxLength("testBox", "1" * 20001, 20000) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.max.length", Some(Seq("20,000"))))
+      validateStringMaxLength("testBox", "1" * 20001, StandardCohoTextfieldLimit) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.max.length", Some(Seq("20,000"))))
     }
   }
 

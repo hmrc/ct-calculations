@@ -23,12 +23,6 @@ import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 trait ValidatableBox[T <: BoxRetriever] extends Validators {
 
-  val validNonForeignLessRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"!%\\*_\\+:@<>\\?=;]*"
-  val validNonForeignMoreRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"]*"
-  val validCoHoCharacters = "[A-Za-z\\-'\\. \\,]*" // Based on the comment from CATO-3881
-  val SortCodeValidChars = """^[0-9]{6}$"""
-  val AccountNumberValidChars = """^[0-9]{8}$"""
-
   // Taken from PostCodeType on http://www.hmrc.gov.uk/schemas/core-v2-0.xsd
   private val postCodeRegex = """(GIR 0AA)|((([A-Z][0-9][0-9]?)|(([A-Z][A-HJ-Y][0-9][0-9]?)|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2})"""
 
@@ -261,4 +255,14 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
+}
+
+object ValidatableBox {
+
+  val ValidNonForeignLessRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"!%\\*_\\+:@<>\\?=;]*"
+  val ValidNonForeignMoreRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"]*"
+  val ValidCoHoCharacters = "[A-Za-z\\-'\\. \\,]*" // Based on the comment from CATO-3881
+  val SortCodeValidChars = """^[0-9]{6}$"""
+  val AccountNumberValidChars = """^[0-9]{8}$"""
+  val StandardCohoTextfieldLimit = 20000
 }

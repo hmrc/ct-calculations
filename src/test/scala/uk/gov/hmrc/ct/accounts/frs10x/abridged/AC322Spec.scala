@@ -20,26 +20,19 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
-import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
-class AC5058ASpec extends WordSpec
+class AC322Spec extends WordSpec
   with MockitoSugar
   with Matchers
   with MockAbridgedAccountsRetriever
   with AccountsFreeTextValidationFixture {
 
   override def setUpMocks(): Unit = {
-    when(boxRetriever.ac58()).thenReturn(AC58(Some(100)))
+    when(boxRetriever.ac322()).thenReturn(AC322(Some("text")))
   }
 
-  testAccountsCharacterLimitValidation("AC5058A", StandardCohoTextfieldLimit, AC5058A)
-  testAccountsRegexValidation("AC5058A", AC5058A)
+  testAccountsCharacterLimitValidation("AC322", StandardCohoTextfieldLimit, AC322)
+  testAccountsRegexValidation("AC322", AC322)
 
-  "AC5058A" should {
-    "fail validation when populated and AC58 is empty" in {
-      when(boxRetriever.ac58()).thenReturn(AC58(None))
-      AC5058A(Some("testing")).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5058A"), "error.AC5058A.cannot.exist"))
-    }
-  }
 }
