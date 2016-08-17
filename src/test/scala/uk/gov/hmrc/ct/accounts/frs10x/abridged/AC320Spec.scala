@@ -42,4 +42,10 @@ class AC320Spec extends WordSpec
       AC320(None).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("AC320"), "error.AC320.required"))
     }
   }
+
+  "return value when AC320 is not empty" in {
+    val mockBoxRetriever = mock[AbridgedAccountsBoxRetriever]
+
+    AC320(Some(true)).value shouldBe Some(true)
+  }
 }
