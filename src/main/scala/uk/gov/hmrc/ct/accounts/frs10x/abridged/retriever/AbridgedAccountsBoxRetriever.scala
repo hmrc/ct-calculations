@@ -134,6 +134,20 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac107(): AC107
 
+  def ac320(): AC320
+
+  def ac320A(): AC320A
+
+  def ac321(): AC321
+
+  def ac322(): AC322
+
+  def ac323(): AC323
+
+  def ac324(): AC324
+
+  def ac325(): AC325
+
   def ac1076(): AC1076
 
   def ac1077(): AC1077
