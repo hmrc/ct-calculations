@@ -31,7 +31,7 @@ case class AC320A(value: Option[String]) extends CtBoxIdentifier(name = "Basis o
     collectErrors(
       validateStringMaxLength("AC320A", value.getOrElse(""), StandardCohoTextfieldLimit),
       validateOptionalStringByRegex("AC320A", this, ValidCoHoCharacters),
-      requiredIf(boxRetriever.ac320().orFalse == false)
+      requiredIf(value.isEmpty && boxRetriever.ac320().orFalse == false)
     )
   }
 }
