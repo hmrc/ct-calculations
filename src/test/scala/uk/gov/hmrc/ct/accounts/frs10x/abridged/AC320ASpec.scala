@@ -52,5 +52,12 @@ class AC320ASpec extends WordSpec
 
       AC320A(None).validate(boxRetriever) shouldBe empty
     }
+
+    "pass validation when has value and AC320 is false" in {
+
+      when(boxRetriever.ac320()).thenReturn(AC320(Some(false)))
+
+      AC320A(Some("text")).validate(boxRetriever) shouldBe empty
+    }
   }
 }
