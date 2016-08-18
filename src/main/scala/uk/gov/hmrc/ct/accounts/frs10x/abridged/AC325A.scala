@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetr
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
-case class AC325(value: Option[String]) extends CtBoxIdentifier(name = "Other accounting policies")
+case class AC325A(value: Option[String]) extends CtBoxIdentifier(name = "Other accounting policies")
                                       with CtOptionalString
                                       with Input
                                       with ValidatableBox[AbridgedAccountsBoxRetriever]
@@ -29,8 +29,8 @@ case class AC325(value: Option[String]) extends CtBoxIdentifier(name = "Other ac
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateStringMaxLength("AC325", value.getOrElse(""), StandardCohoTextfieldLimit),
-      validateOptionalStringByRegex("AC325", this, ValidCoHoCharacters)
+      validateStringMaxLength("AC325A", value.getOrElse(""), StandardCohoTextfieldLimit),
+      validateOptionalStringByRegex("AC325A", this, ValidCoHoCharacters)
     )
   }
 }
