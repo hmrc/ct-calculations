@@ -20,7 +20,9 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 class AC320ASpec extends WordSpec
   with MockitoSugar
@@ -29,10 +31,33 @@ class AC320ASpec extends WordSpec
   with AccountsFreeTextValidationFixture {
 
   override def setUpMocks(): Unit = {
+    when(boxRetriever.ac320()).thenReturn(AC320(Some(true)))
     when(boxRetriever.ac320A()).thenReturn(AC320A(Some("text")))
   }
 
   testAccountsCharacterLimitValidation("AC320A", StandardCohoTextfieldLimit, AC320A)
   testAccountsRegexValidation("AC320A", AC320A)
 
+  "AC320A" should {
+    "fail validation when is empty and AC320 is false" in {
+
+      when(boxRetriever.ac320()).thenReturn(AC320(Some(false)))
+
+      AC320A(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC320A"), "error.AC320A.required"))
+    }
+
+    "pass validation when empty and AC320 is true" in {
+
+      when(boxRetriever.ac320()).thenReturn(AC320(Some(true)))
+
+      AC320A(None).validate(boxRetriever) shouldBe empty
+    }
+
+    "pass validation when has value and AC320 is false" in {
+
+      when(boxRetriever.ac320()).thenReturn(AC320(Some(false)))
+
+      AC320A(Some("text")).validate(boxRetriever) shouldBe empty
+    }
+  }
 }

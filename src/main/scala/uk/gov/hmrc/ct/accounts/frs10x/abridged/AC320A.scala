@@ -30,7 +30,8 @@ case class AC320A(value: Option[String]) extends CtBoxIdentifier(name = "Basis o
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       validateStringMaxLength("AC320A", value.getOrElse(""), StandardCohoTextfieldLimit),
-      validateOptionalStringByRegex("AC320A", this, ValidCoHoCharacters)
+      validateOptionalStringByRegex("AC320A", this, ValidCoHoCharacters),
+      requiredIf(value.isEmpty && boxRetriever.ac320().orFalse == false)
     )
   }
 }
