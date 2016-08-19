@@ -18,22 +18,16 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.box.ValidatableBox._
 
-case class AC106A(value: Option[String]) extends CtBoxIdentifier(name = "Employees note additional information")
-  with CtOptionalString
+case class AC320(value: Option[Boolean]) extends CtBoxIdentifier(name = "Basis of measurement and preparation")
+  with CtOptionalBoolean
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
   with Validators {
 
-
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    val noteSelectedForInclusion = boxRetriever.ac7300().orFalse
-
-    collectErrors (
-      cannotExistIf(!noteSelectedForInclusion && value.nonEmpty),
-      validateStringMaxLength("AC106A", value.getOrElse(""), StandardCohoTextfieldLimit),
-      validateOptionalStringByRegex("AC106A", this, ValidCoHoCharacters)
+    collectErrors(
+      validateBooleanAsMandatory("AC320", this)
     )
   }
 }

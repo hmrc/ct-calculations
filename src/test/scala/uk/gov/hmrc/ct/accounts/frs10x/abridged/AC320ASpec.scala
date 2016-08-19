@@ -22,24 +22,42 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class AC5058ASpec extends WordSpec
+class AC320ASpec extends WordSpec
   with MockitoSugar
   with Matchers
   with MockAbridgedAccountsRetriever
   with AccountsFreeTextValidationFixture {
 
   override def setUpMocks(): Unit = {
-    when(boxRetriever.ac58()).thenReturn(AC58(Some(100)))
+    when(boxRetriever.ac320()).thenReturn(AC320(Some(true)))
+    when(boxRetriever.ac320A()).thenReturn(AC320A(Some("text")))
   }
 
-  testAccountsCharacterLimitValidation("AC5058A", StandardCohoTextfieldLimit, AC5058A)
-  testAccountsRegexValidation("AC5058A", AC5058A)
+  testAccountsCharacterLimitValidation("AC320A", StandardCohoTextfieldLimit, AC320A)
+  testAccountsRegexValidation("AC320A", AC320A)
 
-  "AC5058A" should {
-    "fail validation when populated and AC58 is empty" in {
-      when(boxRetriever.ac58()).thenReturn(AC58(None))
-      AC5058A(Some("testing")).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5058A"), "error.AC5058A.cannot.exist"))
+  "AC320A" should {
+    "fail validation when is empty and AC320 is false" in {
+
+      when(boxRetriever.ac320()).thenReturn(AC320(Some(false)))
+
+      AC320A(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC320A"), "error.AC320A.required"))
+    }
+
+    "pass validation when empty and AC320 is true" in {
+
+      when(boxRetriever.ac320()).thenReturn(AC320(Some(true)))
+
+      AC320A(None).validate(boxRetriever) shouldBe empty
+    }
+
+    "pass validation when has value and AC320 is false" in {
+
+      when(boxRetriever.ac320()).thenReturn(AC320(Some(false)))
+
+      AC320A(Some("text")).validate(boxRetriever) shouldBe empty
     }
   }
 }

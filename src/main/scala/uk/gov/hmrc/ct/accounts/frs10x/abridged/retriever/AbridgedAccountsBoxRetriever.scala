@@ -134,6 +134,20 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac107(): AC107
 
+  def ac320(): AC320
+
+  def ac320A(): AC320A
+
+  def ac321(): AC321
+
+  def ac322(): AC322
+
+  def ac323(): AC323
+
+  def ac324(): AC324
+
+  def ac325A(): AC325A
+
   def ac1076(): AC1076
 
   def ac1077(): AC1077
@@ -147,6 +161,8 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
   def ac5052A(): AC5052A
 
   def ac5052B(): AC5052B
+
+  def ac5052C(): AC5052C
 
   def ac5058A(): AC5058A
 
@@ -175,6 +191,18 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
   def ac7800(): AC7800
 
   def ac7900(): AC7900
+  
+  def ac8081(): AC8081
+
+  def ac8082(): AC8082
+
+  def ac8083(): AC8083
+
+  def ac8084(): AC8084
+
+  def ac8085(): AC8085
+
+  def ac8088(): AC8088
 
   def ac7901(): AC7901
 }

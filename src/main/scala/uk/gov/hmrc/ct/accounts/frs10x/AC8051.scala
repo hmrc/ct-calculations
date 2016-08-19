@@ -18,8 +18,9 @@ package uk.gov.hmrc.ct.accounts.frs10x
 
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.ValidatableBox._
 
 case class AC8051(value: Option[String]) extends CtBoxIdentifier(name = "Principal activities of the company") with CtOptionalString with Input with ValidatableBox[Frs10xDirectorsBoxRetriever] {
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever): Set[CtValidation] =
-    validateOptionalStringByLength("AC8051", this, 0, 250) ++ validateOptionalStringByRegex("AC8051", this, validCoHoCharacters)
+    validateOptionalStringByLength("AC8051", this, 0, 250) ++ validateOptionalStringByRegex("AC8051", this, ValidCoHoCharacters)
 }

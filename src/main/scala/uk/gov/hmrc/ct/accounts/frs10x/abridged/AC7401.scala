@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.ValidatableBox._
 
 case class AC7401(value: Option[String]) extends CtBoxIdentifier(name = "Financial commitments") with CtOptionalString
 with Input
@@ -31,8 +32,8 @@ with Validators {
       failIf (boxRetriever.ac7400().orFalse) (
         collectErrors (
           validateStringAsMandatory("AC7401", this),
-          validateOptionalStringByLength("AC7401", this, 1, 20000),
-          validateOptionalStringByRegex("AC7401", this, validCoHoCharacters)
+          validateOptionalStringByLength("AC7401", this, 1, StandardCohoTextfieldLimit),
+          validateOptionalStringByRegex("AC7401", this, ValidCoHoCharacters)
         )
       )
     )

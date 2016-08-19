@@ -21,6 +21,7 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.box.ValidatableBox._
 
 class AC5064ASpec extends WordSpec
   with MockitoSugar
@@ -32,7 +33,7 @@ class AC5064ASpec extends WordSpec
     when(boxRetriever.ac64()).thenReturn(AC64(Some(100)))
   }
 
-  testAccountsCharacterLimitValidation("AC5064A", 20000, AC5064A)
+  testAccountsCharacterLimitValidation("AC5064A", StandardCohoTextfieldLimit, AC5064A)
   testAccountsRegexValidation("AC5064A", AC5064A)
 
   "AC5064A" should {

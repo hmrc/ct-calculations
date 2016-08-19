@@ -56,6 +56,13 @@ package object formats {
   implicit val ac106Format = new OptionalIntegerFormat[AC106](AC106.apply)
   implicit val ac106AFormat = new OptionalStringFormat[AC106A](AC106A.apply)
   implicit val ac107Format = new OptionalIntegerFormat[AC107](AC107.apply)
+  implicit val ac320Format = new OptionalBooleanFormat[AC320](AC320.apply)
+  implicit val ac320AFormat = new OptionalStringFormat[AC320A](AC320A.apply)
+  implicit val ac321Format = new OptionalStringFormat[AC321](AC321.apply)
+  implicit val ac322Format = new OptionalStringFormat[AC322](AC322.apply)
+  implicit val ac323Format = new OptionalStringFormat[AC323](AC323.apply)
+  implicit val ac324Format = new OptionalStringFormat[AC324](AC324.apply)
+  implicit val ac325AFormat = new OptionalStringFormat[AC325A](AC325A.apply)
   implicit val ac1076Format = new OptionalIntegerFormat[AC1076](AC1076.apply)
   implicit val ac1077Format = new OptionalIntegerFormat[AC1077](AC1077.apply)
   implicit val ac1178Format = new OptionalIntegerFormat[AC1178](AC1178.apply)
@@ -63,6 +70,7 @@ package object formats {
   implicit val ac5032Format = new OptionalStringFormat[AC5032](AC5032.apply)
   implicit val ac5052AFormat = new OptionalIntegerFormat[AC5052A](AC5052A.apply)
   implicit val ac5052BFormat = new OptionalStringFormat[AC5052B](AC5052B.apply)
+  implicit val ac5052CFormat = new OptionalIntegerFormat[AC5052C](AC5052C.apply)
   implicit val ac5058AFormat = new OptionalStringFormat[AC5058A](AC5058A.apply)
   implicit val ac5064AFormat = new OptionalStringFormat[AC5064A](AC5064A.apply)
 
@@ -81,4 +89,11 @@ package object formats {
   implicit val ac7800Format = new OptionalBooleanFormat(AC7800.apply)
   implicit val ac7900Format = new OptionalBooleanFormat(AC7900.apply)
   implicit val ac7901Format = new OptionalStringFormat(AC7901.apply)
+
+  implicit val ac8081Format = new OptionalBooleanFormat(AC8081.apply)
+  implicit val ac8082Format = new OptionalBooleanFormat(AC8082.apply)
+  implicit val ac8083Format = new OptionalBooleanFormat(AC8083.apply)
+  implicit val ac8084Format = new OptionalBooleanFormat(AC8084.apply)
+  implicit val ac8085Format = new OptionalBooleanFormat(AC8085.apply)
+  implicit val ac8088Format = new OptionalBooleanFormat(AC8088.apply)
 }

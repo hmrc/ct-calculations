@@ -20,6 +20,7 @@ import org.mockito.Mockito._
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.box.ValidatableBox._
 
 class AC106ASpec extends WordSpec with Matchers with MockAbridgedAccountsRetriever with AccountsFreeTextValidationFixture {
 
@@ -27,7 +28,7 @@ class AC106ASpec extends WordSpec with Matchers with MockAbridgedAccountsRetriev
     when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
   }
 
-  testAccountsCharacterLimitValidation("AC106A", 20000, AC106A)
+  testAccountsCharacterLimitValidation("AC106A", StandardCohoTextfieldLimit, AC106A)
   testAccountsRegexValidation("AC106A", AC106A)
 
   "AC106A" should {

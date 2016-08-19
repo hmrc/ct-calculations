@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.ValidatableBox._
 
 case class AC5032(value: Option[String]) extends CtBoxIdentifier(name = "Profit/(loss) before tax note")
                                       with CtOptionalString
@@ -29,7 +30,7 @@ case class AC5032(value: Option[String]) extends CtBoxIdentifier(name = "Profit/
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       cannotExistIf(value.isDefined && !boxRetriever.ac32().value.isDefined),
-      validateStringMaxLength("AC5032", value.getOrElse(""), 20000)
+      validateStringMaxLength("AC5032", value.getOrElse(""), StandardCohoTextfieldLimit)
     )
   }
 }
