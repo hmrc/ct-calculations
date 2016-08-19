@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
 case class AC7601(value: Option[String]) extends CtBoxIdentifier(name = "Changes in presentation and prior period adjustments") with CtOptionalString
@@ -32,7 +33,7 @@ with Validators {
         collectErrors (
           validateStringAsMandatory("AC7601", this),
           validateOptionalStringByLength("AC7601", this, 1, 20000),
-          validateOptionalStringByRegex("AC7601", this, validCoHoCharacters)
+          validateOptionalStringByRegex("AC7601", this, ValidCoHoCharacters)
         )
       )
     )
