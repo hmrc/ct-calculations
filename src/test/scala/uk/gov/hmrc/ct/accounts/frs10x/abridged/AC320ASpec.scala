@@ -31,7 +31,7 @@ class AC320ASpec extends WordSpec
   with AccountsFreeTextValidationFixture {
 
   override def setUpMocks(): Unit = {
-    when(boxRetriever.ac320()).thenReturn(AC320(Some(true)))
+    when(boxRetriever.ac320()).thenReturn(AC320(Some(false)))
     when(boxRetriever.ac320A()).thenReturn(AC320A(Some("text")))
   }
 
