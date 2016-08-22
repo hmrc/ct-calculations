@@ -39,11 +39,18 @@ class AC320ASpec extends WordSpec
   testAccountsRegexValidation("AC320A", AC320A)
 
   "AC320A" should {
-    "fail validation when is empty and AC320 is false" in {
+    "fail validation when not empty and AC320 is true" in {
 
-      when(boxRetriever.ac320()).thenReturn(AC320(Some(false)))
+      when(boxRetriever.ac320()).thenReturn(AC320(Some(true)))
 
-      AC320A(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC320A"), "error.AC320A.required"))
+      AC320A(Some("text")).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC320A"), "error.AC320A.cannot.exist"))
+    }
+
+    "pass validation when empty and AC320 is None" in {
+
+      when(boxRetriever.ac320()).thenReturn(AC320(None))
+
+      AC320A(None).validate(boxRetriever) shouldBe empty
     }
 
     "pass validation when empty and AC320 is true" in {
