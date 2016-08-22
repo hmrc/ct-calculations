@@ -85,8 +85,10 @@ package object formats {
   implicit val ac7401Format = new OptionalStringFormat(AC7401.apply)
   implicit val ac7500Format = new OptionalBooleanFormat(AC7500.apply)
   implicit val ac7600Format = new OptionalBooleanFormat(AC7600.apply)
+  implicit val ac7601Format = new OptionalStringFormat(AC7601.apply)
   implicit val ac7800Format = new OptionalBooleanFormat(AC7800.apply)
   implicit val ac7900Format = new OptionalBooleanFormat(AC7900.apply)
+  implicit val ac7901Format = new OptionalStringFormat(AC7901.apply)
 
   implicit val ac8081Format = new OptionalBooleanFormat(AC8081.apply)
   implicit val ac8082Format = new OptionalBooleanFormat(AC8082.apply)
