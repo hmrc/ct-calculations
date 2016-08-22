@@ -46,6 +46,13 @@ class AC320ASpec extends WordSpec
       AC320A(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC320A"), "error.AC320A.required"))
     }
 
+    "pass validation when empty and AC320 is None" in {
+
+      when(boxRetriever.ac320()).thenReturn(AC320(None))
+
+      AC320A(None).validate(boxRetriever) shouldBe empty
+    }
+
     "pass validation when empty and AC320 is true" in {
 
       when(boxRetriever.ac320()).thenReturn(AC320(Some(true)))
