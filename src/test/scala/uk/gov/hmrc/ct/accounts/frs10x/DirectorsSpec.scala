@@ -186,5 +186,33 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
       val directors = Directors(List(Director("444", "Jack", ac8005 = Some(true), ac8007 = Some(new LocalDate(2015, 4, 5))), Director("555", "Jill")))
       directors.validate(mockBoxRetriever) shouldBe expectedError
     }
+
+    "validate AC8005 and AC8007 cannot exist if ACQ8003" in {
+      when(mockBoxRetriever.acQ8003()).thenReturn(ACQ8003(Some(false)))
+      when(mockBoxRetriever.acQ8009()).thenReturn(ACQ8009(Some(true)))
+      val directors = Directors(List(
+        Director("1", "Test Name One", ac8005 = Some(true), ac8007 = Some(new LocalDate(2016, 1, 1)), ac8011 = Some(true), ac8013 = Some(new LocalDate(2016, 2, 1))),
+        Director("2", "Test Name Two", ac8005 = None, ac8007 = None, ac8011 = Some(true), ac8013 = Some(new LocalDate(2016, 2, 1)))
+      ))
+
+      directors.validate(mockBoxRetriever) shouldBe Set(
+        CtValidation(Some("AC8005"), "error.director.1.box.AC8005.cannot.exist"),
+        CtValidation(Some("AC8007"), "error.director.1.box.AC8007.cannot.exist")
+      )
+    }
+
+    "validate AC8011 and AC8013 cannot exist if ACQ8009" in {
+      when(mockBoxRetriever.acQ8003()).thenReturn(ACQ8003(Some(true)))
+      when(mockBoxRetriever.acQ8009()).thenReturn(ACQ8009(Some(false)))
+      val directors = Directors(List(
+        Director("1", "Test Name One", ac8005 = Some(true), ac8007 = Some(new LocalDate(2016, 1, 1)), ac8011 = Some(true), ac8013 = Some(new LocalDate(2016, 2, 1))),
+        Director("2", "Test Name Two", ac8005 = Some(true), ac8007 = Some(new LocalDate(2016, 1, 1)), ac8011 = None, ac8013 = None)
+      ))
+
+      directors.validate(mockBoxRetriever) shouldBe Set(
+        CtValidation(Some("AC8011"), "error.director.1.box.AC8011.cannot.exist"),
+        CtValidation(Some("AC8013"), "error.director.1.box.AC8013.cannot.exist")
+      )
+    }
   }
 }
