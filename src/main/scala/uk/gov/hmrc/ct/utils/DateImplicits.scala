@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.cato.filing.util
+package uk.gov.hmrc.ct.utils
 
 import org.joda.time.LocalDate
 
-object CatoImplicits {
+object DateImplicits {
 
   implicit class DateOperators(d:LocalDate){
 

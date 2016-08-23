@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.ct600.calculations
 
 import org.joda.time.{Days, LocalDate}
 import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
+import uk.gov.hmrc.ct.utils.DateImplicits._
 
 object AccountingPeriodHelper {
 
@@ -25,8 +26,8 @@ object AccountingPeriodHelper {
 
   def accountingPeriodDaysInFinancialYear(year: Int, accountingPeriod: HmrcAccountingPeriod): BigDecimal = {
     val (fyStartDate, fyEndDate) = financialYearStartingIn(year)
-    val start = if (accountingPeriod.start.value.isBefore(fyStartDate)) fyStartDate else accountingPeriod.start.value
-    val end = if (accountingPeriod.end.value.isAfter(fyEndDate)) fyEndDate else accountingPeriod.end.value
+    val start = if (accountingPeriod.start.value < fyStartDate) fyStartDate else accountingPeriod.start.value
+    val end = if (accountingPeriod.end.value > fyEndDate) fyEndDate else accountingPeriod.end.value
     BigDecimal(daysBetween(start, end))
   }
 
@@ -41,7 +42,7 @@ object AccountingPeriodHelper {
   def daysBetween(start: LocalDate, end: LocalDate): Int = Days.daysBetween(start, end).getDays + 1
 
   def validateAccountingPeriod(accountingPeriod: HmrcAccountingPeriod) = {
-    if (accountingPeriod.start.value.isAfter(accountingPeriod.end.value)) {
+    if (accountingPeriod.start.value > accountingPeriod.end.value) {
       throw new InvalidAccountingPeriodException("Accounting Period start date must be before the end date")
     }
     
@@ -49,7 +50,7 @@ object AccountingPeriodHelper {
       throw new InvalidAccountingPeriodException("Accounting Period must not be longer than one calendar year")
     }
     
-    if (accountingPeriod.start.value.isBefore(new LocalDate(2006, 10, 2))) {
+    if (accountingPeriod.start.value < new LocalDate(2006, 10, 2)) {
       throw new InvalidAccountingPeriodException("Accounting Period must not be before 1st October 2006")
     }
   }

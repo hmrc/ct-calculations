@@ -17,10 +17,10 @@
 package uk.gov.hmrc.cato.filing.util
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.cato.filing.util.CatoImplicits.DateOperators
-import uk.gov.hmrc.play.test.UnitSpec
+import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.utils.DateImplicits._
 
-class CatoImplicitsSpec extends UnitSpec {
+class DateImplicitsSpec extends WordSpec with Matchers {
 
   "date operator" should {
 
