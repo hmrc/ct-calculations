@@ -17,22 +17,26 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.ValidatableBox._
+import uk.gov.hmrc.ct.box._
 
-case class AC320A(value: Option[String]) extends CtBoxIdentifier(name = "Basis of measurement and preparation")
-                                      with CtOptionalString
-                                      with Input
-                                      with ValidatableBox[AbridgedAccountsBoxRetriever]
-                                      with Validators {
-
+case class AC7601(value: Option[String]) extends CtBoxIdentifier(name = "Changes in presentation and prior period adjustments") with CtOptionalString
+with Input
+with ValidatableBox[AbridgedAccountsBoxRetriever]
+with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      cannotExistIf(value.isDefined && boxRetriever.ac320().value.contains(true)),
-      requiredIf(value.isEmpty && boxRetriever.ac320.value.contains(false)),
-      validateStringMaxLength("AC320A", value.getOrElse(""), StandardCohoTextfieldLimit),
-      validateOptionalStringByRegex("AC320A", this, ValidCoHoCharacters)
+    collectErrors (
+      cannotExistIf(!boxRetriever.ac7600().orFalse && value.nonEmpty),
+
+      failIf (boxRetriever.ac7600().orFalse) (
+        collectErrors (
+          validateStringAsMandatory("AC7601", this),
+          validateOptionalStringByLength("AC7601", this, 1, StandardCohoTextfieldLimit),
+          validateOptionalStringByRegex("AC7601", this, ValidCoHoCharacters)
+        )
+      )
     )
   }
 }
+

@@ -86,6 +86,8 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
       case false => Set.empty
     }
   }
+
+
 }
 
 case class Director(id: String,
@@ -102,7 +104,9 @@ case class Director(id: String,
       validateAppointmentDateAsMandatoryWhenAppointed(boxRetriever) ++
       validateAppointmentDateAsWithinPOA(boxRetriever) ++
       validateResignationDateAsMandatoryWhenResigned(boxRetriever) ++
-      validateResignationDateAsWithinPOA(boxRetriever)
+      validateResignationDateAsWithinPOA(boxRetriever) ++
+      validateAppointments(boxRetriever) ++
+      validateResignations(boxRetriever)
 
   def validateAppointmentDateAsMandatoryWhenAppointed(boxRetriever: Frs10xDirectorsBoxRetriever) = {
     (ac8005, ac8007) match {
@@ -110,7 +114,7 @@ case class Director(id: String,
       case _ => Set()
     }
   }
-  
+
   def validateAppointmentDateAsWithinPOA(boxRetriever: Frs10xDirectorsBoxRetriever): Set[CtValidation] = {
     (ac8007, boxRetriever.ac3().value, boxRetriever.ac4().value) match {
       case (Some(appDate), ac3, ac4) => validateDateAsBetweenInclusive(s"ac8007.$id", ac8007, ac3, ac4, "ac8007")
@@ -130,6 +134,26 @@ case class Director(id: String,
       case (Some(appDate), ac3, ac4) => validateDateAsBetweenInclusive(s"ac8013.$id", ac8013, ac3, ac4, "ac8013")
       case _ => Set()
     }
+  }
+
+  def validateAppointments(boxRetriever: Frs10xDirectorsBoxRetriever) = {
+    if (boxRetriever.acQ8003().value.contains(false)) {
+      val ac8005Errors = if (ac8005.nonEmpty) Set(CtValidation(Some("AC8005"), s"error.director.$id.box.AC8005.cannot.exist")) else Set.empty
+      val ac8007Errors = if (ac8007.nonEmpty) Set(CtValidation(Some("AC8007"), s"error.director.$id.box.AC8007.cannot.exist")) else Set.empty
+
+      ac8005Errors ++ ac8007Errors
+    } else
+      Set.empty
+  }
+
+  def validateResignations(boxRetriever: Frs10xDirectorsBoxRetriever) = {
+    if (boxRetriever.acQ8009().value.contains(false)) {
+      val ac8011Errors = if (ac8011.nonEmpty) Set(CtValidation(Some("AC8011"), s"error.director.$id.box.AC8011.cannot.exist")) else Set.empty
+      val ac8013Errors = if (ac8013.nonEmpty) Set(CtValidation(Some("AC8013"), s"error.director.$id.box.AC8013.cannot.exist")) else Set.empty
+
+      ac8011Errors ++ ac8013Errors
+    } else
+      Set.empty
   }
 }
 
