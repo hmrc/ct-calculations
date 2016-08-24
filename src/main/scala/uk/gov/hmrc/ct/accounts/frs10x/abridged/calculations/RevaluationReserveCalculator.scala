@@ -20,9 +20,10 @@ import uk.gov.hmrc.ct.accounts.frs10x.abridged._
 
 trait RevaluationReserveCalculator {
 
-  def calculateAC5076B(ac77: AC77, ac5076A: AC5076A): AC5076B = {
-    (ac77.value, ac5076A.value) match {
-      case (None, None) => AC5076B(None)
+  def calculateAC5076B(ac76: AC76, ac77: AC77, ac5076A: AC5076A): AC5076B = {
+    (ac76.value, ac77.value, ac5076A.value) match {
+      case (Some(_), None, None) =>  AC5076B(Some(0))
+      case (_, None, None) => AC5076B(None)
       case _ => AC5076B(Some(ac77.orZero + ac5076A.orZero))
     }
   }
