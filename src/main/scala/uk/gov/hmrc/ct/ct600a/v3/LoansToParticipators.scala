@@ -131,7 +131,7 @@ case class Repayment(id: String, amount: Int, amountBefore06042016: Option[Int] 
   private def invalidDateWithin9Months(boxRetriever: CT600ABoxRetriever): Boolean = !(date > currentAPEndDate(boxRetriever)) || date > earlierOfNowAndAPEndDatePlus9Months(boxRetriever)
 
   private def invalidDateAfter9Months(boxRetriever: CT600ABoxRetriever): Boolean = {
-    !(date > currentAPEndDatePlus9Months(boxRetriever) && date < DateHelper.now().plusDays(1).toDateTimeAtStartOfDay.toLocalDate)
+    !(date > currentAPEndDatePlus9Months(boxRetriever) && date <= DateHelper.now().toDateTimeAtStartOfDay.toLocalDate)
   }
 
   private def invalidApEndDateRequired: Boolean = endDateOfAP.isEmpty
