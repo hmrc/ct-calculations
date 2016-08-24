@@ -26,10 +26,11 @@ case class AC5076B(value: Option[Int]) extends CtBoxIdentifier(name = "Balance a
                                        with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    if (boxRetriever.ac76().value.nonEmpty) {
-      validateOptionalIntegerAsEqualTo(this, boxRetriever.ac76())
-    } else
-      Set.empty
+    collectErrors(
+      failIf(boxRetriever.ac76().value.nonEmpty) {
+        validateOptionalIntegerAsEqualTo(this, boxRetriever.ac76())
+      }
+    )
   }
 
 }
