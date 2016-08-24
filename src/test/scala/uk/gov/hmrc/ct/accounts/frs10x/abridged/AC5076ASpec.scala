@@ -34,8 +34,6 @@ class AC5076ASpec extends WordSpec
   }
 
   testAccountsMoneyValidation("AC5076A", AC5076A)
-//  testAccountsCharacterLimitValidation("AC5064A", StandardCohoTextfieldLimit, AC5064A)
-//  testAccountsRegexValidation("AC5064A", AC5064A)
 
   "AC5076A" should {
     "fail validation when populated and AC76 is empty" in {
