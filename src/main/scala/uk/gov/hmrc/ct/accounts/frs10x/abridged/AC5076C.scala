@@ -21,7 +21,9 @@ import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
 case class AC5076C(value: Option[String]) extends CtBoxIdentifier(name = "Additional information (optional)")
-  with CtOptionalString with Input with ValidatableBox[AbridgedAccountsBoxRetriever] {
+                                          with CtOptionalString
+                                          with Input
+                                          with ValidatableBox[AbridgedAccountsBoxRetriever] {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
