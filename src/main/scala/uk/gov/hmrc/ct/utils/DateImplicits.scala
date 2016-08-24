@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.calculations
+package uk.gov.hmrc.ct.utils
 
-import uk.gov.hmrc.ct.accounts.{AC3, AC4}
-import uk.gov.hmrc.ct.utils.DateImplicits._
+import org.joda.time.LocalDate
 
-trait PeriodOfAccountsCalculator {
-  
-  def isLongPeriodOfAccounts(ac3: AC3, ac4: AC4): Boolean = {
-    val oneCalendarYearFromStart = ac3.value.plusYears(1).minusDays(1)
-    
-    ac4.value > oneCalendarYearFromStart
+object DateImplicits {
+
+  implicit class DateOperators(d:LocalDate){
+
+    def >(other:LocalDate) = d.isAfter(other)
+    def <(other:LocalDate) = d.isBefore(other)
+    def >=(other:LocalDate) = d.isEqual(other) || d.isAfter(other)
+    def <=(other:LocalDate) = d.isEqual(other) || d.isBefore(other)
   }
 
 }

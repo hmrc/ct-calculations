@@ -19,14 +19,14 @@ package uk.gov.hmrc.ct.ct600a.v2
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtValue, Input}
 import uk.gov.hmrc.ct.ct600a.v2.formats.Loans
-
+import uk.gov.hmrc.ct.utils.DateImplicits._
 
 case class WriteOff(loanId: String, amountWrittenOff: Int, dateWrittenOff: LocalDate, endDateOfWriteOffAP : Option[LocalDate] = None) {
 
   def isReliefEarlierThanDue(acctPeriodEnd: LocalDate): Boolean = {
     requireEndDateOfWriteOffApp(acctPeriodEnd)
     val nineMonthsAndADayAfter: LocalDate = acctPeriodEnd.plusMonths(9).plusDays(1)
-    dateWrittenOff.isAfter(acctPeriodEnd) && dateWrittenOff.isBefore(nineMonthsAndADayAfter)
+    dateWrittenOff > acctPeriodEnd && dateWrittenOff < nineMonthsAndADayAfter
   }
 
   def isLaterReliefNowDue(acctPeriodEnd: LocalDate, filingDate: LPQ07): Boolean = {
@@ -44,7 +44,7 @@ case class WriteOff(loanId: String, amountWrittenOff: Int, dateWrittenOff: Local
     (filingDateBoxNumber.value, endDateOfWriteOffAP) match {
       case (Some(filingDate), Some(endDate)) => {
         val reliefDueDate = endDate.plusMonths(9)
-        filingDate.isAfter(reliefDueDate)
+        filingDate > reliefDueDate
       }
       case _ =>  false
     }
@@ -57,7 +57,7 @@ case class WriteOff(loanId: String, amountWrittenOff: Int, dateWrittenOff: Local
 
   private def requireEndDateOfWriteOffApp(acctPeriodEnd: LocalDate) = {
     val message = s"As the write off date [$dateWrittenOff] is more than 9 months after the accounting period end date [$acctPeriodEnd], the end date of the write off accounting period must be provided"
-    val requirement:Boolean = if(dateWrittenOff.isAfter(acctPeriodEnd.plusMonths(9)) && endDateOfWriteOffAP.isEmpty) false else true
+    val requirement:Boolean = if(dateWrittenOff > acctPeriodEnd.plusMonths(9) && endDateOfWriteOffAP.isEmpty) false else true
     require(requirement, message)
   }
 
