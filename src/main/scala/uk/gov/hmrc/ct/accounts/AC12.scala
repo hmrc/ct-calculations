@@ -29,28 +29,28 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
   with ValidatableBox[AccountsBoxRetriever with FilingAttributesBoxValueRetriever]
   with Validators  {
 
-  private def isFrs102HmrcAbridgedReturnWithLongPoA(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean = {
-    boxRetriever.hmrcFiling().value && boxRetriever.abridgedFiling().value && isFRS102(boxRetriever) && isLongPoA(boxRetriever)
+  override def validate(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+    failIf(isFrs102HmrcAbridgedReturnWithLongPoA(boxRetriever)) {
+      collectErrors(
+        validateMoney(value, min = 0),
+        validateAsMandatory(this)
+      )
+    }
   }
 
-  def isFRS102(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean = {
+  private def isFrs102HmrcAbridgedReturnWithLongPoA(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean = {
+    boxRetriever.hmrcFiling().value &&
+    boxRetriever.abridgedFiling().value &&
+    isFRS102(boxRetriever) &&
+    isLongPoA(boxRetriever)
+  }
+
+  private def isFRS102(boxRetriever: AccountsBoxRetriever): Boolean = {
     boxRetriever.ac3().value >= new LocalDate(2016, 1, 1)
   }
 
   private def isLongPoA(boxRetriever: AccountsBoxRetriever): Boolean = {
     boxRetriever.ac3().value.plusMonths(12) <= boxRetriever.ac4().value
-  }
-
-  override def validate(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-    isFrs102HmrcAbridgedReturnWithLongPoA(boxRetriever) match {
-      case true => {
-        collectErrors(
-          validateMoney(value, min = 0),
-          validateAsMandatory(this)
-        )
-      }
-      case _ => Set.empty
-    }
   }
 
 }
