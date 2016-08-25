@@ -33,7 +33,7 @@ class AC5076ASpec extends WordSpec
     when(boxRetriever.ac76()).thenReturn(AC76(Some(100)))
   }
 
-  testAccountsMoneyValidation("AC5076A", AC5076A)
+  testAccountsMoneyValidationWithMinMaxIgnoringEmptyTest("AC5076A", STANDARD_MIN, STANDARD_MAX, AC5076A)
 
   "AC5076A" should {
     "fail validation when AC76 isn't empty and this box is empty" in {
