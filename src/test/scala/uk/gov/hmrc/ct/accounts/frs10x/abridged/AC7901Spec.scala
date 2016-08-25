@@ -60,7 +60,7 @@ class AC7901Spec extends WordSpec with Matchers with MockitoSugar {
 
       AC7901(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7901"), "error.AC7901.required", None))
       AC7901(Some("")).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7901"), "error.AC7901.required", None))
-      AC7901(Some("%&^%./[]")).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7901"),"error.AC7901.regexFailure",None))
+      AC7901(Some("%&^%./[]")).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7901"), "error.AC7901.regexFailure", Some(List("^"))))
     }
   }
 }

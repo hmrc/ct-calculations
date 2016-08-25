@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.ct.box
 
+import java.util.regex.{Matcher, Pattern}
+
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
@@ -204,7 +206,20 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
-  protected def validateCoHoOptionalTextField(boxId: String, box: CtOptionalString)(): Set[CtValidation] = validateOptionalStringByRegex(boxId, box, ValidCoHoCharacters)
+  protected def validateCoHoOptionalTextField(boxId: String, box: CtOptionalString)(): Set[CtValidation] = {
+    box.value match {
+      case Some(x) if x.nonEmpty => {
+        val p = Pattern.compile(ValidCoHoCharacters)
+        val m = p.matcher(x)
+        val s = m.replaceAll("+")
+        val notMatchingChars = (s.toList filterNot(_ == '+')).mkString(", ")
+        passIf (m.matches) {
+          Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure", Some(Seq(notMatchingChars))))
+        }
+      }
+      case _ => Set()
+    }
+  }
 
   protected def validateStringByRegex(boxId: String, box: CtString, regex: String)(): Set[CtValidation] = {
     passIf (box.value.isEmpty || box.value.matches(regex)) {
