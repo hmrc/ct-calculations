@@ -222,7 +222,7 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
 
     "return error if too long with thousands formatted as commas" in {
-      validateStringMaxLength("testBox", "1" * 20001, StandardCohoTextfieldLimit) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.max.length", Some(Seq("20,000"))))
+      validateStringMaxLength("testBox", "1" * 20001, StandardCohoTextFieldLimit) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.max.length", Some(Seq("20,000"))))
     }
   }
 

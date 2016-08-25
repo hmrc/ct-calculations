@@ -22,5 +22,5 @@ import uk.gov.hmrc.ct.box.ValidatableBox._
 
 case class AC8053(value: Option[String]) extends CtBoxIdentifier(name = "Company policy on disabled employees") with CtOptionalString with Input with ValidatableBox[Frs10xDirectorsBoxRetriever] {
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever): Set[CtValidation] =
-    validateOptionalStringByLength("AC8053", this, 0, StandardCohoTextfieldLimit) ++ validateOptionalStringByRegex("AC8053", this, ValidCoHoCharacters)
+    validateOptionalStringByLength("AC8053", this, 0, StandardCohoTextFieldLimit) ++ validateCoHoOptionalTextField("AC8053", this)
 }

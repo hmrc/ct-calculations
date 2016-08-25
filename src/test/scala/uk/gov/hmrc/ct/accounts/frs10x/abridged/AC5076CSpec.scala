@@ -33,7 +33,7 @@ class AC5076CSpec extends WordSpec
     when(boxRetriever.ac76()).thenReturn(AC76(Some(100)))
   }
 
-  testAccountsCharacterLimitValidation("AC5076C", StandardCohoTextfieldLimit, AC5076C)
+  testAccountsCharacterLimitValidation("AC5076C", StandardCohoTextFieldLimit, AC5076C)
   testAccountsRegexValidation("AC5076C", AC5076C)
 
   "AC5076C" should {

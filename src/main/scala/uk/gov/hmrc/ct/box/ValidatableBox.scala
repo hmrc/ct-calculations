@@ -21,6 +21,7 @@ import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 import uk.gov.hmrc.ct.utils.DateImplicits._
+import ValidatableBox._
 
 trait ValidatableBox[T <: BoxRetriever] extends Validators {
 
@@ -203,6 +204,8 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
+  protected def validateCoHoOptionalTextField(boxId: String, box: CtOptionalString)(): Set[CtValidation] = validateOptionalStringByRegex(boxId, box, ValidCoHoCharacters)
+
   protected def validateStringByRegex(boxId: String, box: CtString, regex: String)(): Set[CtValidation] = {
     passIf (box.value.isEmpty || box.value.matches(regex)) {
       Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
@@ -272,5 +275,5 @@ object ValidatableBox {
   val ValidCoHoCharacters = "[A-Za-z\\-'\\. \\,]*" // Based on the comment from CATO-3881
   val SortCodeValidChars = """^[0-9]{6}$"""
   val AccountNumberValidChars = """^[0-9]{8}$"""
-  val StandardCohoTextfieldLimit = 20000
+  val StandardCohoTextFieldLimit = 20000
 }
