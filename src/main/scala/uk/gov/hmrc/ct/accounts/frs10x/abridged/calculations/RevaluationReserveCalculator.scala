@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.calculations
+package uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations
 
-import uk.gov.hmrc.ct.accounts.{AC3, AC4}
-import uk.gov.hmrc.ct.utils.DateImplicits._
+import uk.gov.hmrc.ct.accounts.frs10x.abridged._
 
-trait PeriodOfAccountsCalculator {
-  
-  def isLongPeriodOfAccounts(ac3: AC3, ac4: AC4): Boolean = {
-    val oneCalendarYearFromStart = ac3.value.plusYears(1).minusDays(1)
-    
-    ac4.value > oneCalendarYearFromStart
+trait RevaluationReserveCalculator {
+
+  def calculateAC5076B(ac76: AC76, ac77: AC77, ac5076A: AC5076A): AC5076B = {
+    (ac76.value, ac77.value, ac5076A.value) match {
+      case (Some(_), None, None) =>  AC5076B(Some(0))
+      case (_, None, None) => AC5076B(None)
+      case _ => AC5076B(Some(ac77.orZero + ac5076A.orZero))
+    }
   }
 
 }

@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.ct600a.v2
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtValue, Input}
 import uk.gov.hmrc.ct.ct600a.v2.formats.Loans
+import uk.gov.hmrc.ct.utils.DateImplicits._
 
 /**
  * @param endDateOfRepaymentAP :  The end date of the accounting period in which the loan repayment was made
@@ -51,15 +52,15 @@ case class Loan (id: String,
   private def isFilingAfterLaterReliefDueDate(filingDate: LPQ07) =  endDateOfRepaymentAP match {
     case Some(date) => {
       val reliefDueDate = date.plusMonths(9)
-      filingDate.value.map(_.isAfter(reliefDueDate)).getOrElse(false)  // LPQ07 None implies that filing is within 9 months of AP end date
+      filingDate.value.map(_ > reliefDueDate).getOrElse(false)  // LPQ07 None implies that filing is within 9 months of AP end date
     }
     case None => throw new IllegalArgumentException("As the repayment date is more than 9 months after the accounting period end date, the end date of the repayment accounting period must be provided")
   }
 
 
-  private def lastRepaymentIsAfter(date: LocalDate) = lastRepaymentDate.fold(false)(x => x.isAfter(date))
+  private def lastRepaymentIsAfter(date: LocalDate) = lastRepaymentDate.fold(false)(x => x > date)
 
-  private def lastRepaymentBefore(date: LocalDate) = lastRepaymentDate.fold(false)(x => x.isBefore(date))
+  private def lastRepaymentBefore(date: LocalDate) = lastRepaymentDate.fold(false)(x => x < date)
 
 
 }

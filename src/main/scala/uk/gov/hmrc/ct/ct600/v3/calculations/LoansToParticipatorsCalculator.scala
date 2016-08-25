@@ -21,6 +21,7 @@ import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations.CP2
 import uk.gov.hmrc.ct.ct600.v3._
 import uk.gov.hmrc.ct.ct600a.v3._
+import uk.gov.hmrc.ct.utils.DateImplicits._
 
 trait LoansToParticipatorsCalculator extends CtTypeConverters {
 
@@ -236,9 +237,7 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   }
 
 
-  private def shouldApplyNewTaxRateForLoans(cp2: CP2): Boolean = {
-    cp2.value.isEqual(DateOFNewTaxRateForLoans) || cp2.value.isAfter(DateOFNewTaxRateForLoans)
-  }
+  private def shouldApplyNewTaxRateForLoans(cp2: CP2): Boolean = cp2.value >= DateOFNewTaxRateForLoans
 
   private def amountAtNewTaxRate(amountOpt: Option[Int], amountsBeforeApril2016: Int) = {
     amountOpt match {

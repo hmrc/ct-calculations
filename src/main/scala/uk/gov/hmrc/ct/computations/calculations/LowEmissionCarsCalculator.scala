@@ -20,7 +20,7 @@ import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.RoundingFunctions._
 import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations._
-
+import uk.gov.hmrc.ct.utils.DateImplicits._
 
 trait LowEmissionCarsCalculator extends CtTypeConverters {
 
@@ -30,9 +30,9 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
 
   def taxPoolForCar(car: Car): String = {
     car.dateOfPurchase match {
-      case (d) if d.isBefore(new LocalDate("2009-04-01")) => range1(car)
-      case (d) if d.isBefore(new LocalDate("2013-04-01")) => range2(car)
-      case (d) if d.isBefore(new LocalDate("2015-04-01")) => range3(car)
+      case (d) if d < new LocalDate("2009-04-01") => range1(car)
+      case (d) if d < new LocalDate("2013-04-01") => range2(car)
+      case (d) if d < new LocalDate("2015-04-01") => range3(car)
       case _ => range4(car)
 
     }

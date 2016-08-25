@@ -30,6 +30,7 @@ import uk.gov.hmrc.ct.version.CoHoVersions.{FRS102, FRS105, FRSSE2008}
 import uk.gov.hmrc.ct.version.HmrcReturns._
 import uk.gov.hmrc.ct.version.HmrcVersions._
 import uk.gov.hmrc.ct.version.{Return, Version}
+import uk.gov.hmrc.ct.utils.DateImplicits._
 
 object ReturnVersionsCalculator extends ReturnVersionsCalculator
 
@@ -162,7 +163,7 @@ trait ReturnVersionsCalculator {
       throw new IllegalArgumentException(s"")
     }
 
-    val isOnOrAfterFrs102And105Date = !poaStartDate.isBefore(new LocalDate(2016, 1, 1))
+    val isOnOrAfterFrs102And105Date = poaStartDate >= new LocalDate(2016, 1, 1)
 
     val cohoReturn: Set[Return] = (isOnOrAfterFrs102And105Date, coHoFiling, microEntityFiling, statutoryAccountsFiling, abridgedFiling, abbreviatedAccountsFiling) match {
       case (false, CompaniesHouseFiling(true), MicroEntityFiling(true), _, AbridgedFiling(false), _) =>
@@ -253,17 +254,17 @@ trait ReturnVersionsCalculator {
 
   private def computationsVersionBasedOnDate(apStartDate: LocalDate, apEndDate: LocalDate): Version = {
     (apStartDate, apEndDate) match {
-      case (startDate, _) if startDate.isAfter(LocalDate.parse("2015-03-31")) =>
+      case (startDate, _) if startDate > LocalDate.parse("2015-03-31") =>
         ComputationsCT20150201
-      case (_, endDate) if endDate.isAfter(LocalDate.parse("2013-03-31")) =>
+      case (_, endDate) if endDate > LocalDate.parse("2013-03-31") =>
         ComputationsCT20141001
-      case (_, endDate) if endDate.isAfter(LocalDate.parse("2008-03-31")) =>
+      case (_, endDate) if endDate > LocalDate.parse("2008-03-31") =>
         ComputationsCT20130721
       case _ => throw new IllegalArgumentException(s"Cannot calculate the Computations Version for the provided dates: $apStartDate -> $apEndDate")
     }
   }
 
-  private def ct600VersionBasedOnApStartDate(apStartDate: LocalDate): Version = if (apStartDate.isAfter(LocalDate.parse("2015-03-31"))) CT600Version3 else CT600Version2
+  private def ct600VersionBasedOnApStartDate(apStartDate: LocalDate): Version = if (apStartDate > LocalDate.parse("2015-03-31")) CT600Version3 else CT600Version2
 
   private def ct600ReturnsForMembersClub(version: Version): Set[Return] = {
     Set(Return(CT600, version),

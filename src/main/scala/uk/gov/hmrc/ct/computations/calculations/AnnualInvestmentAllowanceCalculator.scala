@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.computations.calculations
 import org.joda.time.{Days, LocalDate, Months}
 import uk.gov.hmrc.ct.CATO02
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
+import uk.gov.hmrc.ct.utils.DateImplicits._
 
 import scala.math.BigDecimal.RoundingMode
 
@@ -85,11 +86,11 @@ case class AnnualInvestmentAllowancePeriod(start: LocalDate, end: LocalDate, max
   require(start == start.dayOfMonth.withMinimumValue, "Start date must be a month start date")
   require(end == end.dayOfMonth.withMaximumValue, "End date must be a month end date")
 
-  def encompasses(date: LocalDate): Boolean = !date.isBefore(start) && !date.isAfter(end)
+  def encompasses(date: LocalDate): Boolean = !(date < start) && !(date > end)
 
-  def fallsWithin(startDate: LocalDate, endDate: LocalDate): Boolean = startDate.isBefore(start) && endDate.isAfter(end)
+  def fallsWithin(startDate: LocalDate, endDate: LocalDate): Boolean = startDate < start && endDate > end
 
-  def startDateFallsWithin(startDate: LocalDate, endDate: LocalDate): Boolean = (start.isAfter(startDate) || start.equals(startDate)) && (start.isBefore(endDate) || start.equals(endDate))
+  def startDateFallsWithin(startDate: LocalDate, endDate: LocalDate): Boolean = start >= startDate && start <= endDate
 
   def intersectingPeriod(periodStart: LocalDate, periodEnd: LocalDate, periodBetween: ComputePeriodBetween): Int =
     (encompasses(periodStart), encompasses(periodEnd), fallsWithin(periodStart, periodEnd)) match {

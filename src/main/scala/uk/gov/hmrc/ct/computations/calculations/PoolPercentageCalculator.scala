@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.{Days, LocalDate}
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
+import uk.gov.hmrc.ct.utils.DateImplicits._
 
 import scala.math.BigDecimal.RoundingMode
 
@@ -49,8 +50,8 @@ case class PoolPercentageCalculator(oldMainRate: Int = 20,
   private def daysInPeriodIncludingStartAndEndDays(startDate: LocalDate, endDate: LocalDate): Int = Days.daysBetween(startDate, endDate.plusDays(1)).getDays
 
   private[calculations] def daysBefore(startDate: LocalDate, endDate: LocalDate):  Int = {
-    (startDate.isBefore(newRateStartDate), endDate.isBefore(newRateStartDate)) match {
-      case (_, _) if endDate.isBefore(startDate) => throw new IllegalArgumentException("start date must be before end date!")
+    (startDate < newRateStartDate, endDate < newRateStartDate) match {
+      case (_, _) if endDate < startDate => throw new IllegalArgumentException("start date must be before end date!")
       case (true, false) => Days.daysBetween(startDate, newRateStartDate).getDays
       case (true, true) => 1 + Days.daysBetween(startDate, newRateStartDate).getDays - Days.daysBetween(endDate, newRateStartDate).getDays // 1 is to include start day
       case (_, _) => 0
@@ -59,8 +60,8 @@ case class PoolPercentageCalculator(oldMainRate: Int = 20,
   }
 
   private[calculations] def daysOnAndAfter(startDate: LocalDate, endDate: LocalDate): Int = {
-    (startDate.isBefore(newRateStartDate), endDate.isBefore(newRateStartDate)) match {
-      case (_, _) if endDate.isBefore(startDate) => throw new IllegalArgumentException("start date must be before end date!")
+    (startDate < newRateStartDate, endDate < newRateStartDate) match {
+      case (_, _) if endDate < startDate => throw new IllegalArgumentException("start date must be before end date!")
       case (true, false) => 1 + Days.daysBetween(newRateStartDate, endDate).getDays // 1 is to include start day
       case (false, false) => 1 + Days.daysBetween(newRateStartDate, endDate).getDays - Days.daysBetween(newRateStartDate, startDate).getDays  // the 1 is to include start day
       case (_, _) => 0
