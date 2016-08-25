@@ -20,8 +20,8 @@ import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.BalanceSheetTangible
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC5132(value: Int) extends CtBoxIdentifier(name = "Net book value of tangible assets at the end of this period ")
-  with CtInteger with BalanceSheetTangibleAssetsCalculator {
+case class AC5132(value: Option[Int]) extends CtBoxIdentifier(name = "Net book value of tangible assets at the end of this period")
+  with CtOptionalInteger with BalanceSheetTangibleAssetsCalculator {
 }
 
 object AC5132 extends Calculated[AC5132, AbridgedAccountsBoxRetriever] with BalanceSheetTangibleAssetsCalculator {

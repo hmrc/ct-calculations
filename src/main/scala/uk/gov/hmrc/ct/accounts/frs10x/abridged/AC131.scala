@@ -20,8 +20,8 @@ import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.BalanceSheetTangible
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC131(value: Int) extends CtBoxIdentifier(name = "Total net assets or liabilities (previous PoA)")
-  with CtInteger with BalanceSheetTangibleAssetsCalculator {
+case class AC131(value: Option[Int]) extends CtBoxIdentifier(name = "Total net assets or liabilities (previous PoA)")
+  with CtOptionalInteger with BalanceSheetTangibleAssetsCalculator {
 }
 
 object AC131 extends Calculated[AC131, AbridgedAccountsBoxRetriever] with BalanceSheetTangibleAssetsCalculator {
