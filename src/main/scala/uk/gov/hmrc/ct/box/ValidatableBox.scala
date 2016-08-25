@@ -272,7 +272,7 @@ object ValidatableBox {
 
   val ValidNonForeignLessRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"!%\\*_\\+:@<>\\?=;]*"
   val ValidNonForeignMoreRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"]*"
-  val ValidCoHoCharacters = "[a-zA-Z0-9&@£$€¥\\\\,.;:\\s!?/“”\"*=#%+<>»«_'(){}\\[\\]\\r-]*" // Based on the comment from CATO-3881
+  val ValidCoHoCharacters = "[a-zA-Z0-9‘’’&@£$€¥\\\\,.;:\\s!?/“”\"*=#%+<>»«_'(){}\\[\\]\\r-]*" // Based on the comment from CATO-3881
   val SortCodeValidChars = """^[0-9]{6}$"""
   val AccountNumberValidChars = """^[0-9]{8}$"""
   val StandardCohoTextFieldLimit = 20000

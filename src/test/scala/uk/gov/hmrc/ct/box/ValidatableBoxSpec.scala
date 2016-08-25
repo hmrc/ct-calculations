@@ -212,7 +212,7 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
 
     "return no errors if it matches character set 5" in {
-      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("<>!»«\"“”    "))) shouldBe Set()
+      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("<>!»«\"“”   ‘ ’ ’    "))) shouldBe Set()
     }
 
     "return no errors if no value set" in {
