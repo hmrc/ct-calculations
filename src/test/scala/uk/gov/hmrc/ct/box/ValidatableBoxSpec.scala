@@ -186,6 +186,44 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
   }
 
+  "validateCoHoOptionalTextField" should {
+    "return error if it does not match" in {
+      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("^"))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.regexFailure"))
+    }
+
+    "return no errors if it matches character set 0" in {
+      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"))) shouldBe Set()
+    }
+
+    "return no errors if it matches character set 1" in {
+      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("0123456789"))) shouldBe Set()
+    }
+
+    "return no errors if it matches character set 2" in {
+      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("&@£$€¥.,:;"))) shouldBe Set()
+    }
+
+    "return no errors if it matches character set 3" in {
+      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("-'()[]{}"))) shouldBe Set()
+    }
+
+    "return no errors if it matches character set 4" in {
+      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("?/\\#%+\\r=*"))) shouldBe Set()
+    }
+
+    "return no errors if it matches character set 5" in {
+      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("<>!»«\"“”    "))) shouldBe Set()
+    }
+
+    "return no errors if no value set" in {
+      validateCoHoOptionalTextField("testBox", testOptStringBox(None)) shouldBe Set()
+    }
+
+    "return no errors if empty string" in {
+      validateCoHoOptionalTextField("testBox", testOptStringBox(Some(""))) shouldBe Set()
+    }
+  }
+
   "validateStringByLength" should {
     "pass if in range #1" in {
       validateStringByLength("testBox", testStringBox("1234567"), 7,8) shouldBe Set()
