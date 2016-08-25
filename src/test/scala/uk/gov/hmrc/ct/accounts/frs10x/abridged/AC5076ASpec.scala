@@ -36,6 +36,16 @@ class AC5076ASpec extends WordSpec
   testAccountsMoneyValidation("AC5076A", AC5076A)
 
   "AC5076A" should {
+    "fail validation when AC76 isn't empty and this box is empty" in {
+      when(boxRetriever.ac76()).thenReturn(AC76(Some(10)))
+      AC5076A(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5076A"), "error.AC5076A.required"))
+    }
+
+    "not fail validation when AC76 isn't empty and this box is set" in {
+      when(boxRetriever.ac76()).thenReturn(AC76(Some(10)))
+      AC5076A(Some(10)).validate(boxRetriever) shouldBe Set.empty
+    }
+
     "fail validation when populated and AC76 is empty" in {
       when(boxRetriever.ac76()).thenReturn(AC76(None))
       AC5076A(Some(100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5076A"), "error.AC5076A.cannot.exist"))
