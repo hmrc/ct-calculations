@@ -37,7 +37,7 @@ class AC320ASpec extends WordSpec
   }
 
   testAccountsCharacterLimitValidation("AC320A", StandardCohoTextFieldLimit, AC320A)
-//  testAccountsRegexValidation("AC320A", AC320A)
+  testAccountsCoHoTextFieldValidation("AC320A", AC320A)
 
   "AC320A" should {
     "fail validation when not empty and AC320 is true" in {
