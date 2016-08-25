@@ -58,7 +58,7 @@ trait ApportionedTurnoverCalculator {
     val periodOfAccountsEnd   = new LocalDate(ac4.value)
     val accountingPeriodStart = new LocalDate(cp1.value)
     val accountingPeriodEnd   = new LocalDate(cp2.value)
-    val turnover              = ac12.orZero
+    val turnover              = resolveAC12(ac12)
 
     val periodOfAccounts       = Days.daysBetween(periodOfAccountsStart, periodOfAccountsEnd).plus(1)
     val beforeAccountingPeriod = Days.daysBetween(periodOfAccountsStart, accountingPeriodStart)
@@ -97,6 +97,13 @@ trait ApportionedTurnoverCalculator {
     }
 
     if (residual != 0) reapportionRoundingErrors else apportionedTurnover
+  }
+
+  private def resolveAC12(ac12: AC12): Int = {
+    ac12.value match {
+      case Some(x) if x > 0 => x
+      case _ => 0
+    }
   }
 }
 

@@ -20,6 +20,7 @@ import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
+import uk.gov.hmrc.ct.utils.DateImplicits._
 
 trait ValidatableBox[T <: BoxRetriever] extends Validators {
 
@@ -112,7 +113,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
   protected def validateDateAsBefore(boxId: String, box: CtOptionalDate, dateToCompare: LocalDate)(): Set[CtValidation] = {
     box.value match {
       case None => Set()
-      case Some(date) if date.isBefore(dateToCompare) => Set()
+      case Some(date) if date < dateToCompare => Set()
       case _ => Set(CtValidation(Some(boxId), s"error.$boxId.not.before"))
     }
   }
@@ -120,7 +121,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
   protected def validateDateAsAfter(boxId: String, box: CtOptionalDate, dateToCompare: LocalDate)(): Set[CtValidation] = {
     box.value match {
       case None => Set()
-      case Some(date) if date.isAfter(dateToCompare) => Set()
+      case Some(date) if date > dateToCompare => Set()
       case _ => Set(CtValidation(Some(boxId), s"error.$boxId.not.after"))
     }
   }
@@ -132,7 +133,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
   protected def validateDateAsBetweenInclusive(boxId: String, date: Option[LocalDate], minDate: LocalDate, maxDate: LocalDate, messageId: String)(): Set[CtValidation] = {
     date match {
       case None => Set()
-      case Some(date) if date.isBefore(minDate.toDateTimeAtStartOfDay.toLocalDate) || date.isAfter(maxDate.plusDays(1).toDateTimeAtStartOfDay.minusSeconds(1).toLocalDate) =>
+      case Some(d) if d < minDate.toDateTimeAtStartOfDay.toLocalDate || d > maxDate.plusDays(1).toDateTimeAtStartOfDay.minusSeconds(1).toLocalDate =>
         Set(CtValidation(Some(boxId), s"error.$messageId.not.betweenInclusive", Some(Seq(toErrorArgsFormat(minDate), toErrorArgsFormat(maxDate)))))
       case _ => Set()
     }
@@ -182,6 +183,13 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
       case Some(x) if x <= 0 => Set(CtValidation(Some(box.id), s"error.${box.id}.mustBePositive"))
       case _ => Set()
     }
+  }
+
+  protected def validateOptionalIntegerAsEqualTo(box: CtBoxIdentifier with CtOptionalInteger, equalToBox: CtBoxIdentifier with CtOptionalInteger): Set[CtValidation] = {
+    if (box.orZero != equalToBox.orZero)
+      Set(CtValidation(Some(box.id), s"error.${box.id}.mustEqual.${equalToBox.id}"))
+    else
+      Set.empty
   }
 
   protected def validateOptionalStringByRegex(boxId: String, box: CtOptionalString, regex: String)(): Set[CtValidation] = {
