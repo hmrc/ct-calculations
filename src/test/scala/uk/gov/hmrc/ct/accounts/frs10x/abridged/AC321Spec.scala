@@ -33,6 +33,6 @@ class AC321Spec extends WordSpec
   }
 
   testAccountsCharacterLimitValidation("AC321", StandardCohoTextFieldLimit, AC321)
-  testAccountsRegexValidation("AC321", AC321)
+  testAccountsCoHoTextFieldValidation("AC321", AC321)
 
 }

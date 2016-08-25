@@ -29,7 +29,7 @@ class AC106ASpec extends WordSpec with Matchers with MockAbridgedAccountsRetriev
   }
 
   testAccountsCharacterLimitValidation("AC106A", StandardCohoTextFieldLimit, AC106A)
-  testAccountsRegexValidation("AC106A", AC106A)
+  testAccountsCoHoTextFieldValidation("AC106A", AC106A)
 
   "AC106A" should {
 

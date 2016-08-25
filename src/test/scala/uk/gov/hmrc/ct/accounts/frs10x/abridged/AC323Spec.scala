@@ -33,6 +33,6 @@ class AC323Spec extends WordSpec
   }
 
   testAccountsCharacterLimitValidation("AC323", StandardCohoTextFieldLimit, AC323)
-  testAccountsRegexValidation("AC323", AC323)
+  testAccountsCoHoTextFieldValidation("AC323", AC323)
 
 }

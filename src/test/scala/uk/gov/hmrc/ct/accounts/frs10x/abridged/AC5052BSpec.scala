@@ -27,7 +27,7 @@ class AC5052BSpec extends WordSpec with MockitoSugar with Matchers with BeforeAn
   with MockAbridgedAccountsRetriever with AccountsFreeTextValidationFixture {
 
   testAccountsCharacterLimitValidation("AC5052B", StandardCohoTextFieldLimit, AC5052B)
-  testAccountsRegexValidation("AC5052B", AC5052B)
+  testAccountsCoHoTextFieldValidation("AC5052B", AC5052B)
 
   before {
     when(boxRetriever.ac52).thenReturn(AC52(Some(33)))

@@ -47,7 +47,7 @@ class AC8033Spec extends WordSpec with Matchers {
 
     "validate secretary name characters" in {
 
-      val secretary = AC8033(Some("??"))
+      val secretary = AC8033(Some("^^"))
 
       val expectedError = Set(CtValidation(Some("AC8033"), "error.AC8033.regexFailure", None))
       secretary.validate(null) shouldBe expectedError

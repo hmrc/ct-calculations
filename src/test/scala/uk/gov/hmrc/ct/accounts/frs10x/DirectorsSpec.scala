@@ -63,7 +63,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
 
     "validate director name characters" in {
 
-      val director = Director("444", "??")
+      val director = Director("444", "^^")
       val directors = Directors(List(director))
 
       val expectedError = Set(CtValidation(Some("ac8001"), "error.Directors.ac8001.regexFailure", None))
