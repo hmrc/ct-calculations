@@ -212,15 +212,14 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
       val p = Pattern.compile(ValidCoHoCharacters)
       val m = p.matcher(x)
       val allMatchedCharsPluses = m.replaceAll("+")
-      val notMatchingChars = (allMatchedCharsPluses.toSet filterNot (_ == '+')).mkString(", ")
-      notMatchingChars
+      (allMatchedCharsPluses.toSet filterNot (_ == '+')).mkString(", ")
     }
 
     box.value match {
       case Some(x) if x.nonEmpty => {
-        val notMatchingChars = getIllegalCharacters(x)
-        passIf (notMatchingChars.isEmpty) {
-          Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure", Some(Seq(notMatchingChars))))
+        val illegalChars = getIllegalCharacters(x)
+        passIf (illegalChars.isEmpty) {
+          Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure", Some(Seq(illegalChars))))
         }
       }
       case _ => Set()
