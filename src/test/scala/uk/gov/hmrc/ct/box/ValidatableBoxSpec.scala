@@ -187,8 +187,8 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
   }
 
   "validateCoHoOptionalTextField" should {
-    "return error if it does not match" in {
-      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("^  aa § 333"))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.regexFailure", Some(List("^, §"))))
+    "return unique errors if it does not match" in {
+      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("^ ^^  aa § 333"))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.regexFailure", Some(List("^, §"))))
     }
 
     "return no errors if it matches character set 0" in {
