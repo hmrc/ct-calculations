@@ -16,11 +16,14 @@
 
 package uk.gov.hmrc.ct.box
 
+import java.util.regex.{Matcher, Pattern}
+
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 import uk.gov.hmrc.ct.utils.DateImplicits._
+import ValidatableBox._
 
 trait ValidatableBox[T <: BoxRetriever] extends Validators {
 
@@ -203,6 +206,21 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
+  protected def validateCoHoOptionalTextField(boxId: String, box: CtOptionalString)(): Set[CtValidation] = {
+    box.value match {
+      case Some(x) if x.nonEmpty => {
+        val p = Pattern.compile(ValidCoHoCharacters)
+        val m = p.matcher(x)
+        val s = m.replaceAll("+")
+        val notMatchingChars = (s.toSet filterNot(_ == '+')).mkString(", ")
+        passIf (m.matches) {
+          Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure", Some(Seq(notMatchingChars))))
+        }
+      }
+      case _ => Set()
+    }
+  }
+
   protected def validateStringByRegex(boxId: String, box: CtString, regex: String)(): Set[CtValidation] = {
     passIf (box.value.isEmpty || box.value.matches(regex)) {
       Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
@@ -269,8 +287,8 @@ object ValidatableBox {
 
   val ValidNonForeignLessRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"!%\\*_\\+:@<>\\?=;]*"
   val ValidNonForeignMoreRestrictiveCharacters = "[A-Za-z0-9 ,\\.\\(\\)/&'\\-\"]*"
-  val ValidCoHoCharacters = "[A-Za-z\\-'\\. \\,]*" // Based on the comment from CATO-3881
+  val ValidCoHoCharacters = "[a-zA-Z0-9‘’’&@£$€¥\\\\,.;:\\s!?/“”\"*=#%+<>»«_'(){}\\[\\]\\r-]*" // Based on the comment from CATO-4027
   val SortCodeValidChars = """^[0-9]{6}$"""
   val AccountNumberValidChars = """^[0-9]{8}$"""
-  val StandardCohoTextfieldLimit = 20000
+  val StandardCohoTextFieldLimit = 20000
 }

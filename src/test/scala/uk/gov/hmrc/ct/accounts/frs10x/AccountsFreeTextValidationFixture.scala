@@ -57,10 +57,10 @@ trait AccountsFreeTextValidationFixture extends WordSpec with Matchers with Mock
     }
   }
 
-  def testAccountsRegexValidation(boxId: String, builder: (Option[String]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
+  def testAccountsCoHoTextFieldValidation(boxId: String, builder: (Option[String]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
     setUpMocks()
     "fail validation if invalid characters" in {
-      builder(Some("??")).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure", None))
+      builder(Some("^ §")).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure", Some(List("^, §"))))
     }
   }
 }
