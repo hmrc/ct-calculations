@@ -207,13 +207,19 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
   }
 
   protected def validateCoHoOptionalTextField(boxId: String, box: CtOptionalString)(): Set[CtValidation] = {
+
+    def getIllegalCharacters(x: String): String = {
+      val p = Pattern.compile(ValidCoHoCharacters)
+      val m = p.matcher(x)
+      val allMatchedCharsPluses = m.replaceAll("+")
+      val notMatchingChars = (allMatchedCharsPluses.toSet filterNot (_ == '+')).mkString(", ")
+      notMatchingChars
+    }
+
     box.value match {
       case Some(x) if x.nonEmpty => {
-        val p = Pattern.compile(ValidCoHoCharacters)
-        val m = p.matcher(x)
-        val s = m.replaceAll("+")
-        val notMatchingChars = (s.toSet filterNot(_ == '+')).mkString(", ")
-        passIf (m.matches) {
+        val notMatchingChars = getIllegalCharacters(x)
+        passIf (notMatchingChars.isEmpty) {
           Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure", Some(Seq(notMatchingChars))))
         }
       }
