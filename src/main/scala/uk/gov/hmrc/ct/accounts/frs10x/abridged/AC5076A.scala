@@ -28,6 +28,7 @@ case class AC5076A(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus o
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
       cannotExistIf(value.nonEmpty && !boxRetriever.ac76().value.isDefined),
+      failIf(boxRetriever.ac76().value.isDefined)(validateIntegerAsMandatory("AC5076A", this)),
       validateMoney(value)
     )
   }

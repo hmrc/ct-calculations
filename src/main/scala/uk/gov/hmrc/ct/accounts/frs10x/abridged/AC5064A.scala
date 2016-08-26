@@ -25,8 +25,8 @@ case class AC5064A(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
       cannotExistIf(value.isDefined && !boxRetriever.ac64().value.isDefined),
-      validateStringMaxLength("AC5064A", value.getOrElse(""), StandardCohoTextfieldLimit),
-      validateOptionalStringByRegex("AC5064A", this, ValidCoHoCharacters)
+      validateStringMaxLength("AC5064A", value.getOrElse(""), StandardCohoTextFieldLimit),
+      validateCoHoOptionalTextField("AC5064A", this)
     )
   }
 }

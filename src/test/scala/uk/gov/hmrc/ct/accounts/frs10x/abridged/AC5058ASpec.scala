@@ -33,8 +33,8 @@ class AC5058ASpec extends WordSpec
     when(boxRetriever.ac58()).thenReturn(AC58(Some(100)))
   }
 
-  testAccountsCharacterLimitValidation("AC5058A", StandardCohoTextfieldLimit, AC5058A)
-  testAccountsRegexValidation("AC5058A", AC5058A)
+  testAccountsCharacterLimitValidation("AC5058A", StandardCohoTextFieldLimit, AC5058A)
+  testAccountsCoHoTextFieldValidation("AC5058A", AC5058A)
 
   "AC5058A" should {
     "fail validation when populated and AC58 is empty" in {

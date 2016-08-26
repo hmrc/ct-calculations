@@ -29,8 +29,8 @@ case class AC321(value: Option[String]) extends CtBoxIdentifier(name = "Turnover
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateStringMaxLength("AC321", value.getOrElse(""), StandardCohoTextfieldLimit),
-      validateOptionalStringByRegex("AC321", this, ValidCoHoCharacters)
+      validateStringMaxLength("AC321", value.getOrElse(""), StandardCohoTextFieldLimit),
+      validateCoHoOptionalTextField("AC321", this)
     )
   }
 }

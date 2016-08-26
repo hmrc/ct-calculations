@@ -32,7 +32,7 @@ class AC324Spec extends WordSpec
     when(boxRetriever.ac324()).thenReturn(AC324(Some("text")))
   }
 
-  testAccountsCharacterLimitValidation("AC324", StandardCohoTextfieldLimit, AC324)
-  testAccountsRegexValidation("AC324", AC324)
+  testAccountsCharacterLimitValidation("AC324", StandardCohoTextFieldLimit, AC324)
+  testAccountsCoHoTextFieldValidation("AC324", AC324)
 
 }
