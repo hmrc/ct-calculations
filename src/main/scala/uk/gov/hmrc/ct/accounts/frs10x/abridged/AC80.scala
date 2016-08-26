@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.box._
 
 case class AC80(value: Option[Int]) extends CtBoxIdentifier(name = "Total Shareholders Funds (current PoA)")
   with CtOptionalInteger with AssetsEqualToSharesValidator {
-
+ 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     validateAssetsEqualToShares("AC80", boxRetriever.ac68())
   }
