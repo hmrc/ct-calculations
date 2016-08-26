@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.box.formats.{OptionalBooleanFormat, OptionalIntegerFormat, OptionalStringFormat}
+import uk.gov.hmrc.ct.box.formats.{IntegerFormat, OptionalBooleanFormat, OptionalIntegerFormat, OptionalStringFormat}
 
 package object formats {
   implicit val ac16Format = new OptionalIntegerFormat[AC16](AC16.apply)
@@ -56,6 +56,16 @@ package object formats {
   implicit val ac106Format = new OptionalIntegerFormat[AC106](AC106.apply)
   implicit val ac106AFormat = new OptionalStringFormat[AC106A](AC106A.apply)
   implicit val ac107Format = new OptionalIntegerFormat[AC107](AC107.apply)
+  implicit val ac125Format = new OptionalIntegerFormat[AC125](AC125.apply)
+  implicit val ac126Format = new OptionalIntegerFormat[AC126](AC126.apply)
+  implicit val ac130Format = new OptionalIntegerFormat[AC130](AC130.apply)
+  implicit val ac131Format = new OptionalIntegerFormat[AC131](AC131.apply)
+  implicit val ac132Format = new OptionalIntegerFormat[AC132](AC132.apply)
+  implicit val ac212Format = new OptionalIntegerFormat[AC212](AC212.apply)
+  implicit val ac213Format = new OptionalIntegerFormat[AC213](AC213.apply)
+  implicit val ac214Format = new OptionalIntegerFormat[AC214](AC214.apply)
+  implicit val ac217Format = new OptionalIntegerFormat[AC217](AC217.apply)
+  implicit val ac219Format = new OptionalIntegerFormat[AC219](AC219.apply)
   implicit val ac320Format = new OptionalBooleanFormat[AC320](AC320.apply)
   implicit val ac320AFormat = new OptionalStringFormat[AC320A](AC320A.apply)
   implicit val ac321Format = new OptionalStringFormat[AC321](AC321.apply)
@@ -75,6 +85,9 @@ package object formats {
   implicit val ac5064AFormat = new OptionalStringFormat[AC5064A](AC5064A.apply)
   implicit val ac5076AFormat = new OptionalIntegerFormat[AC5076A](AC5076A.apply)
   implicit val ac5076CFormat = new OptionalStringFormat[AC5076C](AC5076C.apply)
+  implicit val ac5131Format = new OptionalIntegerFormat[AC5131](AC5131.apply)
+  implicit val ac5132Format = new OptionalIntegerFormat[AC5132](AC5132.apply)
+  implicit val ac5217Format = new OptionalIntegerFormat[AC5217](AC5217.apply)
 
   implicit val ac7100Format = new OptionalBooleanFormat(AC7100.apply)
 

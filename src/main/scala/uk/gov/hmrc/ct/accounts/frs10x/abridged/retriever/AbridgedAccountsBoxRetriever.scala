@@ -130,9 +130,29 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac106(): AC106
 
+  def ac107(): AC107
+
   def ac106A(): AC106A
 
-  def ac107(): AC107
+  def ac125(): AC125
+
+  def ac126(): AC126
+
+  def ac130(): AC130
+
+  def ac131(): AC131 = AC131.calculate(this)
+
+  def ac132(): AC132 = AC132.calculate(this)
+
+  def ac212(): AC212
+
+  def ac213(): AC213
+
+  def ac214(): AC214
+
+  def ac217(): AC217 = AC217.calculate(this)
+
+  def ac219(): AC219
 
   def ac320(): AC320
 
@@ -167,6 +187,12 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
   def ac5058A(): AC5058A
 
   def ac5064A(): AC5064A
+
+  def ac5217(): AC5217
+
+  def ac5131(): AC5131
+
+  def ac5132(): AC5132 = AC5132.calculate(this)
 
   def ac5076A(): AC5076A
 
