@@ -3,7 +3,7 @@ ct-calculations
 ====
 [![Build Status](https://travis-ci.org/hmrc/ct-calculations.svg?branch=master)](https://travis-ci.org/hmrc/ct-calculations) [ ![Download](https://api.bintray.com/packages/hmrc/releases/ct-calculations/images/download.svg) ](https://bintray.com/hmrc/releases/ct-calculations/_latestVersion)
 
-
+ 
 
 CT Calculations is a library that contains the domain needed to create a Corporations Tax return for HMRC. This includes implementations of Boxes and calculations required to produce a CT600, including CT600J, CT600A and Computations. 
 
