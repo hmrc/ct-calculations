@@ -33,7 +33,7 @@ case class AC106A(value: Option[String]) extends CtBoxIdentifier(name = "Employe
     collectErrors (
       cannotExistIf(!noteSelectedForInclusion && value.nonEmpty),
       validateStringMaxLength("AC106A", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalTextField("AC106A", this)
+      validateCoHoOptionalString("AC106A", this)
     )
   }
 }

@@ -100,7 +100,7 @@ case class Director(id: String,
 
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever): Set[CtValidation] =
     validateStringByLength("ac8001", ac8001, "Directors.ac8001", 1, 40) ++
-      validateRawStringByRegex("ac8001", ac8001, "Directors.ac8001", ValidCoHoCharacters) ++
+      validateCoHoString("ac8001", ac8001, errorCodeBoxId = Some("Directors.ac8001")) ++
       validateAppointmentDateAsMandatoryWhenAppointed(boxRetriever) ++
       validateAppointmentDateAsWithinPOA(boxRetriever) ++
       validateResignationDateAsMandatoryWhenResigned(boxRetriever) ++
