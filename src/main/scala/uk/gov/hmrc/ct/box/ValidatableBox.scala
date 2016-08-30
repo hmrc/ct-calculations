@@ -206,7 +206,22 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
-  protected def validateCoHoOptionalTextField(boxId: String, box: CtOptionalString)(): Set[CtValidation] = {
+  protected def validateStringByRegex(boxId: String, box: CtString, regex: String)(): Set[CtValidation] = {
+    passIf (box.value.isEmpty || box.value.matches(regex)) {
+      Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+    }
+  }
+
+  protected def validateCoHoOptionalString(boxId: String, box: CtOptionalString)(): Set[CtValidation] = {
+    box.value match {
+      case Some(x) if x.nonEmpty => {
+        validateCoHoString(boxId, x)
+      }
+      case _ => Set()
+    }
+  }
+
+  protected def validateCoHoString(boxId: String, value: String, errorCodeBoxId: Option[String] = None)(): Set[CtValidation] = {
 
     def getIllegalCharacters(x: String): String = {
       val p = Pattern.compile(ValidCoHoCharacters)
@@ -215,26 +230,10 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
       (allMatchedCharsPluses.toSet filterNot (_ == '+')).mkString(", ")
     }
 
-    box.value match {
-      case Some(x) if x.nonEmpty => {
-        val illegalChars = getIllegalCharacters(x)
-        passIf (illegalChars.isEmpty) {
-          Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure", Some(Seq(illegalChars))))
-        }
-      }
-      case _ => Set()
-    }
-  }
-
-  protected def validateStringByRegex(boxId: String, box: CtString, regex: String)(): Set[CtValidation] = {
-    passIf (box.value.isEmpty || box.value.matches(regex)) {
-      Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
-    }
-  }
-
-  protected def validateRawStringByRegex(boxId: String, value: String, errorCodeBoxId: String, regex: String)(): Set[CtValidation] = {
-    passIf (value.matches(regex)) {
-      Set(CtValidation(Some(boxId), s"error.$errorCodeBoxId.regexFailure"))
+    val errorCode = errorCodeBoxId.getOrElse(boxId)
+    val illegalChars = getIllegalCharacters(value)
+    passIf (illegalChars.isEmpty) {
+      Set(CtValidation(Some(boxId), s"error.$errorCode.regexFailure", Some(Seq(illegalChars))))
     }
   }
 

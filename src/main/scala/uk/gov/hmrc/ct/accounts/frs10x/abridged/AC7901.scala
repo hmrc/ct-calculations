@@ -33,7 +33,7 @@ with Validators {
         collectErrors (
           validateStringAsMandatory("AC7901", this),
           validateOptionalStringByLength("AC7901", this, 1, StandardCohoTextFieldLimit),
-          validateCoHoOptionalTextField("AC7901", this)
+          validateCoHoOptionalString("AC7901", this)
         )
       )
     )

@@ -29,7 +29,7 @@ case class AC5076C(value: Option[String]) extends CtBoxIdentifier(name = "Additi
     collectErrors (
       cannotExistIf(value.isDefined && !boxRetriever.ac76().value.isDefined),
       validateStringMaxLength("AC5076C", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalTextField("AC5076C", this)
+      validateCoHoOptionalString("AC5076C", this)
     )
   }
 

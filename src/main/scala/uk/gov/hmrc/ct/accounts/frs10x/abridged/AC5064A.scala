@@ -26,7 +26,7 @@ case class AC5064A(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
     collectErrors (
       cannotExistIf(value.isDefined && !boxRetriever.ac64().value.isDefined),
       validateStringMaxLength("AC5064A", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalTextField("AC5064A", this)
+      validateCoHoOptionalString("AC5064A", this)
     )
   }
 }

@@ -30,7 +30,7 @@ case class AC5052B(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
     collectErrors (
       cannotExistIf(value.nonEmpty && !boxRetriever.ac52().value.isDefined),
       validateStringMaxLength("AC5052B", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalTextField("AC5052B", this)
+      validateCoHoOptionalString("AC5052B", this)
     )
   }
 }
