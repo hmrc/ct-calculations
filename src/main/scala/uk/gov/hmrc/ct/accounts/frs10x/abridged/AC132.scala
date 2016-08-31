@@ -18,7 +18,6 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.BalanceSheetTangibleAssetsCalculator
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
 case class AC132(value: Option[Int]) extends CtBoxIdentifier(name = "Net book value of tangible assets at the end of the previous period")
@@ -27,7 +26,7 @@ case class AC132(value: Option[Int]) extends CtBoxIdentifier(name = "Net book va
   with Validators{
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    failIf (boxRetriever.ac44.value.nonEmpty) (
+    failIf (boxRetriever.ac44().value.nonEmpty) (
       collectErrors(
         validateNetBooValueMatchesTotalAssets(boxRetriever)
       )
@@ -51,13 +50,3 @@ object AC132 extends Calculated[AC132, AbridgedAccountsBoxRetriever] with Balanc
   }
 }
 
-/*
-val anyProfitOrLossFieldHasAValue =
-      (value orElse
-        ac18().value orElse
-        ac20().value orElse
-        ac28().value orElse
-        ac30().value orElse
-        ac34().value)
-        .nonEmpty
- */
