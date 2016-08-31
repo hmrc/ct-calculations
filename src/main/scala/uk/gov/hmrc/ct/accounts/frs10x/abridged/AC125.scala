@@ -27,7 +27,33 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateMoney(value, min = 0)
+      failIf(boxRetriever.ac44().value.nonEmpty)(
+        collectErrors(
+          validateMoney(value, min = 0),
+          validateOneFieldMandatory(boxRetriever)
+        )
+      )
+    )
+  }
+
+  private def validateOneFieldMandatory(boxRetriever: AbridgedAccountsBoxRetriever)() = {
+    val anyBoxPopulated = (
+      boxRetriever.ac5217().value orElse
+        boxRetriever.ac125().value orElse
+        boxRetriever.ac126().value orElse
+        boxRetriever.ac212().value orElse
+        boxRetriever.ac213().value orElse
+        boxRetriever.ac5131().value orElse
+        boxRetriever.ac219().value orElse
+        boxRetriever.ac130().value orElse
+        boxRetriever.ac214().value orElse
+        boxRetriever.ac5133().value
+         )
+      .nonEmpty
+
+    failIf(!anyBoxPopulated)(
+      Set(CtValidation(None, s"error.global.tangibleAssetsNote.one.field.required"))
     )
   }
 }
+

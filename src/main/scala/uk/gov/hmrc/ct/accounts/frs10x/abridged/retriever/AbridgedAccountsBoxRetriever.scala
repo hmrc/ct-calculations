@@ -194,6 +194,8 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac5132(): AC5132 = AC5132.calculate(this)
 
+  def ac5133(): AC5133
+
   def ac5076A(): AC5076A
 
   def ac5076B(): AC5076B = AC5076B.calculate(this)
