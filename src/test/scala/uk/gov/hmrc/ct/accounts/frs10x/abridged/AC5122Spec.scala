@@ -33,12 +33,6 @@ class AC5122Spec extends AccountsMoneyValidationFixture with MockAbridgedAccount
 
   "AC5122" should {
 
-    "throw error when is set when AC42 is empty" in {
-      setUpMocks()
-      when(boxRetriever.ac42()).thenReturn(AC42(None))
-      AC5122(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5122"), "error.AC5122.cannot.exist"))
-    }
-
     "throw error when is different than AC43" in {
       setUpMocks()
       AC5122(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5122"), "error.AC5122.mustEqual.AC43"))

@@ -25,10 +25,10 @@ case class AC115(value: Option[Int]) extends CtBoxIdentifier(name = "Additions")
   with ValidatableBox[AbridgedAccountsBoxRetriever]
   with Validators {
 
-  def validateNoteEntered(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  def getNoteValues(boxRetriever: AbridgedAccountsBoxRetriever) = {
     import boxRetriever._
 
-    val noteValues = Set(
+    Set(
       ac5117().value,
       ac115().value,
       ac116().value,
@@ -39,6 +39,12 @@ case class AC115(value: Option[Int]) extends CtBoxIdentifier(name = "Additions")
       ac120().value,
       ac211().value
     )
+  }
+
+  def validateNoteEntered(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+    import boxRetriever._
+
+    val noteValues = getNoteValues(boxRetriever)
 
     (noteValues.exists(_.nonEmpty), ac5123().value.getOrElse("").trim().nonEmpty) match {
       case (false, false) => Set(CtValidation(None, "error.balanceSheet.intangibleAssets.atLeastOneEntered"))
@@ -46,11 +52,23 @@ case class AC115(value: Option[Int]) extends CtBoxIdentifier(name = "Additions")
     }
   }
 
+  def validateNoteCannotExists(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+    import boxRetriever._
+
+    val noteValues = getNoteValues(boxRetriever)
+    val noteIsNotEmpty = noteValues.exists(_.nonEmpty) || ac5123().value.getOrElse("").trim().nonEmpty
+
+    (ac42.value.isEmpty, noteIsNotEmpty) match {
+      case (true, true) => Set(CtValidation(None, "error.balanceSheet.intangibleAssetsNote.cannot.exist"))
+      case _ => Set.empty
+    }
+  }
+
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      cannotExistIf(value.nonEmpty && boxRetriever.ac42().value.isEmpty),
       failIf(boxRetriever.ac42().value.nonEmpty)(validateNoteEntered(boxRetriever)),
+      failIf(boxRetriever.ac42().value.isEmpty)(validateNoteCannotExists(boxRetriever)),
       validateMoney(value, min = 0)
     )
   }

@@ -30,21 +30,6 @@ class AC210Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
     when(ac42()).thenReturn(AC42(Some(100)))
   }
 
-  testAccountsMoneyValidation("AC210", AC210.apply, testEmpty = false)
-
-  "AC210" should {
-
-    "throw error when is set when AC42 is empty" in {
-      setUpMocks()
-      when(boxRetriever.ac42()).thenReturn(AC42(None))
-      AC210(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC210"), "error.AC210.cannot.exist"))
-    }
-
-    "validate successfully if nothing is wrong" in {
-      setUpMocks()
-      AC210(Some(10)).validate(boxRetriever) shouldBe Set.empty
-    }
-
-  }
+  testAccountsMoneyValidation("AC210", AC210.apply)
 
 }

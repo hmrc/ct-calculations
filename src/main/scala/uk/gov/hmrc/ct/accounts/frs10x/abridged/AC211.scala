@@ -28,7 +28,6 @@ case class AC211(value: Option[Int]) extends CtBoxIdentifier(name = "Other adjus
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      cannotExistIf(value.nonEmpty && boxRetriever.ac42().value.isEmpty),
       validateMoney(value)
     )
   }

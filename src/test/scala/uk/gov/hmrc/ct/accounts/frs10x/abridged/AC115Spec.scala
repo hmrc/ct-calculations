@@ -45,16 +45,16 @@ class AC115Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
 
   "AC115" should {
 
-    "throw error when is set when AC42 is empty" in {
-      setUpMocks()
-      when(boxRetriever.ac42()).thenReturn(AC42(None))
-      AC115(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC115"), "error.AC115.cannot.exist"))
-    }
-
     "throw global error when none of the fields for the note is entered" in {
       setUpMocks()
       when(boxRetriever.ac5123()).thenReturn(AC5123(None))
       AC115(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.intangibleAssets.atLeastOneEntered"))
+    }
+
+    "throw global error when one field was entered but not cannot be set" in {
+      setUpMocks()
+      when(boxRetriever.ac42()).thenReturn(AC42(None))
+      AC115(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.intangibleAssetsNote.cannot.exist"))
     }
 
     "validate successfully if nothing is wrong" in {
