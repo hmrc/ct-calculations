@@ -29,7 +29,6 @@ case class AC122(value: Option[Int]) extends CtBoxIdentifier(name = "Net book va
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      cannotExistIf(value.nonEmpty && boxRetriever.ac42().value.isEmpty),
       validateMoney(value, min = 0),
       failIf(boxRetriever.ac42().value.nonEmpty)(validateOptionalIntegerAsEqualTo(this, boxRetriever.ac42()))
     )

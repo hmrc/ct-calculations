@@ -32,17 +32,6 @@ class AC121Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
 
   "AC121" should {
 
-    "throw error when is set when AC42 is empty" in {
-      setUpMocks()
-      when(boxRetriever.ac42()).thenReturn(AC42(None))
-      AC121(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC121"), "error.AC121.cannot.exist"))
-    }
-
-    "validate successfully if nothing is wrong" in {
-      setUpMocks()
-      AC121(Some(10)).validate(boxRetriever) shouldBe Set.empty
-    }
-
     "correctly perform the calculation" in {
       import boxRetriever._
 

@@ -29,7 +29,6 @@ case class AC5123(value: Option[String]) extends CtBoxIdentifier(name = "Additio
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      cannotExistIf(value.nonEmpty && boxRetriever.ac42().value.isEmpty),
       validateOptionalStringByLength("AC7601", this, 1, StandardCohoTextFieldLimit),
       validateOptionalStringByRegex("AC7601", this, ValidCoHoCharacters)
     )

@@ -30,21 +30,6 @@ class AC120Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
     when(ac42()).thenReturn(AC42(Some(100)))
   }
 
-  testAccountsMoneyValidationWithMin("AC120", 0, AC120.apply, testEmpty = false)
-
-  "AC120" should {
-
-    "throw error when is set when AC42 is empty" in {
-      setUpMocks()
-      when(boxRetriever.ac42()).thenReturn(AC42(None))
-      AC120(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC120"), "error.AC120.cannot.exist"))
-    }
-
-    "validate successfully if nothing is wrong" in {
-      setUpMocks()
-      AC120(Some(10)).validate(boxRetriever) shouldBe Set.empty
-    }
-
-  }
+  testAccountsMoneyValidationWithMin("AC120", 0, AC120.apply)
 
 }
