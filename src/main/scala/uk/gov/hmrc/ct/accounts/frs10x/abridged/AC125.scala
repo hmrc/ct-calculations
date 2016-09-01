@@ -49,7 +49,7 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
       ).nonEmpty
 
     failIf(!anyBoxPopulated)(
-      Set(CtValidation(None, "error.global.tangible.assets.note.one.box.required"))
+      Set(CtValidation(None, "error.tangible.assets.note.one.box.required"))
     )
   }
 }

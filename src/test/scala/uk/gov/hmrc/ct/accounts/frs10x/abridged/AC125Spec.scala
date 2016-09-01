@@ -48,7 +48,7 @@ class AC125Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
   "AC125" should {
     "fail validation when at least one intangible assets field is not populated" in {
       when(boxRetriever.ac125()).thenReturn(AC125(None))
-      AC125(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.global.tangible.assets.note.one.box.required"))
+      AC125(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.tangible.assets.note.one.box.required"))
     }
 
     "pass validation if no fields populated and AC44 not populated" in {

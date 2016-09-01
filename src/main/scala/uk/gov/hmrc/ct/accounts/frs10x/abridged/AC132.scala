@@ -28,14 +28,14 @@ case class AC132(value: Option[Int]) extends CtBoxIdentifier(name = "Net book va
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     failIf (boxRetriever.ac44().value.nonEmpty) (
       collectErrors(
-        validateNetBooValueMatchesTotalAssets(boxRetriever)
+        validateNetBookValueMatchesTotalAssets(boxRetriever)
       )
     )
   }
 
-  def validateNetBooValueMatchesTotalAssets(boxRetriever: AbridgedAccountsBoxRetriever)() = {
+  def validateNetBookValueMatchesTotalAssets(boxRetriever: AbridgedAccountsBoxRetriever)() = {
     failIf (boxRetriever.ac132().orZero != boxRetriever.ac44().orZero || boxRetriever.ac5132().orZero != boxRetriever.ac45().orZero) {
-      Set(CtValidation(None, "error.global.tangible.assets.note.netBookValue.notEqualToAssets"))
+      Set(CtValidation(None, "error.tangible.assets.note.netBookValue.notEqualToAssets"))
     }
   }
 }
@@ -44,8 +44,8 @@ object AC132 extends Calculated[AC132, AbridgedAccountsBoxRetriever] with Balanc
 
   override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC132 = {
     calculateNetBookValueOfTangibleAssetsAEndOfPreviousPeriod(
-    boxRetriever.ac217(),
-    boxRetriever.ac131()
+      boxRetriever.ac217(),
+      boxRetriever.ac131()
     )
   }
 }
