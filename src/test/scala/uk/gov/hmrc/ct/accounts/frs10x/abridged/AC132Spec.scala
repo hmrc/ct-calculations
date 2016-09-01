@@ -22,7 +22,7 @@ import uk.gov.hmrc.ct.box.CtValidation
 
 class AC132Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
 
-  "AC125" should {
+  "AC132" should {
     "fail validation when AC132 does not match AC44" in {
       when(boxRetriever.ac132()).thenReturn(AC132(Some(11)))
       when(boxRetriever.ac44()).thenReturn(AC44(Some(22)))
