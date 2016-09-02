@@ -26,12 +26,36 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
   with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
       failIf(boxRetriever.ac44().value.nonEmpty)(
         collectErrors(
           validateMoney(value, min = 0),
           validateOneFieldMandatory(boxRetriever)
         )
-      )
+      ),
+      failIf(boxRetriever.ac44().value.isEmpty)(validateNoteCannotExist(boxRetriever))
+    )
+  }
+
+  private def validateNoteCannotExist(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+    import boxRetriever._
+
+    val values = Seq(
+      ac5217().value,
+      ac125().value,
+      ac126().value,
+      ac212().value,
+      ac213().value,
+      ac5131().value,
+      ac219().value,
+      ac130().value,
+      ac214().value
+    )
+
+    (values.exists(_.nonEmpty) || ac5133().value.getOrElse("").trim().nonEmpty) match {
+      case true => Set(CtValidation(None, "error.balanceSheet.tangibleAssetsNote.cannot.exist"))
+      case _ => Set.empty
+    }
   }
 
   private def validateOneFieldMandatory(boxRetriever: AbridgedAccountsBoxRetriever)() = {
