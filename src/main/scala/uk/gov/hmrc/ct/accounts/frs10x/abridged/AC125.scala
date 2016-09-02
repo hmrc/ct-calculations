@@ -52,10 +52,10 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
       ac214().value
     )
 
-    (values.exists(_.nonEmpty) || ac5133().value.getOrElse("").trim().nonEmpty) match {
-      case true => Set(CtValidation(None, "error.balanceSheet.tangibleAssetsNote.cannot.exist"))
-      case _ => Set.empty
-    }
+    if (values.exists(_.nonEmpty) || ac5133().value.getOrElse("").trim().nonEmpty)
+      Set(CtValidation(None, "error.balanceSheet.tangibleAssetsNote.cannot.exist"))
+    else
+      Set.empty
   }
 
   private def validateOneFieldMandatory(boxRetriever: AbridgedAccountsBoxRetriever)() = {
