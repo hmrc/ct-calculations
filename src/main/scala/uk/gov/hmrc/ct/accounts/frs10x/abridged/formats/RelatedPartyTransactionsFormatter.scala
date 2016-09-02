@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.formats
+package uk.gov.hmrc.ct.accounts.frs10x.abridged.formats
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.ct.accounts.frs10x.Directors
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions.RelatedPartyTransactions
 
-object DirectorsFormatter {
+object RelatedPartyTransactionsFormatter {
   
-  def DirectorsFromJsonString(json: String): Directors = Json.fromJson[Directors](Json.parse(json)).get
+//  def RelatedPartyTransactionsFromJsonString(json: String): RelatedPartyTransactions = Json.fromJson[RelatedPartyTransactions](Json.parse(json)).get
+//
+//  def toJsonString(RelatedPartyTransactions: RelatedPartyTransactions): String =  Json.toJson(RelatedPartyTransactions).toString()
+//
+//  def asBoxString(RelatedPartyTransactions: RelatedPartyTransactions): Option[String] = Some(toJsonString(RelatedPartyTransactions))
 
-  def toJsonString(directors: Directors): String =  Json.toJson(directors).toString()
-
-  def asBoxString(directors: Directors): Option[String] = Some(toJsonString(directors))
 }

@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.formats
+package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
 
-import play.api.libs.json.Json
-import uk.gov.hmrc.ct.accounts.frs10x.Directors
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.box._
 
-object DirectorsFormatter {
-  
-  def DirectorsFromJsonString(json: String): Directors = Json.fromJson[Directors](Json.parse(json)).get
+case class AC7805(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at end of POA")
+  with CtOptionalInteger
+  with Input
+  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with Validators {
 
-  def toJsonString(directors: Directors): String =  Json.toJson(directors).toString()
-
-  def asBoxString(directors: Directors): Option[String] = Some(toJsonString(directors))
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
+    collectErrors {
+      validateMoney(value, min = 0)
+    }
 }
