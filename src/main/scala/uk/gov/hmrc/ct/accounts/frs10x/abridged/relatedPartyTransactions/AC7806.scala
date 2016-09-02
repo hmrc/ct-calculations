@@ -17,13 +17,21 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
-case class AC7801(value: Option[Boolean]) extends CtBoxIdentifier(name = "is incoming (vs outgoing) transaction")
-  with CtOptionalBoolean
+case class AC7806(value: Option[String]) extends CtBoxIdentifier(name = "Additional information")
+  with CtOptionalString
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
   with Validators {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = Set()
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+
+    collectErrors(
+      validateAsMandatory(this),
+      validateOptionalStringByLength("AC7806", this, 1, StandardCohoTextFieldLimit),
+      validateOptionalStringByRegex("AC7806", this, ValidCoHoCharacters)
+    )
+  }
 }

@@ -16,35 +16,42 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
 
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] = List.empty) extends CtBoxIdentifier(name = "Related party transactions")
   with CtValue[List[RelatedPartyTransaction]]
   with Input
-  with ValidatableBox[Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever] {
+  with ValidatableBox[AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
 
   override def value = transactions
 
- // override def asBoxString = RelatedPartyTransactionsFormatter.asBoxString(this)
-
-  override def validate(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = Set()
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+    transactions.flatMap(_.validate(boxRetriever)).toSet
+  }
 }
 
-case class RelatedPartyTransaction(txId: String,
+case class RelatedPartyTransaction(uuid: String,
                                    ac7801: AC7801,
                                    ac7802: AC7802,
                                    ac7803: AC7803,
                                    ac7804: AC7804,
                                    ac7805: AC7805
                                          ) extends CtBoxIdentifier(name = "Related party transactions")
-  with ValidatableBox[Frs10xDirectorsBoxRetriever]
+  with ValidatableBox[AbridgedAccountsBoxRetriever]
   with CtValue[RelatedPartyTransaction] {
 
   override def value = this
 
-  override def validate(boxRetriever: Frs10xDirectorsBoxRetriever): Set[CtValidation] = Set()
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
+    collectErrors(
+      () => ac7801.validate(boxRetriever),
+      () => ac7802.validate(boxRetriever),
+      () => ac7803.validate(boxRetriever),
+      () => ac7804.validate(boxRetriever),
+      () => ac7805.validate(boxRetriever)
+    )
 }
 
 

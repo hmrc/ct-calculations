@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged._
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions.RelatedPartyTransactions
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions.{AC7806, RelatedPartyTransactions}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
@@ -253,8 +253,12 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac7800(): AC7800
 
+  def ac7806(): AC7806
+
+  def relatedPartyTransactions(): RelatedPartyTransactions
+
   def ac7900(): AC7900
-  
+
   def ac8081(): AC8081
 
   def ac8082(): AC8082
@@ -268,6 +272,4 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
   def ac8088(): AC8088
 
   def ac7901(): AC7901
-
-  def relatedPartyTransactions(): RelatedPartyTransactions
 }

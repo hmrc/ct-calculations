@@ -125,6 +125,7 @@ package object formats {
   implicit val ac7803Format = new OptionalStringFormat(AC7803.apply)
   implicit val ac7804Format = new OptionalIntegerFormat(AC7804.apply)
   implicit val ac7805Format = new OptionalIntegerFormat(AC7805.apply)
+  implicit val ac7806Format = new OptionalStringFormat(AC7806.apply)
   implicit val ac7900Format = new OptionalBooleanFormat(AC7900.apply)
   implicit val ac7901Format = new OptionalStringFormat(AC7901.apply)
   implicit val relatedPartyTransactionFormatter = Json.format[RelatedPartyTransaction]
