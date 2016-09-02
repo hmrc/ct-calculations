@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
 
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.formats.RelatedPartyTransactionsFormatter
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
