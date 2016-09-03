@@ -16,7 +16,9 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.box.formats.{IntegerFormat, OptionalBooleanFormat, OptionalIntegerFormat, OptionalStringFormat}
+import play.api.libs.json._
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions._
+import uk.gov.hmrc.ct.box.formats.{OptionalBooleanFormat, OptionalIntegerFormat, OptionalStringFormat}
 
 package object formats {
   implicit val ac16Format = new OptionalIntegerFormat[AC16](AC16.apply)
@@ -118,8 +120,16 @@ package object formats {
   implicit val ac7600Format = new OptionalBooleanFormat(AC7600.apply)
   implicit val ac7601Format = new OptionalStringFormat(AC7601.apply)
   implicit val ac7800Format = new OptionalBooleanFormat(AC7800.apply)
+  implicit val ac7801Format = new OptionalBooleanFormat(AC7801.apply)
+  implicit val ac7802Format = new OptionalStringFormat(AC7802.apply)
+  implicit val ac7803Format = new OptionalStringFormat(AC7803.apply)
+  implicit val ac7804Format = new OptionalIntegerFormat(AC7804.apply)
+  implicit val ac7805Format = new OptionalIntegerFormat(AC7805.apply)
+  implicit val ac7806Format = new OptionalStringFormat(AC7806.apply)
   implicit val ac7900Format = new OptionalBooleanFormat(AC7900.apply)
   implicit val ac7901Format = new OptionalStringFormat(AC7901.apply)
+  implicit val relatedPartyTransactionFormatter = Json.format[RelatedPartyTransaction]
+  implicit val relatedPartyTransactionsFormatter = Json.format[RelatedPartyTransactions]
 
   implicit val ac8081Format = new OptionalBooleanFormat(AC8081.apply)
   implicit val ac8082Format = new OptionalBooleanFormat(AC8082.apply)
