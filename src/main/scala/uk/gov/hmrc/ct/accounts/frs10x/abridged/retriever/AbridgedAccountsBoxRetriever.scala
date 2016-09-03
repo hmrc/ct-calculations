@@ -253,8 +253,6 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac7800(): AC7800
 
-  def ac7806(): AC7806
-
   def relatedPartyTransactions(): RelatedPartyTransactions
 
   def ac7900(): AC7900

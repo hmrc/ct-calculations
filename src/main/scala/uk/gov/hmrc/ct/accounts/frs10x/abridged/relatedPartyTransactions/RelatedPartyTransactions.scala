@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetr
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] = List.empty) extends CtBoxIdentifier(name = "Related party transactions")
+case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] = List.empty, ac7806: AC7806) extends CtBoxIdentifier(name = "Related party transactions")
   with CtValue[List[RelatedPartyTransaction]]
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
