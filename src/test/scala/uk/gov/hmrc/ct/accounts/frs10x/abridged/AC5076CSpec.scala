@@ -35,11 +35,4 @@ class AC5076CSpec extends WordSpec
 
   testAccountsCharacterLimitValidation("AC5076C", StandardCohoTextFieldLimit, AC5076C)
   testAccountsCoHoTextFieldValidation("AC5076C", AC5076C)
-
-  "AC5076C" should {
-    "fail validation when populated and AC76 is empty" in {
-      when(boxRetriever.ac76()).thenReturn(AC76(None))
-      AC5076C(Some("test value")).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5076C"), "error.AC5076C.cannot.exist"))
-    }
-  }
 }

@@ -27,10 +27,21 @@ case class AC5076A(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus o
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
-      cannotExistIf(value.nonEmpty && !boxRetriever.ac76().value.isDefined),
       failIf(boxRetriever.ac76().value.isDefined)(validateIntegerAsMandatory("AC5076A", this)),
+      failIf(boxRetriever.ac76().value.isEmpty)(validateNoteCannotExist(boxRetriever)),
       validateMoney(value)
     )
+  }
+
+  def validateNoteCannotExist(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+    import boxRetriever._
+
+    val isNoteNonEmpty = ac5076A().value.nonEmpty || ac5076C().value.getOrElse("").trim().nonEmpty
+
+    if (isNoteNonEmpty)
+      Set(CtValidation(None, "error.balanceSheet.revaluationReserveNote.cannot.exist"))
+    else
+      Set.empty
   }
 
 }
