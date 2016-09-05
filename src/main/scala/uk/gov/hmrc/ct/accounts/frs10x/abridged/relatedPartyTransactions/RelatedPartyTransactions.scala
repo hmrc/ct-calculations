@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetr
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] = List.empty, ac7806: AC7806) extends CtBoxIdentifier(name = "Related party transactions")
+case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] = List.empty, ac7806: Option[AC7806]) extends CtBoxIdentifier(name = "Related party transactions")
   with CtValue[List[RelatedPartyTransaction]]
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
@@ -33,17 +33,16 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
 }
 
 case class RelatedPartyTransaction(uuid: String,
-                                   ac7801: AC7801,
-                                   ac7802: AC7802,
-                                   ac7803: AC7803,
-                                   ac7804: AC7804,
-                                   ac7805: AC7805
-
-//                                     ac7801: Option[AC7801],
-//ac7802: Option[AC7802],
-//ac7803: Option[AC7803],
-//ac7804: Option[AC7804],
-//ac7805: Option[AC7805]
+//                                   ac7801: AC7801,
+//                                   ac7802: AC7802,
+//                                   ac7803: AC7803,
+//                                   ac7804: AC7804,
+//                                   ac7805: AC7805
+                                      ac7801: Option[AC7801],
+                                      ac7802: Option[AC7802],
+                                      ac7803: Option[AC7803],
+                                      ac7804: Option[AC7804],
+                                      ac7805: Option[AC7805]
                                          ) extends CtBoxIdentifier(name = "Related party transactions")
   with ValidatableBox[AbridgedAccountsBoxRetriever]
   with Input
@@ -53,17 +52,17 @@ case class RelatedPartyTransaction(uuid: String,
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
     collectErrors(
-      () => ac7801.validate(boxRetriever),
-      () => ac7802.validate(boxRetriever),
-      () => ac7803.validate(boxRetriever),
-      () => ac7804.validate(boxRetriever),
-      () => ac7805.validate(boxRetriever)
+//      () => ac7801.validate(boxRetriever),
+//      () => ac7802.validate(boxRetriever),
+//      () => ac7803.validate(boxRetriever),
+//      () => ac7804.validate(boxRetriever),
+//      () => ac7805.validate(boxRetriever)
 
-//        () => ac7801.map(box => box.validate(boxRetriever)).getOrElse(Set()),
-//  () => ac7802.map(box => box.validate(boxRetriever)).getOrElse(Set()),
-//  () => ac7803.map(box => box.validate(boxRetriever)).getOrElse(Set()),
-//  () => ac7804.map(box => box.validate(boxRetriever)).getOrElse(Set()),
-//  () => ac7805.map(box => box.validate(boxRetriever)).getOrElse(Set())
+        () => ac7801.map(box => box.validate(boxRetriever)).getOrElse(Set()),
+  () => ac7802.map(box => box.validate(boxRetriever)).getOrElse(Set()),
+  () => ac7803.map(box => box.validate(boxRetriever)).getOrElse(Set()),
+  () => ac7804.map(box => box.validate(boxRetriever)).getOrElse(Set()),
+  () => ac7805.map(box => box.validate(boxRetriever)).getOrElse(Set())
     )
 }
 
