@@ -16,7 +16,9 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
+import org.mockito.Mockito._
 import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.box.CtValidation
 
 class AC77Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
 

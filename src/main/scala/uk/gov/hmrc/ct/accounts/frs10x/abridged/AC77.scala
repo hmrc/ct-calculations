@@ -31,4 +31,6 @@ case class AC77(value: Option[Int]) extends CtBoxIdentifier(name = "Revaluation 
       validateMoney(value)
     )
   }
+
+
 }
