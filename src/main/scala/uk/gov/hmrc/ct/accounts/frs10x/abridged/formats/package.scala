@@ -137,7 +137,7 @@ package object formats {
     override def reads(json: JsValue): JsResult[RelatedPartyTransaction] = baseFormat
       .compose(withDefault("ac7801", AC7801(None)))
       .compose(withDefault("ac7802", AC7802(None)))
-      .compose(withDefault("ac7803", AC7803(Some("test default"))))
+      .compose(withDefault("ac7803", AC7803(None)))
       .compose(withDefault("ac7804", AC7804(None)))
       .compose(withDefault("ac7805", AC7805(None)))
       .reads(json)
