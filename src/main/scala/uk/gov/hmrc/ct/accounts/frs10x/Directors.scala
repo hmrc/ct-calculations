@@ -95,7 +95,8 @@ case class Director(id: String,
                     ac8005: Option[Boolean] = None,   // appointed
                     ac8011: Option[Boolean] = None,   // resigned
                     ac8007: Option[LocalDate] = None, // appointed date
-                    ac8013: Option[LocalDate] = None  // resignation date
+                    ac8013: Option[LocalDate] = None,  // resignation date
+                    ac199A: Option[Boolean] = None  // approver
                      ) extends ValidatableBox[Frs10xDirectorsBoxRetriever] {
 
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever): Set[CtValidation] =
