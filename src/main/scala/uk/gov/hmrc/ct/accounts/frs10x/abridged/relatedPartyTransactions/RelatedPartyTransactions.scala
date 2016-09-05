@@ -22,11 +22,11 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 
 case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] = List.empty, ac7806: AC7806) extends CtBoxIdentifier(name = "Related party transactions")
- // with CtValue[RelatedPartyTransactions]
+  with CtValue[RelatedPartyTransactions]
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
 
-//  override def value = this
+  override def value = this
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     transactions.flatMap(_.validate(boxRetriever)).toSet
@@ -47,10 +47,10 @@ case class RelatedPartyTransaction(uuid: String,
                                          ) extends CtBoxIdentifier(name = "Related party transactions")
   with ValidatableBox[AbridgedAccountsBoxRetriever]
   with Input
-//  with CtValue[RelatedPartyTransaction]
+  with CtValue[RelatedPartyTransaction]
  {
 
- // override def value = this
+  override def value = this
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
     collectErrors(

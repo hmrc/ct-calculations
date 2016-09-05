@@ -154,7 +154,7 @@ package object formats {
 
     override def writes(o: RelatedPartyTransactions): JsValue = baseFormat.writes(o)
   }
-  
+
   implicit val ac8081Format = new OptionalBooleanFormat(AC8081.apply)
   implicit val ac8082Format = new OptionalBooleanFormat(AC8082.apply)
   implicit val ac8083Format = new OptionalBooleanFormat(AC8083.apply)
