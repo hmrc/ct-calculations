@@ -32,7 +32,7 @@ class AC125Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
 
   private def clearMockTangibleAssetsFields() = {
     when(boxRetriever.ac5217()).thenReturn(AC5217(None))
-    when(boxRetriever.ac125()).thenReturn(AC125(Some(99)))
+    when(boxRetriever.ac125()).thenReturn(AC125(None))
     when(boxRetriever.ac126()).thenReturn(AC126(None))
     when(boxRetriever.ac212()).thenReturn(AC212(None))
     when(boxRetriever.ac213()).thenReturn(AC213(None))
@@ -51,6 +51,12 @@ class AC125Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
       AC125(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.tangible.assets.note.one.box.required"))
     }
 
+    "fail validation when note cannot be populated" in {
+      when(boxRetriever.ac44()).thenReturn(AC44(None))
+      when(boxRetriever.ac5131()).thenReturn(AC5131(Some(123)))
+      AC125(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.tangibleAssetsNote.cannot.exist"))
+    }
+
     "pass validation if no fields populated and AC44 not populated" in {
       clearMockTangibleAssetsFields()
       when(boxRetriever.ac44()).thenReturn(AC44(None))
@@ -58,6 +64,7 @@ class AC125Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
     }
 
     "pass validation if one field populated" in  {
+      when(boxRetriever.ac44()).thenReturn(AC44(Some(1)))
       when(boxRetriever.ac125()).thenReturn(AC125(None))
       when(boxRetriever.ac5217()).thenReturn(AC5217(Some(99)))
       AC125(None).validate(boxRetriever) shouldBe Set()

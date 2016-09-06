@@ -30,15 +30,9 @@ class AC117Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
     when(ac42()).thenReturn(AC42(Some(100)))
   }
 
-  testAccountsMoneyValidationWithMin("AC117", 0, AC117.apply, testEmpty = false)
+  testAccountsMoneyValidationWithMin("AC117", 0, AC117.apply)
 
   "AC117" should {
-
-    "throw error when is set when AC42 is empty" in {
-      setUpMocks()
-      when(boxRetriever.ac42()).thenReturn(AC42(None))
-      AC117(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC117"), "error.AC117.cannot.exist"))
-    }
 
     "validate successfully if nothing is wrong" in {
       setUpMocks()
