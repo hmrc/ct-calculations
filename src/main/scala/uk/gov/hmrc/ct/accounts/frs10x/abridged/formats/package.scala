@@ -21,6 +21,8 @@ import uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions._
 import uk.gov.hmrc.ct.box.formats.{OptionalBooleanFormat, OptionalIntegerFormat, OptionalStringFormat}
 
 package object formats {
+  private def withDefault[A](key:String, default:A)(implicit writes:Writes[A]) = __.json.update((__ \ key).json.copyFrom((__ \ key).json.pick orElse Reads.pure(Json.toJson(default))))
+
   implicit val ac16Format = new OptionalIntegerFormat[AC16](AC16.apply)
   implicit val ac17Format = new OptionalIntegerFormat[AC17](AC17.apply)
   implicit val ac18Format = new OptionalIntegerFormat[AC18](AC18.apply)
@@ -128,8 +130,30 @@ package object formats {
   implicit val ac7806Format = new OptionalStringFormat(AC7806.apply)
   implicit val ac7900Format = new OptionalBooleanFormat(AC7900.apply)
   implicit val ac7901Format = new OptionalStringFormat(AC7901.apply)
-  implicit val relatedPartyTransactionFormatter = Json.format[RelatedPartyTransaction]
-  implicit val relatedPartyTransactionsFormatter = Json.format[RelatedPartyTransactions]
+
+  implicit val relatedPartyTransactionFormatWIthDefaults = new Format[RelatedPartyTransaction] {
+    val baseFormat = Json.format[RelatedPartyTransaction]
+
+    override def reads(json: JsValue): JsResult[RelatedPartyTransaction] = baseFormat
+      .compose(withDefault("ac7801", AC7801(None)))
+      .compose(withDefault("ac7802", AC7802(None)))
+      .compose(withDefault("ac7803", AC7803(None)))
+      .compose(withDefault("ac7804", AC7804(None)))
+      .compose(withDefault("ac7805", AC7805(None)))
+      .reads(json)
+
+    override def writes(o: RelatedPartyTransaction): JsValue = baseFormat.writes(o)
+  }
+
+  implicit val relatedPartyTransactionsFormatWIthDefaults = new Format[RelatedPartyTransactions] {
+    val baseFormat = Json.format[RelatedPartyTransactions]
+
+    override def reads(json: JsValue): JsResult[RelatedPartyTransactions] = baseFormat
+      .compose(withDefault("ac7806", AC7806(None)))
+      .reads(json)
+
+    override def writes(o: RelatedPartyTransactions): JsValue = baseFormat.writes(o)
+  }
 
   implicit val ac8081Format = new OptionalBooleanFormat(AC8081.apply)
   implicit val ac8082Format = new OptionalBooleanFormat(AC8082.apply)
@@ -137,4 +161,6 @@ package object formats {
   implicit val ac8084Format = new OptionalBooleanFormat(AC8084.apply)
   implicit val ac8085Format = new OptionalBooleanFormat(AC8085.apply)
   implicit val ac8088Format = new OptionalBooleanFormat(AC8088.apply)
-}
+
+  }
+
