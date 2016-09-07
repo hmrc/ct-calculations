@@ -34,7 +34,7 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
       errors.map(error => error.copy(errorMessageKey = contextualiseErrorKey(error.errorMessageKey, index.toString)))
     }
 
-    errorList.flatten.toSet
+    errorList.flatten.toSet ++ Set(CtValidation(Some("RelatedPartyTransactions"),"TEST"))
   }
 
   private def contextualiseErrorKey(errorKey: String, context: String): String = {
