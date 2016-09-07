@@ -25,5 +25,9 @@ case class AC7801(value: Option[Boolean]) extends CtBoxIdentifier(name = "is inc
   with ValidatableBox[AbridgedAccountsBoxRetriever]
   with Validators {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = Set()
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateAsMandatory(this)
+    )
+  }
 }
