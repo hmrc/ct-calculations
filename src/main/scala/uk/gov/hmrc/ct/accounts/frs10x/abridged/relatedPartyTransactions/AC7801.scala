@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.abridged
-
+package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC77(value: Option[Int]) extends CtBoxIdentifier(name = "Revaluation reserve (previous PoA)")
-  with CtOptionalInteger
+case class AC7801(value: Option[Boolean]) extends CtBoxIdentifier(name = "is incoming (vs outgoing) transaction")
+  with CtOptionalBoolean
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
   with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateMoney(value)
+      validateAsMandatory(this)
     )
   }
-
-
 }

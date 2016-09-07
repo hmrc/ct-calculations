@@ -18,7 +18,6 @@ package uk.gov.hmrc.ct.accounts.frs10x.formats
 
 import play.api.libs.json.Json
 import uk.gov.hmrc.ct.accounts.frs10x.Directors
-import uk.gov.hmrc.ct.ct600a.v3.LoansToParticipators
 
 object DirectorsFormatter {
   
