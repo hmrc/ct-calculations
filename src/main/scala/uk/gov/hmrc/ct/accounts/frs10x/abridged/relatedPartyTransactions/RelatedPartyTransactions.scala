@@ -56,8 +56,3 @@ case class RelatedPartyTransaction(uuid: String,
       () => ac7805.validate(boxRetriever)
     )
 }
-
-
-
-
-

@@ -145,7 +145,7 @@ package object formats {
     override def writes(o: RelatedPartyTransaction): JsValue = baseFormat.writes(o)
   }
 
-  implicit val relatedPartyTransactionsFormatWIthDefaults = new Format[RelatedPartyTransactions] {
+  implicit val relatedPartyTransactionsFormatWithDefaults = new Format[RelatedPartyTransactions] {
     val baseFormat = Json.format[RelatedPartyTransactions]
 
     override def reads(json: JsValue): JsResult[RelatedPartyTransactions] = baseFormat
