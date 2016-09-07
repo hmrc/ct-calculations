@@ -83,4 +83,8 @@ trait Validators {
       predicate()
     }.toSet
   }
+
+  protected def transformErrors(originalErrors: Set[CtValidation], transformer: (CtValidation) => CtValidation): Set[CtValidation] = {
+    originalErrors.map(transformer(_))
+  }
 }

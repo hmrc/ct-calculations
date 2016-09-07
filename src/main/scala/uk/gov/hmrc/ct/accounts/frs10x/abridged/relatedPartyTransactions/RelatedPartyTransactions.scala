@@ -29,7 +29,17 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
   override def value = this
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-    transactions.flatMap(_.validate(boxRetriever)).toSet
+    val errorList = for((transaction, index) <- transactions.zipWithIndex) yield {
+      val errors = transaction.validate(boxRetriever)
+      errors.map(error => error.copy(errorMessageKey = contextualiseErrorKey(error.errorMessageKey, index.toString)))
+    }
+
+    errorList.flatten.toSet
+  }
+
+  private def contextualiseErrorKey(errorKey: String, context: String): String = {
+    val splitKey = errorKey.split(".")
+    (splitKey.take(2) ++ Array("") ++ splitKey.drop(2)).mkString(".")
   }
 }
 
@@ -48,11 +58,11 @@ case class RelatedPartyTransaction(uuid: String,
   override def value = this
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
-    collectErrors(
-      () => ac7801.validate(boxRetriever),
-      () => ac7802.validate(boxRetriever),
-      () => ac7803.validate(boxRetriever),
-      () => ac7804.validate(boxRetriever),
-      () => ac7805.validate(boxRetriever)
+      collectErrors(
+        () => ac7801.validate(boxRetriever),
+        () => ac7802.validate(boxRetriever),
+        () => ac7803.validate(boxRetriever),
+        () => ac7804.validate(boxRetriever),
+        () => ac7805.validate(boxRetriever)
     )
 }
