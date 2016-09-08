@@ -42,13 +42,31 @@ class AC122Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
       AC122(Some(100)).validate(boxRetriever) shouldBe Set.empty
     }
 
-    "correctly perform the calculation" in {
+    "correctly perform the calculation when both numbers are set" in {
       import boxRetriever._
 
       when(ac117()).thenReturn(AC117(Some(1)))
       when(ac121()).thenReturn(AC121(Some(1)))
 
       AC122.calculate(boxRetriever) shouldBe AC122(Some(0))
+    }
+
+    "correctly perform the calculation when only one number is set" in {
+      import boxRetriever._
+
+      when(ac117()).thenReturn(AC117(Some(1)))
+      when(ac121()).thenReturn(AC121(None))
+
+      AC122.calculate(boxRetriever) shouldBe AC122(Some(1))
+    }
+
+    "correctly perform the calculation when no numbers are set" in {
+      import boxRetriever._
+
+      when(ac117()).thenReturn(AC117(None))
+      when(ac121()).thenReturn(AC121(None))
+
+      AC122.calculate(boxRetriever) shouldBe AC122(None)
     }
 
   }
