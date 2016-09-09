@@ -31,7 +31,7 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     val errorList = for((transaction, index) <- transactions.zipWithIndex) yield {
       val errors = transaction.validate(boxRetriever)
-      errors.map(error => error.copy(errorMessageKey = contextualiseErrorKey(error.errorMessageKey, index.toString)))
+      errors.map(error => error.copy(boxId = Some("RelatedPartyTransactions"), errorMessageKey = contextualiseErrorKey(error.errorMessageKey, index.toString)))
     }
 
     errorList.flatten.toSet
@@ -39,7 +39,7 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
 
   private def contextualiseErrorKey(errorKey: String, context: String): String = {
     val splitKey = errorKey.split('.')
-    (splitKey.take(2) ++ Array(context) ++ splitKey.drop(2)).mkString(".")
+    (splitKey.take(1) ++ Array("transactions") ++ Array(context) ++ splitKey.drop(1)).mkString(".")
   }
 }
 
