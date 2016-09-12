@@ -38,30 +38,10 @@ trait AccountsFreeTextValidationFixture extends WordSpec with Matchers with Mock
       builder(None).validate(boxRetriever) shouldBe Set.empty
     }
 
-    "pass validation when empty string" in {
-      builder(Some("")).validate(boxRetriever) shouldBe Set.empty
-    }
-
-    "pass validation with valid string value" in {
-      builder(Some("testing this like crazy")).validate(boxRetriever) shouldBe Set.empty
-    }
-
-    s"pass validation when string is $charLimit characters long" in {
-      val string = "a" * charLimit
-      builder(Some(string)).validate(boxRetriever) shouldBe Set.empty
-    }
-
-    s"fail validation when string is longer than $charLimit characters long" in {
-      val string = "a" * (charLimit + 1)
-      builder(Some(string)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(f"$charLimit%,d"))))
-    }
+    testMandatoryAccountsCharacterLimitValidation(boxId, charLimit ,builder)
   }
 
   def testMandatoryAccountsCharacterLimitValidation(boxId: String, charLimit: Int, builder: (Option[String]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
-
-    "pass validation when empty" in {
-      builder(None).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId),s"error.$boxId.required",None))
-    }
 
     "pass validation when empty string" in {
       builder(Some("")).validate(boxRetriever) shouldBe Set()
