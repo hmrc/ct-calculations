@@ -16,22 +16,21 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
 
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
-import uk.gov.hmrc.ct.box._
 
-case class AC7802(value: Option[String]) extends CtBoxIdentifier(name = "Name of related party")
-  with CtOptionalString
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+class AC7803Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
+  with MockAbridgedAccountsRetriever with AccountsFreeTextValidationFixture {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  testMandatoryAccountsCharacterLimitValidation("AC7803", StandardCohoTextFieldLimit, AC7803)
+  testAccountsCoHoTextFieldValidation("AC7803", AC7803)
 
-    collectErrors(
-      validateAsMandatory(this),
-      validateStringMaxLength("AC7802", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString("AC7802", this)
-    )
+  "AC7803" should {
+    "be mandatory" in {
+      AC7803(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7803"),"error.AC7803.required",None))
+    }
   }
 }

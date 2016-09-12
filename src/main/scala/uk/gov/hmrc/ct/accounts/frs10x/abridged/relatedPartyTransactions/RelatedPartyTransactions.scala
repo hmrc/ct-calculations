@@ -30,9 +30,10 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
 
-    failIf(boxRetriever.ac7800.orFalse || true /*testing hack */) {
+    failIf(boxRetriever.ac7800().orFalse) {
       collectErrors(
         validateTransactionRequired(boxRetriever),
+        validateAtMost20transactions(boxRetriever),
         validateTransactions(boxRetriever)
       )
     }
@@ -52,8 +53,8 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
     }
   }
 
-  def validateAtMost20transactions(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    failIf(transactions.isEmpty) {
+  def validateAtMost20transactions(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+    failIf(transactions.length > 20) {
       Set(CtValidation(None, "error.RelatedPartyTransactions.atMost20", None))
     }
   }
