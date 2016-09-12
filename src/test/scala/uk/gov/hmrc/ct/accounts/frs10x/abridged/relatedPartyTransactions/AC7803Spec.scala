@@ -30,7 +30,7 @@ class AC7803Spec extends WordSpec with MockitoSugar with Matchers with BeforeAnd
 
   "AC7803" should {
     "be mandatory" in {
-      AC7803(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7803"),"error.AC7803.required",None))
+      AC7803(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7803"), "error.AC7803.required", None))
     }
   }
 }
