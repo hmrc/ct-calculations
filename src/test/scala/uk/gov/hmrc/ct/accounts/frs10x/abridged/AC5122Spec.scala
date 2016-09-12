@@ -43,13 +43,31 @@ class AC5122Spec extends AccountsMoneyValidationFixture with MockAbridgedAccount
       AC5122(Some(100)).validate(boxRetriever) shouldBe Set.empty
     }
 
-    "correctly perform the calculation" in {
+    "correctly perform the calculation when both numbers are set" in {
       import boxRetriever._
 
       when(ac5117()).thenReturn(AC5117(Some(1)))
       when(ac5121()).thenReturn(AC5121(Some(1)))
 
       AC5122.calculate(boxRetriever) shouldBe AC5122(Some(0))
+    }
+
+    "correctly perform the calculation when only one number is set" in {
+      import boxRetriever._
+
+      when(ac5117()).thenReturn(AC5117(None))
+      when(ac5121()).thenReturn(AC5121(Some(1)))
+
+      AC5122.calculate(boxRetriever) shouldBe AC5122(Some(-1))
+    }
+
+    "correctly perform the calculation when no numbers are set" in {
+      import boxRetriever._
+
+      when(ac5117()).thenReturn(AC5117(None))
+      when(ac5121()).thenReturn(AC5121(None))
+
+      AC5122.calculate(boxRetriever) shouldBe AC5122(None)
     }
 
   }
