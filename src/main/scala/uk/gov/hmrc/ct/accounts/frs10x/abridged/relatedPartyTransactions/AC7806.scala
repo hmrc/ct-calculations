@@ -29,8 +29,7 @@ case class AC7806(value: Option[String]) extends CtBoxIdentifier(name = "Additio
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      validateOptionalStringByLength("AC7806", this, 1, StandardCohoTextFieldLimit),
-      validateOptionalStringByRegex("AC7806", this, ValidCoHoCharacters)
-    )
+      validateStringMaxLength("AC7806", value.getOrElse(""), StandardCohoTextFieldLimit),
+      validateCoHoOptionalString("AC7806", this)    )
   }
 }

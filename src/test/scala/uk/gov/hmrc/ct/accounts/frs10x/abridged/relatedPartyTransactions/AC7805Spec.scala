@@ -16,22 +16,9 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
 
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box.ValidatableBox._
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
 
-case class AC7802(value: Option[String]) extends CtBoxIdentifier(name = "Name of related party")
-  with CtOptionalString
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+class AC7805Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-
-    collectErrors(
-      validateAsMandatory(this),
-      validateStringMaxLength("AC7802", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString("AC7802", this)
-    )
-  }
+  testAccountsMoneyValidationWithMin("AC7805", 0, AC7805.apply)
 }
