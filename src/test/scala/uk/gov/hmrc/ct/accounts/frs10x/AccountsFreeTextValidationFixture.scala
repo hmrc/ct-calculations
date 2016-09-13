@@ -38,6 +38,11 @@ trait AccountsFreeTextValidationFixture extends WordSpec with Matchers with Mock
       builder(None).validate(boxRetriever) shouldBe Set.empty
     }
 
+    testMandatoryAccountsCharacterLimitValidation(boxId, charLimit ,builder)
+  }
+
+  def testMandatoryAccountsCharacterLimitValidation(boxId: String, charLimit: Int, builder: (Option[String]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
+
     "pass validation when empty string" in {
       builder(Some("")).validate(boxRetriever) shouldBe Set.empty
     }

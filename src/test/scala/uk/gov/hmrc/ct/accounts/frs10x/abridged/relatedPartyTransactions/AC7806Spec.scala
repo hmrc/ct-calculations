@@ -16,22 +16,15 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
 
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
-import uk.gov.hmrc.ct.box._
 
-case class AC7802(value: Option[String]) extends CtBoxIdentifier(name = "Name of related party")
-  with CtOptionalString
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+class AC7806Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
+  with MockAbridgedAccountsRetriever with AccountsFreeTextValidationFixture {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-
-    collectErrors(
-      validateAsMandatory(this),
-      validateStringMaxLength("AC7802", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString("AC7802", this)
-    )
-  }
+  testAccountsCharacterLimitValidation("AC7806", StandardCohoTextFieldLimit, AC7806)
+  testAccountsCoHoTextFieldValidation("AC7806", AC7806)
 }
