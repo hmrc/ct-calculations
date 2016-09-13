@@ -29,8 +29,24 @@ case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC80
   override def value = this
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-    Set.empty
+    collectErrors(
+      () => ac8091.validate(boxRetriever),
+      () => ac198A.validate(boxRetriever),
+      validateApproverRequired(boxRetriever),
+      validateAtMost24Approvers(boxRetriever),
+    )
   }
 
+  def validateApproverRequired(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+    failIf((ac199A ++ ac8092).isEmpty) {
+      Set(CtValidation(None, "error.AccountsApproval.atLeast1", None))
+    }
+  }
+
+  def validateAtMost24Approvers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+    failIf((ac199A ++ ac8092).length > 24) {
+      Set(CtValidation(None, "error.AccountsApproval.atMost24", None))
+    }
+  }
 }
 
