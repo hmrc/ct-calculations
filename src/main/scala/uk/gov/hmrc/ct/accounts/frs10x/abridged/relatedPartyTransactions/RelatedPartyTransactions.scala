@@ -32,6 +32,7 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
 
     failIf(boxRetriever.ac7800().orFalse) {
       collectErrors(
+        validateFields(boxRetriever),
         validateTransactionRequired(boxRetriever),
         validateAtMost20transactions(boxRetriever),
         validateTransactions(boxRetriever)
@@ -56,6 +57,12 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
   def validateAtMost20transactions(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
     failIf(transactions.length > 20) {
       Set(CtValidation(None, "error.RelatedPartyTransactions.atMost20", None))
+    }
+  }
+
+  def validateFields(boxRetriever: AbridgedAccountsBoxRetriever)() = {
+    ac7806.validate(boxRetriever).map {
+      error => error.copy(boxId = Some("RelatedPartyTransactions"))
     }
   }
 
