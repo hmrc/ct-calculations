@@ -33,7 +33,7 @@ case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC80
       () => ac8091.validate(boxRetriever),
       () => ac198A.validate(boxRetriever),
       validateApproverRequired(boxRetriever),
-      validateAtMost24Approvers(boxRetriever),
+      validateAtMost24Approvers(boxRetriever)
     )
   }
 
