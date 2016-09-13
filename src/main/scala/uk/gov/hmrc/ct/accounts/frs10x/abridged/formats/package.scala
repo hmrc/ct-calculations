@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 import play.api.libs.json._
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval._
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions._
-import uk.gov.hmrc.ct.box.formats.{OptionalBooleanFormat, OptionalDateFormat, OptionalIntegerFormat, OptionalStringFormat}
+import uk.gov.hmrc.ct.box.formats._
 
 package object formats {
   private def withDefault[A](key:String, default:A)(implicit writes:Writes[A]) = __.json.update((__ \ key).json.copyFrom((__ \ key).json.pick orElse Reads.pure(Json.toJson(default))))
@@ -67,7 +67,7 @@ package object formats {
   implicit val ac131Format = new OptionalIntegerFormat[AC131](AC131.apply)
   implicit val ac132Format = new OptionalIntegerFormat[AC132](AC132.apply)
   implicit val ac198AFormat = new OptionalDateFormat[AC198A](AC198A.apply)
-  implicit val ac199AFormat = new OptionalStringFormat[AC199A](AC199A.apply)
+  implicit val ac199AFormat = new StringFormat[AC199A](AC199A.apply)
   implicit val ac8092Format = new OptionalStringFormat[AC8092](AC8092.apply)
   implicit val ac8091Format = new OptionalBooleanFormat[AC8091](AC8091.apply)
   implicit val ac212Format = new OptionalIntegerFormat[AC212](AC212.apply)
