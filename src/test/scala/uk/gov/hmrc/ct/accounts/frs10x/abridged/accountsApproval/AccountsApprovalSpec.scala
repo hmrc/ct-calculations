@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval
 
 
-import org.joda.time.LocalDate
+import org.joda.time.{LocalDate}
 import org.mockito.Mockito
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
@@ -38,7 +38,7 @@ class AccountsApprovalSpec extends WordSpec with MockitoSugar with Matchers with
       val mockBoxRetriever = mock[AbridgedAccountsBoxRetriever]
 
     Mockito.when(mockBoxRetriever.ac4()).thenReturn(AC4(new LocalDate()))
-      val aa = AccountsApproval(List(), List(AC8092(Some("^")), AC8092(Some("^"))), AC8091(None), AC198A(None))
+      val aa = AccountsApproval(List(), List(AC8092(Some("Mario")), AC8092(Some("^"))), AC8091(None), AC198A(None))
       aa.validate(mockBoxRetriever) shouldBe empty
     }
 
