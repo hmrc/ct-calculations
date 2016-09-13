@@ -21,5 +21,9 @@ import uk.gov.hmrc.ct.box._
 
 case class AC8091(value: Option[Boolean]) extends CtBoxIdentifier(name = "Approve accounts approval statement") with CtOptionalBoolean with Input with ValidatableBox[FilingAttributesBoxValueRetriever] {
 
-  override def validate(boxRetriever: FilingAttributesBoxValueRetriever): Set[CtValidation] = Set.empty
+  override def validate(boxRetriever: FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+    collectErrors {
+      validateBooleanAsTrue("AC8091", this)
+    }
+  }
 }

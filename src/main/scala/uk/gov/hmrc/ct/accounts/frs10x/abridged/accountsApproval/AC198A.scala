@@ -17,6 +17,17 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalDate, Input}
+import uk.gov.hmrc.cato.time.DateHelper
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.box._
 
-case class AC198A(value: Option[LocalDate]) extends CtBoxIdentifier("Approve accounts date of approval") with CtOptionalDate with Input
+case class AC198A(value: Option[LocalDate]) extends CtBoxIdentifier("Approve accounts date of approval") with CtOptionalDate with Input with ValidatableBox[AbridgedAccountsBoxRetriever] {
+
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+
+    collectErrors(
+      validateDateAsMandatory("AC198A", this),
+      validateDateAsBetweenInclusive("AC198A", this, boxRetriever.ac4().value, DateHelper.now())
+    )
+  }
+}

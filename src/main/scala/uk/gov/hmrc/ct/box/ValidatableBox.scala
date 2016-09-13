@@ -39,6 +39,13 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
+  protected def validateBooleanAsTrue(boxId: String, box: CtOptionalBoolean)(): Set[CtValidation] = {
+    box.value match {
+      case None | Some(false) => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
+      case _ => Set()
+    }
+  }
+
   protected def validateIntegerAsMandatory(boxId: String, box: CtOptionalInteger)(): Set[CtValidation] = {
     box.value match {
       case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
