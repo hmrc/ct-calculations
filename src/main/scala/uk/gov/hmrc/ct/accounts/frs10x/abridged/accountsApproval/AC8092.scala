@@ -17,11 +17,12 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
 case class AC8092(value: Option[String]) extends CtBoxIdentifier(name = "Additional Approver.") with CtOptionalString with Input with ValidatableBox[AbridgedAccountsBoxRetriever] {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    Set.empty
+    validateStringMaxLength("AC8092", this.value.getOrElse(""), StandardCohoTextFieldLimit) ++ validateCoHoOptionalString("AC8092", this)
   }
 }

@@ -16,38 +16,33 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval
 
-import org.mockito.Mockito._
+
+import org.joda.time.LocalDate
+import org.mockito.Mockito
 import org.scalatest.mock.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.AC4
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-class AC8091Spec extends WordSpec
-  with MockitoSugar
-  with Matchers
-  with MockAbridgedAccountsRetriever
-  with AccountsFreeTextValidationFixture {
+class AccountsApprovalSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
+  with MockAbridgedAccountsRetriever with AccountsFreeTextValidationFixture {
 
 
-  "AC8091 validate" should {
+
+  "AccountsApproval validate" should {
     "return errors when AC8091 is empty" in {
       val mockBoxRetriever = mock[AbridgedAccountsBoxRetriever]
 
-      AC8091(None).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("AC8091"), "error.AC8091.required"))
+    Mockito.when(mockBoxRetriever.ac4()).thenReturn(AC4(new LocalDate()))
+      val aa = AccountsApproval(List(), List(AC8092(Some("^")), AC8092(Some("^"))), AC8091(None), AC198A(None))
+      aa.validate(mockBoxRetriever) shouldBe empty
     }
 
-    "return errors when AC8091 is false" in {
-      val mockBoxRetriever = mock[AbridgedAccountsBoxRetriever]
 
-      AC8091(Some(false)).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("AC8091"), "error.AC8091.required"))
-    }
-
-    "return value when AC8091 is true" in {
-      val mockBoxRetriever = mock[AbridgedAccountsBoxRetriever]
-
-      AC8091(Some(true)).value shouldBe Some(true)
-    }
   }
+
 }

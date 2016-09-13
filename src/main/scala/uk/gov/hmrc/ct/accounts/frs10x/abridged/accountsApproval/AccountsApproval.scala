@@ -24,16 +24,17 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC8092] = List.empty, ac8091: AC8091, ac198A: AC198A) extends CtBoxIdentifier(name = "Accounts approval")
   with CtValue[AccountsApproval]
   with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
+  with ValidatableBox[AbridgedAccountsBoxRetriever] {
 
   override def value = this
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-    collectErrors(
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors (
       () => ac8091.validate(boxRetriever),
       () => ac198A.validate(boxRetriever),
       validateApproverRequired(boxRetriever),
-      validateAtMost24Approvers(boxRetriever)
+      validateAtMost12OtherApprovers(boxRetriever),
+      validateOtherApprovers(boxRetriever)
     )
   }
 
@@ -43,10 +44,23 @@ case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC80
     }
   }
 
-  def validateAtMost24Approvers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
-    failIf((ac199A ++ ac8092).length > 24) {
-      Set(CtValidation(None, "error.AccountsApproval.atMost24", None))
+  def validateAtMost12OtherApprovers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+    failIf(ac8092.length > 12) {
+      Set(CtValidation(None, "error.AccountsApproval.otherApprovers.atMost12", None))
     }
+  }
+
+  def validateOtherApprovers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+    val otherApproversErrorList = for ((otherApprover, index) <- ac8092.zipWithIndex) yield {
+      val errors = otherApprover.validate(boxRetriever)
+      errors.map(error => error.copy(boxId = Some("AccountsApproval"), errorMessageKey = contextualiseListErrorKey(error.errorMessageKey, index.toString)))
+    }
+    otherApproversErrorList.flatten.toSet
+  }
+
+  private def contextualiseListErrorKey(errorKey: String, context: String): String = {
+    val splitKey = errorKey.split('.')
+    (splitKey.take(2) ++ Array(context) ++ splitKey.drop(2)).mkString(".")
   }
 }
 
