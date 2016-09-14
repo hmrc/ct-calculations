@@ -77,12 +77,13 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
         ac7804 = AC7804(None),
         ac7805 = AC7805(None)
       )
-      val transactions = RelatedPartyTransactions(transactions = List(transaction), ac7806 = AC7806(None))
+      val transactions = RelatedPartyTransactions(transactions = List(transaction), ac7806 = AC7806(Some("^^")))
 
       transactions.validate(mockBoxRetriever) shouldBe Set(
         CtValidation(Some("RelatedPartyTransactions"), "error.transactions.0.AC7801.required", None),
         CtValidation(Some("RelatedPartyTransactions"), "error.transactions.0.AC7802.required", None),
-        CtValidation(Some("RelatedPartyTransactions"), "error.transactions.0.AC7803.required", None)
+        CtValidation(Some("RelatedPartyTransactions"), "error.transactions.0.AC7803.required", None),
+        CtValidation(Some("RelatedPartyTransactions"), "error.AC7806.regexFailure",Some(List("^")))
       )
     }
 
