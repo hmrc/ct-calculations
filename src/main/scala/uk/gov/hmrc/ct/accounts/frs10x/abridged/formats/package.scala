@@ -164,8 +164,8 @@ package object formats {
     val baseFormat = Json.format[AccountsApproval]
 
     override def reads(json: JsValue): JsResult[AccountsApproval] = baseFormat
-      .compose(withDefault("AC8091", AC8091(None)))
-      .compose(withDefault("AC198A", AC198A(None)))
+      .compose(withDefault("ac8091", AC8091(None)))
+      .compose(withDefault("ac198A", AC198A(None)))
       .reads(json)
 
     override def writes(o: AccountsApproval): JsValue = baseFormat.writes(o)
