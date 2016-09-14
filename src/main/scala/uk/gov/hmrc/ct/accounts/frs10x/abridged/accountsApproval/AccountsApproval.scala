@@ -29,14 +29,13 @@ case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC80
   override def value = this
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-//    collectErrors (
-//      () => ac8091.validate(boxRetriever),
-//      () => ac198A.validate(boxRetriever),
-//      validateApproverRequired(boxRetriever),
-//      validateAtMost12OtherApprovers(boxRetriever),
-//      validateOtherApprovers(boxRetriever)
-//    )
-    Set.empty
+    collectErrors (
+      () => ac8091.validate(boxRetriever),
+      () => ac198A.validate(boxRetriever),
+      validateApproverRequired(boxRetriever),
+      validateAtMost12OtherApprovers(boxRetriever),
+      validateOtherApprovers(boxRetriever)
+    )
   }
 
   def validateApproverRequired(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
