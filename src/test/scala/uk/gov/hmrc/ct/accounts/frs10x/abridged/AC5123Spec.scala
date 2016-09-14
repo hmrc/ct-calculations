@@ -16,21 +16,15 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import org.mockito.Mockito._
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
-import uk.gov.hmrc.ct.box._
 
-case class AC5123(value: Option[String]) extends CtBoxIdentifier(name = "Intangible assets: additional information")
-  with CtOptionalString
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+class AC5123Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
+  with MockAbridgedAccountsRetriever with AccountsFreeTextValidationFixture {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-
-    collectErrors(
-      validateOptionalStringByLength("AC5123", this, 1, StandardCohoTextFieldLimit),
-      validateCoHoOptionalString("AC5123", this)
-    )
-  }
+  testAccountsCoHoTextFieldValidation("AC5123", AC5123)
 }

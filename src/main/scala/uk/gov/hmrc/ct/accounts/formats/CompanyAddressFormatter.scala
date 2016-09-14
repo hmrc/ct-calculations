@@ -14,28 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.retriever
+package uk.gov.hmrc.ct.accounts.formats
 
-import uk.gov.hmrc.ct.accounts._
-import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
+import play.api.libs.json.Json
+import uk.gov.hmrc.ct.accounts.CompanyAddress
 
-trait AccountsBoxRetriever extends BoxRetriever {
-
-  self: FilingAttributesBoxValueRetriever =>
-
-  def companyAddress(): CompanyAddress
-
-  def ac1(): AC1
-
-  def ac2(): AC2
-
-  def ac3(): AC3
+object CompanyAddressFormatter {
   
-  def ac4(): AC4
+  def fromJsonString(json: String): CompanyAddress = Json.fromJson[CompanyAddress](Json.parse(json)).get
 
-  def ac12(): AC12
+  def toJsonString(address: CompanyAddress): String =  Json.toJson(address).toString()
 
-  def ac205(): AC205
-
-  def ac206(): AC206
+  def asBoxString(address: CompanyAddress): Option[String] = Some(toJsonString(address))
 }
