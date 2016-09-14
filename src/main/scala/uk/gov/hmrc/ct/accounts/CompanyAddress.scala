@@ -31,8 +31,8 @@ case class CompanyAddress(addressLine1: Option[String] = None,
   with CtValue[CompanyAddress]
   with Input {
 
-  override def value = this
+  override def value: CompanyAddress = this
 
-  override def asBoxString = CompanyAddressFormatter.asBoxString(this)
+  override def asBoxString: Option[String] = CompanyAddressFormatter.asBoxString(this)
 
 }
