@@ -68,7 +68,7 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
 
   private def contextualiseErrorKey(errorKey: String, context: String): String = {
     val splitKey = errorKey.split('.')
-    (splitKey.take(1) ++ Array("compoundList","transactions") ++ Array(context) ++ splitKey.drop(1)).mkString(".")
+    (splitKey.take(1) ++ Array("compoundList", "transactions") ++ Array(context) ++ splitKey.drop(1)).mkString(".")
   }
 }
 
