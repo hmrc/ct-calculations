@@ -17,13 +17,10 @@
 package uk.gov.hmrc.ct.accounts.frs10x
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.accounts.frs10x.formats.DirectorsFormatter
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs10x.validation.DirectorsReportEnabled
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-import uk.gov.hmrc.ct.domain.ValidationConstants._
-import uk.gov.hmrc.ct.box.ValidatableBox._
 
 case class Directors(directors: List[Director] = List.empty) extends CtBoxIdentifier(name = "Directors.")
   with CtValue[List[Director]]
@@ -32,8 +29,6 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
   with DirectorsReportEnabled {
 
   override def value = directors
-
-  override def asBoxString = DirectorsFormatter.asBoxString(this)
 
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     validateDirectorRequired(boxRetriever) ++

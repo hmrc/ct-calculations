@@ -77,12 +77,13 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
         ac7804 = AC7804(None),
         ac7805 = AC7805(None)
       )
-      val transactions = RelatedPartyTransactions(transactions = List(transaction), ac7806 = AC7806(None))
+      val transactions = RelatedPartyTransactions(transactions = List(transaction), ac7806 = AC7806(Some("^^")))
 
       transactions.validate(mockBoxRetriever) shouldBe Set(
-        CtValidation(Some("RelatedPartyTransactions"), "error.transactions.0.AC7801.required", None),
-        CtValidation(Some("RelatedPartyTransactions"), "error.transactions.0.AC7802.required", None),
-        CtValidation(Some("RelatedPartyTransactions"), "error.transactions.0.AC7803.required", None)
+        CtValidation(Some("RelatedPartyTransactions"), "error.compoundList.transactions.0.AC7801.required", None),
+        CtValidation(Some("RelatedPartyTransactions"), "error.compoundList.transactions.0.AC7802.required", None),
+        CtValidation(Some("RelatedPartyTransactions"), "error.compoundList.transactions.0.AC7803.required", None),
+        CtValidation(Some("RelatedPartyTransactions"), "error.AC7806.regexFailure",Some(List("^")))
       )
     }
 
@@ -100,8 +101,8 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
       val transactions = RelatedPartyTransactions(transactions = List(validTransaction , transaction2), ac7806 = AC7806(None))
 
       transactions.validate(mockBoxRetriever) shouldBe Set(
-        CtValidation(Some("RelatedPartyTransactions"),"error.transactions.1.AC7804.below.min", Some(List("0", "99999999"))),
-        CtValidation(Some("RelatedPartyTransactions"),"error.transactions.1.AC7805.below.min", Some(List("0", "99999999")))
+        CtValidation(Some("RelatedPartyTransactions"),"error.compoundList.transactions.1.AC7804.below.min", Some(List("0", "99999999"))),
+        CtValidation(Some("RelatedPartyTransactions"),"error.compoundList.transactions.1.AC7805.below.min", Some(List("0", "99999999")))
       )
     }
 
@@ -124,6 +125,11 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
     }
   }
 
+  "inject context information (list name and index of list item) into error message key" in {
+      val transactions = RelatedPartyTransactions(transactions = List.empty, ac7806 = AC7806(None))
+
+      transactions.contextualiseErrorKey("error.BoxId.some.message", 2) shouldBe "error.compoundList.transactions.2.BoxId.some.message"
+  }
 }
 
 object RelatedPartyTransactionsMockSetup extends MockitoSugar {
