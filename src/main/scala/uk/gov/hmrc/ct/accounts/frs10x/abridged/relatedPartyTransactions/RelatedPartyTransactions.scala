@@ -32,7 +32,7 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
 
     failIf(boxRetriever.ac7800().orFalse) {
       collectErrors(
-        validateFields(boxRetriever),
+        validateSimpleField(boxRetriever),
         validateTransactionRequired(boxRetriever),
         validateAtMost20transactions(boxRetriever),
         validateTransactions(boxRetriever)
@@ -60,7 +60,7 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
     }
   }
 
-  def validateFields(boxRetriever: AbridgedAccountsBoxRetriever)() = {
+  def validateSimpleField(boxRetriever: AbridgedAccountsBoxRetriever)() = {
     ac7806.validate(boxRetriever).map {
       error => error.copy(boxId = Some("RelatedPartyTransactions"))
     }
