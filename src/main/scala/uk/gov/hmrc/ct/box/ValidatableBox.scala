@@ -213,6 +213,12 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
+  protected def validateRawStringByRegex(boxId: String, value: String, errorCodeBoxId: String, regex: String)(): Set[CtValidation] = {
+    passIf (value.matches(regex)) {
+      Set(CtValidation(Some(boxId), s"error.$errorCodeBoxId.regexFailure"))
+    }
+  }
+
   protected def validateStringByRegex(boxId: String, box: CtString, regex: String)(): Set[CtValidation] = {
     passIf (box.value.isEmpty || box.value.matches(regex)) {
       Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
@@ -302,4 +308,6 @@ object ValidatableBox {
   val SortCodeValidChars = """^[0-9]{6}$"""
   val AccountNumberValidChars = """^[0-9]{8}$"""
   val StandardCohoTextFieldLimit = 20000
+  val StandardCohoNameFieldLimit = 40
+  val ValidCoHoNamesCharacters = "[A-Za-z\\-'\\. \\,]*" // Based on the comment from CATO-3881
 }

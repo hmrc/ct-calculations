@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs10x
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs10x.validation.DirectorsReportEnabled
+import uk.gov.hmrc.ct.box.ValidatableBox.ValidCoHoNamesCharacters
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
@@ -95,7 +96,7 @@ case class Director(id: String,
 
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever): Set[CtValidation] =
     validateStringByLength("ac8001", ac8001, "Directors.ac8001", 1, 40) ++
-      validateCoHoString("ac8001", ac8001, errorCodeBoxId = Some("Directors.ac8001")) ++
+      validateRawStringByRegex("ac8001", ac8001, errorCodeBoxId = "Directors.ac8001", ValidCoHoNamesCharacters) ++
       validateAppointmentDateAsMandatoryWhenAppointed(boxRetriever) ++
       validateAppointmentDateAsWithinPOA(boxRetriever) ++
       validateResignationDateAsMandatoryWhenResigned(boxRetriever) ++

@@ -27,30 +27,53 @@ case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC80
   with ValidatableBox[AbridgedAccountsBoxRetriever] {
 
   override def value = this
+  private def filteredApprovers = ac199A.map(ac199A => ac199A.value)
+  private def filteredOtherApprovers = ac8092.map(ac8092 => ac8092.value).flatten
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
       () => ac8091.validate(boxRetriever),
       () => ac198A.validate(boxRetriever),
       validateApproverRequired(boxRetriever),
+      validateAtMost12Approvers(boxRetriever),
       validateAtMost12OtherApprovers(boxRetriever),
+      validateApprovers(boxRetriever),
       validateOtherApprovers(boxRetriever)
     )
   }
 
   def validateApproverRequired(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
-    failIf((ac199A ++ ac8092).isEmpty) {
+
+    failIf(ac199A.isEmpty && filteredOtherApprovers.isEmpty) {
       Set(CtValidation(None, "error.AccountsApproval.atLeast1", None))
     }
   }
 
+  def validateAtMost12Approvers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+
+    failIf(filteredApprovers.length > 12) {
+      Set(CtValidation(None, "error.AccountsApproval.approvers.atMost12", None))
+    }
+  }
+
   def validateAtMost12OtherApprovers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
-    failIf(ac8092.length > 12) {
+
+    failIf(filteredOtherApprovers.length > 12) {
       Set(CtValidation(None, "error.AccountsApproval.otherApprovers.atMost12", None))
     }
   }
 
+  def validateApprovers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+
+    val approversErrorList = for ((approver, index) <- ac199A.zipWithIndex) yield {
+      val errors = approver.validate(boxRetriever)
+      errors.map(error => error.copy(boxId = Some("AccountsApproval"), errorMessageKey = contextualiseListErrorKey(error.errorMessageKey, index.toString)))
+    }
+    approversErrorList.flatten.toSet
+  }
+
   def validateOtherApprovers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+
     val otherApproversErrorList = for ((otherApprover, index) <- ac8092.zipWithIndex) yield {
       val errors = otherApprover.validate(boxRetriever)
       errors.map(error => error.copy(boxId = Some("AccountsApproval"), errorMessageKey = contextualiseListErrorKey(error.errorMessageKey, index.toString)))
@@ -59,8 +82,10 @@ case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC80
   }
 
   private def contextualiseListErrorKey(errorKey: String, context: String): String = {
-    val splitKey = errorKey.split('.')
-    (splitKey.take(2) ++ Array(context) ++ splitKey.drop(2)).mkString(".")
+    val replaced = errorKey.replace("error", "error.simpleList")
+    val splitKey = replaced.split('.')
+    (splitKey.take(3) ++ Array(context) ++ splitKey.drop(3)).mkString(".")
   }
+
 }
 
