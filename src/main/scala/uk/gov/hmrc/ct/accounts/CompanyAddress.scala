@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.accounts.formats.CompanyAddressFormatter
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtValue, Input}
 
 case class CompanyAddress(addressLine1: Option[String] = None,
@@ -32,7 +31,4 @@ case class CompanyAddress(addressLine1: Option[String] = None,
   with Input {
 
   override def value: CompanyAddress = this
-
-  override def asBoxString: Option[String] = CompanyAddressFormatter.asBoxString(this)
-
 }
