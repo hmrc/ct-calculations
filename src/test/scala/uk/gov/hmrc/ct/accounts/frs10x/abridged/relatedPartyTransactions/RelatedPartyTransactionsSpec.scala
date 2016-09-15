@@ -125,6 +125,11 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
     }
   }
 
+  "inject context information (list name and index if list item) into error message key" in {
+      val transactions = RelatedPartyTransactions(transactions = List.empty, ac7806 = AC7806(None))
+
+      transactions.contextualiseErrorKey("error.BoxId.some.message", 2) shouldBe "error.compoundList.transactions.2.BoxId.some.message"
+  }
 }
 
 object RelatedPartyTransactionsMockSetup extends MockitoSugar {
