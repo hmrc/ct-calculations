@@ -52,21 +52,21 @@ class AccountsApprovalSpec extends WordSpec with MockitoSugar with Matchers with
 
       val aa = AccountsApproval(List(), List(AC8092(Approver)), AC8091(None), AC198A(Date))
 
-      aa.validate(boxRetriever) shouldBe Set(CtValidation(Some("AC8091"),"error.AC8091.required"))
+      aa.validate(boxRetriever) shouldBe Set(CtValidation(Some("AccountsApproval"),"error.AC8091.required"))
     }
 
     "return error when AC8091 is false" in {
 
       val aa = AccountsApproval(List(), List(AC8092(Approver)), AC8091(Some(false)), AC198A(Date))
 
-      aa.validate(boxRetriever) shouldBe Set(CtValidation(Some("AC8091"),"error.AC8091.required"))
+      aa.validate(boxRetriever) shouldBe Set(CtValidation(Some("AccountsApproval"),"error.AC8091.required"))
     }
 
     "return error when ac198A is empty" in {
 
       val aa = AccountsApproval(List(), List(AC8092(Approver)), AC8091(True), AC198A(None))
 
-      aa.validate(boxRetriever) shouldBe Set(CtValidation(Some("AC198A"),"error.AC198A.required"))
+      aa.validate(boxRetriever) shouldBe Set(CtValidation(Some("AccountsApproval"),"error.AC198A.required"))
     }
 
     "return global error when no approvers" in {
