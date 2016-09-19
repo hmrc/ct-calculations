@@ -234,6 +234,15 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
+  protected def validateCohoNameField(boxId: String, box: CtString)(): Set[CtValidation] = {
+    validateStringByRegex(boxId, box, ValidCoHoNamesCharacters)
+  }
+
+  protected def validateCohoOptionalNameField(boxId: String, box: CtOptionalString)(): Set[CtValidation] = {
+    validateOptionalStringByRegex(boxId, box, ValidCoHoNamesCharacters)
+  }
+
+
   protected def validateCoHoString(boxId: String, value: String, errorCodeBoxId: Option[String] = None)(): Set[CtValidation] = {
 
     def getIllegalCharacters(x: String): String = {

@@ -23,6 +23,6 @@ import uk.gov.hmrc.ct.box._
 case class AC199A(value: String) extends CtBoxIdentifier(name = "Approve accounts approver") with CtString with Input with ValidatableBox[AbridgedAccountsBoxRetriever] {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    validateStringMaxLength("AC199A", this.value, StandardCohoNameFieldLimit) ++ validateStringByRegex("AC199A", this, ValidCoHoNamesCharacters)
+    validateStringMaxLength("AC199A", this.value, StandardCohoNameFieldLimit) ++ validateCohoNameField("AC199A", this)
   }
 }

@@ -23,6 +23,6 @@ import uk.gov.hmrc.ct.box._
 case class AC8092(value: Option[String]) extends CtBoxIdentifier(name = "Additional Approver.") with CtOptionalString with Input with ValidatableBox[AbridgedAccountsBoxRetriever] {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    validateStringMaxLength("AC8092", this.value.getOrElse(""), StandardCohoNameFieldLimit) ++ validateOptionalStringByRegex("AC8092", this, ValidCoHoNamesCharacters)
+    validateStringMaxLength("AC8092", this.value.getOrElse(""), StandardCohoNameFieldLimit) ++ validateCohoOptionalNameField("AC8092", this)
   }
 }

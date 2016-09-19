@@ -31,7 +31,7 @@ case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC80
   private def filteredOtherApprovers = ac8092.map(ac8092 => ac8092.value).flatten
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    collectReplaceBoxId("AccountsApproval") {
+    collectWithBoxId("AccountsApproval") {
       collectErrors (
         () => ac8091.validate(boxRetriever),
         () => ac198A.validate(boxRetriever),
@@ -41,18 +41,6 @@ case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC80
         validateApprovers(boxRetriever),
         validateOtherApprovers(boxRetriever)
       )
-    }
-  }
-
-  private def collectReplaceBoxId(newBoxId: String) (errors: Set[CtValidation]): Set[CtValidation] = {
-    val (globalErrors, boxErrors) = errors.partition(_.isGlobalError)
-    val transformedBoxErrors = boxErrors.map (error => error.copy(boxId = Some(newBoxId)))
-    globalErrors ++ transformedBoxErrors
-  }
-
-  private def replaceBoxId(boxId: String, errors: () => Set[CtValidation]): () => Set[CtValidation] = {
-    () => {
-      errors().map(error => error.copy(boxId = Some(boxId)))
     }
   }
 
@@ -81,7 +69,7 @@ case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC80
 
     val approversErrorList = for ((approver, index) <- ac199A.zipWithIndex) yield {
       val errors = approver.validate(boxRetriever)
-      errors.map(error => error.copy(boxId = Some("AccountsApproval"), errorMessageKey = contextualiseListErrorKey(error.errorMessageKey, index.toString)))
+      errors.map(error => error.copy(errorMessageKey = contextualiseListErrorKey(error.errorMessageKey, index.toString)))
     }
     approversErrorList.flatten.toSet
   }
@@ -90,7 +78,7 @@ case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC80
 
     val otherApproversErrorList = for ((otherApprover, index) <- ac8092.zipWithIndex) yield {
       val errors = otherApprover.validate(boxRetriever)
-      errors.map(error => error.copy(boxId = Some("AccountsApproval"), errorMessageKey = contextualiseListErrorKey(error.errorMessageKey, index.toString)))
+      errors.map(error => error.copy(errorMessageKey = contextualiseListErrorKey(error.errorMessageKey, index.toString)))
     }
     otherApproversErrorList.flatten.toSet
   }

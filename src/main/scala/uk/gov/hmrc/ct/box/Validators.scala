@@ -78,6 +78,17 @@ trait Validators {
 
   protected def isEmpty(value: Option[_]): Boolean = value.isEmpty
 
+  protected def collectWithBoxId(newBoxId: String) (errors: Set[CtValidation]): Set[CtValidation] = {
+    val (globalErrors, boxErrors) = errors.partition(_.isGlobalError)
+    val transformedBoxErrors = boxErrors.map (error => error.copy(boxId = Some(newBoxId)))
+    globalErrors ++ transformedBoxErrors
+  }
+
+  protected def replaceBoxId(newBoxId: String, errors: () => Set[CtValidation])(): Set[CtValidation] = {
+
+    errors().map(error => error.copy(boxId = Some(newBoxId)))
+  }
+
   protected def collectErrors(predicates: (() => Set[CtValidation])*): Set[CtValidation] = {
     predicates.flatMap { predicate =>
       predicate()
