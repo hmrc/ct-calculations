@@ -27,7 +27,6 @@ class AC8092Spec extends WordSpec with MockitoSugar with Matchers with BeforeAnd
   with MockAbridgedAccountsRetriever with AccountsFreeTextValidationFixture {
 
   testAccountsCharacterLimitValidation("AC8092", StandardCohoNameFieldLimit, AC8092)
-  testAccountsCoHoTextFieldValidation("AC8092", AC8092)
-
+  testAccountsCoHoNameFieldValidation("AC8092", AC8092)
 
 }

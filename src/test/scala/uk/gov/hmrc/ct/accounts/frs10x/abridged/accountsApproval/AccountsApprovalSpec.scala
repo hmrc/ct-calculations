@@ -48,21 +48,14 @@ class AccountsApprovalSpec extends WordSpec with MockitoSugar with Matchers with
       aa.validate(boxRetriever) shouldBe empty
     }
 
-    "return error when AC8091 is empty" in {
+    "return error with 'AccountsApproval' boxId for AC8091 errors" in {
 
       val aa = AccountsApproval(List(), List(AC8092(Approver)), AC8091(None), AC198A(Date))
 
       aa.validate(boxRetriever) shouldBe Set(CtValidation(Some("AccountsApproval"),"error.AC8091.required"))
     }
 
-    "return error when AC8091 is false" in {
-
-      val aa = AccountsApproval(List(), List(AC8092(Approver)), AC8091(Some(false)), AC198A(Date))
-
-      aa.validate(boxRetriever) shouldBe Set(CtValidation(Some("AccountsApproval"),"error.AC8091.required"))
-    }
-
-    "return error when ac198A is empty" in {
+    "return error with 'AccountsApproval' boxId for ac198A errors" in {
 
       val aa = AccountsApproval(List(), List(AC8092(Approver)), AC8091(True), AC198A(None))
 
