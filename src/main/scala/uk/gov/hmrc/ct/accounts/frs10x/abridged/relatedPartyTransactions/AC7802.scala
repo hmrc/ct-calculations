@@ -30,8 +30,8 @@ case class AC7802(value: Option[String]) extends CtBoxIdentifier(name = "Name of
 
     collectErrors(
       validateAsMandatory(this),
-      validateStringMaxLength("AC7802", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString("AC7802", this)
+      validateStringMaxLength("AC7802", value.getOrElse(""), StandardCohoNameFieldLimit),
+      validateCohoOptionalNameField("AC7802", this)
     )
   }
 }

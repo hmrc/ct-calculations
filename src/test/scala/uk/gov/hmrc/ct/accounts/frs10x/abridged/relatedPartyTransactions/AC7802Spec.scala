@@ -26,8 +26,8 @@ import uk.gov.hmrc.ct.box.ValidatableBox._
 class AC7802Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
   with MockAbridgedAccountsRetriever with AccountsFreeTextValidationFixture {
 
-  testMandatoryAccountsCharacterLimitValidation("AC7802", StandardCohoTextFieldLimit, AC7802)
-  testAccountsCoHoTextFieldValidation("AC7802", AC7802)
+  testMandatoryAccountsCharacterLimitValidation("AC7802", StandardCohoNameFieldLimit, AC7802)
+  testAccountsCoHoNameFieldValidation("AC7802", AC7802)
 
   "AC7802" should {
     "be mandatory" in {
