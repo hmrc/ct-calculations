@@ -14,24 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
+package uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box.ValidatableBox._
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC7802(value: Option[String]) extends CtBoxIdentifier(name = "Name of related party")
-  with CtOptionalString
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+case class AC8091(value: Option[Boolean]) extends CtBoxIdentifier(name = "Approve accounts approval statement") with CtOptionalBoolean with Input with ValidatableBox[AbridgedAccountsBoxRetriever] {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-
-    collectErrors(
-      validateAsMandatory(this),
-      validateStringMaxLength("AC7802", value.getOrElse(""), StandardCohoNameFieldLimit),
-      validateCohoOptionalNameField("AC7802", this)
-    )
+    collectErrors {
+      validateBooleanAsTrue("AC8091", this)
+    }
   }
 }

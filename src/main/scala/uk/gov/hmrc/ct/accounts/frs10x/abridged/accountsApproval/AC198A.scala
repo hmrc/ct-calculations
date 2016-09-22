@@ -14,24 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
+package uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval
 
+import org.joda.time.LocalDate
+import uk.gov.hmrc.cato.time.DateHelper
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
-case class AC7802(value: Option[String]) extends CtBoxIdentifier(name = "Name of related party")
-  with CtOptionalString
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+case class AC198A(value: Option[LocalDate]) extends CtBoxIdentifier("Approve accounts date of approval") with CtOptionalDate with Input with ValidatableBox[AbridgedAccountsBoxRetriever] {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      validateAsMandatory(this),
-      validateStringMaxLength("AC7802", value.getOrElse(""), StandardCohoNameFieldLimit),
-      validateCohoOptionalNameField("AC7802", this)
+      validateDateAsMandatory("AC198A", this),
+      validateDateAsBetweenInclusive("AC198A", this, boxRetriever.ac4().value, DateHelper.now())
     )
   }
 }

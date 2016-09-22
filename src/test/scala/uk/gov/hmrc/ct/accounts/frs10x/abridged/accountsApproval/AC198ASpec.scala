@@ -14,24 +14,33 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
+package uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval
 
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.cato.time.DateHelper
+import uk.gov.hmrc.ct.accounts.AC4
+import uk.gov.hmrc.ct.accounts.frs10x.{AccountsDatesValidationFixture, MockAbridgedAccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.box.ValidatableBox._
+import uk.gov.hmrc.ct.domain.ValidationConstants._
 
-class AC7802Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
-  with MockAbridgedAccountsRetriever with AccountsFreeTextValidationFixture {
+class AC198ASpec extends WordSpec
+  with MockitoSugar
+  with Matchers
+  with MockAbridgedAccountsRetriever
+  with BeforeAndAfter
+  with AccountsDatesValidationFixture {
 
-  testMandatoryAccountsCharacterLimitValidation("AC7802", StandardCohoNameFieldLimit, AC7802)
-  testAccountsCoHoNameFieldValidation("AC7802", AC7802)
+  val NOW = DateHelper.now()
+  val APEnd = NOW.minusMonths(1)
 
-  "AC7802" should {
-    "be mandatory" in {
-      AC7802(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7802"), "error.AC7802.required", None))
-    }
+  before{
+    when(boxRetriever.ac4()).thenReturn(AC4(APEnd))
   }
+
+  testDateIsMandatory("AC198A", AC198A)
+
+  testDateBetweenIntervalValidation("AC198A", startDate = APEnd, endDate = NOW, AC198A)
+
 }

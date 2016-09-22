@@ -39,6 +39,13 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
+  protected def validateBooleanAsTrue(boxId: String, box: CtOptionalBoolean)(): Set[CtValidation] = {
+    box.value match {
+      case None | Some(false) => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
+      case _ => Set()
+    }
+  }
+
   protected def validateIntegerAsMandatory(boxId: String, box: CtOptionalInteger)(): Set[CtValidation] = {
     box.value match {
       case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
@@ -206,6 +213,12 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
+  protected def validateRawStringByRegex(boxId: String, value: String, errorCodeBoxId: String, regex: String)(): Set[CtValidation] = {
+    passIf (value.matches(regex)) {
+      Set(CtValidation(Some(boxId), s"error.$errorCodeBoxId.regexFailure"))
+    }
+  }
+
   protected def validateStringByRegex(boxId: String, box: CtString, regex: String)(): Set[CtValidation] = {
     passIf (box.value.isEmpty || box.value.matches(regex)) {
       Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
@@ -220,6 +233,15 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
       case _ => Set()
     }
   }
+
+  protected def validateCohoNameField(boxId: String, box: CtString)(): Set[CtValidation] = {
+    validateStringByRegex(boxId, box, ValidCoHoNamesCharacters)
+  }
+
+  protected def validateCohoOptionalNameField(boxId: String, box: CtOptionalString)(): Set[CtValidation] = {
+    validateOptionalStringByRegex(boxId, box, ValidCoHoNamesCharacters)
+  }
+
 
   protected def validateCoHoString(boxId: String, value: String, errorCodeBoxId: Option[String] = None)(): Set[CtValidation] = {
 
@@ -295,4 +317,6 @@ object ValidatableBox {
   val SortCodeValidChars = """^[0-9]{6}$"""
   val AccountNumberValidChars = """^[0-9]{8}$"""
   val StandardCohoTextFieldLimit = 20000
+  val StandardCohoNameFieldLimit = 40
+  val ValidCoHoNamesCharacters = "[A-Za-z\\-'\\. \\,]*" // Based on the comment from CATO-3881
 }

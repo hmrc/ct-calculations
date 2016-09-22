@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
+package uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval
 
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
@@ -23,15 +23,10 @@ import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAb
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
-class AC7802Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
+class AC8092Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
   with MockAbridgedAccountsRetriever with AccountsFreeTextValidationFixture {
 
-  testMandatoryAccountsCharacterLimitValidation("AC7802", StandardCohoNameFieldLimit, AC7802)
-  testAccountsCoHoNameFieldValidation("AC7802", AC7802)
+  testAccountsCharacterLimitValidation("AC8092", StandardCohoNameFieldLimit, AC8092)
+  testAccountsCoHoNameFieldValidation("AC8092", AC8092)
 
-  "AC7802" should {
-    "be mandatory" in {
-      AC7802(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7802"), "error.AC7802.required", None))
-    }
-  }
 }
