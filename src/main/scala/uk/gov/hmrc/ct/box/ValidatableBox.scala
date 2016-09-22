@@ -36,7 +36,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
 
 
   // Taken from PostCodeType on http://www.hmrc.gov.uk/schemas/core-v2-0.xsd
-  private val postCodeRegex = """(GIR 0AA)|((([A-Z][0-9][0-9]?)|(([A-Z][A-HJ-Y][0-9][0-9]?)|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2})"""
+  protected val postCodeRegex = """(GIR 0AA)|((([A-Z][0-9][0-9]?)|(([A-Z][A-HJ-Y][0-9][0-9]?)|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2})"""
 
   def validate(boxRetriever: T): Set[CtValidation]
 
@@ -274,7 +274,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
-  protected def validateStringByLength(boxId: String, box: CtString, min:Int, max:Int)(): Set[CtValidation] = {
+  protected def validateStringByLength(boxId: String, box: StringIdBox, min:Int, max:Int)(): Set[CtValidation] = {
      validateNotEmptyStringByLength(boxId, box.value, min, max)
   }
 
