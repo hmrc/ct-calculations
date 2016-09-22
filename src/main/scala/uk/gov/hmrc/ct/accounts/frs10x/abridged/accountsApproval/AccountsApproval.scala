@@ -44,28 +44,28 @@ case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC80
     }
   }
 
-  def validateApproverRequired(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+  private def validateApproverRequired(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
 
     failIf(ac199A.isEmpty && filteredOtherApprovers.isEmpty) {
       Set(CtValidation(None, "error.AccountsApproval.atLeast1", None))
     }
   }
 
-  def validateAtMost12Approvers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+  private def validateAtMost12Approvers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
 
     failIf(filteredApprovers.length > 12) {
       Set(CtValidation(None, "error.AccountsApproval.approvers.atMost12", None))
     }
   }
 
-  def validateAtMost12OtherApprovers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+  private def validateAtMost12OtherApprovers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
 
     failIf(filteredOtherApprovers.length > 12) {
       Set(CtValidation(None, "error.AccountsApproval.otherApprovers.atMost12", None))
     }
   }
 
-  def validateApprovers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+  private def validateApprovers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
 
     val approversErrorList = for ((approver, index) <- ac199A.zipWithIndex) yield {
       val errors = approver.validate(boxRetriever)
@@ -74,7 +74,7 @@ case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC80
     approversErrorList.flatten.toSet
   }
 
-  def validateOtherApprovers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+  private def validateOtherApprovers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
 
     val otherApproversErrorList = for ((otherApprover, index) <- ac8092.zipWithIndex) yield {
       val errors = otherApprover.validate(boxRetriever)

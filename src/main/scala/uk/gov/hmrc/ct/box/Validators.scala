@@ -84,10 +84,8 @@ trait Validators {
     globalErrors ++ transformedBoxErrors
   }
 
-  protected def replaceBoxId(newBoxId: String, errors: () => Set[CtValidation])(): Set[CtValidation] = {
+  protected def replaceBoxId(newBoxId: String, errors: () => Set[CtValidation])(): Set[CtValidation] = errors().map(error => error.copy(boxId = Some(newBoxId)))
 
-    errors().map(error => error.copy(boxId = Some(newBoxId)))
-  }
 
   protected def collectErrors(predicates: (() => Set[CtValidation])*): Set[CtValidation] = {
     predicates.flatMap { predicate =>
