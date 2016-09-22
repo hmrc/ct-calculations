@@ -17,6 +17,9 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged._
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.loansToDirectors.LoansToDirectors
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval.AccountsApproval
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions.{AC7806, RelatedPartyTransactions}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
@@ -154,6 +157,26 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac219(): AC219
 
+  def ac115(): AC115
+
+  def ac116(): AC116
+
+  def ac117(): AC117 = AC117.calculate(this)
+
+  def ac119(): AC119
+
+  def ac120(): AC120
+
+  def ac121(): AC121 = AC121.calculate(this)
+
+  def ac122(): AC122 = AC122.calculate(this)
+
+  def ac209(): AC209
+
+  def ac210(): AC210
+
+  def ac211(): AC211
+
   def ac320(): AC320
 
   def ac320A(): AC320A
@@ -194,11 +217,21 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac5132(): AC5132 = AC5132.calculate(this)
 
+  def ac5133(): AC5133
+
   def ac5076A(): AC5076A
 
   def ac5076B(): AC5076B = AC5076B.calculate(this)
 
   def ac5076C(): AC5076C
+
+  def ac5117(): AC5117
+
+  def ac5121(): AC5121
+
+  def ac5122(): AC5122 = AC5122.calculate(this)
+
+  def ac5123(): AC5123
 
   def ac7100(): AC7100
 
@@ -222,8 +255,10 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac7800(): AC7800
 
+  def loansToDirectors(): LoansToDirectors
+
   def ac7900(): AC7900
-  
+
   def ac8081(): AC8081
 
   def ac8082(): AC8082
@@ -237,4 +272,8 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
   def ac8088(): AC8088
 
   def ac7901(): AC7901
+
+  def relatedPartyTransactions(): RelatedPartyTransactions
+
+  def accountsApproval(): AccountsApproval
 }

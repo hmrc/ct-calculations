@@ -188,39 +188,39 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
 
   "validateCoHoOptionalTextField" should {
     "return unique errors if it does not match" in {
-      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("^ ^^  aa § 333"))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.regexFailure", Some(List("^, §"))))
+      validateCoHoOptionalString("testBox", testOptStringBox(Some("^ ^^  aa § 333"))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.regexFailure", Some(List("^, §"))))
     }
 
     "return no errors if it matches character set 0" in {
-      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"))) shouldBe Set()
+      validateCoHoOptionalString("testBox", testOptStringBox(Some("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"))) shouldBe Set()
     }
 
     "return no errors if it matches character set 1" in {
-      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("0123456789"))) shouldBe Set()
+      validateCoHoOptionalString("testBox", testOptStringBox(Some("0123456789"))) shouldBe Set()
     }
 
     "return no errors if it matches character set 2" in {
-      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("&@£$€¥.,:;"))) shouldBe Set()
+      validateCoHoOptionalString("testBox", testOptStringBox(Some("&@£$€¥.,:;"))) shouldBe Set()
     }
 
     "return no errors if it matches character set 3" in {
-      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("-'()[]{}"))) shouldBe Set()
+      validateCoHoOptionalString("testBox", testOptStringBox(Some("-'()[]{}"))) shouldBe Set()
     }
 
     "return no errors if it matches character set 4" in {
-      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("?/\\#%+\\r=*"))) shouldBe Set()
+      validateCoHoOptionalString("testBox", testOptStringBox(Some("?/\\#%+\\r=*"))) shouldBe Set()
     }
 
     "return no errors if it matches character set 5" in {
-      validateCoHoOptionalTextField("testBox", testOptStringBox(Some("<>!»«\"“”   ‘ ’ ’    "))) shouldBe Set()
+      validateCoHoOptionalString("testBox", testOptStringBox(Some("<>!»«\"“”   ‘ ’ ’    "))) shouldBe Set()
     }
 
     "return no errors if no value set" in {
-      validateCoHoOptionalTextField("testBox", testOptStringBox(None)) shouldBe Set()
+      validateCoHoOptionalString("testBox", testOptStringBox(None)) shouldBe Set()
     }
 
     "return no errors if empty string" in {
-      validateCoHoOptionalTextField("testBox", testOptStringBox(Some(""))) shouldBe Set()
+      validateCoHoOptionalString("testBox", testOptStringBox(Some(""))) shouldBe Set()
     }
   }
 

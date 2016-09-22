@@ -42,16 +42,16 @@ trait AccountsMoneyValidationFixture extends WordSpec with Matchers with Mockito
     when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate())))
   }
 
-  def testAccountsMoneyValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
-    doTests(boxId, STANDARD_MIN, STANDARD_MAX, builder, testEmpty = true)
+  def testAccountsMoneyValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever], testEmpty: Boolean = true): Unit = {
+    doTests(boxId, STANDARD_MIN, STANDARD_MAX, builder, testEmpty = testEmpty)
   }
 
-  def testAccountsMoneyValidationWithMin(boxId: String, minValue: Int, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
-    doTests(boxId, minValue, STANDARD_MAX, builder, testEmpty = true)
+  def testAccountsMoneyValidationWithMin(boxId: String, minValue: Int, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever], testEmpty: Boolean = true): Unit = {
+    doTests(boxId, minValue, STANDARD_MAX, builder, testEmpty = testEmpty)
   }
 
-  def testAccountsMoneyValidationWithMinMaxIgnoringEmptyTest(boxId: String, minValue: Int, maxValue: Int, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
-    doTests(boxId, minValue, maxValue, builder, testEmpty = false)
+  def testAccountsMoneyValidationWithMinMax(boxId: String, minValue: Int, maxValue: Int, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever], testEmpty: Boolean = true): Unit = {
+    doTests(boxId, minValue, maxValue, builder, testEmpty = testEmpty)
   }
 
   private def doTests(boxId: String, minValue: Int, maxValue: Int, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever], testEmpty: Boolean): Unit = {

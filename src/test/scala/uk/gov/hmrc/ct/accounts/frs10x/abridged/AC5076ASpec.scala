@@ -31,9 +31,12 @@ class AC5076ASpec extends WordSpec
 
   override def setUpMocks(): Unit = {
     when(boxRetriever.ac76()).thenReturn(AC76(Some(100)))
+    when(boxRetriever.ac5076A()).thenReturn(AC5076A(Some(10)))
+    when(boxRetriever.ac5076B()).thenReturn(AC5076B(Some(10)))
+    when(boxRetriever.ac5076C()).thenReturn(AC5076C(Some("Test content")))
   }
 
-  testAccountsMoneyValidationWithMinMaxIgnoringEmptyTest("AC5076A", STANDARD_MIN, STANDARD_MAX, AC5076A)
+  testAccountsMoneyValidationWithMinMax("AC5076A", STANDARD_MIN, STANDARD_MAX, AC5076A, testEmpty = false)
 
   "AC5076A" should {
     "fail validation when AC76 isn't empty and this box is empty" in {
@@ -41,14 +44,27 @@ class AC5076ASpec extends WordSpec
       AC5076A(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5076A"), "error.AC5076A.required"))
     }
 
-    "not fail validation when AC76 isn't empty and this box is set" in {
-      when(boxRetriever.ac76()).thenReturn(AC76(Some(10)))
-      AC5076A(Some(10)).validate(boxRetriever) shouldBe Set.empty
+    "throw global error when note cannot be entered" in {
+      val box = AC5076A(Some(10))
+      when(boxRetriever.ac76()).thenReturn(AC76(None))
+      when(boxRetriever.ac5076A()).thenReturn(box)
+
+      box.validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.revaluationReserveNote.cannot.exist"))
     }
 
-    "fail validation when populated and AC76 is empty" in {
+    "validate successfully if note can't be entered but is empty" in {
+      val box = AC5076A(None)
+
       when(boxRetriever.ac76()).thenReturn(AC76(None))
-      AC5076A(Some(100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5076A"), "error.AC5076A.cannot.exist"))
+      when(boxRetriever.ac5076A()).thenReturn(box)
+      when(boxRetriever.ac5076B()).thenReturn(AC5076B(None))
+      when(boxRetriever.ac5076C()).thenReturn(AC5076C(None))
+
+      box.validate(boxRetriever) shouldBe Set.empty
+    }
+
+    "validate successfully if note can be entered" in {
+      AC5076A(Some(10)).validate(boxRetriever) shouldBe Set.empty
     }
   }
 }

@@ -36,7 +36,6 @@ trait CtValue[T] {
         case x => Some(x.toString)
       }
   }
-
 }
 
 trait CtOptionalInteger extends CtValue[Option[Int]] {

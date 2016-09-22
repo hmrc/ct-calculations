@@ -30,7 +30,7 @@ case class AC322(value: Option[String]) extends CtBoxIdentifier(name = "Tangible
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       validateStringMaxLength("AC322", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalTextField("AC322", this)
+      validateCoHoOptionalString("AC322", this)
     )
   }
 }

@@ -36,7 +36,7 @@ trait ValidateAssetsEqualSharesSpec extends WordSpec with Matchers with MockitoS
 
         addOtherBoxValue100Mock(retriever)
 
-        builder(Some(50)).validate(retriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.assetsNotEqualToShares"))
+        builder(Some(50)).validate(retriever) shouldBe Set(CtValidation(None, s"error.$boxId.assetsNotEqualToShares"))
       }
 
       "return an error if it has a value and other box is None" in {
@@ -44,7 +44,7 @@ trait ValidateAssetsEqualSharesSpec extends WordSpec with Matchers with MockitoS
 
         addOtherBoxValueNoneMock(retriever)
 
-        builder(Some(100)).validate(retriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.assetsNotEqualToShares"))
+        builder(Some(100)).validate(retriever) shouldBe Set(CtValidation(None, s"error.$boxId.assetsNotEqualToShares"))
       }
 
       "return no error if both value are None" in {

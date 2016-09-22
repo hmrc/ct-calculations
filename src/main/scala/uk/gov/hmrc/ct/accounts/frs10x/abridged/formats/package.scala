@@ -16,9 +16,15 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.box.formats.{IntegerFormat, OptionalBooleanFormat, OptionalIntegerFormat, OptionalStringFormat}
+import play.api.libs.json._
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval._
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.loansToDirectors._
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions._
+import uk.gov.hmrc.ct.box.formats._
 
 package object formats {
+  private def withDefault[A](key:String, default:A)(implicit writes:Writes[A]) = __.json.update((__ \ key).json.copyFrom((__ \ key).json.pick orElse Reads.pure(Json.toJson(default))))
+
   implicit val ac16Format = new OptionalIntegerFormat[AC16](AC16.apply)
   implicit val ac17Format = new OptionalIntegerFormat[AC17](AC17.apply)
   implicit val ac18Format = new OptionalIntegerFormat[AC18](AC18.apply)
@@ -61,11 +67,31 @@ package object formats {
   implicit val ac130Format = new OptionalIntegerFormat[AC130](AC130.apply)
   implicit val ac131Format = new OptionalIntegerFormat[AC131](AC131.apply)
   implicit val ac132Format = new OptionalIntegerFormat[AC132](AC132.apply)
+  implicit val ac198AFormat = new OptionalDateFormat[AC198A](AC198A.apply)
+  implicit val ac199AFormat = new StringFormat[AC199A](AC199A.apply)
+  implicit val ac8092Format = new OptionalStringFormat[AC8092](AC8092.apply)
+  implicit val ac8091Format = new OptionalBooleanFormat[AC8091](AC8091.apply)
   implicit val ac212Format = new OptionalIntegerFormat[AC212](AC212.apply)
   implicit val ac213Format = new OptionalIntegerFormat[AC213](AC213.apply)
   implicit val ac214Format = new OptionalIntegerFormat[AC214](AC214.apply)
   implicit val ac217Format = new OptionalIntegerFormat[AC217](AC217.apply)
   implicit val ac219Format = new OptionalIntegerFormat[AC219](AC219.apply)
+  implicit val ac115Format = new OptionalIntegerFormat[AC115](AC115.apply)
+  implicit val ac116Format = new OptionalIntegerFormat[AC116](AC116.apply)
+  implicit val ac117Format = new OptionalIntegerFormat[AC117](AC117.apply)
+  implicit val ac119Format = new OptionalIntegerFormat[AC119](AC119.apply)
+  implicit val ac120Format = new OptionalIntegerFormat[AC120](AC120.apply)
+  implicit val ac121Format = new OptionalIntegerFormat[AC121](AC121.apply)
+  implicit val ac122Format = new OptionalIntegerFormat[AC122](AC122.apply)
+  implicit val ac209Format = new OptionalIntegerFormat[AC209](AC209.apply)
+  implicit val ac210Format = new OptionalIntegerFormat[AC210](AC210.apply)
+  implicit val ac211Format = new OptionalIntegerFormat[AC211](AC211.apply)
+  implicit val ac304AFormat = new OptionalStringFormat[AC304A](AC304A.apply)
+  implicit val ac305AFormat = new OptionalStringFormat[AC305A](AC305A.apply)
+  implicit val ac306AFormat = new OptionalIntegerFormat[AC306A](AC306A.apply)
+  implicit val ac307AFormat = new OptionalIntegerFormat[AC307A](AC307A.apply)
+  implicit val ac308AFormat = new OptionalIntegerFormat[AC308A](AC308A.apply)
+  implicit val ac309AFormat = new OptionalIntegerFormat[AC309A](AC309A.apply)
   implicit val ac320Format = new OptionalBooleanFormat[AC320](AC320.apply)
   implicit val ac320AFormat = new OptionalStringFormat[AC320A](AC320A.apply)
   implicit val ac321Format = new OptionalStringFormat[AC321](AC321.apply)
@@ -87,7 +113,13 @@ package object formats {
   implicit val ac5076CFormat = new OptionalStringFormat[AC5076C](AC5076C.apply)
   implicit val ac5131Format = new OptionalIntegerFormat[AC5131](AC5131.apply)
   implicit val ac5132Format = new OptionalIntegerFormat[AC5132](AC5132.apply)
+  implicit val ac5133Format = new OptionalStringFormat[AC5133](AC5133.apply)
+
   implicit val ac5217Format = new OptionalIntegerFormat[AC5217](AC5217.apply)
+  implicit val ac5117Format = new OptionalIntegerFormat[AC5117](AC5117.apply)
+  implicit val ac5121Format = new OptionalIntegerFormat[AC5121](AC5121.apply)
+  implicit val ac5122Format = new OptionalIntegerFormat[AC5122](AC5122.apply)
+  implicit val ac5123Format = new OptionalStringFormat[AC5123](AC5123.apply)
 
   implicit val ac7100Format = new OptionalBooleanFormat(AC7100.apply)
 
@@ -99,11 +131,81 @@ package object formats {
   implicit val ac7400Format = new OptionalBooleanFormat(AC7400.apply)
   implicit val ac7401Format = new OptionalStringFormat(AC7401.apply)
   implicit val ac7500Format = new OptionalBooleanFormat(AC7500.apply)
+  implicit val ac7501Format = new OptionalStringFormat(AC7501.apply)
   implicit val ac7600Format = new OptionalBooleanFormat(AC7600.apply)
   implicit val ac7601Format = new OptionalStringFormat(AC7601.apply)
   implicit val ac7800Format = new OptionalBooleanFormat(AC7800.apply)
+  implicit val ac7801Format = new OptionalBooleanFormat(AC7801.apply)
+  implicit val ac7802Format = new OptionalStringFormat(AC7802.apply)
+  implicit val ac7803Format = new OptionalStringFormat(AC7803.apply)
+  implicit val ac7804Format = new OptionalIntegerFormat(AC7804.apply)
+  implicit val ac7805Format = new OptionalIntegerFormat(AC7805.apply)
+  implicit val ac7806Format = new OptionalStringFormat(AC7806.apply)
+
   implicit val ac7900Format = new OptionalBooleanFormat(AC7900.apply)
   implicit val ac7901Format = new OptionalStringFormat(AC7901.apply)
+
+  implicit val relatedPartyTransactionFormatWIthDefaults = new Format[RelatedPartyTransaction] {
+    val baseFormat = Json.format[RelatedPartyTransaction]
+
+    override def reads(json: JsValue): JsResult[RelatedPartyTransaction] = baseFormat
+      .compose(withDefault("ac7801", AC7801(None)))
+      .compose(withDefault("ac7802", AC7802(None)))
+      .compose(withDefault("ac7803", AC7803(None)))
+      .compose(withDefault("ac7804", AC7804(None)))
+      .compose(withDefault("ac7805", AC7805(None)))
+      .reads(json)
+
+    override def writes(o: RelatedPartyTransaction): JsValue = baseFormat.writes(o)
+  }
+
+  implicit val relatedPartyTransactionsFormatWithDefaults = new Format[RelatedPartyTransactions] {
+    val baseFormat = Json.format[RelatedPartyTransactions]
+
+    override def reads(json: JsValue): JsResult[RelatedPartyTransactions] = baseFormat
+      .compose(withDefault("ac7806", AC7806(None)))
+      .reads(json)
+
+    override def writes(o: RelatedPartyTransactions): JsValue = baseFormat.writes(o)
+  }
+
+  implicit val accountsApprovalFormatWithDefaults = new Format[AccountsApproval] {
+    val baseFormat = Json.format[AccountsApproval]
+
+    override def reads(json: JsValue): JsResult[AccountsApproval] = baseFormat
+      .compose(withDefault("ac8091", AC8091(None)))
+      .compose(withDefault("ac198A", AC198A(None)))
+      .reads(json)
+
+    override def writes(o: AccountsApproval): JsValue = baseFormat.writes(o)
+  }
+
+
+
+  implicit val loanToDirectorFormatWithDefaults = new Format[LoanToDirector] {
+    val baseFormat = Json.format[LoanToDirector]
+
+    override def reads(json: JsValue): JsResult[LoanToDirector] = baseFormat
+      .compose(withDefault("ac304A", AC304A(None)))
+      .compose(withDefault("ac305A", AC305A(None)))
+      .compose(withDefault("ac306A", AC306A(None)))
+      .compose(withDefault("ac307A", AC307A(None)))
+      .compose(withDefault("ac308A", AC308A(None)))
+      .compose(withDefault("ac309A", AC309A(None)))
+      .reads(json)
+
+    override def writes(o: LoanToDirector): JsValue = baseFormat.writes(o)
+  }
+
+  implicit val loansToDirectorsFormatWithDefaults = new Format[LoansToDirectors] {
+    val baseFormat = Json.format[LoansToDirectors]
+
+    override def reads(json: JsValue): JsResult[LoansToDirectors] = baseFormat
+      .compose(withDefault("ac7501", AC7501(None)))
+      .reads(json)
+
+    override def writes(o: LoansToDirectors): JsValue = baseFormat.writes(o)
+  }
 
   implicit val ac8081Format = new OptionalBooleanFormat(AC8081.apply)
   implicit val ac8082Format = new OptionalBooleanFormat(AC8082.apply)
@@ -111,4 +213,6 @@ package object formats {
   implicit val ac8084Format = new OptionalBooleanFormat(AC8084.apply)
   implicit val ac8085Format = new OptionalBooleanFormat(AC8085.apply)
   implicit val ac8088Format = new OptionalBooleanFormat(AC8088.apply)
-}
+
+  }
+

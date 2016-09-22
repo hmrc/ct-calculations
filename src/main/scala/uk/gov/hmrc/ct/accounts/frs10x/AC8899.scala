@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs10x
 
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs10x.validation.DirectorsReportEnabled
+import uk.gov.hmrc.ct.accounts.frs10x.validation.DirectorsReportEnabledCalculator
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
@@ -25,7 +25,7 @@ case class AC8899(value: Option[Boolean]) extends CtBoxIdentifier(name = "Direct
   with CtOptionalBoolean
   with Input
   with ValidatableBox[Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever]
-  with DirectorsReportEnabled {
+  with DirectorsReportEnabledCalculator {
 
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] =
     if (directorsReportEnabled(boxRetriever))

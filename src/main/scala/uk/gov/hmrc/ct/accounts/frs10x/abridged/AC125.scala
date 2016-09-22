@@ -27,7 +27,54 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateMoney(value, min = 0)
+      failIf(boxRetriever.ac44().value.nonEmpty)(
+        collectErrors(
+          validateMoney(value, min = 0),
+          validateOneFieldMandatory(boxRetriever)
+        )
+      ),
+      failIf(boxRetriever.ac44().value.isEmpty)(validateNoteCannotExist(boxRetriever))
+    )
+  }
+
+  private def validateNoteCannotExist(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+    import boxRetriever._
+
+    val values = Seq(
+      ac5217().value,
+      ac125().value,
+      ac126().value,
+      ac212().value,
+      ac213().value,
+      ac5131().value,
+      ac219().value,
+      ac130().value,
+      ac214().value
+    )
+
+    if (values.exists(_.nonEmpty) || ac5133().value.getOrElse("").trim().nonEmpty)
+      Set(CtValidation(None, "error.balanceSheet.tangibleAssetsNote.cannot.exist"))
+    else
+      Set.empty
+  }
+
+  private def validateOneFieldMandatory(boxRetriever: AbridgedAccountsBoxRetriever)() = {
+    val anyBoxPopulated = (
+        boxRetriever.ac5217().value orElse
+        boxRetriever.ac125().value orElse
+        boxRetriever.ac126().value orElse
+        boxRetriever.ac212().value orElse
+        boxRetriever.ac213().value orElse
+        boxRetriever.ac5131().value orElse
+        boxRetriever.ac219().value orElse
+        boxRetriever.ac130().value orElse
+        boxRetriever.ac214().value orElse
+        boxRetriever.ac5133().value
+      ).nonEmpty
+
+    failIf(!anyBoxPopulated)(
+      Set(CtValidation(None, "error.tangible.assets.note.one.box.required"))
     )
   }
 }
+

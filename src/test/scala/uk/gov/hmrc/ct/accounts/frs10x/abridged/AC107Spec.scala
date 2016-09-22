@@ -28,7 +28,7 @@ class AC107Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
     when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
   }
 
-  testAccountsMoneyValidationWithMinMaxIgnoringEmptyTest("AC107", 0, 99999, AC107.apply)
+  testAccountsMoneyValidationWithMinMax("AC107", 0, 99999, AC107.apply, testEmpty = false)
 
   "AC107" should {
 

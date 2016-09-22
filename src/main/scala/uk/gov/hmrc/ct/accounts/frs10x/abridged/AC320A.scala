@@ -32,7 +32,7 @@ case class AC320A(value: Option[String]) extends CtBoxIdentifier(name = "Basis o
       cannotExistIf(value.isDefined && boxRetriever.ac320().value.contains(true)),
       requiredIf(value.isEmpty && boxRetriever.ac320.value.contains(false)),
       validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalTextField()
+      validateCoHoOptionalString()
     )
   }
 }
