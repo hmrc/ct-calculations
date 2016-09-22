@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.box.ValidatableBox._
 case class AC320A(value: Option[String]) extends CtBoxIdentifier(name = "Basis of measurement and preparation")
                                       with CtOptionalString
                                       with Input
-                                      with ValidatableBox[AbridgedAccountsBoxRetriever]
+                                      with SelfValidatableBox[AbridgedAccountsBoxRetriever, Option[String]]
                                       with Validators {
 
 
@@ -31,8 +31,8 @@ case class AC320A(value: Option[String]) extends CtBoxIdentifier(name = "Basis o
     collectErrors(
       cannotExistIf(value.isDefined && boxRetriever.ac320().value.contains(true)),
       requiredIf(value.isEmpty && boxRetriever.ac320.value.contains(false)),
-      validateStringMaxLength("AC320A", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalTextField("AC320A", this)
+      validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit),
+      validateCoHoOptionalTextField()
     )
   }
 }
