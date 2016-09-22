@@ -30,6 +30,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
   type OptionalBooleanIdBox = CtValue[Option[Boolean]] with CtBoxIdentifier
   type OptionalIntIdBox = CtValue[Option[Int]] with CtBoxIdentifier
   type OptionalStringIdBox = CtValue[Option[String]] with CtBoxIdentifier
+  type StringIdBox = CtValue[String] with CtBoxIdentifier
   type OptionalDateIdBox = CtValue[Option[LocalDate]] with CtBoxIdentifier
   type OptionalBigDecimalIdBox = CtValue[Option[BigDecimal]] with CtBoxIdentifier
 
@@ -227,13 +228,13 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
-  protected def validateStringByRegex(boxId: String, box: CtString, regex: String)(): Set[CtValidation] = {
+  protected def validateStringByRegex(boxId: String, box: StringIdBox, regex: String)(): Set[CtValidation] = {
     passIf (box.value.isEmpty || box.value.matches(regex)) {
       Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
     }
   }
 
-  protected def validateCoHoOptionalString(boxId: String, box: CtOptionalString)(): Set[CtValidation] = {
+  protected def validateCoHoOptionalString(boxId: String, box: OptionalStringIdBox)(): Set[CtValidation] = {
     box.value match {
       case Some(x) if x.nonEmpty => {
         validateCoHoString(boxId, x)
@@ -242,11 +243,11 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
-  protected def validateCohoNameField(boxId: String, box: CtString)(): Set[CtValidation] = {
+  protected def validateCohoNameField(boxId: String, box: StringIdBox)(): Set[CtValidation] = {
     validateStringByRegex(boxId, box, ValidCoHoNamesCharacters)
   }
 
-  protected def validateCohoOptionalNameField(boxId: String, box: CtOptionalString)(): Set[CtValidation] = {
+  protected def validateCohoOptionalNameField(boxId: String, box: OptionalStringIdBox)(): Set[CtValidation] = {
     validateOptionalStringByRegex(boxId, box, ValidCoHoNamesCharacters)
   }
 
