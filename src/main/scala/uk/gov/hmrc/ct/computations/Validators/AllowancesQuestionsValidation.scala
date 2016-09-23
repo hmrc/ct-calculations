@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.ct.computations.Validators
 
-import uk.gov.hmrc.ct.box.{CtOptionalBoolean, CtValidation, ValidatableBox}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, CtValidation, ValidatableBox}
 import uk.gov.hmrc.ct.computations.CPQ7
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 trait AllowancesQuestionsValidation {
 
-  self: CtOptionalBoolean with ValidatableBox[ComputationsBoxRetriever] =>
+  self: CtOptionalBoolean with ValidatableBox[ComputationsBoxRetriever] with CtBoxIdentifier =>
 
   def validateAgainstCPQ7(boxRetriever: ComputationsBoxRetriever, boxId: String, value: Option[Boolean]): Set[CtValidation] = {
     (boxRetriever.cpQ7(), value) match {

@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file a directors' report to Companies House?") with CtOptionalBoolean with Input with ValidatableBox[Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever] {
+case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file a directors' report to Companies House?") with CtOptionalBoolean with Input with SelfValidatableBox[Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever, Option[Boolean]] {
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     val coHoFiling = boxRetriever.companiesHouseFiling().value
     val hmrcFiling = boxRetriever.hmrcFiling().value
@@ -31,7 +31,7 @@ case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you
     // or when filing Joint micro-entity AND answered "true" to "AC8023".
     // In the last case, answering "false" disables "Directors report" section - including this question.
     if (coHoFiling && (!(hmrcFiling && microEntityFiling) || (hmrcFiling && microEntityFiling && fileDRToHmrc)))
-      validateBooleanAsMandatory("AC8021", this)
+      validateBooleanAsMandatory()
     else
       Set.empty
   }

@@ -23,17 +23,16 @@ import uk.gov.hmrc.ct.box.ValidatableBox._
 case class AC106A(value: Option[String]) extends CtBoxIdentifier(name = "Employees note additional information")
   with CtOptionalString
   with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with SelfValidatableBox[AbridgedAccountsBoxRetriever, Option[String]]
   with Validators {
-
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     val noteSelectedForInclusion = boxRetriever.ac7300().orFalse
 
     collectErrors (
       cannotExistIf(!noteSelectedForInclusion && value.nonEmpty),
-      validateStringMaxLength("AC106A", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString("AC106A", this)
+      validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit),
+      validateCoHoOptionalString()
     )
   }
 }
