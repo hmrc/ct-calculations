@@ -49,7 +49,7 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
       transactions.validate(mockBoxRetriever) shouldBe empty
     }
 
-    "validate when there are errors but AC7800 not set to true" in {
+    "return error when there are errors but AC7800 not set to true" in {
       setupDefaults(mockBoxRetriever)
       when(mockBoxRetriever.ac7800()).thenReturn(AC7800(None))
 
@@ -63,7 +63,7 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
       )
       val transactions = RelatedPartyTransactions(transactions = List(transaction), ac7806 = AC7806(None))
 
-      transactions.validate(mockBoxRetriever) shouldBe empty
+      transactions.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("RelatedPartyTransactions"), "error.RelatedPartyTransactions.cannot.exist"))
     }
 
     "errors against correct transaction and contextualised #1" in {
