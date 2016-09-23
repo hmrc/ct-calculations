@@ -23,6 +23,8 @@ trait AccountsBoxRetriever extends BoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 
+  def companyAddress(): CompanyAddress
+
   def ac1(): AC1
 
   def ac2(): AC2

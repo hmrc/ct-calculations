@@ -16,10 +16,12 @@
 
 package uk.gov.hmrc.ct.accounts
 
-import play.api.libs.json.Format
+import play.api.libs.json.{Format, Json}
 import uk.gov.hmrc.ct.box.formats.{DateFormat, OptionalDateFormat, OptionalIntegerFormat, OptionalStringFormat}
 
 package object formats {
+
+  implicit val companyAddressFormat: Format[CompanyAddress] = Json.format[CompanyAddress]
 
   implicit val ac1Format: Format[AC1] = new OptionalStringFormat[AC1](AC1.apply)
   implicit val ac2Format: Format[AC2] = new OptionalStringFormat[AC2](AC2.apply)

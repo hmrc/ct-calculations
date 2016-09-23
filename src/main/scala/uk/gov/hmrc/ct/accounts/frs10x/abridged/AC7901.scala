@@ -22,7 +22,7 @@ import uk.gov.hmrc.ct.box._
 
 case class AC7901(value: Option[String]) extends CtBoxIdentifier(name = "Post balance sheet events") with CtOptionalString
 with Input
-with ValidatableBox[AbridgedAccountsBoxRetriever]
+with SelfValidatableBox[AbridgedAccountsBoxRetriever, Option[String]]
 with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
@@ -31,9 +31,9 @@ with Validators {
 
       failIf (boxRetriever.ac7900().orFalse) (
         collectErrors (
-          validateStringAsMandatory("AC7901", this),
-          validateOptionalStringByLength("AC7901", this, 1, StandardCohoTextFieldLimit),
-          validateCoHoOptionalString("AC7901", this)
+          validateStringAsMandatory(),
+          validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
+          validateCoHoOptionalString()
         )
       )
     )

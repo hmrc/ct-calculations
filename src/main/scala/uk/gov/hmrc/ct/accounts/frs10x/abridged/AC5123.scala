@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetr
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
-case class AC5123(value: Option[String]) extends CtBoxIdentifier(name = "Additional information")
+case class AC5123(value: Option[String]) extends CtBoxIdentifier(name = "Intangible assets: additional information")
   with CtOptionalString
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
@@ -29,8 +29,8 @@ case class AC5123(value: Option[String]) extends CtBoxIdentifier(name = "Additio
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      validateOptionalStringByLength("AC7601", this, 1, StandardCohoTextFieldLimit),
-      validateOptionalStringByRegex("AC7601", this, ValidCoHoCharacters)
+      validateOptionalStringByLength("AC5123", this, 1, StandardCohoTextFieldLimit),
+      validateCoHoOptionalString("AC5123", this)
     )
   }
 }

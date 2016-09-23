@@ -17,23 +17,19 @@
 package uk.gov.hmrc.ct.accounts.frs10x
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.accounts.frs10x.formats.DirectorsFormatter
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs10x.validation.DirectorsReportEnabled
+import uk.gov.hmrc.ct.accounts.frs10x.validation.DirectorsReportEnabledCalculator
+import uk.gov.hmrc.ct.box.ValidatableBox.ValidCoHoNamesCharacters
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-import uk.gov.hmrc.ct.domain.ValidationConstants._
-import uk.gov.hmrc.ct.box.ValidatableBox._
 
 case class Directors(directors: List[Director] = List.empty) extends CtBoxIdentifier(name = "Directors.")
   with CtValue[List[Director]]
   with Input
   with ValidatableBox[Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever]
-  with DirectorsReportEnabled {
+  with DirectorsReportEnabledCalculator {
 
   override def value = directors
-
-  override def asBoxString = DirectorsFormatter.asBoxString(this)
 
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     validateDirectorRequired(boxRetriever) ++
@@ -101,7 +97,7 @@ case class Director(id: String,
 
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever): Set[CtValidation] =
     validateStringByLength("ac8001", ac8001, "Directors.ac8001", 1, 40) ++
-      validateCoHoString("ac8001", ac8001, errorCodeBoxId = Some("Directors.ac8001")) ++
+      validateRawStringByRegex("ac8001", ac8001, errorCodeBoxId = "Directors.ac8001", ValidCoHoNamesCharacters) ++
       validateAppointmentDateAsMandatoryWhenAppointed(boxRetriever) ++
       validateAppointmentDateAsWithinPOA(boxRetriever) ++
       validateResignationDateAsMandatoryWhenResigned(boxRetriever) ++

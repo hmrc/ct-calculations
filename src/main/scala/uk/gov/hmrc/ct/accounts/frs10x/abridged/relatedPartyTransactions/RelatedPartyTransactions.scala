@@ -29,17 +29,46 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
   override def value = this
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-    val errorList = for((transaction, index) <- transactions.zipWithIndex) yield {
-      val errors = transaction.validate(boxRetriever)
-      errors.map(error => error.copy(errorMessageKey = contextualiseErrorKey(error.errorMessageKey, index.toString)))
-    }
 
-    errorList.flatten.toSet
+    failIf(boxRetriever.ac7800().orFalse) {
+      collectErrors(
+        validateSimpleField(boxRetriever),
+        validateTransactionRequired(boxRetriever),
+        validateAtMost20transactions(boxRetriever),
+        validateTransactions(boxRetriever)
+      )
+    }
+  }
+  
+  def validateTransactions(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+    val transactionsErrorList = for ((transaction, index) <- transactions.zipWithIndex) yield {
+      val errors = transaction.validate(boxRetriever)
+      errors.map(error => error.copy(boxId = Some("RelatedPartyTransactions"), errorMessageKey = contextualiseErrorKey(error.errorMessageKey, index)))
+    }
+    transactionsErrorList.flatten.toSet
   }
 
-  private def contextualiseErrorKey(errorKey: String, context: String): String = {
-    val splitKey = errorKey.split(".")
-    (splitKey.take(2) ++ Array(context) ++ splitKey.drop(2)).mkString(".")
+  def validateTransactionRequired(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+    failIf(transactions.isEmpty) {
+      Set(CtValidation(None, "error.RelatedPartyTransactions.atLeast1", None))
+    }
+  }
+
+  def validateAtMost20transactions(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+    failIf(transactions.length > 20) {
+      Set(CtValidation(None, "error.RelatedPartyTransactions.atMost20", None))
+    }
+  }
+
+  def validateSimpleField(boxRetriever: AbridgedAccountsBoxRetriever)() = {
+    ac7806.validate(boxRetriever).map {
+      error => error.copy(boxId = Some("RelatedPartyTransactions"))
+    }
+  }
+
+  def contextualiseErrorKey(errorKey: String, index: Int): String = {
+    val splitKey = errorKey.split('.')
+    (splitKey.take(1) ++ Array("compoundList", "transactions") ++ Array(index.toString) ++ splitKey.drop(1)).mkString(".")
   }
 }
 

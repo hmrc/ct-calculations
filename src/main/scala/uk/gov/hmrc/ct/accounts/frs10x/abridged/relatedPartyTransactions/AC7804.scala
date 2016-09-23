@@ -26,8 +26,8 @@ case class AC7804(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at
   with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
-    collectErrors {
-      validateAsMandatory(this)
+
+    failIf(boxRetriever.ac206().value.nonEmpty) {
       validateMoney(value, min = 0)
     }
 }
