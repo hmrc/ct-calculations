@@ -29,15 +29,18 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
   override def value = this
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+    collectErrors (
+      cannotExistIf(!boxRetriever.ac7800().orFalse && (transactions.nonEmpty || ac7806.value.nonEmpty)),
 
-    failIf(boxRetriever.ac7800().orFalse) {
-      collectErrors(
-        validateSimpleField(boxRetriever),
-        validateTransactionRequired(boxRetriever),
-        validateAtMost20transactions(boxRetriever),
-        validateTransactions(boxRetriever)
-      )
-    }
+      failIf(boxRetriever.ac7800().orFalse) {
+        collectErrors(
+          validateSimpleField(boxRetriever),
+          validateTransactionRequired(boxRetriever),
+          validateAtMost20transactions(boxRetriever),
+          validateTransactions(boxRetriever)
+        )
+      }
+    )
   }
   
   def validateTransactions(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
