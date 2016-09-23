@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.box._
 case class AC17(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit or loss (previous PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with SelfValidatableBox[AbridgedAccountsBoxRetriever, Option[Int]]
   with AccountsPreviousPeriodValidation
   with Validators {
 
