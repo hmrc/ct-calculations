@@ -16,39 +16,25 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import org.mockito.Mockito._
+import org.mockito.Mockito
+import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.box.ValidatableBox._
 
-class AC5032Spec extends WordSpec with MockitoSugar with Matchers {
+class AC5032Spec extends WordSpec with MockitoSugar with Matchers with MockAbridgedAccountsRetriever with AccountsFreeTextValidationFixture {
 
-  val boxRetriever = mock[AbridgedAccountsBoxRetriever]
+  override def setUpMocks(): Unit = {
+    when(boxRetriever.ac32()).thenReturn(AC32(Some(4)))
+  }
+
+  testAccountsCharacterLimitValidation("AC5032", StandardCohoTextFieldLimit, AC5032)
+  testAccountsCoHoTextFieldValidation("AC5032", AC5032)
 
   "AC5032" should {
-    "pass validation when empty" in {
-      when(boxRetriever.ac32()).thenReturn(AC32(Some(1)))
-      AC5032(None).validate(boxRetriever) shouldBe Set.empty
-    }
-    "pass validation when empty string" in {
-      when(boxRetriever.ac32()).thenReturn(AC32(Some(1)))
-      AC5032(Some("")).validate(boxRetriever) shouldBe Set.empty
-    }
-    "pass validation when string" in {
-      when(boxRetriever.ac32()).thenReturn(AC32(Some(1)))
-      AC5032(Some("testing this like crazy")).validate(boxRetriever) shouldBe Set.empty
-    }
-    "pass validation when string is 20,000 characters long" in {
-      when(boxRetriever.ac32()).thenReturn(AC32(Some(1)))
-      val string = "a" * 20000
-      AC5032(Some(string)).validate(boxRetriever) shouldBe Set.empty
-    }
-    "fail validation when string is longer than 20,000 characters long" in {
-      when(boxRetriever.ac32()).thenReturn(AC32(Some(1)))
-      val string = "a" * 20001
-      AC5032(Some(string)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5032"), "error.AC5032.max.length", Some(Seq("20,000"))))
-    }
+
     "fail validation when populated and AC32 is empty" in {
       when(boxRetriever.ac32()).thenReturn(AC32(None))
       AC5032(Some("testing")).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5032"), "error.AC5032.cannot.exist"))

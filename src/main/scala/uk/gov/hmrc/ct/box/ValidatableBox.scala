@@ -257,7 +257,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
       val p = Pattern.compile(ValidCoHoCharacters)
       val m = p.matcher(x)
       val allMatchedCharsPluses = m.replaceAll("+")
-      (allMatchedCharsPluses.toSet filterNot (_ == '+')).mkString(", ")
+      (allMatchedCharsPluses.toSet filterNot (_ == '+')).mkString("  ")
     }
 
     val errorCode = errorCodeBoxId.getOrElse(boxId)
