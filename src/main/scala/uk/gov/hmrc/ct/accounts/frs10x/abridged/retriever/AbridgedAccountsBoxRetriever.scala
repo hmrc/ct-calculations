@@ -211,7 +211,7 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac5064A(): AC5064A
 
-  def ac5217(): AC5217
+  def ac124(): AC124
 
   def ac5131(): AC5131
 

@@ -28,7 +28,7 @@ object AC5132 extends Calculated[AC5132, AbridgedAccountsBoxRetriever] with Bala
 
   override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC5132 = {
     calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(
-      boxRetriever.ac5217(),
+      boxRetriever.ac124(),
       boxRetriever.ac5131()
     )
   }

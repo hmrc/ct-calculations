@@ -31,7 +31,7 @@ class AC125Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
   }
 
   private def clearMockTangibleAssetsFields() = {
-    when(boxRetriever.ac5217()).thenReturn(AC5217(None))
+    when(boxRetriever.ac124()).thenReturn(AC124(None))
     when(boxRetriever.ac125()).thenReturn(AC125(None))
     when(boxRetriever.ac126()).thenReturn(AC126(None))
     when(boxRetriever.ac212()).thenReturn(AC212(None))
@@ -66,7 +66,7 @@ class AC125Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
     "pass validation if one field populated" in  {
       when(boxRetriever.ac44()).thenReturn(AC44(Some(1)))
       when(boxRetriever.ac125()).thenReturn(AC125(None))
-      when(boxRetriever.ac5217()).thenReturn(AC5217(Some(99)))
+      when(boxRetriever.ac124()).thenReturn(AC124(Some(99)))
       AC125(None).validate(boxRetriever) shouldBe Set()
 
       clearMockTangibleAssetsFields()

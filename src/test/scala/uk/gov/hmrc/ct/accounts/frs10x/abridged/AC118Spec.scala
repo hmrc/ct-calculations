@@ -42,9 +42,9 @@ class AC118Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
       when(boxRetriever.ac43()).thenReturn(AC43(Some(43)))
       AC118(Some(5121)).validate(boxRetriever) shouldBe empty
     }
-    "be OK when AC43 is empty and AC5121 is empty" in {
+    "be OK when AC43 is empty and AC118 is empty" in {
       when(boxRetriever.ac43()).thenReturn(AC43(None))
-      AC5121(None).validate(boxRetriever) shouldBe empty
+      AC118(None).validate(boxRetriever) shouldBe empty
     }
   }
 

@@ -21,10 +21,10 @@ import uk.gov.hmrc.ct.box.CtTypeConverters
 
 trait BalanceSheetTangibleAssetsCalculator extends CtTypeConverters {
 
-  def calculateTangibleAssetsAtTheEndOFThePeriod(ac5217: AC5217, ac125: AC125, ac126: AC126, ac212: AC212, ac213: AC213): AC217 = {
-    (ac5217.value, ac125.value, ac126.value, ac212.value, ac213.value) match {
+  def calculateTangibleAssetsAtTheEndOFThePeriod(ac124: AC124, ac125: AC125, ac126: AC126, ac212: AC212, ac213: AC213): AC217 = {
+    (ac124.value, ac125.value, ac126.value, ac212.value, ac213.value) match {
       case (None, None, None, None, None) => AC217(None)
-      case (_) => AC217(Some(ac5217.orZero + ac125.orZero - ac126.orZero + ac212.orZero + ac213.orZero))
+      case (_) => AC217(Some(ac124.orZero + ac125.orZero - ac126.orZero + ac212.orZero + ac213.orZero))
     }
   }
 
@@ -35,10 +35,10 @@ trait BalanceSheetTangibleAssetsCalculator extends CtTypeConverters {
     }
   }
 
-  def calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(ac5217: AC5217, ac5131: AC5131) = {
-    (ac5217.value, ac5131.value) match {
+  def calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(ac124: AC124, ac5131: AC5131) = {
+    (ac124.value, ac5131.value) match {
       case (None, None) =>  AC5132(None)
-      case _ => AC5132(Some(ac5217.orZero - ac5131.orZero))
+      case _ => AC5132(Some(ac124.orZero - ac5131.orZero))
     }
   }
 
