@@ -34,7 +34,7 @@ class AC115Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
     when(ac116()).thenReturn(AC116(None))
     when(ac209()).thenReturn(AC209(None))
     when(ac210()).thenReturn(AC210(None))
-    when(ac5121()).thenReturn(AC5121(None))
+    when(ac118()).thenReturn(AC118(None))
     when(ac119()).thenReturn(AC119(None))
     when(ac120()).thenReturn(AC120(None))
     when(ac211()).thenReturn(AC211(None))

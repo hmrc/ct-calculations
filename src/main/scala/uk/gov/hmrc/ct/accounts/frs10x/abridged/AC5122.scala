@@ -40,7 +40,7 @@ object AC5122 extends Calculated[AC5122, AbridgedAccountsBoxRetriever]
 
   override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC5122 = {
     import boxRetriever._
-    calculateAC5122(ac114(), ac5121())
+    calculateAC5122(ac114(), ac118())
   }
 
 }

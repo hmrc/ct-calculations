@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC5121(value: Option[Int]) extends CtBoxIdentifier(name = "Amortisation at [POA START]")
+case class AC118(value: Option[Int]) extends CtBoxIdentifier(name = "Amortisation at [POA START]")
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]

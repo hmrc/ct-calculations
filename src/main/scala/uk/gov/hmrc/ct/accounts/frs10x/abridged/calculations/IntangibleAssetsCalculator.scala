@@ -27,16 +27,16 @@ trait IntangibleAssetsCalculator {
     }
   }
 
-  def calculateAC121(ac5121: AC5121, ac119: AC119, ac120: AC120, ac211: AC211): AC121 = {
-    Set(ac5121.value, ac119.value, ac120.value, ac211.value).exists(_.nonEmpty) match {
-      case true => AC121(Some(ac5121.orZero + ac119.orZero - ac120.orZero + ac211.orZero))
+  def calculateAC121(ac118: AC118, ac119: AC119, ac120: AC120, ac211: AC211): AC121 = {
+    Set(ac118.value, ac119.value, ac120.value, ac211.value).exists(_.nonEmpty) match {
+      case true => AC121(Some(ac118.orZero + ac119.orZero - ac120.orZero + ac211.orZero))
       case _ => AC121(None)
     }
   }
 
-  def calculateAC5122(ac114: AC114, ac5121: AC5121): AC5122 = {
-    Set(ac114.value, ac5121.value).exists(_.nonEmpty) match {
-      case true => AC5122(Some(ac114.orZero - ac5121.orZero))
+  def calculateAC5122(ac114: AC114, ac118: AC118): AC5122 = {
+    Set(ac114.value, ac118.value).exists(_.nonEmpty) match {
+      case true => AC5122(Some(ac114.orZero - ac118.orZero))
       case _ => AC5122(None)
     }
   }

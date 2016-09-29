@@ -47,7 +47,7 @@ class AC5122Spec extends AccountsMoneyValidationFixture with MockAbridgedAccount
       import boxRetriever._
 
       when(ac114()).thenReturn(AC114(Some(1)))
-      when(ac5121()).thenReturn(AC5121(Some(1)))
+      when(ac118()).thenReturn(AC118(Some(1)))
 
       AC5122.calculate(boxRetriever) shouldBe AC5122(Some(0))
     }
@@ -56,7 +56,7 @@ class AC5122Spec extends AccountsMoneyValidationFixture with MockAbridgedAccount
       import boxRetriever._
 
       when(ac114()).thenReturn(AC114(None))
-      when(ac5121()).thenReturn(AC5121(Some(1)))
+      when(ac118()).thenReturn(AC118(Some(1)))
 
       AC5122.calculate(boxRetriever) shouldBe AC5122(Some(-1))
     }
@@ -65,7 +65,7 @@ class AC5122Spec extends AccountsMoneyValidationFixture with MockAbridgedAccount
       import boxRetriever._
 
       when(ac114()).thenReturn(AC114(None))
-      when(ac5121()).thenReturn(AC5121(None))
+      when(ac118()).thenReturn(AC118(None))
 
       AC5122.calculate(boxRetriever) shouldBe AC5122(None)
     }
