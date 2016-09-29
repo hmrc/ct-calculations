@@ -229,7 +229,7 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac118(): AC118
 
-  def ac5122(): AC5122 = AC5122.calculate(this)
+  def ac123(): AC123 = AC123.calculate(this)
 
   def ac5123(): AC5123
 

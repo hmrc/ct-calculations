@@ -34,10 +34,10 @@ trait IntangibleAssetsCalculator {
     }
   }
 
-  def calculateAC5122(ac114: AC114, ac118: AC118): AC5122 = {
+  def calculateAC123(ac114: AC114, ac118: AC118): AC123 = {
     Set(ac114.value, ac118.value).exists(_.nonEmpty) match {
-      case true => AC5122(Some(ac114.orZero - ac118.orZero))
-      case _ => AC5122(None)
+      case true => AC123(Some(ac114.orZero - ac118.orZero))
+      case _ => AC123(None)
     }
   }
 
