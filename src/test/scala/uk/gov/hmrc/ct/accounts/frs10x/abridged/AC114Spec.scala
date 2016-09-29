@@ -38,9 +38,13 @@ class AC114Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
       when(boxRetriever.ac43()).thenReturn(AC43(None))
       AC114(Some(114)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("AC114"), s"error.AC114.cannot.exist", None))
     }
-    "not exist when AC43 is provided" in {
+    "be OK when AC43 is provided" in {
       when(boxRetriever.ac43()).thenReturn(AC43(Some(43)))
       AC114(Some(114)).validate(boxRetriever) shouldBe empty
+    }
+    "be OK when AC43 is empty and AC5117 is empty" in {
+      when(boxRetriever.ac43()).thenReturn(AC43(None))
+      AC5117(None).validate(boxRetriever) shouldBe empty
     }
   }
 
