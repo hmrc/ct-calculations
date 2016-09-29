@@ -29,7 +29,7 @@ case class AC5117(value: Option[Int]) extends CtBoxIdentifier(name = "Cost at [P
 
     collectErrors(
       validateMoney(value, min = 0),
-      cannotExistIf(boxRetriever.ac43().value.isEmpty)
+      cannotExistIf(value.nonEmpty && boxRetriever.ac43().value.isEmpty)
     )
   }
 }
