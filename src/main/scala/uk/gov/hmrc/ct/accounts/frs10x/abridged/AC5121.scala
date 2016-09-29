@@ -28,7 +28,8 @@ case class AC5121(value: Option[Int]) extends CtBoxIdentifier(name = "Amortisati
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      validateMoney(value, min = 0)
+      validateMoney(value, min = 0),
+      cannotExistIf(boxRetriever.ac43().value.isEmpty)
     )
   }
 }

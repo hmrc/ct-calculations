@@ -28,8 +28,21 @@ class AC5121Spec extends AccountsMoneyValidationFixture with MockAbridgedAccount
     import boxRetriever._
 
     when(ac42()).thenReturn(AC42(Some(100)))
+    when(ac43()).thenReturn(AC43(Some(100)))
   }
 
   testAccountsMoneyValidationWithMin("AC5121", 0, AC5121.apply)
+
+  "AC5121" should {
+    "not exist when AC43 is empty" in {
+      when(boxRetriever.ac43()).thenReturn(AC43(None))
+      AC5121(Some(5121)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("AC5121"), s"error.AC5121.cannot.exist", None))
+    }
+    "not exist when AC43 is provided" in {
+      when(boxRetriever.ac43()).thenReturn(AC43(Some(43)))
+      AC5121(Some(5121)).validate(boxRetriever) shouldBe empty
+    }
+  }
+
 
 }
