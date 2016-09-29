@@ -28,6 +28,10 @@ case class LoansToDirectors(loans: List[LoanToDirector] = List.empty, ac7501: AC
   override def value = this
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = Set.empty
+
+  def evalCalculated():LoansToDirectors = {
+    this.copy(loans = loans.map(_.evalCalculated()))
+  }
 }
 
 case class LoanToDirector(uuid: String,
@@ -42,13 +46,14 @@ case class LoanToDirector(uuid: String,
   with Input
   with CtValue[LoanToDirector] {
 
-  override def value = {
-    throw new RuntimeException("!!")
-    this
-  }
+  override def value = throw new NotImplementedError("should never be used")
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
     collectErrors(
       //TODO Actual Coding
     )
+
+  def evalCalculated(): LoanToDirector = {
+    this.copy(ac309A = AC309A.calculate(this))
+  }
 }

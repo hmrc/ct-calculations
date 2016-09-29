@@ -191,7 +191,6 @@ package object formats {
       .compose(withDefault("ac306A", AC306A(None)))
       .compose(withDefault("ac307A", AC307A(None)))
       .compose(withDefault("ac308A", AC308A(None)))
-      .compose(withDefault("ac309A", AC309A(None)))
       .reads(json)
 
     override def writes(o: LoanToDirector): JsValue = baseFormat.writes(o)
