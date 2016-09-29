@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC5131(value: Option[Int]) extends CtBoxIdentifier(name = "Depreciation value of all tangible assets at the start of this period")
+case class AC128(value: Option[Int]) extends CtBoxIdentifier(name = "Depreciation value of all tangible assets at the start of this period")
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]

@@ -28,17 +28,17 @@ trait BalanceSheetTangibleAssetsCalculator extends CtTypeConverters {
     }
   }
 
-  def calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(ac5131: AC5131, ac219: AC219, ac130: AC130, ac214: AC214) = {
-    (ac5131.value, ac219.value, ac130.value, ac214.value) match {
+  def calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(ac128: AC128, ac219: AC219, ac130: AC130, ac214: AC214) = {
+    (ac128.value, ac219.value, ac130.value, ac214.value) match {
       case (None, None, None, None) => AC131(None)
-      case (_) => AC131 (Some(ac5131.orZero + ac219.orZero - ac130.orZero + ac214.orZero))
+      case (_) => AC131 (Some(ac128.orZero + ac219.orZero - ac130.orZero + ac214.orZero))
     }
   }
 
-  def calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(ac124: AC124, ac5131: AC5131) = {
-    (ac124.value, ac5131.value) match {
+  def calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(ac124: AC124, ac128: AC128) = {
+    (ac124.value, ac128.value) match {
       case (None, None) =>  AC5132(None)
-      case _ => AC5132(Some(ac124.orZero - ac5131.orZero))
+      case _ => AC5132(Some(ac124.orZero - ac128.orZero))
     }
   }
 

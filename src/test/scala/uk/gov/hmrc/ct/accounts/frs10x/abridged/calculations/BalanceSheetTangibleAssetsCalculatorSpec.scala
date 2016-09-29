@@ -44,41 +44,41 @@ class BalanceSheetTangibleAssetsCalculatorSpec extends WordSpec with Matchers {
 
     "calculating AC131" when {
       "return None only if all inputs are empty" in new BalanceSheetTangibleAssetsCalculator {
-        calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(AC5131(None), AC219(None), AC130(None), AC214(None)) shouldBe AC131(None)
-        calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(AC5131(Some(0)), AC219(None), AC130(Some(0)), AC214(None)) shouldBe AC131(Some(0))
-        calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(AC5131(Some(0)), AC219(Some(0)), AC130(Some(0)), AC214(Some(0))) shouldBe AC131(Some(0))
+        calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(AC128(None), AC219(None), AC130(None), AC214(None)) shouldBe AC131(None)
+        calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(AC128(Some(0)), AC219(None), AC130(Some(0)), AC214(None)) shouldBe AC131(Some(0))
+        calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(AC128(Some(0)), AC219(Some(0)), AC130(Some(0)), AC214(Some(0))) shouldBe AC131(Some(0))
       }
 
       "return zero if net value is 0" in new BalanceSheetTangibleAssetsCalculator {
-        calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(AC5131(Some(9)), AC219(Some(11)), AC130(Some(50)), AC214(Some(30))) shouldBe AC131(Some(0))
+        calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(AC128(Some(9)), AC219(Some(11)), AC130(Some(50)), AC214(Some(30))) shouldBe AC131(Some(0))
       }
 
       "return correct positive value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(AC5131(Some(9)), AC219(Some(11)), AC130(Some(61)), AC214(Some(52))) shouldBe AC131(Some(11))
+        calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(AC128(Some(9)), AC219(Some(11)), AC130(Some(61)), AC214(Some(52))) shouldBe AC131(Some(11))
       }
 
       "return correct negative value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(AC5131(Some(9)), AC219(Some(11)), AC130(Some(10)), AC214(Some(-21))) shouldBe AC131(Some(-11))
+        calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(AC128(Some(9)), AC219(Some(11)), AC130(Some(10)), AC214(Some(-21))) shouldBe AC131(Some(-11))
       }
     }
 
     "calculating AC5132" when {
       "return None only if all inputs are empty" in new BalanceSheetTangibleAssetsCalculator {
-        calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(AC124(None), AC5131(None)) shouldBe AC5132(None)
-        calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(AC124(Some(0)), AC5131(None)) shouldBe AC5132(Some(0))
-        calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(AC124(Some(0)), AC5131(Some(0))) shouldBe AC5132(Some(0))
+        calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(AC124(None), AC128(None)) shouldBe AC5132(None)
+        calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(AC124(Some(0)), AC128(None)) shouldBe AC5132(Some(0))
+        calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(AC124(Some(0)), AC128(Some(0))) shouldBe AC5132(Some(0))
       }
 
       "return zero if net value is 0" in new BalanceSheetTangibleAssetsCalculator {
-        calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(AC124(Some(11)), AC5131(Some(11))) shouldBe AC5132(Some(0))
+        calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(AC124(Some(11)), AC128(Some(11))) shouldBe AC5132(Some(0))
       }
 
       "return correct positive value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(AC124(Some(30)), AC5131(Some(19))) shouldBe AC5132(Some(11))
+        calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(AC124(Some(30)), AC128(Some(19))) shouldBe AC5132(Some(11))
      }
 
       "return correct negative value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(AC124(Some(-14)), AC5131(Some(-3))) shouldBe AC5132(Some(-11))
+        calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(AC124(Some(-14)), AC128(Some(-3))) shouldBe AC5132(Some(-11))
       }
     }
 

@@ -36,7 +36,7 @@ class AC125Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
     when(boxRetriever.ac126()).thenReturn(AC126(None))
     when(boxRetriever.ac212()).thenReturn(AC212(None))
     when(boxRetriever.ac213()).thenReturn(AC213(None))
-    when(boxRetriever.ac5131()).thenReturn(AC5131(None))
+    when(boxRetriever.ac128()).thenReturn(AC128(None))
     when(boxRetriever.ac219()).thenReturn(AC219(None))
     when(boxRetriever.ac130()).thenReturn(AC130(None))
     when(boxRetriever.ac214()).thenReturn(AC214(None))
@@ -53,7 +53,7 @@ class AC125Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
 
     "fail validation when note cannot be populated" in {
       when(boxRetriever.ac44()).thenReturn(AC44(None))
-      when(boxRetriever.ac5131()).thenReturn(AC5131(Some(123)))
+      when(boxRetriever.ac128()).thenReturn(AC128(Some(123)))
       AC125(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.tangibleAssetsNote.cannot.exist"))
     }
 
@@ -86,7 +86,7 @@ class AC125Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
       AC125(None).validate(boxRetriever) shouldBe Set()
 
       clearMockTangibleAssetsFields()
-      when(boxRetriever.ac5131()).thenReturn(AC5131(Some(99)))
+      when(boxRetriever.ac128()).thenReturn(AC128(Some(99)))
       AC125(None).validate(boxRetriever) shouldBe Set()
 
       clearMockTangibleAssetsFields()
