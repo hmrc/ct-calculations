@@ -23,12 +23,13 @@ import uk.gov.hmrc.ct.box._
 case class AC304A(value: Option[String]) extends CtBoxIdentifier(name = "Director Name loaned too")
   with CtOptionalString
   with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with SelfValidatableBox[AbridgedAccountsBoxRetriever, Option[String]]
   with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
+      validateAsMandatory()
     )
   }
 }
