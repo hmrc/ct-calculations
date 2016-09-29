@@ -42,7 +42,10 @@ case class LoanToDirector(uuid: String,
   with Input
   with CtValue[LoanToDirector] {
 
-  override def value = this
+  override def value = {
+    throw new RuntimeException("!!")
+    this
+  }
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
     collectErrors(
