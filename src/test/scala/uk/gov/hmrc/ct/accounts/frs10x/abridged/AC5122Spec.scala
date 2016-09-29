@@ -46,7 +46,7 @@ class AC5122Spec extends AccountsMoneyValidationFixture with MockAbridgedAccount
     "correctly perform the calculation when both numbers are set" in {
       import boxRetriever._
 
-      when(ac5117()).thenReturn(AC5117(Some(1)))
+      when(ac114()).thenReturn(AC114(Some(1)))
       when(ac5121()).thenReturn(AC5121(Some(1)))
 
       AC5122.calculate(boxRetriever) shouldBe AC5122(Some(0))
@@ -55,7 +55,7 @@ class AC5122Spec extends AccountsMoneyValidationFixture with MockAbridgedAccount
     "correctly perform the calculation when only one number is set" in {
       import boxRetriever._
 
-      when(ac5117()).thenReturn(AC5117(None))
+      when(ac114()).thenReturn(AC114(None))
       when(ac5121()).thenReturn(AC5121(Some(1)))
 
       AC5122.calculate(boxRetriever) shouldBe AC5122(Some(-1))
@@ -64,7 +64,7 @@ class AC5122Spec extends AccountsMoneyValidationFixture with MockAbridgedAccount
     "correctly perform the calculation when no numbers are set" in {
       import boxRetriever._
 
-      when(ac5117()).thenReturn(AC5117(None))
+      when(ac114()).thenReturn(AC114(None))
       when(ac5121()).thenReturn(AC5121(None))
 
       AC5122.calculate(boxRetriever) shouldBe AC5122(None)

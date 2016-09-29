@@ -20,7 +20,7 @@ import org.mockito.Mockito._
 import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC5117Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
+class AC114Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
 
   override def setUpMocks() = {
     super.setUpMocks()
@@ -31,16 +31,16 @@ class AC5117Spec extends AccountsMoneyValidationFixture with MockAbridgedAccount
     when(ac43()).thenReturn(AC43(Some(43)))
   }
 
-  testAccountsMoneyValidationWithMin("AC5117", 0, AC5117.apply)
+  testAccountsMoneyValidationWithMin("AC114", 0, AC114.apply)
 
-  "AC5117" should {
+  "AC114" should {
     "not exist when AC43 is empty" in {
       when(boxRetriever.ac43()).thenReturn(AC43(None))
-      AC5117(Some(5117)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("AC5117"), s"error.AC5117.cannot.exist", None))
+      AC114(Some(114)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("AC114"), s"error.AC114.cannot.exist", None))
     }
     "not exist when AC43 is provided" in {
       when(boxRetriever.ac43()).thenReturn(AC43(Some(43)))
-      AC5117(Some(5117)).validate(boxRetriever) shouldBe empty
+      AC114(Some(114)).validate(boxRetriever) shouldBe empty
     }
   }
 

@@ -20,9 +20,9 @@ import uk.gov.hmrc.ct.accounts.frs10x.abridged._
 
 trait IntangibleAssetsCalculator {
 
-  def calculateAC117(ac5117: AC5117, ac115: AC115, ac116: AC116, ac209: AC209, ac210: AC210): AC117 = {
-    Set(ac5117.value, ac115.value, ac116.value, ac209.value, ac210.value).exists(_.nonEmpty) match {
-      case true => AC117(Some(ac5117.orZero + ac115.orZero - ac116.orZero + ac209.orZero + ac210.orZero))
+  def calculateAC117(ac114: AC114, ac115: AC115, ac116: AC116, ac209: AC209, ac210: AC210): AC117 = {
+    Set(ac114.value, ac115.value, ac116.value, ac209.value, ac210.value).exists(_.nonEmpty) match {
+      case true => AC117(Some(ac114.orZero + ac115.orZero - ac116.orZero + ac209.orZero + ac210.orZero))
       case _ => AC117(None)
     }
   }
@@ -34,9 +34,9 @@ trait IntangibleAssetsCalculator {
     }
   }
 
-  def calculateAC5122(ac5117: AC5117, ac5121: AC5121): AC5122 = {
-    Set(ac5117.value, ac5121.value).exists(_.nonEmpty) match {
-      case true => AC5122(Some(ac5117.orZero - ac5121.orZero))
+  def calculateAC5122(ac114: AC114, ac5121: AC5121): AC5122 = {
+    Set(ac114.value, ac5121.value).exists(_.nonEmpty) match {
+      case true => AC5122(Some(ac114.orZero - ac5121.orZero))
       case _ => AC5122(None)
     }
   }
