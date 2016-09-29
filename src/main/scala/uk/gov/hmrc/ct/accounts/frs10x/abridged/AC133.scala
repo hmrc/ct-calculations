@@ -20,13 +20,13 @@ import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.BalanceSheetTangible
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC5132(value: Option[Int]) extends CtBoxIdentifier(name = "Net book value of tangible assets at the end of this period")
+case class AC133(value: Option[Int]) extends CtBoxIdentifier(name = "Net book value of tangible assets at the end of this period")
   with CtOptionalInteger {
 }
 
-object AC5132 extends Calculated[AC5132, AbridgedAccountsBoxRetriever] with BalanceSheetTangibleAssetsCalculator {
+object AC133 extends Calculated[AC133, AbridgedAccountsBoxRetriever] with BalanceSheetTangibleAssetsCalculator {
 
-  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC5132 = {
+  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC133 = {
     calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(
       boxRetriever.ac124(),
       boxRetriever.ac128()

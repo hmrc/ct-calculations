@@ -37,8 +37,8 @@ trait BalanceSheetTangibleAssetsCalculator extends CtTypeConverters {
 
   def calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(ac124: AC124, ac128: AC128) = {
     (ac124.value, ac128.value) match {
-      case (None, None) =>  AC5132(None)
-      case _ => AC5132(Some(ac124.orZero - ac128.orZero))
+      case (None, None) =>  AC133(None)
+      case _ => AC133(Some(ac124.orZero - ac128.orZero))
     }
   }
 
