@@ -20,7 +20,7 @@ import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.AC7800
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.{AC7500, AC7800}
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AC205, AC206}
 import uk.gov.hmrc.ct.box.CtValidation
@@ -123,12 +123,6 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
       val tooManyTransactions = RelatedPartyTransactions(transactions = List.tabulate(21)(index => validTransaction), ac7806 = AC7806(None))
       tooManyTransactions.validate(mockBoxRetriever) shouldBe Set(CtValidation(None,"error.RelatedPartyTransactions.atMost20",None))
     }
-  }
-
-  "inject context information (list name and index of list item) into error message key" in {
-      val transactions = RelatedPartyTransactions(transactions = List.empty, ac7806 = AC7806(None))
-
-      transactions.contextualiseErrorKey("error.BoxId.some.message", 2) shouldBe "error.compoundList.transactions.2.BoxId.some.message"
   }
 }
 

@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.abridged.loansToDirectors
+package uk.gov.hmrc.ct.accounts.frs10x.abridged.validation
 
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import org.scalatest.{Matchers, WordSpec}
 
-case class AC308A(value: Option[Int]) extends CtBoxIdentifier(name = "Advances or Credits Repaid")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+class CompoundBoxValidationHelperSpec extends WordSpec with Matchers {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors {
-      validateMoney(value, min = 0)
-    }
+    "contextualiseErrorKey" should {
+
+      "convert message key to format that includes container index and keyword 'compoundList" in {
+        CompoundBoxValidationHelper.contextualiseErrorKey("container", "error.BoxId.some.message", 2) shouldBe "error.compoundList.container.2.BoxId.some.message"
+      }
   }
 }

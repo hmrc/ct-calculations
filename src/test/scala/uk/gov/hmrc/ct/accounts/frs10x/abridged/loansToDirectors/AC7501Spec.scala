@@ -16,18 +16,18 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.loansToDirectors
 
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextSizeRangeValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.box.ValidatableBox._
 
-case class AC308A(value: Option[Int]) extends CtBoxIdentifier(name = "Advances or Credits Repaid")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+class AC7501Spec extends WordSpec
+  with MockitoSugar
+  with Matchers
+  with MockAbridgedAccountsRetriever
+  with AccountsFreeTextSizeRangeValidationFixture {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors {
-      validateMoney(value, min = 0)
-    }
-  }
+  testMandatoryAccountsCharacterSizeRangeValidation("AC7501", 0, StandardCohoTextFieldLimit , AC7501)
+  testAccountsCoHoTextFieldValidation("AC7501", AC7501)
 }

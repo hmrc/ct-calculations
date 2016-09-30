@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.abridged.loansToDirectors
+package uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.loansToDirectors.{AC309A, AC308A, AC307A, AC306A}
+import uk.gov.hmrc.ct.box.CtTypeConverters
 
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+trait LoansToDirectorsCalculator extends CtTypeConverters {
 
-case class AC308A(value: Option[Int]) extends CtBoxIdentifier(name = "Advances or Credits Repaid")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
-
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors {
-      validateMoney(value, min = 0)
+  def calculateLoanBalanceAtEndOfPOA(ac306A: AC306A, ac307A: AC307A, ac308A: AC308A): AC309A = {
+    (ac306A.value, ac307A.value, ac308A.value) match {
+      case (None, None, None) => AC309A(None)
+      case _ => AC309A(Some(ac306A.orZero + ac307A.orZero - ac308A.orZero))
     }
   }
 }

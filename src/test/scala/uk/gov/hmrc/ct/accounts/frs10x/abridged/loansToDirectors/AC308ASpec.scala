@@ -16,18 +16,9 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.loansToDirectors
 
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
 
-case class AC308A(value: Option[Int]) extends CtBoxIdentifier(name = "Advances or Credits Repaid")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+class AC308ASpec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors {
-      validateMoney(value, min = 0)
-    }
-  }
+  testAccountsMoneyValidationWithMin("AC308A", 0, AC308A.apply)
 }

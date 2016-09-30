@@ -166,6 +166,7 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
     super.validateStringByLength(box.id, value, errorCodeId, min, max)
   }
 
+  @Deprecated
   def validateStringMaxLength(value: String, max: Int)(): Set[CtValidation] = {
     super.validateStringMaxLength(box.id, value, max)
   }
