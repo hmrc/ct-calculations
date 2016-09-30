@@ -46,7 +46,7 @@ case class LoansToDirectors(loans: List[LoanToDirector] = List.empty, ac7501: AC
   }
 
   def evalAC309A():LoansToDirectors = {
-    this.copy(loans = loans.map(_.evalAC309A()))
+    this.copy(loans = loans.map(_.calculateAC309A()))
   }
 
   def validateLoans(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
@@ -102,7 +102,7 @@ case class LoanToDirector(uuid: String,
       () => ac308A.validate(boxRetriever)
     )
 
-  def evalAC309A(): LoanToDirector = {
+  def calculateAC309A(): LoanToDirector = {
     this.copy(ac309A = AC309A.calculate(this))
   }
 }
