@@ -29,14 +29,14 @@ class AC132Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
       AC132(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.tangible.assets.note.netBookValue.notEqualToAssets"))
     }
 
-    "fail validation when AC5132 does not match AC45" in {
-      when(boxRetriever.ac5132()).thenReturn(AC5132(Some(11)))
+    "fail validation when AC133 does not match AC45" in {
+      when(boxRetriever.ac133()).thenReturn(AC133(Some(11)))
       when(boxRetriever.ac45()).thenReturn(AC45(Some(22)))
       AC132(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.tangible.assets.note.netBookValue.notEqualToAssets"))
     }
 
     "pass validation when totals tally" in {
-      when(boxRetriever.ac5132()).thenReturn(AC5132(Some(11)))
+      when(boxRetriever.ac133()).thenReturn(AC133(Some(11)))
       when(boxRetriever.ac45()).thenReturn(AC45(Some(11)))
       when(boxRetriever.ac132()).thenReturn(AC132(Some(22)))
       when(boxRetriever.ac44()).thenReturn(AC44(Some(22)))
@@ -44,7 +44,7 @@ class AC132Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
     }
 
     "pass validation when no values for note fields or balance sheet value" in {
-      when(boxRetriever.ac5132()).thenReturn(AC5132(None))
+      when(boxRetriever.ac133()).thenReturn(AC133(None))
       when(boxRetriever.ac45()).thenReturn(AC45(None))
       when(boxRetriever.ac132()).thenReturn(AC132(None))
       when(boxRetriever.ac44()).thenReturn(AC44(None))

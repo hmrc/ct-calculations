@@ -14,20 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.abridged.loansToDirectors
+package uk.gov.hmrc.ct.box
 
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+trait CompoundCalculated[T, C] {
 
-case class AC308A(value: Option[Int]) extends CtBoxIdentifier(name = "Advances or Credits Repaid")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
-
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors {
-      validateMoney(value, min = 0)
-    }
-  }
+   def calculate(container: C): T
 }

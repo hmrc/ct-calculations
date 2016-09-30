@@ -14,20 +14,33 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.abridged.loansToDirectors
+package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.IntangibleAssetsCalculator
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC308A(value: Option[Int]) extends CtBoxIdentifier(name = "Advances or Credits Repaid")
+case class AC123(value: Option[Int]) extends CtBoxIdentifier(name = "Net book value at [POA START]")
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
   with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors {
-      validateMoney(value, min = 0)
-    }
+
+    collectErrors(
+      validateMoney(value, min = 0),
+      failIf(boxRetriever.ac42().value.nonEmpty)(validateOptionalIntegerAsEqualTo(this, boxRetriever.ac43()))
+    )
   }
+}
+
+object AC123 extends Calculated[AC123, AbridgedAccountsBoxRetriever]
+  with IntangibleAssetsCalculator {
+
+  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC123 = {
+    import boxRetriever._
+    calculateAC123(ac114(), ac118())
+  }
+
 }

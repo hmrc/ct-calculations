@@ -16,31 +16,19 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.IntangibleAssetsCalculator
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC5122(value: Option[Int]) extends CtBoxIdentifier(name = "Net book value at [POA START]")
+case class AC128(value: Option[Int]) extends CtBoxIdentifier(name = "Depreciation value of all tangible assets at the start of this period")
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
   with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-
     collectErrors(
       validateMoney(value, min = 0),
-      failIf(boxRetriever.ac42().value.nonEmpty)(validateOptionalIntegerAsEqualTo(this, boxRetriever.ac43()))
+      cannotExistIf(value.nonEmpty && boxRetriever.ac45().value.isEmpty)
     )
   }
-}
-
-object AC5122 extends Calculated[AC5122, AbridgedAccountsBoxRetriever]
-  with IntangibleAssetsCalculator {
-
-  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC5122 = {
-    import boxRetriever._
-    calculateAC5122(ac5117(), ac5121())
-  }
-
 }

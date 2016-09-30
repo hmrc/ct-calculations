@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.validation.CompoundBoxValidationHelper
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
@@ -46,7 +47,9 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
   def validateTransactions(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
     val transactionsErrorList = for ((transaction, index) <- transactions.zipWithIndex) yield {
       val errors = transaction.validate(boxRetriever)
-      errors.map(error => error.copy(boxId = Some("RelatedPartyTransactions"), errorMessageKey = contextualiseErrorKey(error.errorMessageKey, index)))
+      errors.map(error => error.copy(
+        boxId = Some("RelatedPartyTransactions"),
+        errorMessageKey = CompoundBoxValidationHelper.contextualiseErrorKey("transactions", error.errorMessageKey, index)))
     }
     transactionsErrorList.flatten.toSet
   }
@@ -67,11 +70,6 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
     ac7806.validate(boxRetriever).map {
       error => error.copy(boxId = Some("RelatedPartyTransactions"))
     }
-  }
-
-  def contextualiseErrorKey(errorKey: String, index: Int): String = {
-    val splitKey = errorKey.split('.')
-    (splitKey.take(1) ++ Array("compoundList", "transactions") ++ Array(index.toString) ++ splitKey.drop(1)).mkString(".")
   }
 }
 

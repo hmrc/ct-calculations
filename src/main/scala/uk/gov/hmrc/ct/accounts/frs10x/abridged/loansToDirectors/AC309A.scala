@@ -16,14 +16,20 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.loansToDirectors
 
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.LoansToDirectorsCalculator
 import uk.gov.hmrc.ct.box._
 
 case class AC309A(value: Option[Int]) extends CtBoxIdentifier(name = "Loan Balance at end of POA")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+  with CtOptionalInteger {
+}
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = Set.empty
+object AC309A extends CompoundCalculated[AC309A, LoanToDirector] with LoansToDirectorsCalculator {
+
+  override def calculate(loan: LoanToDirector): AC309A = {
+    calculateLoanBalanceAtEndOfPOA(
+      loan.ac306A,
+      loan.ac307A,
+      loan.ac308A
+    )
+  }
 }

@@ -41,12 +41,12 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
     import boxRetriever._
 
     val values = Seq(
-      ac5217().value,
+      ac124().value,
       ac125().value,
       ac126().value,
       ac212().value,
       ac213().value,
-      ac5131().value,
+      ac128().value,
       ac219().value,
       ac130().value,
       ac214().value
@@ -60,12 +60,12 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
 
   private def validateOneFieldMandatory(boxRetriever: AbridgedAccountsBoxRetriever)() = {
     val anyBoxPopulated = (
-        boxRetriever.ac5217().value orElse
+        boxRetriever.ac124().value orElse
         boxRetriever.ac125().value orElse
         boxRetriever.ac126().value orElse
         boxRetriever.ac212().value orElse
         boxRetriever.ac213().value orElse
-        boxRetriever.ac5131().value orElse
+        boxRetriever.ac128().value orElse
         boxRetriever.ac219().value orElse
         boxRetriever.ac130().value orElse
         boxRetriever.ac214().value orElse

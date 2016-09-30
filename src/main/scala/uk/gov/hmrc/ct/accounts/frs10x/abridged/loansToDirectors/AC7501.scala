@@ -23,13 +23,14 @@ import uk.gov.hmrc.ct.box._
 case class AC7501(value: Option[String]) extends CtBoxIdentifier(name = "Loans To Directors Additional information")
   with CtOptionalString
   with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with SelfValidatableBox[AbridgedAccountsBoxRetriever, Option[String]]
   with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-
+      validateOptionalStringByLength(0, StandardCohoTextFieldLimit),
+      validateCoHoOptionalString()
     )
   }
 }

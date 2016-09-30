@@ -19,17 +19,16 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC5117(value: Option[Int]) extends CtBoxIdentifier(name = "Cost at [POA START]")
+case class AC124(value: Option[Int]) extends CtBoxIdentifier(name = "Total cost or valuation of all tangible assets (Previous Year)")
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
   with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-
     collectErrors(
       validateMoney(value, min = 0),
-      cannotExistIf(value.nonEmpty && boxRetriever.ac43().value.isEmpty)
+      cannotExistIf(value.nonEmpty && boxRetriever.ac45().value.isEmpty)
     )
   }
 }

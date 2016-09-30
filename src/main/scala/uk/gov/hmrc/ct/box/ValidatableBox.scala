@@ -290,6 +290,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
+  @Deprecated
   def validateStringMaxLength(boxId: String, value: String, max: Int)(): Set[CtValidation] = {
     failIf (value.size > max) {
       def commaForThousands(i: Int) = f"$i%,d"
