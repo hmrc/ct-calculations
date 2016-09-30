@@ -28,7 +28,7 @@ object AC131 extends Calculated[AC131, AbridgedAccountsBoxRetriever] with Balanc
 
   override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC131 = {
     calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(
-      boxRetriever.ac5131(),
+      boxRetriever.ac128(),
       boxRetriever.ac219(),
       boxRetriever.ac130(),
       boxRetriever.ac214()

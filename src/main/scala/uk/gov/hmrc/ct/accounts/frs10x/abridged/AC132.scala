@@ -34,7 +34,7 @@ case class AC132(value: Option[Int]) extends CtBoxIdentifier(name = "Net book va
   }
 
   def validateNetBookValueMatchesTotalAssets(boxRetriever: AbridgedAccountsBoxRetriever)() = {
-    failIf (boxRetriever.ac132().orZero != boxRetriever.ac44().orZero || boxRetriever.ac5132().orZero != boxRetriever.ac45().orZero) {
+    failIf (boxRetriever.ac132().orZero != boxRetriever.ac44().orZero || boxRetriever.ac133().orZero != boxRetriever.ac45().orZero) {
       Set(CtValidation(None, "error.tangible.assets.note.netBookValue.notEqualToAssets"))
     }
   }

@@ -16,9 +16,18 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.box._
 
-class AC5217Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
+case class AC124(value: Option[Int]) extends CtBoxIdentifier(name = "Total cost or valuation of all tangible assets (Previous Year)")
+  with CtOptionalInteger
+  with Input
+  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with Validators {
 
-  testAccountsMoneyValidationWithMin("AC5217",0, AC5217.apply)
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateMoney(value, min = 0)
+    )
+  }
 }

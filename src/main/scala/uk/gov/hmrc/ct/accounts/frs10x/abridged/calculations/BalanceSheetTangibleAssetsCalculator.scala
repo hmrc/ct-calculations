@@ -21,24 +21,24 @@ import uk.gov.hmrc.ct.box.CtTypeConverters
 
 trait BalanceSheetTangibleAssetsCalculator extends CtTypeConverters {
 
-  def calculateTangibleAssetsAtTheEndOFThePeriod(ac5217: AC5217, ac125: AC125, ac126: AC126, ac212: AC212, ac213: AC213): AC217 = {
-    (ac5217.value, ac125.value, ac126.value, ac212.value, ac213.value) match {
+  def calculateTangibleAssetsAtTheEndOFThePeriod(ac124: AC124, ac125: AC125, ac126: AC126, ac212: AC212, ac213: AC213): AC217 = {
+    (ac124.value, ac125.value, ac126.value, ac212.value, ac213.value) match {
       case (None, None, None, None, None) => AC217(None)
-      case (_) => AC217(Some(ac5217.orZero + ac125.orZero - ac126.orZero + ac212.orZero + ac213.orZero))
+      case (_) => AC217(Some(ac124.orZero + ac125.orZero - ac126.orZero + ac212.orZero + ac213.orZero))
     }
   }
 
-  def calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(ac5131: AC5131, ac219: AC219, ac130: AC130, ac214: AC214) = {
-    (ac5131.value, ac219.value, ac130.value, ac214.value) match {
+  def calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(ac128: AC128, ac219: AC219, ac130: AC130, ac214: AC214) = {
+    (ac128.value, ac219.value, ac130.value, ac214.value) match {
       case (None, None, None, None) => AC131(None)
-      case (_) => AC131 (Some(ac5131.orZero + ac219.orZero - ac130.orZero + ac214.orZero))
+      case (_) => AC131 (Some(ac128.orZero + ac219.orZero - ac130.orZero + ac214.orZero))
     }
   }
 
-  def calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(ac5217: AC5217, ac5131: AC5131) = {
-    (ac5217.value, ac5131.value) match {
-      case (None, None) =>  AC5132(None)
-      case _ => AC5132(Some(ac5217.orZero - ac5131.orZero))
+  def calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(ac124: AC124, ac128: AC128) = {
+    (ac124.value, ac128.value) match {
+      case (None, None) =>  AC133(None)
+      case _ => AC133(Some(ac124.orZero - ac128.orZero))
     }
   }
 

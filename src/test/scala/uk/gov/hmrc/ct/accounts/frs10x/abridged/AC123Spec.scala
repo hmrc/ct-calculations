@@ -20,7 +20,7 @@ import org.mockito.Mockito._
 import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC5122Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
+class AC123Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
 
   override def setUpMocks() = {
     super.setUpMocks()
@@ -31,43 +31,43 @@ class AC5122Spec extends AccountsMoneyValidationFixture with MockAbridgedAccount
     when(ac43()).thenReturn(AC43(Some(100)))
   }
 
-  "AC5122" should {
+  "AC123" should {
 
     "throw error when is different than AC43" in {
       setUpMocks()
-      AC5122(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5122"), "error.AC5122.mustEqual.AC43"))
+      AC123(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC123"), "error.AC123.mustEqual.AC43"))
     }
 
     "validate successfully if nothing is wrong" in {
       setUpMocks()
-      AC5122(Some(100)).validate(boxRetriever) shouldBe Set.empty
+      AC123(Some(100)).validate(boxRetriever) shouldBe Set.empty
     }
 
     "correctly perform the calculation when both numbers are set" in {
       import boxRetriever._
 
-      when(ac5117()).thenReturn(AC5117(Some(1)))
-      when(ac5121()).thenReturn(AC5121(Some(1)))
+      when(ac114()).thenReturn(AC114(Some(1)))
+      when(ac118()).thenReturn(AC118(Some(1)))
 
-      AC5122.calculate(boxRetriever) shouldBe AC5122(Some(0))
+      AC123.calculate(boxRetriever) shouldBe AC123(Some(0))
     }
 
     "correctly perform the calculation when only one number is set" in {
       import boxRetriever._
 
-      when(ac5117()).thenReturn(AC5117(None))
-      when(ac5121()).thenReturn(AC5121(Some(1)))
+      when(ac114()).thenReturn(AC114(None))
+      when(ac118()).thenReturn(AC118(Some(1)))
 
-      AC5122.calculate(boxRetriever) shouldBe AC5122(Some(-1))
+      AC123.calculate(boxRetriever) shouldBe AC123(Some(-1))
     }
 
     "correctly perform the calculation when no numbers are set" in {
       import boxRetriever._
 
-      when(ac5117()).thenReturn(AC5117(None))
-      when(ac5121()).thenReturn(AC5121(None))
+      when(ac114()).thenReturn(AC114(None))
+      when(ac118()).thenReturn(AC118(None))
 
-      AC5122.calculate(boxRetriever) shouldBe AC5122(None)
+      AC123.calculate(boxRetriever) shouldBe AC123(None)
     }
 
   }
