@@ -45,7 +45,7 @@ case class LoansToDirectors(loans: List[LoanToDirector] = List.empty, ac7501: AC
     )
   }
 
-  def evalAC309A():LoansToDirectors = {
+  def calculateAC309A():LoansToDirectors = {
     this.copy(loans = loans.map(_.calculateAC309A()))
   }
 

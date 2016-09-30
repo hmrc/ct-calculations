@@ -162,7 +162,7 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
     )
     val loans = LoansToDirectors(loans = List(loan), ac7501 = AC7501(None))
 
-    loans.evalAC309A() shouldBe LoansToDirectors(List(
+    loans.calculateAC309A() shouldBe LoansToDirectors(List(
       LoanToDirector("uuid",
         AC304A(Some("director 1")),
         AC305A(Some("description")),
