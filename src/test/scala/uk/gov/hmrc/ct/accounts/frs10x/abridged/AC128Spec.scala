@@ -16,9 +16,31 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
+import org.mockito.Mockito._
 import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.box.CtValidation
 
 class AC128Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
 
+  override def setUpMocks(): Unit = {
+    when(boxRetriever.ac45()).thenReturn(AC45(Some(45)))
+    super.setUpMocks()
+  }
+
   testAccountsMoneyValidationWithMin("AC128",0, AC128.apply)
+
+  "AC128" should {
+    "not exist when AC45 is empty" in {
+      when(boxRetriever.ac45()).thenReturn(AC45(None))
+      AC128(Some(5217)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("AC128"), s"error.AC128.cannot.exist", None))
+    }
+    "be OK when AC45 is provided" in {
+      when(boxRetriever.ac45()).thenReturn(AC45(Some(45)))
+      AC128(Some(5217)).validate(boxRetriever) shouldBe empty
+    }
+    "be OK when AC45 is empty and AC128 is empty" in {
+      when(boxRetriever.ac45()).thenReturn(AC45(None))
+      AC128(None).validate(boxRetriever) shouldBe empty
+    }
+  }
 }
