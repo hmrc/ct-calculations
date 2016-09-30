@@ -35,7 +35,7 @@ class AC121Spec extends AccountsMoneyValidationFixture with MockAbridgedAccounts
     "correctly perform the calculation" in {
       import boxRetriever._
 
-      when(ac5121()).thenReturn(AC5121(Some(1)))
+      when(ac118()).thenReturn(AC118(Some(1)))
       when(ac119()).thenReturn(AC119(Some(1)))
       when(ac120()).thenReturn(AC120(Some(1)))
       when(ac211()).thenReturn(AC211(Some(1)))

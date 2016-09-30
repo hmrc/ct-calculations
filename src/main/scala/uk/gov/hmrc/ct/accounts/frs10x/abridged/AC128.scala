@@ -16,9 +16,18 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.box._
 
-class AC5131Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
+case class AC128(value: Option[Int]) extends CtBoxIdentifier(name = "Depreciation value of all tangible assets at the start of this period")
+  with CtOptionalInteger
+  with Input
+  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with Validators {
 
-  testAccountsMoneyValidationWithMin("AC5131",0, AC5131.apply)
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateMoney(value, min = 0)
+    )
+  }
 }

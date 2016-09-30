@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.IntangibleAssetsCalc
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC5122(value: Option[Int]) extends CtBoxIdentifier(name = "Net book value at [POA START]")
+case class AC123(value: Option[Int]) extends CtBoxIdentifier(name = "Net book value at [POA START]")
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
@@ -35,12 +35,12 @@ case class AC5122(value: Option[Int]) extends CtBoxIdentifier(name = "Net book v
   }
 }
 
-object AC5122 extends Calculated[AC5122, AbridgedAccountsBoxRetriever]
+object AC123 extends Calculated[AC123, AbridgedAccountsBoxRetriever]
   with IntangibleAssetsCalculator {
 
-  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC5122 = {
+  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC123 = {
     import boxRetriever._
-    calculateAC5122(ac5117(), ac5121())
+    calculateAC123(ac114(), ac118())
   }
 
 }
