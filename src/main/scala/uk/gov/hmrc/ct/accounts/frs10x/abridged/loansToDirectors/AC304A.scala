@@ -29,7 +29,9 @@ case class AC304A(value: Option[String]) extends CtBoxIdentifier(name = "Directo
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      validateAsMandatory()
+      validateAsMandatory(),
+      validateOptionalStringByLength(0, StandardCohoNameFieldLimit),
+      validateCohoOptionalNameField()
     )
   }
 }

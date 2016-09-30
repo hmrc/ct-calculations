@@ -33,7 +33,7 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
 
   val validLoan = LoanToDirector(
     uuid = "uuid",
-    ac304A = AC304A(Some("director 1")),
+    ac304A = AC304A(Some("director")),
     ac305A = AC305A(Some("description")),
     ac306A = AC306A(Some(99)),
     ac307A = AC307A(None),
@@ -106,9 +106,19 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
         CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC305A.regexFailure",Some(List("^"))),
         CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC306A.below.min", Some(List("0", "99999999"))),
         CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC307A.below.min", Some(List("0", "99999999"))),
-        CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC308A.below.min", Some(List("0", "99999999")))
+        CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC308A.below.min", Some(List("0", "99999999"))),
+        CtValidation(Some("LoansToDirectors"), "error.AC7501.regexFailure" ,Some(List("^")))
       )
     }
+    // CtValidation(Some(LoansToDirectors),error.compoundList.loans.0.AC304A.required,None),
+    // CtValidation(Some(LoansToDirectors),error.compoundList.loans.0.AC305A.regexFailure,Some(List(^))),
+    // CtValidation(Some(LoansToDirectors),error.compoundList.loans.0.AC307A.below.min,Some(List(0, 99999999))),
+    // CtValidation(Some(LoansToDirectors),error.compoundList.loans.0.AC306A.below.min,Some(List(0, 99999999))),
+    // CtValidation(Some(LoansToDirectors),error.compoundList.loans.0.AC308A.below.min,Some(List(0, 99999999))))
+    // CtValidation(Some(LoansToDirectors),error.AC7501.regexFailure,Some(List(^))),
+    //
+    // was not equal to Set(CtValidation(Some(LoansToDirectors),error.compoundList.loans.0.AC305A.regexFailure,Some(List(^))), CtValidation(Some(LoansToDirectors),error.compoundList.loans.0.AC307A.below.min,Some(List(0, 99999999))), CtValidation(Some(LoansToDirectors),error.compoundList.loans.0.AC306A.below.min,Some(List(0, 99999999))), CtValidation(Some(LoansToDirectors),error.compoundList.loans.0.AC304A.required,None), CtValidation(Some(LoansToDirectors),error.compoundList.loans.0.AC308A.below.min,Some(List(0, 99999999))))
+
 
     "errors against correct loan and contextualised #2" in {
       setupDefaults(mockBoxRetriever)

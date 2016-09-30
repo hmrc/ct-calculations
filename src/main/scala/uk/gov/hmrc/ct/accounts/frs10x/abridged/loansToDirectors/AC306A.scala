@@ -30,5 +30,4 @@ case class AC306A(value: Option[Int]) extends CtBoxIdentifier(name = "Loan Balan
       validateMoney(value, min = 0)
     }
   }
-
 }
