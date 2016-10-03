@@ -32,7 +32,7 @@ class AC189Spec extends WordSpec
   override def setUpMocks(): Unit = {
     when(boxRetriever.ac76()).thenReturn(AC76(Some(100)))
     when(boxRetriever.ac189()).thenReturn(AC189(Some(10)))
-    when(boxRetriever.ac5076B()).thenReturn(AC5076B(Some(10)))
+    when(boxRetriever.ac190()).thenReturn(AC190(Some(10)))
     when(boxRetriever.ac5076C()).thenReturn(AC5076C(Some("Test content")))
   }
 
@@ -57,7 +57,7 @@ class AC189Spec extends WordSpec
 
       when(boxRetriever.ac76()).thenReturn(AC76(None))
       when(boxRetriever.ac189()).thenReturn(box)
-      when(boxRetriever.ac5076B()).thenReturn(AC5076B(None))
+      when(boxRetriever.ac190()).thenReturn(AC190(None))
       when(boxRetriever.ac5076C()).thenReturn(AC5076C(None))
 
       box.validate(boxRetriever) shouldBe Set.empty

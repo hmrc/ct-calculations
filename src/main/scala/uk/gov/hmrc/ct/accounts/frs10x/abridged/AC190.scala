@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.RevaluationReserveCa
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC5076B(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at [POA END DATE]")
+case class AC190(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at [POA END DATE]")
                                        with CtOptionalInteger
                                        with ValidatableBox[AbridgedAccountsBoxRetriever]
                                        with Validators {
@@ -35,11 +35,11 @@ case class AC5076B(value: Option[Int]) extends CtBoxIdentifier(name = "Balance a
 
 }
 
-object AC5076B extends Calculated[AC5076B, AbridgedAccountsBoxRetriever]
+object AC190 extends Calculated[AC190, AbridgedAccountsBoxRetriever]
                with RevaluationReserveCalculator {
 
-  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC5076B = {
-    calculateAC5076B(boxRetriever.ac76(), boxRetriever.ac77(), boxRetriever.ac189())
+  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC190 = {
+    calculateAC190(boxRetriever.ac76(), boxRetriever.ac77(), boxRetriever.ac189())
   }
 
 }
