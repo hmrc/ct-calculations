@@ -28,10 +28,10 @@ trait NetCurrentAssetsLiabilitiesCalculator extends CtTypeConverters {
     }
   }
 
-  def calculatePreviousNetCurrentAssetsLiabilities(ac57: AC57, ac1077: AC1077, ac59: AC59): AC61 = {
-    (ac57.value, ac1077.value, ac59.value) match {
+  def calculatePreviousNetCurrentAssetsLiabilities(ac57: AC57, ac466: AC466, ac59: AC59): AC61 = {
+    (ac57.value, ac466.value, ac59.value) match {
       case (None, None, None) => AC61(None)
-      case _ => AC61(Some(ac57 + ac1077 - ac59))
+      case _ => AC61(Some(ac57 + ac466 - ac59))
     }
   }
 
