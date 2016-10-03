@@ -197,7 +197,7 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac470(): AC470
 
-  def ac1179(): AC1179
+  def ac471(): AC471
 
   def ac5032(): AC5032
 
