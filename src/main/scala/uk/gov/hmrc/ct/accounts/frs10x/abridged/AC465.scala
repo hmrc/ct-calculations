@@ -16,10 +16,18 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.box._
 
-class AC1076Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
+case class AC465(value: Option[Int]) extends CtBoxIdentifier(name = "Prepayments and accrued income (current PoA)")
+  with CtOptionalInteger
+  with Input
+  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with Validators {
 
-  testAccountsMoneyValidationWithMin("AC1076", 0, AC1076.apply)
-
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateMoney(value, min = 0)
+    )
+  }
 }

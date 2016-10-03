@@ -25,16 +25,16 @@ class NetCurrentAssetsLiabilitiesCalculatorSpec extends WordSpec with Matchers w
 
     "calculate Current Net Current Assets Liabilities" in {
       val ac56 = AC56(Some(50))
-      val ac1076 = AC1076(Some(20))
+      val ac465 = AC465(Some(20))
       val ac58 = AC58(Some(30))
-      calculateCurrentNetCurrentAssetsLiabilities(ac56, ac1076, ac58) shouldBe AC60(Some(40))
+      calculateCurrentNetCurrentAssetsLiabilities(ac56, ac465, ac58) shouldBe AC60(Some(40))
     }
 
     "return None for Current Net Current Assets Liabilities when all inputs are None" in {
       val ac56 = AC56(None)
-      val ac1076 = AC1076(None)
+      val ac465 = AC465(None)
       val ac58 = AC58(None)
-      calculateCurrentNetCurrentAssetsLiabilities(ac56, ac1076, ac58) shouldBe AC60(None)
+      calculateCurrentNetCurrentAssetsLiabilities(ac56, ac465, ac58) shouldBe AC60(None)
     }
 
     "calculate Previous Net Current Assets Liabilities" in {

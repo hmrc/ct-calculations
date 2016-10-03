@@ -26,6 +26,6 @@ object AC60 extends Calculated[AC60, AbridgedAccountsBoxRetriever] with NetCurre
 
   override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC60 = {
     import boxRetriever._
-    calculateCurrentNetCurrentAssetsLiabilities(ac56(), ac1076(), ac58())
+    calculateCurrentNetCurrentAssetsLiabilities(ac56(), ac465(), ac58())
   }
 }
