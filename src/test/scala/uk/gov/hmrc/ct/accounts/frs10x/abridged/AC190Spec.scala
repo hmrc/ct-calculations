@@ -23,31 +23,31 @@ import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.RevaluationReserveCa
 import uk.gov.hmrc.ct.accounts.frs10x.MockAbridgedAccountsRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC5076BSpec extends WordSpec
+class AC190Spec extends WordSpec
   with MockitoSugar
   with Matchers
   with MockAbridgedAccountsRetriever {
 
-  "AC5076B" should {
+  "AC190" should {
     "fail validation when calculated value is not equal to AC76" in {
       when(boxRetriever.ac76()).thenReturn(AC76(Some(123)))
-      AC5076B(Some(125)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5076B"), "error.AC5076B.mustEqual.AC76"))
+      AC190(Some(125)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC190"), "error.AC190.mustEqual.AC76"))
     }
 
-    "calculate the value when both AC77 and AC5076A are set" in new RevaluationReserveCalculator {
-      calculateAC5076B(AC76(Some(1)), AC77(Some(10)), AC5076A(Some(3))).value shouldEqual Some(13)
+    "calculate the value when both AC77 and AC189 are set" in new RevaluationReserveCalculator {
+      calculateAC190(AC76(Some(1)), AC77(Some(10)), AC189(Some(3))).value shouldEqual Some(13)
     }
 
     "calculate the value when AC77 is set" in new RevaluationReserveCalculator {
-      calculateAC5076B(AC76(Some(1)), AC77(Some(10)), AC5076A(None)).value shouldEqual Some(10)
+      calculateAC190(AC76(Some(1)), AC77(Some(10)), AC189(None)).value shouldEqual Some(10)
     }
 
-    "return 0 when AC76 is set and AC77 and AC5076A are not set" in new RevaluationReserveCalculator {
-      calculateAC5076B(AC76(Some(1)), AC77(None), AC5076A(None)).value shouldEqual Some(0)
+    "return 0 when AC76 is set and AC77 and AC189 are not set" in new RevaluationReserveCalculator {
+      calculateAC190(AC76(Some(1)), AC77(None), AC189(None)).value shouldEqual Some(0)
     }
 
-    "return None when AC76, AC77 and AC5076A are not set" in new RevaluationReserveCalculator {
-      calculateAC5076B(AC76(None), AC77(None), AC5076A(None)).value shouldEqual None
+    "return None when AC76, AC77 and AC189 are not set" in new RevaluationReserveCalculator {
+      calculateAC190(AC76(None), AC77(None), AC189(None)).value shouldEqual None
     }
   }
 }
