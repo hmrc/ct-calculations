@@ -17,18 +17,17 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.box.{CtValidation, Input, ValidatableBox}
 
+trait AccountsApproval extends Input with ValidatableBox[AbridgedAccountsBoxRetriever]{
 
-case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC8092] = List.empty, ac8091: AC8091, ac198A: AC198A) extends CtBoxIdentifier(name = "Accounts approval")
-  with CtValue[AccountsApproval]
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever] {
+  val ac199A: List[AC199A]
+  val ac8092: List[AC8092]
+  val ac8091: AC8091
+  val ac198A: AC198A
 
-  override def value = this
   private def filteredApprovers = ac199A.map(ac199A => ac199A.value)
-  private def filteredOtherApprovers = ac8092.map(ac8092 => ac8092.value).flatten
+  private def filteredOtherApprovers = ac8092.flatMap(ac8092 => ac8092.value)
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectWithBoxId("AccountsApproval") {
@@ -90,4 +89,3 @@ case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC80
   }
 
 }
-

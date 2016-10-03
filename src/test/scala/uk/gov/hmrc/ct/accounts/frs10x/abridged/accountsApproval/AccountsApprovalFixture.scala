@@ -24,11 +24,11 @@ import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.AC4
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
-import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-class AccountsApprovalSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
+class AccountsApprovalFixture extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
   with MockAbridgedAccountsRetriever with AccountsFreeTextValidationFixture {
 
   val Date = Some(new LocalDate())
@@ -39,32 +39,32 @@ class AccountsApprovalSpec extends WordSpec with MockitoSugar with Matchers with
     Mockito.when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate()))
   }
 
-  "AccountsApproval validate" should {
+  def testAccountsApproval(builder: (List[AC199A], List[AC8092], AC8091, AC198A) => AccountsApproval) {
 
     "return no error at least one approver, approved, and valid date" in {
 
-      val aa = AccountsApproval(List(), List(AC8092(Approver)), AC8091(True), AC198A(Date))
+      val aa = builder(List(), List(AC8092(Approver)), AC8091(True), AC198A(Date))
 
       aa.validate(boxRetriever) shouldBe empty
     }
 
     "return error with 'AccountsApproval' boxId for AC8091 errors" in {
 
-      val aa = AccountsApproval(List(), List(AC8092(Approver)), AC8091(None), AC198A(Date))
+      val aa = builder(List(), List(AC8092(Approver)), AC8091(None), AC198A(Date))
 
       aa.validate(boxRetriever) shouldBe Set(CtValidation(Some("AccountsApproval"),"error.AC8091.required"))
     }
 
     "return error with 'AccountsApproval' boxId for ac198A errors" in {
 
-      val aa = AccountsApproval(List(), List(AC8092(Approver)), AC8091(True), AC198A(None))
+      val aa = builder(List(), List(AC8092(Approver)), AC8091(True), AC198A(None))
 
       aa.validate(boxRetriever) shouldBe Set(CtValidation(Some("AccountsApproval"),"error.AC198A.required"))
     }
 
     "return global error when no approvers" in {
 
-      val aa = AccountsApproval(List(), List(), AC8091(True), AC198A(Date))
+      val aa = builder(List(), List(), AC8091(True), AC198A(Date))
 
       aa.validate(boxRetriever) shouldBe Set(CtValidation(None,"error.AccountsApproval.atLeast1"))
     }
@@ -72,7 +72,7 @@ class AccountsApprovalSpec extends WordSpec with MockitoSugar with Matchers with
     "return global error when more than 12 approvers" in {
 
       val approvers = for (i <- (1 to 13).toList) yield AC199A("approver")
-      val aa = AccountsApproval(approvers, List(), AC8091(True), AC198A(Date))
+      val aa = builder(approvers, List(), AC8091(True), AC198A(Date))
 
       aa.validate(boxRetriever) shouldBe Set(CtValidation(None,"error.AccountsApproval.approvers.atMost12"))
     }
@@ -80,14 +80,14 @@ class AccountsApprovalSpec extends WordSpec with MockitoSugar with Matchers with
     "return global error when more than 12 other approvers" in {
 
       val otherApprovers = for (i <- (1 to 13).toList) yield AC8092(Approver)
-      val aa = AccountsApproval(List(), otherApprovers, AC8091(True), AC198A(Date))
+      val aa = builder(List(), otherApprovers, AC8091(True), AC198A(Date))
 
       aa.validate(boxRetriever) shouldBe Set(CtValidation(None,"error.AccountsApproval.otherApprovers.atMost12"))
     }
 
     "return error when invalid approver" in {
 
-      val aa = AccountsApproval(List(AC199A("^"), AC199A("^^")), List(), AC8091(True), AC198A(Date))
+      val aa = builder(List(AC199A("^"), AC199A("^^")), List(), AC8091(True), AC198A(Date))
 
       aa.validate(boxRetriever) shouldBe Set(CtValidation(Some("AccountsApproval"),"error.simpleList.AC199A.0.regexFailure"),
                                               CtValidation(Some("AccountsApproval"),"error.simpleList.AC199A.1.regexFailure"))
@@ -95,7 +95,7 @@ class AccountsApprovalSpec extends WordSpec with MockitoSugar with Matchers with
 
     "return error when invalid other approver" in {
 
-      val aa = AccountsApproval(List(), List(AC8092(Some("^")), AC8092(Some("^"))), AC8091(True), AC198A(Date))
+      val aa = builder(List(), List(AC8092(Some("^")), AC8092(Some("^"))), AC8091(True), AC198A(Date))
 
       aa.validate(boxRetriever) shouldBe Set(CtValidation(Some("AccountsApproval"),"error.simpleList.AC8092.0.regexFailure"),
                                               CtValidation(Some("AccountsApproval"),"error.simpleList.AC8092.1.regexFailure"))
