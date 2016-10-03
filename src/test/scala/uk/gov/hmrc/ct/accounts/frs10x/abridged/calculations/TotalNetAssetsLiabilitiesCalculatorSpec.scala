@@ -27,16 +27,16 @@ class TotalNetAssetsLiabilitiesCalculatorSpec extends WordSpec with Matchers wit
       val ac62 = AC62(Some(50))
       val ac64 = AC64(Some(20))
       val ac66 = AC66(Some(20))
-      val ac1178 = AC1178(Some(20))
-      calculateCurrentTotalNetAssetsLiabilities(ac62, ac64, ac66, ac1178) shouldBe AC68(Some(-10))
+      val ac470 = AC470(Some(20))
+      calculateCurrentTotalNetAssetsLiabilities(ac62, ac64, ac66, ac470) shouldBe AC68(Some(-10))
     }
 
     "return None for current total Net Assets and Liabilities when inputs are None" in {
       val ac62 = AC62(None)
       val ac64 = AC64(None)
       val ac66 = AC66(None)
-      val ac1178 = AC1178(None)
-      calculateCurrentTotalNetAssetsLiabilities(ac62, ac64, ac66, ac1178) shouldBe AC68(None)
+      val ac470 = AC470(None)
+      calculateCurrentTotalNetAssetsLiabilities(ac62, ac64, ac66, ac470) shouldBe AC68(None)
     }
 
     "calculate previous total Net Assets and Liabilities" in {
