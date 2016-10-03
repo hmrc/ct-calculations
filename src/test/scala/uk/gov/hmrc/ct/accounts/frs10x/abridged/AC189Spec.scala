@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockAbrid
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
-class AC5076ASpec extends WordSpec
+class AC189Spec extends WordSpec
   with MockitoSugar
   with Matchers
   with MockAbridgedAccountsRetriever
@@ -31,32 +31,32 @@ class AC5076ASpec extends WordSpec
 
   override def setUpMocks(): Unit = {
     when(boxRetriever.ac76()).thenReturn(AC76(Some(100)))
-    when(boxRetriever.ac5076A()).thenReturn(AC5076A(Some(10)))
+    when(boxRetriever.ac189()).thenReturn(AC189(Some(10)))
     when(boxRetriever.ac5076B()).thenReturn(AC5076B(Some(10)))
     when(boxRetriever.ac5076C()).thenReturn(AC5076C(Some("Test content")))
   }
 
-  testAccountsMoneyValidationWithMinMax("AC5076A", STANDARD_MIN, STANDARD_MAX, AC5076A, testEmpty = false)
+  testAccountsMoneyValidationWithMinMax("AC189", STANDARD_MIN, STANDARD_MAX, AC189, testEmpty = false)
 
-  "AC5076A" should {
+  "AC189" should {
     "fail validation when AC76 isn't empty and this box is empty" in {
       when(boxRetriever.ac76()).thenReturn(AC76(Some(10)))
-      AC5076A(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5076A"), "error.AC5076A.required"))
+      AC189(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC189"), "error.AC189.required"))
     }
 
     "throw global error when note cannot be entered" in {
-      val box = AC5076A(Some(10))
+      val box = AC189(Some(10))
       when(boxRetriever.ac76()).thenReturn(AC76(None))
-      when(boxRetriever.ac5076A()).thenReturn(box)
+      when(boxRetriever.ac189()).thenReturn(box)
 
       box.validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.revaluationReserveNote.cannot.exist"))
     }
 
     "validate successfully if note can't be entered but is empty" in {
-      val box = AC5076A(None)
+      val box = AC189(None)
 
       when(boxRetriever.ac76()).thenReturn(AC76(None))
-      when(boxRetriever.ac5076A()).thenReturn(box)
+      when(boxRetriever.ac189()).thenReturn(box)
       when(boxRetriever.ac5076B()).thenReturn(AC5076B(None))
       when(boxRetriever.ac5076C()).thenReturn(AC5076C(None))
 
@@ -64,7 +64,7 @@ class AC5076ASpec extends WordSpec
     }
 
     "validate successfully if note can be entered" in {
-      AC5076A(Some(10)).validate(boxRetriever) shouldBe Set.empty
+      AC189(Some(10)).validate(boxRetriever) shouldBe Set.empty
     }
   }
 }

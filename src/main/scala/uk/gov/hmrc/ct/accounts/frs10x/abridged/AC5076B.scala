@@ -39,7 +39,7 @@ object AC5076B extends Calculated[AC5076B, AbridgedAccountsBoxRetriever]
                with RevaluationReserveCalculator {
 
   override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC5076B = {
-    calculateAC5076B(boxRetriever.ac76(), boxRetriever.ac77(), boxRetriever.ac5076A())
+    calculateAC5076B(boxRetriever.ac76(), boxRetriever.ac77(), boxRetriever.ac189())
   }
 
 }
