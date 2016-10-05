@@ -25,7 +25,8 @@ case class AC35(value: Option[Int]) extends CtBoxIdentifier(name = "Tax on profi
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
   with Validators
-  with AccountsPreviousPeriodValidation {
+  with AccountsPreviousPeriodValidation
+  with Debit {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(

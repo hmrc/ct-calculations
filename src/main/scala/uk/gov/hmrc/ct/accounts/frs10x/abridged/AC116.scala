@@ -23,7 +23,8 @@ case class AC116(value: Option[Int]) extends CtBoxIdentifier(name = "Disposals")
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+  with Validators
+  with Debit {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
