@@ -104,9 +104,9 @@ case class LoanToDirector(uuid: String,
   
   def globalValidationForLoan(): Set[CtValidation] = {
     val anyAmountFieldHasAValue = (
-      this.ac305A.value orElse 
-      this.ac305A.value orElse
-      this.ac305A.value
+      this.ac306A.value orElse
+      this.ac307A.value orElse
+      this.ac308A.value
     ).nonEmpty
 
     if (!anyAmountFieldHasAValue) {

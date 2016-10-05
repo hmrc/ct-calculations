@@ -132,16 +132,24 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
       )
      }
 
-    /*
-    CtValidation(Some(LoansToDirectors),error.compoundList.loans.1.AC304A.required,None),
-    CtValidation(Some(LoansToDirectors),error.compoundList.loans.1.AC305A.required,None),
-    CtValidation(Some(LoansToDirectors),error.LoansToDirectors.compoundList.loans.1.one.field.required,None)
+    "errors against correct loan and contextualised #3 - only global error" in {
+      setupDefaults(mockBoxRetriever)
 
-    ) was not equal to
-    CtValidation(Some(LoansToDirectors),error.compoundList.loans.1.AC304A.required,None),
-    CtValidation(Some(LoansToDirectors),error.compoundList.loans.1.AC305A.required,None),
-    CtValidation(None,error.LoansToDirectors.compoundList.loans.1.one.field.required,None))
-     */
+      val transaction2 = LoanToDirector(
+        uuid = "uuid",
+        ac304A = AC304A(Some("director")),
+        ac305A = AC305A(Some("description")),
+        ac306A = AC306A(None),
+        ac307A = AC307A(None),
+        ac308A = AC308A(None),
+        ac309A = AC309A(None)
+      )
+      val loans = LoansToDirectors(loans = List(validLoan , transaction2), ac7501 = AC7501(None))
+
+      loans.validate(mockBoxRetriever) shouldBe Set(
+        CtValidation(None, "error.LoansToDirectors.compoundList.loans.1.one.field.required", None)
+      )
+    }
 
     "range error when no loans" in {
       setupDefaults(mockBoxRetriever)
