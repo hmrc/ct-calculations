@@ -127,9 +127,21 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
 
       loans.validate(mockBoxRetriever) shouldBe Set(
         CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.1.AC304A.required", None),
-        CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.1.AC305A.required", None)
+        CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.1.AC305A.required", None),
+        CtValidation(None, "error.LoansToDirectors.compoundList.loans.1.one.field.required", None)
       )
      }
+
+    /*
+    CtValidation(Some(LoansToDirectors),error.compoundList.loans.1.AC304A.required,None),
+    CtValidation(Some(LoansToDirectors),error.compoundList.loans.1.AC305A.required,None),
+    CtValidation(Some(LoansToDirectors),error.LoansToDirectors.compoundList.loans.1.one.field.required,None)
+
+    ) was not equal to
+    CtValidation(Some(LoansToDirectors),error.compoundList.loans.1.AC304A.required,None),
+    CtValidation(Some(LoansToDirectors),error.compoundList.loans.1.AC305A.required,None),
+    CtValidation(None,error.LoansToDirectors.compoundList.loans.1.one.field.required,None))
+     */
 
     "range error when no loans" in {
       setupDefaults(mockBoxRetriever)
