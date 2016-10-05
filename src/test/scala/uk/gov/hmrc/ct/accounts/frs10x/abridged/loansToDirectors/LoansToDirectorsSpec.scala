@@ -50,7 +50,7 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
       loans.validate(mockBoxRetriever) shouldBe empty
     }
 
-    // TODO: replace test below with this when implementing confirm delete for this note
+// TODO: replace test below with this when implementing confirm delete for this note
 //    "return error when there are errors but AC7500 not set to true" in {
 //      setupDefaults(mockBoxRetriever)
 //      when(mockBoxRetriever.ac7500()).thenReturn(AC7500(None))
