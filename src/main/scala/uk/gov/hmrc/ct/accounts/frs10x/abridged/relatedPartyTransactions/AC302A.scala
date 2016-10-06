@@ -19,14 +19,15 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC7805(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at end of POA")
+case class AC302A(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at start of POA")
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
   with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
-    collectErrors {
+
+    failIf(boxRetriever.ac206().value.nonEmpty) {
       validateMoney(value, min = 0)
     }
 }

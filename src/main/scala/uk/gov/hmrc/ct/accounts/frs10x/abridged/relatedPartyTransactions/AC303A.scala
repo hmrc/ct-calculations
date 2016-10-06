@@ -16,9 +16,17 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
 
-import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.box._
 
-class AC7805Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
+case class AC303A(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at end of POA")
+  with CtOptionalInteger
+  with Input
+  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with Validators {
 
-  testAccountsMoneyValidationWithMin("AC7805", 0, AC7805.apply)
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
+    collectErrors {
+      validateMoney(value, min = 0)
+    }
 }

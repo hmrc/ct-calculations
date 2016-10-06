@@ -34,10 +34,10 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
   val validTransaction = RelatedPartyTransaction(
     uuid = "uuid",
     ac7801 = AC7801(Some(true)),
-    ac7802 = AC7802(Some("blah")),
-    ac7803 = AC7803(Some("blah")),
-    ac7804 = AC7804(None),
-    ac7805 = AC7805(None)
+    ac299A = AC299A(Some("blah")),
+    ac301A = AC301A(Some("blah")),
+    ac302A = AC302A(None),
+    ac303A = AC303A(None)
   )
   
   "RelatedPartyTransactions" should {
@@ -56,10 +56,10 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
       val transaction = RelatedPartyTransaction(
         uuid = "uuid",
         ac7801 = AC7801(None),
-        ac7802 = AC7802(None),
-        ac7803 = AC7803(None),
-        ac7804 = AC7804(None),
-        ac7805 = AC7805(None)
+        ac299A = AC299A(None),
+        ac301A = AC301A(None),
+        ac302A = AC302A(None),
+        ac303A = AC303A(None)
       )
       val transactions = RelatedPartyTransactions(transactions = List(transaction), ac7806 = AC7806(None))
 
@@ -72,17 +72,17 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
       val transaction = RelatedPartyTransaction(
         uuid = "uuid",
         ac7801 = AC7801(None),
-        ac7802 = AC7802(None),
-        ac7803 = AC7803(None),
-        ac7804 = AC7804(None),
-        ac7805 = AC7805(None)
+        ac299A = AC299A(None),
+        ac301A = AC301A(None),
+        ac302A = AC302A(None),
+        ac303A = AC303A(None)
       )
       val transactions = RelatedPartyTransactions(transactions = List(transaction), ac7806 = AC7806(Some("^^")))
 
       transactions.validate(mockBoxRetriever) shouldBe Set(
         CtValidation(Some("RelatedPartyTransactions"), "error.compoundList.transactions.0.AC7801.required", None),
-        CtValidation(Some("RelatedPartyTransactions"), "error.compoundList.transactions.0.AC7802.required", None),
-        CtValidation(Some("RelatedPartyTransactions"), "error.compoundList.transactions.0.AC7803.required", None),
+        CtValidation(Some("RelatedPartyTransactions"), "error.compoundList.transactions.0.AC299A.required", None),
+        CtValidation(Some("RelatedPartyTransactions"), "error.compoundList.transactions.0.AC301A.required", None),
         CtValidation(Some("RelatedPartyTransactions"), "error.AC7806.regexFailure",Some(List("^")))
       )
     }
@@ -93,16 +93,16 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
       val transaction2 = RelatedPartyTransaction(
         uuid = "uuid",
         ac7801 = AC7801(Some(true)),
-        ac7802 = AC7802(Some("blah")),
-        ac7803 = AC7803(Some("blah")),
-        ac7804 = AC7804(Some(-99)),
-        ac7805 = AC7805(Some(-99))
+        ac299A = AC299A(Some("blah")),
+        ac301A = AC301A(Some("blah")),
+        ac302A = AC302A(Some(-99)),
+        ac303A = AC303A(Some(-99))
       )
       val transactions = RelatedPartyTransactions(transactions = List(validTransaction , transaction2), ac7806 = AC7806(None))
 
       transactions.validate(mockBoxRetriever) shouldBe Set(
-        CtValidation(Some("RelatedPartyTransactions"),"error.compoundList.transactions.1.AC7804.below.min", Some(List("0", "99999999"))),
-        CtValidation(Some("RelatedPartyTransactions"),"error.compoundList.transactions.1.AC7805.below.min", Some(List("0", "99999999")))
+        CtValidation(Some("RelatedPartyTransactions"),"error.compoundList.transactions.1.AC302A.below.min", Some(List("0", "99999999"))),
+        CtValidation(Some("RelatedPartyTransactions"),"error.compoundList.transactions.1.AC303A.below.min", Some(List("0", "99999999")))
       )
     }
 

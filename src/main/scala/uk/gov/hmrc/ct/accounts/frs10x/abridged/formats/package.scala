@@ -136,10 +136,10 @@ package object formats {
   implicit val ac7601Format = new OptionalStringFormat(AC7601.apply)
   implicit val ac7800Format = new OptionalBooleanFormat(AC7800.apply)
   implicit val ac7801Format = new OptionalBooleanFormat(AC7801.apply)
-  implicit val ac7802Format = new OptionalStringFormat(AC7802.apply)
-  implicit val ac7803Format = new OptionalStringFormat(AC7803.apply)
-  implicit val ac7804Format = new OptionalIntegerFormat(AC7804.apply)
-  implicit val ac7805Format = new OptionalIntegerFormat(AC7805.apply)
+  implicit val ac299AFormat = new OptionalStringFormat(AC299A.apply)
+  implicit val ac301AFormat = new OptionalStringFormat(AC301A.apply)
+  implicit val ac302AFormat = new OptionalIntegerFormat(AC302A.apply)
+  implicit val ac303AFormat = new OptionalIntegerFormat(AC303A.apply)
   implicit val ac7806Format = new OptionalStringFormat(AC7806.apply)
 
   implicit val ac7900Format = new OptionalBooleanFormat(AC7900.apply)
@@ -150,10 +150,10 @@ package object formats {
 
     override def reads(json: JsValue): JsResult[RelatedPartyTransaction] = baseFormat
       .compose(withDefault("ac7801", AC7801(None)))
-      .compose(withDefault("ac7802", AC7802(None)))
-      .compose(withDefault("ac7803", AC7803(None)))
-      .compose(withDefault("ac7804", AC7804(None)))
-      .compose(withDefault("ac7805", AC7805(None)))
+      .compose(withDefault("ac299A", AC299A(None)))
+      .compose(withDefault("ac301A", AC301A(None)))
+      .compose(withDefault("ac302A", AC302A(None)))
+      .compose(withDefault("ac303A", AC303A(None)))
       .reads(json)
 
     override def writes(o: RelatedPartyTransaction): JsValue = baseFormat.writes(o)
