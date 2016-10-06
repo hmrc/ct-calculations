@@ -33,8 +33,7 @@ case class LoansToDirectors(loans: List[LoanToDirector] = List.empty, ac7501: AC
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     collectErrors (
-      // TODO: add this when ready to implement confirm delete of this note
-      // cannotExistIf(!boxRetriever.ac7500().orFalse && (loans.nonEmpty || ac7501.value.nonEmpty)),
+      cannotExistIf(!boxRetriever.ac7500().orFalse && (loans.nonEmpty || ac7501.value.nonEmpty)),
 
       failIf(boxRetriever.ac7500().orFalse) {
         collectErrors(
