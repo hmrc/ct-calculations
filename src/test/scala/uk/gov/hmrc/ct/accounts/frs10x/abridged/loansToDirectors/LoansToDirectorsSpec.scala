@@ -50,7 +50,7 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
       loans.validate(mockBoxRetriever) shouldBe empty
     }
 
-    // TODO: replace test below with this when implementing confirm delete for this note
+// TODO: replace test below with this when implementing confirm delete for this note
 //    "return error when there are errors but AC7500 not set to true" in {
 //      setupDefaults(mockBoxRetriever)
 //      when(mockBoxRetriever.ac7500()).thenReturn(AC7500(None))
@@ -127,9 +127,29 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
 
       loans.validate(mockBoxRetriever) shouldBe Set(
         CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.1.AC304A.required", None),
-        CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.1.AC305A.required", None)
+        CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.1.AC305A.required", None),
+        CtValidation(None, "error.LoansToDirectors.compoundList.loans.1.one.field.required", None)
       )
      }
+
+    "errors against correct loan and contextualised #3 - only global error" in {
+      setupDefaults(mockBoxRetriever)
+
+      val transaction2 = LoanToDirector(
+        uuid = "uuid",
+        ac304A = AC304A(Some("director")),
+        ac305A = AC305A(Some("description")),
+        ac306A = AC306A(None),
+        ac307A = AC307A(None),
+        ac308A = AC308A(None),
+        ac309A = AC309A(None)
+      )
+      val loans = LoansToDirectors(loans = List(validLoan , transaction2), ac7501 = AC7501(None))
+
+      loans.validate(mockBoxRetriever) shouldBe Set(
+        CtValidation(None, "error.LoansToDirectors.compoundList.loans.1.one.field.required", None)
+      )
+    }
 
     "range error when no loans" in {
       setupDefaults(mockBoxRetriever)
