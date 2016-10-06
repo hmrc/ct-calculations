@@ -16,8 +16,20 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval
 
-class CompaniesHouseAccountsApprovalSpec extends AccountsApprovalFixture {
+import org.mockito.Mockito._
+import uk.gov.hmrc.ct.CompaniesHouseFiling
+import uk.gov.hmrc.ct.accounts.frs10x.MockAbridgedAccountsRetriever
 
-  testAccountsApproval(CompaniesHouseAccountsApproval.apply)
+class CompaniesHouseAccountsApprovalSpec extends AccountsApprovalFixture with MockAbridgedAccountsRetriever {
+
+  override def setUpMocks(): Unit = {
+    when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+  }
+
+  override def setUpDisabledMocks(): Unit = {
+    when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(false))
+  }
+
+  testAccountsApproval("CompaniesHouseAccountsApproval", CompaniesHouseAccountsApproval.apply)
 
 }

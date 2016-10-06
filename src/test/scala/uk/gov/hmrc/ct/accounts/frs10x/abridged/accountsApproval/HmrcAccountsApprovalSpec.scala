@@ -16,8 +16,87 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval
 
-class HmrcAccountsApprovalSpec extends AccountsApprovalFixture {
+import org.mockito.Mockito._
+import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
+import uk.gov.hmrc.ct.accounts.frs10x.{AC8021, ACQ8161, MockAbridgedAccountsRetriever}
 
-  testAccountsApproval(HmrcAccountsApproval.apply)
+class HmrcAccountsApprovalSpec extends AccountsApprovalFixture with MockAbridgedAccountsRetriever {
+
+  override def setUpMocks(): Unit = {
+    when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+    when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+    when(boxRetriever.ac8021()).thenReturn(AC8021(Some(false)))
+    when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+  }
+
+  override def setUpDisabledMocks(): Unit = {
+    when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
+  }
+
+  testAccountsApproval("HmrcAccountsApproval", HmrcAccountsApproval.apply)
+
+  "HMRCAccountsApproval" should {
+    val emptyApproval = HmrcAccountsApproval(List.empty, List.empty, AC8091(None), AC198A(None))
+
+    "have display condition true for HMRC Only filings" in {
+
+      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(false))
+      when(boxRetriever.ac8021()).thenReturn(AC8021(None))
+      when(boxRetriever.acQ8161()).thenReturn(ACQ8161(None))
+
+      emptyApproval.approvalEnabled(boxRetriever) shouldBe true
+    }
+
+    "have display condition true for Joint filings if AC8021 is false and ACQ8161 is true" in {
+
+      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(boxRetriever.ac8021()).thenReturn(AC8021(Some(false)))
+      when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+
+      emptyApproval.approvalEnabled(boxRetriever) shouldBe true
+    }
+
+    "have display condition true for Joint filings if AC8021 is true and ACQ8161 is false" in {
+
+      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(boxRetriever.ac8021()).thenReturn(AC8021(Some(true)))
+      when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+
+      emptyApproval.approvalEnabled(boxRetriever) shouldBe true
+    }
+
+    "have display condition true for Joint filings if both AC8021 and ACQ8161 are false" in {
+
+      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(boxRetriever.ac8021()).thenReturn(AC8021(Some(false)))
+      when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+
+      emptyApproval.approvalEnabled(boxRetriever) shouldBe true
+    }
+
+    "have display condition true for Joint filings if AC8021 is None and ACQ8161 is false" in {
+
+      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(boxRetriever.ac8021()).thenReturn(AC8021(None))
+      when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+
+      emptyApproval.approvalEnabled(boxRetriever) shouldBe true
+    }
+
+    "have display condition false for Joint filings if both AC8021 and ACQ8161 are true" in {
+
+      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(boxRetriever.ac8021()).thenReturn(AC8021(Some(true)))
+      when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+
+      emptyApproval.approvalEnabled(boxRetriever) shouldBe false
+    }
+  }
 
 }

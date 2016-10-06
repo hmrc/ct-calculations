@@ -17,50 +17,60 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.{Frs10xDirectorsBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, Input, ValidatableBox}
 
-trait AccountsApproval extends Input with ValidatableBox[AbridgedAccountsBoxRetriever]{
+trait AccountsApproval extends Input with ValidatableBox[AbridgedAccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever]{
 
   val ac199A: List[AC199A]
   val ac8092: List[AC8092]
   val ac8091: AC8091
   val ac198A: AC198A
 
+  def approvalEnabled(boxRetriever: AbridgedAccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean
+
   private def filteredApprovers = ac199A.map(ac199A => ac199A.value)
   private def filteredOtherApprovers = ac8092.flatMap(ac8092 => ac8092.value)
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    collectWithBoxId("AccountsApproval") {
-      collectErrors (
-        () => ac8091.validate(boxRetriever),
-        () => ac198A.validate(boxRetriever),
-        validateApproverRequired(boxRetriever),
-        validateAtMost12Approvers(boxRetriever),
-        validateAtMost12OtherApprovers(boxRetriever),
-        validateApprovers(boxRetriever),
-        validateOtherApprovers(boxRetriever)
-      )
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+    collectWithBoxId(boxId) {
+      failIf(approvalEnabled(boxRetriever)) {
+        collectErrors(
+          () => ac8091.validate(boxRetriever),
+          () => ac198A.validate(boxRetriever),
+          validateApproverRequired(boxRetriever),
+          validateAtMost12Approvers(boxRetriever),
+          validateAtMost12OtherApprovers(boxRetriever),
+          validateApprovers(boxRetriever),
+          validateOtherApprovers(boxRetriever)
+        )
+      }
     }
+  }
+
+  def anyValuesPopulated: Boolean = {
+    ac199A.nonEmpty || ac8092.nonEmpty || ac8091.value.nonEmpty || ac198A.value.nonEmpty
   }
 
   private def validateApproverRequired(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
 
     failIf(ac199A.isEmpty && filteredOtherApprovers.isEmpty) {
-      Set(CtValidation(None, "error.AccountsApproval.atLeast1", None))
+      Set(CtValidation(None, s"error.$boxId.atLeast1", None))
     }
   }
 
   private def validateAtMost12Approvers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
 
     failIf(filteredApprovers.length > 12) {
-      Set(CtValidation(None, "error.AccountsApproval.approvers.atMost12", None))
+      Set(CtValidation(None, s"error.$boxId.approvers.atMost12", None))
     }
   }
 
   private def validateAtMost12OtherApprovers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
 
     failIf(filteredOtherApprovers.length > 12) {
-      Set(CtValidation(None, "error.AccountsApproval.otherApprovers.atMost12", None))
+      Set(CtValidation(None, s"error.$boxId.otherApprovers.atMost12", None))
     }
   }
 
