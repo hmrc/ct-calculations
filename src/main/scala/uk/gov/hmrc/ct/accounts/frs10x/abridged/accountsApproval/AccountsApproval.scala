@@ -90,4 +90,3 @@ case class AccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[AC80
   }
 
 }
-

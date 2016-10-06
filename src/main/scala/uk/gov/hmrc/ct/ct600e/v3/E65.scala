@@ -24,4 +24,3 @@ case class E65(value: Option[Int]) extends CtBoxIdentifier("Income Gift Aid – 
     validatePositiveInteger(this)
   }
 }
-

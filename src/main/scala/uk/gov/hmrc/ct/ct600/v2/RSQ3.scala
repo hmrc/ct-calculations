@@ -28,4 +28,3 @@ object RSQ3  extends Calculated[RSQ3, AccountsBoxRetriever] with PeriodOfAccount
     RSQ3(isLongPeriodOfAccounts(boxRetriever.ac3(), boxRetriever.ac4()))
 
 }
-

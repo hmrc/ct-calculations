@@ -45,4 +45,3 @@ case class AC189(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus or 
   }
 
 }
-

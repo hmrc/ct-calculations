@@ -24,4 +24,3 @@ case class E120(value: Option[Int]) extends CtBoxIdentifier("Expenditure: Other 
     validatePositiveInteger(this)
   }
 }
-
