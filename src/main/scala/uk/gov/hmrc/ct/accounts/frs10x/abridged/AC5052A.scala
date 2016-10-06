@@ -24,6 +24,7 @@ import uk.gov.hmrc.ct.box._
 case class AC5052A(value: Option[Int]) extends CtBoxIdentifier(name = "Debtors due after more than one year") with CtOptionalInteger
                                                                                                               with Input
                                                                                                               with ValidatableBox[AbridgedAccountsBoxRetriever]
+                                                                                                              with SelfValidatableBox[AbridgedAccountsBoxRetriever, Option[Int]]
 
 with Validators {
 
@@ -31,7 +32,7 @@ with Validators {
     collectErrors (
       cannotExistIf(value.nonEmpty && boxRetriever.ac52().value.isEmpty),
       validateMoney(value, min = 0),
-      validateOptionalIntegerLessOrEqualBox(this, boxRetriever.ac52())
+      validateOptionalIntegerLessOrEqualBox(boxRetriever.ac52())
     )
   }
 }

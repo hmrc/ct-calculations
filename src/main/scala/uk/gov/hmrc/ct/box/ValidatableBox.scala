@@ -211,12 +211,6 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
       Set.empty
   }
 
-  def validateOptionalIntegerLessOrEqualBox(box: CtBoxIdentifier with CtOptionalInteger, other: CtBoxIdentifier with CtOptionalInteger)(): Set[CtValidation] = {
-    failIf (box.value.nonEmpty && other.value.nonEmpty && box.value.get > other.value.get) {
-      Set(CtValidation(Some(box.id), s"error.${box.id}.mustBeLessOrEqual.${other.id}"))
-    }
-  }
-
   protected def validateOptionalStringByRegex(boxId: String, box: OptionalStringIdBox, regex: String)(): Set[CtValidation] = {
     box.value match {
       case Some(x) if x.nonEmpty => {
