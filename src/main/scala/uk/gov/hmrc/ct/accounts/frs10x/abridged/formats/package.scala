@@ -215,4 +215,3 @@ package object formats {
   implicit val ac8088Format = new OptionalBooleanFormat(AC8088.apply)
 
   }
-

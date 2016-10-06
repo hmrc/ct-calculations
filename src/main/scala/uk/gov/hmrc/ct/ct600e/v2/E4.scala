@@ -38,4 +38,3 @@ case class E4(value: Option[Int]) extends CtBoxIdentifier("Amounts overclaimed f
     }
   }
 }
-

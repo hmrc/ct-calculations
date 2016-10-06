@@ -48,5 +48,3 @@ object CP87Input {
   def apply(int: Int): CP87Input = CP87Input(Some(int))
 
 }
-
-

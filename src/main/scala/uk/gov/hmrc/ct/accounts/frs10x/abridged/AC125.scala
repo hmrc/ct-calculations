@@ -77,4 +77,3 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
     )
   }
 }
-
