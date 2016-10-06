@@ -50,32 +50,13 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
       loans.validate(mockBoxRetriever) shouldBe empty
     }
 
-// TODO: replace test below with this when implementing confirm delete for this note
-//    "return error when there are errors but AC7500 not set to true" in {
-//      setupDefaults(mockBoxRetriever)
-//      when(mockBoxRetriever.ac7500()).thenReturn(AC7500(None))
-//
-//      val loan = LoanToDirector(
-//        uuid = "uuid",
-//        ac304A = AC304A(Some("director 1")),
-//        ac305A = AC305A(Some("description ^")),
-//        ac306A = AC306A(Some(-1)),
-//        ac307A = AC307A(Some(-2)),
-//        ac308A = AC308A(Some(-3)),
-//        ac309A = AC309A(None)
-//      )
-//      val loans = LoansToDirectors(loans = List(loan), ac7501 = AC7501(None))
-//
-//      loans.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("LoansToDirectors"), "error.LoansToDirectors.cannot.exist"))
-//    }
-
-    "return no errors when there are errors but AC7500 not set to true" in {
+    "return cannot exist error when there are errors but AC7500 not set to true" in {
       setupDefaults(mockBoxRetriever)
       when(mockBoxRetriever.ac7500()).thenReturn(AC7500(None))
 
       val loan = LoanToDirector(
         uuid = "uuid",
-        ac304A = AC304A(None),
+        ac304A = AC304A(Some("director 1")),
         ac305A = AC305A(Some("description ^")),
         ac306A = AC306A(Some(-1)),
         ac307A = AC307A(Some(-2)),
@@ -84,7 +65,7 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
       )
       val loans = LoansToDirectors(loans = List(loan), ac7501 = AC7501(None))
 
-      loans.validate(mockBoxRetriever) shouldBe Set.empty
+      loans.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("LoansToDirectors"), "error.LoansToDirectors.cannot.exist"))
     }
 
     "errors against correct loan and contextualised #1" in {
