@@ -183,4 +183,3 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
   implicit def box2OptionalDateIdBox(box: CtValue[_] with CtBoxIdentifier): OptionalDateIdBox = box.asInstanceOf[OptionalDateIdBox]
   implicit def box2OptionalBigDecimalIdBox(box: CtValue[_] with CtBoxIdentifier): OptionalBigDecimalIdBox = box.asInstanceOf[OptionalBigDecimalIdBox]
 }
-

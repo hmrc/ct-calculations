@@ -24,4 +24,3 @@ case class B515(value: Option[BigDecimal]) extends CtBoxIdentifier("Income Tax d
   def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = validateZeroOrPositiveBigDecimal(this)
 
 }
-

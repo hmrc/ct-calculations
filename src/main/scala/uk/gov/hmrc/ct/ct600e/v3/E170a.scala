@@ -24,4 +24,3 @@ case class E170A(value: Option[Int]) extends CtBoxIdentifier("Held at the end of
   override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = validateZeroOrPositiveInteger(this)
 
 }
-

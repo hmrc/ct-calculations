@@ -24,4 +24,3 @@ case class E24eA(value: Option[Int]) extends CtBoxIdentifier("Loans and non-trad
     validateZeroOrPositiveInteger(this)
   }
 }
-

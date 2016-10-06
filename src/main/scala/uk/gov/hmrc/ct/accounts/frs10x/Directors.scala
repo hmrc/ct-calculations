@@ -153,6 +153,3 @@ case class Director(id: String,
       Set.empty
   }
 }
-
-
-

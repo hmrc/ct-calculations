@@ -29,4 +29,3 @@ object AC26 extends Calculated[AC26, AbridgedAccountsBoxRetriever] with Operatin
     calculateAC26(ac16(), ac18(), ac20())
   }
 }
-
