@@ -158,6 +158,12 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
     super.validateStringByLength(box.id, box, min, max)
   }
 
+  def validateOptionalIntegerLessOrEqualBox(other: CtBoxIdentifier with CtOptionalInteger)()(implicit ev: <:<[B, Option[Int]]): Set[CtValidation] = {
+    failIf (box.value.nonEmpty && other.value.nonEmpty && box.value.get > other.value.get) {
+      Set(CtValidation(Some(box.id), s"error.${box.id}.mustBeLessOrEqual.${other.id}"))
+    }
+  }
+
   def validateNotEmptyStringByLength(value: String, min: Int, max: Int)(): Set[CtValidation] = {
     super.validateNotEmptyStringByLength(box.id, value, min, max)
   }
@@ -183,4 +189,3 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
   implicit def box2OptionalDateIdBox(box: CtValue[_] with CtBoxIdentifier): OptionalDateIdBox = box.asInstanceOf[OptionalDateIdBox]
   implicit def box2OptionalBigDecimalIdBox(box: CtValue[_] with CtBoxIdentifier): OptionalBigDecimalIdBox = box.asInstanceOf[OptionalBigDecimalIdBox]
 }
-

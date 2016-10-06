@@ -25,7 +25,8 @@ case class AC31(value: Option[Int]) extends CtBoxIdentifier(name = "Interest pay
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
   with Validators
-  with AccountsPreviousPeriodValidation {
+  with AccountsPreviousPeriodValidation
+  with Debit {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(

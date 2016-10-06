@@ -33,6 +33,6 @@ object AC68 extends Calculated[AC68, AbridgedAccountsBoxRetriever] with TotalNet
 
   override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC68 = {
     import boxRetriever._
-    calculateCurrentTotalNetAssetsLiabilities(ac62(), ac64(), ac66(), ac1178())
+    calculateCurrentTotalNetAssetsLiabilities(ac62(), ac64(), ac66(), ac470())
   }
 }

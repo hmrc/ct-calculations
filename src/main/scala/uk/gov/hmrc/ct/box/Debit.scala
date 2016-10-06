@@ -14,20 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.abridged
+package uk.gov.hmrc.ct.box
 
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+/**
+  * This represents a debit which implies a box that reduces the value of a balance sheet.
+  */
+trait Debit {
 
-case class AC1179(value: Option[Int]) extends CtBoxIdentifier(name = "Accruals and deferred income (previous PoA)")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
-
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      validateMoney(value, min = 0)
-    )
-  }
 }

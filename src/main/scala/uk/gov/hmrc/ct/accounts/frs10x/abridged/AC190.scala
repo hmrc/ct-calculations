@@ -16,18 +16,30 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.calculations.RevaluationReserveCalculator
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC1077(value: Option[Int]) extends CtBoxIdentifier(name = "Prepayments and accrued income (previous PoA)")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+case class AC190(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at [POA END DATE]")
+                                       with CtOptionalInteger
+                                       with ValidatableBox[AbridgedAccountsBoxRetriever]
+                                       with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateMoney(value, min = 0)
+      failIf(boxRetriever.ac76().value.nonEmpty) {
+        validateOptionalIntegerAsEqualTo(this, boxRetriever.ac76())
+      }
     )
   }
+
+}
+
+object AC190 extends Calculated[AC190, AbridgedAccountsBoxRetriever]
+               with RevaluationReserveCalculator {
+
+  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC190 = {
+    calculateAC190(boxRetriever.ac76(), boxRetriever.ac77(), boxRetriever.ac189())
+  }
+
 }

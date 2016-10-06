@@ -26,7 +26,7 @@ import uk.gov.hmrc.ct.box.CtValidation
 class AC5052ASpec extends WordSpec with MockitoSugar with Matchers with MockAbridgedAccountsRetriever with AccountsMoneyValidationFixture with BeforeAndAfter {
 
   before {
-    when(boxRetriever.ac52).thenReturn(AC52(Some(33)))
+    when(boxRetriever.ac52).thenReturn(AC52(Some(STANDARD_MAX + 1)))
   }
 
   testAccountsMoneyValidationWithMin("AC5052A", minValue = 0, AC5052A)
@@ -34,5 +34,20 @@ class AC5052ASpec extends WordSpec with MockitoSugar with Matchers with MockAbri
   "fail validation when populated and AC52 is empty" in {
     when(boxRetriever.ac52()).thenReturn(AC52(None))
     AC5052A(Some(4)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5052A"), "error.AC5052A.cannot.exist"))
+  }
+
+  "fail validation when greater than AC52" in {
+    when(boxRetriever.ac52()).thenReturn(AC52(Some(30)))
+    AC5052A(Some(35)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5052A"), "error.AC5052A.mustBeLessOrEqual.AC52"))
+  }
+
+  "pass validation when equals AC52" in {
+    when(boxRetriever.ac52()).thenReturn(AC52(Some(30)))
+    AC5052A(Some(30)).validate(boxRetriever) shouldBe Set.empty
+  }
+
+  "pass validation when less than AC52" in {
+    when(boxRetriever.ac52()).thenReturn(AC52(Some(30)))
+    AC5052A(Some(25)).validate(boxRetriever) shouldBe Set.empty
   }
 }

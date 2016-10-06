@@ -49,4 +49,3 @@ object AC132 extends Calculated[AC132, AbridgedAccountsBoxRetriever] with Balanc
     )
   }
 }
-

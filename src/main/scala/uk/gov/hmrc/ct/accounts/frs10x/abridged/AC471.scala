@@ -16,11 +16,10 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
-
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC67(value: Option[Int]) extends CtBoxIdentifier(name = "Provision for liabilities (previous PoA)")
+case class AC471(value: Option[Int]) extends CtBoxIdentifier(name = "Accruals and deferred income (previous PoA)")
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]

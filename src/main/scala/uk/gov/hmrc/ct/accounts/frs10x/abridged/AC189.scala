@@ -20,14 +20,14 @@ import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetr
 import uk.gov.hmrc.ct.box._
 
 
-case class AC5076A(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus or deficit after revaluation") with CtOptionalInteger
+case class AC189(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus or deficit after revaluation") with CtOptionalInteger
                                                                                                               with Input
                                                                                                               with ValidatableBox[AbridgedAccountsBoxRetriever]
                                                                                                               with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
-      failIf(boxRetriever.ac76().value.isDefined)(validateIntegerAsMandatory("AC5076A", this)),
+      failIf(boxRetriever.ac76().value.isDefined)(validateIntegerAsMandatory("AC189", this)),
       failIf(boxRetriever.ac76().value.isEmpty)(validateNoteCannotExist(boxRetriever)),
       validateMoney(value)
     )
@@ -36,7 +36,7 @@ case class AC5076A(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus o
   def validateNoteCannotExist(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
 
-    val isNoteNonEmpty = ac5076A().value.nonEmpty || ac5076C().value.getOrElse("").trim().nonEmpty
+    val isNoteNonEmpty = ac189().value.nonEmpty || ac5076C().value.getOrElse("").trim().nonEmpty
 
     if (isNoteNonEmpty)
       Set(CtValidation(None, "error.balanceSheet.revaluationReserveNote.cannot.exist"))
@@ -45,4 +45,3 @@ case class AC5076A(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus o
   }
 
 }
-

@@ -19,11 +19,12 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC1178(value: Option[Int]) extends CtBoxIdentifier(name = "Accruals and deferred income (current PoA)")
+case class AC470(value: Option[Int]) extends CtBoxIdentifier(name = "Accruals and deferred income (current PoA)")
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+  with Validators
+  with Debit {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
