@@ -16,10 +16,26 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.validation
 
+import uk.gov.hmrc.ct.box.CtValidation
+
 
 object CompoundBoxValidationHelper {
+  @deprecated
   def contextualiseErrorKey(containerName: String, errorKey: String, index: Int): String = {
     val splitKey = errorKey.split('.')
     (splitKey.take(1) ++ Array("compoundList", containerName) ++ Array(index.toString) ++ splitKey.drop(1)).mkString(".")
   }
+
+  def contextualiseError(owningBox: String, containerName: String, error: CtValidation, index: Int): CtValidation = {
+    val splitKey = error.errorMessageKey.split('.')
+
+    if(error.isGlobalError) {
+      val errorMessage = (splitKey.take(2) ++ Array("compoundList", containerName) ++ Array(index.toString) ++ splitKey.drop(2)).mkString(".")
+      error.copy(errorMessageKey = errorMessage)
+    } else {
+      val errorMessage = (splitKey.take(1) ++ Array("compoundList", containerName) ++ Array(index.toString) ++ splitKey.drop(1)).mkString(".")
+      error.copy(boxId = Some(owningBox), errorMessageKey = errorMessage)
+    }
+  }
 }
+

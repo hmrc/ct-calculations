@@ -27,6 +27,8 @@ case class LoansToDirectors(loans: List[LoanToDirector] = List.empty, ac7501: AC
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
 
+  import CompoundBoxValidationHelper._
+
   override def value = this
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
@@ -52,10 +54,7 @@ case class LoansToDirectors(loans: List[LoanToDirector] = List.empty, ac7501: AC
   def validateLoans(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
     val loansErrorList = for ((loan, index) <- loans.zipWithIndex) yield {
       val errors = loan.validate(boxRetriever)
-      errors.map(error => error.copy(
-        boxId = Some("LoansToDirectors"),
-        errorMessageKey = CompoundBoxValidationHelper.contextualiseErrorKey("loans", error.errorMessageKey, index))
-      )
+      errors.map(error => contextualiseError("LoansToDirectors", "loans", error, index))
     }
     loansErrorList.flatten.toSet
   }
@@ -99,8 +98,21 @@ case class LoanToDirector(uuid: String,
       () => ac305A.validate(boxRetriever),
       () => ac306A.validate(boxRetriever),
       () => ac307A.validate(boxRetriever),
-      () => ac308A.validate(boxRetriever)
+      () => ac308A.validate(boxRetriever),
+      () => globalValidationForLoan()
     )
+  
+  def globalValidationForLoan(): Set[CtValidation] = {
+    val anyAmountFieldHasAValue = (
+      ac306A.value orElse
+      ac307A.value orElse
+      ac308A.value
+    ).nonEmpty
+
+    failIf(!anyAmountFieldHasAValue) {
+      Set(CtValidation(boxId = None, "error.LoansToDirectors.one.field.required"))
+    }
+  }
 
   def calculateAC309A(): LoanToDirector = {
     this.copy(ac309A = AC309A.calculate(this))
