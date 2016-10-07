@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.box.CtValidation
 
 class AC7801Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter with MockAbridgedAccountsRetriever {
 
-  "AC7803" should {
+  "AC301A" should {
     "be mandatory" in {
       AC7801(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7801"), "error.AC7801.required", None))
     }

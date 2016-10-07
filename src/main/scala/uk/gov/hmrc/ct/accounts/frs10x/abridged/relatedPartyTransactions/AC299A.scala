@@ -16,24 +16,22 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
 
-import org.joda.time.LocalDate
-import org.mockito.Mockito._
-import uk.gov.hmrc.ct.accounts.AC206
-import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.box.ValidatableBox._
+import uk.gov.hmrc.ct.box._
 
-class AC7804Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
+case class AC299A(value: Option[String]) extends CtBoxIdentifier(name = "Name of related party")
+  with CtOptionalString
+  with Input
+  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with Validators {
 
-  override def setUpMocks() = {
-    super.setUpMocks()
-    when(boxRetriever.ac206()).thenReturn(AC206(Some(new LocalDate())))
-  }
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
 
-  testAccountsMoneyValidationWithMin("AC7804", 0, AC7804.apply)
-
-  "AC7803" should {
-    "always pass if no previous POA" in {
-      when(boxRetriever.ac206()).thenReturn(AC206(None))
-      AC7804(Some(-99)).validate(boxRetriever) shouldBe Set()
-    }
+    collectErrors(
+      validateAsMandatory(this),
+      validateStringMaxLength("AC299A", value.getOrElse(""), StandardCohoNameFieldLimit),
+      validateCohoOptionalNameField("AC299A", this)
+    )
   }
 }

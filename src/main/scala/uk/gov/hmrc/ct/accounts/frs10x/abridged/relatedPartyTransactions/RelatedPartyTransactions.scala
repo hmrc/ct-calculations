@@ -75,10 +75,10 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
 
 case class RelatedPartyTransaction(uuid: String,
                                    ac7801: AC7801,
-                                   ac7802: AC7802,
-                                   ac7803: AC7803,
-                                   ac7804: AC7804,
-                                   ac7805: AC7805
+                                   ac299A: AC299A,
+                                   ac301A: AC301A,
+                                   ac302A: AC302A,
+                                   ac303A: AC303A
                                          ) extends CtBoxIdentifier(name = "Related party transactions")
   with ValidatableBox[AbridgedAccountsBoxRetriever]
   with Input
@@ -90,9 +90,9 @@ case class RelatedPartyTransaction(uuid: String,
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
     collectErrors(
       () => ac7801.validate(boxRetriever),
-      () => ac7802.validate(boxRetriever),
-      () => ac7803.validate(boxRetriever),
-      () => ac7804.validate(boxRetriever),
-      () => ac7805.validate(boxRetriever)
+      () => ac299A.validate(boxRetriever),
+      () => ac301A.validate(boxRetriever),
+      () => ac302A.validate(boxRetriever),
+      () => ac303A.validate(boxRetriever)
     )
 }

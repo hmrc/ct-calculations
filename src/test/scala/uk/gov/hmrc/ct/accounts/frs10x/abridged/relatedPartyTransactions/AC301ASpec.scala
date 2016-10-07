@@ -16,22 +16,21 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
 
-import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
-class AC7802Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
+class AC301ASpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
   with MockAbridgedAccountsRetriever with AccountsFreeTextValidationFixture {
 
-  testMandatoryAccountsCharacterLimitValidation("AC7802", StandardCohoNameFieldLimit, AC7802)
-  testAccountsCoHoNameFieldValidation("AC7802", AC7802)
+  testMandatoryAccountsCharacterLimitValidation("AC301A", StandardCohoTextFieldLimit, AC301A)
+  testAccountsCoHoTextFieldValidation("AC301A", AC301A)
 
-  "AC7802" should {
+  "AC301A" should {
     "be mandatory" in {
-      AC7802(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7802"), "error.AC7802.required", None))
+      AC301A(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC301A"), "error.AC301A.required", None))
     }
   }
 }
