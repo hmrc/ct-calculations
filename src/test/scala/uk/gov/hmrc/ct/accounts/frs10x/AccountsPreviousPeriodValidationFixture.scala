@@ -22,11 +22,15 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.AC205
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.{Frs10xDirectorsBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
 
+trait TestAccountsRetriever extends AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
+
 trait MockAbridgedAccountsRetriever extends MockitoSugar {
-  val boxRetriever: AbridgedAccountsBoxRetriever = mock[AbridgedAccountsBoxRetriever]
+  val boxRetriever = mock[TestAccountsRetriever]
 }
 
 trait AccountsPreviousPeriodValidationFixture extends WordSpec with Matchers with MockitoSugar {
