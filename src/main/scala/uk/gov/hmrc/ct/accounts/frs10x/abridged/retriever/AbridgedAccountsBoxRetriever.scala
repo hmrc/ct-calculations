@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged._
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.loansToDirectors.LoansToDirectors
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval.AccountsApproval
+import uk.gov.hmrc.ct.accounts.frs10x.abridged.accountsApproval.{CompaniesHouseAccountsApproval, HmrcAccountsApproval}
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions.{AC7806, RelatedPartyTransactions}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
@@ -275,5 +275,7 @@ trait AbridgedAccountsBoxRetriever extends AccountsBoxRetriever {
 
   def relatedPartyTransactions(): RelatedPartyTransactions
 
-  def accountsApproval(): AccountsApproval
+  def companiesHouseAccountsApproval(): CompaniesHouseAccountsApproval
+
+  def hmrcAccountsApproval(): HmrcAccountsApproval
 }

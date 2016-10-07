@@ -169,18 +169,27 @@ package object formats {
     override def writes(o: RelatedPartyTransactions): JsValue = baseFormat.writes(o)
   }
 
-  implicit val accountsApprovalFormatWithDefaults = new Format[AccountsApproval] {
-    val baseFormat = Json.format[AccountsApproval]
+  implicit val coHoAccountsApprovalFormatWithDefaults = new Format[CompaniesHouseAccountsApproval] {
+    val baseFormat = Json.format[CompaniesHouseAccountsApproval]
 
-    override def reads(json: JsValue): JsResult[AccountsApproval] = baseFormat
+    override def reads(json: JsValue): JsResult[CompaniesHouseAccountsApproval] = baseFormat
       .compose(withDefault("ac8091", AC8091(None)))
       .compose(withDefault("ac198A", AC198A(None)))
       .reads(json)
 
-    override def writes(o: AccountsApproval): JsValue = baseFormat.writes(o)
+    override def writes(o: CompaniesHouseAccountsApproval): JsValue = baseFormat.writes(o)
   }
 
+  implicit val hmrcAccountsApprovalFormatWithDefaults = new Format[HmrcAccountsApproval] {
+    val baseFormat = Json.format[HmrcAccountsApproval]
 
+    override def reads(json: JsValue): JsResult[HmrcAccountsApproval] = baseFormat
+      .compose(withDefault("ac8091", AC8091(None)))
+      .compose(withDefault("ac198A", AC198A(None)))
+      .reads(json)
+
+    override def writes(o: HmrcAccountsApproval): JsValue = baseFormat.writes(o)
+  }
 
   implicit val loanToDirectorFormatWithDefaults = new Format[LoanToDirector] {
     val baseFormat = Json.format[LoanToDirector]
