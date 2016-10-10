@@ -37,4 +37,3 @@ case class HmrcAccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[
   }
 
 }
-
