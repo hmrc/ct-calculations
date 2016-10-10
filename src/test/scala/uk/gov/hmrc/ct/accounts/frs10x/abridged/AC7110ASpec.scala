@@ -22,17 +22,17 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
-class AC325ASpec extends WordSpec
+class AC7110ASpec extends WordSpec
   with MockitoSugar
   with Matchers
   with MockAbridgedAccountsRetriever
   with AccountsFreeTextValidationFixture {
 
   override def setUpMocks(): Unit = {
-    when(boxRetriever.ac325A()).thenReturn(AC325A(Some("text")))
+    when(boxRetriever.ac7110A()).thenReturn(AC7110A(Some("text")))
   }
 
-  testAccountsCharacterLimitValidation("AC325A", StandardCohoTextFieldLimit, AC325A)
-  testAccountsCoHoTextFieldValidation("AC325A", AC325A)
+  testAccountsCharacterLimitValidation("AC7110A", StandardCohoTextFieldLimit, AC7110A)
+  testAccountsCoHoTextFieldValidation("AC7110A", AC7110A)
 
 }
