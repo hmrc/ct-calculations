@@ -113,6 +113,7 @@ package object formats {
   implicit val ac5076CFormat = new OptionalStringFormat[AC5076C](AC5076C.apply)
   implicit val ac128Format = new OptionalIntegerFormat[AC128](AC128.apply)
   implicit val ac133Format = new OptionalIntegerFormat[AC133](AC133.apply)
+  implicit val ac188Format = new OptionalIntegerFormat[AC188](AC188.apply)
   implicit val ac5133Format = new OptionalStringFormat[AC5133](AC5133.apply)
 
   implicit val ac124Format = new OptionalIntegerFormat[AC124](AC124.apply)
