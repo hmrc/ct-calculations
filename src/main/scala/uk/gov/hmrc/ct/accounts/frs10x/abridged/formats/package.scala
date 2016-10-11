@@ -138,6 +138,7 @@ package object formats {
   implicit val ac7800Format = new OptionalBooleanFormat(AC7800.apply)
   implicit val ac7801Format = new OptionalBooleanFormat(AC7801.apply)
   implicit val ac299AFormat = new OptionalStringFormat(AC299A.apply)
+  implicit val ac300AFormat = new OptionalStringFormat(AC300A.apply)
   implicit val ac301AFormat = new OptionalStringFormat(AC301A.apply)
   implicit val ac302AFormat = new OptionalIntegerFormat(AC302A.apply)
   implicit val ac303AFormat = new OptionalIntegerFormat(AC303A.apply)
@@ -152,6 +153,7 @@ package object formats {
     override def reads(json: JsValue): JsResult[RelatedPartyTransaction] = baseFormat
       .compose(withDefault("ac7801", AC7801(None)))
       .compose(withDefault("ac299A", AC299A(None)))
+      .compose(withDefault("ac300A", AC300A(None)))
       .compose(withDefault("ac301A", AC301A(None)))
       .compose(withDefault("ac302A", AC302A(None)))
       .compose(withDefault("ac303A", AC303A(None)))

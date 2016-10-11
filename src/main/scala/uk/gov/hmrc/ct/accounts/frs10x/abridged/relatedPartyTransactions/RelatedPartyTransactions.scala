@@ -76,6 +76,7 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
 case class RelatedPartyTransaction(uuid: String,
                                    ac7801: AC7801,
                                    ac299A: AC299A,
+                                   ac300A: AC300A,
                                    ac301A: AC301A,
                                    ac302A: AC302A,
                                    ac303A: AC303A
@@ -91,6 +92,7 @@ case class RelatedPartyTransaction(uuid: String,
     collectErrors(
       () => ac7801.validate(boxRetriever),
       () => ac299A.validate(boxRetriever),
+      () => ac300A.validate(boxRetriever),
       () => ac301A.validate(boxRetriever),
       () => ac302A.validate(boxRetriever),
       () => ac303A.validate(boxRetriever)
