@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.abridged
+package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
 
-import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs10x.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
-class AC325ASpec extends WordSpec
-  with MockitoSugar
-  with Matchers
-  with MockAbridgedAccountsRetriever
-  with AccountsFreeTextValidationFixture {
+class AC300ASpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
+  with MockAbridgedAccountsRetriever with AccountsFreeTextValidationFixture {
 
-  override def setUpMocks(): Unit = {
-    when(boxRetriever.ac325A()).thenReturn(AC325A(Some("text")))
+  testMandatoryAccountsCharacterLimitValidation("AC300A", StandardCohoTextFieldLimit, AC300A)
+  testAccountsCoHoTextFieldValidation("AC300A", AC300A)
+
+  "AC300A" should {
+    "be mandatory" in {
+      AC300A(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC300A"), "error.AC300A.required", None))
+    }
   }
-
-  testAccountsCharacterLimitValidation("AC325A", StandardCohoTextFieldLimit, AC325A)
-  testAccountsCoHoTextFieldValidation("AC325A", AC325A)
-
 }

@@ -98,7 +98,7 @@ package object formats {
   implicit val ac322Format = new OptionalStringFormat[AC322](AC322.apply)
   implicit val ac323Format = new OptionalStringFormat[AC323](AC323.apply)
   implicit val ac324Format = new OptionalStringFormat[AC324](AC324.apply)
-  implicit val ac325AFormat = new OptionalStringFormat[AC325A](AC325A.apply)
+  implicit val ac7110AFormat = new OptionalStringFormat[AC7110A](AC7110A.apply)
   implicit val ac465Format = new OptionalIntegerFormat[AC465](AC465.apply)
   implicit val ac466Format = new OptionalIntegerFormat[AC466](AC466.apply)
   implicit val ac470Format = new OptionalIntegerFormat[AC470](AC470.apply)
@@ -113,6 +113,7 @@ package object formats {
   implicit val ac5076CFormat = new OptionalStringFormat[AC5076C](AC5076C.apply)
   implicit val ac128Format = new OptionalIntegerFormat[AC128](AC128.apply)
   implicit val ac133Format = new OptionalIntegerFormat[AC133](AC133.apply)
+  implicit val ac188Format = new OptionalIntegerFormat[AC188](AC188.apply)
   implicit val ac5133Format = new OptionalStringFormat[AC5133](AC5133.apply)
 
   implicit val ac124Format = new OptionalIntegerFormat[AC124](AC124.apply)
@@ -137,6 +138,7 @@ package object formats {
   implicit val ac7800Format = new OptionalBooleanFormat(AC7800.apply)
   implicit val ac7801Format = new OptionalBooleanFormat(AC7801.apply)
   implicit val ac299AFormat = new OptionalStringFormat(AC299A.apply)
+  implicit val ac300AFormat = new OptionalStringFormat(AC300A.apply)
   implicit val ac301AFormat = new OptionalStringFormat(AC301A.apply)
   implicit val ac302AFormat = new OptionalIntegerFormat(AC302A.apply)
   implicit val ac303AFormat = new OptionalIntegerFormat(AC303A.apply)
@@ -151,6 +153,7 @@ package object formats {
     override def reads(json: JsValue): JsResult[RelatedPartyTransaction] = baseFormat
       .compose(withDefault("ac7801", AC7801(None)))
       .compose(withDefault("ac299A", AC299A(None)))
+      .compose(withDefault("ac300A", AC300A(None)))
       .compose(withDefault("ac301A", AC301A(None)))
       .compose(withDefault("ac302A", AC302A(None)))
       .compose(withDefault("ac303A", AC303A(None)))

@@ -35,6 +35,7 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
     uuid = "uuid",
     ac7801 = AC7801(Some(true)),
     ac299A = AC299A(Some("blah")),
+    ac300A = AC300A(Some("blah")),
     ac301A = AC301A(Some("blah")),
     ac302A = AC302A(None),
     ac303A = AC303A(None)
@@ -57,6 +58,7 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
         uuid = "uuid",
         ac7801 = AC7801(None),
         ac299A = AC299A(None),
+        ac300A = AC300A(None),
         ac301A = AC301A(None),
         ac302A = AC302A(None),
         ac303A = AC303A(None)
@@ -73,6 +75,7 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
         uuid = "uuid",
         ac7801 = AC7801(None),
         ac299A = AC299A(None),
+        ac300A = AC300A(None),
         ac301A = AC301A(None),
         ac302A = AC302A(None),
         ac303A = AC303A(None)
@@ -82,6 +85,7 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
       transactions.validate(mockBoxRetriever) shouldBe Set(
         CtValidation(Some("RelatedPartyTransactions"), "error.compoundList.transactions.0.AC7801.required", None),
         CtValidation(Some("RelatedPartyTransactions"), "error.compoundList.transactions.0.AC299A.required", None),
+        CtValidation(Some("RelatedPartyTransactions"), "error.compoundList.transactions.0.AC300A.required", None),
         CtValidation(Some("RelatedPartyTransactions"), "error.compoundList.transactions.0.AC301A.required", None),
         CtValidation(Some("RelatedPartyTransactions"), "error.AC7806.regexFailure",Some(List("^")))
       )
@@ -94,6 +98,7 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
         uuid = "uuid",
         ac7801 = AC7801(Some(true)),
         ac299A = AC299A(Some("blah")),
+        ac300A = AC300A(Some("blah")),
         ac301A = AC301A(Some("blah")),
         ac302A = AC302A(Some(-99)),
         ac303A = AC303A(Some(-99))

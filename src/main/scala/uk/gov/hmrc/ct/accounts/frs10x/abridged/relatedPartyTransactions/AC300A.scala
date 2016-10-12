@@ -14,23 +14,24 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.abridged
+package uk.gov.hmrc.ct.accounts.frs10x.abridged.relatedPartyTransactions
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.ValidatableBox._
+import uk.gov.hmrc.ct.box._
 
-case class AC325A(value: Option[String]) extends CtBoxIdentifier(name = "Other accounting policies")
-                                      with CtOptionalString
-                                      with Input
-                                      with ValidatableBox[AbridgedAccountsBoxRetriever]
-                                      with Validators {
-
+case class AC300A(value: Option[String]) extends CtBoxIdentifier(name = "Relationship of related party")
+  with CtOptionalString
+  with Input
+  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+
     collectErrors(
-      validateStringMaxLength("AC325A", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString("AC325A", this)
+      validateAsMandatory(this),
+      validateStringMaxLength("AC300A", value.getOrElse(""), StandardCohoTextFieldLimit),
+      validateCoHoOptionalString("AC300A", this)
     )
   }
 }
