@@ -20,7 +20,7 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.CompaniesHouseFiling
-import uk.gov.hmrc.ct.accounts.frs10x.ACQ8161
+import uk.gov.hmrc.ct.accounts.frs102.ACQ8161
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
