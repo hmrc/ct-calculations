@@ -56,7 +56,8 @@ case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do yo
         ac34().value.nonEmpty ||
         ac35().value.nonEmpty ||
         ac36().value.nonEmpty ||
-        ac37().value.nonEmpty
+        ac37().value.nonEmpty ||
+        ac5032().value.nonEmpty
 
       if (noteNonEmpty)
         Set(CtValidation(None, "error.profitAndLoss.cannot.exist"))
