@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs102.abridged.calculations
 
 import uk.gov.hmrc.ct.accounts.frs102.abridged._
+import uk.gov.hmrc.ct.accounts.frs102.boxes._
 
 trait OperatingProfitOrLossCalculator {
 

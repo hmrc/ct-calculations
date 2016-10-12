@@ -14,33 +14,23 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.abridged
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
+import uk.gov.hmrc.ct.accounts.AccountsPreviousPeriodValidation
 import uk.gov.hmrc.ct.accounts.frs102.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit or loss (current PoA)")
+case class AC21(value: Option[Int]) extends CtBoxIdentifier(name = "Administrative expenses (previous PoA)")
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+  with Validators
+  with AccountsPreviousPeriodValidation
+  with Debit {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    val fieldValidation = validateMoney(value)
-    import boxRetriever._
-    val anyProfitOrLossFieldHasAValue =
-      (value orElse
-        ac18().value orElse
-        ac20().value orElse
-        ac28().value orElse
-        ac30().value orElse
-        ac34().value)
-        .nonEmpty
-
-    if (fieldValidation.isEmpty && !anyProfitOrLossFieldHasAValue) {
-      Set(CtValidation(boxId = None, "error.abridged.profit.loss.one.box.required"))
-    } else {
-      fieldValidation
-    }
-  }
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
+    collectErrors(
+      validateInputAllowed("AC21", boxRetriever.ac205()),
+      validateMoney(value)
+    )
 }

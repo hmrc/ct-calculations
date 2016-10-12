@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.abridged
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.accounts.frs102.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
 
-case class AC28(value: Option[Int]) extends CtBoxIdentifier(name = "Interest receivable and similar income (current PoA)")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+class AC28Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
-    collectErrors(
-      validateMoney(value)
-    )
+  testAccountsMoneyValidation("AC28", AC28.apply)
 }

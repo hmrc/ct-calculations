@@ -23,6 +23,7 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.AC205
 import uk.gov.hmrc.ct.accounts.frs102.abridged._
 import uk.gov.hmrc.ct.accounts.frs102.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.boxes._
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
 trait AccountsMoneyValidationFixture extends WordSpec with Matchers with MockitoSugar {

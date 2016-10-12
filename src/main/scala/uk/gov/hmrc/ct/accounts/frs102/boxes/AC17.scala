@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.abridged
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
+import uk.gov.hmrc.ct.accounts.AccountsPreviousPeriodValidation
 import uk.gov.hmrc.ct.accounts.frs102.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AccountsPreviousPeriodValidation}
 import uk.gov.hmrc.ct.box._
 
-case class AC31(value: Option[Int]) extends CtBoxIdentifier(name = "Interest payable and similar income (previous PoA)")
+case class AC17(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit or loss (previous PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators
+  with SelfValidatableBox[AbridgedAccountsBoxRetriever, Option[Int]]
   with AccountsPreviousPeriodValidation
-  with Debit {
+  with Validators {
 
   override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      validateInputAllowed("AC31", boxRetriever.ac205()),
+    collectErrors (
+      validateInputAllowed("AC17", boxRetriever.ac205()),
       validateMoney(value)
     )
   }

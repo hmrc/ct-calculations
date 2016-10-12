@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.abridged
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.abridged.calculations.ProfitOrLossFinancialYearCalculator
+import uk.gov.hmrc.ct.accounts.frs102.abridged.calculations.ProfitOrLossBeforeTaxCalculator
 import uk.gov.hmrc.ct.accounts.frs102.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger}
 
-case class AC36(value: Option[Int]) extends CtBoxIdentifier(name = "Profit or loss for financial year (current PoA)") with CtOptionalInteger
+case class AC32(value: Option[Int]) extends CtBoxIdentifier(name = "Profit or loss before tax (current PoA)") with CtOptionalInteger
 
-object AC36 extends Calculated[AC36, AbridgedAccountsBoxRetriever] with ProfitOrLossFinancialYearCalculator {
+object AC32 extends Calculated[AC32, AbridgedAccountsBoxRetriever] with ProfitOrLossBeforeTaxCalculator {
 
-  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC36 = {
+  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC32 = {
     import boxRetriever._
-    calculateAC36(ac32(), ac34())
+    calculateAC32(ac26(), ac28(), ac30())
   }
 }

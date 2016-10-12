@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.abridged
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
+import uk.gov.hmrc.ct.accounts.AccountsPreviousPeriodValidation
 import uk.gov.hmrc.ct.accounts.frs102.abridged.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC20(value: Option[Int]) extends CtBoxIdentifier(name = "Administrative expenses (current PoA)")
+case class AC19(value: Option[Int]) extends CtBoxIdentifier(name = "Distribution costs (previous PoA)")
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
   with Validators
+  with AccountsPreviousPeriodValidation
   with Debit {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
-    collectErrors {
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateInputAllowed("AC19", boxRetriever.ac205()),
       validateMoney(value)
-    }
+    )
+  }
 }

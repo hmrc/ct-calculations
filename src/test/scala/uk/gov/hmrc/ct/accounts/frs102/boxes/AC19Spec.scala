@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.abridged
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.{AccountsMoneyValidationFixture, AccountsPreviousPeriodValidationFixture, MockAbridgedAccountsRetriever}
 

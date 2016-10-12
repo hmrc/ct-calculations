@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.abridged
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
+import uk.gov.hmrc.ct.accounts.AccountsPreviousPeriodValidation
 import uk.gov.hmrc.ct.accounts.frs102.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AccountsPreviousPeriodValidation}
 import uk.gov.hmrc.ct.box._
 
-case class AC21(value: Option[Int]) extends CtBoxIdentifier(name = "Administrative expenses (previous PoA)")
+case class AC35(value: Option[Int]) extends CtBoxIdentifier(name = "Tax on profit or loss (previous PoA)")
   with CtOptionalInteger
   with Input
   with ValidatableBox[AbridgedAccountsBoxRetriever]
@@ -28,9 +28,10 @@ case class AC21(value: Option[Int]) extends CtBoxIdentifier(name = "Administrati
   with AccountsPreviousPeriodValidation
   with Debit {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateInputAllowed("AC21", boxRetriever.ac205()),
+      validateInputAllowed("AC35", boxRetriever.ac205()),
       validateMoney(value)
     )
+  }
 }

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.abridged
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
+import uk.gov.hmrc.ct.accounts.AccountsPreviousPeriodValidation
 import uk.gov.hmrc.ct.accounts.frs102.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AccountsPreviousPeriodValidation}
 import uk.gov.hmrc.ct.box._
 
 case class AC29(value: Option[Int]) extends CtBoxIdentifier(name = "Interest receivable and similar income (previous PoA)")

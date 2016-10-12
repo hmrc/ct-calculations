@@ -20,6 +20,7 @@ import org.mockito.Mockito
 import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs102.boxes.AC32
 import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._

@@ -14,24 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.abridged
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
+import uk.gov.hmrc.ct.accounts.frs102.abridged.calculations.OperatingProfitOrLossCalculator
 import uk.gov.hmrc.ct.accounts.frs102.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AccountsPreviousPeriodValidation}
 import uk.gov.hmrc.ct.box._
 
-case class AC35(value: Option[Int]) extends CtBoxIdentifier(name = "Tax on profit or loss (previous PoA)")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators
-  with AccountsPreviousPeriodValidation
-  with Debit {
+case class AC26(value: Option[Int]) extends CtBoxIdentifier(name = "Operating profit or loss (current PoA)") with CtOptionalInteger
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      validateInputAllowed("AC35", boxRetriever.ac205()),
-      validateMoney(value)
-    )
+object AC26 extends Calculated[AC26, AbridgedAccountsBoxRetriever] with OperatingProfitOrLossCalculator {
+
+  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC26 = {
+    import boxRetriever._
+    calculateAC26(ac16(), ac18(), ac20())
   }
 }

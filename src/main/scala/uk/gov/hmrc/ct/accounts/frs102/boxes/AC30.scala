@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.abridged
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.abridged.calculations.ProfitOrLossFinancialYearCalculator
 import uk.gov.hmrc.ct.accounts.frs102.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger}
+import uk.gov.hmrc.ct.box._
 
-case class AC37(value: Option[Int]) extends CtBoxIdentifier(name = "Profit or loss for financial year (current PoA)") with CtOptionalInteger
+case class AC30(value: Option[Int]) extends CtBoxIdentifier(name = "Interest payable and similar income (current PoA)")
+  with CtOptionalInteger
+  with Input
+  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with Validators
+  with Debit {
 
-object AC37 extends Calculated[AC37, AbridgedAccountsBoxRetriever] with ProfitOrLossFinancialYearCalculator {
-
-  override def calculate(boxRetriever: AbridgedAccountsBoxRetriever): AC37 = {
-    import boxRetriever._
-    calculateAC37(ac33(), ac35())
-  }
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
+    collectErrors(
+      validateMoney(value)
+    )
 }

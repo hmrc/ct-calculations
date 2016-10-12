@@ -20,6 +20,7 @@ import play.api.libs.json._
 import uk.gov.hmrc.ct.accounts.frs102.abridged.accountsApproval._
 import uk.gov.hmrc.ct.accounts.frs102.abridged.loansToDirectors._
 import uk.gov.hmrc.ct.accounts.frs102.abridged.relatedPartyTransactions._
+import uk.gov.hmrc.ct.accounts.frs102.boxes._
 import uk.gov.hmrc.ct.box.formats._
 
 package object formats {

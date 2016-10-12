@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.accounts.frs102.abridged.calculations
 
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs102.abridged._
+import uk.gov.hmrc.ct.accounts.frs102.boxes._
 
 class ProfitOrLossBeforeTaxCalculatorSpec extends WordSpec with Matchers {
 

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.abridged
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
 
-class AC20Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
+class AC30Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
 
-  testAccountsMoneyValidation("AC20", AC20.apply)
+  testAccountsMoneyValidation("AC30", AC30.apply)
 }

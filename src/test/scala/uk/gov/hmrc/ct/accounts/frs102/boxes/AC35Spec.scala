@@ -14,21 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.abridged
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.abridged.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.accounts.frs102.{AccountsMoneyValidationFixture, AccountsPreviousPeriodValidationFixture, MockAbridgedAccountsRetriever}
 
-case class AC18(value: Option[Int]) extends CtBoxIdentifier(name = "Distribution costs (current PoA)")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators
-  with Debit {
+class AC35Spec extends AccountsMoneyValidationFixture with AccountsPreviousPeriodValidationFixture with MockAbridgedAccountsRetriever {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
-    collectErrors {
-      validateMoney(value)
-    }
+  testAccountsMoneyValidation("AC35", AC35.apply)
 
+  testAccountsPreviousPoAValidation("AC35", AC35.apply)
 }
