@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.abridged.relatedPartyTransactions
 
-import uk.gov.hmrc.ct.accounts.frs102.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 case class AC302A(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at start of POA")

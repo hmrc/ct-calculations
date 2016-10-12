@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.abridged.validation
 
-import uk.gov.hmrc.ct.accounts.frs102.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, ValidatableBox}
 
 trait AssetsEqualToSharesValidator extends ValidatableBox[AbridgedAccountsBoxRetriever] {

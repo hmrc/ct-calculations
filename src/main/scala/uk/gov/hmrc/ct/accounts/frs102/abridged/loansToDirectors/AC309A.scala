@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.abridged.loansToDirectors
 
-import uk.gov.hmrc.ct.accounts.frs102.abridged.calculations.LoansToDirectorsCalculator
+import uk.gov.hmrc.ct.accounts.frs102.calculations.LoansToDirectorsCalculator
 import uk.gov.hmrc.ct.box._
 
 case class AC309A(value: Option[Int]) extends CtBoxIdentifier(name = "Loan Balance at end of POA")

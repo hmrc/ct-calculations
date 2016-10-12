@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.accounts.frs102.abridged.validation
 
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
 trait ValidateAssetsEqualSharesSpec extends WordSpec with Matchers with MockitoSugar {

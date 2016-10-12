@@ -16,13 +16,9 @@
 
 package uk.gov.hmrc.ct.accounts.frs102
 
-import org.joda.time.LocalDate
-import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.AC205
-import uk.gov.hmrc.ct.accounts.frs102.abridged._
-import uk.gov.hmrc.ct.accounts.frs102.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
 trait AccountsFreeTextValidationFixture extends WordSpec with Matchers with MockitoSugar {
