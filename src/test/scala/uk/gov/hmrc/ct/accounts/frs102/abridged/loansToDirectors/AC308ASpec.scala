@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.abridged.loansToDirectors
 
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.{AccountsMoneyValidationFixture, MockFrs102AccountsRetriever}
 
-class AC308ASpec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
+class AC308ASpec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever {
 
   testAccountsMoneyValidationWithMin("AC308A", 0, AC308A.apply)
 }

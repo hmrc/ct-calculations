@@ -16,17 +16,17 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 case class AC66(value: Option[Int]) extends CtBoxIdentifier(name = "Provision for liabilities (current PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with ValidatableBox[Frs102AccountsBoxRetriever]
   with Validators
   with Debit {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       validateMoney(value, min = 0)
     )

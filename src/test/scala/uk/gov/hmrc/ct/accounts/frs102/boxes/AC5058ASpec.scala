@@ -19,14 +19,14 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
 class AC5058ASpec extends WordSpec
   with MockitoSugar
   with Matchers
-  with MockAbridgedAccountsRetriever
+  with MockFrs102AccountsRetriever
   with AccountsFreeTextValidationFixture {
 
   override def setUpMocks(): Unit = {

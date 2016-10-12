@@ -18,13 +18,13 @@ package uk.gov.hmrc.ct.accounts.frs102.abridged.loansToDirectors
 
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextSizeRangeValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextSizeRangeValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 
 class AC305ASpec extends WordSpec
   with MockitoSugar
   with Matchers
-  with MockAbridgedAccountsRetriever
+  with MockFrs102AccountsRetriever
   with AccountsFreeTextSizeRangeValidationFixture {
 
   testMandatoryAccountsCharacterSizeRangeValidation("AC305A", 0, 250 , AC305A)

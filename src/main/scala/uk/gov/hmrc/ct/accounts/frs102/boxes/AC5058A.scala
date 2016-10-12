@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
-case class AC5058A(value: Option[String]) extends CtBoxIdentifier(name = "Balance sheet - Creditors within 1 year note.") with CtOptionalString with Input with SelfValidatableBox[AbridgedAccountsBoxRetriever, Option[String]] {
+case class AC5058A(value: Option[String]) extends CtBoxIdentifier(name = "Balance sheet - Creditors within 1 year note.") with CtOptionalString with Input with SelfValidatableBox[Frs102AccountsBoxRetriever, Option[String]] {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
       cannotExistIf(value.isDefined && !boxRetriever.ac58().value.isDefined) ,
       validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit),

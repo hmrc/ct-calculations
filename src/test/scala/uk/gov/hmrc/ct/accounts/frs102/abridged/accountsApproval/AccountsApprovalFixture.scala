@@ -22,12 +22,12 @@ import org.mockito.Mockito
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.AC4
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 
 trait AccountsApprovalFixture extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter with AccountsFreeTextValidationFixture {
 
-  self: MockAbridgedAccountsRetriever =>
+  self: MockFrs102AccountsRetriever =>
 
   def setUpDisabledMocks(): Unit = Unit
 

@@ -16,16 +16,16 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 case class AC115(value: Option[Int]) extends CtBoxIdentifier(name = "Additions")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with ValidatableBox[Frs102AccountsBoxRetriever]
   with Validators {
 
-  def getNoteValues(boxRetriever: AbridgedAccountsBoxRetriever) = {
+  def getNoteValues(boxRetriever: Frs102AccountsBoxRetriever) = {
     import boxRetriever._
 
     Set(
@@ -41,7 +41,7 @@ case class AC115(value: Option[Int]) extends CtBoxIdentifier(name = "Additions")
     )
   }
 
-  def validateNoteEntered(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  def validateNoteEntered(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
 
     val noteValues = getNoteValues(boxRetriever)
@@ -52,7 +52,7 @@ case class AC115(value: Option[Int]) extends CtBoxIdentifier(name = "Additions")
     }
   }
 
-  def validateNoteCannotExists(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  def validateNoteCannotExists(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
 
     val noteValues = getNoteValues(boxRetriever)
@@ -64,7 +64,7 @@ case class AC115(value: Option[Int]) extends CtBoxIdentifier(name = "Additions")
     }
   }
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
       failIf(boxRetriever.ac42().value.nonEmpty)(validateNoteEntered(boxRetriever)),

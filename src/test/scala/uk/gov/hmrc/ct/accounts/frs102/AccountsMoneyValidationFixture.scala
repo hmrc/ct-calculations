@@ -22,12 +22,12 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.AC205
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
-import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
-trait AccountsMoneyValidationFixture extends WordSpec with Matchers with MockitoSugar {
+trait AccountsMoneyValidationFixture[T <: Frs102AccountsBoxRetriever] extends WordSpec with Matchers with MockitoSugar {
 
-  self: MockAbridgedAccountsRetriever =>
+  def boxRetriever: T
 
   val STANDARD_MIN = -99999999
   val STANDARD_MAX = 99999999
@@ -42,19 +42,19 @@ trait AccountsMoneyValidationFixture extends WordSpec with Matchers with Mockito
     when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate())))
   }
 
-  def testAccountsMoneyValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever], testEmpty: Boolean = true): Unit = {
+  def testAccountsMoneyValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[T], testEmpty: Boolean = true): Unit = {
     doTests(boxId, STANDARD_MIN, STANDARD_MAX, builder, testEmpty = testEmpty)
   }
 
-  def testAccountsMoneyValidationWithMin(boxId: String, minValue: Int, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever], testEmpty: Boolean = true): Unit = {
+  def testAccountsMoneyValidationWithMin(boxId: String, minValue: Int, builder: (Option[Int]) => ValidatableBox[T], testEmpty: Boolean = true): Unit = {
     doTests(boxId, minValue, STANDARD_MAX, builder, testEmpty = testEmpty)
   }
 
-  def testAccountsMoneyValidationWithMinMax(boxId: String, minValue: Int, maxValue: Int, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever], testEmpty: Boolean = true): Unit = {
+  def testAccountsMoneyValidationWithMinMax(boxId: String, minValue: Int, maxValue: Int, builder: (Option[Int]) => ValidatableBox[T], testEmpty: Boolean = true): Unit = {
     doTests(boxId, minValue, maxValue, builder, testEmpty = testEmpty)
   }
 
-  private def doTests(boxId: String, minValue: Int, maxValue: Int, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever], testEmpty: Boolean): Unit = {
+  private def doTests(boxId: String, minValue: Int, maxValue: Int, builder: (Option[Int]) => ValidatableBox[T], testEmpty: Boolean): Unit = {
     setUpMocks()
     s"$boxId" should {
       "be valid when minimum" in {

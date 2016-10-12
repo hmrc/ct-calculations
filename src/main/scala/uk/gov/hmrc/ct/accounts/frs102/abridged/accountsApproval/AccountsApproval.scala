@@ -16,23 +16,23 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.abridged.accountsApproval
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs10xDirectorsBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, Frs10xDirectorsBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, Input, ValidatableBox}
 
-trait AccountsApproval extends Input with ValidatableBox[AbridgedAccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever]{
+trait AccountsApproval extends Input with ValidatableBox[Frs102AccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever]{
 
   val ac199A: List[AC199A]
   val ac8092: List[AC8092]
   val ac8091: AC8091
   val ac198A: AC198A
 
-  def approvalEnabled(boxRetriever: AbridgedAccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean
+  def approvalEnabled(boxRetriever: Frs102AccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean
 
   private def filteredApprovers = ac199A.map(ac199A => ac199A.value)
   private def filteredOtherApprovers = ac8092.flatMap(ac8092 => ac8092.value)
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     collectWithBoxId(boxId) {
       failIf(approvalEnabled(boxRetriever)) {
         collectErrors(
@@ -52,28 +52,28 @@ trait AccountsApproval extends Input with ValidatableBox[AbridgedAccountsBoxRetr
     ac199A.nonEmpty || ac8092.nonEmpty || ac8091.value.nonEmpty || ac198A.value.nonEmpty
   }
 
-  private def validateApproverRequired(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+  private def validateApproverRequired(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
 
     failIf(ac199A.isEmpty && filteredOtherApprovers.isEmpty) {
       Set(CtValidation(None, s"error.$boxId.atLeast1", None))
     }
   }
 
-  private def validateAtMost12Approvers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+  private def validateAtMost12Approvers(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
 
     failIf(filteredApprovers.length > 12) {
       Set(CtValidation(None, s"error.$boxId.approvers.atMost12", None))
     }
   }
 
-  private def validateAtMost12OtherApprovers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+  private def validateAtMost12OtherApprovers(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
 
     failIf(filteredOtherApprovers.length > 12) {
       Set(CtValidation(None, s"error.$boxId.otherApprovers.atMost12", None))
     }
   }
 
-  private def validateApprovers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+  private def validateApprovers(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
 
     val approversErrorList = for ((approver, index) <- ac199A.zipWithIndex) yield {
       val errors = approver.validate(boxRetriever)
@@ -82,7 +82,7 @@ trait AccountsApproval extends Input with ValidatableBox[AbridgedAccountsBoxRetr
     approversErrorList.flatten.toSet
   }
 
-  private def validateOtherApprovers(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+  private def validateOtherApprovers(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
 
     val otherApproversErrorList = for ((otherApprover, index) <- ac8092.zipWithIndex) yield {
       val errors = otherApprover.validate(boxRetriever)

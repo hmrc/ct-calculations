@@ -21,22 +21,28 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.AC205
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs10xDirectorsBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, _}
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
 
-trait TestAccountsRetriever extends AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
+sealed trait TestFrs102AccountsRetriever extends Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
 
-trait MockAbridgedAccountsRetriever extends MockitoSugar {
-  val boxRetriever = mock[TestAccountsRetriever]
+sealed trait TestFullAccountsRetriever extends FullAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
+
+trait MockFrs102AccountsRetriever extends MockitoSugar {
+  val boxRetriever = mock[TestFrs102AccountsRetriever]
 }
 
-trait AccountsPreviousPeriodValidationFixture extends WordSpec with Matchers with MockitoSugar {
+trait MockFullAccountsRetriever extends MockitoSugar {
+  val boxRetriever = mock[TestFullAccountsRetriever]
+}
 
-  self: MockAbridgedAccountsRetriever =>
+trait AccountsPreviousPeriodValidationFixture[T <: Frs102AccountsBoxRetriever] extends WordSpec with Matchers with MockitoSugar {
 
-  def testAccountsPreviousPoAValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
+  def boxRetriever: T
+
+  def testAccountsPreviousPoAValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[T]): Unit = {
 
     s"$boxId" should {
       "pass validation when has valid value and AC205 is populated" in {

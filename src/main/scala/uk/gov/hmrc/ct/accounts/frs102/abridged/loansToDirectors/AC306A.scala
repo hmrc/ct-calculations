@@ -16,16 +16,16 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.abridged.loansToDirectors
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 case class AC306A(value: Option[Int]) extends CtBoxIdentifier(name = "Loan Balance at start of POA")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with ValidatableBox[Frs102AccountsBoxRetriever]
   with Validators {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors {
       validateMoney(value, min = 0)
     }

@@ -18,14 +18,14 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.accounts.frs102.abridged.validation.ValidateAssetsEqualSharesSpec
-import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 
 class AC69Spec extends ValidateAssetsEqualSharesSpec {
 
-  override def addOtherBoxValue100Mock(mockRetriever: AbridgedAccountsBoxRetriever) =
+  override def addOtherBoxValue100Mock(mockRetriever: Frs102AccountsBoxRetriever) =
     when(mockRetriever.ac81()).thenReturn(AC81(Some(100)))
 
-  override def addOtherBoxValueNoneMock(mockRetriever: AbridgedAccountsBoxRetriever) =
+  override def addOtherBoxValueNoneMock(mockRetriever: Frs102AccountsBoxRetriever) =
     when(mockRetriever.ac81()).thenReturn(AC81(None))
 
   testAssetsEqualToSharesValidation("AC69", AC69.apply)

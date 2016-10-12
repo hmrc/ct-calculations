@@ -17,15 +17,15 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.calculations.BalanceSheetTangibleAssetsCalculator
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 case class AC132(value: Option[Int]) extends CtBoxIdentifier(name = "Net book value of tangible assets at the end of the previous period")
   with CtOptionalInteger with BalanceSheetTangibleAssetsCalculator
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with ValidatableBox[Frs102AccountsBoxRetriever]
   with Validators{
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     failIf (boxRetriever.ac44().value.nonEmpty) (
       collectErrors(
         validateNetBookValueMatchesTotalAssets(boxRetriever)
@@ -33,7 +33,7 @@ case class AC132(value: Option[Int]) extends CtBoxIdentifier(name = "Net book va
     )
   }
 
-  def validateNetBookValueMatchesTotalAssets(boxRetriever: AbridgedAccountsBoxRetriever)() = {
+  def validateNetBookValueMatchesTotalAssets(boxRetriever: Frs102AccountsBoxRetriever)() = {
     failIf (boxRetriever.ac132().orZero != boxRetriever.ac44().orZero || boxRetriever.ac133().orZero != boxRetriever.ac45().orZero) {
       Set(CtValidation(None, "error.tangible.assets.note.netBookValue.notEqualToAssets"))
     }

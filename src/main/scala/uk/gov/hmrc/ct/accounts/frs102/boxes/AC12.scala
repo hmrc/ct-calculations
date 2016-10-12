@@ -17,20 +17,31 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
-case class AC7110A(value: Option[String]) extends CtBoxIdentifier(name = "Other accounting policies")
-                                          with CtOptionalString
-                                          with Input
-                                          with ValidatableBox[Frs102AccountsBoxRetriever]
-                                          with Validators {
-
+case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover (current PoA)")
+  with CtOptionalInteger
+  with Input
+  with ValidatableBox[Frs102AccountsBoxRetriever]
+  with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      validateStringMaxLength("AC7110A", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString("AC7110A", this)
-    )
+//    val fieldValidation = validateMoney(value)
+//    import boxRetriever._
+//    val anyProfitOrLossFieldHasAValue =
+//      (value orElse
+//        ac18().value orElse
+//        ac20().value orElse
+//        ac28().value orElse
+//        ac30().value orElse
+//        ac34().value)
+//        .nonEmpty
+//
+//    if (fieldValidation.isEmpty && !anyProfitOrLossFieldHasAValue) {
+//      Set(CtValidation(boxId = None, "error.frs102.profit.loss.one.box.required"))
+//    } else {
+//      fieldValidation
+//    }
+    ???
   }
 }

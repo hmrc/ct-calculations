@@ -16,16 +16,17 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC15(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover (current PoA)")
+case class AC15(value: Option[Int]) extends CtBoxIdentifier(name = "Cost of sales (current PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
-  with Validators {
+  with ValidatableBox[FullAccountsBoxRetriever]
+  with Validators
+  with Debit {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
 //    val fieldValidation = validateMoney(value)
 //    import boxRetriever._
 //    val anyProfitOrLossFieldHasAValue =

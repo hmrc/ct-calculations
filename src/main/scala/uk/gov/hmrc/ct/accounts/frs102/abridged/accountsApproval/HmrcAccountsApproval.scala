@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.abridged.accountsApproval
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs10xDirectorsBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, Frs10xDirectorsBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
@@ -26,7 +26,7 @@ case class HmrcAccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[
 
   override def value = this
 
-  override def approvalEnabled(boxRetriever: AbridgedAccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever) = {
+  override def approvalEnabled(boxRetriever: Frs102AccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever) = {
     (boxRetriever.companiesHouseFiling().value, boxRetriever.hmrcFiling().value, boxRetriever.ac8021().value, boxRetriever.acQ8161().value) match {
       case (false, true, _, _) => true
       case (true, true, Some(false), _) => true

@@ -17,10 +17,10 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.MockAbridgedAccountsRetriever
+import uk.gov.hmrc.ct.accounts.frs102.MockFrs102AccountsRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC70Spec extends WordSpec with Matchers with MockAbridgedAccountsRetriever {
+class AC70Spec extends WordSpec with Matchers with MockFrs102AccountsRetriever {
 
   "AC70 validation" should {
 

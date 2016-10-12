@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.abridged.loansToDirectors
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsMoneyValidationFixture, MockFrs102AccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.{AccountsMoneyValidationFixture, AccountsPreviousPeriodValidationFixture, MockFullAccountsRetriever}
 
-class AC307ASpec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever {
+class AC15Spec extends AccountsMoneyValidationFixture[FullAccountsBoxRetriever] with AccountsPreviousPeriodValidationFixture[FullAccountsBoxRetriever] with MockFullAccountsRetriever {
 
-  testAccountsMoneyValidationWithMin("AC307A", 0, AC307A.apply)
+  testAccountsMoneyValidationWithMin("AC15", 0, AC15.apply)
+
+  testAccountsPreviousPoAValidation("AC15", AC15.apply)
 }

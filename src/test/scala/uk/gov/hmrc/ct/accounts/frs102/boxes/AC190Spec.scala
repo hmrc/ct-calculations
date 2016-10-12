@@ -19,14 +19,14 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.MockAbridgedAccountsRetriever
+import uk.gov.hmrc.ct.accounts.frs102.MockFrs102AccountsRetriever
 import uk.gov.hmrc.ct.accounts.frs102.calculations.RevaluationReserveCalculator
 import uk.gov.hmrc.ct.box.CtValidation
 
 class AC190Spec extends WordSpec
   with MockitoSugar
   with Matchers
-  with MockAbridgedAccountsRetriever {
+  with MockFrs102AccountsRetriever {
 
   "AC190" should {
     "fail validation when calculated value is not equal to AC76" in {

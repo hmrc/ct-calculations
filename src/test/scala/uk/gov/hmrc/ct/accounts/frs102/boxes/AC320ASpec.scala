@@ -19,15 +19,15 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
 class AC320ASpec extends WordSpec
   with MockitoSugar
   with Matchers
-  with MockAbridgedAccountsRetriever
+  with MockFrs102AccountsRetriever
   with AccountsFreeTextValidationFixture {
 
   override def setUpMocks(): Unit = {
@@ -75,7 +75,7 @@ class AC320ASpec extends WordSpec
     }
   }
 
-  override def testAccountsCharacterLimitValidation(boxId: String, charLimit: Int, builder: (Option[String]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
+  override def testAccountsCharacterLimitValidation(boxId: String, charLimit: Int, builder: (Option[String]) => ValidatableBox[Frs102AccountsBoxRetriever]): Unit = {
     setUpMocks()
 
     "pass validation when empty string" in {

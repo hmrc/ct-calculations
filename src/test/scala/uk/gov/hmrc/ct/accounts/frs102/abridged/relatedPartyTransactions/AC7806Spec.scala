@@ -18,12 +18,11 @@ package uk.gov.hmrc.ct.accounts.frs102.abridged.relatedPartyTransactions
 
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever}
-import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
 class AC7806Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
-  with MockAbridgedAccountsRetriever with AccountsFreeTextValidationFixture {
+  with MockFrs102AccountsRetriever with AccountsFreeTextValidationFixture {
 
   testAccountsCharacterLimitValidation("AC7806", StandardCohoTextFieldLimit, AC7806)
   testAccountsCoHoTextFieldValidation("AC7806", AC7806)

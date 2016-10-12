@@ -16,16 +16,16 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
 case class AC7601(value: Option[String]) extends CtBoxIdentifier(name = "Changes in presentation and prior period adjustments") with CtOptionalString
 with Input
-with ValidatableBox[AbridgedAccountsBoxRetriever]
+with ValidatableBox[Frs102AccountsBoxRetriever]
 with Validators {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
       cannotExistIf(!boxRetriever.ac7600().orFalse && value.nonEmpty),
 

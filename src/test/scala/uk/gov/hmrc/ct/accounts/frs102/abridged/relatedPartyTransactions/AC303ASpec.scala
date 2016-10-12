@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.abridged.relatedPartyTransactions
 
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.{AccountsMoneyValidationFixture, MockFrs102AccountsRetriever}
 
-class AC303ASpec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
+class AC303ASpec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever {
 
   testAccountsMoneyValidationWithMin("AC303A", 0, AC303A.apply)
 }

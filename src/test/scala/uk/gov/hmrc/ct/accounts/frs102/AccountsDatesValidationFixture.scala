@@ -20,25 +20,25 @@ package uk.gov.hmrc.ct.accounts.frs102
 import org.joda.time.LocalDate
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 trait AccountsDatesValidationFixture extends WordSpec with Matchers with MockitoSugar {
 
-  self: MockAbridgedAccountsRetriever =>
+  self: MockFrs102AccountsRetriever =>
 
   //This can be overridden if mock box retriever calls need to be made
   def setUpMocks(): Unit = Unit
 
-  def testDateIsMandatory(boxId: String, builder: (Option[LocalDate]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
+  def testDateIsMandatory(boxId: String, builder: (Option[LocalDate]) => ValidatableBox[Frs102AccountsBoxRetriever]): Unit = {
     setUpMocks()
     "fail validation when empty" in {
       builder(None).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.required"))
     }
   }
 
-  def testDateBetweenIntervalValidation(boxId: String, startDate: LocalDate, endDate: LocalDate, builder: (Option[LocalDate]) => ValidatableBox[AbridgedAccountsBoxRetriever]): Unit = {
+  def testDateBetweenIntervalValidation(boxId: String, startDate: LocalDate, endDate: LocalDate, builder: (Option[LocalDate]) => ValidatableBox[Frs102AccountsBoxRetriever]): Unit = {
 
     val INVALID_DATE_ERROR_MESSAGE: Set[CtValidation] = Set(CtValidation(Some(boxId), s"error.$boxId.not.betweenInclusive", Some(Seq(toErrorArgsFormat(startDate), toErrorArgsFormat(endDate)))))
 

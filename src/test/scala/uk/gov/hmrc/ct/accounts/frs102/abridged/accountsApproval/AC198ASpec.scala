@@ -21,14 +21,12 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 import uk.gov.hmrc.cato.time.DateHelper
 import uk.gov.hmrc.ct.accounts.AC4
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsDatesValidationFixture, MockAbridgedAccountsRetriever}
-import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.domain.ValidationConstants._
+import uk.gov.hmrc.ct.accounts.frs102.{AccountsDatesValidationFixture, MockFrs102AccountsRetriever}
 
 class AC198ASpec extends WordSpec
   with MockitoSugar
   with Matchers
-  with MockAbridgedAccountsRetriever
+  with MockFrs102AccountsRetriever
   with BeforeAndAfter
   with AccountsDatesValidationFixture {
 

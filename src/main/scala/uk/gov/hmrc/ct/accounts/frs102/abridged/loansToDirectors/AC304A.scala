@@ -16,17 +16,17 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.abridged.loansToDirectors
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
 case class AC304A(value: Option[String]) extends CtBoxIdentifier(name = "Director Name loaned too")
   with CtOptionalString
   with Input
-  with SelfValidatableBox[AbridgedAccountsBoxRetriever, Option[String]]
+  with SelfValidatableBox[Frs102AccountsBoxRetriever, Option[String]]
   with Validators {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
       validateAsMandatory(),

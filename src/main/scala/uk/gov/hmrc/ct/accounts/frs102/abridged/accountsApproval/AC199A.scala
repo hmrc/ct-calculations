@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.abridged.accountsApproval
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
-case class AC199A(value: String) extends CtBoxIdentifier(name = "Approve accounts approver") with CtString with Input with ValidatableBox[AbridgedAccountsBoxRetriever] {
+case class AC199A(value: String) extends CtBoxIdentifier(name = "Approve accounts approver") with CtString with Input with ValidatableBox[Frs102AccountsBoxRetriever] {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     validateStringMaxLength("AC199A", this.value, StandardCohoNameFieldLimit) ++ validateCohoNameField("AC199A", this)
   }
 }

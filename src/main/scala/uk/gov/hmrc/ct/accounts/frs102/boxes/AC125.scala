@@ -16,16 +16,16 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of all tangible assets acquired during this period")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with ValidatableBox[Frs102AccountsBoxRetriever]
   with Validators {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       failIf(boxRetriever.ac44().value.nonEmpty)(
         collectErrors(
@@ -37,7 +37,7 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
     )
   }
 
-  private def validateNoteCannotExist(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  private def validateNoteCannotExist(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
 
     val values = Seq(
@@ -58,7 +58,7 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
       Set.empty
   }
 
-  private def validateOneFieldMandatory(boxRetriever: AbridgedAccountsBoxRetriever)() = {
+  private def validateOneFieldMandatory(boxRetriever: Frs102AccountsBoxRetriever)() = {
     val anyBoxPopulated = (
         boxRetriever.ac124().value orElse
         boxRetriever.ac125().value orElse

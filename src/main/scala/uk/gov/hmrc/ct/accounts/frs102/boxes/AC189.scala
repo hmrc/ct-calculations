@@ -16,16 +16,16 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 
 case class AC189(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus or deficit after revaluation") with CtOptionalInteger
                                                                                                               with Input
-                                                                                                              with ValidatableBox[AbridgedAccountsBoxRetriever]
+                                                                                                              with ValidatableBox[Frs102AccountsBoxRetriever]
                                                                                                               with Validators {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
       failIf(boxRetriever.ac76().value.isDefined)(validateIntegerAsMandatory("AC189", this)),
       failIf(boxRetriever.ac76().value.isEmpty)(validateNoteCannotExist(boxRetriever)),
@@ -33,7 +33,7 @@ case class AC189(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus or 
     )
   }
 
-  def validateNoteCannotExist(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
+  def validateNoteCannotExist(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
 
     val isNoteNonEmpty = ac189().value.nonEmpty || ac5076C().value.getOrElse("").trim().nonEmpty
