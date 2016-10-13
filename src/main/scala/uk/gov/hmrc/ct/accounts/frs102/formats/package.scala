@@ -33,6 +33,8 @@ package object formats {
   implicit val ac19Format = new OptionalIntegerFormat[AC19](AC19.apply)
   implicit val ac20Format = new OptionalIntegerFormat[AC20](AC20.apply)
   implicit val ac21Format = new OptionalIntegerFormat[AC21](AC21.apply)
+  implicit val ac22Format = new OptionalIntegerFormat[AC22](AC22.apply)
+  implicit val ac23Format = new OptionalIntegerFormat[AC23](AC23.apply)
   implicit val ac28Format = new OptionalIntegerFormat[AC28](AC28.apply)
   implicit val ac29Format = new OptionalIntegerFormat[AC29](AC29.apply)
   implicit val ac30Format = new OptionalIntegerFormat[AC30](AC30.apply)
