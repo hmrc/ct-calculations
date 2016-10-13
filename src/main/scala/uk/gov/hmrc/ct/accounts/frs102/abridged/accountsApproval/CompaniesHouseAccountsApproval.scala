@@ -32,4 +32,3 @@ case class CompaniesHouseAccountsApproval(ac199A: List[AC199A] = List.empty, ac8
   }
 
 }
-

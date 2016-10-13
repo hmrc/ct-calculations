@@ -20,7 +20,12 @@ import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file a directors' report to Companies House?") with CtOptionalBoolean with Input with SelfValidatableBox[Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever, Option[Boolean]] {
+case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file a directors' report to Companies House?")
+                                          with CtOptionalBoolean
+                                          with Input
+                                          with SelfValidatableBox[Frs10xDirectorsBoxRetriever
+                                          with FilingAttributesBoxValueRetriever, Option[Boolean]] {
+
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     val coHoFiling = boxRetriever.companiesHouseFiling().value
     val hmrcFiling = boxRetriever.hmrcFiling().value
@@ -30,9 +35,33 @@ case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you
     // This field is required if filing non micro-entity Joint or to CoHo only
     // or when filing Joint micro-entity AND answered "true" to "AC8023".
     // In the last case, answering "false" disables "Directors report" section - including this question.
-    if (coHoFiling && (!(hmrcFiling && microEntityFiling) || (hmrcFiling && microEntityFiling && fileDRToHmrc)))
-      validateBooleanAsMandatory()
-    else
-      Set.empty
+    failIf(coHoFiling && (!(hmrcFiling && microEntityFiling) || (hmrcFiling && microEntityFiling && fileDRToHmrc)))(
+      collectErrors(
+        validateAsMandatory(),
+        // Validate cannot exist only if filing for CoHo only
+        failIf(!hmrcFiling)(validateCannotExist(boxRetriever))
+      )
+    )
   }
+
+  def validateCannotExist(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever)(): Set[CtValidation] = {
+    if (value.contains(false)) {
+      val noteNonEmpty =
+        boxRetriever.directors().directors.nonEmpty ||
+        boxRetriever.acQ8003().value.nonEmpty ||
+        boxRetriever.ac8033().value.nonEmpty ||
+        boxRetriever.acQ8009().value.nonEmpty ||
+        boxRetriever.ac8051().value.nonEmpty ||
+        boxRetriever.ac8052().value.nonEmpty ||
+        boxRetriever.ac8053().value.nonEmpty ||
+        boxRetriever.ac8054().value.nonEmpty ||
+        boxRetriever.ac8899().value.nonEmpty
+
+      if (noteNonEmpty)
+        Set(CtValidation(None, "error.directorsReport.cannot.exist"))
+      else
+        Set.empty
+    } else Set.empty
+  }
+
 }
