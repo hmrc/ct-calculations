@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
+import uk.gov.hmrc.ct.accounts.AccountsPreviousPeriodValidation
 import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
@@ -24,25 +25,13 @@ case class AC15(value: Option[Int]) extends CtBoxIdentifier(name = "Cost of sale
   with Input
   with ValidatableBox[FullAccountsBoxRetriever]
   with Validators
+  with AccountsPreviousPeriodValidation
   with Debit {
 
   override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
-//    val fieldValidation = validateMoney(value)
-//    import boxRetriever._
-//    val anyProfitOrLossFieldHasAValue =
-//      (value orElse
-//        ac18().value orElse
-//        ac20().value orElse
-//        ac28().value orElse
-//        ac30().value orElse
-//        ac34().value)
-//        .nonEmpty
-//
-//    if (fieldValidation.isEmpty && !anyProfitOrLossFieldHasAValue) {
-//      Set(CtValidation(boxId = None, "error.frs102.profit.loss.one.box.required"))
-//    } else {
-//      fieldValidation
-//    }
-    ???
+    collectErrors(
+      validateInputAllowed("AC15", boxRetriever.ac205()),
+      validateMoney(value, min = 0)
+    )
   }
 }

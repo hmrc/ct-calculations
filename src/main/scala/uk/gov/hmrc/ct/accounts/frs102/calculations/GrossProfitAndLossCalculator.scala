@@ -14,28 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.retriever
+package uk.gov.hmrc.ct.accounts.frs102.calculations
 
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-trait FullAccountsBoxRetriever extends Frs102AccountsBoxRetriever {
+trait GrossProfitAndLossCalculator extends DebitAwareCalculation {
 
-  self: FilingAttributesBoxValueRetriever =>
+  def calculateAC16(ac12: AC12, ac14: AC14): AC16 = {
+    sum(Seq(ac12, ac14))(AC16.apply)
+  }
 
-  def ac12(): AC12
-
-  def ac13(): AC13
-
-  def ac14(): AC14
-
-  def ac15(): AC15
-
-  def ac16(): AC16
-
-  def ac17(): AC17
-
-  def ac22(): AC22
-
-  def ac23(): AC23
+  def calculateAC17(ac13: AC13, ac15: AC15): AC17= {
+    sum(Seq(ac13, ac15))(AC17.apply)
+  }
 }

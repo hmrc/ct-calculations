@@ -17,10 +17,43 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.calculations.ProfitOrLossFinancialYearCalculator
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
+import uk.gov.hmrc.ct.box._
 
-case class AC36(value: Option[Int]) extends CtBoxIdentifier(name = "Profit or loss for financial year (current PoA)") with CtOptionalInteger
+case class AC36(value: Option[Int]) extends CtBoxIdentifier(name = "Profit or loss for financial year (current PoA)")
+  with CtOptionalInteger
+  with ValidatableBox[Frs102AccountsBoxRetriever]
+  with Validators {
+
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+    boxRetriever match {
+      case br: FullAccountsBoxRetriever => validateFull(br)
+      case _ => validateAbridged(boxRetriever)
+    }
+  }
+
+  private def validateFull(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
+    import boxRetriever._
+    validateAtLeastOneBoxHasValue(ac12(), ac14(), ac18(), ac20(), ac28(), ac30(), ac34())
+  }
+
+  private def validateAbridged(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+    import boxRetriever._
+    validateAtLeastOneBoxHasValue(ac16(), ac18(), ac20(), ac28(), ac30(), ac34())
+  }
+
+  private def validateAtLeastOneBoxHasValue(boxes: CtOptionalInteger*): Set[CtValidation] = {
+    if (noValue(boxes)) {
+      Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
+    } else {
+      Set.empty
+    }
+  }
+
+  private def noValue(values: Seq[CtOptionalInteger]): Boolean = {
+    !values.exists(_.value.nonEmpty)
+  }
+}
 
 object AC36 extends Calculated[AC36, Frs102AccountsBoxRetriever] with ProfitOrLossFinancialYearCalculator {
 

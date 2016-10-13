@@ -33,7 +33,7 @@ trait AccountsBoxRetriever extends BoxRetriever {
   
   def ac4(): AC4
 
-  def ac12(): AC12
+//  def ac12(): AC12
 
   def ac205(): AC205
 

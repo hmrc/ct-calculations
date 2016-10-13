@@ -26,22 +26,8 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover (cu
   with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-//    val fieldValidation = validateMoney(value)
-//    import boxRetriever._
-//    val anyProfitOrLossFieldHasAValue =
-//      (value orElse
-//        ac18().value orElse
-//        ac20().value orElse
-//        ac28().value orElse
-//        ac30().value orElse
-//        ac34().value)
-//        .nonEmpty
-//
-//    if (fieldValidation.isEmpty && !anyProfitOrLossFieldHasAValue) {
-//      Set(CtValidation(boxId = None, "error.frs102.profit.loss.one.box.required"))
-//    } else {
-//      fieldValidation
-//    }
-    ???
+    collectErrors(
+      validateMoney(value, min = 0)
+    )
   }
 }
