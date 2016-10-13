@@ -22,9 +22,9 @@ import scala.annotation.tailrec
 
 trait DebitAwareCalculation {
 
-  protected final def sum[T](boxes: Seq[CtOptionalInteger])(builder: Option[Int] => T): T = {
+  protected final def sum[T](boxes: CtOptionalInteger*)(builder: Option[Int] => T): T = {
     if (boxes.exists(_.value.nonEmpty))
-      builder(Some(doSum(0, boxes)))
+      builder(Some(doSum(0, Seq(boxes:_*))))
     else
       builder(None)
   }

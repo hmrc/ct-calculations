@@ -17,7 +17,8 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.AccountsPreviousPeriodValidation
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.calculations.GrossProfitAndLossCalculator
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
 
 case class AC17(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit or loss (previous PoA)")
@@ -32,5 +33,11 @@ case class AC17(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
       validateInputAllowed("AC17", boxRetriever.ac205()),
       validateMoney(value)
     )
+  }
+}
+
+object AC17 extends Calculated[AC17, FullAccountsBoxRetriever] with GrossProfitAndLossCalculator {
+  override def calculate(boxRetriever: FullAccountsBoxRetriever): AC17 = {
+    calculateAC17(boxRetriever.ac13(), boxRetriever.ac15())
   }
 }

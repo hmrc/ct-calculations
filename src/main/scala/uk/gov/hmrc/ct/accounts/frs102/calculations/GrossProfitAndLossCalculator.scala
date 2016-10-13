@@ -21,10 +21,10 @@ import uk.gov.hmrc.ct.accounts.frs102.boxes._
 trait GrossProfitAndLossCalculator extends DebitAwareCalculation {
 
   def calculateAC16(ac12: AC12, ac14: AC14): AC16 = {
-    sum(Seq(ac12, ac14))(AC16.apply)
+    sum(ac12, ac14)(AC16.apply)
   }
 
   def calculateAC17(ac13: AC13, ac15: AC15): AC17= {
-    sum(Seq(ac13, ac15))(AC17.apply)
+    sum(ac13, ac15)(AC17.apply)
   }
 }

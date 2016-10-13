@@ -18,20 +18,13 @@ package uk.gov.hmrc.ct.accounts.frs102.calculations
 
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
 
-trait OperatingProfitOrLossCalculator {
+trait OperatingProfitOrLossCalculator extends DebitAwareCalculation {
 
-  def calculateAC26(aC16: AC16, aC18: AC18, aC20: AC20, ac22: Option[AC22] = None): AC26 = {
-    (aC16.value, aC18.value, aC20.value) match {
-      case (None, None, None) => AC26(None)
-      case _ => AC26(Some(aC16.orZero - aC18.orZero - aC20.orZero))
-    }
+  def calculateAC26(ac16: AC16, ac18: AC18, ac20: AC20, ac22: AC22 = AC22(None)): AC26 = {
+    sum(ac16, ac18, ac20, ac22)(AC26.apply)
   }
 
-  def calculateAC27(aC17: AC17, aC19: AC19, aC21: AC21): AC27 = {
-    (aC17.value, aC19.value, aC21.value) match {
-      case (None, None, None) => AC27(None)
-      case _ => AC27(Some(aC17.orZero - aC19.orZero - aC21.orZero))
-    }
-
+  def calculateAC27(ac17: AC17, ac19: AC19, ac21: AC21, ac23: AC23 = AC23(None)): AC27 = {
+    sum(ac17, ac19, ac21, ac23)(AC27.apply)
   }
 }

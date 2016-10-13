@@ -31,9 +31,9 @@ trait FullAccountsBoxRetriever extends Frs102AccountsBoxRetriever {
 
   def ac15(): AC15
 
-  def ac16(): AC16
+  def ac16(): AC16 = AC16.calculate(this)
 
-  def ac17(): AC17
+  def ac17(): AC17 = AC17.calculate(this)
 
   def ac22(): AC22
 
