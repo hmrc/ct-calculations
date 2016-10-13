@@ -63,8 +63,7 @@ class AC12Spec extends WordSpec with Matchers with MockitoSugar {
       AC12(None).validate(boxRetriever) shouldBe empty
     }
 
-
-    "not do any validation for negative value in FRS 102 Coho Only filing" in {
+    "fail validation for negative value in FRS 102 Coho Only filing" in {
 
       val boxRetriever = mock[TestBoxRetriever]
 
@@ -72,7 +71,7 @@ class AC12Spec extends WordSpec with Matchers with MockitoSugar {
       when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(true))
       when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate(2016, 1, 1)))
 
-      AC12(Some(-100)).validate(boxRetriever) shouldBe empty
+      AC12(Some(-100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.below.min", Some(Seq("0", "99999999"))))
     }
 
     "fail as mandatory for FRS 102 Hmrc Abridged filing" in {

@@ -16,14 +16,13 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.retriever
 
+import uk.gov.hmrc.ct.accounts.AC12
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 trait FullAccountsBoxRetriever extends Frs102AccountsBoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
-
-  def ac12(): AC12
 
   def ac13(): AC13
 
