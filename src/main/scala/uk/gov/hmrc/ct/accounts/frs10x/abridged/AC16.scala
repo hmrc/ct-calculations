@@ -17,16 +17,27 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xFilingQuestionsBoxRetriever
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit or loss (current PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with ValidatableBox[AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever]
   with Validators {
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] = {
-    val fieldValidation = validateMoney(value)
+  override def validate(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever): Set[CtValidation] = {
+
+    failIf(boxRetriever.hmrcFiling().value || boxRetriever.acQ8161().orFalse)(
+      collectErrors(
+        validateMoney(value),
+        validateAtLeastOne(boxRetriever)
+      )
+    )
+  }
+
+  private def validateAtLeastOne(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever)(): Set[CtValidation] = {
     import boxRetriever._
     val anyProfitOrLossFieldHasAValue =
       (value orElse
@@ -37,10 +48,8 @@ case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
         ac34().value)
         .nonEmpty
 
-    if (fieldValidation.isEmpty && !anyProfitOrLossFieldHasAValue) {
+    passIf(anyProfitOrLossFieldHasAValue)(
       Set(CtValidation(boxId = None, "error.abridged.profit.loss.one.box.required"))
-    } else {
-      fieldValidation
-    }
+    )
   }
 }

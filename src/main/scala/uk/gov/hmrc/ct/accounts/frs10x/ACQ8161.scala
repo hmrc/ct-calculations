@@ -36,10 +36,10 @@ case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do yo
     )
   }
 
-  def validateCannotExist(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+  def validateCannotExist(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever)(): Set[CtValidation] = {
     import boxRetriever._
 
-    if (value.contains(false)) {
+    if (value.contains(false) && !hmrcFiling().value) {
       val noteNonEmpty =
         ac16().value.nonEmpty ||
         ac17().value.nonEmpty ||
