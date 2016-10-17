@@ -25,11 +25,12 @@ case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do yo
                                            with Input
                                            with ValidatableBox[Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
 
-
   override def validate(boxRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-    failIf(boxRetriever.companiesHouseFiling().value)(
-      collectErrors(
-        validateBooleanAsMandatory("ACQ8161", this),
+    collectErrors(
+      failIf(boxRetriever.companiesHouseFiling().value)(
+        validateBooleanAsMandatory("ACQ8161", this)
+      ),
+      passIf(boxRetriever.hmrcFiling().value)(
         validateCannotExist(boxRetriever)
       )
     )
