@@ -17,15 +17,23 @@
 package uk.gov.hmrc.ct.accounts.frs10x.abridged
 
 import org.mockito.Mockito._
-import uk.gov.hmrc.ct.accounts.frs10x.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
+import uk.gov.hmrc.ct.accounts.frs10x.{ACQ8161, AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever, TestAccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC16Spec extends AccountsMoneyValidationFixture with MockAbridgedAccountsRetriever {
+class AC16Spec extends WordSpec with Matchers with MockitoSugar  {
 
-  testAccountsMoneyValidation("AC16", AC16.apply)
+  val boxRetriever = mock[TestAccountsRetriever]
 
   "AC16" should {
     "AC16 has a valid value" when {
+
+      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+
       "pass validation if all fields have a valid value" in {
         when(boxRetriever.ac18()).thenReturn(AC18(Some(18)))
         when(boxRetriever.ac20()).thenReturn(AC20(Some(20)))

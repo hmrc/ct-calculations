@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.ct600.accounts
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
-import uk.gov.hmrc.ct.CompaniesHouseFiling
+import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
 import uk.gov.hmrc.ct.accounts.frs10x.ACQ8161
 import uk.gov.hmrc.ct.accounts.frs10x.abridged._
 import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
@@ -71,6 +71,7 @@ class ACQ8161Spec extends WordSpec with MockitoSugar with Matchers with BeforeAn
 
     "not return errors when filing is for CoHo and ACQ8161 is false" in {
       when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
       when(mockBoxRetriever.ac16()).thenReturn(AC16(None))
       when(mockBoxRetriever.ac17()).thenReturn(AC17(None))
       when(mockBoxRetriever.ac18()).thenReturn(AC18(None))
@@ -94,7 +95,7 @@ class ACQ8161Spec extends WordSpec with MockitoSugar with Matchers with BeforeAn
 
     "return 'cannot exist' error when filing is for CoHo and ACQ8161 is false" in {
       when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-
+      when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
 
       ACQ8161(Some(false)).validate(mockBoxRetriever) shouldBe Set(CtValidation(None, "error.profitAndLoss.cannot.exist"))
     }
