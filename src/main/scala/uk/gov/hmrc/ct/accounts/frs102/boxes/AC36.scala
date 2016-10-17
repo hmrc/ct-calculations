@@ -17,19 +17,22 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.calculations.ProfitOrLossFinancialYearCalculator
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, Frs10xFilingQuestionsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 case class AC36(value: Option[Int]) extends CtBoxIdentifier(name = "Profit or loss for financial year (current PoA)")
   with CtOptionalInteger
-  with ValidatableBox[Frs102AccountsBoxRetriever]
+  with ValidatableBox[Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever]
   with Validators {
 
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    boxRetriever match {
-      case br: FullAccountsBoxRetriever => validateFull(br)
-      case _ => validateAbridged(boxRetriever)
-    }
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever): Set[CtValidation] = {
+    failIf(boxRetriever.hmrcFiling().value || boxRetriever.acQ8161().orFalse)(
+      boxRetriever match {
+        case br: FullAccountsBoxRetriever => validateFull(br)
+        case _ => validateAbridged(boxRetriever)
+      }
+    )
   }
 
   private def validateFull(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {

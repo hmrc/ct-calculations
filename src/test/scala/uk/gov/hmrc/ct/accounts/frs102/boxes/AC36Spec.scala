@@ -20,15 +20,24 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.AC12
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, FullAccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.ACQ8161
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs10xFilingQuestionsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
+
+sealed trait AbridgedBoxRetrieverForTest extends AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever
+sealed trait FullBoxRetrieverForTest extends FullAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever
 
 class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
 
   "AC36" should {
     "for Abridged Accounts" when {
-      val boxRetriever = mock[AbridgedAccountsBoxRetriever]
+      val boxRetriever = mock[AbridgedBoxRetrieverForTest]
       "pass validation if all fields have a valid value" in {
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
         when(boxRetriever.ac16()).thenReturn(AC16(Some(16)))
         when(boxRetriever.ac18()).thenReturn(AC18(Some(18)))
         when(boxRetriever.ac20()).thenReturn(AC20(Some(20)))
@@ -38,6 +47,9 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
         AC36(Some(10)).validate(boxRetriever) shouldBe empty
       }
       "pass validation if AC16 field has a valid value" in {
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
         when(boxRetriever.ac16()).thenReturn(AC16(Some(16)))
         when(boxRetriever.ac18()).thenReturn(AC18(None))
         when(boxRetriever.ac20()).thenReturn(AC20(None))
@@ -47,6 +59,10 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
         AC36(Some(16)).validate(boxRetriever) shouldBe empty
       }
       "pass validation if AC18 field has a valid value" in {
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+
         when(boxRetriever.ac16()).thenReturn(AC16(None))
         when(boxRetriever.ac18()).thenReturn(AC18(Some(18)))
         when(boxRetriever.ac20()).thenReturn(AC20(None))
@@ -55,7 +71,53 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
         when(boxRetriever.ac34()).thenReturn(AC34(None))
         AC36(Some(16)).validate(boxRetriever) shouldBe empty
       }
-      "fail validation if all current inputs are empty" in {
+      "pass validation if all current inputs are empty, CoHo Only filing, and ACQ8161 is false" in {
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+
+        when(boxRetriever.ac16()).thenReturn(AC16(None))
+        when(boxRetriever.ac18()).thenReturn(AC18(None))
+        when(boxRetriever.ac20()).thenReturn(AC20(None))
+        when(boxRetriever.ac28()).thenReturn(AC28(None))
+        when(boxRetriever.ac30()).thenReturn(AC30(None))
+        when(boxRetriever.ac34()).thenReturn(AC34(None))
+        AC36(None).validate(boxRetriever) shouldBe Set()
+      }
+      "fail validation if all current inputs are empty, CoHo Only filing, and ACQ8161 is true" in {
+
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+
+        when(boxRetriever.ac16()).thenReturn(AC16(None))
+        when(boxRetriever.ac18()).thenReturn(AC18(None))
+        when(boxRetriever.ac20()).thenReturn(AC20(None))
+        when(boxRetriever.ac28()).thenReturn(AC28(None))
+        when(boxRetriever.ac30()).thenReturn(AC30(None))
+        when(boxRetriever.ac34()).thenReturn(AC34(None))
+        AC36(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
+      }
+      "fail validation if all current inputs are empty, Joint filing, and ACQ8161 is false" in {
+
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+
+        when(boxRetriever.ac16()).thenReturn(AC16(None))
+        when(boxRetriever.ac18()).thenReturn(AC18(None))
+        when(boxRetriever.ac20()).thenReturn(AC20(None))
+        when(boxRetriever.ac28()).thenReturn(AC28(None))
+        when(boxRetriever.ac30()).thenReturn(AC30(None))
+        when(boxRetriever.ac34()).thenReturn(AC34(None))
+        AC36(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
+      }
+      "fail validation if all current inputs are empty, Joint filing, and ACQ8161 is true" in {
+
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+
         when(boxRetriever.ac16()).thenReturn(AC16(None))
         when(boxRetriever.ac18()).thenReturn(AC18(None))
         when(boxRetriever.ac20()).thenReturn(AC20(None))
@@ -66,8 +128,12 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
       }
     }
     "for Full Accounts" when {
-      val boxRetriever = mock[FullAccountsBoxRetriever]
+      val boxRetriever = mock[FullBoxRetrieverForTest]
       "pass validation if all fields have a valid value" in {
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+
         when(boxRetriever.ac12()).thenReturn(AC12(Some(12)))
         when(boxRetriever.ac14()).thenReturn(AC14(Some(14)))
         when(boxRetriever.ac18()).thenReturn(AC18(Some(18)))
@@ -78,6 +144,10 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
         AC36(Some(36)).validate(boxRetriever) shouldBe empty
       }
       "pass validation if 1 field has a valid value" in {
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+
         when(boxRetriever.ac12()).thenReturn(AC12(Some(12)))
         when(boxRetriever.ac14()).thenReturn(AC14(None))
         when(boxRetriever.ac18()).thenReturn(AC18(None))
@@ -88,6 +158,10 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
         AC36(Some(12)).validate(boxRetriever) shouldBe empty
       }
       "pass validation if 1 (shared) field has a valid value" in {
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+
         when(boxRetriever.ac12()).thenReturn(AC12(None))
         when(boxRetriever.ac14()).thenReturn(AC14(None))
         when(boxRetriever.ac18()).thenReturn(AC18(Some(18)))
@@ -98,8 +172,76 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
         AC36(Some(18)).validate(boxRetriever) shouldBe empty
       }
       "fail validation if all current inputs are empty" in {
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+
         when(boxRetriever.ac12()).thenReturn(AC12(None))
         when(boxRetriever.ac14()).thenReturn(AC14(None))
+        when(boxRetriever.ac18()).thenReturn(AC18(None))
+        when(boxRetriever.ac20()).thenReturn(AC20(None))
+        when(boxRetriever.ac28()).thenReturn(AC28(None))
+        when(boxRetriever.ac30()).thenReturn(AC30(None))
+        when(boxRetriever.ac34()).thenReturn(AC34(None))
+        AC36(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
+      }
+      "pass validation if all current inputs are empty, CoHo Only filing, and ACQ8161 is false" in {
+
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+
+        when(boxRetriever.ac12()).thenReturn(AC12(None))
+        when(boxRetriever.ac14()).thenReturn(AC14(None))
+        when(boxRetriever.ac16()).thenReturn(AC16(None))
+        when(boxRetriever.ac18()).thenReturn(AC18(None))
+        when(boxRetriever.ac20()).thenReturn(AC20(None))
+        when(boxRetriever.ac28()).thenReturn(AC28(None))
+        when(boxRetriever.ac30()).thenReturn(AC30(None))
+        when(boxRetriever.ac34()).thenReturn(AC34(None))
+        AC36(None).validate(boxRetriever) shouldBe Set()
+      }
+      "fail validation if all current inputs are empty, CoHo Only filing, and ACQ8161 is true" in {
+
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+
+        when(boxRetriever.ac12()).thenReturn(AC12(None))
+        when(boxRetriever.ac14()).thenReturn(AC14(None))
+        when(boxRetriever.ac16()).thenReturn(AC16(None))
+        when(boxRetriever.ac18()).thenReturn(AC18(None))
+        when(boxRetriever.ac20()).thenReturn(AC20(None))
+        when(boxRetriever.ac28()).thenReturn(AC28(None))
+        when(boxRetriever.ac30()).thenReturn(AC30(None))
+        when(boxRetriever.ac34()).thenReturn(AC34(None))
+        AC36(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
+      }
+      "fail validation if all current inputs are empty, Joint filing, and ACQ8161 is false" in {
+
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+
+        when(boxRetriever.ac12()).thenReturn(AC12(None))
+        when(boxRetriever.ac14()).thenReturn(AC14(None))
+        when(boxRetriever.ac16()).thenReturn(AC16(None))
+        when(boxRetriever.ac18()).thenReturn(AC18(None))
+        when(boxRetriever.ac20()).thenReturn(AC20(None))
+        when(boxRetriever.ac28()).thenReturn(AC28(None))
+        when(boxRetriever.ac30()).thenReturn(AC30(None))
+        when(boxRetriever.ac34()).thenReturn(AC34(None))
+        AC36(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
+      }
+      "fail validation if all current inputs are empty, Joint filing, and ACQ8161 is true" in {
+
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+
+        when(boxRetriever.ac12()).thenReturn(AC12(None))
+        when(boxRetriever.ac14()).thenReturn(AC14(None))
+        when(boxRetriever.ac16()).thenReturn(AC16(None))
         when(boxRetriever.ac18()).thenReturn(AC18(None))
         when(boxRetriever.ac20()).thenReturn(AC20(None))
         when(boxRetriever.ac28()).thenReturn(AC28(None))
