@@ -30,12 +30,12 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
   with Validators  {
 
   override def validate(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-    failIf(isFrs102HmrcAbridgedReturnWithLongPoA(boxRetriever)) {
       collectErrors(
         validateMoney(value, min = 0),
-        validateAsMandatory(this)
+        failIf(isFrs102HmrcAbridgedReturnWithLongPoA(boxRetriever)) {
+          validateAsMandatory(this)
+        }
       )
-    }
   }
 
   private def isFrs102HmrcAbridgedReturnWithLongPoA(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean = {

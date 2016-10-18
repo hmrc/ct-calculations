@@ -20,16 +20,16 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
-import uk.gov.hmrc.ct.accounts.frs10x.ACQ8161
-import uk.gov.hmrc.ct.accounts.frs10x.abridged._
-import uk.gov.hmrc.ct.accounts.frs10x.abridged.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.ACQ8161
+import uk.gov.hmrc.ct.accounts.frs102.boxes._
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 
 class ACQ8161Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
 
-  private trait TestBoxRetriever extends AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever
+  private trait TestBoxRetriever extends Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever
 
   private var mockBoxRetriever: TestBoxRetriever = _
 
@@ -37,6 +37,8 @@ class ACQ8161Spec extends WordSpec with MockitoSugar with Matchers with BeforeAn
     super.beforeEach()
 
     mockBoxRetriever = mock[TestBoxRetriever]
+
+    when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
     when(mockBoxRetriever.ac16()).thenReturn(AC16(Some(10)))
     when(mockBoxRetriever.ac17()).thenReturn(AC17(Some(10)))
     when(mockBoxRetriever.ac18()).thenReturn(AC18(Some(10)))
@@ -63,13 +65,25 @@ class ACQ8161Spec extends WordSpec with MockitoSugar with Matchers with BeforeAn
       ACQ8161(None).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("ACQ8161"), "error.ACQ8161.required"))
     }
 
+    "not return errors when filing is not CoHo and ACQ8161 is empty" in {
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(false))
+
+      ACQ8161(None).validate(mockBoxRetriever) shouldBe Set()
+    }
+
     "not return errors when filing is for CoHo and ACQ8161 is true" in {
       when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
 
       ACQ8161(Some(true)).validate(mockBoxRetriever) shouldBe Set()
     }
 
-    "not return errors when filing is for CoHo and ACQ8161 is false" in {
+    "not return errors when filing is Joint and ACQ8161 is true" in {
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+
+      ACQ8161(Some(true)).validate(mockBoxRetriever) shouldBe Set()
+    }
+
+    "not return errors when filing is CoHo only and ACQ8161 is false" in {
       when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
       when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
       when(mockBoxRetriever.ac16()).thenReturn(AC16(None))
@@ -89,6 +103,13 @@ class ACQ8161Spec extends WordSpec with MockitoSugar with Matchers with BeforeAn
       when(mockBoxRetriever.ac36()).thenReturn(AC36(None))
       when(mockBoxRetriever.ac37()).thenReturn(AC37(None))
       when(mockBoxRetriever.ac5032()).thenReturn(AC5032(None))
+
+      ACQ8161(Some(false)).validate(mockBoxRetriever) shouldBe Set()
+    }
+
+    "not return errors when filing is Joint and ACQ8161 is false" in {
+      when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
 
       ACQ8161(Some(false)).validate(mockBoxRetriever) shouldBe Set()
     }
