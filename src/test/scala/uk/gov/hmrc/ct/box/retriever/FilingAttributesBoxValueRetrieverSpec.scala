@@ -26,7 +26,7 @@ class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
 
   "FilingAttributesBoxValueRetriever" should {
     "have 10 functions" in {
-      BoxValues.boxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 10
+      BoxValues.boxIdFunctions(classOf[FilingAttributesBoxValueRetriever]).size shouldBe 12
     }
 
     "get ct values" in {
@@ -42,6 +42,8 @@ class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
       result("AbridgedFiling") shouldBe retriever.abridgedFiling()
       result("CompaniesHouseFiling") shouldBe retriever.companiesHouseFiling()
       result("HMRCFiling") shouldBe retriever.hmrcFiling()
+      result("CompaniesHouseSubmitted") shouldBe retriever.companiesHouseSubmitted()
+      result("HMRCSubmitted") shouldBe retriever.hmrcSubmitted()
       result("HMRCAmendment") shouldBe retriever.hmrcAmendment()
       result("CountryOfRegistration") shouldBe retriever.countryOfRegistration()
     }
@@ -67,6 +69,10 @@ class FilingAttributesBoxValueRetrieverForTest extends FilingAttributesBoxValueR
   override def companiesHouseFiling(): CompaniesHouseFiling = CompaniesHouseFiling(true)
 
   override def hmrcFiling(): HMRCFiling = HMRCFiling(true)
+
+  override def companiesHouseSubmitted(): CompaniesHouseSubmitted = CompaniesHouseSubmitted(false)
+
+  override def hmrcSubmitted(): HMRCSubmitted = HMRCSubmitted(true)
 
   override def hmrcAmendment(): HMRCAmendment = HMRCAmendment(false)
 
