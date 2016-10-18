@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs102.abridged.loansToDirectors
 
 import uk.gov.hmrc.ct.accounts.frs102.abridged.validation.CompoundBoxValidationHelper
-import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
@@ -25,13 +25,13 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 case class LoansToDirectors(loans: List[LoanToDirector] = List.empty, ac7501: AC7501) extends CtBoxIdentifier(name = "Loans To Directors")
   with CtValue[LoansToDirectors]
   with Input
-  with ValidatableBox[AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
+  with ValidatableBox[Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
 
   import CompoundBoxValidationHelper._
 
   override def value = this
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     collectErrors (
       cannotExistIf(!boxRetriever.ac7500().orFalse && (loans.nonEmpty || ac7501.value.nonEmpty)),
 
@@ -50,7 +50,7 @@ case class LoansToDirectors(loans: List[LoanToDirector] = List.empty, ac7501: AC
     this.copy(loans = loans.map(_.calculateAC309A()))
   }
 
-  def validateLoans(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+  def validateLoans(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
     val loansErrorList = for ((loan, index) <- loans.zipWithIndex) yield {
       val errors = loan.validate(boxRetriever)
       errors.map(error => contextualiseError("LoansToDirectors", "loans", error, index))
@@ -58,19 +58,19 @@ case class LoansToDirectors(loans: List[LoanToDirector] = List.empty, ac7501: AC
     loansErrorList.flatten.toSet
   }
 
-  def validateLoanRequired(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+  def validateLoanRequired(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
     failIf(loans.isEmpty) {
       Set(CtValidation(None, "error.LoansToDirectors.atLeast1", None))
     }
   }
 
-  def validateAtMost20Loans(boxRetriever: AbridgedAccountsBoxRetriever)(): Set[CtValidation] = {
+  def validateAtMost20Loans(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
     failIf(loans.length > 20) {
       Set(CtValidation(None, "error.LoansToDirectors.atMost20", None))
     }
   }
 
-  def validateSimpleField(boxRetriever: AbridgedAccountsBoxRetriever)() = {
+  def validateSimpleField(boxRetriever: Frs102AccountsBoxRetriever)() = {
     ac7501.validate(boxRetriever).map {
       error => error.copy(boxId = Some("LoansToDirectors"))
     }
@@ -85,13 +85,13 @@ case class LoanToDirector(uuid: String,
                           ac308A: AC308A,
                           ac309A: AC309A
                          ) extends CtBoxIdentifier(name = "LoanToDirector")
-  with ValidatableBox[AbridgedAccountsBoxRetriever]
+  with ValidatableBox[Frs102AccountsBoxRetriever]
   with Input
   with CtValue[LoanToDirector] {
 
   override def value = throw new NotImplementedError("should never be used")
 
-  override def validate(boxRetriever: AbridgedAccountsBoxRetriever): Set[CtValidation] =
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] =
     collectErrors(
       () => ac304A.validate(boxRetriever),
       () => ac305A.validate(boxRetriever),
