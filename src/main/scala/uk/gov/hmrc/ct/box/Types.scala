@@ -39,9 +39,7 @@ trait CtValue[T] {
 
   def hasValue(implicit ev: <:<[T, Option[_]]) = value.isDefined
 
-  def isEmpty(implicit ev: <:<[T, Option[_]]) = value.isEmpty
-
-  def nonEmpty(implicit ev: <:<[T, Option[_]]) = value.nonEmpty
+  def noValue(implicit ev: <:<[T, Option[_]]) = value.isEmpty
 
 }
 

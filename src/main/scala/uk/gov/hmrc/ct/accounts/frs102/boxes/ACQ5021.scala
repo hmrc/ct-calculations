@@ -28,7 +28,7 @@ case class ACQ5021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Goodw
   override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
     collectErrors(
-      requiredIf(isEmpty && (ac42.hasValue || ac43.hasValue))
+      requiredIf(noValue && (ac42.hasValue || ac43.hasValue))
     )
   }
 }

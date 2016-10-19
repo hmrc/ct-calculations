@@ -29,13 +29,13 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
     import boxRetriever._
 
     collectErrors(
-      failIf(ac44.nonEmpty)(
+      failIf(ac44.hasValue)(
         collectErrors(
           validateMoney(value, min = 0),
           validateOneFieldMandatory(boxRetriever)
         )
       ),
-      failIf(ac44.isEmpty)(validateNoteCannotExist(boxRetriever))
+      failIf(ac44.noValue)(validateNoteCannotExist(boxRetriever))
     )
   }
 
