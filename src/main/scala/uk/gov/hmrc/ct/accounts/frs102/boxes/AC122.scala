@@ -30,7 +30,7 @@ case class AC122(value: Option[Int]) extends CtBoxIdentifier(name = "Net book va
 
     collectErrors(
       validateMoney(value, min = 0),
-      failIf(boxRetriever.ac42().value.nonEmpty)(validateOptionalIntegerAsEqualTo(this, boxRetriever.ac42()))
+      failIf(boxRetriever.ac42.nonEmpty)(validateOptionalIntegerAsEqualTo(this, boxRetriever.ac42()))
     )
   }
 }

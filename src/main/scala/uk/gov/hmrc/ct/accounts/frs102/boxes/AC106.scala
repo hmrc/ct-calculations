@@ -29,10 +29,11 @@ case class AC106(value: Option[Int]) extends CtBoxIdentifier(name = "Average num
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     val noteSelectedForInclusion = boxRetriever.ac7300().orFalse
 
+    import boxRetriever._
     collectErrors(
       cannotExistIf(!noteSelectedForInclusion && value.nonEmpty),
       validateMoney(value, min = 0, max = 99999),
-      failIf(value.isEmpty && boxRetriever.ac7300().orFalse && boxRetriever.ac107().value.isEmpty && boxRetriever.ac106A().value.isEmpty)
+      failIf(isEmpty && ac7300().orFalse && ac107.isEmpty && ac106A.isEmpty)
         (Set(CtValidation(None, "error.abridged.additional.employees.note.one.box.required")))
     )
   }

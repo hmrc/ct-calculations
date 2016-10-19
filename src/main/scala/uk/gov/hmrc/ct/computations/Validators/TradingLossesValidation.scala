@@ -34,31 +34,31 @@ trait TradingLossesValidation extends Validators {
   }
 
    def answeredNoToTradingLossesNotUsedFromPreviousPeriod(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ17().value == Some(false)
+     boxRetriever.cpQ17.isFalse
   }
 
    def answeredYesToTradingLossesNotUsedFromPreviousPeriod(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ17().value == Some(true)
+     boxRetriever.cpQ17.isTrue
   }
 
    def notAnsweredTradingLossesNotUsedFromPreviousPeriod(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ17().value.isEmpty
+     boxRetriever.cpQ17.isEmpty
   }
 
    def answeredNoToCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ19().value == Some(false)
+     boxRetriever.cpQ19.isFalse
   }
 
    def answeredYesToCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ19().value == Some(true)
+     boxRetriever.cpQ19.isTrue
   }
 
    def answeredYesToCurrentTradingLossesAgainstToPreviousPeriod(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ20().value == Some(true)
+     boxRetriever.cpQ20.isTrue
   }
 
    def notAnsweredCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ19().value.isEmpty
+     boxRetriever.cpQ19.isEmpty
   }
 
    def netTradingProfitGreaterThanTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {

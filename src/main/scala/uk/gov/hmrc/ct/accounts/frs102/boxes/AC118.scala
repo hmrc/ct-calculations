@@ -29,7 +29,7 @@ case class AC118(value: Option[Int]) extends CtBoxIdentifier(name = "Amortisatio
 
     collectErrors(
       validateMoney(value, min = 0),
-      cannotExistIf(value.nonEmpty && boxRetriever.ac43().value.isEmpty)
+      cannotExistIf(value.nonEmpty && boxRetriever.ac43.isEmpty)
     )
   }
 }

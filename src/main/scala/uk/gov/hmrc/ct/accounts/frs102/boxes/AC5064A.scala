@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.box._
 case class AC5064A(value: Option[String]) extends CtBoxIdentifier(name = "Balance sheet - Creditors after 1 year note.") with CtOptionalString with Input with ValidatableBox[Frs102AccountsBoxRetriever] {
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
-      cannotExistIf(value.isDefined && !boxRetriever.ac64().value.isDefined),
+      cannotExistIf(hasValue && !boxRetriever.ac64.hasValue),
       validateStringMaxLength("AC5064A", value.getOrElse(""), StandardCohoTextFieldLimit),
       validateCoHoOptionalString("AC5064A", this)
     )

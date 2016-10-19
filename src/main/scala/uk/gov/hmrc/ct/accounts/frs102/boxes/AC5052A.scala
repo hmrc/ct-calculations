@@ -29,7 +29,7 @@ with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
-      cannotExistIf(value.nonEmpty && boxRetriever.ac52().value.isEmpty),
+      cannotExistIf(value.nonEmpty && boxRetriever.ac52.isEmpty),
       validateMoney(value, min = 0),
       validateOptionalIntegerLessOrEqualBox(boxRetriever.ac52())
     )

@@ -30,19 +30,26 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
 
   def validate(boxRetriever: T): Set[CtValidation]
 
-  protected def validateBooleanAsMandatory()()(implicit ev: <:<[B, Option[Boolean]]): Set[CtValidation] = {
+  implicit def box2StringIdBox(box: CtValue[_] with CtBoxIdentifier): StringIdBox = box.asInstanceOf[StringIdBox]
+  implicit def box2OptionalIntIdBox(box: CtValue[_] with CtBoxIdentifier): OptionalIntIdBox = box.asInstanceOf[OptionalIntIdBox]
+  implicit def box2OptionalBooleanIdBox(box: CtValue[_] with CtBoxIdentifier): OptionalBooleanIdBox = box.asInstanceOf[OptionalBooleanIdBox]
+  implicit def box2OptionalStringIdBox(box: CtValue[_] with CtBoxIdentifier): OptionalStringIdBox = box.asInstanceOf[OptionalStringIdBox]
+  implicit def box2OptionalDateIdBox(box: CtValue[_] with CtBoxIdentifier): OptionalDateIdBox = box.asInstanceOf[OptionalDateIdBox]
+  implicit def box2OptionalBigDecimalIdBox(box: CtValue[_] with CtBoxIdentifier): OptionalBigDecimalIdBox = box.asInstanceOf[OptionalBigDecimalIdBox]
+
+  protected def validateBooleanAsMandatory()(): Set[CtValidation] = {
     super.validateBooleanAsMandatory(box.id, box)
   }
 
-  protected def validateBooleanAsTrue()()(implicit ev: <:<[B, Option[Boolean]]): Set[CtValidation] = {
+  protected def validateBooleanAsTrue()(): Set[CtValidation] = {
     super.validateBooleanAsTrue(box.id, box)
   }
 
-  protected def validateIntegerAsMandatory()()(implicit ev: <:<[B, Option[Int]]): Set[CtValidation] = {
+  protected def validateIntegerAsMandatory()(): Set[CtValidation] = {
     super.validateIntegerAsMandatory(box.id, box)
   }
 
-  protected def validateStringAsMandatory()()(implicit ev: <:<[B, Option[String]]): Set[CtValidation] = {
+  protected def validateStringAsMandatory()(): Set[CtValidation] = {
     super.validateStringAsMandatory(box.id, box)
   }
 
@@ -50,7 +57,7 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
     validateAsMandatory(box)
   }
 
-  protected def validateStringAsMandatoryIfPAYEEQ1False(boxRetriever: RepaymentsBoxRetriever)()(implicit ev: <:<[B, Option[String]]): Set[CtValidation] = {
+  protected def validateStringAsMandatoryIfPAYEEQ1False(boxRetriever: RepaymentsBoxRetriever)(): Set[CtValidation] = {
     super.validateStringAsMandatoryIfPAYEEQ1False(boxRetriever, box.id, box)
   }
 
@@ -62,7 +69,7 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
     super.validateAllFilledOrEmptyStringsForBankDetails(boxRetriever, box.id)
   }
 
-  protected def validateStringAsBlank()()(implicit ev: <:<[B, Option[String]]): Set[CtValidation] = {
+  protected def validateStringAsBlank()(): Set[CtValidation] = {
     super.validateStringAsBlank(box.id, box)
   }
 
@@ -74,15 +81,15 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
     super.validateDateAsMandatory(box.id, date, messageId)
   }
 
-  protected def validateDateAsBlank()()(implicit ev: <:<[B, Option[LocalDate]]): Set[CtValidation] = {
+  protected def validateDateAsBlank()(): Set[CtValidation] = {
     super.validateDateAsBlank(box.id, box)
   }
 
-  protected def validateDateAsBefore(dateToCompare: LocalDate)()(implicit ev: <:<[B, Option[LocalDate]]): Set[CtValidation] = {
+  protected def validateDateAsBefore(dateToCompare: LocalDate)(): Set[CtValidation] = {
     super.validateDateAsBefore(box.id, box, dateToCompare)
   }
 
-  protected def validateDateAsAfter(dateToCompare: LocalDate)()(implicit ev: <:<[B, Option[LocalDate]]): Set[CtValidation] = {
+  protected def validateDateAsAfter(dateToCompare: LocalDate)(): Set[CtValidation] = {
     super.validateDateAsAfter(box.id, box, dateToCompare)
   }
 
@@ -94,35 +101,35 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
     super.validateDateAsBetweenInclusive(box.id, date, minDate, maxDate, messageId)
   }
 
-  protected def validateIntegerAsBlank()()(implicit ev: <:<[B, Option[Int]]): Set[CtValidation] = {
+  protected def validateIntegerAsBlank()(): Set[CtValidation] = {
     super.validateIntegerAsBlank(box.id, box)
   }
 
-  protected def validateIntegerRange(min: Int = 0, max: Int)()(implicit ev: <:<[B, Option[Int]]): Set[CtValidation] = {
+  protected def validateIntegerRange(min: Int = 0, max: Int)(): Set[CtValidation] = {
     super.validateIntegerRange(box.id, box, min, max)
   }
 
-  protected def validateZeroOrPositiveBigDecimal()()(implicit ev: <:<[B, Option[BigDecimal]]): Set[CtValidation] = {
+  protected def validateZeroOrPositiveBigDecimal()(): Set[CtValidation] = {
     super.validateZeroOrPositiveBigDecimal(box)
   }
 
-  protected def validateZeroOrPositiveInteger()()(implicit ev: <:<[B, Option[Int]]): Set[CtValidation] = {
+  protected def validateZeroOrPositiveInteger()(): Set[CtValidation] = {
     super.validateZeroOrPositiveInteger(box)
   }
 
-  protected def validatePositiveBigDecimal()()(implicit ev: <:<[B, Option[BigDecimal]]): Set[CtValidation] = {
+  protected def validatePositiveBigDecimal()(): Set[CtValidation] = {
     super.validatePositiveBigDecimal(box)
   }
 
-  protected def validatePositiveInteger()()(implicit ev: <:<[B, Option[Int]]): Set[CtValidation] = {
+  protected def validatePositiveInteger()(): Set[CtValidation] = {
     super.validatePositiveInteger(box)
   }
 
-  protected def validateOptionalIntegerAsEqualTo(equalToBox: CtBoxIdentifier with CtOptionalInteger)(implicit ev: <:<[B, CtBoxIdentifier with CtOptionalInteger]): Set[CtValidation] = {
+  protected def validateOptionalIntegerAsEqualTo(equalToBox: CtBoxIdentifier with CtOptionalInteger): Set[CtValidation] = {
     super.validateOptionalIntegerAsEqualTo(box.asInstanceOf[CtBoxIdentifier with CtOptionalInteger], equalToBox)
   }
 
-  protected def validateOptionalStringByRegex(regex: String)()(implicit ev: <:<[B, Option[String]]): Set[CtValidation] = {
+  protected def validateOptionalStringByRegex(regex: String)(): Set[CtValidation] = {
     super.validateOptionalStringByRegex(box.id, box, regex)
   }
 
@@ -130,19 +137,19 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
     super.validateRawStringByRegex(box.id, value, errorCodeBoxId, regex)
   }
 
-  protected def validateStringByRegex(regex: String)()(implicit ev: <:<[B, String]): Set[CtValidation] = {
+  protected def validateStringByRegex(regex: String)(): Set[CtValidation] = {
     super.validateStringByRegex(box.id, box, regex)
   }
 
-  protected def validateCoHoOptionalString()()(implicit ev: <:<[B, Option[String]]): Set[CtValidation] = {
+  protected def validateCoHoOptionalString()(): Set[CtValidation] = {
     super.validateCoHoOptionalString(box.id, box)
   }
 
-  protected def validateCohoNameField()()(implicit ev: <:<[B, String]): Set[CtValidation] = {
+  protected def validateCohoNameField()(): Set[CtValidation] = {
     super.validateCohoNameField(box.id, box)
   }
 
-  protected def validateCohoOptionalNameField()()(implicit ev: <:<[B, Option[String]]): Set[CtValidation] = {
+  protected def validateCohoOptionalNameField()(): Set[CtValidation] = {
     super.validateCohoOptionalNameField(box.id, box)
   }
 
@@ -150,11 +157,11 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
     super.validateCoHoString(box.id, value, errorCodeBoxId)
   }
 
-  protected def validateOptionalStringByLength(min: Int, max: Int)()(implicit ev: <:<[B, Option[String]]): Set[CtValidation] = {
+  protected def validateOptionalStringByLength(min: Int, max: Int)(): Set[CtValidation] = {
     super.validateOptionalStringByLength(box.id, box, min, max)
   }
 
-  protected def validateStringByLength(min:Int, max:Int)()(implicit ev: <:<[B, String]): Set[CtValidation] = {
+  protected def validateStringByLength(min:Int, max:Int)(): Set[CtValidation] = {
     super.validateStringByLength(box.id, box, min, max)
   }
 
@@ -181,11 +188,4 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
     super.validatePostcode(box.id, box)
   }
 
-
-  implicit def box2StringIdBox(box: CtValue[_] with CtBoxIdentifier): StringIdBox = box.asInstanceOf[StringIdBox]
-  implicit def box2OptionalIntIdBox(box: CtValue[_] with CtBoxIdentifier): OptionalIntIdBox = box.asInstanceOf[OptionalIntIdBox]
-  implicit def box2OptionalBooleanIdBox(box: CtValue[_] with CtBoxIdentifier): OptionalBooleanIdBox = box.asInstanceOf[OptionalBooleanIdBox]
-  implicit def box2OptionalStringIdBox(box: CtValue[_] with CtBoxIdentifier): OptionalStringIdBox = box.asInstanceOf[OptionalStringIdBox]
-  implicit def box2OptionalDateIdBox(box: CtValue[_] with CtBoxIdentifier): OptionalDateIdBox = box.asInstanceOf[OptionalDateIdBox]
-  implicit def box2OptionalBigDecimalIdBox(box: CtValue[_] with CtBoxIdentifier): OptionalBigDecimalIdBox = box.asInstanceOf[OptionalBigDecimalIdBox]
 }

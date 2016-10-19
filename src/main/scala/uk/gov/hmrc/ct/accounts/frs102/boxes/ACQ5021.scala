@@ -16,21 +16,19 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.ValidatableBox._
+import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC5032(value: Option[String]) extends CtBoxIdentifier(name = "Profit/(loss) before tax note")
-                                      with CtOptionalString
-                                      with Input
-                                      with SelfValidatableBox[Frs102AccountsBoxRetriever, Option[String]] {
+case class ACQ5021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Goodwill")
+  with CtOptionalBoolean
+  with Input
+  with ValidatableBox[FullAccountsBoxRetriever]
+  with Validators {
 
-
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
+    import boxRetriever._
     collectErrors(
-      cannotExistIf(hasValue && !boxRetriever.ac32().hasValue),
-      validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString()
+      requiredIf(isEmpty && (ac42.hasValue || ac43.hasValue))
     )
   }
 }

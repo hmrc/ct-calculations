@@ -26,14 +26,16 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
   with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+    import boxRetriever._
+
     collectErrors(
-      failIf(boxRetriever.ac44().value.nonEmpty)(
+      failIf(ac44.nonEmpty)(
         collectErrors(
           validateMoney(value, min = 0),
           validateOneFieldMandatory(boxRetriever)
         )
       ),
-      failIf(boxRetriever.ac44().value.isEmpty)(validateNoteCannotExist(boxRetriever))
+      failIf(ac44.isEmpty)(validateNoteCannotExist(boxRetriever))
     )
   }
 

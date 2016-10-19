@@ -41,23 +41,23 @@ case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do yo
 
     if (value.contains(false)) {
       val noteNonEmpty =
-        ac16().value.nonEmpty ||
-        ac17().value.nonEmpty ||
-        ac18().value.nonEmpty ||
-        ac19().value.nonEmpty ||
-        ac20().value.nonEmpty ||
-        ac21().value.nonEmpty ||
-        ac26().value.nonEmpty ||
-        ac27().value.nonEmpty ||
-        ac28().value.nonEmpty ||
-        ac29().value.nonEmpty ||
-        ac30().value.nonEmpty ||
-        ac31().value.nonEmpty ||
-        ac34().value.nonEmpty ||
-        ac35().value.nonEmpty ||
-        ac36().value.nonEmpty ||
-        ac37().value.nonEmpty ||
-        ac5032().value.nonEmpty
+        ac16.nonEmpty ||
+        ac17.nonEmpty ||
+        ac18.nonEmpty ||
+        ac19.nonEmpty ||
+        ac20.nonEmpty ||
+        ac21.nonEmpty ||
+        ac26.nonEmpty ||
+        ac27.nonEmpty ||
+        ac28.nonEmpty ||
+        ac29.nonEmpty ||
+        ac30.nonEmpty ||
+        ac31.nonEmpty ||
+        ac34.nonEmpty ||
+        ac35.nonEmpty ||
+        ac36.nonEmpty ||
+        ac37.nonEmpty ||
+        ac5032.nonEmpty
 
       if (noteNonEmpty)
         Set(CtValidation(None, "error.profitAndLoss.cannot.exist"))
