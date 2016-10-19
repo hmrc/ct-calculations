@@ -21,7 +21,23 @@ import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 case class AC133(value: Option[Int]) extends CtBoxIdentifier(name = "Net book value of tangible assets at the end of this period")
-  with CtOptionalInteger {
+  with CtOptionalInteger
+  with ValidatableBox[Frs102AccountsBoxRetriever]
+  with Validators{
+
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+    failIf(boxRetriever.ac44.nonEmpty) (
+      collectErrors(
+        validateNetBookValueMatchesTotalAssets(boxRetriever)
+      )
+    )
+  }
+
+  def validateNetBookValueMatchesTotalAssets(boxRetriever: Frs102AccountsBoxRetriever)() = {
+    failIf(boxRetriever.ac133().orZero != boxRetriever.ac45().orZero) {
+      Set(CtValidation(None, "error.tangible.assets.note.previousNetBookValue.notEqualToAssets"))
+    }
+  }
 }
 
 object AC133 extends Calculated[AC133, Frs102AccountsBoxRetriever] with BalanceSheetTangibleAssetsCalculator {
