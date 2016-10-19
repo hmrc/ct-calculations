@@ -21,7 +21,15 @@ import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, F
 import uk.gov.hmrc.ct.box._
 
 case class AC131(value: Option[Int]) extends CtBoxIdentifier(name = "Total net assets or liabilities (previous PoA)")
-  with CtOptionalInteger with BalanceSheetTangibleAssetsCalculator {
+  with CtOptionalInteger
+  with ValidatableBox[Frs102AccountsBoxRetriever]
+  with Validators {
+
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateMoney(value)
+    )
+  }
 }
 
 object AC131 extends Calculated[AC131, Frs102AccountsBoxRetriever] with BalanceSheetTangibleAssetsCalculator {
