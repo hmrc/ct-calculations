@@ -67,8 +67,8 @@ case class AC115(value: Option[Int]) extends CtBoxIdentifier(name = "Additions")
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      failIf(boxRetriever.ac42().value.nonEmpty)(validateNoteEntered(boxRetriever)),
-      failIf(boxRetriever.ac42().value.isEmpty)(validateNoteCannotExists(boxRetriever)),
+      failIf(boxRetriever.ac42.nonEmpty)(validateNoteEntered(boxRetriever)),
+      failIf(boxRetriever.ac42.isEmpty)(validateNoteCannotExists(boxRetriever)),
       validateMoney(value, min = 0)
     )
   }

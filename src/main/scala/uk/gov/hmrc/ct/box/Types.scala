@@ -36,6 +36,13 @@ trait CtValue[T] {
         case x => Some(x.toString)
       }
   }
+
+  def hasValue(implicit ev: <:<[T, Option[_]]) = value.isDefined
+
+  def isEmpty(implicit ev: <:<[T, Option[_]]) = value.isEmpty
+
+  def nonEmpty(implicit ev: <:<[T, Option[_]]) = value.nonEmpty
+
 }
 
 trait CtOptionalInteger extends CtValue[Option[Int]] {
@@ -163,6 +170,11 @@ trait CtOptionalBoolean extends CtValue[Option[Boolean]] {
   def orFalse: Boolean = value.getOrElse(false)
 
   def inverse : Option[Boolean] = value.map { !_ }
+
+  def isTrue = value == Some(true)
+
+  def isFalse = value == Some(false)
+
 }
 
 trait CtString extends CtValue[String] {
