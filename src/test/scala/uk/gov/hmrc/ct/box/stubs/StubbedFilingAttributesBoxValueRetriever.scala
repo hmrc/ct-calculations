@@ -34,6 +34,10 @@ trait StubbedFilingAttributesBoxValueRetriever extends FilingAttributesBoxValueR
 
   override def hmrcFiling(): HMRCFiling = ???
 
+  override def companiesHouseSubmitted(): CompaniesHouseSubmitted = ???
+
+  override def hmrcSubmitted(): HMRCSubmitted = ???
+
   override def hmrcAmendment(): HMRCAmendment = ???
 
   override def companiesHouseFiling(): CompaniesHouseFiling = ???

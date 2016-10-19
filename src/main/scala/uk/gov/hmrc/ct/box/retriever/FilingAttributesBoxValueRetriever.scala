@@ -30,6 +30,10 @@ trait FilingAttributesBoxValueRetriever extends BoxRetriever {
 
   def hmrcFiling(): HMRCFiling
 
+  def companiesHouseSubmitted(): CompaniesHouseSubmitted
+
+  def hmrcSubmitted(): HMRCSubmitted
+
   def hmrcAmendment(): HMRCAmendment
 
   def microEntityFiling(): MicroEntityFiling
