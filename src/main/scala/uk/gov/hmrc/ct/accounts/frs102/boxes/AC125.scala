@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.calculations.BalanceSheetTangibleAssetsCalculator
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
 
 case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of all tangible assets acquired during this period")
@@ -74,6 +75,20 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
 
     failIf(!anyBoxPopulated)(
       Set(CtValidation(None, "error.tangible.assets.note.one.box.required"))
+    )
+  }
+}
+
+object AC125 extends Calculated[AC125, FullAccountsBoxRetriever] with BalanceSheetTangibleAssetsCalculator {
+
+  override def calculate(boxRetriever: FullAccountsBoxRetriever): AC125 = {
+    import boxRetriever._
+    calculateAC125(
+      ac125A(),
+      ac125B(),
+      ac125C(),
+      ac125D(),
+      ac125E()
     )
   }
 }
