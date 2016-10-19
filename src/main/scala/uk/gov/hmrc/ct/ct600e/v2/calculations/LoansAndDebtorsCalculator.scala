@@ -22,7 +22,7 @@ trait LoansAndDebtorsCalculator {
   def calculateFieldValue(e24eA: E24eA, e24eB: E24eB): E24e = {
     val fields = Seq(e24eA, e24eB)
 
-    if (fields.exists(_.value.isDefined))
+    if (fields.exists(_.hasValue))
       E24e(Some(fields.map(_.orZero).sum))
     else
       E24e(None)

@@ -48,14 +48,14 @@ case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you
     if (value.contains(false)) {
       val noteNonEmpty =
         boxRetriever.directors().directors.nonEmpty ||
-        boxRetriever.acQ8003().value.nonEmpty ||
-        boxRetriever.ac8033().value.nonEmpty ||
-        boxRetriever.acQ8009().value.nonEmpty ||
-        boxRetriever.ac8051().value.nonEmpty ||
-        boxRetriever.ac8052().value.nonEmpty ||
-        boxRetriever.ac8053().value.nonEmpty ||
-        boxRetriever.ac8054().value.nonEmpty ||
-        boxRetriever.ac8899().value.nonEmpty
+        boxRetriever.acQ8003.nonEmpty ||
+        boxRetriever.ac8033.nonEmpty ||
+        boxRetriever.acQ8009.nonEmpty ||
+        boxRetriever.ac8051.nonEmpty ||
+        boxRetriever.ac8052.nonEmpty ||
+        boxRetriever.ac8053.nonEmpty ||
+        boxRetriever.ac8054.nonEmpty ||
+        boxRetriever.ac8899.nonEmpty
 
       if (noteNonEmpty)
         Set(CtValidation(None, "error.directorsReport.cannot.exist"))
