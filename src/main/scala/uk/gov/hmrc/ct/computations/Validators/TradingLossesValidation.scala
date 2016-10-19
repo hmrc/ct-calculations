@@ -42,7 +42,7 @@ trait TradingLossesValidation extends Validators {
   }
 
    def notAnsweredTradingLossesNotUsedFromPreviousPeriod(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ17.isEmpty
+     boxRetriever.cpQ17.noValue
   }
 
    def answeredNoToCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
@@ -58,7 +58,7 @@ trait TradingLossesValidation extends Validators {
   }
 
    def notAnsweredCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ19.isEmpty
+     boxRetriever.cpQ19.noValue
   }
 
    def netTradingProfitGreaterThanTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {

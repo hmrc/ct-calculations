@@ -28,7 +28,7 @@ case class AC124(value: Option[Int]) extends CtBoxIdentifier(name = "Total cost 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       validateMoney(value, min = 0),
-      cannotExistIf(value.nonEmpty && boxRetriever.ac45.isEmpty)
+      cannotExistIf(value.nonEmpty && boxRetriever.ac45.noValue)
     )
   }
 }

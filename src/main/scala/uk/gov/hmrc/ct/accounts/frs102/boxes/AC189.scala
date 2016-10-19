@@ -29,7 +29,7 @@ case class AC189(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus or 
     import boxRetriever._
     collectErrors (
       failIf(ac76.hasValue)(validateIntegerAsMandatory("AC189", this)),
-      failIf(ac76.isEmpty)(validateNoteCannotExist(boxRetriever)),
+      failIf(ac76.noValue)(validateNoteCannotExist(boxRetriever)),
       validateMoney(value)
     )
   }
@@ -37,7 +37,7 @@ case class AC189(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus or 
   def validateNoteCannotExist(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
 
-    val isNoteNonEmpty = ac189.nonEmpty || ac5076C().value.getOrElse("").trim().nonEmpty
+    val isNoteNonEmpty = ac189.hasValue || ac5076C().value.getOrElse("").trim().nonEmpty
 
     if (isNoteNonEmpty)
       Set(CtValidation(None, "error.balanceSheet.revaluationReserveNote.cannot.exist"))
