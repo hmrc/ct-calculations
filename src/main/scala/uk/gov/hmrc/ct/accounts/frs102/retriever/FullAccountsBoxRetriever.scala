@@ -37,4 +37,8 @@ trait FullAccountsBoxRetriever extends Frs102AccountsBoxRetriever {
   def ac22(): AC22
 
   def ac23(): AC23
+
+  def acq5021(): ACQ5021
+
+  def acq5022(): ACQ5022
 }

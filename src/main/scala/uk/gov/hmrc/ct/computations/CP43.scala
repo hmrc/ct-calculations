@@ -21,7 +21,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP43(value: Option[Int]) extends CtBoxIdentifier(name = "Interest Received") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
 
-  def validate(boxRetriever: ComputationsBoxRetriever) = validateZeroOrPositiveInteger(this)
+  override def validate(boxRetriever: ComputationsBoxRetriever) = validateZeroOrPositiveInteger(this)
 
 }
 

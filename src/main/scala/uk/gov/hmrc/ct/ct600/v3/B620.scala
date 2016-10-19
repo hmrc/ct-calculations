@@ -21,7 +21,7 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 case class B620(value: Option[Int]) extends CtBoxIdentifier("Franked investment") with CtOptionalInteger with Input with ValidatableBox[CT600BoxRetriever] {
 
-  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
     val bfq1 = boxRetriever.bFQ1()
 
     failIf (bfq1.value.getOrElse(false) && !hasValue) {

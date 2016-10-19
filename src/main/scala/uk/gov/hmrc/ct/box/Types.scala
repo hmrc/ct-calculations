@@ -36,14 +36,16 @@ trait CtValue[T] {
         case x => Some(x.toString)
       }
   }
-
-  def hasValue(implicit ev: <:<[T, Option[_]]) = value.isDefined
-
-  def noValue(implicit ev: <:<[T, Option[_]]) = value.isEmpty
-
 }
 
-trait CtOptionalInteger extends CtValue[Option[Int]] {
+trait OptionalCtValue[T] extends CtValue[Option[T]] {
+
+  def hasValue = value.isDefined
+
+  def noValue = value.isEmpty
+}
+
+trait CtOptionalInteger extends OptionalCtValue[Int] {
 
   self: CtBoxIdentifier =>
 
@@ -82,7 +84,7 @@ trait CtOptionalInteger extends CtValue[Option[Int]] {
   def isPositive: Boolean = orZero > 0
 }
 
-trait CtOptionalBigDecimal extends CtValue[Option[BigDecimal]] {
+trait CtOptionalBigDecimal extends OptionalCtValue[BigDecimal] {
 
   self: CtBoxIdentifier =>
 
@@ -159,7 +161,7 @@ trait CtBoolean extends CtValue[Boolean] {
   def asBoolean:Option[Boolean] = Some(value)
 }
 
-trait CtOptionalBoolean extends CtValue[Option[Boolean]] {
+trait CtOptionalBoolean extends OptionalCtValue[Boolean] {
 
   self: CtBoxIdentifier =>
 
@@ -180,7 +182,7 @@ trait CtString extends CtValue[String] {
   self: CtBoxIdentifier =>
 }
 
-trait CtOptionalString extends CtValue[Option[String]] {
+trait CtOptionalString extends OptionalCtValue[String] {
 
   self: CtBoxIdentifier =>
 }
@@ -234,7 +236,7 @@ trait CtDate extends CtValue[LocalDate] {
 
 }
 
-trait CtOptionalDate extends CtValue[Option[LocalDate]] {
+trait CtOptionalDate extends OptionalCtValue[LocalDate] {
 
   self: CtBoxIdentifier =>
 

@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
+import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
-import uk.gov.hmrc.ct.box.ValidatableBox._
 
-case class B935(value: String) extends CtBoxIdentifier("account name")
-with CtString with Input with ValidatableBox[RepaymentsBoxRetriever] {
+case class ACQ5022(value: Option[Boolean]) extends CtBoxIdentifier(name = "Other intangible assets")
+  with CtOptionalBoolean
+  with Input
+  with ValidatableBox[FullAccountsBoxRetriever]
+  with Validators {
 
-  override def validate(boxRetriever: RepaymentsBoxRetriever): Set[CtValidation] = {
-    validateAllFilledOrEmptyStringsForBankDetails(boxRetriever,"B935") ++
-      validateStringByLength("B935", this, 2, 28) ++
-      validateStringByRegex("B935", this, ValidNonForeignLessRestrictiveCharacters)
-  }
+
 }
