@@ -29,6 +29,9 @@ trait BoxesFixture extends MockitoSugar {
   def ac42noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.ac42()).thenReturn(AC42(None))
   def ac43noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.ac43()).thenReturn(AC43(None))
   def ac43withValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.ac43()).thenReturn(AC43(Some(99)))
+  def acq5021noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5021()).thenReturn(ACQ5021(None))
+  def acq5021false(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5021()).thenReturn(ACQ5021(Some(false)))
+  def acq5021withValue(implicit boxRetriever: FullAccountsBoxRetriever) = acq5021false
   def acq5022noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5022()).thenReturn(ACQ5022(None))
   def acq5022false(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5022()).thenReturn(ACQ5022(Some(false)))
   def acq5022withValue(implicit boxRetriever: FullAccountsBoxRetriever) = acq5022false
@@ -36,6 +39,8 @@ trait BoxesFixture extends MockitoSugar {
   def ac44noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.ac44()).thenReturn(AC44(None))
   def ac45noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.ac45()).thenReturn(AC45(None))
   def ac45withValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.ac45()).thenReturn(AC45(Some(99)))
+  def acq5031noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5031()).thenReturn(ACQ5031(None))
+  def acq5031withValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5031()).thenReturn(ACQ5031(Some(false)))
   def acq5032noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5032()).thenReturn(ACQ5032(None))
   def acq5032withValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5032()).thenReturn(ACQ5032(Some(false)))
   def acq5033noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5033()).thenReturn(ACQ5033(None))

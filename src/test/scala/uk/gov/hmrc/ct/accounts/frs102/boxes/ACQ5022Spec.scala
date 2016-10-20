@@ -16,24 +16,27 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs102.BoxesFixture
+import uk.gov.hmrc.ct.box.CtValidation
 
-case class ACQ5031(value: Option[Boolean]) extends CtBoxIdentifier(name = "Land and buildings")
-  with CtOptionalBoolean
-  with Input
-  with ValidatableBox[FullAccountsBoxRetriever]
-  with Validators {
 
-  override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
-    import boxRetriever._
-    collectErrors(
-      cannotExistIf(ac44.noValue && ac45.noValue),
+class ACQ5022Spec extends WordSpec with Matchers with BoxesFixture {
 
-      failIf(ac44.hasValue || ac45.hasValue) {
-        atLeastOneBoxHasValue("balanche.sheet.tangible.assets", this, acq5032, acq5033, acq5034, acq5035)
+  "ACQ5022" should {
+
+    "for Full Accounts fail validation" when {
+
+      val cannotExist = Set(CtValidation(Some("ACQ5022"),"error.ACQ5022.cannot.exist",None))
+
+      "ac42, ac43 has no value and acq5022 has value" in {
+        ac42noValue
+        ac43noValue
+        acq5021noValue
+
+        ACQ5022(Some(false)).validate(boxRetriever) shouldBe cannotExist
       }
-    )
+
+    }
   }
 }
-

@@ -16,7 +16,16 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
+import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 case class ACQ5032(value: Option[Boolean]) extends CtBoxIdentifier(name = "Plant and machinery")  with CtOptionalBoolean with Input
+  with ValidatableBox[FullAccountsBoxRetriever]
+{
+
+  def validate(boxRetriever: FullAccountsBoxRetriever) = {
+    import boxRetriever._
+    cannotExistIf(ac44.noValue && ac45.noValue)
+  }
+}
 

@@ -38,7 +38,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
   // Taken from PostCodeType on http://www.hmrc.gov.uk/schemas/core-v2-0.xsd
   protected val postCodeRegex = """(GIR 0AA)|((([A-Z][0-9][0-9]?)|(([A-Z][A-HJ-Y][0-9][0-9]?)|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2})"""
 
-  def validate(boxRetriever: T): Set[CtValidation] = Set.empty
+  def validate(boxRetriever: T): Set[CtValidation]
 
 
   protected def validateBooleanAsMandatory(boxId: String, box: OptionalBooleanIdBox)(): Set[CtValidation] = {

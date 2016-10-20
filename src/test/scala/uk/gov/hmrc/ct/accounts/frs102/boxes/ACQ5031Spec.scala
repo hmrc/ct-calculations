@@ -151,7 +151,8 @@ class ACQ5031Spec extends WordSpec with Matchers with BoxesFixture {
 
     "for Full Accounts fail validation" when {
 
-      val error = Set(CtValidation(None,"error.balanche.sheet.tangible.assets.one.box.required",None))
+      val atLeastOneError = Set(CtValidation(None,"error.balanche.sheet.tangible.assets.one.box.required",None))
+      val cannotExistError = Set(CtValidation(Some("ACQ5031"),"error.ACQ5031.cannot.exist",None))
 
       "ac44 has value and other boxes have no value" in {
         ac44withValue
@@ -161,7 +162,7 @@ class ACQ5031Spec extends WordSpec with Matchers with BoxesFixture {
         acq5034noValue
         acq5035noValue
 
-        ACQ5031(None).validate(boxRetriever) shouldBe error
+        ACQ5031(None).validate(boxRetriever) shouldBe atLeastOneError
       }
 
       "ac45 has value and other boxes have no value" in {
@@ -172,7 +173,7 @@ class ACQ5031Spec extends WordSpec with Matchers with BoxesFixture {
         acq5034noValue
         acq5035noValue
 
-        ACQ5031(None).validate(boxRetriever) shouldBe error
+        ACQ5031(None).validate(boxRetriever) shouldBe atLeastOneError
       }
 
       "ac44,ac45 have value and other boxes have no value" in {
@@ -183,7 +184,18 @@ class ACQ5031Spec extends WordSpec with Matchers with BoxesFixture {
         acq5034noValue
         acq5035noValue
 
-        ACQ5031(None).validate(boxRetriever) shouldBe error
+        ACQ5031(None).validate(boxRetriever) shouldBe atLeastOneError
+      }
+
+      "ac44,ac45 have no value and acq5031 has value" in {
+        ac44noValue
+        ac45noValue
+        acq5032noValue
+        acq5033noValue
+        acq5034noValue
+        acq5035noValue
+
+        ACQ5031(Some(false)).validate(boxRetriever) shouldBe cannotExistError
       }
 
     }
