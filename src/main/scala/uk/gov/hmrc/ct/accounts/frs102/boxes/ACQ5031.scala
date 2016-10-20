@@ -14,15 +14,26 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
+import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CPQ7(value: Option[Boolean]) extends CtBoxIdentifier(name = "Claim trade capital allowances or report balancing charge or incur qualifying expenditure.")
+case class ACQ5031(value: Option[Boolean]) extends CtBoxIdentifier(name = "Land and buildings")
   with CtOptionalBoolean
   with Input
-  with ValidatableBox[ComputationsBoxRetriever] {
+  with ValidatableBox[FullAccountsBoxRetriever]
+  with Validators {
 
-  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = validateBooleanAsMandatory("CPQ7", this)
+  override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
+    import boxRetriever._
+    collectErrors(
+      cannotExistIf(ac44.noValue && ac45.noValue),
+
+      failIf(ac44.hasValue || ac45.hasValue) {
+        atLeastOneBoxHasValue("balanche.sheet.tangible.assets", this, acq5032, acq5033, acq5034, acq5035)
+      }
+    )
+  }
 }
+

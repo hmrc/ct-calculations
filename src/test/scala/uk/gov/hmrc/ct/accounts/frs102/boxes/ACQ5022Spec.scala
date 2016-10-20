@@ -14,18 +14,29 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs102.BoxesFixture
+import uk.gov.hmrc.ct.box.CtValidation
 
-case class B620(value: Option[Int]) extends CtBoxIdentifier("Franked investment") with CtOptionalInteger with Input with ValidatableBox[CT600BoxRetriever] {
 
-  override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = {
-    val bfq1 = boxRetriever.bFQ1()
+class ACQ5022Spec extends WordSpec with Matchers with BoxesFixture {
 
-    failIf (bfq1.value.getOrElse(false) && !hasValue) {
-      Set(CtValidation(Some("B620"), "error.B620.required"))
+  "ACQ5022" should {
+
+    "for Full Accounts fail validation" when {
+
+      val cannotExist = Set(CtValidation(Some("ACQ5022"),"error.ACQ5022.cannot.exist",None))
+
+      "ac42, ac43 has no value and acq5022 has value" in {
+        ac42noValue
+        ac43noValue
+        acq5021noValue
+
+        ACQ5022(Some(false)).validate(boxRetriever) shouldBe cannotExist
+      }
+
     }
   }
 }

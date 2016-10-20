@@ -28,7 +28,6 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
 
   box: CtValue[B] with CtBoxIdentifier =>
 
-  def validate(boxRetriever: T): Set[CtValidation]
 
   implicit def box2StringIdBox(box: CtValue[_] with CtBoxIdentifier): StringIdBox = box.asInstanceOf[StringIdBox]
   implicit def box2OptionalIntIdBox(box: CtValue[_] with CtBoxIdentifier): OptionalIntIdBox = box.asInstanceOf[OptionalIntIdBox]
