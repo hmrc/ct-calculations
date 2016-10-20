@@ -18,5 +18,5 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.box._
 
-case class ACQ5022(value: Option[Boolean]) extends CtBoxIdentifier(name = "Other intangible assets")  with CtOptionalBoolean with Input
+case class ACQ5033(value: Option[Boolean]) extends CtBoxIdentifier(name = "Fixtures and fittings")  with CtOptionalBoolean with Input
 

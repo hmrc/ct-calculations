@@ -16,7 +16,22 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
+import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class ACQ5022(value: Option[Boolean]) extends CtBoxIdentifier(name = "Other intangible assets")  with CtOptionalBoolean with Input
+case class ACQ5031(value: Option[Boolean]) extends CtBoxIdentifier(name = "Land and buildings")
+  with CtOptionalBoolean
+  with Input
+  with ValidatableBox[FullAccountsBoxRetriever]
+  with Validators {
+
+  override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
+    import boxRetriever._
+    collectErrors(
+      failIf(ac44.hasValue || ac45.hasValue) {
+        atLeastOneBoxHasValue("balanche.sheet.tangible.assets", acq5031, acq5032, acq5033, acq5034, acq5035)
+      }
+    )
+  }
+}
 

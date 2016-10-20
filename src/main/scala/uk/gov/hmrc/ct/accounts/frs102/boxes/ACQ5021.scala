@@ -28,8 +28,8 @@ case class ACQ5021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Goodw
   override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
     collectErrors(
-      failIf(ac42.hasValue || ac42.hasValue) {
-        atLeastOneBoxHasValue("balanche.sheet.intangible.assets", acq5021, acq5022)
+      failIf(ac42.hasValue || ac43.hasValue) {
+        atLeastOneBoxHasValue("balanche.sheet.intangible.assets", this, acq5022)
       }
     )
   }
