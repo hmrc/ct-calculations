@@ -29,7 +29,7 @@ case class ACQ5031(value: Option[Boolean]) extends CtBoxIdentifier(name = "Land 
     import boxRetriever._
     collectErrors(
       failIf(ac44.hasValue || ac45.hasValue) {
-        atLeastOneBoxHasValue("balanche.sheet.tangible.assets", acq5031, acq5032, acq5033, acq5034, acq5035)
+        atLeastOneBoxHasValue("balanche.sheet.tangible.assets", this, acq5032, acq5033, acq5034, acq5035)
       }
     )
   }
