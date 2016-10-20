@@ -40,7 +40,7 @@ trait CtValue[T] {
 
 trait OptionalCtValue[T] extends CtValue[Option[T]] {
 
-  def hasValue = value.isDefined
+  def hasValue = value.nonEmpty
 
   def noValue = value.isEmpty
 }
