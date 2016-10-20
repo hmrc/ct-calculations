@@ -16,20 +16,27 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs102.BoxesFixture
+import uk.gov.hmrc.ct.box.CtValidation
 
-case class AC114(value: Option[Int]) extends CtBoxIdentifier(name = "Cost at [POA START]")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[Frs102AccountsBoxRetriever]
-  with Validators {
 
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+class ACQ5022Spec extends WordSpec with Matchers with BoxesFixture {
 
-    collectErrors(
-      validateMoney(value, min = 0),
-      cannotExistIf(value.nonEmpty && boxRetriever.ac43.noValue)
-    )
+  "ACQ5022" should {
+
+    "for Full Accounts fail validation" when {
+
+      val cannotExist = Set(CtValidation(Some("ACQ5022"),"error.ACQ5022.cannot.exist",None))
+
+      "ac42, ac43 has no value and acq5022 has value" in {
+        ac42noValue
+        ac43noValue
+        acq5021noValue
+
+        ACQ5022(Some(false)).validate(boxRetriever) shouldBe cannotExist
+      }
+
+    }
   }
 }

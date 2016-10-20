@@ -30,7 +30,7 @@ case class AC5052C(value: Option[Int]) extends CtBoxIdentifier(name = "Debtors d
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
-      cannotExistIf(value.nonEmpty && boxRetriever.ac52.isEmpty),
+      cannotExistIf(value.nonEmpty && boxRetriever.ac52.noValue),
       validateInputAllowed("AC5052C", boxRetriever.ac205()),
       validateMoney(value, min = 0),
       validateOptionalIntegerLessOrEqualBox(boxRetriever.ac53())

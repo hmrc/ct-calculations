@@ -37,25 +37,14 @@ case class AC36(value: Option[Int]) extends CtBoxIdentifier(name = "Profit or lo
 
   private def validateFull(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
-    validateAtLeastOneBoxHasValue(ac12(), ac14(), ac18(), ac20(), ac28(), ac30(), ac34())
+    atLeastOneBoxHasValue("profit.loss", ac12(), ac14(), ac18(), ac20(), ac28(), ac30(), ac34())
   }
 
   private def validateAbridged(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
-    validateAtLeastOneBoxHasValue(ac16(), ac18(), ac20(), ac28(), ac30(), ac34())
+    atLeastOneBoxHasValue("profit.loss", ac16(), ac18(), ac20(), ac28(), ac30(), ac34())
   }
 
-  private def validateAtLeastOneBoxHasValue(boxes: CtOptionalInteger*): Set[CtValidation] = {
-    if (noValue(boxes)) {
-      Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
-    } else {
-      Set.empty
-    }
-  }
-
-  private def noValue(values: Seq[CtOptionalInteger]): Boolean = {
-    !values.exists(_.value.nonEmpty)
-  }
 }
 
 object AC36 extends Calculated[AC36, Frs102AccountsBoxRetriever] with ProfitOrLossFinancialYearCalculator {

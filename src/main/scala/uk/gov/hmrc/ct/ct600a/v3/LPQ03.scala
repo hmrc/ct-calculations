@@ -20,5 +20,5 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 case class LPQ03(value: Option[Boolean]) extends CtBoxIdentifier(name = "During this accounting period, did the company make any loans to participators or their associates that were not repaid") with CtOptionalBoolean with Input with ValidatableBox[CT600BoxRetriever] {
-  def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = validateBooleanAsMandatory("LPQ03", this)
+  override def validate(boxRetriever: CT600BoxRetriever): Set[CtValidation] = validateBooleanAsMandatory("LPQ03", this)
 }

@@ -32,26 +32,25 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
     boxRetriever match {
       case x: AbridgedAccountsBoxRetriever =>
         collectErrors(
-          failIf(ac44().nonEmpty)(
+          failIf(ac44().hasValue)(
             collectErrors(
               validateMoney(value, min = 0),
               validateAbridgedOneFieldMandatory(boxRetriever)
             )
           ),
-          failIf(ac44().isEmpty)(validateAbridgedNoteCannotExist(boxRetriever))
+          failIf(ac44().noValue)(validateAbridgedNoteCannotExist(boxRetriever))
         )
       case x: FullAccountsBoxRetriever =>
         collectErrors(
-          failIf(ac44().nonEmpty)(
+          failIf(ac44().hasValue)(
             collectErrors(
               validateMoney(value, min = 0),
               validateFullOneFieldMandatory(x)
             )
           ),
-          failIf(ac44().isEmpty)(validateFullNoteCannotExist(x))
+          failIf(ac44().noValue)(validateFullNoteCannotExist(x))
         )
     }
-
   }
 
   private def validateAbridgedNoteCannotExist(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {

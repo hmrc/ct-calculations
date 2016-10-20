@@ -45,17 +45,19 @@ case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you
   }
 
   def validateCannotExist(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever)(): Set[CtValidation] = {
+    import boxRetriever._
+
     if (value.contains(false)) {
       val noteNonEmpty =
-        boxRetriever.directors().directors.nonEmpty ||
-        boxRetriever.acQ8003.nonEmpty ||
-        boxRetriever.ac8033.nonEmpty ||
-        boxRetriever.acQ8009.nonEmpty ||
-        boxRetriever.ac8051.nonEmpty ||
-        boxRetriever.ac8052.nonEmpty ||
-        boxRetriever.ac8053.nonEmpty ||
-        boxRetriever.ac8054.nonEmpty ||
-        boxRetriever.ac8899.nonEmpty
+        directors().directors.nonEmpty ||
+        acQ8003.hasValue ||
+        ac8033.hasValue ||
+        acQ8009.hasValue ||
+        ac8051.hasValue ||
+        ac8052.hasValue ||
+        ac8053.hasValue ||
+        ac8054.hasValue ||
+        ac8899.hasValue
 
       if (noteNonEmpty)
         Set(CtValidation(None, "error.directorsReport.cannot.exist"))

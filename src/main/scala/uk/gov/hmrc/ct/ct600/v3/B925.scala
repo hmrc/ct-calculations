@@ -24,7 +24,7 @@ import uk.gov.hmrc.ct.box.ValidatableBox._
 case class B925(value: String) extends CtBoxIdentifier("sort code")
 with CtString with Input with ValidatableBox[RepaymentsBoxRetriever] {
 
-  def validate(boxRetriever: RepaymentsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: RepaymentsBoxRetriever): Set[CtValidation] = {
       validateAllFilledOrEmptyStringsForBankDetails(boxRetriever, "B925") ++
       validateStringByRegex("B925", this, SortCodeValidChars)
   }

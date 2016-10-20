@@ -26,6 +26,6 @@ case class CPQ8(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did the 
                                         with ValidatableBox[ComputationsBoxRetriever]
                                         with AllowancesQuestionsValidation {
 
-  def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = validateAgainstCPQ7(boxRetriever, "CPQ8", value)
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = validateAgainstCPQ7(boxRetriever, "CPQ8", value)
 
 }
