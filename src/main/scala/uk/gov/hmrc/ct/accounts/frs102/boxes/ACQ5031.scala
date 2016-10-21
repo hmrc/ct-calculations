@@ -31,7 +31,7 @@ case class ACQ5031(value: Option[Boolean]) extends CtBoxIdentifier(name = "Land 
       cannotExistIf(hasValue && ac44.noValue && ac45.noValue),
 
       failIf(ac44.hasValue || ac45.hasValue) {
-        atLeastOneBoxHasValue("balanche.sheet.tangible.assets", this, acq5032, acq5033, acq5034, acq5035)
+        atLeastOneBoxHasValue("balance.sheet.tangible.assets", this, acq5032, acq5033, acq5034, acq5035)
       }
     )
   }

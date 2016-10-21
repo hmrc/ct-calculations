@@ -32,7 +32,7 @@ case class ACQ5021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Goodw
       cannotExistIf(hasValue && ac42.noValue && ac43.noValue),
 
       failIf(ac42.hasValue || ac43.hasValue) {
-        atLeastOneBoxHasValue("balanche.sheet.intangible.assets", this, acq5022)
+        atLeastOneBoxHasValue("balance.sheet.intangible.assets", this, acq5022)
       }
     )
   }

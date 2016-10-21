@@ -162,7 +162,7 @@ class ACQ5031Spec extends WordSpec with Matchers with BoxesFixture {
 
     "for Full Accounts fail validation" when {
 
-      val atLeastOneError = Set(CtValidation(None,"error.balanche.sheet.tangible.assets.one.box.required",None))
+      val atLeastOneError = Set(CtValidation(None,"error.balance.sheet.tangible.assets.one.box.required",None))
       val cannotExistError = Set(CtValidation(Some("ACQ5031"),"error.ACQ5031.cannot.exist",None))
 
       "ac44 has value and other boxes have no value" in {
