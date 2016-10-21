@@ -25,7 +25,7 @@ case class ACQ5032(value: Option[Boolean]) extends CtBoxIdentifier(name = "Plant
 
   def validate(boxRetriever: FullAccountsBoxRetriever) = {
     import boxRetriever._
-    cannotExistIf(ac44.noValue && ac45.noValue)
+    cannotExistIf(hasValue && ac44.noValue && ac45.noValue)
   }
 }
 

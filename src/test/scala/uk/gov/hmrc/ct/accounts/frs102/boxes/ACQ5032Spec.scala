@@ -25,6 +25,20 @@ class ACQ5032Spec extends WordSpec with Matchers with BoxesFixture {
 
   "ACQ5032" should {
 
+    "for Full Accounts pass validation" when {
+
+      "all no value" in {
+        ac44noValue
+        ac45noValue
+        acq5031noValue
+        acq5033noValue
+        acq5034noValue
+        acq5035noValue
+
+        ACQ5032(None).validate(boxRetriever) shouldBe empty
+      }
+    }
+
     "for Full Accounts fail validation" when {
 
       val cannotExistError = Set(CtValidation(Some("ACQ5032"),"error.ACQ5032.cannot.exist",None))
@@ -39,7 +53,6 @@ class ACQ5032Spec extends WordSpec with Matchers with BoxesFixture {
 
         ACQ5032(Some(false)).validate(boxRetriever) shouldBe cannotExistError
       }
-
     }
   }
 }

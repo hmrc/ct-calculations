@@ -147,6 +147,17 @@ class ACQ5031Spec extends WordSpec with Matchers with BoxesFixture {
 
         ACQ5031(None).validate(boxRetriever) shouldBe empty
       }
+
+      "all no value" in {
+        ac44noValue
+        ac45noValue
+        acq5032noValue
+        acq5033noValue
+        acq5034noValue
+        acq5035noValue
+
+        ACQ5031(None).validate(boxRetriever) shouldBe empty
+      }
     }
 
     "for Full Accounts fail validation" when {
