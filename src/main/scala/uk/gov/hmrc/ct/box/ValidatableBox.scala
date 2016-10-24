@@ -27,12 +27,12 @@ import ValidatableBox._
 
 trait ValidatableBox[T <: BoxRetriever] extends Validators {
 
-  type OptionalBooleanIdBox = CtValue[Option[Boolean]] with CtBoxIdentifier
-  type OptionalIntIdBox = CtValue[Option[Int]] with CtBoxIdentifier
-  type OptionalStringIdBox = CtValue[Option[String]] with CtBoxIdentifier
+  type OptionalBooleanIdBox = OptionalCtValue[Boolean] with CtBoxIdentifier
+  type OptionalIntIdBox = OptionalCtValue[Int] with CtBoxIdentifier
+  type OptionalStringIdBox = OptionalCtValue[String] with CtBoxIdentifier
   type StringIdBox = CtValue[String] with CtBoxIdentifier
-  type OptionalDateIdBox = CtValue[Option[LocalDate]] with CtBoxIdentifier
-  type OptionalBigDecimalIdBox = CtValue[Option[BigDecimal]] with CtBoxIdentifier
+  type OptionalDateIdBox = OptionalCtValue[LocalDate] with CtBoxIdentifier
+  type OptionalBigDecimalIdBox = OptionalCtValue[BigDecimal] with CtBoxIdentifier
 
 
   // Taken from PostCodeType on http://www.hmrc.gov.uk/schemas/core-v2-0.xsd
@@ -314,6 +314,18 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
       case x if x.isEmpty => Set()
       case _ => Set(CtValidation(Some(boxId), s"error.$boxId.invalidPostcode"))
     }
+  }
+
+  protected def atLeastOneBoxHasValue(boxId: String, boxes: OptionalCtValue[_]*)(): Set[CtValidation] = {
+    if (noValue(boxes)) {
+      Set(CtValidation(boxId = None, s"error.$boxId.one.box.required"))
+    } else {
+      Set.empty
+    }
+  }
+
+  private def noValue(values: Seq[OptionalCtValue[_]]): Boolean = {
+    values.forall(_.noValue)
   }
 
 }

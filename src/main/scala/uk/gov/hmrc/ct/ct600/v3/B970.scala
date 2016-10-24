@@ -22,5 +22,5 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
 case class B970(value: Option[String]) extends CtBoxIdentifier("Nominee name")
             with CtOptionalString with Input with ValidatableBox[RepaymentsBoxRetriever] {
 
-  def validate(boxRetriever: RepaymentsBoxRetriever): Set[CtValidation] = validateStringAsMandatoryIfPAYEEQ1False(boxRetriever, "B970", this)
+  override def validate(boxRetriever: RepaymentsBoxRetriever): Set[CtValidation] = validateStringAsMandatoryIfPAYEEQ1False(boxRetriever, "B970", this)
 }

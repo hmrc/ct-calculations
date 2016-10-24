@@ -24,5 +24,5 @@ case class CPQ7(value: Option[Boolean]) extends CtBoxIdentifier(name = "Claim tr
   with Input
   with ValidatableBox[ComputationsBoxRetriever] {
 
-  def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = validateBooleanAsMandatory("CPQ7", this)
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = validateBooleanAsMandatory("CPQ7", this)
 }

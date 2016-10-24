@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class ACQ5021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Goodwill")
+case class ACQ5031(value: Option[Boolean]) extends CtBoxIdentifier(name = "Land and buildings")
   with CtOptionalBoolean
   with Input
   with ValidatableBox[FullAccountsBoxRetriever]
@@ -28,12 +28,12 @@ case class ACQ5021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Goodw
   override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
     collectErrors(
+      cannotExistIf(hasValue && ac44.noValue && ac45.noValue),
 
-      cannotExistIf(hasValue && ac42.noValue && ac43.noValue),
-
-      failIf(ac42.hasValue || ac43.hasValue) {
-        atLeastOneBoxHasValue("balance.sheet.intangible.assets", this, acq5022)
+      failIf(ac44.hasValue || ac45.hasValue) {
+        atLeastOneBoxHasValue("balance.sheet.tangible.assets", this, acq5032, acq5033, acq5034, acq5035)
       }
     )
   }
 }
+
