@@ -82,11 +82,19 @@ class ACQ5021Spec extends WordSpec with Matchers with BoxesFixture {
 
         ACQ5021(Some(true)).validate(boxRetriever) shouldBe empty
       }
+
+      "all no value" in {
+        ac42noValue
+        ac43noValue
+        acq5022noValue
+
+        ACQ5021(None).validate(boxRetriever) shouldBe empty
+      }
     }
 
     "for Full Accounts fail validation" when {
 
-      val errorAtLeastOne = Set(CtValidation(None,"error.balanche.sheet.intangible.assets.one.box.required",None))
+      val errorAtLeastOne = Set(CtValidation(None,"error.balance.sheet.intangible.assets.one.box.required",None))
       val cannotExist = Set(CtValidation(Some("ACQ5021"),"error.ACQ5021.cannot.exist",None))
 
       "ac42 has value and acq5021,acq5022 have no value" in {
