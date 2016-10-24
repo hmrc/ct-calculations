@@ -23,7 +23,8 @@ case class AC130E(value: Option[Int]) extends CtBoxIdentifier(name = "Tangible a
   with CtOptionalInteger
   with Input
   with ValidatableBox[Frs102AccountsBoxRetriever]
-  with Validators {
+  with Validators
+  with Debit {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
