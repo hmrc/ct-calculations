@@ -25,31 +25,27 @@ class AC133Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetrieve
 
   "AC133" should {
     "fail validation when AC133 does not match AC45" in {
-      when(boxRetriever.ac133()).thenReturn(AC133(Some(11)))
       when(boxRetriever.ac45()).thenReturn(AC45(Some(22)))
       when(boxRetriever.ac44()).thenReturn(AC44(Some(22)))
-      AC133(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.tangible.assets.note.previousNetBookValue.notEqualToAssets"))
+      AC133(Some(11)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.tangible.assets.note.previousNetBookValue.notEqualToAssets"))
     }
 
     "pass validation when totals tally" in {
-      when(boxRetriever.ac133()).thenReturn(AC133(Some(11)))
       when(boxRetriever.ac45()).thenReturn(AC45(Some(11)))
       when(boxRetriever.ac44()).thenReturn(AC44(Some(11)))
-      AC133(None).validate(boxRetriever) shouldBe Set()
+      AC133(Some(11)).validate(boxRetriever) shouldBe Set()
     }
 
     "pass validation when no values for note fields or balance sheet value" in {
-      when(boxRetriever.ac133()).thenReturn(AC133(None))
       when(boxRetriever.ac45()).thenReturn(AC45(None))
       when(boxRetriever.ac44()).thenReturn(AC44(Some(22)))
       AC133(None).validate(boxRetriever) shouldBe Set()
     }
 
     "not fail validation when no current value balance sheet value" in {
-      when(boxRetriever.ac133()).thenReturn(AC133(Some(22)))
       when(boxRetriever.ac45()).thenReturn(AC45(Some(11)))
       when(boxRetriever.ac44()).thenReturn(AC44(None))
-      AC133(None).validate(boxRetriever) shouldBe Set()
+      AC133(Some(22)).validate(boxRetriever) shouldBe Set()
     }
   }
 }

@@ -25,19 +25,16 @@ class AC132Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetrieve
 
   "AC132" should {
     "fail validation when AC132 does not match AC44" in {
-      when(boxRetriever.ac132()).thenReturn(AC132(Some(11)))
       when(boxRetriever.ac44()).thenReturn(AC44(Some(22)))
-      AC132(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.tangible.assets.note.currentNetBookValue.notEqualToAssets"))
+      AC132(Some(11)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.tangible.assets.note.currentNetBookValue.notEqualToAssets"))
     }
 
     "pass validation when totals tally" in {
-      when(boxRetriever.ac132()).thenReturn(AC132(Some(22)))
       when(boxRetriever.ac44()).thenReturn(AC44(Some(22)))
-      AC132(None).validate(boxRetriever) shouldBe Set()
+      AC132(Some(22)).validate(boxRetriever) shouldBe Set()
     }
 
     "pass validation when no values for note fields or balance sheet value" in {
-      when(boxRetriever.ac132()).thenReturn(AC132(None))
       when(boxRetriever.ac44()).thenReturn(AC44(None))
       AC132(None).validate(boxRetriever) shouldBe Set()
     }
