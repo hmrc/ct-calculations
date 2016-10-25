@@ -28,4 +28,3 @@ case class ACQ5032(value: Option[Boolean]) extends CtBoxIdentifier(name = "Plant
     cannotExistIf(hasValue && ac44.noValue && ac45.noValue)
   }
 }
-

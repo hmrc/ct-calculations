@@ -36,4 +36,3 @@ case class ACQ5031(value: Option[Boolean]) extends CtBoxIdentifier(name = "Land 
     )
   }
 }
-

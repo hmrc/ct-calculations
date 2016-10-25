@@ -29,4 +29,3 @@ case class ACQ5022(value: Option[Boolean]) extends CtBoxIdentifier(name = "Other
     cannotExistIf(hasValue && ac42.noValue && ac43.noValue)
   }
 }
-

@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.calculations.BalanceSheetTangibleAssetsCalculator
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
 
 case class AC133(value: Option[Int]) extends CtBoxIdentifier(name = "Net book value of tangible assets at the end of this period")
@@ -26,7 +26,7 @@ case class AC133(value: Option[Int]) extends CtBoxIdentifier(name = "Net book va
   with Validators{
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    failIf(boxRetriever.ac44.hasValue) (
+    failIf(boxRetriever.ac44().hasValue) (
       collectErrors(
         validateNetBookValueMatchesTotalAssets(boxRetriever)
       )
@@ -43,9 +43,18 @@ case class AC133(value: Option[Int]) extends CtBoxIdentifier(name = "Net book va
 object AC133 extends Calculated[AC133, Frs102AccountsBoxRetriever] with BalanceSheetTangibleAssetsCalculator {
 
   override def calculate(boxRetriever: Frs102AccountsBoxRetriever): AC133 = {
-    calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(
-      boxRetriever.ac124(),
-      boxRetriever.ac128()
-    )
+    boxRetriever match {
+      case x: AbridgedAccountsBoxRetriever => calculateNetBookValueOfTangibleAssetsAEndOfThePeriod(x.ac124(), x.ac128())
+      case x: FullAccountsBoxRetriever => {
+        import x._
+        calculateAC133(
+          ac133A(),
+          ac133B(),
+          ac133C(),
+          ac133D(),
+          ac133E()
+        )
+      }
+    }
   }
 }

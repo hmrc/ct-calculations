@@ -28,10 +28,16 @@ import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
 sealed trait TestFrs102AccountsRetriever extends Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
 
+sealed trait TestAbridgedAccountsRetriever extends AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
+
 sealed trait TestFullAccountsRetriever extends FullAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
 
 trait MockFrs102AccountsRetriever extends MockitoSugar {
   val boxRetriever = mock[TestFrs102AccountsRetriever]
+}
+
+trait MockAbridgedAccountsRetriever extends MockitoSugar {
+  val boxRetriever = mock[TestAbridgedAccountsRetriever]
 }
 
 trait MockFullAccountsRetriever extends MockitoSugar {
