@@ -18,10 +18,10 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsMoneyValidationFixture, MockFrs102AccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC118Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever {
+class AC118Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with MockAbridgedAccountsRetriever {
 
   override def setUpMocks() = {
     super.setUpMocks()
@@ -33,21 +33,5 @@ class AC118Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetrieve
   }
 
   testAccountsMoneyValidationWithMin("AC118", 0, AC118.apply)
-
-  "AC118" should {
-    "not exist when AC43 is empty" in {
-      when(boxRetriever.ac43()).thenReturn(AC43(None))
-      AC118(Some(5121)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("AC118"), s"error.AC118.cannot.exist", None))
-    }
-    "be OK when AC43 is provided" in {
-      when(boxRetriever.ac43()).thenReturn(AC43(Some(43)))
-      AC118(Some(5121)).validate(boxRetriever) shouldBe empty
-    }
-    "be OK when AC43 is empty and AC118 is empty" in {
-      when(boxRetriever.ac43()).thenReturn(AC43(None))
-      AC118(None).validate(boxRetriever) shouldBe empty
-    }
-  }
-
 
 }

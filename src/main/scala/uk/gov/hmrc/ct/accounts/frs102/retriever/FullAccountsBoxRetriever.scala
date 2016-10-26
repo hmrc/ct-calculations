@@ -37,6 +37,58 @@ trait FullAccountsBoxRetriever extends Frs102AccountsBoxRetriever {
 
   def ac23(): AC23
 
+  override def ac114(): AC114 = AC114.calculate(this)
+
+  def ac114A(): AC114A
+
+  def ac114B(): AC114B
+
+  override def ac115(): AC115 = AC115.calculate(this)
+
+  def ac115A(): AC115A
+
+  def ac115B(): AC115B
+
+  override def ac116(): AC116 = AC116.calculate(this)
+
+  def ac116A(): AC116A
+
+  def ac116B(): AC116B
+
+  def ac117A(): AC117A
+
+  def ac117B(): AC117B
+
+  override def ac118(): AC118 = AC118.calculate(this)
+
+  def ac118A(): AC118A
+
+  def ac118B(): AC118B
+
+  override def ac119(): AC119 = AC119.calculate(this)
+
+  def ac119A(): AC119A
+
+  def ac119B(): AC119B
+
+  override def ac120(): AC120 = AC120.calculate(this)
+
+  def ac120A(): AC120A
+
+  def ac120B(): AC120B
+
+  def ac121A(): AC121A
+
+  def ac121B(): AC121B
+
+  def ac122A(): AC122A
+
+  def ac122B(): AC122B
+
+  def ac123A(): AC123A
+
+  def ac123B(): AC123B
+
   override def ac124(): AC124 = AC124.calculate(this)
 
   def ac124A(): AC124A
@@ -150,6 +202,24 @@ trait FullAccountsBoxRetriever extends Frs102AccountsBoxRetriever {
   def ac133D(): AC133D = AC133D.calculate(this)
 
   def ac133E(): AC133E = AC133E.calculate(this)
+
+  override def ac209(): AC209 = AC209.calculate(this)
+
+  def ac209A(): AC209A
+
+  def ac209B(): AC209B
+
+  override def ac210(): AC210 = AC210.calculate(this)
+
+  def ac210A(): AC210A
+
+  def ac210B(): AC210B
+
+  override def ac211(): AC211 = AC211.calculate(this)
+
+  def ac211A(): AC211A
+
+  def ac211B(): AC211B
 
   override def ac212(): AC212 = AC212.calculate(this)
 

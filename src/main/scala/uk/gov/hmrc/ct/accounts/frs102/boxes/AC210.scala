@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.calculations.IntangibleAssetsCalculator
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
 
 case class AC210(value: Option[Int]) extends CtBoxIdentifier(name = "Transfers")
@@ -31,4 +32,14 @@ case class AC210(value: Option[Int]) extends CtBoxIdentifier(name = "Transfers")
       validateMoney(value)
     )
   }
+}
+
+object AC210 extends Calculated[AC210, FullAccountsBoxRetriever]
+  with IntangibleAssetsCalculator {
+
+  override def calculate(boxRetriever: FullAccountsBoxRetriever): AC210 = {
+    import boxRetriever._
+    calculateAC210(ac210A(), ac210B())
+  }
+
 }

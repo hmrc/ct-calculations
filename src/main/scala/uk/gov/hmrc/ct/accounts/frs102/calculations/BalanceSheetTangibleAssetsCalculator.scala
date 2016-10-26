@@ -80,35 +80,35 @@ trait BalanceSheetTangibleAssetsCalculator extends CtTypeConverters {
   def calculateAC127A(ac124A: AC124A, ac125A: AC125A, ac126A: AC126A, ac212A: AC212A, ac213A: AC213A): AC127A = {
     (ac124A.value, ac125A.value, ac126A.value, ac212A.value, ac213A.value) match {
       case (None, None, None, None, None) => AC127A(None)
-      case _ => AC127A(Some(ac124A.orZero + ac125A.orZero - (ac126A.orZero + ac212A.orZero + ac213A.orZero)))
+      case _ => AC127A(Some(ac124A.orZero + ac125A.orZero - ac126A.orZero + ac212A.orZero + ac213A.orZero))
     }
   }
 
   def calculateAC127B(ac124B: AC124B, ac125B: AC125B, ac126B: AC126B, ac212B: AC212B, ac213B: AC213B): AC127B = {
     (ac124B.value, ac125B.value, ac126B.value, ac212B.value, ac213B.value) match {
       case (None, None, None, None, None) => AC127B(None)
-      case _ => AC127B(Some(ac124B.orZero + ac125B.orZero - (ac126B.orZero + ac212B.orZero + ac213B.orZero)))
+      case _ => AC127B(Some(ac124B.orZero + ac125B.orZero - ac126B.orZero + ac212B.orZero + ac213B.orZero))
     }
   }
 
   def calculateAC127C(ac124C: AC124C, ac125C: AC125C, ac126C: AC126C, ac212C: AC212C, ac213C: AC213C): AC127C = {
     (ac124C.value, ac125C.value, ac126C.value, ac212C.value, ac213C.value) match {
       case (None, None, None, None, None) => AC127C(None)
-      case _ => AC127C(Some(ac124C.orZero + ac125C.orZero - (ac126C.orZero + ac212C.orZero + ac213C.orZero)))
+      case _ => AC127C(Some(ac124C.orZero + ac125C.orZero - ac126C.orZero + ac212C.orZero + ac213C.orZero))
     }
   }
 
   def calculateAC127D(ac124D: AC124D, ac125D: AC125D, ac126D: AC126D, ac212D: AC212D, ac213D: AC213D): AC127D = {
     (ac124D.value, ac125D.value, ac126D.value, ac212D.value, ac213D.value) match {
       case (None, None, None, None, None) => AC127D(None)
-      case _ => AC127D(Some(ac124D.orZero + ac125D.orZero - (ac126D.orZero + ac212D.orZero + ac213D.orZero)))
+      case _ => AC127D(Some(ac124D.orZero + ac125D.orZero - ac126D.orZero + ac212D.orZero + ac213D.orZero))
     }
   }
 
   def calculateAC127E(ac124E: AC124E, ac125E: AC125E, ac126E: AC126E, ac212E: AC212E, ac213E: AC213E): AC127E = {
     (ac124E.value, ac125E.value, ac126E.value, ac212E.value, ac213E.value) match {
       case (None, None, None, None, None) => AC127E(None)
-      case _ => AC127E(Some(ac124E.orZero + ac125E.orZero - (ac126E.orZero + ac212E.orZero + ac213E.orZero)))
+      case _ => AC127E(Some(ac124E.orZero + ac125E.orZero - ac126E.orZero + ac212E.orZero + ac213E.orZero))
     }
   }
 
@@ -143,35 +143,35 @@ trait BalanceSheetTangibleAssetsCalculator extends CtTypeConverters {
   def calculateAC131A(ac128A: AC128A, ac129A: AC129A, ac130A: AC130A, ac214A: AC214A): AC131A = {
     (ac128A.value, ac129A.value, ac130A.value, ac214A.value) match {
       case (None, None, None, None) => AC131A(None)
-      case _ => AC131A(Some(ac128A.orZero + ac129A.orZero - (ac130A.orZero + ac214A.orZero)))
+      case _ => AC131A(Some(ac128A.orZero + ac129A.orZero - ac130A.orZero + ac214A.orZero))
     }
   }
 
   def calculateAC131B(ac128B: AC128B, ac129B: AC129B, ac130B: AC130B, ac214B: AC214B): AC131B = {
     (ac128B.value, ac129B.value, ac130B.value, ac214B.value) match {
       case (None, None, None, None) => AC131B(None)
-      case _ => AC131B(Some(ac128B.orZero + ac129B.orZero - (ac130B.orZero + ac214B.orZero)))
+      case _ => AC131B(Some(ac128B.orZero + ac129B.orZero - ac130B.orZero + ac214B.orZero))
     }
   }
 
   def calculateAC131C(ac128C: AC128C, ac129C: AC129C, ac130C: AC130C, ac214C: AC214C): AC131C = {
     (ac128C.value, ac129C.value, ac130C.value, ac214C.value) match {
       case (None, None, None, None) => AC131C(None)
-      case _ => AC131C(Some(ac128C.orZero + ac129C.orZero - (ac130C.orZero + ac214C.orZero)))
+      case _ => AC131C(Some(ac128C.orZero + ac129C.orZero - ac130C.orZero + ac214C.orZero))
     }
   }
 
   def calculateAC131D(ac128D: AC128D, ac129D: AC129D, ac130D: AC130D, ac214D: AC214D): AC131D = {
     (ac128D.value, ac129D.value, ac130D.value, ac214D.value) match {
       case (None, None, None, None) => AC131D(None)
-      case _ => AC131D(Some(ac128D.orZero + ac129D.orZero - (ac130D.orZero + ac214D.orZero)))
+      case _ => AC131D(Some(ac128D.orZero + ac129D.orZero - ac130D.orZero + ac214D.orZero))
     }
   }
 
   def calculateAC131E(ac128E: AC128E, ac129E: AC129E, ac130E: AC130E, ac214E: AC214E): AC131E = {
     (ac128E.value, ac129E.value, ac130E.value, ac214E.value) match {
       case (None, None, None, None) => AC131E(None)
-      case _ => AC131E(Some(ac128E.orZero + ac129E.orZero - (ac130E.orZero + ac214E.orZero)))
+      case _ => AC131E(Some(ac128E.orZero + ac129E.orZero - ac130E.orZero + ac214E.orZero))
     }
   }
 
