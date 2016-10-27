@@ -199,16 +199,16 @@ class BalanceSheetTangibleAssetsCalculatorSpec extends WordSpec with Matchers {
         calculateAC127A(AC124A(Some(1)), AC125A(None), AC126A(None), AC212A(None), AC213A(None)) shouldBe AC127A(Some(1))
         calculateAC127A(AC124A(None), AC125A(Some(1)), AC126A(None), AC212A(None), AC213A(None)) shouldBe AC127A(Some(1))
         calculateAC127A(AC124A(None), AC125A(None), AC126A(Some(1)), AC212A(None), AC213A(None)) shouldBe AC127A(Some(-1))
-        calculateAC127A(AC124A(None), AC125A(None), AC126A(None), AC212A(Some(1)), AC213A(None)) shouldBe AC127A(Some(-1))
-        calculateAC127A(AC124A(None), AC125A(None), AC126A(None), AC212A(None), AC213A(Some(1))) shouldBe AC127A(Some(-1))
+        calculateAC127A(AC124A(None), AC125A(None), AC126A(None), AC212A(Some(1)), AC213A(None)) shouldBe AC127A(Some(1))
+        calculateAC127A(AC124A(None), AC125A(None), AC126A(None), AC212A(None), AC213A(Some(1))) shouldBe AC127A(Some(1))
       }
 
       "return correct positive value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC127A(AC124A(Some(2)), AC125A(Some(2)), AC126A(Some(1)), AC212A(Some(1)), AC213A(Some(1))) shouldBe AC127A(Some(1))
+        calculateAC127A(AC124A(Some(2)), AC125A(Some(2)), AC126A(Some(1)), AC212A(Some(1)), AC213A(Some(1))) shouldBe AC127A(Some(5))
       }
 
       "return correct negative value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC127A(AC124A(Some(1)), AC125A(Some(1)), AC126A(Some(1)), AC212A(Some(1)), AC213A(Some(1))) shouldBe AC127A(Some(-1))
+        calculateAC127A(AC124A(Some(1)), AC125A(Some(1)), AC126A(Some(1)), AC212A(Some(-1)), AC213A(Some(-1))) shouldBe AC127A(Some(-1))
       }
     }
 
@@ -221,16 +221,16 @@ class BalanceSheetTangibleAssetsCalculatorSpec extends WordSpec with Matchers {
         calculateAC127B(AC124B(Some(1)), AC125B(None), AC126B(None), AC212B(None), AC213B(None)) shouldBe AC127B(Some(1))
         calculateAC127B(AC124B(None), AC125B(Some(1)), AC126B(None), AC212B(None), AC213B(None)) shouldBe AC127B(Some(1))
         calculateAC127B(AC124B(None), AC125B(None), AC126B(Some(1)), AC212B(None), AC213B(None)) shouldBe AC127B(Some(-1))
-        calculateAC127B(AC124B(None), AC125B(None), AC126B(None), AC212B(Some(1)), AC213B(None)) shouldBe AC127B(Some(-1))
-        calculateAC127B(AC124B(None), AC125B(None), AC126B(None), AC212B(None), AC213B(Some(1))) shouldBe AC127B(Some(-1))
+        calculateAC127B(AC124B(None), AC125B(None), AC126B(None), AC212B(Some(1)), AC213B(None)) shouldBe AC127B(Some(1))
+        calculateAC127B(AC124B(None), AC125B(None), AC126B(None), AC212B(None), AC213B(Some(1))) shouldBe AC127B(Some(1))
       }
 
       "return correct positive value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC127B(AC124B(Some(2)), AC125B(Some(2)), AC126B(Some(1)), AC212B(Some(1)), AC213B(Some(1))) shouldBe AC127B(Some(1))
+        calculateAC127B(AC124B(Some(2)), AC125B(Some(2)), AC126B(Some(1)), AC212B(Some(1)), AC213B(Some(1))) shouldBe AC127B(Some(5))
       }
 
       "return correct negative value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC127B(AC124B(Some(1)), AC125B(Some(1)), AC126B(Some(1)), AC212B(Some(1)), AC213B(Some(1))) shouldBe AC127B(Some(-1))
+        calculateAC127B(AC124B(Some(1)), AC125B(Some(1)), AC126B(Some(1)), AC212B(Some(-1)), AC213B(Some(-1))) shouldBe AC127B(Some(-1))
       }
     }
 
@@ -243,16 +243,16 @@ class BalanceSheetTangibleAssetsCalculatorSpec extends WordSpec with Matchers {
         calculateAC127C(AC124C(Some(1)), AC125C(None), AC126C(None), AC212C(None), AC213C(None)) shouldBe AC127C(Some(1))
         calculateAC127C(AC124C(None), AC125C(Some(1)), AC126C(None), AC212C(None), AC213C(None)) shouldBe AC127C(Some(1))
         calculateAC127C(AC124C(None), AC125C(None), AC126C(Some(1)), AC212C(None), AC213C(None)) shouldBe AC127C(Some(-1))
-        calculateAC127C(AC124C(None), AC125C(None), AC126C(None), AC212C(Some(1)), AC213C(None)) shouldBe AC127C(Some(-1))
-        calculateAC127C(AC124C(None), AC125C(None), AC126C(None), AC212C(None), AC213C(Some(1))) shouldBe AC127C(Some(-1))
+        calculateAC127C(AC124C(None), AC125C(None), AC126C(None), AC212C(Some(1)), AC213C(None)) shouldBe AC127C(Some(1))
+        calculateAC127C(AC124C(None), AC125C(None), AC126C(None), AC212C(None), AC213C(Some(1))) shouldBe AC127C(Some(1))
       }
 
       "return correct positive value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC127C(AC124C(Some(2)), AC125C(Some(2)), AC126C(Some(1)), AC212C(Some(1)), AC213C(Some(1))) shouldBe AC127C(Some(1))
+        calculateAC127C(AC124C(Some(2)), AC125C(Some(2)), AC126C(Some(1)), AC212C(Some(1)), AC213C(Some(1))) shouldBe AC127C(Some(5))
       }
 
       "return correct negative value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC127C(AC124C(Some(1)), AC125C(Some(1)), AC126C(Some(1)), AC212C(Some(1)), AC213C(Some(1))) shouldBe AC127C(Some(-1))
+        calculateAC127C(AC124C(Some(1)), AC125C(Some(1)), AC126C(Some(1)), AC212C(Some(-1)), AC213C(Some(-1))) shouldBe AC127C(Some(-1))
       }
     }
 
@@ -265,16 +265,16 @@ class BalanceSheetTangibleAssetsCalculatorSpec extends WordSpec with Matchers {
         calculateAC127D(AC124D(Some(1)), AC125D(None), AC126D(None), AC212D(None), AC213D(None)) shouldBe AC127D(Some(1))
         calculateAC127D(AC124D(None), AC125D(Some(1)), AC126D(None), AC212D(None), AC213D(None)) shouldBe AC127D(Some(1))
         calculateAC127D(AC124D(None), AC125D(None), AC126D(Some(1)), AC212D(None), AC213D(None)) shouldBe AC127D(Some(-1))
-        calculateAC127D(AC124D(None), AC125D(None), AC126D(None), AC212D(Some(1)), AC213D(None)) shouldBe AC127D(Some(-1))
-        calculateAC127D(AC124D(None), AC125D(None), AC126D(None), AC212D(None), AC213D(Some(1))) shouldBe AC127D(Some(-1))
+        calculateAC127D(AC124D(None), AC125D(None), AC126D(None), AC212D(Some(1)), AC213D(None)) shouldBe AC127D(Some(1))
+        calculateAC127D(AC124D(None), AC125D(None), AC126D(None), AC212D(None), AC213D(Some(1))) shouldBe AC127D(Some(1))
       }
 
       "return correct positive value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC127D(AC124D(Some(2)), AC125D(Some(2)), AC126D(Some(1)), AC212D(Some(1)), AC213D(Some(1))) shouldBe AC127D(Some(1))
+        calculateAC127D(AC124D(Some(2)), AC125D(Some(2)), AC126D(Some(1)), AC212D(Some(1)), AC213D(Some(1))) shouldBe AC127D(Some(5))
       }
 
       "return correct negative value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC127D(AC124D(Some(1)), AC125D(Some(1)), AC126D(Some(1)), AC212D(Some(1)), AC213D(Some(1))) shouldBe AC127D(Some(-1))
+        calculateAC127D(AC124D(Some(1)), AC125D(Some(1)), AC126D(Some(1)), AC212D(Some(-1)), AC213D(Some(-1))) shouldBe AC127D(Some(-1))
       }
     }
 
@@ -287,16 +287,16 @@ class BalanceSheetTangibleAssetsCalculatorSpec extends WordSpec with Matchers {
         calculateAC127E(AC124E(Some(1)), AC125E(None), AC126E(None), AC212E(None), AC213E(None)) shouldBe AC127E(Some(1))
         calculateAC127E(AC124E(None), AC125E(Some(1)), AC126E(None), AC212E(None), AC213E(None)) shouldBe AC127E(Some(1))
         calculateAC127E(AC124E(None), AC125E(None), AC126E(Some(1)), AC212E(None), AC213E(None)) shouldBe AC127E(Some(-1))
-        calculateAC127E(AC124E(None), AC125E(None), AC126E(None), AC212E(Some(1)), AC213E(None)) shouldBe AC127E(Some(-1))
-        calculateAC127E(AC124E(None), AC125E(None), AC126E(None), AC212E(None), AC213E(Some(1))) shouldBe AC127E(Some(-1))
+        calculateAC127E(AC124E(None), AC125E(None), AC126E(None), AC212E(Some(1)), AC213E(None)) shouldBe AC127E(Some(1))
+        calculateAC127E(AC124E(None), AC125E(None), AC126E(None), AC212E(None), AC213E(Some(1))) shouldBe AC127E(Some(1))
       }
 
       "return correct positive value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC127E(AC124E(Some(2)), AC125E(Some(2)), AC126E(Some(1)), AC212E(Some(1)), AC213E(Some(1))) shouldBe AC127E(Some(1))
+        calculateAC127E(AC124E(Some(2)), AC125E(Some(2)), AC126E(Some(1)), AC212E(Some(1)), AC213E(Some(1))) shouldBe AC127E(Some(5))
       }
 
       "return correct negative value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC127E(AC124E(Some(1)), AC125E(Some(1)), AC126E(Some(1)), AC212E(Some(1)), AC213E(Some(1))) shouldBe AC127E(Some(-1))
+        calculateAC127E(AC124E(Some(1)), AC125E(Some(1)), AC126E(Some(1)), AC212E(Some(-1)), AC213E(Some(-1))) shouldBe AC127E(Some(-1))
       }
     }
 
@@ -397,15 +397,15 @@ class BalanceSheetTangibleAssetsCalculatorSpec extends WordSpec with Matchers {
         calculateAC131A(AC128A(Some(1)), AC129A(None), AC130A(None), AC214A(None)) shouldBe AC131A(Some(1))
         calculateAC131A(AC128A(None), AC129A(Some(1)), AC130A(None), AC214A(None)) shouldBe AC131A(Some(1))
         calculateAC131A(AC128A(None), AC129A(None), AC130A(Some(1)), AC214A(None)) shouldBe AC131A(Some(-1))
-        calculateAC131A(AC128A(None), AC129A(None), AC130A(None), AC214A(Some(1))) shouldBe AC131A(Some(-1))
+        calculateAC131A(AC128A(None), AC129A(None), AC130A(None), AC214A(Some(1))) shouldBe AC131A(Some(1))
       }
 
       "return correct positive value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC131A(AC128A(Some(2)), AC129A(Some(2)), AC130A(Some(1)), AC214A(Some(1))) shouldBe AC131A(Some(2))
+        calculateAC131A(AC128A(Some(2)), AC129A(Some(2)), AC130A(Some(1)), AC214A(Some(1))) shouldBe AC131A(Some(4))
       }
 
       "return correct negative value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC131A(AC128A(Some(1)), AC129A(Some(1)), AC130A(Some(2)), AC214A(Some(1))) shouldBe AC131A(Some(-1))
+        calculateAC131A(AC128A(Some(1)), AC129A(Some(1)), AC130A(Some(2)), AC214A(Some(-1))) shouldBe AC131A(Some(-1))
       }
     }
 
@@ -418,15 +418,15 @@ class BalanceSheetTangibleAssetsCalculatorSpec extends WordSpec with Matchers {
         calculateAC131B(AC128B(Some(1)), AC129B(None), AC130B(None), AC214B(None)) shouldBe AC131B(Some(1))
         calculateAC131B(AC128B(None), AC129B(Some(1)), AC130B(None), AC214B(None)) shouldBe AC131B(Some(1))
         calculateAC131B(AC128B(None), AC129B(None), AC130B(Some(1)), AC214B(None)) shouldBe AC131B(Some(-1))
-        calculateAC131B(AC128B(None), AC129B(None), AC130B(None), AC214B(Some(1))) shouldBe AC131B(Some(-1))
+        calculateAC131B(AC128B(None), AC129B(None), AC130B(None), AC214B(Some(1))) shouldBe AC131B(Some(1))
       }
 
       "return correct positive value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC131B(AC128B(Some(2)), AC129B(Some(2)), AC130B(Some(1)), AC214B(Some(1))) shouldBe AC131B(Some(2))
+        calculateAC131B(AC128B(Some(2)), AC129B(Some(2)), AC130B(Some(1)), AC214B(Some(1))) shouldBe AC131B(Some(4))
       }
 
       "return correct negative value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC131B(AC128B(Some(1)), AC129B(Some(1)), AC130B(Some(2)), AC214B(Some(1))) shouldBe AC131B(Some(-1))
+        calculateAC131B(AC128B(Some(1)), AC129B(Some(1)), AC130B(Some(2)), AC214B(Some(-1))) shouldBe AC131B(Some(-1))
       }
     }
 
@@ -439,15 +439,15 @@ class BalanceSheetTangibleAssetsCalculatorSpec extends WordSpec with Matchers {
         calculateAC131C(AC128C(Some(1)), AC129C(None), AC130C(None), AC214C(None)) shouldBe AC131C(Some(1))
         calculateAC131C(AC128C(None), AC129C(Some(1)), AC130C(None), AC214C(None)) shouldBe AC131C(Some(1))
         calculateAC131C(AC128C(None), AC129C(None), AC130C(Some(1)), AC214C(None)) shouldBe AC131C(Some(-1))
-        calculateAC131C(AC128C(None), AC129C(None), AC130C(None), AC214C(Some(1))) shouldBe AC131C(Some(-1))
+        calculateAC131C(AC128C(None), AC129C(None), AC130C(None), AC214C(Some(1))) shouldBe AC131C(Some(1))
       }
 
       "return correct positive value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC131C(AC128C(Some(2)), AC129C(Some(2)), AC130C(Some(1)), AC214C(Some(1))) shouldBe AC131C(Some(2))
+        calculateAC131C(AC128C(Some(2)), AC129C(Some(2)), AC130C(Some(1)), AC214C(Some(1))) shouldBe AC131C(Some(4))
       }
 
       "return correct negative value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC131C(AC128C(Some(1)), AC129C(Some(1)), AC130C(Some(2)), AC214C(Some(1))) shouldBe AC131C(Some(-1))
+        calculateAC131C(AC128C(Some(1)), AC129C(Some(1)), AC130C(Some(2)), AC214C(Some(-1))) shouldBe AC131C(Some(-1))
       }
     }
 
@@ -460,15 +460,15 @@ class BalanceSheetTangibleAssetsCalculatorSpec extends WordSpec with Matchers {
         calculateAC131D(AC128D(Some(1)), AC129D(None), AC130D(None), AC214D(None)) shouldBe AC131D(Some(1))
         calculateAC131D(AC128D(None), AC129D(Some(1)), AC130D(None), AC214D(None)) shouldBe AC131D(Some(1))
         calculateAC131D(AC128D(None), AC129D(None), AC130D(Some(1)), AC214D(None)) shouldBe AC131D(Some(-1))
-        calculateAC131D(AC128D(None), AC129D(None), AC130D(None), AC214D(Some(1))) shouldBe AC131D(Some(-1))
+        calculateAC131D(AC128D(None), AC129D(None), AC130D(None), AC214D(Some(1))) shouldBe AC131D(Some(1))
       }
 
       "return correct positive value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC131D(AC128D(Some(2)), AC129D(Some(2)), AC130D(Some(1)), AC214D(Some(1))) shouldBe AC131D(Some(2))
+        calculateAC131D(AC128D(Some(2)), AC129D(Some(2)), AC130D(Some(1)), AC214D(Some(1))) shouldBe AC131D(Some(4))
       }
 
       "return correct negative value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC131D(AC128D(Some(1)), AC129D(Some(1)), AC130D(Some(2)), AC214D(Some(1))) shouldBe AC131D(Some(-1))
+        calculateAC131D(AC128D(Some(1)), AC129D(Some(1)), AC130D(Some(2)), AC214D(Some(-1))) shouldBe AC131D(Some(-1))
       }
     }
 
@@ -481,16 +481,16 @@ class BalanceSheetTangibleAssetsCalculatorSpec extends WordSpec with Matchers {
         calculateAC131E(AC128E(Some(1)), AC129E(None), AC130E(None), AC214E(None)) shouldBe AC131E(Some(1))
         calculateAC131E(AC128E(None), AC129E(Some(1)), AC130E(None), AC214E(None)) shouldBe AC131E(Some(1))
         calculateAC131E(AC128E(None), AC129E(None), AC130E(Some(1)), AC214E(None)) shouldBe AC131E(Some(-1))
-        calculateAC131E(AC128E(None), AC129E(None), AC130E(None), AC214E(Some(1))) shouldBe AC131E(Some(-1))
+        calculateAC131E(AC128E(None), AC129E(None), AC130E(None), AC214E(Some(1))) shouldBe AC131E(Some(1))
 
       }
 
       "return correct positive value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC131E(AC128E(Some(2)), AC129E(Some(2)), AC130E(Some(1)), AC214E(Some(1))) shouldBe AC131E(Some(2))
+        calculateAC131E(AC128E(Some(2)), AC129E(Some(2)), AC130E(Some(1)), AC214E(Some(1))) shouldBe AC131E(Some(4))
       }
 
       "return correct negative value" in new BalanceSheetTangibleAssetsCalculator {
-        calculateAC131E(AC128E(Some(1)), AC129E(Some(1)), AC130E(Some(2)), AC214E(Some(1))) shouldBe AC131E(Some(-1))
+        calculateAC131E(AC128E(Some(1)), AC129E(Some(1)), AC130E(Some(2)), AC214E(Some(-1))) shouldBe AC131E(Some(-1))
       }
     }
 

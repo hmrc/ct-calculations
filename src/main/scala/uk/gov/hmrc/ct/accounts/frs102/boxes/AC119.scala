@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.calculations.IntangibleAssetsCalculator
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
 
 case class AC119(value: Option[Int]) extends CtBoxIdentifier(name = "Charge for year")
@@ -31,4 +32,14 @@ case class AC119(value: Option[Int]) extends CtBoxIdentifier(name = "Charge for 
       validateMoney(value, min = 0)
     )
   }
+
+}
+
+object AC119 extends Calculated[AC119, FullAccountsBoxRetriever]
+  with IntangibleAssetsCalculator {
+
+  override def calculate(boxRetriever: FullAccountsBoxRetriever): AC119 = {
+    calculateAC119(boxRetriever.ac119A(), boxRetriever.ac119B())
+  }
+
 }

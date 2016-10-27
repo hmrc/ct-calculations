@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.calculations.IntangibleAssetsCalculator
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
 
 case class AC114(value: Option[Int]) extends CtBoxIdentifier(name = "Cost at [POA START]")
@@ -32,4 +33,14 @@ case class AC114(value: Option[Int]) extends CtBoxIdentifier(name = "Cost at [PO
       cannotExistIf(value.nonEmpty && boxRetriever.ac43.noValue)
     )
   }
+}
+
+object AC114 extends Calculated[AC114, FullAccountsBoxRetriever]
+  with IntangibleAssetsCalculator {
+
+  override def calculate(boxRetriever: FullAccountsBoxRetriever): AC114 = {
+    import boxRetriever._
+    calculateAC114(ac114A(), ac114B())
+  }
+
 }

@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.calculations.IntangibleAssetsCalculator
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
 
 case class AC122(value: Option[Int]) extends CtBoxIdentifier(name = "Net book value at [POA END]")
@@ -39,8 +39,10 @@ object AC122 extends Calculated[AC122, Frs102AccountsBoxRetriever]
   with IntangibleAssetsCalculator {
 
   override def calculate(boxRetriever: Frs102AccountsBoxRetriever): AC122 = {
-    import boxRetriever._
-    calculateAC122(ac117(), ac121())
+    boxRetriever match {
+      case x: AbridgedAccountsBoxRetriever => calculateAbridgedAC122(x.ac117(), x.ac121())
+      case x: FullAccountsBoxRetriever => calculateFullAC122(x.ac122A(), x.ac122B())
+    }
   }
 
 }

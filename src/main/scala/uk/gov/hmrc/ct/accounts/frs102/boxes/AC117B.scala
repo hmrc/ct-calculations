@@ -20,27 +20,27 @@ import uk.gov.hmrc.ct.accounts.frs102.calculations.IntangibleAssetsCalculator
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
 
-case class AC116(value: Option[Int]) extends CtBoxIdentifier(name = "Disposals")
+case class AC117B(value: Option[Int]) extends CtBoxIdentifier(name = "Intangible assets - Other - Cost - Cost at [POA END]")
   with CtOptionalInteger
   with Input
   with ValidatableBox[Frs102AccountsBoxRetriever]
-  with Validators
-  with Debit {
+  with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-
     collectErrors(
       validateMoney(value, min = 0)
     )
   }
+
 }
 
-object AC116 extends Calculated[AC116, FullAccountsBoxRetriever]
+
+object AC117B extends Calculated[AC117B, FullAccountsBoxRetriever]
   with IntangibleAssetsCalculator {
 
-  override def calculate(boxRetriever: FullAccountsBoxRetriever): AC116 = {
+  override def calculate(boxRetriever: FullAccountsBoxRetriever): AC117B = {
     import boxRetriever._
-    calculateAC116(ac116A(), ac116B())
+    calculateAC117B(ac114B(), ac115B(), ac116B(), ac209B(), ac210B())
   }
 
 }
