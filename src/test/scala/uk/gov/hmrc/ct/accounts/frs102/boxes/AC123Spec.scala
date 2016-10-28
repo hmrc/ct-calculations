@@ -36,7 +36,7 @@ class AC123Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetrieve
 
     "throw error when is different than AC43" in {
       setUpMocks()
-      AC123(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC123"), "error.AC123.mustEqual.AC43"))
+      AC123(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.intangible.assets.note.previousNetBookValue.notEqualToAssets"))
     }
 
     "validate successfully if nothing is wrong" in {
