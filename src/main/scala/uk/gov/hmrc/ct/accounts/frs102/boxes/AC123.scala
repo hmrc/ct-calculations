@@ -30,8 +30,14 @@ case class AC123(value: Option[Int]) extends CtBoxIdentifier(name = "Net book va
 
     collectErrors(
       validateMoney(value, min = 0),
-      failIf(boxRetriever.ac42.hasValue)(validateOptionalIntegerAsEqualTo(this, boxRetriever.ac43()))
+      validateNetBookValueMatchesTotalAssets(boxRetriever)
     )
+  }
+
+  def validateNetBookValueMatchesTotalAssets(boxRetriever: Frs102AccountsBoxRetriever)() = {
+    failIf(this.orZero != boxRetriever.ac43().orZero) {
+      Set(CtValidation(None, "error.intangible.assets.note.previousNetBookValue.notEqualToAssets"))
+    }
   }
 
 }
