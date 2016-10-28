@@ -228,6 +228,8 @@ package object formats {
   implicit val ac7210AFormat = new OptionalIntegerFormat(AC7210A.apply)
   implicit val ac7210BFormat = new OptionalIntegerFormat(AC7210B.apply)
 
+  implicit val ac7210Format = new OptionalStringFormat(AC7210.apply)
+
   implicit val ac7300Format = new OptionalBooleanFormat(AC7300.apply)
   implicit val ac7400Format = new OptionalBooleanFormat(AC7400.apply)
   implicit val ac7401Format = new OptionalStringFormat(AC7401.apply)
