@@ -203,6 +203,22 @@ trait FullAccountsBoxRetriever extends Frs102AccountsBoxRetriever {
 
   def ac133E(): AC133E = AC133E.calculate(this)
 
+  def ac156(): AC156
+
+  def ac157(): AC157
+
+  def ac158(): AC158
+
+  def ac159(): AC159
+
+  def ac160(): AC160
+
+  def ac161(): AC161
+
+  def ac162(): AC162 = AC162.calculate(this)
+
+  def ac163(): AC163 = AC163.calculate(this)
+
   override def ac209(): AC209 = AC209.calculate(this)
 
   def ac209A(): AC209A
