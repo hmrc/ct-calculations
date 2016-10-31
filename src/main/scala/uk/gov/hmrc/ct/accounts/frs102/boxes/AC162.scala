@@ -17,18 +17,25 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.calculations.BalanceSheetCreditorsCalculator
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 case class AC162(value: Option[Int]) extends CtBoxIdentifier(name = "Creditors after one year - Total (CY)")
   with CtOptionalInteger
-  with ValidatableBox[Frs102AccountsBoxRetriever]
+  with ValidatableBox[FullAccountsBoxRetriever]
   with Validators {
 
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateMoney(value)
+      validateMoney(value),
+      failIf(boxRetriever.ac64().hasValue)(totalEqualToCurrentAmount(boxRetriever))
     )
+  }
+
+  def totalEqualToCurrentAmount(boxRetriever: FullAccountsBoxRetriever)() = {
+    failIf(this.orZero != boxRetriever.ac64().orZero) {
+      Set(CtValidation(None, "error.creditorsAfterOneYear.currentYearTotal.notEqualsTo.currentYearAmount"))
+    }
   }
 
 }
@@ -43,4 +50,5 @@ object AC162 extends Calculated[AC162, FullAccountsBoxRetriever] with BalanceShe
       ac160()
     )
   }
+
 }

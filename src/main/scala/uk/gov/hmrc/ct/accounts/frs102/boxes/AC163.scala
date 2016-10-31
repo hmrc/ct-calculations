@@ -22,13 +22,20 @@ import uk.gov.hmrc.ct.box._
 
 case class AC163(value: Option[Int]) extends CtBoxIdentifier(name = "Creditors after one year - Total (PY)")
   with CtOptionalInteger
-  with ValidatableBox[Frs102AccountsBoxRetriever]
+  with ValidatableBox[FullAccountsBoxRetriever]
   with Validators {
 
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateMoney(value)
+      validateMoney(value),
+      failIf(boxRetriever.ac65().hasValue)(totalEqualToCurrentAmount(boxRetriever))
     )
+  }
+
+  def totalEqualToCurrentAmount(boxRetriever: FullAccountsBoxRetriever)() = {
+    failIf(this.orZero != boxRetriever.ac64().orZero) {
+      Set(CtValidation(None, "error.creditorsAfterOneYear.previousYearTotal.notEqualsTo.previousYearAmount"))
+    }
   }
 
 }
