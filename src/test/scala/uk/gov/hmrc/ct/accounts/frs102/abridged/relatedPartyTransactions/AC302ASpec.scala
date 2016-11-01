@@ -18,9 +18,8 @@ package uk.gov.hmrc.ct.accounts.frs102.abridged.relatedPartyTransactions
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
-import uk.gov.hmrc.ct.accounts.AC206
+import uk.gov.hmrc.ct.accounts.{MockFrs102AccountsRetriever, AccountsMoneyValidationFixture, AC206}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsMoneyValidationFixture, MockFrs102AccountsRetriever}
 
 class AC302ASpec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever {
 

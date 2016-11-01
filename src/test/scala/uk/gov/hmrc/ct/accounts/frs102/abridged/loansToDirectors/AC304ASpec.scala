@@ -18,7 +18,8 @@ package uk.gov.hmrc.ct.accounts.frs102.abridged.loansToDirectors
 
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextSizeRangeValidationFixture, MockFrs102AccountsRetriever}
+import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
+import uk.gov.hmrc.ct.accounts.frs102.AccountsFreeTextSizeRangeValidationFixture
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
 

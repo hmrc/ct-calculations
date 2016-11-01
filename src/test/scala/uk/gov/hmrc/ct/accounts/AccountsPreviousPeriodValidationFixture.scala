@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102
+package uk.gov.hmrc.ct.accounts
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.AC205
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, _}
+import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
 
 sealed trait TestFrs102AccountsRetriever extends Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
+
+sealed trait TestFrs105AccountsRetriever extends Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever
 
 sealed trait TestAbridgedAccountsRetriever extends AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
 
@@ -34,6 +36,10 @@ sealed trait TestFullAccountsRetriever extends FullAccountsBoxRetriever with Fil
 
 trait MockFrs102AccountsRetriever extends MockitoSugar {
   val boxRetriever = mock[TestFrs102AccountsRetriever]
+}
+
+trait MockFrs105AccountsRetriever extends MockitoSugar {
+  val boxRetriever = mock[TestFrs105AccountsRetriever]
 }
 
 trait MockAbridgedAccountsRetriever extends MockitoSugar {

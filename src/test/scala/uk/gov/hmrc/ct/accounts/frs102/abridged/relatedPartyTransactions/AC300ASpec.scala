@@ -18,7 +18,8 @@ package uk.gov.hmrc.ct.accounts.frs102.abridged.relatedPartyTransactions
 
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
+import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
+import uk.gov.hmrc.ct.accounts.frs102.AccountsFreeTextValidationFixture
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
 

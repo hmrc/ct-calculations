@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102
+package uk.gov.hmrc.ct.accounts
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.AC205
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
-trait AccountsMoneyValidationFixture[T <: Frs102AccountsBoxRetriever] extends WordSpec with Matchers with MockitoSugar {
+trait AccountsMoneyValidationFixture[T <: AccountsBoxRetriever] extends WordSpec with Matchers with MockitoSugar {
 
   def boxRetriever: T
 
@@ -33,12 +33,6 @@ trait AccountsMoneyValidationFixture[T <: Frs102AccountsBoxRetriever] extends Wo
   val STANDARD_MAX = 99999999
 
   def setUpMocks(): Unit = {
-    when(boxRetriever.ac16()).thenReturn(AC16(Some(16)))
-    when(boxRetriever.ac18()).thenReturn(AC18(Some(18)))
-    when(boxRetriever.ac20()).thenReturn(AC20(Some(20)))
-    when(boxRetriever.ac28()).thenReturn(AC28(Some(28)))
-    when(boxRetriever.ac30()).thenReturn(AC30(Some(30)))
-    when(boxRetriever.ac34()).thenReturn(AC34(Some(34)))
     when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate())))
   }
 

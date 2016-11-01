@@ -19,8 +19,9 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.AccountsFreeTextValidationFixture
 import uk.gov.hmrc.ct.box.CtValidation
 
 class AC320Spec extends WordSpec

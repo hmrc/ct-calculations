@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.MockFrs102AccountsRetriever
+import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
 import uk.gov.hmrc.ct.accounts.frs102.calculations.RevaluationReserveCalculator
 import uk.gov.hmrc.ct.box.CtValidation
 
