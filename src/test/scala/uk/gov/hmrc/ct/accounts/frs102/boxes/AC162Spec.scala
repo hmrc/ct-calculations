@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs102.{AccountsMoneyValidationFixture, MockFullAccountsRetriever}
+import uk.gov.hmrc.ct.box.CtValidation
 
 class AC162Spec extends AccountsMoneyValidationFixture[FullAccountsBoxRetriever]
                 with MockFullAccountsRetriever {
@@ -30,5 +31,17 @@ class AC162Spec extends AccountsMoneyValidationFixture[FullAccountsBoxRetriever]
   }
 
   testAccountsMoneyValidation("AC162", AC162.apply)
+
+  "AC162" should {
+    "fail validation if value is not equal to AC64" in {
+      when(boxRetriever.ac64()).thenReturn(AC64(Some(10)))
+      AC162(Some(5)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.creditorsAfterOneYear.currentYearTotal.notEqualsTo.currentYearAmount"))
+    }
+
+    "pass validation if value is equal to AC64" in {
+      when(boxRetriever.ac64()).thenReturn(AC64(Some(10)))
+      AC162(Some(10)).validate(boxRetriever) shouldBe Set.empty
+    }
+  }
 
 }
