@@ -38,6 +38,11 @@ class AC162Spec extends AccountsMoneyValidationFixture[FullAccountsBoxRetriever]
       AC162(Some(5)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.creditorsAfterOneYear.currentYearTotal.notEqualsTo.currentYearAmount"))
     }
 
+    "fail validation if value is empty and AC64 is zero" in {
+      when(boxRetriever.ac64()).thenReturn(AC64(Some(0)))
+      AC162(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.creditorsAfterOneYear.currentYearTotal.notEqualsTo.currentYearAmount"))
+    }
+
     "pass validation if value is equal to AC64" in {
       when(boxRetriever.ac64()).thenReturn(AC64(Some(10)))
       AC162(Some(10)).validate(boxRetriever) shouldBe Set.empty

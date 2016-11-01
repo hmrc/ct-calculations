@@ -33,7 +33,7 @@ case class AC163(value: Option[Int]) extends CtBoxIdentifier(name = "Creditors a
   }
 
   def totalEqualToCurrentAmount(boxRetriever: FullAccountsBoxRetriever)() = {
-    failIf(this.orZero != boxRetriever.ac65().orZero) {
+    failIf(this.value != boxRetriever.ac65().value) {
       Set(CtValidation(None, "error.creditorsAfterOneYear.previousYearTotal.notEqualsTo.previousYearAmount"))
     }
   }
