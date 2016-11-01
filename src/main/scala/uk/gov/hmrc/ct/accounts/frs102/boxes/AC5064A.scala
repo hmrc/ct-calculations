@@ -16,16 +16,62 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
-case class AC5064A(value: Option[String]) extends CtBoxIdentifier(name = "Balance sheet - Creditors after 1 year note.") with CtOptionalString with Input with ValidatableBox[Frs102AccountsBoxRetriever] {
+case class AC5064A(value: Option[String]) extends CtBoxIdentifier(name = "Balance sheet - Creditors after 1 year note.")
+                                          with CtOptionalString
+                                          with Input
+                                          with ValidatableBox[Frs102AccountsBoxRetriever] {
+
+  private def fullNoteHasValue(boxRetriever: FullAccountsBoxRetriever): Boolean = {
+    boxRetriever.ac156().hasValue ||
+      boxRetriever.ac157().hasValue ||
+      boxRetriever.ac158().hasValue ||
+      boxRetriever.ac159().hasValue ||
+      boxRetriever.ac160().hasValue ||
+      boxRetriever.ac161().hasValue ||
+      boxRetriever.ac162().hasValue ||
+      boxRetriever.ac163().hasValue ||
+      boxRetriever.ac5064A().hasValue
+  }
+
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
-      cannotExistIf(hasValue && !boxRetriever.ac64.hasValue),
+      failIf(!boxRetriever.ac64().hasValue)(validateCannotExist(boxRetriever)),
+      failIf(boxRetriever.ac64().hasValue)(validateNoteIsMandatory(boxRetriever)),
       validateStringMaxLength("AC5064A", value.getOrElse(""), StandardCohoTextFieldLimit),
       validateCoHoOptionalString("AC5064A", this)
     )
   }
+
+  private def validateCannotExist(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
+    boxRetriever match {
+      case x: AbridgedAccountsBoxRetriever =>
+        if (hasValue)
+          Set(CtValidation(None, "error.balanceSheet.creditorsAfterOneYear.cannotExist"))
+        else
+          Set.empty
+
+      case x: FullAccountsBoxRetriever =>
+        if (fullNoteHasValue(x))
+          Set(CtValidation(None, "error.balanceSheet.creditorsAfterOneYear.cannotExist"))
+        else
+          Set.empty
+    }
+  }
+
+  private def validateNoteIsMandatory(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
+    boxRetriever match {
+      case x: FullAccountsBoxRetriever =>
+        if (!fullNoteHasValue(x))
+          Set(CtValidation(None, "error.balanceSheet.creditorsAfterOneYear.mustNotBeEmpty"))
+        else
+          Set.empty
+
+      case _ => Set.empty
+    }
+  }
+
 }
