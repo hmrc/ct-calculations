@@ -18,7 +18,8 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
+import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
+import uk.gov.hmrc.ct.accounts.frs102.AccountsFreeTextValidationFixture
 
 class AC5123Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
   with MockFrs102AccountsRetriever with AccountsFreeTextValidationFixture {
