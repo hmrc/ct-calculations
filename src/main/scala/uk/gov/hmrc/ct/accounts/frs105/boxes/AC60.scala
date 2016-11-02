@@ -16,18 +16,19 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
+import uk.gov.hmrc.ct.accounts.frs102.calculations.OperatingProfitOrLossCalculator
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC471(value: Option[Int]) extends CtBoxIdentifier(name = "Accruals and deferred income Previous Year")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[Frs105AccountsBoxRetriever]
-  with Debit {
+case class AC60(value: Option[Int]) extends CtBoxIdentifier(name = "Net current assets or liabilities (current PoA)") with CtOptionalInteger
 
-  override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      validateMoney(value, min = 0)
-    )
+object AC60 extends Calculated[AC60, Frs105AccountsBoxRetriever] with OperatingProfitOrLossCalculator {
+
+  override def calculate(boxRetriever: Frs105AccountsBoxRetriever): AC60 = {
+    boxRetriever match {
+      case br: FullAccountsBoxRetriever => calculateAC60(br.ac16(), br.ac18(), br.ac20(), br.ac22())
+      case br: AbridgedAccountsBoxRetriever => calculateAC60(br.ac16(), br.ac18(), br.ac20())
+    }
   }
 }

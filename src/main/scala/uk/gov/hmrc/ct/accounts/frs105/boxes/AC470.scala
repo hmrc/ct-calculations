@@ -22,7 +22,8 @@ import uk.gov.hmrc.ct.box._
 case class AC470(value: Option[Int]) extends CtBoxIdentifier(name = "Accruals and deferred income Current Year")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[Frs105AccountsBoxRetriever] {
+  with ValidatableBox[Frs105AccountsBoxRetriever]
+  with Debit {
 
   override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(

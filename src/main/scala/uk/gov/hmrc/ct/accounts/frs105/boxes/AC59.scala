@@ -22,7 +22,8 @@ import uk.gov.hmrc.ct.box._
 case class AC59(value: Option[Int]) extends CtBoxIdentifier(name = "Creditors: amounts falling due within one year Previous Year")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[Frs105AccountsBoxRetriever] {
+  with ValidatableBox[Frs105AccountsBoxRetriever]
+  with Debit {
 
   override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
