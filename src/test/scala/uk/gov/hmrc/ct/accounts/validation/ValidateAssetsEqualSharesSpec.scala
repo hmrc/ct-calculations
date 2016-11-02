@@ -14,33 +14,38 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.abridged.validation
+package uk.gov.hmrc.ct.accounts.validation
 
+import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.FilingCompanyType
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
-import org.mockito.Mockito._
-import uk.gov.hmrc.ct.FilingCompanyType
 import uk.gov.hmrc.ct.domain.CompanyTypes
 
-sealed trait TestBoxRetriever extends Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever
+trait Frs102TestBoxRetriever extends Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever
 
-trait ValidateAssetsEqualSharesSpec extends WordSpec with Matchers with MockitoSugar {
+trait Frs105TestBoxRetriever extends Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever
 
-  def addOtherBoxValue100Mock(mockRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Unit
+trait ValidateAssetsEqualSharesSpec[T <: FilingAttributesBoxValueRetriever] extends WordSpec with Matchers with MockitoSugar {
 
-  def addOtherBoxValueNoneMock(mockRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Unit
+  def addOtherBoxValue100Mock(mockRetriever: T): Unit
 
-  def testAssetsEqualToSharesValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever]): Unit = {
+  def addOtherBoxValueNoneMock(mockRetriever: T): Unit
+
+  def createMock(): T
+
+  def testAssetsEqualToSharesValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[T]): Unit = {
 
     s"$boxId" should {
       "for NON limited by guarantee company" when {
         val noLimitedByGuaranteeCompanies = CompanyTypes.AllCompanyTypes.filterNot(CompanyTypes.limitedByGuaranteeCompanyTypes.contains)
         noLimitedByGuaranteeCompanies.foreach { companyType =>
           s"return an error if it has a different value to other box for companyType: $companyType" in {
-            val retriever = mock[TestBoxRetriever]
+            val retriever = createMock()
             when(retriever.companyType()).thenReturn(FilingCompanyType(companyType))
 
             addOtherBoxValue100Mock(retriever)
@@ -49,7 +54,7 @@ trait ValidateAssetsEqualSharesSpec extends WordSpec with Matchers with MockitoS
           }
 
           s"return an error if it has a value and other box is None for companyType: $companyType" in {
-            val retriever = mock[TestBoxRetriever]
+            val retriever = createMock()
             when(retriever.companyType()).thenReturn(FilingCompanyType(companyType))
 
             addOtherBoxValueNoneMock(retriever)
@@ -58,7 +63,7 @@ trait ValidateAssetsEqualSharesSpec extends WordSpec with Matchers with MockitoS
           }
 
           s"return no error if both value are None for companyType: $companyType" in {
-            val retriever = mock[TestBoxRetriever]
+            val retriever = createMock()
             when(retriever.companyType()).thenReturn(FilingCompanyType(companyType))
 
             addOtherBoxValueNoneMock(retriever)
@@ -67,7 +72,7 @@ trait ValidateAssetsEqualSharesSpec extends WordSpec with Matchers with MockitoS
           }
 
           s"return no error if they have the same values for companyType: $companyType" in {
-            val retriever = mock[TestBoxRetriever]
+            val retriever = createMock()
             when(retriever.companyType()).thenReturn(FilingCompanyType(companyType))
 
             addOtherBoxValue100Mock(retriever)
@@ -80,7 +85,7 @@ trait ValidateAssetsEqualSharesSpec extends WordSpec with Matchers with MockitoS
       "for limited by guarantee company" when {
         CompanyTypes.limitedByGuaranteeCompanyTypes.foreach { companyType =>
           s"return an error if it has a different value to other box for companyType: $companyType" in {
-            val retriever = mock[TestBoxRetriever]
+            val retriever = createMock()
             when(retriever.companyType()).thenReturn(FilingCompanyType(companyType))
 
             addOtherBoxValue100Mock(retriever)
@@ -89,7 +94,7 @@ trait ValidateAssetsEqualSharesSpec extends WordSpec with Matchers with MockitoS
           }
 
           s"return an error if it has a value and other box is None for companyType: $companyType" in {
-            val retriever = mock[TestBoxRetriever]
+            val retriever = createMock()
             when(retriever.companyType()).thenReturn(FilingCompanyType(companyType))
 
             addOtherBoxValueNoneMock(retriever)
@@ -98,7 +103,7 @@ trait ValidateAssetsEqualSharesSpec extends WordSpec with Matchers with MockitoS
           }
 
           s"return no error if both value are None for companyType: $companyType" in {
-            val retriever = mock[TestBoxRetriever]
+            val retriever = createMock()
             when(retriever.companyType()).thenReturn(FilingCompanyType(companyType))
 
             addOtherBoxValueNoneMock(retriever)
@@ -107,7 +112,7 @@ trait ValidateAssetsEqualSharesSpec extends WordSpec with Matchers with MockitoS
           }
 
           s"return no error if they have the same values for companyType: $companyType" in {
-            val retriever = mock[TestBoxRetriever]
+            val retriever = createMock()
             when(retriever.companyType()).thenReturn(FilingCompanyType(companyType))
 
             addOtherBoxValue100Mock(retriever)

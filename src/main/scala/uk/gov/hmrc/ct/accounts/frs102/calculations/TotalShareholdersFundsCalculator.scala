@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.calculations
 
+import uk.gov.hmrc.ct.accounts.calculations.DebitAwareCalculation
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
-import uk.gov.hmrc.ct.box.CtTypeConverters
 
 trait TotalShareholdersFundsCalculator extends DebitAwareCalculation {
 

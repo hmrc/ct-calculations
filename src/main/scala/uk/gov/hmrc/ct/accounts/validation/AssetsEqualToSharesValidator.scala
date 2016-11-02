@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.abridged.validation
+package uk.gov.hmrc.ct.accounts.validation
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, ValidatableBox}
+import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, Validators}
 
-trait AssetsEqualToSharesValidator extends ValidatableBox[Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
+trait AssetsEqualToSharesValidator extends Validators {
   self: CtOptionalInteger =>
 
   def validateAssetsEqualToShares(boxId: String, otherBox: CtOptionalInteger, isLimitedByGuarantee: Boolean): Set[CtValidation] = {
