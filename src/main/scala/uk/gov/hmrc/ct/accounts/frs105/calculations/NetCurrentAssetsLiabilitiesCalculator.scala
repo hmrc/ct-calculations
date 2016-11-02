@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.calculations
+package uk.gov.hmrc.ct.accounts.frs105.calculations
 
 import uk.gov.hmrc.ct.accounts.calculations.DebitAwareCalculation
-import uk.gov.hmrc.ct.accounts.frs102.boxes._
-import uk.gov.hmrc.ct.box.CtTypeConverters
+import uk.gov.hmrc.ct.accounts.frs105.boxes._
 
-trait BalanceSheetCreditorsCalculator extends DebitAwareCalculation {
+trait NetCurrentAssetsLiabilitiesCalculator extends DebitAwareCalculation {
 
-  def calculateAC162(ac156: AC156, ac158: AC158, ac160: AC160): AC162 = {
-    sum(ac156, ac158, ac160)(AC162.apply)
+  def calculateCurrentNetCurrentAssetsLiabilities(ac455: AC455, ac465: AC465, ac58: AC58): AC60 = {
+    sum(ac455, ac465, ac58)(AC60.apply)
   }
 
-  def calculateAC163(ac157: AC157, ac159: AC159, ac161: AC161): AC163 = {
-    sum(ac157, ac159, ac161)(AC163.apply)
+  def calculatePreviousNetCurrentAssetsLiabilities(ac456: AC456, ac466: AC466, ac59: AC59): AC61 = {
+    sum(ac456, ac466, ac59)(AC61.apply)
   }
 
 }

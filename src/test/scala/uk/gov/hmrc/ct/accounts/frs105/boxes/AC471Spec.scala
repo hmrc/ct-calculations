@@ -17,17 +17,10 @@
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, MockFrs105AccountsRetriever}
 
-case class AC405(value: Option[Int]) extends CtBoxIdentifier(name = "Other income not included in turnover (current PoA)")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[Frs105AccountsBoxRetriever]
-  with Validators {
+class AC471Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
 
-  override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      validateMoney(value)
-    )
-  }
+  testAccountsMoneyValidationWithMin("AC471", minValue = 0, AC471)
+
 }

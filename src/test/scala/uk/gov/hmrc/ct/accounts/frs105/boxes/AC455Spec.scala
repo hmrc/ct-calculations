@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.calculations
+package uk.gov.hmrc.ct.accounts.frs105.boxes
 
-import uk.gov.hmrc.ct.accounts.calculations.DebitAwareCalculation
-import uk.gov.hmrc.ct.accounts.frs102.boxes._
-import uk.gov.hmrc.ct.box.CtTypeConverters
+import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, MockFrs105AccountsRetriever}
 
-trait BalanceSheetCreditorsCalculator extends DebitAwareCalculation {
+class AC455Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
 
-  def calculateAC162(ac156: AC156, ac158: AC158, ac160: AC160): AC162 = {
-    sum(ac156, ac158, ac160)(AC162.apply)
-  }
-
-  def calculateAC163(ac157: AC157, ac159: AC159, ac161: AC161): AC163 = {
-    sum(ac157, ac159, ac161)(AC163.apply)
-  }
+  testAccountsMoneyValidationWithMin("AC455", minValue = 0, AC455)
 
 }
