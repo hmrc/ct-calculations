@@ -27,6 +27,7 @@ class AC5052AAbridgedSpec extends WordSpec with MockitoSugar with Matchers with 
 
   before {
     when(boxRetriever.ac52()).thenReturn(AC52(Some(STANDARD_MAX + 1)))
+    when(boxRetriever.ac53()).thenReturn(AC53(Some(STANDARD_MAX + 1)))
     when(boxRetriever.ac5052A()).thenReturn(AC5052A(Some(10)))
     when(boxRetriever.ac5052B()).thenReturn(AC5052B(Some("asd asd")))
     when(boxRetriever.ac5052C()).thenReturn(AC5052C(Some(10)))
@@ -36,6 +37,7 @@ class AC5052AAbridgedSpec extends WordSpec with MockitoSugar with Matchers with 
 
   "fail validation when AC5052A is set and AC52 is empty" in {
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     when(boxRetriever.ac5052A()).thenReturn(AC5052A(Some(10)))
     when(boxRetriever.ac5052B()).thenReturn(AC5052B(None))
     when(boxRetriever.ac5052C()).thenReturn(AC5052C(None))
@@ -45,6 +47,7 @@ class AC5052AAbridgedSpec extends WordSpec with MockitoSugar with Matchers with 
 
   "fail validation when AC5052B is set and AC52 is empty" in {
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     when(boxRetriever.ac5052A()).thenReturn(AC5052A(None))
     when(boxRetriever.ac5052B()).thenReturn(AC5052B(None))
     when(boxRetriever.ac5052C()).thenReturn(AC5052C(Some(10)))
@@ -54,6 +57,7 @@ class AC5052AAbridgedSpec extends WordSpec with MockitoSugar with Matchers with 
 
   "pass validation when note is empty and AC52 is empty" in {
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     when(boxRetriever.ac5052A()).thenReturn(AC5052A(None))
     when(boxRetriever.ac5052B()).thenReturn(AC5052B(None))
     when(boxRetriever.ac5052C()).thenReturn(AC5052C(None))
@@ -63,6 +67,7 @@ class AC5052AAbridgedSpec extends WordSpec with MockitoSugar with Matchers with 
 
   "fail validation when AC5052C is set and AC52 is empty" in {
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     when(boxRetriever.ac5052A()).thenReturn(AC5052A(None))
     when(boxRetriever.ac5052B()).thenReturn(AC5052B(Some("sadf")))
     when(boxRetriever.ac5052C()).thenReturn(AC5052C(None))
@@ -90,6 +95,7 @@ class AC5052AFullSpec extends WordSpec with MockitoSugar with Matchers with Mock
 
   before {
     when(boxRetriever.ac52()).thenReturn(AC52(Some(STANDARD_MAX + 1)))
+    when(boxRetriever.ac53()).thenReturn(AC53(Some(STANDARD_MAX + 1)))
     when(boxRetriever.ac134()).thenReturn(AC134(Some(10)))
   }
 
@@ -126,12 +132,14 @@ class AC5052AFullSpec extends WordSpec with MockitoSugar with Matchers with Mock
   "pass validation when note is empty and AC52 is empty" in {
     setupEmpty()
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     AC5052A(None).validate(boxRetriever) shouldBe Set.empty
   }
 
   "fail validation when AC134 is set and AC52 is empty" in {
     setupEmpty()
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     when(boxRetriever.ac134()).thenReturn(AC134(Some(10)))
     AC5052A(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.debtors.cannotExist"))
   }
@@ -139,6 +147,7 @@ class AC5052AFullSpec extends WordSpec with MockitoSugar with Matchers with Mock
   "fail validation when AC135 is set and AC52 is empty" in {
     setupEmpty()
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     when(boxRetriever.ac135()).thenReturn(AC135(Some(10)))
     AC5052A(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.debtors.cannotExist"))
   }
@@ -146,6 +155,7 @@ class AC5052AFullSpec extends WordSpec with MockitoSugar with Matchers with Mock
   "fail validation when AC138 is set and AC52 is empty" in {
     setupEmpty()
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     when(boxRetriever.ac138()).thenReturn(AC138(Some(10)))
     AC5052A(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.debtors.cannotExist"))
   }
@@ -153,6 +163,7 @@ class AC5052AFullSpec extends WordSpec with MockitoSugar with Matchers with Mock
   "fail validation when AC139 is set and AC52 is empty" in {
     setupEmpty()
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     when(boxRetriever.ac139()).thenReturn(AC139(Some(10)))
     AC5052A(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.debtors.cannotExist"))
   }
@@ -160,6 +171,7 @@ class AC5052AFullSpec extends WordSpec with MockitoSugar with Matchers with Mock
   "fail validation when AC136 is set and AC52 is empty" in {
     setupEmpty()
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     when(boxRetriever.ac136()).thenReturn(AC136(Some(10)))
     AC5052A(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.debtors.cannotExist"))
   }
@@ -167,6 +179,7 @@ class AC5052AFullSpec extends WordSpec with MockitoSugar with Matchers with Mock
   "fail validation when AC137 is set and AC52 is empty" in {
     setupEmpty()
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     when(boxRetriever.ac137()).thenReturn(AC137(Some(10)))
     AC5052A(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.debtors.cannotExist"))
   }
@@ -174,6 +187,7 @@ class AC5052AFullSpec extends WordSpec with MockitoSugar with Matchers with Mock
   "fail validation when AC140 is set and AC52 is empty" in {
     setupEmpty()
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     when(boxRetriever.ac140()).thenReturn(AC140(Some(10)))
     AC5052A(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.debtors.cannotExist"))
   }
@@ -181,6 +195,7 @@ class AC5052AFullSpec extends WordSpec with MockitoSugar with Matchers with Mock
   "fail validation when AC141 is set and AC52 is empty" in {
     setupEmpty()
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     when(boxRetriever.ac141()).thenReturn(AC141(Some(10)))
     AC5052A(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.debtors.cannotExist"))
   }
@@ -188,6 +203,7 @@ class AC5052AFullSpec extends WordSpec with MockitoSugar with Matchers with Mock
   "fail validation when AC5052A is set and AC52 is empty" in {
     setupEmpty()
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     when(boxRetriever.ac5052A()).thenReturn(AC5052A(Some(10)))
     AC5052A(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.debtors.cannotExist"))
   }
@@ -195,6 +211,7 @@ class AC5052AFullSpec extends WordSpec with MockitoSugar with Matchers with Mock
   "fail validation when AC5052B is set and AC52 is empty" in {
     setupEmpty()
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     when(boxRetriever.ac5052B()).thenReturn(AC5052B(Some("test")))
     AC5052A(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.debtors.cannotExist"))
   }
@@ -202,8 +219,16 @@ class AC5052AFullSpec extends WordSpec with MockitoSugar with Matchers with Mock
   "fail validation when AC5052C is set and AC52 is empty" in {
     setupEmpty()
     when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
     when(boxRetriever.ac5052C()).thenReturn(AC5052C(Some(10)))
     AC5052A(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.debtors.cannotExist"))
+  }
+
+  "pass validation when note is not set and AC52 and AC53 are empty" in {
+    setupEmpty()
+    when(boxRetriever.ac52()).thenReturn(AC52(None))
+    when(boxRetriever.ac53()).thenReturn(AC53(None))
+    AC5052A(None).validate(boxRetriever) shouldBe Set.empty
   }
 
   "fail validation when note is not set and AC52 is not empty" in {
