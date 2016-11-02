@@ -16,23 +16,31 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.calculations.TotalNetAssetsLiabilitiesCalculator
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.calculations.TotalCreditorsWithinOneYearCalculator
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.validation.AssetsEqualToSharesValidator
 import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger, CtValidation}
 
-case class AC69(value: Option[Int]) extends CtBoxIdentifier(name = "Total net assets or liabilities (previous PoA)")
+case class AC155(value: Option[Int]) extends CtBoxIdentifier(name = "Total creditors within one year (previous PoA)")
   with CtOptionalInteger with AssetsEqualToSharesValidator {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    validateAssetsEqualToShares("AC69", boxRetriever.ac81())
+    validateMatchesBalanceSheetValue(boxRetriever)
+  }
+
+  def validateMatchesBalanceSheetValue(boxRetriever: Frs102AccountsBoxRetriever)() = {
+    failIf(value != boxRetriever.ac59().value) {
+      Set(CtValidation(None, "error.creditors.within.one.year.note.previous.total.not.equal.balance.sheet"))
+    }
   }
 }
 
-object AC69 extends Calculated[AC69, Frs102AccountsBoxRetriever] with TotalNetAssetsLiabilitiesCalculator {
+object AC155 extends Calculated[AC155, FullAccountsBoxRetriever] with TotalCreditorsWithinOneYearCalculator {
 
-  override def calculate(boxRetriever: Frs102AccountsBoxRetriever): AC69 = {
+  override def calculate(boxRetriever: FullAccountsBoxRetriever): AC155 = {
     import boxRetriever._
-    calculatePreviousTotalNetAssetsLiabilities(ac63(), ac65(), ac67(), ac471())
+    calculatePreviousTotalCreditorsWithinOneYear(ac143(), ac145(), ac147(), ac149(), ac151(), ac153())
   }
 }
+
+

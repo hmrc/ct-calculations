@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.calculations
-import uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors.{AC306A, AC307A, AC308A, AC309A}
-import uk.gov.hmrc.ct.box.CtTypeConverters
+package uk.gov.hmrc.ct.accounts.frs102.boxes.accountsApproval
 
-trait LoansToDirectorsCalculator extends CtTypeConverters {
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.box._
 
-  def calculateLoanBalanceAtEndOfPOA(ac306A: AC306A, ac307A: AC307A, ac308A: AC308A): AC309A = {
-    (ac306A.value, ac307A.value, ac308A.value) match {
-      case (None, None, None) => AC309A(None)
-      case _ => AC309A(Some(ac306A.orZero + ac307A.orZero - ac308A.orZero))
+case class AC8091(value: Option[Boolean]) extends CtBoxIdentifier(name = "Approve accounts approval statement") with CtOptionalBoolean with Input with ValidatableBox[Frs102AccountsBoxRetriever] {
+
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors {
+      validateBooleanAsTrue("AC8091", this)
     }
   }
 }

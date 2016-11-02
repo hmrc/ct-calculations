@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.calculations
-import uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors.{AC306A, AC307A, AC308A, AC309A}
-import uk.gov.hmrc.ct.box.CtTypeConverters
+package uk.gov.hmrc.ct.accounts.frs102.boxes.relatedPartyTransactions
 
-trait LoansToDirectorsCalculator extends CtTypeConverters {
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
+import uk.gov.hmrc.ct.box.CtValidation
 
-  def calculateLoanBalanceAtEndOfPOA(ac306A: AC306A, ac307A: AC307A, ac308A: AC308A): AC309A = {
-    (ac306A.value, ac307A.value, ac308A.value) match {
-      case (None, None, None) => AC309A(None)
-      case _ => AC309A(Some(ac306A.orZero + ac307A.orZero - ac308A.orZero))
+class AC7801Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter with MockFrs102AccountsRetriever {
+
+  "AC301A" should {
+    "be mandatory" in {
+      AC7801(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7801"), "error.AC7801.required", None))
     }
   }
 }

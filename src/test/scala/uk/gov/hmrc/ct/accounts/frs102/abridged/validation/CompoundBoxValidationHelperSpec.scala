@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs102.abridged.validation
 
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs102.validation.CompoundBoxValidationHelper
 import uk.gov.hmrc.ct.box.CtValidation
 
 class CompoundBoxValidationHelperSpec extends WordSpec with Matchers {

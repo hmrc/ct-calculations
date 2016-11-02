@@ -17,9 +17,9 @@
 package uk.gov.hmrc.ct.accounts.frs102
 
 import play.api.libs.json.{JsResult, JsValue, Reads, _}
-import uk.gov.hmrc.ct.accounts.frs102.abridged.accountsApproval._
-import uk.gov.hmrc.ct.accounts.frs102.abridged.loansToDirectors._
-import uk.gov.hmrc.ct.accounts.frs102.abridged.relatedPartyTransactions._
+import uk.gov.hmrc.ct.accounts.frs102.boxes.accountsApproval._
+import uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors._
+import uk.gov.hmrc.ct.accounts.frs102.boxes.relatedPartyTransactions._
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
 import uk.gov.hmrc.ct.box.formats._
 
@@ -113,6 +113,18 @@ package object formats {
   implicit val ac137Format = new OptionalIntegerFormat[AC137](AC137.apply)
   implicit val ac140Format = new OptionalIntegerFormat[AC140](AC140.apply)
   implicit val ac141Format = new OptionalIntegerFormat[AC141](AC141.apply)
+  implicit val ac142Format = new OptionalIntegerFormat[AC142](AC142.apply)
+  implicit val ac143Format = new OptionalIntegerFormat[AC143](AC143.apply)
+  implicit val ac144Format = new OptionalIntegerFormat[AC144](AC144.apply)
+  implicit val ac145Format = new OptionalIntegerFormat[AC145](AC145.apply)
+  implicit val ac146Format = new OptionalIntegerFormat[AC146](AC146.apply)
+  implicit val ac147Format = new OptionalIntegerFormat[AC147](AC147.apply)
+  implicit val ac148Format = new OptionalIntegerFormat[AC148](AC148.apply)
+  implicit val ac149Format = new OptionalIntegerFormat[AC149](AC149.apply)
+  implicit val ac150Format = new OptionalIntegerFormat[AC150](AC150.apply)
+  implicit val ac151Format = new OptionalIntegerFormat[AC151](AC151.apply)
+  implicit val ac152Format = new OptionalIntegerFormat[AC152](AC152.apply)
+  implicit val ac153Format = new OptionalIntegerFormat[AC153](AC153.apply)
   implicit val ac156Format = new OptionalIntegerFormat[AC156](AC156.apply)
   implicit val ac157Format = new OptionalIntegerFormat[AC157](AC157.apply)
   implicit val ac158Format = new OptionalIntegerFormat[AC158](AC158.apply)

@@ -14,25 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes
+package uk.gov.hmrc.ct.accounts.frs102.boxes.accountsApproval
 
-import uk.gov.hmrc.ct.accounts.frs102.calculations.TotalShareholdersFundsCalculator
+import org.joda.time.LocalDate
+import uk.gov.hmrc.cato.time.DateHelper
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs102.validation.AssetsEqualToSharesValidator
 import uk.gov.hmrc.ct.box._
 
-case class AC80(value: Option[Int]) extends CtBoxIdentifier(name = "Total Shareholders Funds (current PoA)")
-  with CtOptionalInteger with AssetsEqualToSharesValidator {
- 
+case class AC198A(value: Option[LocalDate]) extends CtBoxIdentifier("Approve accounts date of approval") with CtOptionalDate with Input with ValidatableBox[Frs102AccountsBoxRetriever] {
+
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    validateAssetsEqualToShares("AC80", boxRetriever.ac68())
-  }
-}
 
-object AC80 extends Calculated[AC80, Frs102AccountsBoxRetriever] with TotalShareholdersFundsCalculator {
-
-  override def calculate(boxRetriever: Frs102AccountsBoxRetriever): AC80 = {
-    import boxRetriever._
-    calculateCurrentTotalShareholdersFunds(ac70(), ac76(), ac74())
+    collectErrors(
+      validateDateAsMandatory("AC198A", this),
+      validateDateAsBetweenInclusive("AC198A", this, boxRetriever.ac4().value, DateHelper.now())
+    )
   }
 }

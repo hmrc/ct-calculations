@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.calculations
-import uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors.{AC306A, AC307A, AC308A, AC309A}
-import uk.gov.hmrc.ct.box.CtTypeConverters
+package uk.gov.hmrc.ct.accounts.frs102.validation
 
-trait LoansToDirectorsCalculator extends CtTypeConverters {
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, ValidatableBox}
 
-  def calculateLoanBalanceAtEndOfPOA(ac306A: AC306A, ac307A: AC307A, ac308A: AC308A): AC309A = {
-    (ac306A.value, ac307A.value, ac308A.value) match {
-      case (None, None, None) => AC309A(None)
-      case _ => AC309A(Some(ac306A.orZero + ac307A.orZero - ac308A.orZero))
+trait AssetsEqualToSharesValidator extends ValidatableBox[Frs102AccountsBoxRetriever] {
+  self: CtOptionalInteger =>
+
+  def validateAssetsEqualToShares(boxId: String, otherBox: CtOptionalInteger): Set[CtValidation] = {
+    failIf(value != otherBox.value) {
+      Set(CtValidation(None, s"error.$boxId.assetsNotEqualToShares"))
     }
   }
+
 }

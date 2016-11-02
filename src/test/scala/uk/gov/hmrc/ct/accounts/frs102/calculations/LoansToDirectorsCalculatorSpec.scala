@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs102.calculations
 
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.abridged.loansToDirectors.{AC306A, AC307A, AC308A, AC309A}
+import uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors.{AC306A, AC307A, AC308A, AC309A}
 
 class LoansToDirectorsCalculatorSpec extends WordSpec with Matchers {
 

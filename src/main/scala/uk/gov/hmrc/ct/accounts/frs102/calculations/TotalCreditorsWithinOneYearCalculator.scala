@@ -15,15 +15,17 @@
  */
 
 package uk.gov.hmrc.ct.accounts.frs102.calculations
-import uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors.{AC306A, AC307A, AC308A, AC309A}
-import uk.gov.hmrc.ct.box.CtTypeConverters
 
-trait LoansToDirectorsCalculator extends CtTypeConverters {
+import uk.gov.hmrc.ct.accounts.calculations.DebitAwareCalculation
+import uk.gov.hmrc.ct.accounts.frs102.boxes._
 
-  def calculateLoanBalanceAtEndOfPOA(ac306A: AC306A, ac307A: AC307A, ac308A: AC308A): AC309A = {
-    (ac306A.value, ac307A.value, ac308A.value) match {
-      case (None, None, None) => AC309A(None)
-      case _ => AC309A(Some(ac306A.orZero + ac307A.orZero - ac308A.orZero))
-    }
+trait TotalCreditorsWithinOneYearCalculator extends DebitAwareCalculation {
+
+  def calculateCurrentTotalCreditorsWithinOneYear(ac142: AC142, ac144: AC144, ac146: AC146, ac148: AC148, ac150: AC150, ac152: AC152): AC154 = {
+    sum(ac142, ac144, ac146, ac148, ac150, ac152)(AC154.apply)
+  }
+
+  def calculatePreviousTotalCreditorsWithinOneYear(ac143: AC143, ac145: AC145, ac147: AC147, ac149: AC149, ac151: AC151, ac153: AC153): AC155 = {
+    sum(ac143, ac145, ac147, ac149, ac151, ac153)(AC155.apply)
   }
 }

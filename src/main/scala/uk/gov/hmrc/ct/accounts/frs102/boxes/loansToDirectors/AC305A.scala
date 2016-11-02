@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes
+package uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors
 
-import uk.gov.hmrc.ct.accounts.frs102.calculations.TotalShareholdersFundsCalculator
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs102.validation.AssetsEqualToSharesValidator
 import uk.gov.hmrc.ct.box._
 
-case class AC80(value: Option[Int]) extends CtBoxIdentifier(name = "Total Shareholders Funds (current PoA)")
-  with CtOptionalInteger with AssetsEqualToSharesValidator {
- 
+case class AC305A(value: Option[String]) extends CtBoxIdentifier(name = "Description of Loan")
+  with CtOptionalString
+  with Input
+  with SelfValidatableBox[Frs102AccountsBoxRetriever, Option[String]]
+  with Validators {
+
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    validateAssetsEqualToShares("AC80", boxRetriever.ac68())
-  }
-}
 
-object AC80 extends Calculated[AC80, Frs102AccountsBoxRetriever] with TotalShareholdersFundsCalculator {
-
-  override def calculate(boxRetriever: Frs102AccountsBoxRetriever): AC80 = {
-    import boxRetriever._
-    calculateCurrentTotalShareholdersFunds(ac70(), ac76(), ac74())
+    collectErrors(
+      validateAsMandatory(),
+      validateOptionalStringByLength(0, 250),
+      validateCoHoOptionalString()
+    )
   }
 }
