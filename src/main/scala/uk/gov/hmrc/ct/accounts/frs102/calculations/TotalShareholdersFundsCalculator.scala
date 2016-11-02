@@ -16,23 +16,16 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.calculations
 
+import uk.gov.hmrc.ct.accounts.calculations.DebitAwareCalculation
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
-import uk.gov.hmrc.ct.box.CtTypeConverters
 
-trait TotalShareholdersFundsCalculator extends CtTypeConverters {
+trait TotalShareholdersFundsCalculator extends DebitAwareCalculation {
 
   def calculateCurrentTotalShareholdersFunds(ac70: AC70, ac76: AC76, ac74: AC74): AC80 = {
-    (ac70.value, ac76.value, ac74.value) match {
-      case (None, None, None) => AC80(None)
-      case _ => AC80(Some(ac70 + ac76 + ac74))
-    }
+    sum(ac70, ac74, ac76)(AC80.apply)
   }
 
   def calculatePreviousTotalShareholdersFunds(ac71: AC71, ac77: AC77, ac75: AC75): AC81 = {
-    (ac71.value, ac77.value, ac75.value) match {
-      case (None, None, None) => AC81(None)
-      case _ => AC81(Some(ac71 + ac77 + ac75))
-    }
+    sum(ac71, ac75, ac77)(AC81.apply)
   }
-
 }

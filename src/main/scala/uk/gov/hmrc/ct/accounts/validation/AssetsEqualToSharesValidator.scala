@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs105.validation
+package uk.gov.hmrc.ct.accounts.validation
 
-import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, ValidatableBox}
+import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, Validators}
 
-trait AssetsEqualToSharesValidator extends ValidatableBox[Frs105AccountsBoxRetriever] {
+trait AssetsEqualToSharesValidator extends Validators {
   self: CtOptionalInteger =>
 
-  def validateAssetsEqualToShares(boxId: String, otherBox: CtOptionalInteger)(): Set[CtValidation] = {
-    failIf(value != otherBox.value) {
-      Set(CtValidation(None, s"error.$boxId.assetsNotEqualToShares"))
-    }
+  def validateAssetsEqualToShares(boxId: String, otherBox: CtOptionalInteger, isLimitedByGuarantee: Boolean): Set[CtValidation] = {
+    collectErrors(
+      failIf(value != otherBox.value && !isLimitedByGuarantee) {
+        Set(CtValidation(None, s"error.$boxId.assetsNotEqualToShares"))
+      },
+      failIf(value != otherBox.value && isLimitedByGuarantee) {
+        Set(CtValidation(None, s"error.$boxId.assetsNotEqualToMembersFunds"))
+      }
+    )
   }
 
 }
