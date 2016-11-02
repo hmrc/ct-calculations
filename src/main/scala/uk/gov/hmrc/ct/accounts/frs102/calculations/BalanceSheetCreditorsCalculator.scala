@@ -19,20 +19,14 @@ package uk.gov.hmrc.ct.accounts.frs102.calculations
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
 import uk.gov.hmrc.ct.box.CtTypeConverters
 
-trait BalanceSheetCreditorsCalculator extends DebitAwareCalculation  {
+trait BalanceSheetCreditorsCalculator extends DebitAwareCalculation {
 
   def calculateAC162(ac156: AC156, ac158: AC158, ac160: AC160): AC162 = {
-    (ac156.value, ac158.value, ac160.value) match {
-      case (None, None, None) => AC162(None)
-      case _ => sum(ac156, ac158, ac160)(AC162.apply)
-    }
+    sum(ac156, ac158, ac160)(AC162.apply)
   }
 
   def calculateAC163(ac157: AC157, ac159: AC159, ac161: AC161): AC163 = {
-    (ac157.value, ac159.value, ac161.value) match {
-      case (None, None, None) => AC163(None)
-      case _ => sum(ac157, ac159, ac161)(AC163.apply)
-    }
+    sum(ac157, ac159, ac161)(AC163.apply)
   }
 
 }

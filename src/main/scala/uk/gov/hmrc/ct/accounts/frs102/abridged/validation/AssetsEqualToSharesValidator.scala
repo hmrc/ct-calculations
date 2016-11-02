@@ -17,15 +17,21 @@
 package uk.gov.hmrc.ct.accounts.frs102.abridged.validation
 
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, ValidatableBox}
 
-trait AssetsEqualToSharesValidator extends ValidatableBox[Frs102AccountsBoxRetriever] {
+trait AssetsEqualToSharesValidator extends ValidatableBox[Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
   self: CtOptionalInteger =>
 
-  def validateAssetsEqualToShares(boxId: String, otherBox: CtOptionalInteger): Set[CtValidation] = {
-    failIf(value != otherBox.value) {
-      Set(CtValidation(None, s"error.$boxId.assetsNotEqualToShares"))
-    }
+  def validateAssetsEqualToShares(boxId: String, otherBox: CtOptionalInteger, isLimitedByGuarantee: Boolean): Set[CtValidation] = {
+    collectErrors(
+      failIf(value != otherBox.value && !isLimitedByGuarantee) {
+        Set(CtValidation(None, s"error.$boxId.assetsNotEqualToShares"))
+      },
+      failIf(value != otherBox.value && isLimitedByGuarantee) {
+        Set(CtValidation(None, s"error.$boxId.assetsNotEqualToMembersFunds"))
+      }
+    )
   }
 
 }
