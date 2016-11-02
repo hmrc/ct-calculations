@@ -16,11 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.retriever
 
-import uk.gov.hmrc.ct.accounts.frs102.abridged.accountsApproval.{CompaniesHouseAccountsApproval, HmrcAccountsApproval}
-import uk.gov.hmrc.ct.accounts.frs102.abridged.loansToDirectors.LoansToDirectors
-import uk.gov.hmrc.ct.accounts.frs102.abridged.relatedPartyTransactions.RelatedPartyTransactions
-import uk.gov.hmrc.ct.accounts.frs102.boxes._
-import uk.gov.hmrc.ct.accounts.frs105.boxes.AC405
+import uk.gov.hmrc.ct.accounts.frs105.boxes._
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
@@ -28,6 +24,40 @@ trait Frs105AccountsBoxRetriever extends AccountsBoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 
-  def ac405(): AC405
+  def ac450(): AC450
+
+  def ac451(): AC451
+
+  def ac460(): AC460
+
+  def ac461(): AC461
+
+  def ac455(): AC455
+
+  def ac456(): AC456
+
+  def ac465(): AC465
+
+  def ac466(): AC466
+
+  def ac58(): AC58
+
+  def ac59(): AC59
+
+  def ac60(): AC60
+
+  def ac61(): AC61
+
+  def ac64(): AC64
+
+  def ac65(): AC65
+
+  def ac66(): AC66
+
+  def ac67(): AC67
+
+  def ac470(): AC470
+
+  def ac471(): AC471
 
  }
