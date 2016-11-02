@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.calculations
+package uk.gov.hmrc.ct.accounts.frs105.validation
 
-import uk.gov.hmrc.ct.accounts.AC12
-import uk.gov.hmrc.ct.accounts.calculations.DebitAwareCalculation
-import uk.gov.hmrc.ct.accounts.frs102.boxes._
+import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
+import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, ValidatableBox}
 
-trait GrossProfitAndLossCalculator extends DebitAwareCalculation {
+trait AssetsEqualToSharesValidator extends ValidatableBox[Frs105AccountsBoxRetriever] {
+  self: CtOptionalInteger =>
 
-  def calculateAC16(ac12: AC12, ac14: AC14): AC16 = {
-    sum(ac12, ac14)(AC16.apply)
+  def validateAssetsEqualToShares(boxId: String, otherBox: CtOptionalInteger)(): Set[CtValidation] = {
+    failIf(value != otherBox.value) {
+      Set(CtValidation(None, s"error.$boxId.assetsNotEqualToShares"))
+    }
   }
 
-  def calculateAC17(ac13: AC13, ac15: AC15): AC17= {
-    sum(ac13, ac15)(AC17.apply)
-  }
 }
