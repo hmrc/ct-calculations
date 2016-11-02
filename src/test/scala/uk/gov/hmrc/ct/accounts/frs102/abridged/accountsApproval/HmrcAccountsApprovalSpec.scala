@@ -17,7 +17,8 @@
 package uk.gov.hmrc.ct.accounts.frs102.abridged.accountsApproval
 
 import org.mockito.Mockito._
-import uk.gov.hmrc.ct.accounts.frs102.{AC8021, ACQ8161, MockFrs102AccountsRetriever}
+import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
+import uk.gov.hmrc.ct.accounts.frs102.{AC8021, ACQ8161}
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
 
 class sHmrcAccountsApprovalSpec extends AccountsApprovalFixture with MockFrs102AccountsRetriever {
