@@ -17,22 +17,15 @@
 package uk.gov.hmrc.ct.accounts.frs105.calculations
 
 import uk.gov.hmrc.ct.accounts.frs105.boxes._
-import uk.gov.hmrc.ct.box.CtTypeConverters
 
-trait NetCurrentAssetsLiabilitiesCalculator extends CtTypeConverters {
+trait NetCurrentAssetsLiabilitiesCalculator extends DebitAwareCalculation {
 
   def calculateCurrentNetCurrentAssetsLiabilities(ac455: AC455, ac465: AC465, ac58: AC58): AC60 = {
-    (ac455.value, ac465.value, ac58.value) match {
-      case (None, None, None) => AC60(None)
-      case _ => AC60(Some(ac455 + ac465 - ac58))
-    }
+    sum(ac455, ac465, ac58)(AC60.apply)
   }
 
   def calculatePreviousNetCurrentAssetsLiabilities(ac456: AC456, ac466: AC466, ac59: AC59): AC61 = {
-    (ac456.value, ac466.value, ac59.value) match {
-      case (None, None, None) => AC61(None)
-      case _ => AC61(Some(ac456 + ac466 - ac59))
-    }
+    sum(ac456, ac466, ac59)(AC61.apply)
   }
 
 }
