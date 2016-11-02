@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs105.calculations
+package uk.gov.hmrc.ct.accounts.calculations
 
 import uk.gov.hmrc.ct.box.{CtOptionalInteger, Debit}
 

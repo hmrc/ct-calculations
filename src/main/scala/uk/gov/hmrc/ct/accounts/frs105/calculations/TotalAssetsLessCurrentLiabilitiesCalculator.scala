@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.calculations
 
+import uk.gov.hmrc.ct.accounts.calculations.DebitAwareCalculation
 import uk.gov.hmrc.ct.accounts.frs105.boxes._
 
 trait TotalAssetsLessCurrentLiabilitiesCalculator extends DebitAwareCalculation {
