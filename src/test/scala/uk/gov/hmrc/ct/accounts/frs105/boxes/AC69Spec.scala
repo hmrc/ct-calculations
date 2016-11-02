@@ -16,17 +16,17 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
+import org.mockito.Mockito._
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.accounts.frs105.validation.ValidateAssetsEqualSharesSpec
 
-case class AC450(value: Option[Int]) extends CtBoxIdentifier(name = "Fixed assets (current PoA)")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[Frs105AccountsBoxRetriever] {
+class AC69Spec extends ValidateAssetsEqualSharesSpec {
 
-  override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      validateMoney(value, min = 0)
-    )
-  }
+  override def addOtherBoxValue100Mock(mockRetriever: Frs105AccountsBoxRetriever) =
+    when(mockRetriever.ac491()).thenReturn(AC491(Some(100)))
+
+  override def addOtherBoxValueNoneMock(mockRetriever: Frs105AccountsBoxRetriever) =
+    when(mockRetriever.ac491()).thenReturn(AC491(None))
+
+  testAssetsEqualToSharesValidation("AC69", AC69.apply)
 }

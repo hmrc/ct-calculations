@@ -17,16 +17,20 @@
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs105.validation.AssetsEqualToSharesValidator
 import uk.gov.hmrc.ct.box._
 
-case class AC450(value: Option[Int]) extends CtBoxIdentifier(name = "Fixed assets (current PoA)")
+case class AC491(value: Option[Int]) extends CtBoxIdentifier(name = "Capital and reserves (previous PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[Frs105AccountsBoxRetriever] {
+  with SelfValidatableBox[Frs105AccountsBoxRetriever, Option[Int]]
+  with AssetsEqualToSharesValidator {
 
   override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
+
     collectErrors(
-      validateMoney(value, min = 0)
+      validateAssetsEqualToShares("AC491", boxRetriever.ac69()),
+      validateMoney(value)
     )
   }
 }

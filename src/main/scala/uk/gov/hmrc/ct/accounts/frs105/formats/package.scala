@@ -17,12 +17,10 @@
 package uk.gov.hmrc.ct.accounts.frs105
 
 import play.api.libs.json.{JsResult, JsValue, Reads, _}
-import uk.gov.hmrc.ct.accounts.frs105.boxes.AC405
 import uk.gov.hmrc.ct.box.formats._
 
 package object formats {
 
   private def withDefault[A](key:String, default:A)(implicit writes:Writes[A]) = __.json.update((__ \ key).json.copyFrom((__ \ key).json.pick orElse Reads.pure(Json.toJson(default))))
 
-  implicit val ac405Format = new OptionalIntegerFormat[AC405](AC405.apply)
 }

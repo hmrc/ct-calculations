@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs105.boxes
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC65(value: Option[Int]) extends CtBoxIdentifier(name = "Creditors: amounts falling due after more than one year Previous Year")
+case class AC65(value: Option[Int]) extends CtBoxIdentifier(name = "Creditors: amounts falling due after more than one year (previous PoA)")
   with CtOptionalInteger
   with Input
   with ValidatableBox[Frs105AccountsBoxRetriever]

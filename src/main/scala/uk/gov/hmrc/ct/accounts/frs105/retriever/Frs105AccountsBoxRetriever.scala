@@ -48,6 +48,10 @@ trait Frs105AccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac61(): AC61
 
+  def ac62(): AC62
+
+  def ac63(): AC63
+
   def ac64(): AC64
 
   def ac65(): AC65
@@ -56,8 +60,16 @@ trait Frs105AccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac67(): AC67
 
+  def ac68(): AC68
+
+  def ac69(): AC69
+
   def ac470(): AC470
 
   def ac471(): AC471
+
+  def ac490(): AC490
+
+  def ac491(): AC491
 
  }

@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.accounts.frs102.calculations.BalanceSheetTangibleAssetsCal
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
 
-case class AC124(value: Option[Int]) extends CtBoxIdentifier(name = "Total cost or valuation of all tangible assets (Previous Year)")
+case class AC124(value: Option[Int]) extends CtBoxIdentifier(name = "Total cost or valuation of all tangible assets (current PoA)")
   with CtOptionalInteger
   with Input
   with ValidatableBox[Frs102AccountsBoxRetriever]

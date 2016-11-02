@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs105.boxes
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC66(value: Option[Int]) extends CtBoxIdentifier(name = "Provision for liabilities Current Year")
+case class AC66(value: Option[Int]) extends CtBoxIdentifier(name = "Provision for liabilities (current PoA)")
   with CtOptionalInteger
   with Input
   with ValidatableBox[Frs105AccountsBoxRetriever]

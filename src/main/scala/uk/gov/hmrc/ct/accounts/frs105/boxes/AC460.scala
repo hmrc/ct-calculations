@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs105.boxes
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC460(value: Option[Int]) extends CtBoxIdentifier(name = "Called up share capital not paid Current Year")
+case class AC460(value: Option[Int]) extends CtBoxIdentifier(name = "Called up share capital not paid (current PoA)")
   with CtOptionalInteger
   with Input
   with ValidatableBox[Frs105AccountsBoxRetriever] {

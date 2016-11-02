@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs105.boxes
+package uk.gov.hmrc.ct.accounts.frs105.validation
 
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, ValidatableBox}
 
-case class AC450(value: Option[Int]) extends CtBoxIdentifier(name = "Fixed assets (current PoA)")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[Frs105AccountsBoxRetriever] {
+trait AssetsEqualToSharesValidator extends ValidatableBox[Frs105AccountsBoxRetriever] {
+  self: CtOptionalInteger =>
 
-  override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      validateMoney(value, min = 0)
-    )
+  def validateAssetsEqualToShares(boxId: String, otherBox: CtOptionalInteger)(): Set[CtValidation] = {
+    failIf(value != otherBox.value) {
+      Set(CtValidation(None, s"error.$boxId.assetsNotEqualToShares"))
+    }
   }
+
 }
