@@ -33,17 +33,6 @@ class AC5052CSpec extends WordSpec with MockitoSugar with Matchers with MockFrs1
 
   testAccountsMoneyValidationWithMin("AC5052C", minValue = 0, AC5052C)
 
-  "fail validation when populated and AC52 is empty" in {
-    when(boxRetriever.ac52()).thenReturn(AC52(None))
-    AC5052C(Some(4)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5052C"), "error.AC5052C.cannot.exist"))
-  }
-
-  "cannot be populated if the previous year date is not set" in {
-    when(boxRetriever.ac52()).thenReturn(AC52(Some(123)))
-    when(boxRetriever.ac205()).thenReturn(AC205(None))
-    AC5052C(Some(4)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5052C"), "error.AC5052C.cannot.exist"))
-  }
-
   "pass the validation if AC52 and AC205 are set" in {
     when(boxRetriever.ac52()).thenReturn(AC52(Some(123)))
     when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.parse("2016-01-01"))))

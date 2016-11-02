@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
 
 
@@ -27,11 +27,49 @@ case class AC5052A(value: Option[Int]) extends CtBoxIdentifier(name = "Debtors d
 
 with Validators {
 
+  private def noteHasValue(boxRetriever: Frs102AccountsBoxRetriever): Boolean = {
+    boxRetriever match {
+      case x: AbridgedAccountsBoxRetriever =>
+        x.ac5052A().hasValue ||
+          x.ac5052B().hasValue ||
+          x.ac5052C().hasValue
+
+      case x: FullAccountsBoxRetriever =>
+        x.ac134().hasValue ||
+          x.ac135().hasValue ||
+          x.ac138().hasValue ||
+          x.ac139().hasValue ||
+          x.ac136().hasValue ||
+          x.ac137().hasValue ||
+          x.ac140().hasValue ||
+          x.ac141().hasValue ||
+          x.ac5052A().hasValue ||
+          x.ac5052B().hasValue ||
+          x.ac5052C().hasValue
+    }
+  }
+
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
-      cannotExistIf(value.nonEmpty && boxRetriever.ac52.noValue),
+      failIf(boxRetriever.ac52().noValue && boxRetriever.ac53().noValue)(validateCannotExist(boxRetriever)),
+      failIf(boxRetriever.ac52().hasValue || boxRetriever.ac53().hasValue)(validateNotEmpty(boxRetriever)),
       validateMoney(value, min = 0),
       validateOptionalIntegerLessOrEqualBox(boxRetriever.ac52())
     )
   }
+
+  private def validateCannotExist(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
+    if (noteHasValue(boxRetriever))
+      Set(CtValidation(None, "error.balanceSheet.debtors.cannotExist"))
+    else
+      Set.empty
+  }
+
+  private def validateNotEmpty(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
+    if (!noteHasValue(boxRetriever))
+      Set(CtValidation(None, "error.balanceSheet.debtors.mustNotBeEmpty"))
+    else
+      Set.empty
+  }
+
 }

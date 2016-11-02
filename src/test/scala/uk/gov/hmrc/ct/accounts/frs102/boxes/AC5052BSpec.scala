@@ -34,11 +34,4 @@ class AC5052BSpec extends WordSpec with MockitoSugar with Matchers with BeforeAn
     when(boxRetriever.ac52).thenReturn(AC52(Some(33)))
   }
 
-  "AC5052B" should {
-
-    "fail validation when populated and AC52 is empty" in {
-      when(boxRetriever.ac52()).thenReturn(AC52(None))
-      AC5052B(Some("test text")).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC5052B"), "error.AC5052B.cannot.exist"))
-    }
-  }
 }
