@@ -17,10 +17,16 @@
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, MockFrs105AccountsRetriever}
+import uk.gov.hmrc.ct.box._
 
-class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
+case class AC465(value: Option[Int]) extends CtBoxIdentifier(name = "Prepayments and accrued income Current Year")
+  with CtOptionalInteger
+  with Input
+  with ValidatableBox[Frs105AccountsBoxRetriever] {
 
-  testAccountsMoneyValidation("AC405",  AC405.apply)
-
+  override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateMoney(value, min = 0)
+    )
+  }
 }
