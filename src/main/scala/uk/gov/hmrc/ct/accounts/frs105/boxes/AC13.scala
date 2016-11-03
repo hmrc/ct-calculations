@@ -18,16 +18,17 @@ package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import uk.gov.hmrc.ct.accounts.AccountsPreviousPeriodValidation
 import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 case class AC13(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover (previous PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[FullAccountsBoxRetriever]
+  with ValidatableBox[AccountsBoxRetriever]
   with AccountsPreviousPeriodValidation
   with Validators {
 
-  override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       validateInputAllowed("AC13", boxRetriever.ac205()),
       validateMoney(value, min = 0)
