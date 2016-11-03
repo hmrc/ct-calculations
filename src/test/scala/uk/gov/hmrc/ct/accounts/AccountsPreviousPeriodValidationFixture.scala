@@ -22,6 +22,7 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, _}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
@@ -50,7 +51,7 @@ trait MockFullAccountsRetriever extends MockitoSugar {
   val boxRetriever = mock[TestFullAccountsRetriever]
 }
 
-trait AccountsPreviousPeriodValidationFixture[T <: Frs102AccountsBoxRetriever] extends WordSpec with Matchers with MockitoSugar {
+trait AccountsPreviousPeriodValidationFixture[T <: AccountsBoxRetriever] extends WordSpec with Matchers with MockitoSugar {
 
   def boxRetriever: T
 
