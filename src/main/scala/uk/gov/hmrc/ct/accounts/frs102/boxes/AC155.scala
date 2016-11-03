@@ -18,11 +18,11 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.calculations.TotalCreditorsWithinOneYearCalculator
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
-import uk.gov.hmrc.ct.accounts.frs102.validation.AssetsEqualToSharesValidator
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger, CtValidation}
+import uk.gov.hmrc.ct.accounts.validation.AssetsEqualToSharesValidator
+import uk.gov.hmrc.ct.box._
 
 case class AC155(value: Option[Int]) extends CtBoxIdentifier(name = "Total creditors within one year (previous PoA)")
-  with CtOptionalInteger with AssetsEqualToSharesValidator {
+  with CtOptionalInteger with AssetsEqualToSharesValidator with ValidatableBox[Frs102AccountsBoxRetriever]  {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     validateMatchesBalanceSheetValue(boxRetriever)

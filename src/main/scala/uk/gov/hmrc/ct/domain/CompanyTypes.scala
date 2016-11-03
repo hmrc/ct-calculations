@@ -82,4 +82,5 @@ object CompanyTypes {
 
   private val registeredTypes: Map[String, CompanyType] = AllCompanyTypes.map(t => t.productPrefix -> t).toMap
 
+  val limitedByGuaranteeCompanyTypes: Set[CompanyType] = Set(CompanyLimitedByGuarantee, LimitedByGuaranteeCASC, LimitedByGuaranteeCharity)
 }
