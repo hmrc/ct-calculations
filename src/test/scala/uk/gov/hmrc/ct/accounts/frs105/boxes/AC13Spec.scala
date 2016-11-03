@@ -16,18 +16,14 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
-import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, AccountsPreviousPeriodValidationFixture, MockFullAccountsRetriever}
 
-case class AC420(value: Option[Int]) extends CtBoxIdentifier(name = "Depreciation and other amounts written off assets (current PoA)")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[Frs105AccountsBoxRetriever]
-  with Debit {
+class AC13Spec extends AccountsMoneyValidationFixture[FullAccountsBoxRetriever]
+               with AccountsPreviousPeriodValidationFixture[FullAccountsBoxRetriever]
+               with MockFullAccountsRetriever {
 
-  override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      validateMoney(value)
-    )
-  }
+  testAccountsMoneyValidationWithMin("AC13", 0, AC13.apply)
+
+  testAccountsPreviousPoAValidation("AC13", AC13.apply)
 }

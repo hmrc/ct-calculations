@@ -24,6 +24,11 @@ trait Frs105AccountsBoxRetriever extends AccountsBoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 
+  def ac13(): AC13
+
+  def ac34(): AC34
+
+  def ac35(): AC35
 
   def ac58(): AC58
 
@@ -48,6 +53,30 @@ trait Frs105AccountsBoxRetriever extends AccountsBoxRetriever {
   def ac68(): AC68 = AC68.calculate(this)
 
   def ac69(): AC69 = AC69.calculate(this)
+
+  def ac405(): AC405
+
+  def ac406(): AC406
+
+  def ac410(): AC410
+
+  def ac411(): AC411
+
+  def ac415(): AC415
+
+  def ac416(): AC416
+
+  def ac420(): AC420
+
+  def ac421(): AC421
+
+  def ac425(): AC425
+
+  def ac426(): AC426
+
+  def ac435(): AC435 = AC435.calculate(this)
+
+  def ac436(): AC436 = AC436.calculate(this)
 
   def ac450(): AC450
 

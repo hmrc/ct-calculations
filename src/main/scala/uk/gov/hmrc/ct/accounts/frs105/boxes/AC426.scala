@@ -22,7 +22,9 @@ import uk.gov.hmrc.ct.box._
 case class AC426(value: Option[Int]) extends CtBoxIdentifier(name = "Other charges (previous PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[Frs105AccountsBoxRetriever] {
+  with ValidatableBox[Frs105AccountsBoxRetriever]
+  with Debit {
+
 
   override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(

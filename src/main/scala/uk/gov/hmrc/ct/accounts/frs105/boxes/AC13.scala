@@ -16,18 +16,21 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
-import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.AccountsPreviousPeriodValidation
+import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC420(value: Option[Int]) extends CtBoxIdentifier(name = "Depreciation and other amounts written off assets (current PoA)")
+case class AC13(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover (previous PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[Frs105AccountsBoxRetriever]
-  with Debit {
+  with ValidatableBox[FullAccountsBoxRetriever]
+  with AccountsPreviousPeriodValidation
+  with Validators {
 
-  override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateMoney(value)
+      validateInputAllowed("AC13", boxRetriever.ac205()),
+      validateMoney(value, min = 0)
     )
   }
 }
