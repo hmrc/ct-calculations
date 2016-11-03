@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.retriever
 
-import uk.gov.hmrc.ct.accounts.frs102.abridged.accountsApproval.{CompaniesHouseAccountsApproval, HmrcAccountsApproval}
-import uk.gov.hmrc.ct.accounts.frs102.abridged.loansToDirectors.LoansToDirectors
-import uk.gov.hmrc.ct.accounts.frs102.abridged.relatedPartyTransactions.RelatedPartyTransactions
+import uk.gov.hmrc.ct.accounts.frs102.boxes.accountsApproval.{CompaniesHouseAccountsApproval, HmrcAccountsApproval}
+import uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors.LoansToDirectors
+import uk.gov.hmrc.ct.accounts.frs102.boxes.relatedPartyTransactions.RelatedPartyTransactions
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever

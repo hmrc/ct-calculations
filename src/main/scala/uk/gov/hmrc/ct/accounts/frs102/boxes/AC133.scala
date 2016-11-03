@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.accounts.frs102.calculations.BalanceSheetTangibleAssetsCal
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
 
-case class AC133(value: Option[Int]) extends CtBoxIdentifier(name = "Net book value of tangible assets at the end of this period")
+case class AC133(value: Option[Int]) extends CtBoxIdentifier(name = "Net book value of tangible assets at the end of the previous period")
   with CtOptionalInteger
   with ValidatableBox[Frs102AccountsBoxRetriever]
   with Validators{
