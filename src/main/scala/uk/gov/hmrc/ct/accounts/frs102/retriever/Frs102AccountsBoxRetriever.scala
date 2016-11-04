@@ -271,6 +271,8 @@ trait Frs102AccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac8085(): AC8085
 
+  def ac8087(): AC8087
+
   def ac8088(): AC8088
 
   def ac7901(): AC7901
