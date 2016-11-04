@@ -30,6 +30,7 @@ case class AC490(value: Option[Int]) extends CtBoxIdentifier(name = "Capital and
   override def validate(boxRetriever: Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
 
     collectErrors(
+      validateAsMandatory(),
       () => validateAssetsEqualToShares("AC490", boxRetriever.ac68(), boxRetriever.companyType().isLimitedByGuarantee),
       validateMoney(value)
     )
