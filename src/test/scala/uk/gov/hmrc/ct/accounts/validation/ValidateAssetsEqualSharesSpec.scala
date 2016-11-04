@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.accounts.validation
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
+import play.api.data.validation.ValidationError
 import uk.gov.hmrc.ct.FilingCompanyType
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
@@ -62,13 +63,19 @@ trait ValidateAssetsEqualSharesSpec[T <: FilingAttributesBoxValueRetriever] exte
             builder(Some(100)).validate(retriever) shouldBe Set(CtValidation(None, s"error.$boxId.assetsNotEqualToShares"))
           }
 
-          s"return no error if both value are None for companyType: $companyType" in {
+          s"return no error if the box is not mandatory and both value are None for companyType: $companyType" in {
             val retriever = createMock()
             when(retriever.companyType()).thenReturn(FilingCompanyType(companyType))
 
             addOtherBoxValueNoneMock(retriever)
 
-            builder(None).validate(retriever) shouldBe empty
+            val outcome:Set[CtValidation] = builder(None).validate(retriever)
+            def boxIsNotRequired = !outcome.exists(_.errorMessageKey.contains("required"))
+            if(boxIsNotRequired) {
+              outcome shouldBe empty
+            } else {
+              outcome.size shouldBe 1
+            }
           }
 
           s"return no error if they have the same values for companyType: $companyType" in {
@@ -102,13 +109,19 @@ trait ValidateAssetsEqualSharesSpec[T <: FilingAttributesBoxValueRetriever] exte
             builder(Some(100)).validate(retriever) shouldBe Set(CtValidation(None, s"error.$boxId.assetsNotEqualToMembersFunds"))
           }
 
-          s"return no error if both value are None for companyType: $companyType" in {
+          s"return no error if the box is not mandatory and if both value are None for companyType: $companyType" in {
             val retriever = createMock()
             when(retriever.companyType()).thenReturn(FilingCompanyType(companyType))
 
             addOtherBoxValueNoneMock(retriever)
 
-            builder(None).validate(retriever) shouldBe empty
+            val outcome:Set[CtValidation] = builder(None).validate(retriever)
+            def boxIsNotRequired = !outcome.exists(_.errorMessageKey.contains("required"))
+            if(boxIsNotRequired) {
+              outcome shouldBe empty
+            } else {
+              outcome.size shouldBe 1
+            }
           }
 
           s"return no error if they have the same values for companyType: $companyType" in {
