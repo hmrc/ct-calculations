@@ -40,7 +40,7 @@ trait MockFrs102AccountsRetriever extends MockitoSugar {
 }
 
 trait MockFrs105AccountsRetriever extends MockitoSugar {
-  val boxRetriever = mock[TestFrs105AccountsRetriever]
+  val boxRetriever = mock[TestFrs105AccountsRetriever](RETURNS_SMART_NULLS)
 }
 
 trait MockAbridgedAccountsRetriever extends MockitoSugar {
