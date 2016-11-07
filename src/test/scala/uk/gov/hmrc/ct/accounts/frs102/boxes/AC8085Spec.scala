@@ -16,12 +16,10 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.{AbridgedFiling, MicroEntityFiling, StatutoryAccountsFiling}
 
 class AC8085Spec extends WordSpec
                  with MockitoSugar
@@ -31,43 +29,11 @@ class AC8085Spec extends WordSpec
 
   "AC8085" should {
 
-    "fail validation if is empty and filing full accounts" in {
-      when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(false))
-      when(boxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
-      when(boxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(true))
-
+    "fail validation if is empty" in {
       AC8085(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC8085"), "error.AC8085.required"))
     }
 
-    "pass validation if is empty and filing full accounts" in {
-      when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(false))
-      when(boxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
-      when(boxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(true))
-
-      AC8085(Some(true)).validate(boxRetriever) shouldBe Set.empty
-    }
-
-    "pass validation if is empty and filing micro accounts" in {
-      when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(false))
-      when(boxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(true))
-      when(boxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(false))
-
-      AC8085(None).validate(boxRetriever) shouldBe Set.empty
-    }
-
-    "fail validation if is empty and filing abridged accounts" in {
-      when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(true))
-      when(boxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
-      when(boxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(false))
-
-      AC8085(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC8085"), "error.AC8085.required"))
-    }
-
-    "pass validation if not empty and filing abridged accounts" in {
-      when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(true))
-      when(boxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
-      when(boxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(false))
-
+    "pass validation if is not empty" in {
       AC8085(Some(true)).validate(boxRetriever) shouldBe Set.empty
     }
 
