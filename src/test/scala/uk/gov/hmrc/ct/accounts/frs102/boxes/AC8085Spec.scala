@@ -33,7 +33,7 @@ class AC8085Spec extends WordSpec
       AC8085(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC8085"), "error.AC8085.required"))
     }
 
-    "pass validation if is empty" in {
+    "pass validation if is not empty" in {
       AC8085(Some(true)).validate(boxRetriever) shouldBe Set.empty
     }
 
