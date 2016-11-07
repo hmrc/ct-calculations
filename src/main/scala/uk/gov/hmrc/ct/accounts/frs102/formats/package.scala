@@ -349,12 +349,8 @@ package object formats {
     override def writes(o: LoansToDirectors): JsValue = baseFormat.writes(o)
   }
 
-  implicit val ac8081Format = new OptionalBooleanFormat(AC8081.apply)
-  implicit val ac8082Format = new OptionalBooleanFormat(AC8082.apply)
-  implicit val ac8083Format = new OptionalBooleanFormat(AC8083.apply)
   implicit val ac8084Format = new OptionalBooleanFormat(AC8084.apply)
   implicit val ac8085Format = new OptionalBooleanFormat(AC8085.apply)
-  implicit val ac8088Format = new OptionalBooleanFormat(AC8088.apply)
 
   implicit val ac8021Format: Format[AC8021] = new OptionalBooleanFormat[AC8021](AC8021.apply)
   implicit val ac8023Format: Format[AC8023] = new OptionalBooleanFormat[AC8023](AC8023.apply)

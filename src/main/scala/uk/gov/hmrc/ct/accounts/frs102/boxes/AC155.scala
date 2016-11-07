@@ -42,5 +42,3 @@ object AC155 extends Calculated[AC155, FullAccountsBoxRetriever] with TotalCredi
     calculatePreviousTotalCreditorsWithinOneYear(ac143(), ac145(), ac147(), ac149(), ac151(), ac153())
   }
 }
-
-

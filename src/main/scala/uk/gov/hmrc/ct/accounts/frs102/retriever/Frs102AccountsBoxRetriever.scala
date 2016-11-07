@@ -20,10 +20,10 @@ import uk.gov.hmrc.ct.accounts.frs102.boxes.accountsApproval.{CompaniesHouseAcco
 import uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors.LoansToDirectors
 import uk.gov.hmrc.ct.accounts.frs102.boxes.relatedPartyTransactions.RelatedPartyTransactions
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
-import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-trait Frs102AccountsBoxRetriever extends AccountsBoxRetriever {
+trait Frs102AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 
@@ -261,17 +261,9 @@ trait Frs102AccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac7900(): AC7900
 
-  def ac8081(): AC8081
-
-  def ac8082(): AC8082
-
-  def ac8083(): AC8083
-
   def ac8084(): AC8084
 
   def ac8085(): AC8085
-
-  def ac8088(): AC8088
 
   def ac7901(): AC7901
 

@@ -62,4 +62,5 @@ package object formats {
   implicit val ac490Frs105Format = new OptionalIntegerFormat[AC490](AC490.apply)
   implicit val ac491Frs105Format = new OptionalIntegerFormat[AC491](AC491.apply)
   implicit val acq8161Frs105Format = new OptionalBooleanFormat[ACQ8161](ACQ8161.apply)
+  implicit val ac8087Format = new OptionalBooleanFormat(AC8087.apply)
 }

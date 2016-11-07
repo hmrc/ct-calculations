@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes
+package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC8081(value: Option[Boolean]) extends CtBoxIdentifier(name = "For the year ending <<POA END DATE>> the company was entitled to exemption under section 477 of the Companies Act 2006 relating to small companies.")
+case class AC8088(value: Option[Boolean]) extends CtBoxIdentifier(name = "I agree to the legal statements - include them with my balance sheet\t")
   with CtOptionalBoolean
   with Input
-  with ValidatableBox[Frs102AccountsBoxRetriever]
+  with ValidatableBox[Frs10xAccountsBoxRetriever]
   with Validators {
 
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       validateAsMandatory(this)
     )
   }
-
+  
 }

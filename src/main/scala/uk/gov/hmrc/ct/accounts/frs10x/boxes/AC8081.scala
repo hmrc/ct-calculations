@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes
+package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-case class AC8084(value: Option[Boolean]) extends CtBoxIdentifier(name = "The members have agreed to the preparation of abridged accounts for this accounting period in accordance with Section 444(2A).")
+case class AC8081(value: Option[Boolean]) extends CtBoxIdentifier(name = "For the year ending <<POA END DATE>> the company was entitled to exemption under section 477 of the Companies Act 2006 relating to small companies.")
   with CtOptionalBoolean
   with Input
-  with ValidatableBox[Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever]
+  with ValidatableBox[Frs10xAccountsBoxRetriever]
   with Validators {
 
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      failIf(boxRetriever.abridgedFiling().value)(validateAsMandatory(this))
+      validateAsMandatory(this)
     )
   }
-  
+
 }

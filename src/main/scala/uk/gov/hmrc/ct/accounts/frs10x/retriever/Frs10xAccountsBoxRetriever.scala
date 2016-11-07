@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes
+package uk.gov.hmrc.ct.accounts.frs10x.retriever
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC8081, AC8082, AC8083, AC8088}
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-case class AC8088(value: Option[Boolean]) extends CtBoxIdentifier(name = "I agree to the legal statements - include them with my balance sheet\t")
-  with CtOptionalBoolean
-  with Input
-  with ValidatableBox[Frs102AccountsBoxRetriever]
-  with Validators {
+trait Frs10xAccountsBoxRetriever extends AccountsBoxRetriever {
+  self: FilingAttributesBoxValueRetriever =>
 
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      validateAsMandatory(this)
-    )
-  }
-  
+  def ac8081(): AC8081
+
+  def ac8082(): AC8082
+
+  def ac8083(): AC8083
+
+  def ac8088(): AC8088
 }

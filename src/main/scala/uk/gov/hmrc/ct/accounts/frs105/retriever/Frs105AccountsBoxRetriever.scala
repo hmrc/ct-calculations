@@ -17,10 +17,10 @@
 package uk.gov.hmrc.ct.accounts.frs105.retriever
 
 import uk.gov.hmrc.ct.accounts.frs105.boxes._
-import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-trait Frs105AccountsBoxRetriever extends AccountsBoxRetriever {
+trait Frs105AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 
@@ -101,6 +101,8 @@ trait Frs105AccountsBoxRetriever extends AccountsBoxRetriever {
   def ac490(): AC490
 
   def ac491(): AC491
+
+  def ac8087(): AC8087
 
   def acq8161(): ACQ8161
  }
