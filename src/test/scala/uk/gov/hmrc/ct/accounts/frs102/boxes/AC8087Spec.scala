@@ -19,7 +19,8 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
+import uk.gov.hmrc.ct.accounts.MockFrs105AccountsRetriever
+import uk.gov.hmrc.ct.accounts.frs105.boxes.AC8087
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.{AbridgedFiling, MicroEntityFiling, StatutoryAccountsFiling}
 
@@ -27,7 +28,7 @@ class AC8087Spec extends WordSpec
                  with MockitoSugar
                  with Matchers
                  with BeforeAndAfter
-                 with MockFrs102AccountsRetriever {
+                 with MockFrs105AccountsRetriever {
 
   "AC8087" should {
 
