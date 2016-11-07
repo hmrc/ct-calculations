@@ -33,15 +33,13 @@ class AC8084Spec extends WordSpec
 
     "pass validation if is empty and filing full accounts" in {
       when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(false))
-      when(boxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
       when(boxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(true))
 
       AC8084(None).validate(boxRetriever) shouldBe Set.empty
     }
 
-    "pass validation if is empty and filing micro accounts" in {
+    "pass validation if is empty and filing other type" in {
       when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(false))
-      when(boxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(true))
       when(boxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(false))
 
       AC8084(None).validate(boxRetriever) shouldBe Set.empty
@@ -49,7 +47,6 @@ class AC8084Spec extends WordSpec
 
     "fail validation if is empty and filing abridged accounts" in {
       when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(true))
-      when(boxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
       when(boxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(false))
 
       AC8084(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC8084"), "error.AC8084.required"))
@@ -57,7 +54,6 @@ class AC8084Spec extends WordSpec
 
     "pass validation if not empty and filing abridged accounts" in {
       when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(true))
-      when(boxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
       when(boxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(false))
 
       AC8084(Some(true)).validate(boxRetriever) shouldBe Set.empty
