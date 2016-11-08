@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes.accountsApproval
+package uk.gov.hmrc.ct.accounts.frs10x.retriever
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval.{HmrcAccountsApproval, CompaniesHouseAccountsApproval}
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-case class AC8091(value: Option[Boolean]) extends CtBoxIdentifier(name = "Approve accounts approval statement") with CtOptionalBoolean with Input with ValidatableBox[Frs102AccountsBoxRetriever] {
+trait AccountsApprovalBoxRetriever extends AccountsBoxRetriever {
+  self: FilingAttributesBoxValueRetriever =>
 
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors {
-      validateBooleanAsTrue("AC8091", this)
-    }
-  }
+  def companiesHouseAccountsApproval(): CompaniesHouseAccountsApproval
+
+  def hmrcAccountsApproval(): HmrcAccountsApproval
 }

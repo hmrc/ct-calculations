@@ -18,13 +18,13 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes.relatedPartyTransactions
 
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
-import uk.gov.hmrc.ct.accounts.frs102.AccountsFreeTextValidationFixture
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
 class AC299ASpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
-  with MockFrs102AccountsRetriever with AccountsFreeTextValidationFixture {
+  with MockFrs102AccountsRetriever with AccountsFreeTextValidationFixture[Frs102AccountsBoxRetriever] {
 
   testMandatoryAccountsCharacterLimitValidation("AC299A", StandardCohoNameFieldLimit, AC299A)
   testAccountsCoHoNameFieldValidation("AC299A", AC299A)

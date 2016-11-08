@@ -20,7 +20,7 @@ import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextSizeRangeValidationFixture, AccountsFreeTextValidationFixture}
+import uk.gov.hmrc.ct.accounts.frs102.AccountsFreeTextSizeRangeValidationFixture
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
 

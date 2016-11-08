@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes.accountsApproval
+package uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval
 
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.{MockFrs102AccountsRetriever, AC4}
-import uk.gov.hmrc.ct.accounts.frs102.AccountsFreeTextValidationFixture
+import uk.gov.hmrc.ct.accounts._
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
-trait AccountsApprovalFixture extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter with AccountsFreeTextValidationFixture {
+trait AccountsApprovalFixture extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter with AccountsFreeTextValidationFixture[Frs10xAccountsBoxRetriever] {
 
-  self: MockFrs102AccountsRetriever =>
+  self: MockFrs10xAccountsRetriever =>
 
   def setUpDisabledMocks(): Unit = Unit
 

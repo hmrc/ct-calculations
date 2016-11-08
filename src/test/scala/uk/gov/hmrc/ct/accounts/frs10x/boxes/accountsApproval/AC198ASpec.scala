@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes.accountsApproval
+package uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval
 
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 import uk.gov.hmrc.cato.time.DateHelper
-import uk.gov.hmrc.ct.accounts.{MockFrs102AccountsRetriever, AC4}
-import uk.gov.hmrc.ct.accounts.frs102.AccountsDatesValidationFixture
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.{AccountsDatesValidationFixture, MockFrs102AccountsRetriever, AC4}
 
 class AC198ASpec extends WordSpec
   with MockitoSugar
   with Matchers
   with MockFrs102AccountsRetriever
   with BeforeAndAfter
-  with AccountsDatesValidationFixture {
+  with AccountsDatesValidationFixture[AccountsBoxRetriever] {
 
   val NOW = DateHelper.now()
   val APEnd = NOW.minusMonths(1)

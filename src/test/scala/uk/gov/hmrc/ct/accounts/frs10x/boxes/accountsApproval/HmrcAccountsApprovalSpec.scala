@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes.accountsApproval
+package uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval
 
 import org.mockito.Mockito._
-import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
+import uk.gov.hmrc.ct.accounts.{MockFrs10xAccountsRetriever, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.{AC8021, ACQ8161}
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
 
-class sHmrcAccountsApprovalSpec extends AccountsApprovalFixture with MockFrs102AccountsRetriever {
+class sHmrcAccountsApprovalSpec extends AccountsApprovalFixture with MockFrs10xAccountsRetriever {
 
   override def setUpMocks(): Unit = {
     when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))

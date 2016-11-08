@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes.accountsApproval
+package uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval
 
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.ValidatableBox._
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC199A(value: String) extends CtBoxIdentifier(name = "Approve accounts approver") with CtString with Input with ValidatableBox[Frs102AccountsBoxRetriever] {
+case class AC8091(value: Option[Boolean]) extends CtBoxIdentifier(name = "Approve accounts approval statement") with CtOptionalBoolean with Input with ValidatableBox[AccountsBoxRetriever] {
 
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    validateStringMaxLength("AC199A", this.value, StandardCohoNameFieldLimit) ++ validateCohoNameField("AC199A", this)
+  override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors {
+      validateBooleanAsTrue("AC8091", this)
+    }
   }
 }
