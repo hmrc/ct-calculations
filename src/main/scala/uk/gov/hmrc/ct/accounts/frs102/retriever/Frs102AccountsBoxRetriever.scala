@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.retriever
 
-import uk.gov.hmrc.ct.accounts.frs102.boxes.accountsApproval.{CompaniesHouseAccountsApproval, HmrcAccountsApproval}
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval.{CompaniesHouseAccountsApproval, HmrcAccountsApproval}
 import uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors.LoansToDirectors
 import uk.gov.hmrc.ct.accounts.frs102.boxes.relatedPartyTransactions.RelatedPartyTransactions
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
@@ -268,8 +268,4 @@ trait Frs102AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
   def ac7901(): AC7901
 
   def relatedPartyTransactions(): RelatedPartyTransactions
-
-  def companiesHouseAccountsApproval(): CompaniesHouseAccountsApproval
-
-  def hmrcAccountsApproval(): HmrcAccountsApproval
 }

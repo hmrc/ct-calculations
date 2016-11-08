@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102
+package uk.gov.hmrc.ct.accounts
 
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
-trait AccountsFreeTextValidationFixture extends WordSpec with Matchers with MockitoSugar {
+trait AccountsFreeTextValidationFixture[T <: AccountsBoxRetriever] extends WordSpec with Matchers with MockitoSugar {
 
-  self: MockFrs102AccountsRetriever =>
+  def boxRetriever: T
 
   //This can be overridden if mock box retriever calls need to be made
   def setUpMocks(): Unit = Unit
 
-  def testAccountsCharacterLimitValidation(boxId: String, charLimit: Int, builder: (Option[String]) => ValidatableBox[Frs102AccountsBoxRetriever]): Unit = {
+  def testAccountsCharacterLimitValidation(boxId: String, charLimit: Int, builder: (Option[String]) => ValidatableBox[T]): Unit = {
     setUpMocks()
     "pass validation when empty" in {
       builder(None).validate(boxRetriever) shouldBe Set.empty
@@ -38,7 +38,7 @@ trait AccountsFreeTextValidationFixture extends WordSpec with Matchers with Mock
     testMandatoryAccountsCharacterLimitValidation(boxId, charLimit ,builder)
   }
 
-  def testMandatoryAccountsCharacterLimitValidation(boxId: String, charLimit: Int, builder: (Option[String]) => ValidatableBox[Frs102AccountsBoxRetriever]): Unit = {
+  def testMandatoryAccountsCharacterLimitValidation(boxId: String, charLimit: Int, builder: (Option[String]) => ValidatableBox[T]): Unit = {
 
     "pass validation when empty string" in {
       builder(Some("")).validate(boxRetriever) shouldBe Set.empty
@@ -59,14 +59,14 @@ trait AccountsFreeTextValidationFixture extends WordSpec with Matchers with Mock
     }
   }
 
-  def testAccountsCoHoTextFieldValidation(boxId: String, builder: (Option[String]) => ValidatableBox[Frs102AccountsBoxRetriever]): Unit = {
+  def testAccountsCoHoTextFieldValidation(boxId: String, builder: (Option[String]) => ValidatableBox[T]): Unit = {
     setUpMocks()
     "fail validation if invalid characters" in {
       builder(Some("^ §")).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure", Some(List("^  §"))))
     }
   }
 
-  def testAccountsCoHoNameFieldValidation(boxId: String, builder: (Option[String]) => ValidatableBox[Frs102AccountsBoxRetriever]): Unit = {
+  def testAccountsCoHoNameFieldValidation(boxId: String, builder: (Option[String]) => ValidatableBox[T]): Unit = {
     setUpMocks()
     "fail validation if invalid characters" in {
       builder(Some("^ §")).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure", None))

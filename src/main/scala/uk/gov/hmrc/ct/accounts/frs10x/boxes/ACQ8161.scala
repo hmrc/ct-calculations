@@ -14,24 +14,30 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102
+package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file P&L to Companies House?")
                                            with CtOptionalBoolean
                                            with Input
-                                           with ValidatableBox[Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
+                                           with ValidatableBox[AccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
 
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     collectErrors(
       failIf(boxRetriever.companiesHouseFiling().value)(
         validateBooleanAsMandatory("ACQ8161", this)
       ),
       passIf(boxRetriever.hmrcFiling().value)(
-        validateCannotExist(boxRetriever)
+        boxRetriever match {
+          case boxRetriever: Frs102AccountsBoxRetriever => validateCannotExist(boxRetriever)
+          case boxRetriever: Frs105AccountsBoxRetriever => validateCannotExist(boxRetriever)
+          case unknown => throw new IllegalStateException("unexpected retriever type: " + unknown)
+        }
       )
     )
   }
@@ -66,4 +72,28 @@ case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do yo
     } else Set.empty
   }
 
+  def validateCannotExist(boxRetriever: Frs105AccountsBoxRetriever)(): Set[CtValidation] = {
+    import boxRetriever._
+
+    if (value.contains(false)) {
+      val noteNonEmpty =
+        ac405().hasValue ||
+          ac406().hasValue ||
+          ac410().hasValue ||
+          ac411().hasValue ||
+          ac415().hasValue ||
+          ac416().hasValue ||
+          ac420().hasValue ||
+          ac421().hasValue ||
+          ac425().hasValue ||
+          ac426().hasValue ||
+          ac34().hasValue ||
+          ac35().hasValue
+
+      if (noteNonEmpty)
+        Set(CtValidation(None, "error.profitAndLoss.cannot.exist"))
+      else
+        Set.empty
+    } else Set.empty
+  }
 }

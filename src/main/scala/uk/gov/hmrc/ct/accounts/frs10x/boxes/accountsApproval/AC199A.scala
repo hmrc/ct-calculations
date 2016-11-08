@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes.accountsApproval
+package uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval
 
-import org.scalatest.mock.MockitoSugar
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
-import uk.gov.hmrc.ct.accounts.frs102.AccountsFreeTextValidationFixture
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.ValidatableBox._
+import uk.gov.hmrc.ct.box._
 
-class AC8092Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
-  with MockFrs102AccountsRetriever with AccountsFreeTextValidationFixture {
+case class AC199A(value: String) extends CtBoxIdentifier(name = "Approve accounts approver") with CtString with Input with ValidatableBox[AccountsBoxRetriever] {
 
-  testAccountsCharacterLimitValidation("AC8092", StandardCohoNameFieldLimit, AC8092)
-  testAccountsCoHoNameFieldValidation("AC8092", AC8092)
-
+  override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
+    validateStringMaxLength("AC199A", this.value, StandardCohoNameFieldLimit) ++ validateCohoNameField("AC199A", this)
+  }
 }

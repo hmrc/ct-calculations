@@ -20,8 +20,9 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.AC12
-import uk.gov.hmrc.ct.accounts.frs102.ACQ8161
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs10xFilingQuestionsBoxRetriever, FullAccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, FullAccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.ACQ8161
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xFilingQuestionsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
@@ -37,7 +38,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
       "pass validation if all fields have a valid value" in {
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+        when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
         when(boxRetriever.ac16()).thenReturn(AC16(Some(16)))
         when(boxRetriever.ac18()).thenReturn(AC18(Some(18)))
         when(boxRetriever.ac20()).thenReturn(AC20(Some(20)))
@@ -49,7 +50,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
       "pass validation if AC16 field has a valid value" in {
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+        when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
         when(boxRetriever.ac16()).thenReturn(AC16(Some(16)))
         when(boxRetriever.ac18()).thenReturn(AC18(None))
         when(boxRetriever.ac20()).thenReturn(AC20(None))
@@ -61,7 +62,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
       "pass validation if AC18 field has a valid value" in {
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+        when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
 
         when(boxRetriever.ac16()).thenReturn(AC16(None))
         when(boxRetriever.ac18()).thenReturn(AC18(Some(18)))
@@ -74,7 +75,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
       "pass validation if all current inputs are empty, CoHo Only filing, and ACQ8161 is false" in {
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+        when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(false)))
 
         when(boxRetriever.ac16()).thenReturn(AC16(None))
         when(boxRetriever.ac18()).thenReturn(AC18(None))
@@ -88,7 +89,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
 
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+        when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
 
         when(boxRetriever.ac16()).thenReturn(AC16(None))
         when(boxRetriever.ac18()).thenReturn(AC18(None))
@@ -102,7 +103,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
 
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+        when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(false)))
 
         when(boxRetriever.ac16()).thenReturn(AC16(None))
         when(boxRetriever.ac18()).thenReturn(AC18(None))
@@ -116,7 +117,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
 
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+        when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
 
         when(boxRetriever.ac16()).thenReturn(AC16(None))
         when(boxRetriever.ac18()).thenReturn(AC18(None))
@@ -132,7 +133,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
       "pass validation if all fields have a valid value" in {
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+        when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
 
         when(boxRetriever.ac12()).thenReturn(AC12(Some(12)))
         when(boxRetriever.ac14()).thenReturn(AC14(Some(14)))
@@ -146,7 +147,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
       "pass validation if 1 field has a valid value" in {
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+        when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
 
         when(boxRetriever.ac12()).thenReturn(AC12(Some(12)))
         when(boxRetriever.ac14()).thenReturn(AC14(None))
@@ -160,7 +161,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
       "pass validation if 1 (shared) field has a valid value" in {
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+        when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
 
         when(boxRetriever.ac12()).thenReturn(AC12(None))
         when(boxRetriever.ac14()).thenReturn(AC14(None))
@@ -174,7 +175,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
       "fail validation if all current inputs are empty" in {
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+        when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
 
         when(boxRetriever.ac12()).thenReturn(AC12(None))
         when(boxRetriever.ac14()).thenReturn(AC14(None))
@@ -189,7 +190,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
 
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+        when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(false)))
 
         when(boxRetriever.ac12()).thenReturn(AC12(None))
         when(boxRetriever.ac14()).thenReturn(AC14(None))
@@ -205,7 +206,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
 
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+        when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
 
         when(boxRetriever.ac12()).thenReturn(AC12(None))
         when(boxRetriever.ac14()).thenReturn(AC14(None))
@@ -221,7 +222,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
 
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+        when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(false)))
 
         when(boxRetriever.ac12()).thenReturn(AC12(None))
         when(boxRetriever.ac14()).thenReturn(AC14(None))
@@ -237,7 +238,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
 
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
-        when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+        when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
 
         when(boxRetriever.ac12()).thenReturn(AC12(None))
         when(boxRetriever.ac14()).thenReturn(AC14(None))
