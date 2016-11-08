@@ -29,26 +29,28 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
 
+    val isMandatory = ac44().hasValue || ac45().hasValue
+
     boxRetriever match {
       case x: AbridgedAccountsBoxRetriever =>
         collectErrors(
-          failIf(ac44().hasValue)(
+          failIf(isMandatory)(
             collectErrors(
               validateMoney(value, min = 0),
               validateAbridgedOneFieldMandatory(boxRetriever)
             )
           ),
-          failIf(ac44().noValue)(validateAbridgedNoteCannotExist(boxRetriever))
+          failIf(!isMandatory)(validateAbridgedNoteCannotExist(boxRetriever))
         )
       case x: FullAccountsBoxRetriever =>
         collectErrors(
-          failIf(ac44().hasValue)(
+          failIf(isMandatory)(
             collectErrors(
               validateMoney(value, min = 0),
               validateFullOneFieldMandatory(x)
             )
           ),
-          failIf(ac44().noValue)(validateFullNoteCannotExist(x))
+          failIf(!isMandatory)(validateFullNoteCannotExist(x))
         )
     }
   }

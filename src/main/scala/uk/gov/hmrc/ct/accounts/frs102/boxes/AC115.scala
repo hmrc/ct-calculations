@@ -26,7 +26,7 @@ case class AC115(value: Option[Int]) extends CtBoxIdentifier(name = "Additions")
   with ValidatableBox[Frs102AccountsBoxRetriever]
   with Validators {
 
-  def getNoteValues(boxRetriever: Frs102AccountsBoxRetriever) = {
+  private def getNoteValues(boxRetriever: Frs102AccountsBoxRetriever) = {
     boxRetriever match {
       case x: AbridgedAccountsBoxRetriever =>
         import x._
@@ -88,33 +88,36 @@ case class AC115(value: Option[Int]) extends CtBoxIdentifier(name = "Additions")
     }
   }
 
-  def validateNoteEntered(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    import boxRetriever._
-
-    val noteValues = getNoteValues(boxRetriever)
-
-    (noteValues.exists(_.nonEmpty), ac5123().value.getOrElse("").trim().nonEmpty) match {
-      case (false, false) => Set(CtValidation(None, "error.balanceSheet.intangibleAssets.atLeastOneEntered"))
-      case _ => Set.empty
-    }
-  }
-
-  def validateNoteCannotExists(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+  private def validateNoteEntered(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
 
     val noteValues = getNoteValues(boxRetriever)
     val noteIsNotEmpty = noteValues.exists(_.nonEmpty) || ac5123().value.getOrElse("").trim().nonEmpty
 
-    (ac42().value.isEmpty, noteIsNotEmpty) match {
-      case (true, true) => Set(CtValidation(None, "error.balanceSheet.intangibleAssetsNote.cannot.exist"))
-      case _ => Set.empty
-    }
+    if (!noteIsNotEmpty)
+      Set(CtValidation(None, "error.balanceSheet.intangibleAssets.atLeastOneEntered"))
+    else
+      Set.empty
+  }
+
+  private def validateNoteCannotExists(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+    import boxRetriever._
+
+    val noteValues = getNoteValues(boxRetriever)
+    val noteIsNotEmpty = noteValues.exists(_.nonEmpty) || ac5123().value.getOrElse("").trim().nonEmpty
+
+    if (noteIsNotEmpty)
+      Set(CtValidation(None, "error.balanceSheet.intangibleAssetsNote.cannot.exist"))
+    else
+      Set.empty
   }
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+    val isMandatory = boxRetriever.ac42().hasValue || boxRetriever.ac43().hasValue
+
     collectErrors(
-      failIf(boxRetriever.ac42().hasValue)(validateNoteEntered(boxRetriever)),
-      failIf(boxRetriever.ac42().noValue)(validateNoteCannotExists(boxRetriever)),
+      failIf(isMandatory)(validateNoteEntered(boxRetriever)),
+      failIf(!isMandatory)(validateNoteCannotExists(boxRetriever)),
       validateMoney(value, min = 0)
     )
   }
