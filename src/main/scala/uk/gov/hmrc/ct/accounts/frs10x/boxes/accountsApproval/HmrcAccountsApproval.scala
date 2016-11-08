@@ -29,7 +29,7 @@ case class HmrcAccountsApproval(ac199A: List[AC199A] = List.empty, ac8092: List[
   override def value = this
 
   override def approvalEnabled(boxRetriever: AccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever) = {
-    (boxRetriever.companiesHouseFiling().value, boxRetriever.hmrcFiling().value, boxRetriever.ac8021().value, boxRetriever.acQ8161().value) match {
+    (boxRetriever.companiesHouseFiling().value, boxRetriever.hmrcFiling().value, boxRetriever.ac8021().value, boxRetriever.acq8161().value) match {
       case (false, true, _, _) => true
       case (true, true, Some(false), _) => true
       case (true, true, _, Some(false)) => true

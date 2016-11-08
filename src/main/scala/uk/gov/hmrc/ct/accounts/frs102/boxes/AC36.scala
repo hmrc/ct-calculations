@@ -28,7 +28,7 @@ case class AC36(value: Option[Int]) extends CtBoxIdentifier(name = "Profit or lo
   with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever): Set[CtValidation] = {
-    failIf(boxRetriever.hmrcFiling().value || boxRetriever.acQ8161().orFalse)(
+    failIf(boxRetriever.hmrcFiling().value || boxRetriever.acq8161().orFalse)(
       boxRetriever match {
         case br: FullAccountsBoxRetriever => validateFull(br)
         case _ => validateAbridged(boxRetriever)

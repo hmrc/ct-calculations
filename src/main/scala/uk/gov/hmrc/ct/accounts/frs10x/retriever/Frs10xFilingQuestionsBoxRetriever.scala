@@ -24,5 +24,5 @@ trait Frs10xFilingQuestionsBoxRetriever extends AccountsBoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 
-  def acQ8161(): ACQ8161
+  def acq8161(): ACQ8161
 }
