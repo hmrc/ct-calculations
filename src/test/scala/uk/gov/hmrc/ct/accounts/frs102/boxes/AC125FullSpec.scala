@@ -122,13 +122,23 @@ class AC125FullSpec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetr
 
     "fail validation when note cannot be populated" in {
       when(boxRetriever.ac44()).thenReturn(AC44(None))
+      when(boxRetriever.ac45()).thenReturn(AC45(None))
       when(boxRetriever.ac128()).thenReturn(AC128(Some(123)))
       AC125(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.tangibleAssetsNote.cannot.exist"))
     }
 
-    "pass validation if no fields populated and AC44 not populated" in {
+    "pass validation if AC45 is set together with PY box" in {
       clearMockTangibleAssetsFields()
       when(boxRetriever.ac44()).thenReturn(AC44(None))
+      when(boxRetriever.ac45()).thenReturn(AC45(Some(10)))
+      when(boxRetriever.ac124A()).thenReturn(AC124A(Some(10)))
+      AC125(None).validate(boxRetriever) shouldBe Set()
+    }
+
+    "pass validation if no fields populated and AC44 and AC45 not populated" in {
+      clearMockTangibleAssetsFields()
+      when(boxRetriever.ac44()).thenReturn(AC44(None))
+      when(boxRetriever.ac45()).thenReturn(AC45(None))
       AC125(None).validate(boxRetriever) shouldBe Set()
     }
 

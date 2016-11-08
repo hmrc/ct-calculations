@@ -56,6 +56,7 @@ class AC115AbridgedSpec extends AccountsMoneyValidationFixture[Frs102AccountsBox
     "throw global error when one field was entered but not cannot be set" in {
       setUpMocks()
       when(boxRetriever.ac42()).thenReturn(AC42(None))
+      when(boxRetriever.ac43()).thenReturn(AC43(None))
       AC115(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.intangibleAssetsNote.cannot.exist"))
     }
 

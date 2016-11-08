@@ -91,9 +91,21 @@ class AC115FullSpec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetr
       setupEmptyMocks()
 
       when(boxRetriever.ac42()).thenReturn(AC42(None))
+      when(boxRetriever.ac43()).thenReturn(AC43(None))
       when(boxRetriever.ac5123()).thenReturn(AC5123(Some("Test text")))
 
       AC115(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.intangibleAssetsNote.cannot.exist"))
+    }
+
+    "validate successfully if AC42 is empty, AC43 not and there's a note box set." in {
+      setupEmptyMocks()
+
+      when(boxRetriever.ac42()).thenReturn(AC42(None))
+      when(boxRetriever.ac43()).thenReturn(AC43(Some(10)))
+      when(boxRetriever.ac114()).thenReturn(AC114(Some(10)))
+      when(boxRetriever.ac5123()).thenReturn(AC5123(Some("Test text")))
+
+      AC115(None).validate(boxRetriever) shouldBe Set.empty
     }
 
     "validate successfully when AC114 is set" in {

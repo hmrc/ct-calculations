@@ -47,6 +47,7 @@ class AC189Spec extends WordSpec
     "throw global error when note cannot be entered" in {
       val box = AC189(Some(10))
       when(boxRetriever.ac76()).thenReturn(AC76(None))
+      when(boxRetriever.ac77()).thenReturn(AC77(None))
       when(boxRetriever.ac189()).thenReturn(box)
 
       box.validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.revaluationReserveNote.cannot.exist"))
@@ -56,6 +57,7 @@ class AC189Spec extends WordSpec
       val box = AC189(None)
 
       when(boxRetriever.ac76()).thenReturn(AC76(None))
+      when(boxRetriever.ac77()).thenReturn(AC77(None))
       when(boxRetriever.ac189()).thenReturn(box)
       when(boxRetriever.ac190()).thenReturn(AC190(None))
       when(boxRetriever.ac5076C()).thenReturn(AC5076C(None))

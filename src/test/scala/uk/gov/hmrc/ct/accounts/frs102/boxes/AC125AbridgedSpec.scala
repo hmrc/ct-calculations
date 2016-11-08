@@ -54,6 +54,7 @@ class AC125AbridgedSpec extends AccountsMoneyValidationFixture[Frs102AccountsBox
 
     "fail validation when note cannot be populated" in {
       when(boxRetriever.ac44()).thenReturn(AC44(None))
+      when(boxRetriever.ac45()).thenReturn(AC45(None))
       when(boxRetriever.ac128()).thenReturn(AC128(Some(123)))
       AC125(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.balanceSheet.tangibleAssetsNote.cannot.exist"))
     }
