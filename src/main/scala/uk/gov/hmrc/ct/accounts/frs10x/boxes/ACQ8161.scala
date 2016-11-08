@@ -34,7 +34,6 @@ case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do yo
       ),
       passIf(boxRetriever.hmrcFiling().value)(
         boxRetriever match {
-            // TODO:use filing types ?
           case boxRetriever: Frs102AccountsBoxRetriever => validateCannotExist(boxRetriever)
           case boxRetriever: Frs105AccountsBoxRetriever => validateCannotExist(boxRetriever)
           case unknown => throw new IllegalStateException("unexpected retriever type: " + unknown)
