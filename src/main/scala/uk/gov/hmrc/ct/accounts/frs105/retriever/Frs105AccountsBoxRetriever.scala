@@ -107,6 +107,4 @@ trait Frs105AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
   def ac7991(): AC7991
 
   def ac7992(): AC7992
-
-  def acq8161(): ACQ8161
  }

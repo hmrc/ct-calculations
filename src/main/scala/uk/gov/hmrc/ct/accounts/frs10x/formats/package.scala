@@ -30,6 +30,8 @@ package object formats {
   implicit val ac8083Format = new OptionalBooleanFormat(AC8083.apply)
   implicit val ac8088Format = new OptionalBooleanFormat(AC8088.apply)
 
+  implicit val acq8161Format = new OptionalBooleanFormat[ACQ8161](ACQ8161.apply)
+
   implicit val ac8092Format = new OptionalStringFormat[AC8092](AC8092.apply)
   implicit val ac8091Format = new OptionalBooleanFormat[AC8091](AC8091.apply)
   implicit val ac198AFormat = new OptionalDateFormat[AC198A](AC198A.apply)
