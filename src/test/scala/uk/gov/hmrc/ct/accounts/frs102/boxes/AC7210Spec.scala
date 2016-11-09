@@ -20,11 +20,11 @@ import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
-import uk.gov.hmrc.ct.accounts.frs102.{AccountsFreeTextSizeRangeValidationFixture, AccountsFreeTextValidationFixture}
+import uk.gov.hmrc.ct.accounts.frs102.AccountsFreeTextValidationFixture
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
-class AC7210Spec extends WordSpec with MockitoSugar with Matchers with MockFrs102AccountsRetriever with AccountsFreeTextSizeRangeValidationFixture {
+class AC7210Spec extends WordSpec with MockitoSugar with Matchers with MockFrs102AccountsRetriever with AccountsFreeTextValidationFixture {
 
   override def setUpMocks(): Unit = {
     when(boxRetriever.ac32()).thenReturn(AC32(Some(4)))

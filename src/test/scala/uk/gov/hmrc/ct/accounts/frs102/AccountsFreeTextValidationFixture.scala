@@ -59,6 +59,43 @@ trait AccountsFreeTextValidationFixture extends WordSpec with Matchers with Mock
     }
   }
 
+  def testAccountsCharacterSizeRangeValidation(boxId: String, lowerLimit: Int , upperLimit: Int, builder: (Option[String]) => ValidatableBox[Frs102AccountsBoxRetriever]): Unit = {
+    setUpMocks()
+    "pass validation when empty" in {
+      builder(None).validate(boxRetriever) shouldBe Set.empty
+    }
+
+    testMandatoryAccountsCharacterSizeRangeValidation(boxId, lowerLimit, upperLimit,builder)
+  }
+
+  def testMandatoryAccountsCharacterSizeRangeValidation(boxId: String, lowerLimit: Int , upperLimit: Int, builder: (Option[String]) => ValidatableBox[Frs102AccountsBoxRetriever]): Unit = {
+
+    "pass validation when empty string" in {
+      builder(Some("")).validate(boxRetriever) shouldBe Set.empty
+    }
+
+    "pass validation with valid string value" in {
+      builder(Some("testing this like crazy")).validate(boxRetriever) shouldBe Set.empty
+    }
+
+    s"pass validation when string is $upperLimit characters long" in {
+      val string = "a" * upperLimit
+      builder(Some(string)).validate(boxRetriever) shouldBe Set.empty
+    }
+
+    s"fail validation when string is longer than $upperLimit characters long" in {
+      val string = "a" * (upperLimit + 1)
+      builder(Some(string)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(s"$lowerLimit", s"$upperLimit"))))
+    }
+
+    s"fail validation when string is shorter than $lowerLimit characters long" in {
+      if(lowerLimit > 0) {
+        val string = "a" * (lowerLimit - 1)
+        builder(Some(string)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(s"$lowerLimit", s"$upperLimit"))))
+      }
+    }
+  }
+
   def testAccountsCoHoTextFieldValidation(boxId: String, builder: (Option[String]) => ValidatableBox[Frs102AccountsBoxRetriever]): Unit = {
     setUpMocks()
     "fail validation if invalid characters" in {
