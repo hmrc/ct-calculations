@@ -30,7 +30,7 @@ case class AC304A(value: Option[String]) extends CtBoxIdentifier(name = "Directo
 
     collectErrors(
       validateAsMandatory(),
-      validateOptionalStringByLength(0, StandardCohoNameFieldLimit),
+      validateOptionalStringByLength(1, StandardCohoNameFieldLimit),
       validateCohoOptionalNameField()
     )
   }

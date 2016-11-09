@@ -73,6 +73,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
   protected def validateAsMandatory[U](box: CtValue[U] with CtBoxIdentifier)(): Set[CtValidation] = {
     box.value match {
       case None => Set(CtValidation(Some(box.id), s"error.${box.id}.required"))
+      case Some(x:String) if x.isEmpty => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
       case _ => Set()
     }
   }
@@ -234,10 +235,10 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
-  protected def validateCoHoOptionalString(boxId: String, box: OptionalStringIdBox)(): Set[CtValidation] = {
+  protected def validateCoHoStringReturnIllegalChars(boxId: String, box: OptionalStringIdBox)(): Set[CtValidation] = {
     box.value match {
       case Some(x) if x.nonEmpty => {
-        validateCoHoString(boxId, x)
+        validateCoHoStringReturnIllegalChars(boxId, x)
       }
       case _ => Set()
     }
@@ -251,7 +252,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     validateOptionalStringByRegex(boxId, box, ValidCoHoNamesCharacters)
   }
 
-  protected def validateCoHoString(boxId: String, value: String, errorCodeBoxId: Option[String] = None)(): Set[CtValidation] = {
+  protected def validateCoHoStringReturnIllegalChars(boxId: String, value: String, errorCodeBoxId: Option[String] = None)(): Set[CtValidation] = {
 
     def getIllegalCharacters(x: String): String = {
       val p = Pattern.compile(ValidCoHoCharacters)

@@ -30,7 +30,7 @@ case class AC5032(value: Option[String]) extends CtBoxIdentifier(name = "Profit/
     collectErrors(
       cannotExistIf(hasValue && !boxRetriever.ac32().hasValue),
       validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString()
+      validateCoHoStringReturnIllegalChars()
     )
   }
 }

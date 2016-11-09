@@ -34,7 +34,7 @@ trait TradingLossesValidation extends Validators {
   }
 
    def answeredNoToTradingLossesNotUsedFromPreviousPeriod(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ17.isFalse
+     boxRetriever.cpQ17.hasValue && boxRetriever.cpQ17.isFalse
   }
 
    def answeredYesToTradingLossesNotUsedFromPreviousPeriod(boxRetriever: ComputationsBoxRetriever)() = {
@@ -46,7 +46,7 @@ trait TradingLossesValidation extends Validators {
   }
 
    def answeredNoToCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ19.isFalse
+     boxRetriever.cpQ19.hasValue && boxRetriever.cpQ19.isFalse
   }
 
    def answeredYesToCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {

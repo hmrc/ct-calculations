@@ -30,7 +30,7 @@ case class AC7501(value: Option[String]) extends CtBoxIdentifier(name = "Loans T
 
     collectErrors(
       validateOptionalStringByLength(0, StandardCohoTextFieldLimit),
-      validateCoHoOptionalString()
+      validateCoHoStringReturnIllegalChars()
     )
   }
 }

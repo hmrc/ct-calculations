@@ -22,46 +22,10 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, _}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.{Frs10xFilingQuestionsBoxRetriever, Frs10xAccountsBoxRetriever}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
-sealed trait TestAccountsRetriever extends AccountsBoxRetriever with FilingAttributesBoxValueRetriever
-
-sealed trait TestFrs10xAccountsRetriever extends Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
-
-sealed trait TestFrs102AccountsRetriever extends Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
-
-sealed trait TestFrs105AccountsRetriever extends Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever
-
-sealed trait TestAbridgedAccountsRetriever extends AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
-
-sealed trait TestFullAccountsRetriever extends FullAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
-
-trait MockAccountsRetriever extends MockitoSugar {
-  val boxRetriever = mock[TestAccountsRetriever]
-}
-
-trait MockFrs10xAccountsRetriever extends MockitoSugar {
-  val boxRetriever = mock[TestFrs10xAccountsRetriever]
-}
-
-trait MockFrs102AccountsRetriever extends MockitoSugar {
-  val boxRetriever = mock[TestFrs102AccountsRetriever]
-}
-
-trait MockFrs105AccountsRetriever extends MockitoSugar {
-  val boxRetriever = mock[TestFrs105AccountsRetriever](RETURNS_SMART_NULLS)
-}
-
-trait MockAbridgedAccountsRetriever extends MockitoSugar {
-  val boxRetriever = mock[TestAbridgedAccountsRetriever]
-}
-
-trait MockFullAccountsRetriever extends MockitoSugar {
-  val boxRetriever = mock[TestFullAccountsRetriever]
-}
 
 trait AccountsPreviousPeriodValidationFixture[T <: AccountsBoxRetriever] extends WordSpec with Matchers with MockitoSugar {
 

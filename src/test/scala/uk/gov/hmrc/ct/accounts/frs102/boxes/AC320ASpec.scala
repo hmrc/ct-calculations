@@ -35,8 +35,8 @@ class AC320ASpec extends WordSpec
     when(boxRetriever.ac320A()).thenReturn(AC320A(Some("text")))
   }
 
-  testAccountsCharacterLimitValidation("AC320A", StandardCohoTextFieldLimit, AC320A)
-  testAccountsCoHoTextFieldValidation("AC320A", AC320A)
+  testTextFieldValidation("AC320A", AC320A, testUpperLimit = Some(StandardCohoTextFieldLimit), testMandatory = None)
+  testTextFieldIllegalCharacterValidationReturnsIllegalCharacters("AC320A", AC320A)
 
   "AC320A" should {
     "fail validation when not empty and AC320 is true" in {
@@ -72,28 +72,6 @@ class AC320ASpec extends WordSpec
       when(boxRetriever.ac320()).thenReturn(AC320(Some(false)))
 
       AC320A(Some("text")).validate(boxRetriever) shouldBe empty
-    }
-  }
-
-  override def testAccountsCharacterLimitValidation(boxId: String, charLimit: Int, builder: (Option[String]) => ValidatableBox[Frs102AccountsBoxRetriever]): Unit = {
-    setUpMocks()
-
-    "pass validation when empty string" in {
-      builder(Some("")).validate(boxRetriever) shouldBe Set.empty
-    }
-
-    "pass validation with valid string value" in {
-      builder(Some("testing this like crazy")).validate(boxRetriever) shouldBe Set.empty
-    }
-
-    s"pass validation when string is $charLimit characters long" in {
-      val string = "a" * charLimit
-      builder(Some(string)).validate(boxRetriever) shouldBe Set.empty
-    }
-
-    s"fail validation when string is longer than $charLimit characters long" in {
-      val string = "a" * (charLimit + 1)
-      builder(Some(string)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(f"$charLimit%,d"))))
     }
   }
 }

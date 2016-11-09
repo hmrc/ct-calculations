@@ -22,5 +22,5 @@ import uk.gov.hmrc.ct.box.ValidatableBox._
 
 case class AC8052(value: Option[String]) extends CtBoxIdentifier(name = "Political and charitable donations") with CtOptionalString with Input with ValidatableBox[Frs10xDirectorsBoxRetriever] {
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever): Set[CtValidation] =
-    validateOptionalStringByLength("AC8052", this, 0, StandardCohoTextFieldLimit) ++ validateCoHoOptionalString("AC8052", this)
+    validateOptionalStringByLength("AC8052", this, 0, StandardCohoTextFieldLimit) ++ validateCoHoStringReturnIllegalChars("AC8052", this)
 }
