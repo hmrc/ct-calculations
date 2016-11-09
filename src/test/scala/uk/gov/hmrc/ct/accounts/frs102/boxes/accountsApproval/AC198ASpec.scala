@@ -20,15 +20,15 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 import uk.gov.hmrc.cato.time.DateHelper
-import uk.gov.hmrc.ct.accounts.{MockFrs102AccountsRetriever, AC4}
-import uk.gov.hmrc.ct.accounts.frs102.AccountsDatesValidationFixture
+import uk.gov.hmrc.ct.accounts.{AC4, AccountsDatesValidationFixture, MockFrs102AccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 
 class AC198ASpec extends WordSpec
   with MockitoSugar
   with Matchers
   with MockFrs102AccountsRetriever
   with BeforeAndAfter
-  with AccountsDatesValidationFixture {
+  with AccountsDatesValidationFixture[Frs102AccountsBoxRetriever] {
 
   val NOW = DateHelper.now()
   val APEnd = NOW.minusMonths(1)
