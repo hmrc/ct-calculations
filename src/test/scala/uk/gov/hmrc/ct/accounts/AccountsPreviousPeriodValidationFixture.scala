@@ -27,30 +27,6 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 
 
-sealed trait TestFrs102AccountsRetriever extends Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
-
-sealed trait TestFrs105AccountsRetriever extends Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever
-
-sealed trait TestAbridgedAccountsRetriever extends AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
-
-sealed trait TestFullAccountsRetriever extends FullAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
-
-trait MockFrs102AccountsRetriever extends MockitoSugar {
-  val boxRetriever = mock[TestFrs102AccountsRetriever]
-}
-
-trait MockFrs105AccountsRetriever extends MockitoSugar {
-  val boxRetriever = mock[TestFrs105AccountsRetriever](RETURNS_SMART_NULLS)
-}
-
-trait MockAbridgedAccountsRetriever extends MockitoSugar {
-  val boxRetriever = mock[TestAbridgedAccountsRetriever]
-}
-
-trait MockFullAccountsRetriever extends MockitoSugar {
-  val boxRetriever = mock[TestFullAccountsRetriever]
-}
-
 trait AccountsPreviousPeriodValidationFixture[T <: AccountsBoxRetriever] extends WordSpec with Matchers with MockitoSugar {
 
   def boxRetriever: T
