@@ -17,7 +17,8 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.calculations.ProfitOrLossFinancialYearCalculator
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, Frs10xFilingQuestionsBoxRetriever, FullAccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xFilingQuestionsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
@@ -27,7 +28,7 @@ case class AC36(value: Option[Int]) extends CtBoxIdentifier(name = "Profit or lo
   with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever): Set[CtValidation] = {
-    failIf(boxRetriever.hmrcFiling().value || boxRetriever.acQ8161().orFalse)(
+    failIf(boxRetriever.hmrcFiling().value || boxRetriever.acq8161().orFalse)(
       boxRetriever match {
         case br: FullAccountsBoxRetriever => validateFull(br)
         case _ => validateAbridged(boxRetriever)

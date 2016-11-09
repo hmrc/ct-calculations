@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes.accountsApproval
+package uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval
 
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, AbridgedAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 
 class AC8091Spec extends WordSpec

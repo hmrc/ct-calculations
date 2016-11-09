@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes.accountsApproval
+package uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval
 
 import org.mockito.Mockito._
-import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
-import uk.gov.hmrc.ct.accounts.frs102.{AC8021, ACQ8161}
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.ACQ8161
+import uk.gov.hmrc.ct.accounts.{MockFrs10xAccountsRetriever, MockFrs102AccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.AC8021
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
 
-class sHmrcAccountsApprovalSpec extends AccountsApprovalFixture with MockFrs102AccountsRetriever {
+class sHmrcAccountsApprovalSpec extends AccountsApprovalFixture with MockFrs10xAccountsRetriever {
 
   override def setUpMocks(): Unit = {
     when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
     when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
     when(boxRetriever.ac8021()).thenReturn(AC8021(Some(false)))
-    when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+    when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(false)))
   }
 
   override def setUpDisabledMocks(): Unit = {
@@ -44,7 +45,7 @@ class sHmrcAccountsApprovalSpec extends AccountsApprovalFixture with MockFrs102A
       when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
       when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(false))
       when(boxRetriever.ac8021()).thenReturn(AC8021(None))
-      when(boxRetriever.acQ8161()).thenReturn(ACQ8161(None))
+      when(boxRetriever.acq8161()).thenReturn(ACQ8161(None))
 
       emptyApproval.approvalEnabled(boxRetriever) shouldBe true
     }
@@ -54,7 +55,7 @@ class sHmrcAccountsApprovalSpec extends AccountsApprovalFixture with MockFrs102A
       when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
       when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
       when(boxRetriever.ac8021()).thenReturn(AC8021(Some(false)))
-      when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+      when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
 
       emptyApproval.approvalEnabled(boxRetriever) shouldBe true
     }
@@ -64,7 +65,7 @@ class sHmrcAccountsApprovalSpec extends AccountsApprovalFixture with MockFrs102A
       when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
       when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
       when(boxRetriever.ac8021()).thenReturn(AC8021(Some(true)))
-      when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+      when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(false)))
 
       emptyApproval.approvalEnabled(boxRetriever) shouldBe true
     }
@@ -74,7 +75,7 @@ class sHmrcAccountsApprovalSpec extends AccountsApprovalFixture with MockFrs102A
       when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
       when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
       when(boxRetriever.ac8021()).thenReturn(AC8021(Some(false)))
-      when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+      when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(false)))
 
       emptyApproval.approvalEnabled(boxRetriever) shouldBe true
     }
@@ -84,7 +85,7 @@ class sHmrcAccountsApprovalSpec extends AccountsApprovalFixture with MockFrs102A
       when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
       when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
       when(boxRetriever.ac8021()).thenReturn(AC8021(None))
-      when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(false)))
+      when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(false)))
 
       emptyApproval.approvalEnabled(boxRetriever) shouldBe true
     }
@@ -94,7 +95,7 @@ class sHmrcAccountsApprovalSpec extends AccountsApprovalFixture with MockFrs102A
       when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
       when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
       when(boxRetriever.ac8021()).thenReturn(AC8021(Some(true)))
-      when(boxRetriever.acQ8161()).thenReturn(ACQ8161(Some(true)))
+      when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
 
       emptyApproval.approvalEnabled(boxRetriever) shouldBe false
     }
