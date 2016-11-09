@@ -30,8 +30,8 @@ class AC7210Spec extends WordSpec with MockitoSugar with Matchers with MockFrs10
     when(boxRetriever.ac32()).thenReturn(AC32(Some(4)))
   }
 
-  testAccountsCharacterSizeRangeValidation("AC7210", 0, StandardCohoTextFieldLimit, AC7210)
-  testAccountsCoHoTextFieldValidation("AC7210", AC7210)
+  testTextFieldValidation("AC7210", AC7210, testLowerLimit = Some(0), testUpperLimit = Some(StandardCohoTextFieldLimit))
+  testTextFieldIllegalCharacterValidationReturnsIllegalCharacters("AC7210", AC7210)
 
   "AC7210" should {
 

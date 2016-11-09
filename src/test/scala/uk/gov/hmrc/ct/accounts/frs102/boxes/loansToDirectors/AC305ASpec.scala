@@ -28,8 +28,8 @@ class AC305ASpec extends WordSpec
   with MockFrs102AccountsRetriever
   with AccountsFreeTextValidationFixture[Frs102AccountsBoxRetriever] {
 
-  testMandatoryAccountsCharacterSizeRangeValidation("AC305A", 0, 250 , AC305A)
-  testAccountsCoHoTextFieldValidation("AC305A", AC305A)
+  testTextFieldValidation("AC305A", AC305A, testLowerLimit = Some(1), testUpperLimit = Some(250), testMandatory = Some(true))
+  testTextFieldIllegalCharacterValidationReturnsIllegalCharacters("AC305A", AC305A)
 
   "AC305A should" should {
 

@@ -33,7 +33,7 @@ class AC321Spec extends WordSpec
     when(boxRetriever.ac321()).thenReturn(AC321(Some("text")))
   }
 
-  testAccountsCharacterLimitValidation("AC321", StandardCohoTextFieldLimit, AC321)
-  testAccountsCoHoTextFieldValidation("AC321", AC321)
+  testTextFieldValidation("AC321", AC321, testUpperLimit = Some(StandardCohoTextFieldLimit))
+  testTextFieldIllegalCharacterValidationReturnsIllegalCharacters("AC321", AC321)
 
 }

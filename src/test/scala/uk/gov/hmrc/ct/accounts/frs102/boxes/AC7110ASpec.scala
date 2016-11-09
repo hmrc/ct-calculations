@@ -33,7 +33,7 @@ class AC7110ASpec extends WordSpec
     when(boxRetriever.ac7110A()).thenReturn(AC7110A(Some("text")))
   }
 
-  testAccountsCharacterLimitValidation("AC7110A", StandardCohoTextFieldLimit, AC7110A)
-  testAccountsCoHoTextFieldValidation("AC7110A", AC7110A)
+  testTextFieldValidation("AC7110A", AC7110A, testUpperLimit = Some(StandardCohoTextFieldLimit))
+  testTextFieldIllegalCharacterValidationReturnsIllegalCharacters("AC7110A", AC7110A)
 
 }

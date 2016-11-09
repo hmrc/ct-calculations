@@ -34,8 +34,8 @@ class AC5064ATextSpec extends WordSpec
     when(boxRetriever.ac64()).thenReturn(AC64(Some(100)))
   }
 
-  testAccountsCharacterLimitValidation("AC5064A", StandardCohoTextFieldLimit, AC5064A)
-  testAccountsCoHoTextFieldValidation("AC5064A", AC5064A)
+  testTextFieldValidation("AC5064A", AC5064A, testUpperLimit = Some(StandardCohoTextFieldLimit))
+  testTextFieldIllegalCharacterValidationReturnsIllegalCharacters("AC5064A", AC5064A)
 
 }
 

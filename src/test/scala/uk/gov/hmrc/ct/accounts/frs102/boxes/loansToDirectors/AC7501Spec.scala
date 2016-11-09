@@ -28,6 +28,6 @@ class AC7501Spec extends WordSpec
   with MockFrs102AccountsRetriever
   with AccountsFreeTextValidationFixture[Frs102AccountsBoxRetriever] {
 
-  testMandatoryAccountsCharacterSizeRangeValidation("AC7501", 0, StandardCohoTextFieldLimit , AC7501)
-  testAccountsCoHoTextFieldValidation("AC7501", AC7501)
+  testTextFieldValidation("AC7501", AC7501, testLowerLimit = Some(0), testUpperLimit = Some(StandardCohoTextFieldLimit))
+  testTextFieldIllegalCharacterValidationReturnsIllegalCharacters("AC7501", AC7501)
 }

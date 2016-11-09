@@ -73,6 +73,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
   protected def validateAsMandatory[U](box: CtValue[U] with CtBoxIdentifier)(): Set[CtValidation] = {
     box.value match {
       case None => Set(CtValidation(Some(box.id), s"error.${box.id}.required"))
+      case Some(x:String) if x.isEmpty => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
       case _ => Set()
     }
   }

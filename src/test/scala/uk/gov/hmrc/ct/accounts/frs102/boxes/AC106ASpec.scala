@@ -29,8 +29,8 @@ class AC106ASpec extends WordSpec with Matchers with MockFrs102AccountsRetriever
     when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
   }
 
-  testAccountsCharacterLimitValidation("AC106A", StandardCohoTextFieldLimit, AC106A)
-  testAccountsCoHoTextFieldValidation("AC106A", AC106A)
+  testTextFieldValidation("AC106A", AC106A, testUpperLimit = Some(StandardCohoTextFieldLimit))
+  testTextFieldIllegalCharacterValidationReturnsIllegalCharacters("AC106A", AC106A)
 
   "AC106A" should {
 

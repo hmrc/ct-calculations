@@ -27,8 +27,8 @@ import uk.gov.hmrc.ct.box.ValidatableBox._
 class AC5052BSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
   with MockFrs102AccountsRetriever with AccountsFreeTextValidationFixture[Frs102AccountsBoxRetriever] {
 
-  testAccountsCharacterLimitValidation("AC5052B", StandardCohoTextFieldLimit, AC5052B)
-  testAccountsCoHoTextFieldValidation("AC5052B", AC5052B)
+  testTextFieldValidation("AC5052B", AC5052B, testUpperLimit = Some(StandardCohoTextFieldLimit))
+  testTextFieldIllegalCharacterValidationReturnsIllegalCharacters("AC5052B", AC5052B)
 
   before {
     when(boxRetriever.ac52).thenReturn(AC52(Some(33)))

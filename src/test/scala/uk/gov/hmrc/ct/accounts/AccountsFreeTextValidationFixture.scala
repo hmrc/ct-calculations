@@ -28,81 +28,70 @@ trait AccountsFreeTextValidationFixture[T <: AccountsBoxRetriever] extends WordS
   //This can be overridden if mock box retriever calls need to be made
   def setUpMocks(): Unit = Unit
 
-  def testAccountsCharacterLimitValidation(boxId: String, charLimit: Int, builder: (Option[String]) => ValidatableBox[T]): Unit = {
-    setUpMocks()
-    "pass validation when empty" in {
-      builder(None).validate(boxRetriever) shouldBe Set.empty
-    }
+  def testTextFieldValidation(boxId: String, builder: (Option[String]) => ValidatableBox[T], testLowerLimit: Option[Int] = None, testUpperLimit: Option[Int] = None, testMandatory: Option[Boolean] = Some(false)) = {
 
-    testMandatoryAccountsCharacterLimitValidation(boxId, charLimit ,builder)
-  }
-
-  def testMandatoryAccountsCharacterLimitValidation(boxId: String, charLimit: Int, builder: (Option[String]) => ValidatableBox[T]): Unit = {
-
-    "pass validation when empty string" in {
-      builder(Some("")).validate(boxRetriever) shouldBe Set.empty
-    }
-
-    "pass validation with valid string value" in {
-      builder(Some("testing this like crazy")).validate(boxRetriever) shouldBe Set.empty
-    }
-
-    s"pass validation when string is $charLimit characters long" in {
-      val string = "a" * charLimit
-      builder(Some(string)).validate(boxRetriever) shouldBe Set.empty
-    }
-
-    s"fail validation when string is longer than $charLimit characters long" in {
-      val string = "a" * (charLimit + 1)
-      builder(Some(string)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(f"$charLimit%,d"))))
-    }
-  }
-
-  def testAccountsCharacterSizeRangeValidation(boxId: String, lowerLimit: Int , upperLimit: Int, builder: (Option[String]) => ValidatableBox[T]): Unit = {
-    setUpMocks()
-    "pass validation when empty" in {
-      builder(None).validate(boxRetriever) shouldBe Set.empty
-    }
-
-    testMandatoryAccountsCharacterSizeRangeValidation(boxId, lowerLimit, upperLimit,builder)
-  }
-
-  def testMandatoryAccountsCharacterSizeRangeValidation(boxId: String, lowerLimit: Int , upperLimit: Int, builder: (Option[String]) => ValidatableBox[T]): Unit = {
-
-    "pass validation when empty string" in {
-      builder(Some("")).validate(boxRetriever) shouldBe Set.empty
+    if(testMandatory == Some(true)) {
+      "fail validation when empty string" in {
+        builder(Some("")).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.required", None))
+      }
+    } else if(testMandatory == Some(false)) {
+      "pass validation when empty string" in {
+        builder(None).validate(boxRetriever) shouldBe Set.empty
+      }
+    } else {
+      //'None' disables validation on empty strings, required to avoid failures in cases when a box being mandatory depends on the value of another box.
     }
 
     "pass validation with valid string value" in {
       builder(Some("testing this like crazy")).validate(boxRetriever) shouldBe Set.empty
     }
 
-    s"pass validation when string is $upperLimit characters long" in {
-      val string = "a" * upperLimit
-      builder(Some(string)).validate(boxRetriever) shouldBe Set.empty
-    }
+    if(testLowerLimit.isDefined && testUpperLimit.isDefined) {
+      val lowerLimit = testLowerLimit.get
+      val upperLimit = testUpperLimit.get
 
-    s"fail validation when string is longer than $upperLimit characters long" in {
-      val string = "a" * (upperLimit + 1)
-      builder(Some(string)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(s"$lowerLimit", s"$upperLimit"))))
-    }
+      s"pass validation when string is $upperLimit characters long" in {
+        val string = "a" * upperLimit
+        builder(Some(string)).validate(boxRetriever) shouldBe Set.empty
+      }
 
-    s"fail validation when string is shorter than $lowerLimit characters long" in {
-      if(lowerLimit > 0) {
-        val string = "a" * (lowerLimit - 1)
+      s"fail validation when string is longer than $upperLimit characters long" in {
+        val string = "a" * (upperLimit + 1)
         builder(Some(string)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(s"$lowerLimit", s"$upperLimit"))))
       }
+
+      s"fail validation when string is shorter than $lowerLimit characters long" in {
+        if(lowerLimit > 1) {
+          val string = "a" * (lowerLimit - 1)
+          builder(Some(string)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(s"$lowerLimit", s"$upperLimit"))))
+        }
+      }
     }
+
+    if(!testLowerLimit.isDefined && testUpperLimit.isDefined) {
+      val upperLimit = testUpperLimit.get
+
+      s"pass validation when string is $upperLimit characters long" in {
+        val string = "a" * upperLimit
+        builder(Some(string)).validate(boxRetriever) shouldBe Set.empty
+      }
+
+      s"fail validation when string is longer than $upperLimit characters long" in {
+        val string = "a" * (upperLimit + 1)
+        builder(Some(string)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(f"$upperLimit%,d"))))
+      }
+    }
+
   }
 
-  def testAccountsCoHoTextFieldValidation(boxId: String, builder: (Option[String]) => ValidatableBox[T]): Unit = {
+  def testTextFieldIllegalCharacterValidationReturnsIllegalCharacters(boxId: String, builder: (Option[String]) => ValidatableBox[T]): Unit = {
     setUpMocks()
     "fail validation if invalid characters" in {
       builder(Some("^ §")).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure", Some(List("^  §"))))
     }
   }
 
-  def testAccountsCoHoNameFieldValidation(boxId: String, builder: (Option[String]) => ValidatableBox[T]): Unit = {
+  def testTextFieldIllegalCharactersValidation(boxId: String, builder: (Option[String]) => ValidatableBox[T]): Unit = {
     setUpMocks()
     "fail validation if invalid characters" in {
       builder(Some("^ §")).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure", None))

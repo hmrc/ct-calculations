@@ -29,7 +29,7 @@ class AC304ASpec extends WordSpec
   with MockFrs102AccountsRetriever
   with AccountsFreeTextValidationFixture[Frs102AccountsBoxRetriever] {
 
-  testMandatoryAccountsCharacterSizeRangeValidation("AC304A", 0, StandardCohoNameFieldLimit, AC304A)
+  testTextFieldValidation("AC304A", AC304A, testLowerLimit = Some(1), testUpperLimit = Some(StandardCohoNameFieldLimit), testMandatory = Some(true))
 
   "AC304A should" should {
 

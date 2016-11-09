@@ -26,8 +26,8 @@ import uk.gov.hmrc.ct.box.ValidatableBox._
 class AC299ASpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
   with MockFrs102AccountsRetriever with AccountsFreeTextValidationFixture[Frs102AccountsBoxRetriever] {
 
-  testMandatoryAccountsCharacterLimitValidation("AC299A", StandardCohoNameFieldLimit, AC299A)
-  testAccountsCoHoNameFieldValidation("AC299A", AC299A)
+  testTextFieldValidation("AC299A", AC299A, testUpperLimit = Some(StandardCohoNameFieldLimit), testMandatory = Some(true))
+  testTextFieldIllegalCharactersValidation("AC299A", AC299A)
 
   "AC299A" should {
     "be mandatory" in {

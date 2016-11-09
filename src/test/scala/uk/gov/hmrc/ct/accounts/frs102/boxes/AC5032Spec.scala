@@ -30,8 +30,8 @@ class AC5032Spec extends WordSpec with MockitoSugar with Matchers with MockFrs10
     when(boxRetriever.ac32()).thenReturn(AC32(Some(4)))
   }
 
-  testAccountsCharacterLimitValidation("AC5032", StandardCohoTextFieldLimit, AC5032)
-  testAccountsCoHoTextFieldValidation("AC5032", AC5032)
+  testTextFieldValidation("AC5032", AC5032, testUpperLimit = Some(StandardCohoTextFieldLimit))
+  testTextFieldIllegalCharacterValidationReturnsIllegalCharacters("AC5032", AC5032)
 
   "AC5032" should {
 

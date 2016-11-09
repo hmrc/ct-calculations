@@ -34,8 +34,8 @@ class AC5058ASpec extends WordSpec
     when(boxRetriever.ac58()).thenReturn(AC58(Some(100)))
   }
 
-  testAccountsCharacterLimitValidation("AC5058A", StandardCohoTextFieldLimit, AC5058A)
-  testAccountsCoHoTextFieldValidation("AC5058A", AC5058A)
+  testTextFieldValidation("AC5058A", AC5058A, testUpperLimit = Some(StandardCohoTextFieldLimit))
+  testTextFieldIllegalCharacterValidationReturnsIllegalCharacters("AC5058A", AC5058A)
 
   "AC5058A" should {
     "throw cannot exist error when populated and AC58 and AC59 are empty in Abridged" in {
