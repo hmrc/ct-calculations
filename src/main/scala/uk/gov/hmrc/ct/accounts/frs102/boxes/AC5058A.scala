@@ -27,7 +27,7 @@ case class AC5058A(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
       failIf(!boxRetriever.ac58().hasValue && !boxRetriever.ac59().hasValue)(validateCannotExist(boxRetriever)),
       failIf(boxRetriever.ac58().hasValue || boxRetriever.ac59().hasValue)(validateNoteIsMandatory(boxRetriever)),
       validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString()
+      validateCoHoStringReturnIllegalChars()
     )
   }
 

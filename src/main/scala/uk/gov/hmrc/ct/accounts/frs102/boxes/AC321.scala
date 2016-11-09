@@ -30,7 +30,7 @@ case class AC321(value: Option[String]) extends CtBoxIdentifier(name = "Turnover
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       validateStringMaxLength("AC321", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString("AC321", this)
+      validateCoHoStringReturnIllegalChars("AC321", this)
     )
   }
 }

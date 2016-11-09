@@ -34,7 +34,7 @@ with Validators {
         collectErrors (
           validateStringAsMandatory(),
           validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
-          validateCoHoOptionalString()
+          validateCoHoStringReturnIllegalChars()
         )
       )
     )

@@ -30,7 +30,7 @@ with Validators {
       failIf (boxRetriever.ac44.hasValue) (
         collectErrors (
           validateOptionalStringByLength("AC5133", this, 1, StandardCohoTextFieldLimit),
-          validateCoHoOptionalString("AC5133", this)
+          validateCoHoStringReturnIllegalChars("AC5133", this)
         )
       )
     )

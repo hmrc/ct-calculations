@@ -140,8 +140,8 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
     super.validateStringByRegex(box.id, box, regex)
   }
 
-  protected def validateCoHoOptionalString()(): Set[CtValidation] = {
-    super.validateCoHoOptionalString(box.id, box)
+  protected def validateCoHoStringReturnIllegalChars()(): Set[CtValidation] = {
+    super.validateCoHoStringReturnIllegalChars(box.id, box)
   }
 
   protected def validateCohoNameField()(): Set[CtValidation] = {
@@ -152,8 +152,8 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
     super.validateCohoOptionalNameField(box.id, box)
   }
 
-  protected def validateCoHoString(value: String, errorCodeBoxId: Option[String])(): Set[CtValidation] = {
-    super.validateCoHoString(box.id, value, errorCodeBoxId)
+  protected def validateCoHoStringReturnIllegalChars(value: String, errorCodeBoxId: Option[String])(): Set[CtValidation] = {
+    super.validateCoHoStringReturnIllegalChars(box.id, value, errorCodeBoxId)
   }
 
   protected def validateOptionalStringByLength(min: Int, max: Int)(): Set[CtValidation] = {

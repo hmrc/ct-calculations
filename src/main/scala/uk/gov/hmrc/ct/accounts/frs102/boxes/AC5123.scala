@@ -30,7 +30,7 @@ case class AC5123(value: Option[String]) extends CtBoxIdentifier(name = "Intangi
 
     collectErrors(
       validateOptionalStringByLength("AC5123", this, 1, StandardCohoTextFieldLimit),
-      validateCoHoOptionalString("AC5123", this)
+      validateCoHoStringReturnIllegalChars("AC5123", this)
     )
   }
 }
