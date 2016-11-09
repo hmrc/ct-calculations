@@ -20,7 +20,7 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, FullAccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.AccountsFreeTextValidationFixture
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
@@ -29,7 +29,7 @@ class AC5058ASpec extends WordSpec
   with MockitoSugar
   with Matchers
   with MockFrs102AccountsRetriever
-  with AccountsFreeTextValidationFixture {
+  with AccountsFreeTextValidationFixture[Frs102AccountsBoxRetriever] {
 
   override def setUpMocks(): Unit = {
     when(boxRetriever.ac58()).thenReturn(AC58(Some(100)))

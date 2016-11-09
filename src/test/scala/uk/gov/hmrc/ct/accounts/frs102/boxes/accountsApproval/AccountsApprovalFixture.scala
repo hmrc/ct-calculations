@@ -21,11 +21,12 @@ import org.joda.time.LocalDate
 import org.mockito.Mockito
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.{MockFrs102AccountsRetriever, AC4}
+import uk.gov.hmrc.ct.accounts.{AC4, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.AccountsFreeTextValidationFixture
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
-trait AccountsApprovalFixture extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter with AccountsFreeTextValidationFixture {
+trait AccountsApprovalFixture extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter with AccountsFreeTextValidationFixture[Frs102AccountsBoxRetriever] {
 
   self: MockFrs102AccountsRetriever =>
 

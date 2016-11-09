@@ -20,10 +20,11 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
 import uk.gov.hmrc.ct.accounts.frs102.AccountsFreeTextValidationFixture
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
 class AC8092Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
-  with MockFrs102AccountsRetriever with AccountsFreeTextValidationFixture {
+  with MockFrs102AccountsRetriever with AccountsFreeTextValidationFixture[Frs102AccountsBoxRetriever] {
 
   testAccountsCharacterLimitValidation("AC8092", StandardCohoNameFieldLimit, AC8092)
   testAccountsCoHoNameFieldValidation("AC8092", AC8092)

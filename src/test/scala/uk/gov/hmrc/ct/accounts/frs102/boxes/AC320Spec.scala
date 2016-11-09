@@ -28,7 +28,7 @@ class AC320Spec extends WordSpec
   with MockitoSugar
   with Matchers
   with MockFrs102AccountsRetriever
-  with AccountsFreeTextValidationFixture {
+  with AccountsFreeTextValidationFixture[Frs102AccountsBoxRetriever] {
 
   override def setUpMocks(): Unit = {
     when(boxRetriever.ac320A()).thenReturn(AC320A(Some("text")))
