@@ -25,7 +25,7 @@ import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
-trait AccountsApprovalFixture extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter with AccountsFreeTextValidationFixture[Frs102AccountsBoxRetriever] {
+trait AccountsApprovalFixture extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter with AccountsFreeTextValidationFixture[Frs10xAccountsBoxRetriever] {
 
   self: MockFrs10xAccountsRetriever =>
 
