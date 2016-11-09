@@ -42,8 +42,14 @@ class AC133Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetrieve
       AC133(None).validate(boxRetriever) shouldBe Set()
     }
 
-    "not fail validation when no current value balance sheet value" in {
+    "fail validation when no current value balance sheet value but previous year value is set" in {
       when(boxRetriever.ac45()).thenReturn(AC45(Some(11)))
+      when(boxRetriever.ac44()).thenReturn(AC44(None))
+      AC133(Some(22)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.tangible.assets.note.previousNetBookValue.notEqualToAssets"))
+    }
+
+    "not fail validation when no current value balance sheet value" in {
+      when(boxRetriever.ac45()).thenReturn(AC45(None))
       when(boxRetriever.ac44()).thenReturn(AC44(None))
       AC133(Some(22)).validate(boxRetriever) shouldBe Set()
     }

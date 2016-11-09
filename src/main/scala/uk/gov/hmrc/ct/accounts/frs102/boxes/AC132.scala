@@ -26,7 +26,7 @@ case class AC132(value: Option[Int]) extends CtBoxIdentifier(name = "Net book va
   with Validators{
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    failIf (boxRetriever.ac44().hasValue) (
+    failIf (boxRetriever.ac44().hasValue || boxRetriever.ac45().hasValue) (
       collectErrors(
         validateMoney(value),
         validateNetBookValueMatchesTotalAssets(boxRetriever)
