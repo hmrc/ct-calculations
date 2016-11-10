@@ -19,8 +19,8 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockAbridgedAccountsRetriever, MockFrs102AccountsRetriever, MockFullAccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFullAccountsRetriever, MockAbridgedAccountsRetriever, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
@@ -34,8 +34,8 @@ class AC5064ATextSpec extends WordSpec
     when(boxRetriever.ac64()).thenReturn(AC64(Some(100)))
   }
 
-  testAccountsCharacterLimitValidation("AC5064A", StandardCohoTextFieldLimit, AC5064A)
-  testAccountsCoHoTextFieldValidation("AC5064A", AC5064A)
+  testTextFieldValidation("AC5064A", AC5064A, testUpperLimit = Some(StandardCohoTextFieldLimit))
+  testTextFieldIllegalCharacterValidationReturnsIllegalCharacters("AC5064A", AC5064A)
 
 }
 

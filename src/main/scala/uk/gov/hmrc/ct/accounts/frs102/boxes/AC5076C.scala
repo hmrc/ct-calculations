@@ -28,7 +28,7 @@ case class AC5076C(value: Option[String]) extends CtBoxIdentifier(name = "Additi
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
       validateStringMaxLength("AC5076C", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString("AC5076C", this)
+      validateCoHoStringReturnIllegalChars("AC5076C", this)
     )
   }
 

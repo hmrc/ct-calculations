@@ -20,7 +20,7 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, AbridgedAccountsBoxRetriever, FullAccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
@@ -34,8 +34,8 @@ class AC5058ASpec extends WordSpec
     when(boxRetriever.ac58()).thenReturn(AC58(Some(100)))
   }
 
-  testAccountsCharacterLimitValidation("AC5058A", StandardCohoTextFieldLimit, AC5058A)
-  testAccountsCoHoTextFieldValidation("AC5058A", AC5058A)
+  testTextFieldValidation("AC5058A", AC5058A, testUpperLimit = Some(StandardCohoTextFieldLimit))
+  testTextFieldIllegalCharacterValidationReturnsIllegalCharacters("AC5058A", AC5058A)
 
   "AC5058A" should {
     "throw cannot exist error when populated and AC58 and AC59 are empty in Abridged" in {

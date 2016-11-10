@@ -31,7 +31,7 @@ case class AC301A(value: Option[String]) extends CtBoxIdentifier(name = "Name of
     collectErrors(
       validateAsMandatory(this),
       validateStringMaxLength("AC301A", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString("AC301A", this)
+      validateCoHoStringReturnIllegalChars("AC301A", this)
     )
   }
 }

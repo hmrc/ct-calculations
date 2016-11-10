@@ -29,8 +29,8 @@ case class AC305A(value: Option[String]) extends CtBoxIdentifier(name = "Descrip
 
     collectErrors(
       validateAsMandatory(),
-      validateOptionalStringByLength(0, 250),
-      validateCoHoOptionalString()
+      validateOptionalStringByLength(1, 250),
+      validateCoHoStringReturnIllegalChars()
     )
   }
 }

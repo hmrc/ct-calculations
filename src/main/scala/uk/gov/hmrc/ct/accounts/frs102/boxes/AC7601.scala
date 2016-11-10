@@ -33,7 +33,7 @@ with Validators {
         collectErrors (
           validateStringAsMandatory("AC7601", this),
           validateOptionalStringByLength("AC7601", this, 1, StandardCohoTextFieldLimit),
-          validateCoHoOptionalString("AC7601", this)
+          validateCoHoStringReturnIllegalChars("AC7601", this)
         )
       )
     )

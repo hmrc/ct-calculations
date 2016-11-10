@@ -29,7 +29,7 @@ case class AC5052B(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
       validateStringMaxLength("AC5052B", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString("AC5052B", this)
+      validateCoHoStringReturnIllegalChars("AC5052B", this)
     )
   }
 }

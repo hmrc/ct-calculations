@@ -30,6 +30,6 @@ case class AC7806(value: Option[String]) extends CtBoxIdentifier(name = "Additio
 
     collectErrors(
       validateStringMaxLength("AC7806", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString("AC7806", this)    )
+      validateCoHoStringReturnIllegalChars("AC7806", this)    )
   }
 }

@@ -30,7 +30,7 @@ case class AC7110A(value: Option[String]) extends CtBoxIdentifier(name = "Other 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       validateStringMaxLength("AC7110A", value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoOptionalString("AC7110A", this)
+      validateCoHoStringReturnIllegalChars("AC7110A", this)
     )
   }
 }

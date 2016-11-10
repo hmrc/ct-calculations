@@ -14,23 +14,26 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes
+package uk.gov.hmrc.ct.accounts.frs105.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
-case class AC5133(value: Option[String]) extends CtBoxIdentifier(name = "Tangible assets additional information") with CtOptionalString
+case class AC7995(value: Option[String]) extends CtBoxIdentifier(name = "Commitments by way of guarantee note") with CtOptionalString
 with Input
-with ValidatableBox[Frs102AccountsBoxRetriever]
-with Validators {
+with SelfValidatableBox[Frs105AccountsBoxRetriever, Option[String]] {
 
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs105AccountsBoxRetriever) = {
+    import boxRetriever._
     collectErrors (
-      failIf (boxRetriever.ac44.hasValue) (
+      cannotExistIf(value.nonEmpty && ac7991().isFalse),
+
+      failIf (boxRetriever.ac7991().isTrue) (
         collectErrors (
-          validateOptionalStringByLength("AC5133", this, 1, StandardCohoTextFieldLimit),
-          validateCoHoStringReturnIllegalChars("AC5133", this)
+          validateStringAsMandatory(),
+          validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
+          validateCoHoStringReturnIllegalChars()
         )
       )
     )
