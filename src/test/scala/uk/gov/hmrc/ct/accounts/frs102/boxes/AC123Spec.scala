@@ -39,6 +39,24 @@ class AC123Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetrieve
       AC123(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.intangible.assets.note.previousNetBookValue.notEqualToAssets"))
     }
 
+    "pass validation if has value but AC42 and AC43 are empty" in {
+      import boxRetriever._
+
+      when(ac42()).thenReturn(AC42(None))
+      when(ac43()).thenReturn(AC43(None))
+
+      AC123(Some(10)).validate(boxRetriever) shouldBe Set.empty
+    }
+
+    "fail validation if this and AC42 have values but AC43 is empty" in {
+      import boxRetriever._
+
+      when(ac42()).thenReturn(AC42(Some(10)))
+      when(ac43()).thenReturn(AC43(None))
+
+      AC123(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.intangible.assets.note.previousNetBookValue.notEqualToAssets"))
+    }
+
     "validate successfully if nothing is wrong" in {
       setUpMocks()
       AC123(Some(100)).validate(boxRetriever) shouldBe Set.empty
