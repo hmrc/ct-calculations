@@ -29,12 +29,31 @@ class AC122Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetrieve
     import boxRetriever._
 
     when(ac42()).thenReturn(AC42(Some(100)))
+    when(ac43()).thenReturn(AC43(Some(100)))
   }
 
   "AC122" should {
 
-    "throw error when is different than AC43" in {
+    "throw error when is different than AC42" in {
       setUpMocks()
+      AC122(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.intangible.assets.note.currentNetBookValue.notEqualToAssets"))
+    }
+
+    "pass validation if has value but AC42 and AC43 are empty" in {
+      import boxRetriever._
+
+      when(ac42()).thenReturn(AC42(None))
+      when(ac43()).thenReturn(AC43(None))
+
+      AC122(Some(10)).validate(boxRetriever) shouldBe Set.empty
+    }
+
+    "fail validation if this and AC43 have values but AC42 is empty" in {
+      import boxRetriever._
+
+      when(ac42()).thenReturn(AC42(None))
+      when(ac43()).thenReturn(AC43(Some(10)))
+
       AC122(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.intangible.assets.note.currentNetBookValue.notEqualToAssets"))
     }
 

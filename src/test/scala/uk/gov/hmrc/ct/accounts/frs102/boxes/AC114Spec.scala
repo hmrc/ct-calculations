@@ -34,19 +34,4 @@ class AC114Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetrieve
 
   testAccountsMoneyValidationWithMin("AC114", 0, AC114.apply)
 
-  "AC114" should {
-    "not exist when AC43 is empty" in {
-      when(boxRetriever.ac43()).thenReturn(AC43(None))
-      AC114(Some(114)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some("AC114"), s"error.AC114.cannot.exist", None))
-    }
-    "be OK when AC43 is provided" in {
-      when(boxRetriever.ac43()).thenReturn(AC43(Some(43)))
-      AC114(Some(114)).validate(boxRetriever) shouldBe empty
-    }
-    "be OK when AC43 is empty and AC114 is empty" in {
-      when(boxRetriever.ac43()).thenReturn(AC43(None))
-      AC114(None).validate(boxRetriever) shouldBe empty
-    }
-  }
-
 }
