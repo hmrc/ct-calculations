@@ -26,9 +26,11 @@ case class AC163(value: Option[Int]) extends CtBoxIdentifier(name = "Creditors a
   with Validators {
 
   override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      validateMoney(value),
-      failIf(boxRetriever.ac65().hasValue)(totalEqualToCurrentAmount(boxRetriever))
+    failIf(boxRetriever.ac64().hasValue || boxRetriever.ac65().hasValue)(
+      collectErrors(
+        validateMoney(value),
+        totalEqualToCurrentAmount(boxRetriever)
+      )
     )
   }
 
