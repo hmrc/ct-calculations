@@ -25,7 +25,9 @@ case class AC154(value: Option[Int]) extends CtBoxIdentifier(name = "Total credi
   with CtOptionalInteger with AssetsEqualToSharesValidator with ValidatableBox[Frs102AccountsBoxRetriever] {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    validateMatchesBalanceSheetValue(boxRetriever)
+    failIf(boxRetriever.ac58().hasValue || boxRetriever.ac59().hasValue)(
+      validateMatchesBalanceSheetValue(boxRetriever)
+    )
   }
 
   private def validateMatchesBalanceSheetValue(boxRetriever: Frs102AccountsBoxRetriever)() = {
