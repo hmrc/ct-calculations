@@ -29,6 +29,11 @@ class AC140Spec extends AccountsMoneyValidationFixture[FullAccountsBoxRetriever]
       AC140(Some(1)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.debtors.currentYearTotal.notEqualsTo.currentYearAmount"))
     }
 
+    "fail validation if not equal to empty AC52" in {
+      when(boxRetriever.ac52()).thenReturn(AC52(None))
+      AC140(Some(1)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.debtors.currentYearTotal.notEqualsTo.currentYearAmount"))
+    }
+
     "fail validation if empty and AC52 is 0" in {
       when(boxRetriever.ac52()).thenReturn(AC52(Some(0)))
       AC140(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.debtors.currentYearTotal.notEqualsTo.currentYearAmount"))
