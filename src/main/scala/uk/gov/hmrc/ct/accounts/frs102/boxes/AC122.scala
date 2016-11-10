@@ -27,10 +27,11 @@ case class AC122(value: Option[Int]) extends CtBoxIdentifier(name = "Net book va
   with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-
-    collectErrors(
-      validateMoney(value, min = 0),
-      validateNetBookValueMatchesTotalAssets(boxRetriever)
+    failIf (boxRetriever.ac42().hasValue || boxRetriever.ac43().hasValue) (
+      collectErrors(
+        validateMoney(value, min = 0),
+        validateNetBookValueMatchesTotalAssets(boxRetriever)
+      )
     )
   }
 
