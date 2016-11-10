@@ -30,6 +30,7 @@ class AC154Spec extends WordSpec with Matchers with MockitoSugar {
       val boxRetriever = mock[FullAccountsBoxRetriever]
 
       when(boxRetriever.ac58()).thenReturn(AC58(Some(50)))
+      when(boxRetriever.ac59()).thenReturn(AC59(Some(50)))
       AC154(Some(50)).validate(boxRetriever) shouldBe empty
     }
 
@@ -38,6 +39,7 @@ class AC154Spec extends WordSpec with Matchers with MockitoSugar {
       val boxRetriever = mock[FullAccountsBoxRetriever]
 
       when(boxRetriever.ac58()).thenReturn(AC58(None))
+      when(boxRetriever.ac59()).thenReturn(AC59(Some(50)))
       AC154(None).validate(boxRetriever) shouldBe empty
     }
 
@@ -45,6 +47,7 @@ class AC154Spec extends WordSpec with Matchers with MockitoSugar {
       val boxRetriever = mock[FullAccountsBoxRetriever]
 
       when(boxRetriever.ac58()).thenReturn(AC58(Some(0)))
+      when(boxRetriever.ac59()).thenReturn(AC59(Some(50)))
       AC154(Some(0)).validate(boxRetriever) shouldBe empty
     }
 
@@ -52,6 +55,7 @@ class AC154Spec extends WordSpec with Matchers with MockitoSugar {
       val boxRetriever = mock[FullAccountsBoxRetriever]
 
       when(boxRetriever.ac58()).thenReturn(AC58(Some(0)))
+      when(boxRetriever.ac59()).thenReturn(AC59(Some(50)))
       AC154(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.creditors.within.one.year.note.current.total.not.equal.balance.sheet"))
     }
 
@@ -59,6 +63,7 @@ class AC154Spec extends WordSpec with Matchers with MockitoSugar {
       val boxRetriever = mock[FullAccountsBoxRetriever]
 
       when(boxRetriever.ac58()).thenReturn(AC58(Some(0)))
+      when(boxRetriever.ac59()).thenReturn(AC59(Some(50)))
       AC154(Some(50)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.creditors.within.one.year.note.current.total.not.equal.balance.sheet"))
     }
 

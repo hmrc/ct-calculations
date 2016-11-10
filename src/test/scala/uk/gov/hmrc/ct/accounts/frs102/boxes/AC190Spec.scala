@@ -36,7 +36,14 @@ class AC190Spec extends WordSpec
 
     "fail validation when calculated value is not equal to empty AC76" in {
       when(boxRetriever.ac76()).thenReturn(AC76(None))
+      when(boxRetriever.ac77()).thenReturn(AC77(Some(1)))
       AC190(Some(125)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.AC190.mustEqual.AC76"))
+    }
+
+    "pass validation when calculated value is not equal to empty AC76 and AC77 is empty" in {
+      when(boxRetriever.ac76()).thenReturn(AC76(None))
+      when(boxRetriever.ac77()).thenReturn(AC77(None))
+      AC190(Some(125)).validate(boxRetriever) shouldBe Set.empty
     }
 
     "calculate the value when both AC77 and AC189 are set" in new RevaluationReserveCalculator {
