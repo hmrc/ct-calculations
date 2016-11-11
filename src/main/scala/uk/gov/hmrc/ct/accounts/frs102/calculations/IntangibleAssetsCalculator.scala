@@ -43,7 +43,7 @@ trait IntangibleAssetsCalculator {
   }
   
   def calculateAbridgedAC117(ac114: AC114, ac115: AC115, ac116: AC116, ac209: AC209, ac210: AC210): AC117 = {
-    Set(ac114.value, ac115.value, ac116.value, ac209.value, ac210.value).exists(_.nonEmpty) match {
+    anyHaveValue(ac114, ac115, ac116, ac209, ac210) match {
       case true => AC117(Some(ac114.orZero + ac115.orZero - ac116.orZero + ac209.orZero + ac210.orZero))
       case _ => AC117(None)
     }
@@ -93,7 +93,7 @@ trait IntangibleAssetsCalculator {
   }
   
   def calculateAbridgedAC121(ac118: AC118, ac119: AC119, ac120: AC120, ac211: AC211): AC121 = {
-    Set(ac118.value, ac119.value, ac120.value, ac211.value).exists(_.nonEmpty) match {
+    anyHaveValue(ac118, ac119, ac120, ac211) match {
       case true => AC121(Some(ac118.orZero + ac119.orZero - ac120.orZero + ac211.orZero))
       case _ => AC121(None)
     }
@@ -107,14 +107,14 @@ trait IntangibleAssetsCalculator {
   }
 
   def calculateAC121A(ac118A: AC118A, ac119A: AC119A, ac120A: AC120A, ac211A: AC211A): AC121A = {
-    Set(ac118A.value, ac119A.value, ac120A.value, ac211A.value).exists(_.nonEmpty) match {
+    anyHaveValue(ac118A, ac119A, ac120A, ac211A) match {
       case true => AC121A(Some(ac118A.orZero + ac119A.orZero - ac120A.orZero + ac211A.orZero))
       case _ => AC121A(None)
     }
   }
 
   def calculateAC121B(ac118B: AC118B, ac119B: AC119B, ac120B: AC120B, ac211B: AC211B): AC121B = {
-    Set(ac118B.value, ac119B.value, ac120B.value, ac211B.value).exists(_.nonEmpty) match {
+    anyHaveValue(ac118B, ac119B, ac120B, ac211B) match {
       case true => AC121B(Some(ac118B.orZero + ac119B.orZero - ac120B.orZero + ac211B.orZero))
       case _ => AC121B(None)
     }
