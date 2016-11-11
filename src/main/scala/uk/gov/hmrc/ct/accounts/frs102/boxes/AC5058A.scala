@@ -19,13 +19,19 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
 
 case class AC5058A(value: Option[String]) extends CtBoxIdentifier(name = "Balance sheet - Creditors within 1 year note.") with CtOptionalString with Input with SelfValidatableBox[Frs102AccountsBoxRetriever, Option[String]] {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+    import boxRetriever._
     collectErrors (
-      failIf(!boxRetriever.ac58().hasValue && !boxRetriever.ac59().hasValue)(validateCannotExist(boxRetriever)),
-      failIf(boxRetriever.ac58().hasValue || boxRetriever.ac59().hasValue)(validateNoteIsMandatory(boxRetriever)),
+      failIf(!ac58().hasValue && !ac59().hasValue)(
+        validateCannotExist(boxRetriever)
+      ),
+      failIf(anyHaveValue(ac58(), ac59()))(
+        validateNoteIsMandatory(boxRetriever)
+      ),
       validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit),
       validateCoHoStringReturnIllegalChars()
     )
@@ -50,12 +56,14 @@ case class AC5058A(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
   private def fullNoteHasValue(boxRetriever: FullAccountsBoxRetriever): Boolean = {
     import boxRetriever._
 
-    ac142().hasValue || ac143().hasValue ||
-      ac144().hasValue || ac145().hasValue ||
-      ac146().hasValue || ac147().hasValue ||
-      ac148().hasValue || ac149().hasValue ||
-      ac150().hasValue || ac151().hasValue ||
-      ac152().hasValue || ac153().hasValue ||
-      hasValue
+    anyHaveValue(
+      ac142(), ac143(),
+      ac144(), ac145(),
+      ac146(), ac147(),
+      ac148(), ac149(),
+      ac150(), ac151(),
+      ac152(), ac153(),
+      this
+    )
   }
 }

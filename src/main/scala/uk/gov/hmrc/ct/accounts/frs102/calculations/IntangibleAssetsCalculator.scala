@@ -17,25 +17,26 @@
 package uk.gov.hmrc.ct.accounts.frs102.calculations
 
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
 
 trait IntangibleAssetsCalculator {
 
   def calculateAC114(ac114A: AC114A, ac114B: AC114B): AC114 = {
-    if (ac114A.hasValue || ac114B.hasValue)
+    if (anyHaveValue(ac114A, ac114B))
       AC114(Some(ac114A.orZero + ac114B.orZero))
     else
       AC114(None)
   }
 
   def calculateAC115(ac115A: AC115A, ac115B: AC115B): AC115 = {
-    if (ac115A.hasValue || ac115B.hasValue)
+    if (anyHaveValue(ac115A, ac115B))
       AC115(Some(ac115A.orZero + ac115B.orZero))
     else
       AC115(None)
   }
 
   def calculateAC116(ac116A: AC116A, ac116B: AC116B): AC116 = {
-    if (ac116A.hasValue || ac116B.hasValue)
+    if (anyHaveValue(ac116A, ac116B))
       AC116(Some(ac116A.orZero + ac116B.orZero))
     else
       AC116(None)
@@ -49,7 +50,7 @@ trait IntangibleAssetsCalculator {
   }
 
   def calculateFullAC117(ac117A: AC117A, ac117B: AC117B): AC117 = {
-    if (ac117A.hasValue || ac117B.hasValue)
+    if (anyHaveValue(ac117A, ac117B))
       AC117(Some(ac117A.orZero + ac117B.orZero))
     else
       AC117(None)
@@ -71,21 +72,21 @@ trait IntangibleAssetsCalculator {
   }
 
   def calculateAC118(ac118A: AC118A, ac118B: AC118B): AC118 = {
-    if (ac118A.hasValue || ac118B.hasValue)
+    if (anyHaveValue(ac118A, ac118B))
       AC118(Some(ac118A.orZero + ac118B.orZero))
     else
       AC118(None)
   }
 
   def calculateAC119(ac119A: AC119A, ac119B: AC119B): AC119 = {
-    if (ac119A.hasValue || ac119B.hasValue)
+    if (anyHaveValue(ac119A, ac119B))
       AC119(Some(ac119A.orZero + ac119B.orZero))
     else
       AC119(None)
   }
 
   def calculateAC120(ac120A: AC120A, ac120B: AC120B): AC120 = {
-    if (ac120A.hasValue || ac120B.hasValue)
+    if (anyHaveValue(ac120A, ac120B))
       AC120(Some(ac120A.orZero + ac120B.orZero))
     else
       AC120(None)
@@ -99,7 +100,7 @@ trait IntangibleAssetsCalculator {
   }
 
   def calculateFullAC121(ac121A: AC121A, ac121B: AC121B): AC121 = {
-    if (ac121A.hasValue || ac121B.hasValue)
+    if (anyHaveValue(ac121A, ac121B))
       AC121(Some(ac121A.orZero + ac121B.orZero))
     else
       AC121(None)
@@ -127,7 +128,7 @@ trait IntangibleAssetsCalculator {
   }
 
   def calculateFullAC122(ac122A: AC122A, ac122B: AC122B): AC122 = {
-    if (ac122A.hasValue || ac122B.hasValue)
+    if (anyHaveValue(ac122A, ac122B))
       AC122(Some(ac122A.orZero + ac122B.orZero))
     else
       AC122(None)
@@ -155,7 +156,7 @@ trait IntangibleAssetsCalculator {
   }
 
   def calculateFullAC123(ac123A: AC123A, ac123B: AC123B): AC123 = {
-    if (ac123A.hasValue || ac123B.hasValue)
+    if (anyHaveValue(ac123A, ac123B))
       AC123(Some(ac123A.orZero + ac123B.orZero))
     else
       AC123(None)
@@ -176,21 +177,21 @@ trait IntangibleAssetsCalculator {
   }
 
   def calculateAC209(ac209A: AC209A, ac209B: AC209B): AC209 = {
-    if (ac209A.hasValue || ac209B.hasValue)
+    if (anyHaveValue(ac209A, ac209B))
       AC209(Some(ac209A.orZero + ac209B.orZero))
     else
       AC209(None)
   }
 
   def calculateAC210(ac210A: AC210A, ac210B: AC210B): AC210 = {
-    if (ac210A.hasValue || ac210B.hasValue)
+    if (anyHaveValue(ac210A, ac210B))
       AC210(Some(ac210A.orZero + ac210B.orZero))
     else
       AC210(None)
   }
 
   def calculateAC211(ac211A: AC211A, ac211B: AC211B): AC211 = {
-    if (ac211A.hasValue || ac211B.hasValue)
+    if (anyHaveValue(ac211A, ac211B))
       AC211(Some(ac211A.orZero + ac211B.orZero))
     else
       AC211(None)

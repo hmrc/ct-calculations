@@ -21,6 +21,8 @@ import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
+
 
 case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file P&L to Companies House?")
                                            with CtOptionalBoolean
@@ -46,24 +48,25 @@ case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do yo
     import boxRetriever._
 
     if (value.contains(false)) {
-      val noteNonEmpty =
-        ac16.hasValue ||
-        ac17.hasValue ||
-        ac18.hasValue ||
-        ac19.hasValue ||
-        ac20.hasValue ||
-        ac21.hasValue ||
-        ac26.hasValue ||
-        ac27.hasValue ||
-        ac28.hasValue ||
-        ac29.hasValue ||
-        ac30.hasValue ||
-        ac31.hasValue ||
-        ac34.hasValue ||
-        ac35.hasValue ||
-        ac36.hasValue ||
-        ac37.hasValue ||
-        ac5032.hasValue
+      val noteNonEmpty = anyHaveValue(
+        ac16,
+        ac17,
+        ac18,
+        ac19,
+        ac20,
+        ac21,
+        ac26,
+        ac27,
+        ac28,
+        ac29,
+        ac30,
+        ac31,
+        ac34,
+        ac35,
+        ac36,
+        ac37,
+        ac5032
+      )
 
       if (noteNonEmpty)
         Set(CtValidation(None, "error.profitAndLoss.cannot.exist"))
@@ -76,20 +79,20 @@ case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do yo
     import boxRetriever._
 
     if (value.contains(false)) {
-      val noteNonEmpty =
-        ac405().hasValue ||
-          ac406().hasValue ||
-          ac410().hasValue ||
-          ac411().hasValue ||
-          ac415().hasValue ||
-          ac416().hasValue ||
-          ac420().hasValue ||
-          ac421().hasValue ||
-          ac425().hasValue ||
-          ac426().hasValue ||
-          ac34().hasValue ||
-          ac35().hasValue
-
+      val noteNonEmpty = anyHaveValue(
+        ac405(),
+          ac406(),
+          ac410(),
+          ac411(),
+          ac415(),
+          ac416(),
+          ac420(),
+          ac421(),
+          ac425(),
+          ac426(),
+          ac34(),
+          ac35()
+      )
       if (noteNonEmpty)
         Set(CtValidation(None, "error.profitAndLoss.cannot.exist"))
       else

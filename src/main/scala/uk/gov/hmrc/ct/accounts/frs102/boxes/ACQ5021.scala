@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
 
 case class ACQ5021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Goodwill")
   with CtOptionalBoolean
@@ -31,7 +32,7 @@ case class ACQ5021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Goodw
 
       cannotExistIf(hasValue && ac42.noValue && ac43.noValue),
 
-      failIf(ac42.hasValue || ac43.hasValue) {
+      failIf(anyHaveValue(ac42, ac43)) {
         atLeastOneBoxHasValue("balance.sheet.intangible.assets", this, acq5022)
       }
     )

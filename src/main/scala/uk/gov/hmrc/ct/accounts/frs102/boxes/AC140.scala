@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import uk.gov.hmrc.ct.accounts.frs102.calculations.BalanceSheetDebtorsCalculator
 import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
 
 case class AC140(value: Option[Int]) extends CtBoxIdentifier(name = "Debtors - Total (CY)")
   with CtOptionalInteger
@@ -26,7 +27,9 @@ case class AC140(value: Option[Int]) extends CtBoxIdentifier(name = "Debtors - T
   with Validators {
 
   override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
-    failIf(boxRetriever.ac52().hasValue || boxRetriever.ac53().hasValue)(
+    import boxRetriever._
+
+    failIf (anyHaveValue(ac52(), ac53()))(
       collectErrors(
         validateMoney(value),
         totalEqualToCurrentAmount(boxRetriever)

@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs102
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
 
 case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file a directors' report to Companies House?")
                                           with CtOptionalBoolean
@@ -50,14 +51,16 @@ case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you
     if (value.contains(false)) {
       val noteNonEmpty =
         directors().directors.nonEmpty ||
-        acQ8003.hasValue ||
-        ac8033.hasValue ||
-        acQ8009.hasValue ||
-        ac8051.hasValue ||
-        ac8052.hasValue ||
-        ac8053.hasValue ||
-        ac8054.hasValue ||
-        ac8899.hasValue
+          anyHaveValue(
+            acQ8003(),
+            ac8033(),
+            acQ8009(),
+            ac8051(),
+            ac8052(),
+            ac8053(),
+            ac8054(),
+            ac8899()
+        )
 
       if (noteNonEmpty)
         Set(CtValidation(None, "error.directorsReport.cannot.exist"))

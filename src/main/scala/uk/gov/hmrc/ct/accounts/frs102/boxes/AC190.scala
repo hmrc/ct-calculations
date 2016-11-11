@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import uk.gov.hmrc.ct.accounts.frs102.calculations.RevaluationReserveCalculator
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
 
 case class AC190(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at [POA END DATE]")
                                        with CtOptionalInteger
@@ -26,7 +27,9 @@ case class AC190(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at 
                                        with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    failIf(boxRetriever.ac76().hasValue || boxRetriever.ac77().hasValue)(
+    import boxRetriever._
+
+    failIf (anyHaveValue(ac76(), ac77()))(
       collectErrors(
         validateTotalEqualToCurrentAmount(boxRetriever)
       )

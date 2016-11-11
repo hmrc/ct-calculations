@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
-
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
 
 case class AC189(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus or deficit after revaluation") with CtOptionalInteger
                                                                                                               with Input
@@ -27,7 +27,7 @@ case class AC189(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus or 
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
-    val isMandatory = ac76().hasValue || ac77().hasValue
+    val isMandatory = anyHaveValue(ac76(), ac77())
 
     collectErrors (
       failIf(isMandatory)(validateIntegerAsMandatory("AC189", this)),

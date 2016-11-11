@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.box.retriever
 
-import uk.gov.hmrc.ct.box.{CtValidation, CtValue, ValidatableBox}
+import uk.gov.hmrc.ct.box._
 
 trait BoxRetriever {
 
@@ -37,4 +37,10 @@ trait BoxRetriever {
     validationErrors
   }
 
+
+
+}
+
+object BoxRetriever {
+  def anyHaveValue(boxes: OptionalCtValue[_]*): Boolean = boxes.exists(_.hasValue)
 }

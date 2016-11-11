@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
 
 
 case class AC5052A(value: Option[Int]) extends CtBoxIdentifier(name = "Debtors due after more than one year") with CtOptionalInteger
@@ -29,30 +30,21 @@ with Validators {
 
   private def noteHasValue(boxRetriever: Frs102AccountsBoxRetriever): Boolean = {
     boxRetriever match {
-      case x: AbridgedAccountsBoxRetriever =>
-        x.ac5052A().hasValue ||
-          x.ac5052B().hasValue ||
-          x.ac5052C().hasValue
-
-      case x: FullAccountsBoxRetriever =>
-        x.ac134().hasValue ||
-          x.ac135().hasValue ||
-          x.ac138().hasValue ||
-          x.ac139().hasValue ||
-          x.ac136().hasValue ||
-          x.ac137().hasValue ||
-          x.ac140().hasValue ||
-          x.ac141().hasValue ||
-          x.ac5052A().hasValue ||
-          x.ac5052B().hasValue ||
-          x.ac5052C().hasValue
+      case x: AbridgedAccountsBoxRetriever => anyHaveValue(x.ac5052A(), x.ac5052B(), x.ac5052C())
+      case x: FullAccountsBoxRetriever => anyHaveValue(x.ac134(), x.ac135(), x.ac138(), x.ac139(), x.ac136(), x.ac137(), x.ac140(), x.ac141(), x.ac5052A(), x.ac5052B(), x.ac5052C())
     }
   }
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+    import boxRetriever._
+
     collectErrors (
-      failIf(boxRetriever.ac52().noValue && boxRetriever.ac53().noValue)(validateCannotExist(boxRetriever)),
-      failIf(boxRetriever.ac52().hasValue || boxRetriever.ac53().hasValue)(validateNotEmpty(boxRetriever)),
+      failIf(ac52().noValue && ac53().noValue)(
+        validateCannotExist(boxRetriever)
+      ),
+      failIf(anyHaveValue(ac52(), ac53()))(
+        validateNotEmpty(boxRetriever)
+      ),
       validateMoney(value, min = 0),
       validateOptionalIntegerLessOrEqualBox(boxRetriever.ac52())
     )
