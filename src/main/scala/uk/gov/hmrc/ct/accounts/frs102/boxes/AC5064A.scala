@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
 
 case class AC5064A(value: Option[String]) extends CtBoxIdentifier(name = "Balance sheet - Creditors after 1 year note.")
                                           with CtOptionalString
@@ -26,19 +27,24 @@ case class AC5064A(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
                                           with ValidatableBox[Frs102AccountsBoxRetriever] {
 
   private def fullNoteHasValue(boxRetriever: FullAccountsBoxRetriever): Boolean = {
-    boxRetriever.ac156().hasValue ||
-      boxRetriever.ac157().hasValue ||
-      boxRetriever.ac158().hasValue ||
-      boxRetriever.ac159().hasValue ||
-      boxRetriever.ac160().hasValue ||
-      boxRetriever.ac161().hasValue ||
-      boxRetriever.ac162().hasValue ||
-      boxRetriever.ac163().hasValue ||
-      boxRetriever.ac5064A().hasValue
+    import boxRetriever._
+
+    anyHaveValue(
+      ac156(),
+      ac157(),
+      ac158(),
+      ac159(),
+      ac160(),
+      ac161(),
+      ac162(),
+      ac163(),
+      ac5064A()
+    )
   }
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    val isMandatory = boxRetriever.ac64().hasValue || boxRetriever.ac65().hasValue
+    import boxRetriever._
+    val isMandatory = anyHaveValue(ac64(), ac65())
 
     collectErrors (
       failIf(!isMandatory)(validateCannotExist(boxRetriever)),

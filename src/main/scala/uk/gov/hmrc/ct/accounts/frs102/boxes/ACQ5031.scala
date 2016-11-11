@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
 
 case class ACQ5031(value: Option[Boolean]) extends CtBoxIdentifier(name = "Land and buildings")
   with CtOptionalBoolean
@@ -30,7 +31,7 @@ case class ACQ5031(value: Option[Boolean]) extends CtBoxIdentifier(name = "Land 
     collectErrors(
       cannotExistIf(hasValue && ac44.noValue && ac45.noValue),
 
-      failIf(ac44.hasValue || ac45.hasValue) {
+      failIf(anyHaveValue(ac44, ac45)) {
         atLeastOneBoxHasValue("balance.sheet.tangible.assets", this, acq5032, acq5033, acq5034, acq5035)
       }
     )

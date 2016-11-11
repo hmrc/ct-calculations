@@ -19,6 +19,8 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import uk.gov.hmrc.ct.accounts.frs102.calculations.IntangibleAssetsCalculator
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
+
 
 case class AC115(value: Option[Int]) extends CtBoxIdentifier(name = "Additions")
   with CtOptionalInteger
@@ -113,7 +115,8 @@ case class AC115(value: Option[Int]) extends CtBoxIdentifier(name = "Additions")
   }
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    val isMandatory = boxRetriever.ac42().hasValue || boxRetriever.ac43().hasValue
+    import boxRetriever._
+    val isMandatory = anyHaveValue(ac42(), ac43())
 
     collectErrors(
       failIf(isMandatory)(validateNoteEntered(boxRetriever)),

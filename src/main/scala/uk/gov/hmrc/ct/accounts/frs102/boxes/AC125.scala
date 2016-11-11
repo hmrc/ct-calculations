@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import uk.gov.hmrc.ct.accounts.frs102.calculations.BalanceSheetTangibleAssetsCalculator
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
 
 case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of all tangible assets acquired during this period")
   with CtOptionalInteger
@@ -29,7 +30,7 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
 
-    val isMandatory = ac44().hasValue || ac45().hasValue
+    val isMandatory = anyHaveValue(ac44(), ac45())
 
     boxRetriever match {
       case x: AbridgedAccountsBoxRetriever =>
