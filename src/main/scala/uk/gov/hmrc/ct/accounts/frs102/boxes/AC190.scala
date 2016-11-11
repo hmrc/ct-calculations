@@ -26,10 +26,10 @@ case class AC190(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at 
                                        with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      failIf(boxRetriever.ac76().hasValue || this.hasValue) {
+    failIf(boxRetriever.ac76().hasValue || boxRetriever.ac77().hasValue)(
+      collectErrors(
         validateTotalEqualToCurrentAmount(boxRetriever)
-      }
+      )
     )
   }
 

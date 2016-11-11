@@ -26,9 +26,11 @@ case class AC141(value: Option[Int]) extends CtBoxIdentifier(name = "Debtors - T
   with Validators {
 
   override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      validateMoney(value),
-      failIf(boxRetriever.ac52().hasValue)(totalEqualToCurrentAmount(boxRetriever))
+    failIf(boxRetriever.ac52().hasValue || boxRetriever.ac53().hasValue)(
+      collectErrors(
+        validateMoney(value),
+        totalEqualToCurrentAmount(boxRetriever)
+      )
     )
   }
 
