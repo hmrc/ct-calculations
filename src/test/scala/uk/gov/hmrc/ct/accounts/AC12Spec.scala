@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts
 
-import org.joda.time.LocalDate
+import org.joda.time.{Days, LocalDate}
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
@@ -24,9 +24,11 @@ import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-import uk.gov.hmrc.ct.{AbridgedFiling, HMRCFiling}
+import uk.gov.hmrc.ct.{AbridgedFiling, CompaniesHouseFiling, HMRCFiling}
 
 class AC12Spec extends WordSpec with Matchers with MockitoSugar {
+
+
 
   "AC12" should {
 
@@ -37,6 +39,7 @@ class AC12Spec extends WordSpec with Matchers with MockitoSugar {
       when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
       when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(true))
       when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate(2015, 12, 31)))
+      when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate(2016, 12, 31)))
 
       AC12(None).validate(boxRetriever) shouldBe empty
     }
@@ -48,6 +51,7 @@ class AC12Spec extends WordSpec with Matchers with MockitoSugar {
       when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
       when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(false))
       when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate(2016, 1, 1)))
+      when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate(2016, 12, 31)))
 
       AC12(None).validate(boxRetriever) shouldBe empty
     }
@@ -57,21 +61,12 @@ class AC12Spec extends WordSpec with Matchers with MockitoSugar {
       val boxRetriever = mock[TestBoxRetriever]
 
       when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
+      when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
       when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(true))
       when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate(2016, 1, 1)))
+      when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate(2016, 12, 31)))
 
       AC12(None).validate(boxRetriever) shouldBe empty
-    }
-
-    "fail validation for negative value in FRS 102 Coho Only filing" in {
-
-      val boxRetriever = mock[TestBoxRetriever]
-
-      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
-      when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(true))
-      when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate(2016, 1, 1)))
-
-      AC12(Some(-100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.below.min", Some(Seq("0", "99999999"))))
     }
 
     "fail as mandatory for FRS 102 Hmrc Abridged filing" in {
@@ -110,28 +105,706 @@ class AC12Spec extends WordSpec with Matchers with MockitoSugar {
       AC12(Some(0)).validate(boxRetriever) shouldBe empty
     }
 
-    "fail if has negative value for FRS 102 Hmrc Abridged filing" in {
+    "HMRC only filing" when {
+      val isHmrcFiling = true
+      val isCoHoFiling = false
+      val isAbridgedFiling = false
 
-      val boxRetriever = mock[TestBoxRetriever]
+      def getBoxRetriever(startDate: LocalDate, endDate: LocalDate): TestBoxRetriever = {
+        val boxRetriever = mock[TestBoxRetriever]
 
-      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
-      when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(true))
-      when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate(2016, 1, 1)))
-      when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate(2017, 1, 1)))
+        when(boxRetriever.ac3()).thenReturn(AC3(startDate))
+        when(boxRetriever.ac4()).thenReturn(AC4(endDate))
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(isHmrcFiling))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(isCoHoFiling))
+        when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(isAbridgedFiling))
 
-      AC12(Some(-1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.below.min", Some(Seq("0", "99999999"))))
+        boxRetriever
+      }
+
+      "poa starts before 1st Jan 2016" when {
+        val startDate = new LocalDate(2015, 1, 1)
+        val endDate = new LocalDate(2015, 12, 31)
+        val maximumValue = 632000
+
+        "pass validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+      }
+
+      "poa starts and ends on the same, non-leap year" when {
+        val startDate = new LocalDate(2017, 1, 1)
+        val endDate = new LocalDate(2017, 12, 31)
+        val maximumValue = 632000
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts on 1st Match in a leap year, ends on 1st March next year" when {
+        val startDate = new LocalDate(2016, 3, 1)
+        val endDate = new LocalDate(2017, 3, 1)
+        val maximumValue = 633731
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts on 28th Feb on non leap year and ends on 28th Feb on a leap year" when {
+        val startDate = new LocalDate(2019, 2, 28)
+        val endDate = new LocalDate(2020, 2, 28)
+        val maximumValue = 633731
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts on 29th Feb and ends the same year on 31st Dec" when {
+        val startDate = new LocalDate(2016, 2, 29)
+        val endDate = new LocalDate(2016, 12, 31)
+        val maximumValue = 530120
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts on non-leap year 1st Feb and ends on 29th Feb" when {
+        val startDate = new LocalDate(2019, 2, 1)
+        val endDate = new LocalDate(2020, 2, 29)
+        val maximumValue = 680349
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts 1st Jan on a leap year and ends on 31st Dec" when {
+        val startDate = new LocalDate(2016, 1, 1)
+        val endDate = new LocalDate(2016, 12, 31)
+        val maximumValue = 632000
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts on 1st June on a non-leap year and ends on 31st May on a leap year" when {
+        val startDate = new LocalDate(2019, 6, 1)
+        val endDate = new LocalDate(2020, 5, 31)
+        val maximumValue = 632000
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
     }
 
-    "fail if has more then 99999999 value for FRS 102 Hmrc Abridged filing" in {
+    "Joint filing" when {
+      val isHmrcFiling = true
+      val isCoHoFiling = true
+      val isAbridgedFiling = false
 
-      val boxRetriever = mock[TestBoxRetriever]
+      def getBoxRetriever(startDate: LocalDate, endDate: LocalDate): TestBoxRetriever = {
+        val boxRetriever = mock[TestBoxRetriever]
 
-      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
-      when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(true))
-      when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate(2016, 1, 1)))
-      when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate(2017, 1, 1)))
+        when(boxRetriever.ac3()).thenReturn(AC3(startDate))
+        when(boxRetriever.ac4()).thenReturn(AC4(endDate))
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(isHmrcFiling))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(isCoHoFiling))
+        when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(isAbridgedFiling))
 
-      AC12(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.above.max", Some(Seq("0", "99999999"))))
+        boxRetriever
+      }
+
+      "poa starts before 1st Jan 2016" when {
+        val startDate = new LocalDate(2015, 1, 1)
+        val endDate = new LocalDate(2015, 12, 31)
+        val maximumValue = 632000
+
+        "pass validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+      }
+
+      "poa starts and ends on the same, non-leap year" when {
+        val startDate = new LocalDate(2017, 1, 1)
+        val endDate = new LocalDate(2017, 12, 31)
+        val maximumValue = 632000
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts on 1st Match in a leap year, ends on 1st March next year" when {
+        val startDate = new LocalDate(2016, 3, 1)
+        val endDate = new LocalDate(2017, 3, 1)
+        val maximumValue = 633731
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts on 28th Feb on non leap year and ends on 28th Feb on a leap year" when {
+        val startDate = new LocalDate(2019, 2, 28)
+        val endDate = new LocalDate(2020, 2, 28)
+        val maximumValue = 633731
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts on 29th Feb and ends the same year on 31st Dec" when {
+        val startDate = new LocalDate(2016, 2, 29)
+        val endDate = new LocalDate(2016, 12, 31)
+        val maximumValue = 530120
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts on non-leap year 1st Feb and ends on 29th Feb" when {
+        val startDate = new LocalDate(2019, 2, 1)
+        val endDate = new LocalDate(2020, 2, 29)
+        val maximumValue = 680349
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts 1st Jan on a leap year and ends on 31st Dec" when {
+        val startDate = new LocalDate(2016, 1, 1)
+        val endDate = new LocalDate(2016, 12, 31)
+        val maximumValue = 632000
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts on 1st June on a non-leap year and ends on 31st May on a leap year" when {
+        val startDate = new LocalDate(2019, 6, 1)
+        val endDate = new LocalDate(2020, 5, 31)
+        val maximumValue = 632000
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+    }
+
+    "CoHo only filing" when {
+      val isHmrcFiling = false
+      val isCoHoFiling = true
+      val isAbridgedFiling = false
+
+      def getBoxRetriever(startDate: LocalDate, endDate: LocalDate): TestBoxRetriever = {
+        val boxRetriever = mock[TestBoxRetriever]
+
+        when(boxRetriever.ac3()).thenReturn(AC3(startDate))
+        when(boxRetriever.ac4()).thenReturn(AC4(endDate))
+        when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(isHmrcFiling))
+        when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(isCoHoFiling))
+        when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(isAbridgedFiling))
+
+        boxRetriever
+      }
+
+      "poa starts before 1st Jan 2016" when {
+        val startDate = new LocalDate(2015, 1, 1)
+        val endDate = new LocalDate(2015, 12, 31)
+        val maximumValue = 632000
+
+        "pass validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+      }
+
+      "poa starts and ends on the same, non-leap year" when {
+        val startDate = new LocalDate(2017, 1, 1)
+        val endDate = new LocalDate(2017, 12, 31)
+        val maximumValue = 10200000
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts on 1st Match in a leap year, ends on 1st March next year" when {
+        val startDate = new LocalDate(2016, 3, 1)
+        val endDate = new LocalDate(2017, 3, 1)
+        val maximumValue = 10227945
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts on 28th Feb on non leap year and ends on 28th Feb on a leap year" when {
+        val startDate = new LocalDate(2019, 2, 28)
+        val endDate = new LocalDate(2020, 2, 28)
+        val maximumValue = 10227945
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts on 29th Feb and ends the same year on 31st Dec" when {
+        val startDate = new LocalDate(2016, 2, 29)
+        val endDate = new LocalDate(2016, 12, 31)
+        val maximumValue = 8555737
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts on non-leap year 1st Feb and ends on 29th Feb" when {
+        val startDate = new LocalDate(2019, 2, 1)
+        val endDate = new LocalDate(2020, 2, 29)
+        val maximumValue = 10980327
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts 1st Jan on a leap year and ends on 31st Dec" when {
+        val startDate = new LocalDate(2016, 1, 1)
+        val endDate = new LocalDate(2016, 12, 31)
+        val maximumValue = 10200000
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
+      "poa starts on 1st June on a non-leap year and ends on 31st May on a leap year" when {
+        val startDate = new LocalDate(2019, 6, 1)
+        val endDate = new LocalDate(2020, 5, 31)
+        val maximumValue = 10200000
+
+        "fail validation when number is higher than maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "fail validation when number is lower than minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq((-maximumValue).toString, maximumValue.toString))))
+        }
+
+        "pass validation when number is exactly on maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+        "pass validation when number is exactly on minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(-maximumValue).validate(boxRetriever) shouldBe Set.empty
+        }
+
+      }
+
     }
 
   }

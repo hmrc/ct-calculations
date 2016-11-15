@@ -170,7 +170,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     box.value match {
       case Some(x) => {
         passIf (min <= x && x <= max) {
-           Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(min.toString,max.toString))))
+           Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(min.toString, max.toString))))
         }
       }
       case _ => Set()
