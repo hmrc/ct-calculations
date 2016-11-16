@@ -17,11 +17,15 @@
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import org.mockito.Mockito._
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.ACQ8161
+import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xFilingQuestionsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, MockFrs105AccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
+class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever] with MockFrs105AccountsRetriever {
 
   def setupCurrentYearMocks(ac405: AC405, ac410: AC410, ac415: AC415, ac420: AC420, ac425: AC425, ac34: AC34) = {
     when(boxRetriever.ac405()).thenReturn(ac405)
@@ -34,6 +38,7 @@ class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
 
   override def setUpMocks(): Unit = {
     setupCurrentYearMocks(AC405(None), AC410(Some(1)), AC415(None), AC420(None), AC425(None), AC34(None))
+    when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
     super.setUpMocks()
   }
 
@@ -41,13 +46,17 @@ class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
 
   "AC405 validation" should {
     "fail if at least one current year box not populated" in {
+      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
       setupCurrentYearMocks(AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
+
       AC405(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.profit.loss.one.box.required", None))
     }
   }
 
   "AC405 validation" should {
     "pass if at least one current year box populated" in {
+      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+
       setupCurrentYearMocks(AC405(Some(1)), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
       AC405(None).validate(boxRetriever) shouldBe Set.empty
 
@@ -65,6 +74,46 @@ class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
 
       setupCurrentYearMocks(AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(Some(1)))
       AC405(None).validate(boxRetriever) shouldBe Set.empty
+    }
+
+    "pass validation if all current inputs are empty, CoHo Only filing, and ACQ8161 is false" in {
+      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
+      when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(false)))
+
+      setupCurrentYearMocks(AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
+
+      AC405(None).validate(boxRetriever) shouldBe Set()
+    }
+    "fail validation if all current inputs are empty, CoHo Only filing, and ACQ8161 is true" in {
+
+      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
+      when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
+
+      setupCurrentYearMocks(AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
+
+      AC405(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
+    }
+    "fail validation if all current inputs are empty, Joint filing, and ACQ8161 is false" in {
+
+      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(false)))
+
+      setupCurrentYearMocks(AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
+
+      AC405(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
+    }
+    "fail validation if all current inputs are empty, Joint filing, and ACQ8161 is true" in {
+
+      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
+
+      setupCurrentYearMocks(AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
+
+      AC405(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
     }
   }
 }
