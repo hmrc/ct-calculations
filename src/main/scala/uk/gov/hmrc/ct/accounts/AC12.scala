@@ -87,23 +87,23 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
 
     val currentYearLeapDay =
       if (startYearIsLeap)
-        new LocalDate(poaStartDate.getYear, 2, 29)
-      else // <<HACK, HACK, HACK>>
-        new LocalDate() // We don't care about this date but joda date is stupid in NOT letting me to create invalid dates (facepalm)
+        Some(new LocalDate(poaStartDate.getYear, 2, 29))
+      else
+        None// We don't care about this date but joda date is stupid and doesn't let me create invalid dates (facepalm)
 
     val nextYearLeapDay =
       if (endYearIsLeap)
-        new LocalDate(poaEndDate.getYear, 2, 29)
-      else // <<HACK, HACK, HACK>>
-        new LocalDate() // We don't care about this date but joda date is stupid and doesn't let me create invalid dates (facepalm)
+        Some(new LocalDate(poaEndDate.getYear, 2, 29))
+      else
+        None // We don't care about this date but joda date is stupid and doesn't let me create invalid dates (facepalm)
 
-    val currentYearStartDateIsOnOrBefore29Feb = poaStartDate.isBefore(currentYearLeapDay) || poaStartDate.isEqual(currentYearLeapDay)
-    val currentYearEndDateIsOnOrAfter29Feb = poaStartDate.isEqual(currentYearLeapDay) || poaEndDate.isAfter(currentYearLeapDay)
-    val currentYearSideIncludes29Feb = startYearIsLeap && currentYearStartDateIsOnOrBefore29Feb && currentYearEndDateIsOnOrAfter29Feb
+    val currentYearStartDateIsOnOrBefore29Feb = startYearIsLeap && (poaStartDate.isBefore(currentYearLeapDay.get) || poaStartDate.isEqual(currentYearLeapDay.get))
+    val currentYearEndDateIsOnOrAfter29Feb = startYearIsLeap && (poaStartDate.isEqual(currentYearLeapDay.get) || poaEndDate.isAfter(currentYearLeapDay.get))
+    val currentYearSideIncludes29Feb = currentYearStartDateIsOnOrBefore29Feb && currentYearEndDateIsOnOrAfter29Feb
 
-    val nextYearStartDateIsOnOrBefore29Feb = poaStartDate.isBefore(nextYearLeapDay) || poaStartDate.isEqual(nextYearLeapDay)
-    val nextYearEndDateIsOnOrAfter29Feb = poaEndDate.isEqual(nextYearLeapDay) || poaEndDate.isAfter(nextYearLeapDay)
-    val nextYearSideIncludes29Feb = endYearIsLeap && nextYearStartDateIsOnOrBefore29Feb && nextYearEndDateIsOnOrAfter29Feb
+    val nextYearStartDateIsOnOrBefore29Feb = endYearIsLeap && (poaStartDate.isBefore(nextYearLeapDay.get) || poaStartDate.isEqual(nextYearLeapDay.get))
+    val nextYearEndDateIsOnOrAfter29Feb = endYearIsLeap && (poaEndDate.isEqual(nextYearLeapDay.get) || poaEndDate.isAfter(nextYearLeapDay.get))
+    val nextYearSideIncludes29Feb = nextYearStartDateIsOnOrBefore29Feb && nextYearEndDateIsOnOrAfter29Feb
 
     if (currentYearSideIncludes29Feb || nextYearSideIncludes29Feb)
       366
