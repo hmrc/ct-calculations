@@ -116,7 +116,7 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
     val daysInYear = getDaysInYear(boxRetriever)
 
     val maximumTurnoverInYear = Math.floor(10200000.0 * daysInPoa / daysInYear).toInt
-    // Because Scala is shit and I can't do default arguments on overloaded functions I have to resort to a HACK ... not the first time today
+    // Because Scala is awesome and I can't do default arguments on overloaded functions I have to resort to a HACK ... not the first time today
     validateIntegerRange("AC12", this, -maximumTurnoverInYear, maximumTurnoverInYear).map(ve => ve.copy(errorMessageKey = ve.errorMessageKey + ".coho"))
   }
 
