@@ -95,7 +95,7 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
       if (endYearIsLeap)
         new LocalDate(poaEndDate.getYear, 2, 29)
       else // <<HACK, HACK, HACK>>
-        new LocalDate() // We don't care about this date but joda date is stupid in NOT letting me to create invalid dates (facepalm)
+        new LocalDate() // We don't care about this date but joda date is stupid and doesn't let me create invalid dates (facepalm)
 
     val currentYearStartDateIsOnOrBefore29Feb = poaStartDate.isBefore(currentYearLeapDay) || poaStartDate.isEqual(currentYearLeapDay)
     val currentYearEndDateIsOnOrAfter29Feb = poaStartDate.isEqual(currentYearLeapDay) || poaEndDate.isAfter(currentYearLeapDay)
