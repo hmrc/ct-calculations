@@ -17,21 +17,26 @@
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xFilingQuestionsBoxRetriever
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 case class AC405(value: Option[Int]) extends CtBoxIdentifier(name = "Other income (current PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[Frs105AccountsBoxRetriever] {
+  with ValidatableBox[Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever] {
 
-  override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      validateMoney(value),
-      validateAtLeastOneCurrentYearFieldPopulated(boxRetriever)
+  override def validate(boxRetriever: Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever): Set[CtValidation] = {
+    failIf(boxRetriever.hmrcFiling().value || boxRetriever.acq8161().orFalse) (
+      collectErrors(
+        validateMoney(value),
+        validateAtLeastOneCurrentYearFieldPopulated(boxRetriever)
+      )
     )
   }
 
-  def validateAtLeastOneCurrentYearFieldPopulated(boxRetriever: Frs105AccountsBoxRetriever)(): Set[CtValidation] = {
+  def validateAtLeastOneCurrentYearFieldPopulated(boxRetriever: Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever)(): Set[CtValidation] = {
+
     val anyCurrentYearFieldHasAValue = (
       boxRetriever.ac405().value orElse
         boxRetriever.ac410().value orElse
