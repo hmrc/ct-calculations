@@ -170,7 +170,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     box.value match {
       case Some(x) => {
         passIf (min <= x && x <= max) {
-           Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(min.toString,max.toString))))
+           Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(commaForThousands(min), commaForThousands(max)))))
         }
       }
       case _ => Set()
@@ -294,7 +294,6 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
   @Deprecated
   def validateStringMaxLength(boxId: String, value: String, max: Int)(): Set[CtValidation] = {
     failIf (value.size > max) {
-      def commaForThousands(i: Int) = f"$i%,d"
       Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(commaForThousands(max)))))
     }
   }
@@ -341,4 +340,6 @@ object ValidatableBox {
   val StandardCohoTextFieldLimit = 20000
   val StandardCohoNameFieldLimit = 40
   val ValidCoHoNamesCharacters = "[A-Za-z\\-'\\. \\,]*" // Based on the comment from CATO-3881
+
+  def commaForThousands(i: Int) = f"$i%,d"
 }
