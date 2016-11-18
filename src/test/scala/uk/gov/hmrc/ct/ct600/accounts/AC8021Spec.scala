@@ -90,7 +90,7 @@ class AC8021Spec extends WordSpec with MockitoSugar with Matchers with BeforeAnd
       when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
       when(mockBoxRetriever.ac8023()).thenReturn(AC8023(Some(false)))
 
-      AC8021(Some(false)).validate(mockBoxRetriever) shouldBe Set(CtValidation(None, "error.directorsReport.cannot.exist"))
+      AC8021(Some(false)).validate(mockBoxRetriever) shouldBe Set(CtValidation(None, "error.AC8021.directorsReport.cannot.exist"))
     }
 
     "return errors when filing is for Joint and AC8021 is empty" in {
