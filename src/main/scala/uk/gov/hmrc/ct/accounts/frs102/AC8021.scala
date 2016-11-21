@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs102
 
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs10xDirectorsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.validation.DirectorsReportExistenceValidation
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
@@ -25,7 +26,8 @@ case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you
                                           with CtOptionalBoolean
                                           with Input
                                           with SelfValidatableBox[Frs10xDirectorsBoxRetriever
-                                          with FilingAttributesBoxValueRetriever, Option[Boolean]] {
+                                          with FilingAttributesBoxValueRetriever, Option[Boolean]]
+                                          with DirectorsReportExistenceValidation {
 
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     val coHoFiling = boxRetriever.companiesHouseFiling().value
@@ -40,33 +42,9 @@ case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you
       collectErrors(
         validateAsMandatory(),
         // Validate cannot exist only if filing for CoHo only
-        failIf(!hmrcFiling)(validateCannotExist(boxRetriever))
+        failIf(!hmrcFiling)(validateDirectorsReportCannotExist("AC8021", value, boxRetriever))
       )
     )
-  }
-
-  def validateCannotExist(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever)(): Set[CtValidation] = {
-    import boxRetriever._
-
-    if (value.contains(false)) {
-      val noteNonEmpty =
-        directors().directors.nonEmpty ||
-          anyHaveValue(
-            acQ8003(),
-            ac8033(),
-            acQ8009(),
-            ac8051(),
-            ac8052(),
-            ac8053(),
-            ac8054(),
-            ac8899()
-        )
-
-      if (noteNonEmpty)
-        Set(CtValidation(None, "error.directorsReport.cannot.exist"))
-      else
-        Set.empty
-    } else Set.empty
   }
 
 }

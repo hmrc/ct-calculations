@@ -16,13 +16,23 @@
 
 package uk.gov.hmrc.ct.accounts.frs102
 
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs10xDirectorsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.validation.DirectorsReportExistenceValidation
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-case class AC8023(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file a directors' report to HMRC?") with CtOptionalBoolean with Input with ValidatableBox[FilingAttributesBoxValueRetriever] {
-  override def validate(boxRetriever: FilingAttributesBoxValueRetriever): Set[CtValidation] =
-    if (boxRetriever.hmrcFiling().value && boxRetriever.microEntityFiling().value)
-      validateBooleanAsMandatory("AC8023", this)
-    else
-      Set.empty
+case class AC8023(value: Option[Boolean])
+  extends CtBoxIdentifier(name = "Do you want to file a directors' report to HMRC?")
+  with CtOptionalBoolean
+  with Input
+  with ValidatableBox[Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever]
+  with DirectorsReportExistenceValidation {
+
+  override def validate(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] =
+    failIf(boxRetriever.hmrcFiling().value && boxRetriever.microEntityFiling().value) {
+      collectErrors(
+        validateBooleanAsMandatory("AC8023", this),
+        validateDirectorsReportCannotExist("AC8023", value, boxRetriever)
+      )
+    }
 }
