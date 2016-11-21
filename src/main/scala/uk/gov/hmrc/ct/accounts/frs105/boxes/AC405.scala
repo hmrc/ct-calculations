@@ -38,7 +38,8 @@ case class AC405(value: Option[Int]) extends CtBoxIdentifier(name = "Other incom
   def validateAtLeastOneCurrentYearFieldPopulated(boxRetriever: Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever)(): Set[CtValidation] = {
 
     val anyCurrentYearFieldHasAValue = (
-      boxRetriever.ac405().value orElse
+        boxRetriever.ac12().value orElse
+        boxRetriever.ac405().value orElse
         boxRetriever.ac410().value orElse
         boxRetriever.ac415().value orElse
         boxRetriever.ac420().value orElse
