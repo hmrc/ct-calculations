@@ -21,5 +21,5 @@ import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 
 class AC308ASpec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever {
 
-  testAccountsMoneyValidationWithMin("AC308A", 0, AC308A.apply)
+  testAccountsMoneyValidation("AC308A", AC308A.apply)
 }
