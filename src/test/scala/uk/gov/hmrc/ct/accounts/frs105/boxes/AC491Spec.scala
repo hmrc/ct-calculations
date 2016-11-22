@@ -90,15 +90,6 @@ class AC491Spec extends ValidateAssetsEqualSharesSpec[Frs105AccountsBoxRetriever
       AC491(Some(STANDARD_MAX + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC491"), s"error.AC491.above.max", Some(Seq(STANDARD_MIN.toString, STANDARD_MAX.toString))))
     }
 
-    s"fail validation when previous year has value and box is empty for companyType: $companyType" in {
-      val value = None
-      val boxRetriever = createMock()
-      when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
-      when(boxRetriever.ac69()).thenReturn(AC69(value))
-
-      AC491(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC491"), s"error.AC491.required", None))
-    }
-
     s"pass validation when previous year has no value and box is empty for companyType: $companyType" in {
       val value = None
       val boxRetriever = createMock()
