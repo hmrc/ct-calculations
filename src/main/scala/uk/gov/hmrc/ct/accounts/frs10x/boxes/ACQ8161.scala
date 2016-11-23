@@ -57,7 +57,7 @@ case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do yo
 
   private def validateMicro(boxRetriever: Frs105AccountsBoxRetriever)(): Set[CtValidation] = {
     import boxRetriever._
-    ensureIsEmpty(ac405(), ac406(), ac410(), ac411(), ac415(), ac416(), ac420(), ac421(), ac425(), ac426(), ac34(), ac35())
+    ensureIsEmpty(ac12, ac13, ac405, ac406, ac410, ac411, ac415, ac416, ac420, ac421, ac425, ac426, ac34, ac35)
   }
 
   private def ensureIsEmpty(values: OptionalCtValue[_]*): Set[CtValidation] = {
