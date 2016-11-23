@@ -38,24 +38,24 @@ case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do yo
         boxRetriever match {
           case boxRetriever: FullAccountsBoxRetriever => validateFull(boxRetriever)
           case boxRetriever: Frs102AccountsBoxRetriever => validateAbridged(boxRetriever)
-          case boxRetriever: Frs105AccountsBoxRetriever => validateAbridged(boxRetriever)
+          case boxRetriever: Frs105AccountsBoxRetriever => validateMicro(boxRetriever)
           case unknown => throw new IllegalStateException("unexpected retriever type: " + unknown)
         }
       )
     )
   }
 
-  def validateAbridged(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
+  private def validateAbridged(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
     import boxRetriever._
     ensureIsEmpty(ac16, ac17, ac18, ac19, ac20, ac21, ac26, ac27, ac28, ac29, ac30, ac31, ac34, ac35, ac36, ac37, ac5032)
   }
 
-  def validateFull(boxRetriever: FullAccountsBoxRetriever)(): Set[CtValidation] = {
+  private def validateFull(boxRetriever: FullAccountsBoxRetriever)(): Set[CtValidation] = {
     import boxRetriever._
     ensureIsEmpty(ac12, ac13, ac14, ac15) ++ validateAbridged(boxRetriever)
   }
 
-  def validateAbridged(boxRetriever: Frs105AccountsBoxRetriever)(): Set[CtValidation] = {
+  private def validateMicro(boxRetriever: Frs105AccountsBoxRetriever)(): Set[CtValidation] = {
     import boxRetriever._
     ensureIsEmpty(ac405(), ac406(), ac410(), ac411(), ac415(), ac416(), ac420(), ac421(), ac425(), ac426(), ac34(), ac35())
   }
