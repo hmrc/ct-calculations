@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
@@ -36,67 +36,34 @@ case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do yo
       ),
       passIf(boxRetriever.hmrcFiling().value)(
         boxRetriever match {
-          case boxRetriever: Frs102AccountsBoxRetriever => validateCannotExist(boxRetriever)
-          case boxRetriever: Frs105AccountsBoxRetriever => validateCannotExist(boxRetriever)
+          case boxRetriever: FullAccountsBoxRetriever => validateFull(boxRetriever)
+          case boxRetriever: Frs102AccountsBoxRetriever => validateAbridged(boxRetriever)
+          case boxRetriever: Frs105AccountsBoxRetriever => validateAbridged(boxRetriever)
           case unknown => throw new IllegalStateException("unexpected retriever type: " + unknown)
         }
       )
     )
   }
 
-  def validateCannotExist(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
+  def validateAbridged(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
     import boxRetriever._
-
-    if (value.contains(false)) {
-      val noteNonEmpty = anyHaveValue(
-        ac16,
-        ac17,
-        ac18,
-        ac19,
-        ac20,
-        ac21,
-        ac26,
-        ac27,
-        ac28,
-        ac29,
-        ac30,
-        ac31,
-        ac34,
-        ac35,
-        ac36,
-        ac37,
-        ac5032
-      )
-
-      if (noteNonEmpty)
-        Set(CtValidation(None, "error.profitAndLoss.cannot.exist"))
-      else
-        Set.empty
-    } else Set.empty
+    ensureIsEmpty(ac16, ac17, ac18, ac19, ac20, ac21, ac26, ac27, ac28, ac29, ac30, ac31, ac34, ac35, ac36, ac37, ac5032)
   }
 
-  def validateCannotExist(boxRetriever: Frs105AccountsBoxRetriever)(): Set[CtValidation] = {
+  def validateFull(boxRetriever: FullAccountsBoxRetriever)(): Set[CtValidation] = {
     import boxRetriever._
+    ensureIsEmpty(ac12, ac13, ac14, ac15) ++ validateAbridged(boxRetriever)
+  }
 
-    if (value.contains(false)) {
-      val noteNonEmpty = anyHaveValue(
-        ac405(),
-          ac406(),
-          ac410(),
-          ac411(),
-          ac415(),
-          ac416(),
-          ac420(),
-          ac421(),
-          ac425(),
-          ac426(),
-          ac34(),
-          ac35()
-      )
-      if (noteNonEmpty)
-        Set(CtValidation(None, "error.profitAndLoss.cannot.exist"))
-      else
-        Set.empty
-    } else Set.empty
+  def validateAbridged(boxRetriever: Frs105AccountsBoxRetriever)(): Set[CtValidation] = {
+    import boxRetriever._
+    ensureIsEmpty(ac405(), ac406(), ac410(), ac411(), ac415(), ac416(), ac420(), ac421(), ac425(), ac426(), ac34(), ac35())
+  }
+
+  private def ensureIsEmpty(values: OptionalCtValue[_]*): Set[CtValidation] = {
+    (value, anyHaveValue(values:_*)) match {
+      case (Some(false), true) => Set(CtValidation(None, "error.profitAndLoss.cannot.exist"))
+      case _ => Set.empty
+    }
   }
 }
