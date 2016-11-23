@@ -46,6 +46,7 @@ class ACQ8161Spec extends WordSpec with MockitoSugar with Matchers with BeforeAn
 
     when(mockFrs105BoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
     when(mockFrs105BoxRetriever.ac12()).thenReturn(AC12(Some(10)))
+    when(mockFrs105BoxRetriever.ac13()).thenReturn(AC13(Some(10)))
     when(mockFrs105BoxRetriever.ac405()).thenReturn(AC405(Some(10)))
     when(mockFrs105BoxRetriever.ac406()).thenReturn(AC406(Some(10)))
     when(mockFrs105BoxRetriever.ac410()).thenReturn(AC410(Some(10)))
@@ -134,6 +135,8 @@ class ACQ8161Spec extends WordSpec with MockitoSugar with Matchers with BeforeAn
     "not return errors when filing is CoHo only and ACQ8161 is false (frs105 variant) " in {
       when(mockFrs105BoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
       when(mockFrs105BoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
+      when(mockFrs105BoxRetriever.ac12()).thenReturn(AC12(None))
+      when(mockFrs105BoxRetriever.ac13()).thenReturn(AC13(None))
       when(mockFrs105BoxRetriever.ac405()).thenReturn(AC405(None))
       when(mockFrs105BoxRetriever.ac406()).thenReturn(AC406(None))
       when(mockFrs105BoxRetriever.ac410()).thenReturn(AC410(None))
@@ -187,6 +190,26 @@ class ACQ8161Spec extends WordSpec with MockitoSugar with Matchers with BeforeAn
 
       ACQ8161(Some(false)).validate(mockFrs105BoxRetriever) shouldBe Set(CtValidation(None, "error.profitAndLoss.cannot.exist"))
     }
+
+    "return 'cannot exist' error when filing is for FRS105 for CoHo Only and ACQ8161 is false with AC12 and AC13 only populated." in {
+      when(mockFrs105BoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(mockFrs105BoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
+      when(mockFrs105BoxRetriever.ac405()).thenReturn(AC405(None))
+      when(mockFrs105BoxRetriever.ac406()).thenReturn(AC406(None))
+      when(mockFrs105BoxRetriever.ac410()).thenReturn(AC410(None))
+      when(mockFrs105BoxRetriever.ac411()).thenReturn(AC411(None))
+      when(mockFrs105BoxRetriever.ac415()).thenReturn(AC415(None))
+      when(mockFrs105BoxRetriever.ac416()).thenReturn(AC416(None))
+      when(mockFrs105BoxRetriever.ac420()).thenReturn(AC420(None))
+      when(mockFrs105BoxRetriever.ac421()).thenReturn(AC421(None))
+      when(mockFrs105BoxRetriever.ac425()).thenReturn(AC425(None))
+      when(mockFrs105BoxRetriever.ac426()).thenReturn(AC426(None))
+      when(mockFrs105BoxRetriever.ac34()).thenReturn(frs105.boxes.AC34(None))
+      when(mockFrs105BoxRetriever.ac35()).thenReturn(frs105.boxes.AC35(None))
+
+      ACQ8161(Some(false)).validate(mockFrs105BoxRetriever) shouldBe Set(CtValidation(None, "error.profitAndLoss.cannot.exist"))
+    }
+
     "return 'cannot exist' error when filing is for FRS102 full for CoHo Only and ACQ8161 is false" in {
       when(mockFrs102FullBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
       when(mockFrs102FullBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
