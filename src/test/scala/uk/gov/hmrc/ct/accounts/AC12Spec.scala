@@ -388,14 +388,24 @@ class AC12Spec extends WordSpec with Matchers with MockitoSugar {
         val endDate = new LocalDate(2017, 12, 31)
         val maximumValue = 632000
 
-        "fail validation when number is higher than maximum value" in {
+        "fail validation when number is higher than hmrc maximum value" in {
           val boxRetriever = getBoxRetriever(startDate, endDate)
           AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq(ValidatableBox.commaForThousands(-maximumValue), ValidatableBox.commaForThousands(maximumValue)))))
+        }
+
+        "fail validation, with hmrc error only, when number is higher than default maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(Int.MaxValue).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq(ValidatableBox.commaForThousands(-maximumValue), ValidatableBox.commaForThousands(maximumValue)))))
         }
 
         "fail validation when number is lower than minimum value" in {
           val boxRetriever = getBoxRetriever(startDate, endDate)
           AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq(ValidatableBox.commaForThousands(-maximumValue), ValidatableBox.commaForThousands(maximumValue)))))
+        }
+
+        "fail validation, with hmrc error only, when number is lower than default minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(Int.MinValue).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.hmrc", Some(Seq(ValidatableBox.commaForThousands(-maximumValue), ValidatableBox.commaForThousands(maximumValue)))))
         }
 
         "pass validation when number is exactly on maximum value" in {
@@ -627,9 +637,19 @@ class AC12Spec extends WordSpec with Matchers with MockitoSugar {
           AC12(maximumValue + 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq(ValidatableBox.commaForThousands(-maximumValue), ValidatableBox.commaForThousands(maximumValue)))))
         }
 
+        "fail validation, with coho error only, when number is higher than default maximum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(Int.MaxValue).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq(ValidatableBox.commaForThousands(-maximumValue), ValidatableBox.commaForThousands(maximumValue)))))
+        }
+
         "fail validation when number is lower than minimum value" in {
           val boxRetriever = getBoxRetriever(startDate, endDate)
           AC12(-maximumValue - 1).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq(ValidatableBox.commaForThousands(-maximumValue), ValidatableBox.commaForThousands(maximumValue)))))
+        }
+
+        "fail validation, with coho error only, when number is lower than default minimum value" in {
+          val boxRetriever = getBoxRetriever(startDate, endDate)
+          AC12(Int.MinValue).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC12"), "error.AC12.outOfRange.coho", Some(Seq(ValidatableBox.commaForThousands(-maximumValue), ValidatableBox.commaForThousands(maximumValue)))))
         }
 
         "pass validation when number is exactly on maximum value" in {

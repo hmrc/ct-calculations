@@ -33,12 +33,11 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
   private val maximumHmrcTurnover = 632000
 
   override def validate(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-      collectErrors(
-        validateMoney(value),
-        failIf(isFrs102HmrcAbridgedReturnWithLongPoA(boxRetriever)) {
+      val specificErrors = collectErrors(
+        failIf(isFrs10xHmrcAbridgedReturnWithLongPoA(boxRetriever)) {
           validateAsMandatory(this)
         },
-        failIf(isFRS102(boxRetriever))(
+        failIf(isFRS10x(boxRetriever))(
           collectErrors(
             failIf(boxRetriever.hmrcFiling().value)(
               collectErrors(
@@ -53,16 +52,22 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
           )
         )
       )
+
+    if(specificErrors.isEmpty) {
+      validateMoney(value)
+    } else {
+      specificErrors
+    }
   }
 
-  private def isFrs102HmrcAbridgedReturnWithLongPoA(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean = {
+  private def isFrs10xHmrcAbridgedReturnWithLongPoA(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean = {
     boxRetriever.hmrcFiling().value &&
     boxRetriever.abridgedFiling().value &&
-    isFRS102(boxRetriever) &&
+    isFRS10x(boxRetriever) &&
     isLongPoA(boxRetriever)
   }
 
-  private def isFRS102(boxRetriever: AccountsBoxRetriever): Boolean = {
+  private def isFRS10x(boxRetriever: AccountsBoxRetriever): Boolean = {
     boxRetriever.ac3().value >= new LocalDate(2016, 1, 1)
   }
 
