@@ -23,7 +23,7 @@ class AC13Spec extends AccountsMoneyValidationFixture[AccountsBoxRetriever]
                with AccountsPreviousPeriodValidationFixture[AccountsBoxRetriever]
                with MockFullAccountsRetriever {
 
-  testAccountsMoneyValidationWithMin("AC13", 0, AC13.apply)
+  testAccountsMoneyValidation("AC13", AC13.apply)
 
   testAccountsPreviousPoAValidation("AC13", AC13.apply)
 }

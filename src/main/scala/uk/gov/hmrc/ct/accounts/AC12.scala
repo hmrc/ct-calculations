@@ -21,6 +21,7 @@ import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.utils.DateImplicits._
+import uk.gov.hmrc.ct.box.ValidatableBox._
 
 
 case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turnover/Sales")
@@ -33,12 +34,11 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
   private val maximumHmrcTurnover = 632000
 
   override def validate(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-      collectErrors(
-        validateMoney(value),
-        failIf(isFrs102HmrcAbridgedReturnWithLongPoA(boxRetriever)) {
+      val errors = collectErrors(
+        failIf(isFrs10xHmrcAbridgedReturnWithLongPoA(boxRetriever)) {
           validateAsMandatory(this)
         },
-        failIf(isFRS102(boxRetriever))(
+        failIf(isFRS10x(boxRetriever))(
           collectErrors(
             failIf(boxRetriever.hmrcFiling().value)(
               collectErrors(
@@ -53,16 +53,22 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
           )
         )
       )
+
+    if(errors.isEmpty) {
+      validateMoney(value)
+    } else {
+      errors
+    }
   }
 
-  private def isFrs102HmrcAbridgedReturnWithLongPoA(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean = {
+  private def isFrs10xHmrcAbridgedReturnWithLongPoA(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean = {
     boxRetriever.hmrcFiling().value &&
     boxRetriever.abridgedFiling().value &&
-    isFRS102(boxRetriever) &&
+    isFRS10x(boxRetriever) &&
     isLongPoA(boxRetriever)
   }
 
-  private def isFRS102(boxRetriever: AccountsBoxRetriever): Boolean = {
+  private def isFRS10x(boxRetriever: AccountsBoxRetriever): Boolean = {
     boxRetriever.ac3().value >= new LocalDate(2016, 1, 1)
   }
 
@@ -116,8 +122,7 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
     val daysInYear = getDaysInYear(boxRetriever)
 
     val maximumTurnoverInYear = Math.floor(10200000.0 * daysInPoa / daysInYear).toInt
-    // Because Scala is awesome and I can't do default arguments on overloaded functions I have to resort to a HACK ... not the first time today
-    validateIntegerRange("AC12", this, -maximumTurnoverInYear, maximumTurnoverInYear).map(ve => ve.copy(errorMessageKey = ve.errorMessageKey + ".coho"))
+    validateTurnoverRangeWithMinAndMaxMessages(this, s"error.${this.id}.coho.turnover", -maximumTurnoverInYear, maximumTurnoverInYear)
   }
 
   private def validateHmrcTurnover(boxRetriever: AccountsBoxRetriever)(): Set[CtValidation] = {
@@ -125,10 +130,25 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
     val daysInYear = getDaysInYear(boxRetriever)
 
     val maximumTurnoverInYear = Math.floor(632000.0 * daysInPoa / daysInYear).toInt
-    // Hack, hack... hackity, hack...
-    validateIntegerRange("AC12", this, -maximumTurnoverInYear, maximumTurnoverInYear).map(ve => ve.copy(errorMessageKey = ve.errorMessageKey + ".hmrc"))
+    validateTurnoverRangeWithMinAndMaxMessages(this,  s"error.${this.id}.hmrc.turnover", -maximumTurnoverInYear, maximumTurnoverInYear)
   }
 
+  private def validateTurnoverRangeWithMinAndMaxMessages(box: OptionalIntIdBox, message: String, min: Int, max: Int)(): Set[CtValidation] = {
+    box.value match {
+      case Some(x) => {
+        collectErrors(
+          failIf(x < min) {
+            // TODO: use proper localised currency values in the message args
+            Set(CtValidation(Some(boxId), message+".below.min", Some(Seq(commaForThousands(x), commaForThousands(Math.abs(min))))))
+          },
+          failIf(x > max) {
+            Set(CtValidation(Some(boxId), message+".above.max", Some(Seq(commaForThousands(x), commaForThousands(max)))))
+          }
+        )
+      }
+      case _ => Set()
+    }
+  }
 }
 
 object AC12 {
