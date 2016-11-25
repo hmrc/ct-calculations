@@ -22,5 +22,5 @@ import uk.gov.hmrc.ct.domain.CompanyTypes.CompanyType
 
 case class FilingCompanyType(value: CompanyType) extends CtBoxIdentifier("Company Type") with CtValue[CompanyType] with Input {
 
-  def isLimitedByGuarantee: Boolean = CompanyTypes.limitedByGuaranteeCompanyTypes.contains(value)
+  def isLimitedByGuarantee: Boolean = CompanyTypes.LimitedByGuaranteeCompanyTypes.contains(value)
 }

@@ -43,7 +43,7 @@ trait ValidateAssetsEqualSharesSpec[T <: FilingAttributesBoxValueRetriever] exte
 
     s"$boxId" should {
       "for NON limited by guarantee company" when {
-        val noLimitedByGuaranteeCompanies = CompanyTypes.AllCompanyTypes.filterNot(CompanyTypes.limitedByGuaranteeCompanyTypes.contains)
+        val noLimitedByGuaranteeCompanies = CompanyTypes.AllCompanyTypes.filterNot(CompanyTypes.LimitedByGuaranteeCompanyTypes.contains)
         noLimitedByGuaranteeCompanies.foreach { companyType =>
           s"return an error if it has a different value to other box for companyType: $companyType" in {
             val retriever = createMock()
@@ -90,7 +90,7 @@ trait ValidateAssetsEqualSharesSpec[T <: FilingAttributesBoxValueRetriever] exte
       }
 
       "for limited by guarantee company" when {
-        CompanyTypes.limitedByGuaranteeCompanyTypes.foreach { companyType =>
+        CompanyTypes.LimitedByGuaranteeCompanyTypes.foreach { companyType =>
           s"return an error if it has a different value to other box for companyType: $companyType" in {
             val retriever = createMock()
             when(retriever.companyType()).thenReturn(FilingCompanyType(companyType))
