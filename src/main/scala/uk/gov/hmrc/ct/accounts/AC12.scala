@@ -34,7 +34,7 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
   private val maximumHmrcTurnover = 632000
 
   override def validate(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-      val specificErrors = collectErrors(
+      val errors = collectErrors(
         failIf(isFrs10xHmrcAbridgedReturnWithLongPoA(boxRetriever)) {
           validateAsMandatory(this)
         },
@@ -54,10 +54,10 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
         )
       )
 
-    if(specificErrors.isEmpty) {
+    if(errors.isEmpty) {
       validateMoney(value)
     } else {
-      specificErrors
+      errors
     }
   }
 
