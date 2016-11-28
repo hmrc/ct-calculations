@@ -27,7 +27,7 @@ class AC70Spec extends WordSpec with Matchers {
 
 
   "AC70 validation for NON limited by guarantee" should {
-      val companyTypes = CompanyTypes.AllCompanyTypes.filterNot(CompanyTypes.limitedByGuaranteeCompanyTypes.contains)
+      val companyTypes = CompanyTypes.AllCompanyTypes.filterNot(CompanyTypes.LimitedByGuaranteeCompanyTypes.contains)
       companyTypes.foreach { companyType =>
         s"return error if no value entered for companyType: $companyType" in new MockFrs102AccountsRetriever {
           when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
@@ -67,7 +67,7 @@ class AC70Spec extends WordSpec with Matchers {
     }
 
   "AC70 validation for limited by guarantee" should {
-    CompanyTypes.limitedByGuaranteeCompanyTypes.foreach { companyType =>
+    CompanyTypes.LimitedByGuaranteeCompanyTypes.foreach { companyType =>
       s"be valid if no value entered for companyType: $companyType" in new MockFrs102AccountsRetriever {
         when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
         AC70(None).validate(boxRetriever) shouldBe empty

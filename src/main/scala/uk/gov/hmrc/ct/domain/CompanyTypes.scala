@@ -66,7 +66,7 @@ object CompanyTypes {
     override def toString: String = this.getClass.getSimpleName.filterNot(_ == '$')
   }
 
-  val AllCompanyTypes = Seq(
+  val AllCompanyTypes: Set[CompanyType] = Set(
     UkTradingCompany, CompanyLimitedByGuarantee, CASC, LimitedByGuaranteeCASC, LimitedBySharesCASC,
     CompanyInLiquidation, MembersClub, Charity, MembersVoluntaryLiquidation, UnitTrust, CloseInvestmentHoldingCompany,
     InvestmentTrustWithHousingInvestmentProfits, InsuranceCompany, PropertyManagementCompany,
@@ -80,7 +80,8 @@ object CompanyTypes {
     def writes(o: CompanyType): JsValue = JsString(o.toString)
   }
 
-  private val registeredTypes: Map[String, CompanyType] = AllCompanyTypes.map(t => t.productPrefix -> t).toMap
+  private val allCompanyTypesSerializable: Set[CompanyType with Product with Serializable] = AllCompanyTypes.asInstanceOf[Set[CompanyType with Product with Serializable]]
+  private val registeredTypes: Map[String, CompanyType] = allCompanyTypesSerializable.map(t => t.productPrefix -> t).toMap
 
-  val limitedByGuaranteeCompanyTypes: Set[CompanyType] = Set(CompanyLimitedByGuarantee, LimitedByGuaranteeCASC, LimitedByGuaranteeCharity)
+  val LimitedByGuaranteeCompanyTypes: Set[CompanyType] = Set(CompanyLimitedByGuarantee, LimitedByGuaranteeCASC, LimitedByGuaranteeCharity)
 }
