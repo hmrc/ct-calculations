@@ -40,7 +40,7 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
 
   // CHRIS cardinality 1..1 - cannot be null
   def calculateA15(loans2p: LoansToParticipators): A15 = {
-    val sumOfLoanAmounts: Int = (loans2p.loans.map(_.amount)).sum
+    val sumOfLoanAmounts: Int = loans2p.loans.map(_.amount.getOrElse(0)).sum
     A15(Some(sumOfLoanAmounts))
   }
 
@@ -58,14 +58,14 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   // CHRIS cardinality 0..1 - can be null
   def calculateA30(cp2: CP2, loans2p: LoansToParticipators): A30 = {
     val validRepayments: List[Repayment] = validRepaymentsWithin9Months(loans2p.loans, cp2.value)
-    val sumOfRepayments: Int = validRepayments.map(_.amount).sum
+    val sumOfRepayments: Int = validRepayments.map(_.amount.getOrElse(0)).sum
     if (validRepayments.isEmpty) A30(None) else A30(Some(sumOfRepayments))
   }
 
   // CHRIS cardinality is 0..1 - so can be null
   def calculateA35(cp2: CP2, loans2p: LoansToParticipators): A35 = {
     val validWriteOffs = validWriteOffsWithin9Months(loans2p.loans, cp2.value)
-    val sumOfWriteOffs: Int = validWriteOffs.map(_.amount).sum
+    val sumOfWriteOffs: Int = validWriteOffs.map(_.amount.getOrElse(0)).sum
     if (validWriteOffs.isEmpty) A35(None) else A35(Some(sumOfWriteOffs))
   }
 
@@ -97,26 +97,26 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   // CHRIS cardinality 0..1 - can be null
   def calculateA55(cp2: CP2, loans2p: LoansToParticipators, filingDate: LPQ07): A55 = {
     val validRepayments: List[Repayment] = validRepaymentsWithLaterReliefNowDue(loans2p.loans, cp2.value, filingDate)
-    val sumOfRepayments: Int = validRepayments.map(_.amount).sum
+    val sumOfRepayments: Int = validRepayments.map(_.amount.getOrElse(0)).sum
     if (validRepayments.isEmpty) A55(None) else A55(Some(sumOfRepayments))
   }
 
   def calculateA55Inverse(apEndDate: CP2, loans2p: LoansToParticipators, filingDate: LPQ07): A55Inverse = {
     val validRepayments: List[Repayment] = validRepaymentsWithLaterReliefNotYetDue(loans2p.loans, apEndDate.value, filingDate)
-    val sumOfRepayments: Int = validRepayments.map(_.amount).sum
+    val sumOfRepayments: Int = validRepayments.map(_.amount.getOrElse(0)).sum
     if (validRepayments.isEmpty) A55Inverse(None) else A55Inverse(Some(sumOfRepayments))
   }
 
   //CHRIS cardinality 0..1 - can be null
   def calculateA60(cp2: CP2, loans2p: LoansToParticipators, filingDate: LPQ07): A60 = {
     val validWriteOffs: List[WriteOff] = vailidWriteOffWithLaterReliefNowDue(loans2p.loans, cp2.value, filingDate)
-    val sumOfWriteOffs: Int = validWriteOffs.map(_.amount).sum
+    val sumOfWriteOffs: Int = validWriteOffs.map(_.amount.getOrElse(0)).sum
     if(validWriteOffs.isEmpty) A60(None) else A60(Some(sumOfWriteOffs))
   }
 
   def calculateA60Inverse(cp2: CP2, loans2p: LoansToParticipators, filingDate: LPQ07): A60Inverse = {
     val validWriteOffs: List[WriteOff] = vailidWriteOffWithLaterReliefNotYetDue(loans2p.loans, cp2.value, filingDate)
-    val sumOfWriteOffs: Int = validWriteOffs.map(_.amount).sum
+    val sumOfWriteOffs: Int = validWriteOffs.map(_.amount.getOrElse(0)).sum
     if(validWriteOffs.isEmpty) A60Inverse(None) else A60Inverse(Some(sumOfWriteOffs))
   }
 
