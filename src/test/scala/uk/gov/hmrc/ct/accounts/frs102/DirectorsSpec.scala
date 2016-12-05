@@ -22,6 +22,8 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs10x.boxes._
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.Director
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling, MicroEntityFiling}
 

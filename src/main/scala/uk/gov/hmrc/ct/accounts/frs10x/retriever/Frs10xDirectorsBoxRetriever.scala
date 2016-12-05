@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.retriever
-
+package uk.gov.hmrc.ct.accounts.frs10x.retriever
 
 import uk.gov.hmrc.ct.accounts.frs102._
 import uk.gov.hmrc.ct.accounts.frs102.helper.DirectorsReportEnabled
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.{Directors, _}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 

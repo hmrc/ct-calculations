@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs10xDirectorsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
 class AC7100Spec extends WordSpec with Matchers with MockitoSugar {

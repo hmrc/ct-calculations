@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102
+package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs10xDirectorsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.box.ValidatableBox._
 
-case class AC8051(value: Option[String]) extends CtBoxIdentifier(name = "Principal activities of the company") with CtOptionalString with Input with ValidatableBox[Frs10xDirectorsBoxRetriever] {
-  override def validate(boxRetriever: Frs10xDirectorsBoxRetriever): Set[CtValidation] =
-    validateOptionalStringByLength("AC8051", this, 0, 250) ++ validateCoHoStringReturnIllegalChars("AC8051", this)
+case class AC8033(value: Option[String]) extends CtBoxIdentifier(name = "Secretary name") with CtOptionalString with Input with ValidatableBox[Frs10xDirectorsBoxRetriever] {
+
+  override def validate(boxRetriever: Frs10xDirectorsBoxRetriever): Set[CtValidation] = {
+    validateOptionalStringByLength("AC8033", this, 1, 40) ++ validateCoHoStringReturnIllegalChars("AC8033", this)
+  }
 }
