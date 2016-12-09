@@ -75,7 +75,7 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
         uuid = "uuid",
         ac304A = AC304A(None),
         ac305A = AC305A(Some("description ^")),
-        ac306A = AC306A(Some(-1)),
+        ac306A = AC306A(Some(-100000000)),
         ac307A = AC307A(Some(-100000000)),
         ac308A = AC308A(Some(-100000000)),
         ac309A = AC309A(None)
@@ -85,7 +85,7 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
       loans.validate(mockBoxRetriever) shouldBe Set(
         CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC304A.required", None),
         CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC305A.regexFailure",Some(List("^"))),
-        CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC306A.below.min", Some(List("0", "99999999"))),
+        CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC306A.below.min", Some(List("-99999999", "99999999"))),
         CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC307A.below.min", Some(List("-99999999", "99999999"))),
         CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC308A.below.min", Some(List("-99999999", "99999999"))),
         CtValidation(Some("LoansToDirectors"), "error.AC7501.regexFailure" ,Some(List("^")))
