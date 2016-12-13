@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.ct600.v3
 
 import org.joda.time.LocalDate
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.CP2
 import uk.gov.hmrc.ct.ct600.v3.stubs.StubbedCT600BoxRetriever
 import uk.gov.hmrc.ct.ct600a.v3._
@@ -154,6 +155,20 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors shouldBe empty
+    }
+
+    "return sorted error indexes" in {
+      val l2pBox = LoansToParticipators(List(
+        validLoan.copy(amount = None, name = Some("Zebra"), id = "ic"),
+        validLoan.copy(amount = Some(1), name = Some("Aardvark"), id = "1b"),
+        validLoan.copy(amount = None, name = Some("Aardvark"), id = "1a")
+      ))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.uniqueName"))
+      errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.1.uniqueName"))
+      errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.amount.value"))
+      errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.2.amount.value"))
     }
   }
 
@@ -345,6 +360,19 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       val errors = l2pBox.validate(boxRetriever)
       errors shouldBe empty
     }
+
+    "return sorted error indexes" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(otherRepayments = List(
+        validRepaymentAfter9Months.copy(amount = None, date = Some(currentAPEndDate.plusMonths(12)), id = "1"),
+        validRepaymentAfter9Months.copy(amount = Some(200), date = Some(currentAPEndDate.plusMonths(10)), id = "2"),
+        validRepaymentAfter9Months.copy(amount = None, date = None, id = "3")
+      ))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.otherRepayment.1.amount.value"))
+      errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.otherRepayment.2.date.range", Some(List("2 March 2015", "9 December 2016"))))
+      errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.otherRepayment.2.amount.value"))
+    }
   }
 
   "writeOff validation" should {
@@ -450,6 +478,19 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors shouldBe empty
+    }
+
+    "return sorted error indexes" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(writeOffs = List(
+        validWriteOff.copy(amount = None, date = Some(currentAPEndDate.plusMonths(12)), id = "1"),
+        validWriteOff.copy(amount = Some(200), date = Some(currentAPEndDate.plusMonths(10)), id = "2"),
+        validWriteOff.copy(amount = None, date = None, id = "3")
+      ))))
+
+      val errors = l2pBox.validate(boxRetriever)
+      errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.writeOff.1.amount.value"))
+      errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.writeOff.2.date.range", Some(List("2 June 2014", "9 December 2016"))))
+      errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.writeOff.2.amount.value"))
     }
   }
 

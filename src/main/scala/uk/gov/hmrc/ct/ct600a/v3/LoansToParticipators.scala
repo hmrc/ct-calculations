@@ -54,7 +54,7 @@ case class Loan ( id: String,
                   writeOffs: List[WriteOff] = List.empty) {
 
   def validate(boxRetriever: CT600ABoxRetriever, loansToParticipators: LoansToParticipators): Set[CtValidation] = {
-    val loanIndex = findLoanIndex(this, loansToParticipators)
+    val loanIndex = LoansToParticipators.findLoanIndex(this, loansToParticipators)
 
     validateLoan(invalidLoanNameLength, s"loan.$loanIndex.name.length") ++
     validateLoan(invalidLoanNameUnique(loansToParticipators), s"loan.$loanIndex.uniqueName") ++
@@ -65,12 +65,6 @@ case class Loan ( id: String,
     repaymentWithin9Months.map(_.validateWithin9Months(boxRetriever, loanIndex)).getOrElse(Set()) ++
     otherRepayments.foldRight(Set[CtValidation]())((repayment, tail) => repayment.validateAfter9Months(boxRetriever, loansToParticipators, loanIndex) ++ tail) ++
     writeOffs.foldRight(Set[CtValidation]())((writeOff, tail) => writeOff.validate(boxRetriever, loansToParticipators, loanIndex) ++ tail)
-  }
-
-  private def findLoanIndex(loan: Loan, loansToParticipators: LoansToParticipators): Int = {
-    loansToParticipators.loans.sortWith(_.id < _.id).sortWith(_.name.getOrElse("").toLowerCase() < _.name.getOrElse("").toLowerCase()).zipWithIndex.find{
-      case (l, index) => l.id == loan.id
-    }.get._2
   }
 
   private def invalidLoanNameLength: Boolean = name.exists(_.length < 2) || name.exists(_.length > 56) || name.isEmpty
@@ -128,7 +122,7 @@ case class Repayment(id: String, amount: Option[Int], amountBefore06042016: Opti
   val repaymentAfter9MonthsErrorCode = "otherRepayment"
 
   def validateAfter9Months(boxRetriever: CT600ABoxRetriever, loansToParticipators: LoansToParticipators, loanIndex: Int): Set[CtValidation] = {
-    val repaymentIndex = findOtherRepaymentIndex(loanIndex, this, loansToParticipators)
+    val repaymentIndex = LoansToParticipators.findOtherRepaymentIndex(loanIndex, this, loansToParticipators)
 
     validateRepayment(invalidDateAfter9Months(boxRetriever), s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.date.range", errorArgsOtherRepaymentsDate(boxRetriever), loanIndex) ++
     validateRepayment(invalidRepaymentAmount, s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.amount.value", None, loanIndex) ++
@@ -166,12 +160,6 @@ case class Repayment(id: String, amount: Option[Int], amountBefore06042016: Opti
     }
   }
 
-  private def findOtherRepaymentIndex(loanIndex: Int, repayment: Repayment, loansToParticipators: LoansToParticipators): Int = {
-    loansToParticipators.loans(loanIndex).otherRepayments.sortWith((r1, r2) => r1.date.exists(r1Date => r2.date.exists(r2Date => r1Date.isBefore(r2Date)))).zipWithIndex.find {
-      case (r, index) => r.id == repayment.id
-    }.get._2
-  }
-
   def currentAPEndDatePlus9Months(boxRetriever: CT600ABoxRetriever): LocalDate = boxRetriever.cp2().value.plusMonths(9)
 
   def currentAPEndDate(boxRetriever: CT600ABoxRetriever): LocalDate = boxRetriever.cp2().value
@@ -200,7 +188,7 @@ case class WriteOff(id: String, amount: Option[Int], amountBefore06042016: Optio
   private val writeOffErrorCode = "writeOff"
 
   def validate(boxRetriever: CT600ABoxRetriever, loansToParticipators: LoansToParticipators, loanIndex: Int): Set[CtValidation] = {
-    val writeOffIndex = findWriteOffIndex(loanIndex, this, loansToParticipators)
+    val writeOffIndex = LoansToParticipators.findWriteOffIndex(loanIndex, this, loansToParticipators)
 
     validateWriteOff(invalidDate(boxRetriever), s"$writeOffErrorCode.$writeOffIndex.date.range", errorArgsWriteOffDate(boxRetriever), loanIndex) ++
     validateWriteOff(invalidWriteOffAmount, s"$writeOffErrorCode.$writeOffIndex.amount.value", None, loanIndex) ++
@@ -211,7 +199,7 @@ case class WriteOff(id: String, amount: Option[Int], amountBefore06042016: Optio
 
   private def invalidDate(boxRetriever: CT600ABoxRetriever): Boolean = !(date.exists(_ > currentAPEndDate(boxRetriever)) && date.exists(_ < DateHelper.now().plusDays(1).toDateTimeAtStartOfDay.toLocalDate)) || date.isEmpty
 
-  private def invalidWriteOffAmount: Boolean = amount.exists(_ < MIN_MONEY_AMOUNT_ALLOWED) || amount.exists(_ > MAX_MONEY_AMOUNT_ALLOWED)
+  private def invalidWriteOffAmount: Boolean = amount.exists(_ < MIN_MONEY_AMOUNT_ALLOWED) || amount.exists(_ > MAX_MONEY_AMOUNT_ALLOWED) || amount.isEmpty
 
   private def invalidWriteOffBeforeApril2016Amount: Boolean = amountBefore06042016.exists(ab => ab < 0 || amount.exists(_ < ab))
 
@@ -231,12 +219,6 @@ case class WriteOff(id: String, amount: Option[Int], amountBefore06042016: Optio
     }
   }
 
-  private def findWriteOffIndex(loanIndex: Int, writeOff: WriteOff, loansToParticipators: LoansToParticipators): Int = {
-    loansToParticipators.loans(loanIndex).writeOffs.sortWith((wo1, wo2) => wo1.date.exists(wo1Date => wo2.date.exists(wo2Date => wo1Date.isBefore(wo2Date)))).zipWithIndex.find{
-      case (wo, index) => wo.id == writeOff.id
-    }.get._2
-  }
-
   def currentAPEndDate(boxRetriever: CT600ABoxRetriever): LocalDate = boxRetriever.cp2().value
 
   def currentAPEndDatePlus9Months(boxRetriever: CT600ABoxRetriever): LocalDate = boxRetriever.cp2().value.plusMonths(9)
@@ -249,6 +231,31 @@ case class WriteOff(id: String, amount: Option[Int], amountBefore06042016: Optio
 
 }
 
+object LoansToParticipators {
+
+  def sortLoans(loans: List[Loan]): List[Loan] = loans.sortWith(_.id < _.id).sortWith(_.name.getOrElse("").toLowerCase() < _.name.getOrElse("").toLowerCase())
+
+  def findLoanIndex(loan: Loan, loansToParticipators: LoansToParticipators): Int = {
+    sortLoans(loansToParticipators.loans).indexOf(loan)
+  }
+
+  def sortOtherRepayments(otherRepayments: List[Repayment]): List[Repayment] = {
+    otherRepayments.sortWith((r1, r2) => r1.date.exists(r1Date => r2.date.exists(r2Date => r1Date.isBefore(r2Date))))
+  }
+
+  def findOtherRepaymentIndex(loanIndex: Int, repayment: Repayment, loansToParticipators: LoansToParticipators): Int = {
+    sortOtherRepayments(loansToParticipators.loans(loanIndex).otherRepayments).indexOf(repayment)
+  }
+
+  def sortWriteOffs(writeOffs: List[WriteOff]): List[WriteOff] = {
+    writeOffs.sortWith((wo1, wo2) => wo1.date.exists(wo1Date => wo2.date.exists(wo2Date => wo1Date.isBefore(wo2Date))))
+  }
+
+  def findWriteOffIndex(loanIndex: Int, writeOff: WriteOff, loansToParticipators: LoansToParticipators): Int = {
+    sortWriteOffs(loansToParticipators.loans(loanIndex).writeOffs).indexOf(writeOff)
+  }
+
+}
 
 trait LoansDateRules {
 
