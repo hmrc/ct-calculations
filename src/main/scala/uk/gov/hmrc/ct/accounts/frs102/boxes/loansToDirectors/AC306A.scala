@@ -27,7 +27,7 @@ case class AC306A(value: Option[Int]) extends CtBoxIdentifier(name = "Loan Balan
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors {
-      validateMoney(value, min = 0)
+      validateMoney(value)
     }
   }
 }
