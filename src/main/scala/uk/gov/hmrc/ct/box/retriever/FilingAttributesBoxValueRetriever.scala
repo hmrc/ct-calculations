@@ -44,7 +44,7 @@ trait FilingAttributesBoxValueRetriever extends BoxRetriever {
 
   def countryOfRegistration(): CountryOfRegistration
 
-  def coHoAccountsApprovalRequired(): CoHoAccountsApprovalRequired
+  def coHoAccountsApprovalRequired(): CoHoAccountsApprovalRequired = CoHoAccountsApprovalRequired(companiesHouseFiling())
 
-  def hmrcAccountsApprovalRequired(): HmrcAccountsApprovalRequired
+  def hmrcAccountsApprovalRequired(): HmrcAccountsApprovalRequired = HmrcAccountsApprovalRequired.calculate(this)
 }
