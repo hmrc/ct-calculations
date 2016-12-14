@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval
+package uk.gov.hmrc.ct
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.{CtBoolean, CtBoxIdentifier, Linked}
 
-case class AC8091(value: Option[Boolean]) extends CtBoxIdentifier(name = "Approve accounts approval statement") with CtOptionalBoolean with Input with ValidatableBox[AccountsBoxRetriever] {
+case class CoHoAccountsApprovalRequired(value: Boolean) extends CtBoxIdentifier("True if approval required for CoHo accounts requires") with CtBoolean
 
-  override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors {
-      validateBooleanAsTrue("AC8091", this)
-    }
-  }
+object CoHoAccountsApprovalRequired extends Linked[CompaniesHouseFiling, CoHoAccountsApprovalRequired] {
+
+  override def apply(coHoFiling: CompaniesHouseFiling): CoHoAccountsApprovalRequired = new CoHoAccountsApprovalRequired(coHoFiling.value)
 }

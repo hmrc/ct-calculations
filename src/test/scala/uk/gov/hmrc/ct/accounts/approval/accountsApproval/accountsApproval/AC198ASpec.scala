@@ -14,19 +14,32 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval
+package uk.gov.hmrc.ct.accounts.approval.accountsApproval.accountsApproval
 
+import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.cato.time.DateHelper
+import uk.gov.hmrc.ct.accounts.approval.boxes.AC198A
+import uk.gov.hmrc.ct.accounts.{AC4, AccountsDatesValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{MockAccountsRetriever, AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
-import uk.gov.hmrc.ct.box.ValidatableBox._
 
-class AC8092Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
-  with MockAccountsRetriever with AccountsFreeTextValidationFixture[AccountsBoxRetriever] {
+class AC198ASpec extends WordSpec
+  with MockitoSugar
+  with Matchers
+  with MockFrs102AccountsRetriever
+  with BeforeAndAfter
+  with AccountsDatesValidationFixture[AccountsBoxRetriever] {
 
-  testTextFieldValidation("AC8092", AC8092, testUpperLimit = Some(StandardCohoNameFieldLimit))
-  testTextFieldIllegalCharactersValidation("AC8092", AC8092)
+  val NOW = DateHelper.now()
+  val APEnd = NOW.minusMonths(1)
+
+  before{
+    when(boxRetriever.ac4()).thenReturn(AC4(APEnd))
+  }
+
+  testDateIsMandatory("AC198A", AC198A)
+
+  testDateBetweenIntervalValidation("AC198A", startDate = APEnd, endDate = NOW, AC198A)
 
 }

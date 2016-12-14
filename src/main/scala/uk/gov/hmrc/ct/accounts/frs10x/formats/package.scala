@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs10x
 
 import play.api.libs.json.{Reads, _}
-import uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval._
+import uk.gov.hmrc.ct.accounts.approval.boxes._
 import uk.gov.hmrc.ct.accounts.frs10x.boxes._
 import uk.gov.hmrc.ct.box.formats._
 

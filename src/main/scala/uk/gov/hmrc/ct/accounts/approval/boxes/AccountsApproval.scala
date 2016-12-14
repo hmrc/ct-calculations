@@ -14,39 +14,44 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval
+package uk.gov.hmrc.ct.accounts.approval.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, Frs10xDirectorsBoxRetriever}
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xFilingQuestionsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, Input, ValidatableBox}
 
-trait AccountsApproval extends Input with ValidatableBox[AccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever]{
+import scala.collection.immutable.Seq
+
+trait AccountsApproval extends Input with ValidatableBox[AccountsBoxRetriever with FilingAttributesBoxValueRetriever]{
 
   val ac199A: List[AC199A]
   val ac8092: List[AC8092]
   val ac8091: AC8091
   val ac198A: AC198A
 
-  def approvalEnabled(boxRetriever: AccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean
+  def approvalEnabled(boxRetriever: FilingAttributesBoxValueRetriever): Boolean
 
-  private def filteredApprovers = ac199A.map(ac199A => ac199A.value)
-  private def filteredOtherApprovers = ac8092.flatMap(ac8092 => ac8092.value)
+  private def filteredApprovers: Seq[String] = ac199A.map(ac199A => ac199A.value)
+  private def filteredOtherApprovers: Seq[String] = ac8092.flatMap(ac8092 => ac8092.value)
 
-  override def validate(boxRetriever: AccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     collectWithBoxId(boxId) {
-      failIf(approvalEnabled(boxRetriever)) {
-        collectErrors(
-          () => ac8091.validate(boxRetriever),
-          () => ac198A.validate(boxRetriever),
-          validateApproverRequired(boxRetriever),
-          validateAtMost12Approvers(boxRetriever),
-          validateAtMost12OtherApprovers(boxRetriever),
-          validateApprovers(boxRetriever),
-          validateOtherApprovers(boxRetriever)
-        )
-      }
+      collectErrors(
+        failIf(!approvalEnabled(boxRetriever)) {
+          cannotExistIf(anyValuesPopulated)
+        },
+        failIf(approvalEnabled(boxRetriever)) {
+          collectErrors(
+            () => ac8091.validate(boxRetriever),
+            () => ac198A.validate(boxRetriever),
+            validateApproverRequired(boxRetriever),
+            validateAtMost12Approvers(boxRetriever),
+            validateAtMost12OtherApprovers(boxRetriever),
+            validateApprovers(boxRetriever),
+            validateOtherApprovers(boxRetriever)
+          )
+        }
+      )
     }
   }
 

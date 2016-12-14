@@ -17,11 +17,9 @@
 package uk.gov.hmrc.ct.accounts.frs102
 
 import play.api.libs.json.{JsResult, JsValue, Reads, _}
-import uk.gov.hmrc.ct.accounts.frs10x.boxes.ACQ8161
-import uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval._
+import uk.gov.hmrc.ct.accounts.frs102.boxes._
 import uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors._
 import uk.gov.hmrc.ct.accounts.frs102.boxes.relatedPartyTransactions._
-import uk.gov.hmrc.ct.accounts.frs102.boxes._
 import uk.gov.hmrc.ct.box.formats._
 
 package object formats {

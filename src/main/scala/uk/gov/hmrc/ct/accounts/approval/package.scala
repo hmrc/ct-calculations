@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.retriever
+package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval.{HmrcAccountsApproval, CompaniesHouseAccountsApproval}
-import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+package object approval {
 
-trait AccountsApprovalBoxRetriever extends AccountsBoxRetriever {
-  self: FilingAttributesBoxValueRetriever =>
-
-  def companiesHouseAccountsApproval(): CompaniesHouseAccountsApproval
-
-  def hmrcAccountsApproval(): HmrcAccountsApproval
 }

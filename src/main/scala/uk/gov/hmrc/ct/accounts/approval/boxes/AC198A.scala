@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval
+package uk.gov.hmrc.ct.accounts.approval.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import org.joda.time.LocalDate
+import uk.gov.hmrc.cato.time.DateHelper
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
-case class AC8092(value: Option[String]) extends CtBoxIdentifier(name = "Additional Approver.") with CtOptionalString with Input with ValidatableBox[AccountsBoxRetriever] {
+case class AC198A(value: Option[LocalDate]) extends CtBoxIdentifier("Approve accounts date of approval") with CtOptionalDate with Input with ValidatableBox[AccountsBoxRetriever] {
 
   override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
-    validateStringMaxLength("AC8092", this.value.getOrElse(""), StandardCohoNameFieldLimit) ++ validateCohoOptionalNameField("AC8092", this)
+
+    collectErrors(
+      validateDateAsMandatory("AC198A", this),
+      validateDateAsBetweenInclusive("AC198A", this, boxRetriever.ac4().value, DateHelper.now())
+    )
   }
 }
