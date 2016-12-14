@@ -370,7 +370,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.otherRepayment.1.amount.value"))
-      errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.otherRepayment.2.date.range", Some(List("2 March 2015", "9 December 2016"))))
+      errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.otherRepayment.2.date.range", Some(List("2 March 2015", "13 December 2016"))))
       errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.otherRepayment.2.amount.value"))
     }
   }
@@ -489,7 +489,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
       errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.writeOff.1.amount.value"))
-      errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.writeOff.2.date.range", Some(List("2 June 2014", "9 December 2016"))))
+      errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.writeOff.2.date.range", Some(List("2 June 2014", "13 December 2016"))))
       errors should contain (CtValidation(Some("LoansToParticipators"), "error.compoundList.loan.0.writeOff.2.amount.value"))
     }
   }
