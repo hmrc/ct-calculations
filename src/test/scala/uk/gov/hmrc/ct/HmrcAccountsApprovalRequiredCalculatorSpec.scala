@@ -43,7 +43,14 @@ class HmrcAccountsApprovalRequiredCalculatorSpec extends WordSpec with Matchers 
 
     hmrcOnlyFRSSE2008ReturnCombinationsNoUploads.zipWithIndex.foreach {
       case (returns, index) =>
-        s"return false for HMRC Only filing non upload return set $index" in {
+        s"return true for HMRC Only FRSSE2008 filing non upload return set $index" in {
+          HmrcAccountsApprovalRequiredCalculatorForTest(returns).calculateApprovalRequired(retriever) shouldBe HmrcAccountsApprovalRequired(true)
+        }
+    }
+
+    hmrcOnlyFRS10xReturnCombinationsNoUploads.zipWithIndex.foreach {
+      case (returns, index) =>
+        s"return true for HMRC Only FRS10x filing non upload return set $index" in {
           HmrcAccountsApprovalRequiredCalculatorForTest(returns).calculateApprovalRequired(retriever) shouldBe HmrcAccountsApprovalRequired(true)
         }
     }
@@ -101,7 +108,7 @@ class HmrcAccountsApprovalRequiredCalculatorSpec extends WordSpec with Matchers 
       HmrcAccountsApprovalRequiredCalculatorForTest(jointAbridgedFRS102V3Returns).calculateApprovalRequired(boxRetriever) shouldBe HmrcAccountsApprovalRequired(true)
     }
 
-    "return false for FRS105 and answered false to file directors report to HMRC and true to P&L" in {
+    "return false for joint filing FRS105 and answered false to file directors report to HMRC and true to P&L" in {
       val boxRetriever = mock[Frs10xBoxRetriever]
       when(boxRetriever.ac8021()).thenReturn(AC8021(None))
       when(boxRetriever.ac8023()).thenReturn(AC8023(Some(false)))
@@ -124,7 +131,6 @@ class HmrcAccountsApprovalRequiredCalculatorSpec extends WordSpec with Matchers 
       when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(false)))
       HmrcAccountsApprovalRequiredCalculatorForTest(jointMicroFRS105V3Returns).calculateApprovalRequired(boxRetriever) shouldBe HmrcAccountsApprovalRequired(true)
     }
-//    boxRetriever.ac8021().value, boxRetriever.acq8161().value
   }
 }
 

@@ -42,8 +42,11 @@ trait HmrcAccountsApprovalRequiredCalculator extends ReturnVersionsCalculator {
       findMatchingCohoAccounts(returns, hmrc)
     }
 
-    val approvalRequired = (hmrcAccountsReturn, coHoAccountReturn, isFRS102(hmrcAccountsReturn), isFRS105(hmrcAccountsReturn)) match {
-      case (Some(_), None, false, false) => true
+    val isFrs102 = isFRS102(hmrcAccountsReturn)
+    val isFrs105 = isFRS105(hmrcAccountsReturn)
+
+    val approvalRequired = (hmrcAccountsReturn, coHoAccountReturn, isFrs102, isFrs105) match {
+      case (Some(_), None, _, _) => true
       case (Some(hmrc), Some(coHo), true, _) => hmrcApprovalRequireForFRS102(boxRetriever, hmrc, coHo)
       case (Some(hmrc), Some(coHo), _, true) => hmrcApprovalRequireForFRS105(boxRetriever, hmrc, coHo)
       case _ => false
