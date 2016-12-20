@@ -19,12 +19,11 @@ package uk.gov.hmrc.ct.ct600.accounts
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.TestBoxRetriever
-import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling, MicroEntityFiling}
-import uk.gov.hmrc.ct.accounts.frs102._
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs10xDirectorsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.{Directors, _}
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling, MicroEntityFiling}
 
 
 class AC8023Spec extends WordSpec with MockitoSugar with Matchers {
