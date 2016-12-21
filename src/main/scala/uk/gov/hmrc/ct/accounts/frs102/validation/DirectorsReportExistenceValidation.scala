@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.validation
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs10xDirectorsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, Validators}
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever

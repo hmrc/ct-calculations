@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.helper
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs102.validation.DirectorsReportEnabledCalculator
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{Calculated, CtBoolean, CtBoxIdentifier}
 

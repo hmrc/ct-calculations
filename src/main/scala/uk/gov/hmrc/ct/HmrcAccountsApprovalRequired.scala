@@ -16,13 +16,12 @@
 
 package uk.gov.hmrc.ct
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs10xDirectorsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xFilingQuestionsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.{Frs10xDirectorsBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{Calculated, CtBoolean, CtBoxIdentifier}
 import uk.gov.hmrc.ct.version.CoHoVersions.{FRS102, FRS105}
-import uk.gov.hmrc.ct.version.{CoHoEquivalent, HmrcAccounts, Return}
 import uk.gov.hmrc.ct.version.calculations.ReturnVersionsCalculator
+import uk.gov.hmrc.ct.version.{CoHoEquivalent, HmrcAccounts, Return}
 
 case class HmrcAccountsApprovalRequired(value: Boolean) extends CtBoxIdentifier("True if approval required for HMRC version of accounts requires") with CtBoolean
 

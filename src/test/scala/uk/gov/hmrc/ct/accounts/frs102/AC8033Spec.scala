@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs102
 
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC8033
 import uk.gov.hmrc.ct.box.CtValidation
 
 class AC8033Spec extends WordSpec with Matchers {
