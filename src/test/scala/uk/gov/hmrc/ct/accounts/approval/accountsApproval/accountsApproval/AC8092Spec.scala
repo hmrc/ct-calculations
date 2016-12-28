@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval
+package uk.gov.hmrc.ct.accounts.approval.accountsApproval.accountsApproval
 
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
+import uk.gov.hmrc.ct.accounts.approval.boxes.AC8092
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockAccountsRetriever, MockFrs102AccountsRetriever}
+import uk.gov.hmrc.ct.box.ValidatableBox._
 
-case class AC8091(value: Option[Boolean]) extends CtBoxIdentifier(name = "Approve accounts approval statement") with CtOptionalBoolean with Input with ValidatableBox[AccountsBoxRetriever] {
+class AC8092Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
+  with MockAccountsRetriever with AccountsFreeTextValidationFixture[AccountsBoxRetriever] {
 
-  override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors {
-      validateBooleanAsTrue("AC8091", this)
-    }
-  }
+  testTextFieldValidation("AC8092", AC8092, testUpperLimit = Some(StandardCohoNameFieldLimit))
+  testTextFieldIllegalCharactersValidation("AC8092", AC8092)
+
 }

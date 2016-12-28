@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval
+package uk.gov.hmrc.ct.accounts.approval.boxes
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.cato.time.DateHelper
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 

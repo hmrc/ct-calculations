@@ -35,83 +35,83 @@ import uk.gov.hmrc.ct.version.CoHoAccounts._
 import uk.gov.hmrc.ct.version.CoHoVersions.{FRS102, FRS105, FRSSE2008}
 import uk.gov.hmrc.ct.version.HmrcReturns._
 import uk.gov.hmrc.ct.version.HmrcVersions._
+import uk.gov.hmrc.ct.version.calculations.ReturnVersionsFixture.coHoOnlyMicroEntityFRSSE2008Returns
 import uk.gov.hmrc.ct.version.{Return, Version}
 
 class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
+  import ReturnVersionsFixture._
+
   "Return Versions Calculator" should {
     "for CoHo only filing" when {
       "return accounts version for full Micro entity accounts" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoMicroEntityAccounts, FRSSE2008))
+
         calculateReturnVersions(coHoFiling = CompaniesHouseFiling(true),
-                                microEntityFiling = MicroEntityFiling(true)) shouldBe expectedResult
+                                microEntityFiling = MicroEntityFiling(true)) shouldBe coHoOnlyMicroEntityFRSSE2008Returns
       }
 
       "return accounts version for abridged Micro entity accounts" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoMicroEntityAbridgedAccounts, FRSSE2008))
+
         calculateReturnVersions(coHoFiling = CompaniesHouseFiling(true),
                                 microEntityFiling = MicroEntityFiling(true),
-                                abridgedFiling = AbridgedFiling(true)) shouldBe expectedResult
+                                abridgedFiling = AbridgedFiling(true)) shouldBe coHoOnlyAbridgedMicroEntityFRSSE2008Returns
       }
 
       "return accounts version for full statutory accounts" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoStatutoryAccounts, FRSSE2008))
+
         calculateReturnVersions(coHoFiling = CompaniesHouseFiling(true),
-                                statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe expectedResult
+                                statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe coHoOnlyStatutoryFRSSE2008Returns
       }
 
       "return accounts version for abbreviated statutory accounts" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoStatutoryAbbreviatedAccounts, FRSSE2008))
+
         calculateReturnVersions(coHoFiling = CompaniesHouseFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true),
-                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe expectedResult
+                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe coHoOnlyAbbreviatedStatutoryFRSSE2008Returns
       }
 
       "return accounts version for abbreviated statutory accounts for LimitedByGuaranteeCharity" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoStatutoryAbbreviatedAccounts, FRSSE2008))
         calculateReturnVersions(coHoFiling = CompaniesHouseFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true),
                                 abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true),
-                                companyType = FilingCompanyType(LimitedByGuaranteeCharity)) shouldBe expectedResult
+                                companyType = FilingCompanyType(LimitedByGuaranteeCharity)) shouldBe coHoOnlyAbbreviatedStatutoryFRSSE2008Returns
       }
 
       "return accounts version for full statutory accounts for LimitedByGuaranteeCharity" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoStatutoryAccounts, FRSSE2008))
         calculateReturnVersions(coHoFiling = CompaniesHouseFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true),
                                 abbreviatedAccountsFiling = AbbreviatedAccountsFiling(false),
-                                companyType = FilingCompanyType(LimitedByGuaranteeCharity)) shouldBe expectedResult
+                                companyType = FilingCompanyType(LimitedByGuaranteeCharity)) shouldBe coHoOnlyStatutoryFRSSE2008Returns
       }
 
       "return accounts version for Micro entity accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoMicroEntityAccounts, FRS105))
+
         calculateReturnVersions(
           poaStartDate = new LocalDate(2016, 1, 1),
           coHoFiling = CompaniesHouseFiling(true),
           microEntityFiling = MicroEntityFiling(true)
-        ) shouldBe expectedResult
+        ) shouldBe coHoOnlyFRS105Returns
       }
 
       "return accounts version for abridged statutory accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoAbridgedAccounts, FRS102))
+
         calculateReturnVersions(
           poaStartDate = new LocalDate(2016, 1, 2),
           coHoFiling = CompaniesHouseFiling(true),
           abridgedFiling = AbridgedFiling(true)
-        ) shouldBe expectedResult
+        ) shouldBe coHoOnlyAbridgedFRS102Returns
       }
 
       "return accounts version for full statutory accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(CoHoStatutoryAccounts, FRS102))
+
         calculateReturnVersions(
           poaStartDate = new LocalDate(2016, 1, 3),
           coHoFiling = CompaniesHouseFiling(true),
           statutoryAccountsFiling = StatutoryAccountsFiling(true)
-        ) shouldBe expectedResult
+        ) shouldBe coHoOnlyFullFRS102Returns
       }
 
       "match successfully for AccountsBoxRetriever" in {
-        val expectedResult = Set(Return(CoHoMicroEntityAccounts, FRSSE2008))
 
         val accountsBoxRetriever = new StubbedAccountsBoxRetriever with StubbedFilingAttributesBoxValueRetriever {
 
@@ -127,206 +127,135 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           override def ac2(): AC2 = AC2(Some("Random company name"))
         }
 
-        ReturnVersionsCalculator.doCalculation(accountsBoxRetriever) shouldBe expectedResult
+        ReturnVersionsCalculator.doCalculation(accountsBoxRetriever) shouldBe coHoOnlyMicroEntityFRSSE2008Returns
       }
 
       "match successfully for ComputationsBoxRetriever" in {
-        val expectedResult = Set(Return(CT600j, CT600Version2),
-                                 Return(HmrcMicroEntityAccounts, FRSSE2008),
-                                 Return(CT600a, CT600Version2),
-                                 Return(CoHoMicroEntityAccounts, FRSSE2008),
-                                 Return(Computations, ComputationsCT20141001),
-                                 Return(CT600, CT600Version2))
 
         ReturnVersionsCalculator.doCalculation(new ComputationsBoxRetrieverForTest with StubbedAccountsBoxRetriever {
           override def ac3(): AC3 = AC3(new LocalDate(2015,3,30))
-        }) shouldBe expectedResult
+        }) shouldBe jointMicroFRSSE2008V2Returns
       }
     }
 
     "for HMRC only filing" when {
       "return HMRC version for full Micro entity accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version2),
-                                 Return(CT600a, CT600Version2),
-                                 Return(CT600j, CT600Version2),
-                                 Return(Computations, ComputationsCT20141001))
 
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
                                 apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
-                                microEntityFiling = MicroEntityFiling(true)) shouldBe expectedResult
+                                microEntityFiling = MicroEntityFiling(true)) shouldBe hmrcOnlyMicroFRSSE2008V2Returns
       }
       "return HMRC version for full Micro entity accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version3),
-                                 Return(CT600a, CT600Version3),
-                                 Return(CT600j, CT600Version3),
-                                 Return(Computations, ComputationsCT20150201))
+
 
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
                                 apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
-                                microEntityFiling = MicroEntityFiling(true)) shouldBe expectedResult
+                                microEntityFiling = MicroEntityFiling(true)) shouldBe hmrcOnlyMicroFRSSE2008V3Returns
       }
 
       "return HMRC version for abridged Micro entity accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version2),
-                                 Return(CT600a, CT600Version2),
-                                 Return(CT600j, CT600Version2),
-                                 Return(Computations, ComputationsCT20141001))
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
                                 apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 microEntityFiling = MicroEntityFiling(true),
-                                abridgedFiling = AbridgedFiling(true)) shouldBe expectedResult
+                                abridgedFiling = AbridgedFiling(true)) shouldBe hmrcOnlyMicroFRSSE2008V2Returns
       }
 
       "return HMRC version for abridged Micro entity accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version3),
-                                 Return(CT600a, CT600Version3),
-                                 Return(CT600j, CT600Version3),
-                                 Return(Computations, ComputationsCT20150201))
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
                                 apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 microEntityFiling = MicroEntityFiling(true),
-                                abridgedFiling = AbridgedFiling(true)) shouldBe expectedResult
+                                abridgedFiling = AbridgedFiling(true)) shouldBe hmrcOnlyMicroFRSSE2008V3Returns
       }
 
       "return HMRC version for full statutory accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version2),
-                                 Return(CT600a, CT600Version2),
-                                 Return(CT600j, CT600Version2),
-                                 Return(Computations, ComputationsCT20141001))
+
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
                                 apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
-                                statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe expectedResult
+                                statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe hmrcOnlyStatutoryFRSSE2008V2Returns
       }
 
       "return HMRC version for full statutory accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version3),
-                                 Return(CT600a, CT600Version3),
-                                 Return(CT600j, CT600Version3),
-                                 Return(Computations, ComputationsCT20150201))
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
                                 apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
-                                statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe expectedResult
+                                statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe hmrcOnlyStatutoryFRSSE2008V3Returns
       }
 
       "return HMRC versions for abbreviated statutory accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version2),
-                                 Return(CT600a, CT600Version2),
-                                 Return(CT600j, CT600Version2),
-                                 Return(Computations, ComputationsCT20141001))
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
                                 apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true),
-                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe expectedResult
+                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe hmrcOnlyStatutoryFRSSE2008V2Returns
       }
 
       "return HMRC versions for abbreviated statutory accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version3),
-                                 Return(CT600a, CT600Version3),
-                                 Return(CT600j, CT600Version3),
-                                 Return(Computations, ComputationsCT20150201))
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
                                 apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true),
-                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe expectedResult
+                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe hmrcOnlyStatutoryFRSSE2008V3Returns
       }
 
       "return HMRC versions for uploaded accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
-                                 Return(CT600, CT600Version2),
-                                 Return(CT600a, CT600Version2),
-                                 Return(CT600j, CT600Version2),
-                                 Return(Computations, ComputationsCT20141001))
+
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
                                 apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 microEntityFiling = MicroEntityFiling(false),
                                 abridgedFiling = AbridgedFiling(false),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(false),
-                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)) shouldBe expectedResult
+                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)) shouldBe hmrcOnlyUploadAccountsV2Returns
       }
 
-
       "return HMRC versions for uploaded accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
-                                 Return(CT600, CT600Version3),
-                                 Return(CT600a, CT600Version3),
-                                 Return(CT600j, CT600Version3),
-                                 Return(Computations, ComputationsCT20150201))
+
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
                                 apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 microEntityFiling = MicroEntityFiling(false),
                                 abridgedFiling = AbridgedFiling(false),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(false),
-                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)) shouldBe expectedResult
+                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)) shouldBe hmrcOnlyUploadAccountsV3Returns
       }
 
       "return HMRC version for micro accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRS105),
-          Return(CT600, CT600Version3),
-          Return(CT600a, CT600Version3),
-          Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20150201))
 
         calculateReturnVersions(
           poaStartDate = new LocalDate(2016, 1, 1),
           apStartDate = Some(LocalDate.parse("2016-01-01")),
           apEndDate = Some(LocalDate.parse("2016-01-01")),
           hmrcFiling = HMRCFiling(true),
-          microEntityFiling = MicroEntityFiling(true)) shouldBe expectedResult
+          microEntityFiling = MicroEntityFiling(true)) shouldBe hmrcOnlyMicroFRS105V3Returns
       }
 
       "return HMRC version for abridged accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcAbridgedAccounts, FRS102),
-          Return(CT600, CT600Version3),
-          Return(CT600a, CT600Version3),
-          Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20150201))
 
         calculateReturnVersions(
           poaStartDate = new LocalDate(2016, 1, 1),
           apStartDate = Some(LocalDate.parse("2016-01-01")),
           apEndDate = Some(LocalDate.parse("2016-01-01")),
           hmrcFiling = HMRCFiling(true),
-          abridgedFiling = AbridgedFiling(true)) shouldBe expectedResult
+          abridgedFiling = AbridgedFiling(true)) shouldBe hmrcOnlyAbridgedFRS102V3Returns
       }
 
       "return HMRC version for full statutory accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRS102),
-          Return(CT600, CT600Version3),
-          Return(CT600a, CT600Version3),
-          Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20150201))
+
         calculateReturnVersions(
           poaStartDate = new LocalDate(2016, 1, 3),
           apStartDate = Some(LocalDate.parse("2016-01-03")),
           apEndDate = Some(LocalDate.parse("2016-01-03")),
           hmrcFiling = HMRCFiling(true),
-          statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe expectedResult
+          statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe hmrcOnlyStatutoryFRS102V3Returns
       }
 
       "return HMRC versions for uploaded accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
-          Return(CT600, CT600Version3),
-          Return(CT600a, CT600Version3),
-          Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20150201))
+
         calculateReturnVersions(
           poaStartDate = new LocalDate(2016, 1, 2),
           apStartDate = Some(LocalDate.parse("2016-01-02")),
@@ -335,7 +264,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           microEntityFiling = MicroEntityFiling(false),
           abridgedFiling = AbridgedFiling(false),
           statutoryAccountsFiling = StatutoryAccountsFiling(false),
-          abbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)) shouldBe expectedResult
+          abbreviatedAccountsFiling = AbbreviatedAccountsFiling(false)) shouldBe hmrcOnlyUploadAccountsV3Returns
       }
     }
 
@@ -1215,120 +1144,78 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
     "for Joint filing" when {
       "return versions for full Micro entity accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
-                                 Return(CoHoMicroEntityAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version2),
-                                 Return(CT600a, CT600Version2),
-                                 Return(CT600j, CT600Version2),
-                                 Return(Computations, ComputationsCT20141001))
 
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
                                 apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
-                                microEntityFiling = MicroEntityFiling(true)) shouldBe expectedResult
+                                microEntityFiling = MicroEntityFiling(true)) shouldBe jointMicroFRSSE2008V2Returns
       }
       "return versions for full Micro entity accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
-                                 Return(CoHoMicroEntityAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version3),
-                                 Return(CT600a, CT600Version3),
-                                 Return(CT600j, CT600Version3),
-                                 Return(Computations, ComputationsCT20150201))
 
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
                                 apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
-                                microEntityFiling = MicroEntityFiling(true)) shouldBe expectedResult
+                                microEntityFiling = MicroEntityFiling(true)) shouldBe jointMicroFRSSE2008V3Returns
       }
 
       "return versions for abridged Micro entity accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
-                                 Return(CoHoMicroEntityAbridgedAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version2),
-                                 Return(CT600a, CT600Version2),
-                                 Return(CT600j, CT600Version2),
-                                 Return(Computations, ComputationsCT20141001))
+
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
                                 apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
                                 microEntityFiling = MicroEntityFiling(true),
-                                abridgedFiling = AbridgedFiling(true)) shouldBe expectedResult
+                                abridgedFiling = AbridgedFiling(true)) shouldBe jointAbridgedMicroFRSSE2008V2Returns
       }
 
       "return HMRC version for abridged Micro entity accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
-                                 Return(CoHoMicroEntityAbridgedAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version3),
-                                 Return(CT600a, CT600Version3),
-                                 Return(CT600j, CT600Version3),
-                                 Return(Computations, ComputationsCT20150201))
+
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
                                 apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
                                 microEntityFiling = MicroEntityFiling(true),
-                                abridgedFiling = AbridgedFiling(true)) shouldBe expectedResult
+                                abridgedFiling = AbridgedFiling(true)) shouldBe jointAbridgedMicroFRSSE2008V3Returns
       }
 
       "return HMRC version for full statutory accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
-                                 Return(CoHoStatutoryAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version2),
-                                 Return(CT600a, CT600Version2),
-                                 Return(CT600j, CT600Version2),
-                                 Return(Computations, ComputationsCT20141001))
+
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
                                 apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
-                                statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe expectedResult
+                                statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe jointStatutoryFRSSE2008V2Returns
       }
 
       "return HMRC version for full statutory accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
-                                 Return(CoHoStatutoryAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version3),
-                                 Return(CT600a, CT600Version3),
-                                 Return(CT600j, CT600Version3),
-                                 Return(Computations, ComputationsCT20150201))
+
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
                                 apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
-                                statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe expectedResult
+                                statutoryAccountsFiling = StatutoryAccountsFiling(true)) shouldBe jointStatutoryFRSSE2008V3Returns
       }
 
       "return HMRC version for abbreviated statutory accounts for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
-                                 Return(CoHoStatutoryAbbreviatedAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version2),
-                                 Return(CT600a, CT600Version2),
-                                 Return(CT600j, CT600Version2),
-                                 Return(Computations, ComputationsCT20141001))
+
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-03-31")),
                                 apEndDate = Some(LocalDate.parse("2015-12-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true),
-                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe expectedResult
+                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe jointAbbreviatedStatutoryFRSSE2008V2Returns
       }
 
       "return HMRC version for abbreviated statutory accounts for AP starting after 2015-03-31" in new ReturnVersionsCalculatorWithDefaults {
-        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
-                                 Return(CoHoStatutoryAbbreviatedAccounts, FRSSE2008),
-                                 Return(CT600, CT600Version3),
-                                 Return(CT600a, CT600Version3),
-                                 Return(CT600j, CT600Version3),
-                                 Return(Computations, ComputationsCT20150201))
+
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2015-04-01")),
                                 apEndDate = Some(LocalDate.parse("2016-03-31")),
                                 hmrcFiling = HMRCFiling(true),
                                 coHoFiling = CompaniesHouseFiling(true),
                                 statutoryAccountsFiling = StatutoryAccountsFiling(true),
-                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe expectedResult
+                                abbreviatedAccountsFiling = AbbreviatedAccountsFiling(true)) shouldBe jointAbbreviatedStatutoryFRSSE2008V3Returns
       }
     }
   }

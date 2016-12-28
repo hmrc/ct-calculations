@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval
+package uk.gov.hmrc.ct.accounts.approval.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.{Frs10xDirectorsBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
-import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
@@ -29,7 +26,5 @@ case class CompaniesHouseAccountsApproval(ac199A: List[AC199A] = List.empty, ac8
 
   override def value = this
 
-  override def approvalEnabled(boxRetriever: AccountsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever with FilingAttributesBoxValueRetriever) =  {
-    boxRetriever.companiesHouseFiling().value
-  }
+  override def approvalEnabled(boxRetriever: FilingAttributesBoxValueRetriever) = boxRetriever.coHoAccountsApprovalRequired().value
 }

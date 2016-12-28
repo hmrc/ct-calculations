@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x.boxes.accountsApproval
+package uk.gov.hmrc.ct.accounts.approval.retriever
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.approval.boxes.{CompaniesHouseAccountsApproval, HmrcAccountsApproval}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.ValidatableBox._
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-case class AC8092(value: Option[String]) extends CtBoxIdentifier(name = "Additional Approver.") with CtOptionalString with Input with ValidatableBox[AccountsBoxRetriever] {
+trait HmrcAccountsApprovalBoxRetriever extends AccountsBoxRetriever {
+  self: FilingAttributesBoxValueRetriever =>
 
-  override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
-    validateStringMaxLength("AC8092", this.value.getOrElse(""), StandardCohoNameFieldLimit) ++ validateCohoOptionalNameField("AC8092", this)
-  }
+  def hmrcAccountsApproval(): HmrcAccountsApproval
 }

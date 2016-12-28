@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.ct.version
 
+import uk.gov.hmrc.ct.version.CoHoAccounts.{CoHoAbridgedAccounts, CoHoMicroEntityAccounts, CoHoStatutoryAccounts}
+
 object HmrcReturns {
   case object Computations extends ReturnType {
     override def key(): String = "Computations"
@@ -37,20 +39,26 @@ object HmrcReturns {
     override def key(): String = "CT600e"
   }
 
-  case object HmrcUploadedAccounts extends ReturnType with Accounts {
+  case object HmrcUploadedAccounts extends ReturnType with HmrcAccounts {
     override def key(): String = "HmrcUploadedAccounts"
   }
 
-  case object HmrcMicroEntityAccounts extends ReturnType with Accounts {
+  case object HmrcMicroEntityAccounts extends ReturnType with HmrcAccounts with CoHoEquivalent {
     override def key(): String = "HmrcMicroEntityAccounts"
+
+    override def coHoReturnType: Accounts = CoHoMicroEntityAccounts
   }
 
-  case object HmrcStatutoryAccounts extends ReturnType with Accounts {
+  case object HmrcStatutoryAccounts extends ReturnType with HmrcAccounts with CoHoEquivalent {
     override def key(): String = "HmrcStatutoryAccounts"
+
+    override def coHoReturnType: Accounts = CoHoStatutoryAccounts
   }
 
-  case object HmrcAbridgedAccounts extends ReturnType with Accounts {
+  case object HmrcAbridgedAccounts extends ReturnType with HmrcAccounts with CoHoEquivalent {
     override def key(): String = "HmrcAbridgedAccounts"
+
+    override def coHoReturnType: Accounts = CoHoAbridgedAccounts
   }
 
   val returns: Set[ReturnType] = Set(Computations, CT600, CT600a, CT600e, CT600j, HmrcMicroEntityAccounts, HmrcStatutoryAccounts, HmrcUploadedAccounts, HmrcAbridgedAccounts)
@@ -59,3 +67,9 @@ object HmrcReturns {
     returns.find(_.key() == key).getOrElse(throw new IllegalArgumentException(s"Unknown key for HmrcReturn: $key"))
   }
 }
+
+sealed trait CoHoEquivalent {
+  def coHoReturnType: Accounts
+}
+
+sealed trait HmrcAccounts extends Accounts
