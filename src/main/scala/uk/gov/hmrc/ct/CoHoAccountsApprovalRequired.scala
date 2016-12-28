@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct
 
 import uk.gov.hmrc.ct.box.{CtBoolean, CtBoxIdentifier, Linked}
 
-case class CoHoAccountsApprovalRequired(value: Boolean) extends CtBoxIdentifier("True if approval required for CoHo accounts requires") with CtBoolean
+case class CoHoAccountsApprovalRequired(value: Boolean) extends CtBoxIdentifier("True if approval required for CoHo accounts") with CtBoolean
 
 object CoHoAccountsApprovalRequired extends Linked[CompaniesHouseFiling, CoHoAccountsApprovalRequired] {
 

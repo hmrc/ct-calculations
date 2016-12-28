@@ -46,15 +46,15 @@ trait HmrcAccountsApprovalRequiredCalculator extends ReturnVersionsCalculator {
 
     val approvalRequired = (hmrcAccountsReturn, coHoAccountReturn, isFrs102, isFrs105) match {
       case (Some(_), None, _, _) => true
-      case (Some(hmrc), Some(coHo), true, _) => hmrcApprovalRequireForFRS102(boxRetriever, hmrc, coHo)
-      case (Some(hmrc), Some(coHo), _, true) => hmrcApprovalRequireForFRS105(boxRetriever, hmrc, coHo)
+      case (Some(_), Some(_), true, _) => hmrcApprovalRequiredForFRS102(boxRetriever)
+      case (Some(_), Some(_), _, true) => hmrcApprovalRequiredForFRS105(boxRetriever)
       case _ => false
     }
 
     HmrcAccountsApprovalRequired(approvalRequired)
   }
 
-  private def hmrcApprovalRequireForFRS102(boxRetriever: FilingAttributesBoxValueRetriever, hmrc: Return, coHo: Return) = {
+  private def hmrcApprovalRequiredForFRS102(boxRetriever: FilingAttributesBoxValueRetriever) = {
 
     val (drToCoHo, plToCoHo) = boxRetriever match {
       case br: FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever with Frs10xDirectorsBoxRetriever => (br.ac8021().orFalse, br.acq8161().orFalse)
@@ -64,7 +64,7 @@ trait HmrcAccountsApprovalRequiredCalculator extends ReturnVersionsCalculator {
     !drToCoHo || !plToCoHo
   }
 
-  private def hmrcApprovalRequireForFRS105(boxRetriever: FilingAttributesBoxValueRetriever, hmrc: Return, coHo: Return) = {
+  private def hmrcApprovalRequiredForFRS105(boxRetriever: FilingAttributesBoxValueRetriever) = {
 
     val (drToHmrc, drToCoHo, plToCoHo) = boxRetriever match {
       case br: FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever with Frs10xDirectorsBoxRetriever => (br.ac8023().orFalse, br.ac8021().orFalse, br.acq8161().orFalse)
