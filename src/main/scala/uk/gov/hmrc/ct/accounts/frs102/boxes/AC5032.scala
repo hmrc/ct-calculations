@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 HM Revenue & Customs
+ * Copyright 2017 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ case class AC5032(value: Option[String]) extends CtBoxIdentifier(name = "Profit/
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      cannotExistIf(hasValue && !boxRetriever.ac32().hasValue),
+      cannotExistIf(hasValue && !boxRetriever.ac32().hasValue && !boxRetriever.ac33().hasValue),
       validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit),
       validateCoHoStringReturnIllegalChars()
     )
