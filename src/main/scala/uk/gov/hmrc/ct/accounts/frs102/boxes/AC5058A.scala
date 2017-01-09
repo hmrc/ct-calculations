@@ -25,11 +25,14 @@ case class AC5058A(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
+
+    val isMandatory = anyHaveValue(ac58(), ac59())
+
     collectErrors (
-      failIf(!ac58().hasValue && !ac59().hasValue)(
+      failIf(!isMandatory)(
         validateCannotExist(boxRetriever)
       ),
-      failIf(anyHaveValue(ac58(), ac59()))(
+      failIf(isMandatory)(
         validateNoteIsMandatory(boxRetriever)
       ),
       validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit),
