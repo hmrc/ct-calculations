@@ -38,13 +38,13 @@ case class AC190(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at 
 
   def validateTotalEqualToCurrentAmount(boxRetriever: Frs102AccountsBoxRetriever)() = {
     val ac76 = boxRetriever.ac76()
+
     val notEqualToAC76 =
-      if (ac76.hasValue)
-        ac76.value != this.value
-      else if (this.value.nonEmpty)
-         !this.value.contains(0) // This box must be set to 0 in order to balance it out.
-      else
-        false
+      (ac76.hasValue, this.hasValue) match {
+        case (true, _) => ac76.value != this.value
+        case (false, true) => !this.value.contains(0) // This box must be set to 0 in order to balance it out.
+        case _ => false
+      }
 
     failIf(notEqualToAC76) {
       Set(CtValidation(None, "error.AC190.mustEqual.AC76"))
