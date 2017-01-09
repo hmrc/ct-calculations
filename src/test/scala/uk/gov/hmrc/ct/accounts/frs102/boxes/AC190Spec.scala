@@ -40,6 +40,18 @@ class AC190Spec extends WordSpec
       AC190(Some(125)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.AC190.mustEqual.AC76"))
     }
 
+    "pass validation when calculated value is equal to 0 and AC76 is empty" in {
+      when(boxRetriever.ac76()).thenReturn(AC76(None))
+      when(boxRetriever.ac77()).thenReturn(AC77(Some(0)))
+      AC190(Some(0)).validate(boxRetriever) shouldBe Set.empty
+    }
+
+    "pass validation when calculated value is equal to 0 and AC76 is 0" in {
+      when(boxRetriever.ac76()).thenReturn(AC76(Some(0)))
+      when(boxRetriever.ac77()).thenReturn(AC77(Some(0)))
+      AC190(Some(0)).validate(boxRetriever) shouldBe Set.empty
+    }
+
     "pass validation when calculated value is not equal to empty AC76 and AC77 is empty" in {
       when(boxRetriever.ac76()).thenReturn(AC76(None))
       when(boxRetriever.ac77()).thenReturn(AC77(None))

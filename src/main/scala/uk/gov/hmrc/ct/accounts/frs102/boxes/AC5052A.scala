@@ -38,11 +38,13 @@ with Validators {
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
 
+    val isMandatory = anyHaveValue(ac52(), ac53())
+
     collectErrors (
-      failIf(ac52().noValue && ac53().noValue)(
+      failIf(!isMandatory)(
         validateCannotExist(boxRetriever)
       ),
-      failIf(anyHaveValue(ac52(), ac53()))(
+      failIf(isMandatory)(
         validateNotEmpty(boxRetriever)
       ),
       validateMoney(value, min = 0),
