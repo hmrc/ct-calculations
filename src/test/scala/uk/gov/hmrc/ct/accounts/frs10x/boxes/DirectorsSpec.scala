@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102
+package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
@@ -22,10 +22,9 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs10x.boxes._
-import uk.gov.hmrc.ct.accounts.frs10x.boxes.Director
+import uk.gov.hmrc.ct.accounts.frs102.{DirectorsMockSetup, MockableFrs10xBoxretrieverWithFilingAttributes}
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling, MicroEntityFiling}
+import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling, MicroEntityFiling, StatutoryAccountsFiling}
 
 class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
 
@@ -36,6 +35,36 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
   }
 
   "Directors" should {
+
+    val director = Director("444", "luke")
+    val directors = Directors(List(director))
+
+    "cannot exist when directors report disabled" when {
+      "for statutory CoHo only accounts answered no to AC8021" in {
+        when(mockBoxRetriever.ac8021()).thenReturn(AC8021(Some(false)))
+        when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
+        when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(mockBoxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(true))
+        when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
+        directors.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("AC8021"), "error.Directors.cannot.exist"))
+      }
+      "for statutory Joint accounts answered no to AC8021" in {
+        when(mockBoxRetriever.ac8021()).thenReturn(AC8021(Some(false)))
+        when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+        when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+        when(mockBoxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(true))
+        when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
+        directors.validate(mockBoxRetriever) shouldBe empty
+      }
+      "for statutory HMRC only accounts no answered for AC8021" in {
+        when(mockBoxRetriever.ac8021()).thenReturn(AC8021(None))
+        when(mockBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+        when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(false))
+        when(mockBoxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(true))
+        when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
+        directors.validate(mockBoxRetriever) shouldBe empty
+      }
+    }
 
     "validate successfully when no validation errors are present" in {
 

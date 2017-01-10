@@ -24,26 +24,20 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you want to file a directors' report to Companies House?")
                                           with CtOptionalBoolean
                                           with Input
-                                          with SelfValidatableBox[Frs10xDirectorsBoxRetriever
-                                          with FilingAttributesBoxValueRetriever, Option[Boolean]]
+                                          with SelfValidatableBox[Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever, Option[Boolean]]
                                           with DirectorsReportExistenceValidation {
 
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     val coHoFiling = boxRetriever.companiesHouseFiling().value
     val hmrcFiling = boxRetriever.hmrcFiling().value
     val microEntityFiling = boxRetriever.microEntityFiling().value
-    val fileDRToHmrc = boxRetriever.ac8023().orFalse
+    val fileDRToHmrc = boxRetriever.ac8023()
 
-    // This field is required if filing non micro-entity Joint or to CoHo only
-    // or when filing Joint micro-entity AND answered "true" to "AC8023".
-    // In the last case, answering "false" disables "Directors report" section - including this question.
-    failIf(coHoFiling && (!(hmrcFiling && microEntityFiling) || (hmrcFiling && microEntityFiling && fileDRToHmrc)))(
-      collectErrors(
-        validateAsMandatory(),
-        // Validate cannot exist only if filing for CoHo only
-        failIf(!hmrcFiling)(validateDirectorsReportCannotExist("AC8021", value, boxRetriever))
-      )
-    )
+    (coHoFiling, hmrcFiling, microEntityFiling, fileDRToHmrc) match {
+      case (false, _, _, _) => cannotExistIf(hasValue)
+      case (true, true, true, AC8023(Some(false))) => failIf(orFalse)(Set(CtValidation(Some("AC8021"), "error.AC8021.cannot.be.true")))
+      case (true, _, _, _) => validateAsMandatory()
+    }
   }
 
 }

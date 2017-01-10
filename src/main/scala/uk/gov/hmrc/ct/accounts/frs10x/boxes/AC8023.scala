@@ -25,14 +25,17 @@ case class AC8023(value: Option[Boolean])
   extends CtBoxIdentifier(name = "Do you want to file a directors' report to HMRC?")
   with CtOptionalBoolean
   with Input
-  with ValidatableBox[Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever]
+  with SelfValidatableBox[Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever, Option[Boolean]]
   with DirectorsReportExistenceValidation {
 
-  override def validate(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] =
-    failIf(boxRetriever.hmrcFiling().value && boxRetriever.microEntityFiling().value) {
+  override def validate(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+    val isMicroHmrcFiling = boxRetriever.hmrcFiling().value && boxRetriever.microEntityFiling().value
+
       collectErrors(
-        validateBooleanAsMandatory("AC8023", this),
-        validateDirectorsReportCannotExist("AC8023", value, boxRetriever)
+        failIf(isMicroHmrcFiling) {
+          validateAsMandatory()
+        },
+        cannotExistIf(!isMicroHmrcFiling && hasValue)
       )
-    }
+  }
 }
