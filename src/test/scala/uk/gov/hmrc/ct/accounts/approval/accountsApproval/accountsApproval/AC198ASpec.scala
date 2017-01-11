@@ -40,6 +40,6 @@ class AC198ASpec extends WordSpec
 
   testDateIsMandatory("AC198A", AC198A)
 
-  testDateBetweenIntervalValidation("AC198A", startDate = APEnd, endDate = NOW, AC198A)
+  testDateBetweenIntervalValidation("AC198A", startDate = APEnd.plusDays(1), endDate = NOW, AC198A)
 
 }
