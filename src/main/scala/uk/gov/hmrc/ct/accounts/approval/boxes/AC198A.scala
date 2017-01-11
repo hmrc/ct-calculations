@@ -27,7 +27,7 @@ case class AC198A(value: Option[LocalDate]) extends CtBoxIdentifier("Approve acc
 
     collectErrors(
       validateDateAsMandatory("AC198A", this),
-      validateDateAsBetweenInclusive("AC198A", this, boxRetriever.ac4().value, DateHelper.now())
+      validateDateAsBetweenInclusive("AC198A", this, boxRetriever.ac4().value.plusDays(1), DateHelper.now())
     )
   }
 }
