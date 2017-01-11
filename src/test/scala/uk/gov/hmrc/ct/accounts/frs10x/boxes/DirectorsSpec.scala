@@ -47,7 +47,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
         when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
         when(mockBoxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(true))
         when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(false))
-        populatedDirectors.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("AC8021"), "error.Directors.cannot.exist"))
+        populatedDirectors.validate(mockBoxRetriever) shouldBe Set(CtValidation(None, "error.Directors.AC8021.cannot.exist"))
       }
 
       "validate successfully for statutory accounts answered yes to AC8021" in {
@@ -67,7 +67,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
         when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
         when(mockBoxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(false))
         when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(true))
-        populatedDirectors.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("AC8021"), "error.Directors.cannot.exist"))
+        populatedDirectors.validate(mockBoxRetriever) shouldBe Set(CtValidation(None, "error.Directors.AC8021.cannot.exist"))
       }
 
       "validate successfully for micro entity accounts answered yes to AC8021" in {
@@ -109,7 +109,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
         when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
         when(mockBoxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(false))
         when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(true))
-        populatedDirectors.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("AC8023"), "error.Directors.cannot.exist"))
+        populatedDirectors.validate(mockBoxRetriever) shouldBe Set(CtValidation(None, "error.Directors.AC8023.cannot.exist"))
       }
 
       "validate successfully for micro entity accounts answered yes to AC8023 and no to AC8021" in {
@@ -141,7 +141,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
         when(mockBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(false))
         when(mockBoxRetriever.statutoryAccountsFiling()).thenReturn(StatutoryAccountsFiling(false))
         when(mockBoxRetriever.microEntityFiling()).thenReturn(MicroEntityFiling(true))
-        populatedDirectors.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("AC8023"), "error.Directors.cannot.exist"))
+        populatedDirectors.validate(mockBoxRetriever) shouldBe Set(CtValidation(None, "error.Directors.AC8023.cannot.exist"))
       }
 
       "validate successfully for micro entity accounts answered yes to AC8023" in {

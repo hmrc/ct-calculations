@@ -44,7 +44,7 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
   private def validateCannotExist(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     failIf(!directorsReportEnabled(boxRetriever) && directors.nonEmpty) {
       val boxId = if (boxRetriever.hmrcFiling().value) "AC8023" else "AC8021"
-      Set(CtValidation(Some(boxId), "error.Directors.cannot.exist"))
+      Set(CtValidation(None, s"error.Directors.$boxId.cannot.exist"))
     }
   }
 
