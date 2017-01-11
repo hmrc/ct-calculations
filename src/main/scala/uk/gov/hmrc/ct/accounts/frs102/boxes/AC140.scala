@@ -42,7 +42,6 @@ case class AC140(value: Option[Int]) extends CtBoxIdentifier(name = "Debtors - T
       Set(CtValidation(None, "error.debtors.currentYearTotal.notEqualsTo.currentYearAmount"))
     }
   }
-
 }
 
 object AC140 extends Calculated[AC140, FullAccountsBoxRetriever] with BalanceSheetDebtorsCalculator {
@@ -55,5 +54,4 @@ object AC140 extends Calculated[AC140, FullAccountsBoxRetriever] with BalanceShe
       ac138()
     )
   }
-
 }

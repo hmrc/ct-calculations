@@ -37,10 +37,18 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
       validateAtLeastOneDirectorResignedIfResignationsIsYes(boxRetriever) ++
       validateAtMost12Directors() ++
       validateDirectorsUnique() ++
+      validateCannotExist(boxRetriever) ++
     directors.foldRight(Set[CtValidation]())((dd, tail) => dd.validate(boxRetriever) ++ tail)
   }
 
-  def validateAtLeastOneDirectorIsAppointedIfAppointmentsIsYes(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+  private def validateCannotExist(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+    failIf(!directorsReportEnabled(boxRetriever) && directors.nonEmpty) {
+      val boxId = if (boxRetriever.hmrcFiling().value) "AC8023" else "AC8021"
+      Set(CtValidation(None, s"error.Directors.$boxId.cannot.exist"))
+    }
+  }
+
+  private def validateAtLeastOneDirectorIsAppointedIfAppointmentsIsYes(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     failIf (
       directorsReportEnabled(boxRetriever) &&
       boxRetriever.acQ8003().value.getOrElse(false) &&
@@ -50,7 +58,7 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
     }
   }
 
-  def validateAtLeastOneDirectorResignedIfResignationsIsYes(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+  private def validateAtLeastOneDirectorResignedIfResignationsIsYes(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     failIf (
       directorsReportEnabled(boxRetriever) &&
         boxRetriever.acQ8009().value.getOrElse(false) &&
@@ -60,20 +68,20 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
     }
   }
 
-  def validateDirectorRequired(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
+  private def validateDirectorRequired(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     failIf (directorsReportEnabled(boxRetriever) && directors.isEmpty) {
       Set(CtValidation(Some("ac8001"), "error.Directors.ac8001.global.atLeast1", None))
     }
   }
 
-  def validateAtMost12Directors(): Set[CtValidation] = {
+  private def validateAtMost12Directors(): Set[CtValidation] = {
     directors.size match {
       case n if n > 12 => Set(CtValidation(Some("ac8001"), "error.Directors.ac8001.atMost12", None))
       case _ => Set.empty
     }
   }
 
-  def validateDirectorsUnique(): Set[CtValidation] = {
+  private def validateDirectorsUnique(): Set[CtValidation] = {
 
     val uniqueNames = directors.map(_.ac8001).toSet
 
