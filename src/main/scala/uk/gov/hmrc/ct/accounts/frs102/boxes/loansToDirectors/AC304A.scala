@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors
 
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 
@@ -31,7 +32,23 @@ case class AC304A(value: Option[String]) extends CtBoxIdentifier(name = "Directo
     collectErrors(
       validateAsMandatory(),
       validateOptionalStringByLength(1, StandardCohoNameFieldLimit),
-      validateCohoOptionalNameField()
+      validateCohoOptionalNameField(),
+      validateCustomDirectorName(boxRetriever)
     )
+
+  }
+
+  private def validateCustomDirectorName(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
+
+    boxRetriever match {
+      case x: Frs102AccountsBoxRetriever with Frs10xDirectorsBoxRetriever =>
+        if (x.ac8021().orFalse && !x.directors().directors.exists(d => d.ac8001 == this.value.getOrElse(""))) {
+          Set(CtValidation(Some("AC304A"), "error.loansToDirectors.invalidDirectorName", Some(Seq(this.value.getOrElse("")))))
+        } else
+          Set.empty
+      case _ =>
+        Set.empty
+    }
+
   }
 }
