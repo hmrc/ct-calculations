@@ -24,10 +24,10 @@ import uk.gov.hmrc.ct.box._
 case class AC304A(value: Option[String]) extends CtBoxIdentifier(name = "Director Name loaned too")
   with CtOptionalString
   with Input
-  with SelfValidatableBox[Frs102AccountsBoxRetriever, Option[String]]
+  with SelfValidatableBox[Frs102AccountsBoxRetriever with Frs10xDirectorsBoxRetriever, Option[String]]
   with Validators {
 
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever with Frs10xDirectorsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
       validateAsMandatory(),
@@ -38,17 +38,12 @@ case class AC304A(value: Option[String]) extends CtBoxIdentifier(name = "Directo
 
   }
 
-  private def validateCustomDirectorName(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
+  private def validateCustomDirectorName(boxRetriever: Frs102AccountsBoxRetriever with Frs10xDirectorsBoxRetriever)(): Set[CtValidation] = {
 
-    boxRetriever match {
-      case x: Frs102AccountsBoxRetriever with Frs10xDirectorsBoxRetriever =>
-        if (x.ac8021().orFalse && !x.directors().directors.exists(d => d.ac8001 == this.value.getOrElse(""))) {
-          Set(CtValidation(Some("AC304A"), "error.loansToDirectors.invalidDirectorName"))
-        } else
-          Set.empty
-      case _ =>
+      if (boxRetriever.ac8021().orFalse && !boxRetriever.directors().directors.exists(d => d.ac8001 == this.value.getOrElse(""))) {
+        Set(CtValidation(Some("AC304A"), "error.loansToDirectors.invalidDirectorName"))
+      } else
         Set.empty
-    }
 
   }
 }
