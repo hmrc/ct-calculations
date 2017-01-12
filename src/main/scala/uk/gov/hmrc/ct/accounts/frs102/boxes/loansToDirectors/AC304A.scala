@@ -43,7 +43,7 @@ case class AC304A(value: Option[String]) extends CtBoxIdentifier(name = "Directo
     boxRetriever match {
       case x: Frs102AccountsBoxRetriever with Frs10xDirectorsBoxRetriever =>
         if (x.ac8021().orFalse && !x.directors().directors.exists(d => d.ac8001 == this.value.getOrElse(""))) {
-          Set(CtValidation(Some("AC304A"), "error.loansToDirectors.invalidDirectorName", Some(Seq(this.value.getOrElse("")))))
+          Set(CtValidation(Some("AC304A"), "error.loansToDirectors.invalidDirectorName"))
         } else
           Set.empty
       case _ =>
