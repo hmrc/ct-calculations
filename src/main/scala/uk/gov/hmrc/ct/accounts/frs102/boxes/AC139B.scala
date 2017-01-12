@@ -16,11 +16,18 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.{MockFrs102AccountsRetriever, AccountsMoneyValidationFixture}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.box._
 
-class AC471Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever {
+case class AC139B(value: Option[Int]) extends CtBoxIdentifier(name = "Prepayments and accrued income (previous PoA)")
+  with CtOptionalInteger
+  with Input
+  with ValidatableBox[Frs102AccountsBoxRetriever]
+  with Validators {
 
-  testAccountsMoneyValidationWithMin("AC471", 0, AC471.apply)
-
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateMoney(value, min = 0)
+    )
+  }
 }
