@@ -19,8 +19,8 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import uk.gov.hmrc.ct.accounts.{MockFrs102AccountsRetriever, AccountsMoneyValidationFixture}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 
-class AC466Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever {
+class AC150BSpec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever {
 
-  testAccountsMoneyValidationWithMin("AC466", 0, AC466.apply)
+  testAccountsMoneyValidationWithMin("AC150B", 0, AC150B.apply)
 
 }

@@ -35,6 +35,6 @@ object AC69 extends Calculated[AC69, Frs102AccountsBoxRetriever] with TotalNetAs
 
   override def calculate(boxRetriever: Frs102AccountsBoxRetriever): AC69 = {
     import boxRetriever._
-    calculatePreviousTotalNetAssetsLiabilities(ac63(), ac65(), ac67(), ac471())
+    calculatePreviousTotalNetAssetsLiabilities(ac63(), ac65(), ac67(), ac151B())
   }
 }
