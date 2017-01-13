@@ -21,17 +21,17 @@ import uk.gov.hmrc.ct.box.CtTypeConverters
 
 trait NetCurrentAssetsLiabilitiesCalculator extends CtTypeConverters {
 
-  def calculateCurrentNetCurrentAssetsLiabilities(ac56: AC56, ac465: AC465, ac58: AC58): AC60 = {
-    (ac56.value, ac465.value, ac58.value) match {
+  def calculateCurrentNetCurrentAssetsLiabilities(ac56: AC56, ac138B: AC138B, ac58: AC58): AC60 = {
+    (ac56.value, ac138B.value, ac58.value) match {
       case (None, None, None) => AC60(None)
-      case _ => AC60(Some(ac56 + ac465 - ac58))
+      case _ => AC60(Some(ac56 + ac138B - ac58))
     }
   }
 
-  def calculatePreviousNetCurrentAssetsLiabilities(ac57: AC57, ac466: AC466, ac59: AC59): AC61 = {
-    (ac57.value, ac466.value, ac59.value) match {
+  def calculatePreviousNetCurrentAssetsLiabilities(ac57: AC57, ac139B: AC139B, ac59: AC59): AC61 = {
+    (ac57.value, ac139B.value, ac59.value) match {
       case (None, None, None) => AC61(None)
-      case _ => AC61(Some(ac57 + ac466 - ac59))
+      case _ => AC61(Some(ac57 + ac139B - ac59))
     }
   }
 
