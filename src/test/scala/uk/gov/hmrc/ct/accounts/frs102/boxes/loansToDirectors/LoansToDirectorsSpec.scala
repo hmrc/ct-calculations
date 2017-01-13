@@ -22,14 +22,17 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs102.boxes.AC7500
 import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC8021, Director, Directors}
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AC205, AC206}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
-  import LoansToDirectorsMockSetup._
 
-  val mockBoxRetriever = mock[AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever]
+  trait TestBoxRetriever extends AbridgedAccountsBoxRetriever with Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever
+
+  val mockBoxRetriever = mock[TestBoxRetriever]
 
   val validLoan = LoanToDirector(
     uuid = "uuid",
@@ -40,18 +43,25 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
     ac308A = AC308A(None),
     ac309A = AC309A(None)
   )
+
+  override protected def beforeEach(): Unit = {
+    when(mockBoxRetriever.ac8021()).thenReturn(AC8021(Some(false)))
+    when(mockBoxRetriever.directors()).thenReturn(Directors(List(Director("1", "Test dude one"), Director("2", "Test dude two"))))
+
+    when(mockBoxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate(2014, 4, 6))))
+    when(mockBoxRetriever.ac206()).thenReturn(AC206(Some(new LocalDate(2015, 4, 5))))
+
+    when(mockBoxRetriever.ac7500()).thenReturn(AC7500(Some(true)))
+  }
   
   "LoansToDirectors" should {
     "validate successfully when no validation errors are present" in {
-      setupDefaults(mockBoxRetriever)
-
       val loans = LoansToDirectors(loans = List(validLoan), ac7501 = AC7501(None))
 
       loans.validate(mockBoxRetriever) shouldBe empty
     }
 
     "return cannot exist error when there are errors but AC7500 not set to true" in {
-      setupDefaults(mockBoxRetriever)
       when(mockBoxRetriever.ac7500()).thenReturn(AC7500(None))
 
       val loan = LoanToDirector(
@@ -69,8 +79,6 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
     }
 
     "errors against correct loan and contextualised #1" in {
-      setupDefaults(mockBoxRetriever)
-
       val loan = LoanToDirector(
         uuid = "uuid",
         ac304A = AC304A(None),
@@ -93,8 +101,6 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
     }
 
     "errors against correct loan and contextualised #2" in {
-      setupDefaults(mockBoxRetriever)
-
       val transaction2 = LoanToDirector(
         uuid = "uuid",
         ac304A = AC304A(None),
@@ -114,8 +120,6 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
      }
 
     "errors against correct loan and contextualised #3 - only global error" in {
-      setupDefaults(mockBoxRetriever)
-
       val transaction2 = LoanToDirector(
         uuid = "uuid",
         ac304A = AC304A(Some("director")),
@@ -133,16 +137,12 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
     }
 
     "range error when no loans" in {
-      setupDefaults(mockBoxRetriever)
-
       val loans = LoansToDirectors(loans = List.empty, ac7501 = AC7501(None))
 
       loans.validate(mockBoxRetriever) shouldBe Set(CtValidation(None,"error.LoansToDirectors.atLeast1",None))
     }
 
     "range error when too many loans" in {
-      setupDefaults(mockBoxRetriever)
-
       val loans = LoansToDirectors(loans = List.tabulate(20)(index => validLoan), ac7501 = AC7501(None))
       loans.validate(mockBoxRetriever) shouldBe empty
 
@@ -172,16 +172,5 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
         AC308A(Some(15)),
         AC309A(Some(8)))
     ), AC7501(None))
-  }
-}
-
-object LoansToDirectorsMockSetup extends MockitoSugar {
-
-  def setupDefaults(mockBoxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever) = {
-    // previous POA responses
-    when(mockBoxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate(2014, 4, 6))))
-    when(mockBoxRetriever.ac206()).thenReturn(AC206(Some(new LocalDate(2015, 4, 5))))
-
-    when(mockBoxRetriever.ac7500()).thenReturn(AC7500(Some(true)))
   }
 }
