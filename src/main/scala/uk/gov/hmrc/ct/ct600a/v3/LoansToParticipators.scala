@@ -23,6 +23,7 @@ import uk.gov.hmrc.ct.ct600a.v3.formats.LoansFormatter
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 import uk.gov.hmrc.ct.utils.DateImplicits._
+import LoansToParticipators._
 
 case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIdentifier(name = "Loans to participators.") with CtValue[List[Loan]] with Input with ValidatableBox[CT600ABoxRetriever] {
 
@@ -54,7 +55,7 @@ case class Loan ( id: String,
                   writeOffs: List[WriteOff] = List.empty) {
 
   def validate(boxRetriever: CT600ABoxRetriever, loansToParticipators: LoansToParticipators): Set[CtValidation] = {
-    val loanIndex = LoansToParticipators.findLoanIndex(this, loansToParticipators)
+    val loanIndex = findLoanIndex(this, loansToParticipators)
 
     validateLoan(invalidLoanNameLength, s"loans.$loanIndex.name.length") ++
     validateLoan(invalidLoanNameUnique(loansToParticipators), s"loans.$loanIndex.uniqueName") ++
@@ -122,7 +123,7 @@ case class Repayment(id: String, amount: Option[Int], amountBefore06042016: Opti
   val repaymentAfter9MonthsErrorCode = "otherRepayments"
 
   def validateAfter9Months(boxRetriever: CT600ABoxRetriever, loansToParticipators: LoansToParticipators, loanIndex: Int): Set[CtValidation] = {
-    val repaymentIndex = LoansToParticipators.findOtherRepaymentIndex(loanIndex, this, loansToParticipators)
+    val repaymentIndex = findOtherRepaymentIndex(loanIndex, this, loansToParticipators)
 
     validateRepayment(invalidDateAfter9Months(boxRetriever), s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.date.range", errorArgsOtherRepaymentsDate(boxRetriever), loanIndex) ++
     validateRepayment(invalidRepaymentAmount, s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.amount.value", None, loanIndex) ++
@@ -165,13 +166,13 @@ case class Repayment(id: String, amount: Option[Int], amountBefore06042016: Opti
   def currentAPEndDate(boxRetriever: CT600ABoxRetriever): LocalDate = boxRetriever.cp2().value
 
   def earlierOfNowAndAPEndDatePlus9Months(boxRetriever: CT600ABoxRetriever): LocalDate = {
-    currentAPEndDatePlus9Months(boxRetriever) < dateAtStartofToday match {
+    currentAPEndDatePlus9Months(boxRetriever) < dateAtStartOfToday match {
       case true => currentAPEndDatePlus9Months(boxRetriever)
-      case _ => dateAtStartofToday
+      case _ => dateAtStartOfToday
     }
   }
 
-  def dateAtStartofToday: LocalDate = DateHelper.now().toDateTimeAtStartOfDay.toLocalDate
+  def dateAtStartOfToday: LocalDate = DateHelper.now().toDateTimeAtStartOfDay.toLocalDate
 
   def errorArgsRepaymentsWith9MonthsDate(boxRetriever: CT600ABoxRetriever): Some[Seq[String]] =
     Some(Seq(toErrorArgsFormat(currentAPEndDate(boxRetriever)), toErrorArgsFormat(earlierOfNowAndAPEndDatePlus9Months(boxRetriever))))
@@ -188,7 +189,7 @@ case class WriteOff(id: String, amount: Option[Int], amountBefore06042016: Optio
   private val writeOffErrorCode = "writeOffs"
 
   def validate(boxRetriever: CT600ABoxRetriever, loansToParticipators: LoansToParticipators, loanIndex: Int): Set[CtValidation] = {
-    val writeOffIndex = LoansToParticipators.findWriteOffIndex(loanIndex, this, loansToParticipators)
+    val writeOffIndex = findWriteOffIndex(loanIndex, this, loansToParticipators)
 
     validateWriteOff(invalidDate(boxRetriever), s"$writeOffErrorCode.$writeOffIndex.date.range", errorArgsWriteOffDate(boxRetriever), loanIndex) ++
     validateWriteOff(invalidWriteOffAmount, s"$writeOffErrorCode.$writeOffIndex.amount.value", None, loanIndex) ++
@@ -248,7 +249,7 @@ object LoansToParticipators {
   }
 
   def findOtherRepaymentIndex(loanIndex: Int, repayment: Repayment, loansToParticipators: LoansToParticipators): Int = {
-    sortOtherRepayments(loansToParticipators.loans(loanIndex).otherRepayments).indexOf(repayment)
+    sortOtherRepayments(sortLoans(loansToParticipators.loans)(loanIndex).otherRepayments).indexOf(repayment)
   }
 
   def sortWriteOffs(writeOffs: List[WriteOff]): List[WriteOff] = {
@@ -258,7 +259,7 @@ object LoansToParticipators {
   }
 
   def findWriteOffIndex(loanIndex: Int, writeOff: WriteOff, loansToParticipators: LoansToParticipators): Int = {
-    sortWriteOffs(loansToParticipators.loans(loanIndex).writeOffs).indexOf(writeOff)
+    sortWriteOffs(sortLoans(loansToParticipators.loans)(loanIndex).writeOffs).indexOf(writeOff)
   }
 
 }
