@@ -73,6 +73,11 @@ object CompanyTypes {
     RealEstateInvestmentTrust, PublicLimitedCompany, LimitedLiabilityPartnership, Ineligible, LimitedByGuaranteeCharity, LimitedBySharesCharity
   )
 
+  val AllCharityTypes: Set[CompanyType] = Set(
+    CASC, LimitedByGuaranteeCASC, LimitedBySharesCASC,
+    Charity, LimitedByGuaranteeCharity, LimitedBySharesCharity
+  )
+
   implicit val reads: Reads[CompanyType] =
     Reads.StringReads.collect(ValidationError("Not a valid company type.")){case companyClassName if registeredTypes.contains(companyClassName) => registeredTypes(companyClassName)}
 

@@ -22,6 +22,7 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.utils.DateImplicits._
 import uk.gov.hmrc.ct.box.ValidatableBox._
+import uk.gov.hmrc.ct.domain.CompanyTypes
 
 
 case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turnover/Sales")
@@ -129,7 +130,13 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
     val daysInPoa = daysBetweenDates(boxRetriever.ac3().value, boxRetriever.ac4().value)
     val daysInYear = getDaysInYear(boxRetriever)
 
-    val maximumTurnoverInYear = Math.floor(632000.0 * daysInPoa / daysInYear).toInt
+    val isCharity = boxRetriever match {
+      case fabr: FilingAttributesBoxValueRetriever => CompanyTypes.AllCharityTypes.contains(fabr.companyType().value)
+      case _ => false
+    }
+
+    val maxHmrcTurnover = if (isCharity) 6500000.0 else 632000.0
+    val maximumTurnoverInYear = Math.floor(maxHmrcTurnover * daysInPoa / daysInYear).toInt
     validateTurnoverRangeWithMinAndMaxMessages(this,  s"error.${this.id}.hmrc.turnover", -maximumTurnoverInYear, maximumTurnoverInYear)
   }
 
