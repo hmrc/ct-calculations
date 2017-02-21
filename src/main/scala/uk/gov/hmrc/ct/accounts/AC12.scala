@@ -39,18 +39,14 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
         failIf(isFrs10xHmrcAbridgedReturnWithLongPoA(boxRetriever)) {
           validateAsMandatory(this)
         },
-        failIf(isFRS10x(boxRetriever))(
+        failIf(boxRetriever.hmrcFiling().value)(
           collectErrors(
-            failIf(boxRetriever.hmrcFiling().value)(
-              collectErrors(
-                validateHmrcTurnover(boxRetriever)
-              )
-            ),
-            failIf(!boxRetriever.hmrcFiling().value && boxRetriever.companiesHouseFiling().value)(
-              collectErrors(
-                validateCoHoTurnover(boxRetriever)
-              )
-            )
+            validateHmrcTurnover(boxRetriever)
+          )
+        ),
+        failIf(!boxRetriever.hmrcFiling().value && boxRetriever.companiesHouseFiling().value)(
+          collectErrors(
+            validateCoHoTurnover(boxRetriever)
           )
         )
       )
@@ -98,8 +94,8 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
   private def validateCoHoTurnover(boxRetriever: AccountsBoxRetriever)(): Set[CtValidation] = {
     val daysInPoa = daysBetweenDates(boxRetriever.ac3().value, boxRetriever.ac4().value)
     val daysInYear = getDaysInYear(boxRetriever)
-
-    val maximumTurnoverInYear = Math.floor(10200000.0 * daysInPoa / daysInYear).toInt
+    val maxTurnover = if (isFRS10x(boxRetriever)) 10200000.0 else 6500000.0
+    val maximumTurnoverInYear = Math.floor(maxTurnover * daysInPoa / daysInYear).toInt
     validateTurnoverRangeWithMinAndMaxMessages(this, s"error.${this.id}.coho.turnover", -maximumTurnoverInYear, maximumTurnoverInYear)
   }
 

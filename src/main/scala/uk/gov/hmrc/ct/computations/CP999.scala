@@ -26,7 +26,7 @@ object CP999 extends Calculated[CP999, ComputationsBoxRetriever] with TotalDonat
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP999 = {
     calculateTotalDonations(cpq21 = fieldValueRetriever.cpQ21(),
-      cp301 = fieldValueRetriever.cp301(),
-      cp302 = fieldValueRetriever.cp302())
+                            cp301 = fieldValueRetriever.cp301(),
+                            cp302 = fieldValueRetriever.cp302())
   }
 }
