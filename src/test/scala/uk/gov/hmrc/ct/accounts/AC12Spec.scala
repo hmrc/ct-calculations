@@ -24,14 +24,59 @@ import org.scalatest.prop.TableFor6
 import org.scalatest.prop.Tables.Table
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes
-import uk.gov.hmrc.ct.domain.CompanyTypes.CompanyType
+import uk.gov.hmrc.ct.domain.CompanyTypes.{CompanyType, UkTradingCompany}
 import uk.gov.hmrc.ct.{AbridgedFiling, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
 
 class AC12Spec extends WordSpec with Matchers with MockitoSugar {
 
   "AC12 validation" should {
+
+    "validate mandatory check" when {
+
+      val testTable = Table(
+        ("poaStartDate",   "poaEndDate",  "abridgedFiling",  "ac12Value",  "required", "message"),
+        ("2015-01-01",     "2015-12-31",     false,             None,      false,      "1 year PoA pre FRS empty NOT abridged"),
+        ("2015-01-01",     "2015-12-31",     true,              None,      false,      "1 year PoA pre FRS empty abridged"),
+        ("2015-01-01",     "2015-12-01",     false,             None,      false,      "short PoA pre FRS empty NOT abridged"),
+        ("2015-01-01",     "2015-12-01",     true,              None,      false,      "short PoA pre FRS empty abridged"),
+        ("2015-01-01",     "2016-12-01",     false,             None,      false,      "long PoA pre FRS empty NOT abridged"),
+        ("2015-01-01",     "2016-12-01",     true,              None,      false,      "long PoA pre FRS empty abridged"),
+        
+        ("2016-01-01",     "2016-12-31",     false,             None,      false,      "1 year PoA post FRS empty NOT abridged"),
+        ("2016-01-01",     "2016-12-31",     true,              None,      false,      "1 year PoA post FRS empty abridged"),
+        ("2016-01-01",     "2016-12-01",     false,             None,      false,      "short PoA post FRS empty NOT abridged"),
+        ("2016-01-01",     "2016-12-01",     true,              None,      false,      "short PoA post FRS empty abridged"),
+        ("2016-01-01",     "2017-12-01",     false,             None,      false,      "long PoA post FRS empty NOT abridged"),
+        ("2016-01-01",     "2017-12-01",     true,              None,      true,      "long PoA post FRS empty abridged"),
+        ("2016-01-01",     "2017-12-01",     true,              Some(1),   false,      "long PoA post FRS populated abridged")
+      )
+
+      (CompanyTypes.AllCompanyTypes -- CompanyTypes.AllCharityTypes).foreach { companyType =>
+
+        s"check validation when empty for $companyType" in {
+
+          forAll(testTable) { (startDateString: String, endDateString: String, abridgedFiling: Boolean, ac12Value: Option[Int], required: Boolean, message: String) =>
+            val boxRetriever = mock[TestBoxRetriever]
+
+            when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate(startDateString)))
+            when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate(endDateString)))
+            when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+            when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(false))
+            when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(abridgedFiling))
+            when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
+
+            val validationResult = AC12(ac12Value).validate(boxRetriever)
+            if (required)
+              validationResult shouldBe Set(CtValidation(Some("AC12"), "error.AC12.required"))
+            else
+              validationResult shouldBe empty
+          }
+        }
+      }
+    }
 
     "HMRC only non-charity filing" when {
       assertHmrcInvolvedCompanyValidation(isHmrcFiling = true, isCoHoFiling = false)
