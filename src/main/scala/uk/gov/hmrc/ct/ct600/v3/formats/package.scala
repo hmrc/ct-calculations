@@ -80,6 +80,8 @@ package object formats {
 
   implicit val B515Format: Format[B515] = new OptionalBigDecimalFormat[B515](B515.apply)
 
+  implicit val B527Format: Format[B527] = new OptionalBigDecimalFormat[B527](B527.apply)
+
   implicit val B595Format: Format[B595] = new OptionalBigDecimalFormat[B595](B595.apply)
 
   implicit val B705Format: Format[B705] = new OptionalIntegerFormat[B705](B705.apply)
