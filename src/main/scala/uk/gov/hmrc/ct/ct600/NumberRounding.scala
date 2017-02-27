@@ -26,7 +26,7 @@ trait NumberRounding {
     value.setScale(0, BigDecimal.RoundingMode.HALF_DOWN).toInt
   }
 
-  def roundedTwoDecimalPlaces(value: BigDecimal): BigDecimal =  {
+  def roundedTwoDecimalPlaces(value: BigDecimal): BigDecimal = {
     value.setScale(2, BigDecimal.RoundingMode.HALF_UP)
   }
 
