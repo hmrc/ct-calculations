@@ -22,6 +22,7 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.utils.DateImplicits._
 import uk.gov.hmrc.ct.box.ValidatableBox._
+import uk.gov.hmrc.ct.domain.CompanyTypes
 
 
 case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turnover/Sales")
@@ -80,41 +81,18 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
     Days.daysBetween(start, end).getDays + 1
   }
 
-  private def isLeapYear(year: Int): Boolean = {
-    val beginningOfYear = new LocalDate(year, 1, 1)
-    (daysBetweenDates(beginningOfYear, beginningOfYear.plusYears(1)) - 1) == 366
-  }
-
   private def getDaysInYear(boxRetriever: AccountsBoxRetriever): Int = {
     val poaStartDate = boxRetriever.ac3().value
     val poaEndDate = boxRetriever.ac4().value
-    val startYearIsLeap = isLeapYear(poaStartDate.getYear)
-    val endYearIsLeap = isLeapYear(poaEndDate.getYear)
 
-    val currentYearLeapDay =
-      if (startYearIsLeap)
-        Some(new LocalDate(poaStartDate.getYear, 2, 29))
-      else
-        None// We don't care about this date but joda date is stupid and doesn't let me create invalid dates (facepalm)
+    val daysInYearFromStartDate = daysBetweenDates(poaStartDate, poaStartDate.plusYears(1).minusDays(1))
+    val daysInYearEndingEndDate = daysBetweenDates(poaEndDate.minusYears(1).plusDays(1), poaEndDate)
 
-    val nextYearLeapDay =
-      if (endYearIsLeap)
-        Some(new LocalDate(poaEndDate.getYear, 2, 29))
-      else
-        None // We don't care about this date but joda date is stupid and doesn't let me create invalid dates (facepalm)
-
-    val currentYearStartDateIsOnOrBefore29Feb = startYearIsLeap && (poaStartDate.isBefore(currentYearLeapDay.get) || poaStartDate.isEqual(currentYearLeapDay.get))
-    val currentYearEndDateIsOnOrAfter29Feb = startYearIsLeap && (poaStartDate.isEqual(currentYearLeapDay.get) || poaEndDate.isAfter(currentYearLeapDay.get))
-    val currentYearSideIncludes29Feb = currentYearStartDateIsOnOrBefore29Feb && currentYearEndDateIsOnOrAfter29Feb
-
-    val nextYearStartDateIsOnOrBefore29Feb = endYearIsLeap && (poaStartDate.isBefore(nextYearLeapDay.get) || poaStartDate.isEqual(nextYearLeapDay.get))
-    val nextYearEndDateIsOnOrAfter29Feb = endYearIsLeap && (poaEndDate.isEqual(nextYearLeapDay.get) || poaEndDate.isAfter(nextYearLeapDay.get))
-    val nextYearSideIncludes29Feb = nextYearStartDateIsOnOrBefore29Feb && nextYearEndDateIsOnOrAfter29Feb
-
-    if (currentYearSideIncludes29Feb || nextYearSideIncludes29Feb)
-      366
-    else
-      365
+    (isLongPoA(boxRetriever), poaStartDate.getDayOfMonth, poaStartDate.getMonthOfYear) match {
+      case (_, 29, 2) => 366
+      case (true, _, _) => daysInYearFromStartDate max daysInYearEndingEndDate
+      case (false, _, _) => daysInYearFromStartDate min daysInYearEndingEndDate
+    }
   }
 
   private def validateCoHoTurnover(boxRetriever: AccountsBoxRetriever)(): Set[CtValidation] = {
@@ -129,7 +107,13 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
     val daysInPoa = daysBetweenDates(boxRetriever.ac3().value, boxRetriever.ac4().value)
     val daysInYear = getDaysInYear(boxRetriever)
 
-    val maximumTurnoverInYear = Math.floor(632000.0 * daysInPoa / daysInYear).toInt
+    val isCharity = boxRetriever match {
+      case fabr: FilingAttributesBoxValueRetriever => CompanyTypes.AllCharityTypes.contains(fabr.companyType().value)
+      case _ => false
+    }
+
+    val maxHmrcTurnover = if (isCharity) 6500000.0 else 632000.0
+    val maximumTurnoverInYear = Math.floor(maxHmrcTurnover * daysInPoa / daysInYear).toInt
     validateTurnoverRangeWithMinAndMaxMessages(this,  s"error.${this.id}.hmrc.turnover", -maximumTurnoverInYear, maximumTurnoverInYear)
   }
 
