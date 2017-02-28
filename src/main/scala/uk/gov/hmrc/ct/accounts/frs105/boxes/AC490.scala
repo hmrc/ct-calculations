@@ -31,7 +31,7 @@ case class AC490(value: Option[Int]) extends CtBoxIdentifier(name = "Capital and
     import boxRetriever._
 
     collectErrors(
-      validateAsMandatory(this),
+      validateAsMandatory(),
       () => validateAssetsEqualToShares("AC490", ac68(), boxRetriever.companyType().isLimitedByGuarantee),
       validateMoney(value)
     )
