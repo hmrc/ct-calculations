@@ -90,11 +90,11 @@ case class RelatedPartyTransaction(uuid: String,
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] =
     collectErrors(
-      () => ac7801.validate(boxRetriever),
-      () => ac299A.validate(boxRetriever),
-      () => ac300A.validate(boxRetriever),
-      () => ac301A.validate(boxRetriever),
-      () => ac302A.validate(boxRetriever),
-      () => ac303A.validate(boxRetriever)
+      ac7801.validate(boxRetriever),
+      ac299A.validate(boxRetriever),
+      ac300A.validate(boxRetriever),
+      ac301A.validate(boxRetriever),
+      ac302A.validate(boxRetriever),
+      ac303A.validate(boxRetriever)
     )
 }
