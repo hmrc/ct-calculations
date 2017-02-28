@@ -40,6 +40,15 @@ class AC490Spec extends ValidateAssetsEqualSharesSpec[Frs105AccountsBoxRetriever
   override def createMock(): Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever = mock[Frs105TestBoxRetriever]
 
   CompanyTypes.AllCompanyTypes.foreach { companyType =>
+    s"be invalid when empty for company type: $companyType" in {
+      val value = None
+      val boxRetriever = createMock()
+      when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
+      when(boxRetriever.ac68()).thenReturn(AC68(value))
+
+      AC490(value).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC490"), "error.AC490.required"))
+    }
+
     s"be valid when minimum for companyType: $companyType" in {
       val value = Some(STANDARD_MIN)
       val boxRetriever = createMock()
@@ -79,17 +88,6 @@ class AC490Spec extends ValidateAssetsEqualSharesSpec[Frs105AccountsBoxRetriever
       when(boxRetriever.ac68()).thenReturn(AC68(value))
 
       AC490(Some(STANDARD_MAX + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC490"), s"error.AC490.above.max", Some(Seq(STANDARD_MIN.toString, STANDARD_MAX.toString))))
-    }
-  }
-
-  CompanyTypes.LimitedByGuaranteeCompanyTypes.foreach { companyType =>
-    s"should pass validation when AC490 is empty and AC68 is 0 for companyType: $companyType" in {
-      val value = Some(0)
-      val boxRetriever = createMock()
-      when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
-      when(boxRetriever.ac68()).thenReturn(AC68(value))
-
-      AC490(None).validate(boxRetriever) shouldBe empty
     }
   }
 
