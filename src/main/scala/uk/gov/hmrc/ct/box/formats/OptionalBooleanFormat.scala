@@ -21,7 +21,7 @@ import uk.gov.hmrc.ct.box.CtOptionalBoolean
 
 class OptionalBooleanFormat[T <: CtOptionalBoolean](builder: (Option[Boolean] => T)) extends Format[T] {
    override def reads(json: JsValue): JsResult[T] = {
-     JsSuccess(builder(json.as[Option[Boolean]]))
+     JsSuccess(builder(json.asOpt[Boolean]))
    }
 
    override def writes(out: T): JsValue = {
