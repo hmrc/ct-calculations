@@ -32,7 +32,7 @@ case class AC491(value: Option[Int]) extends CtBoxIdentifier(name = "Capital and
       failIf(boxRetriever.ac205().hasValue)(
         validateAsMandatory()
       ),
-      () => validateAssetsEqualToShares("AC491", boxRetriever.ac69(), boxRetriever.companyType().isLimitedByGuarantee),
+      validateAssetsEqualToShares("AC491", boxRetriever.ac69(), boxRetriever.companyType().isLimitedByGuarantee),
       validateMoney(value)
     )
 }

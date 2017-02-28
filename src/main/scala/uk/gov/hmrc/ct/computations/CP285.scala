@@ -35,7 +35,7 @@ case class CP285(value: Option[LocalDate]) extends CtBoxIdentifier(name = "End d
     collectErrors(
       requiredIf({ value.isEmpty && boxRetriever.cpQ18().value.contains(true) }) ,
       cannotExistIf(value.nonEmpty && !boxRetriever.cpQ18().orFalse),
-      { () =>
+      { ()
         failIf (value.nonEmpty) {
           val providedDate = value.getOrElse(throw new IllegalStateException("The value of CP285 is empty and that does not appear to be possible."))
           val cp2 = boxRetriever.cp2().value

@@ -42,8 +42,8 @@ trait AccountsApproval extends Input with ValidatableBox[AccountsBoxRetriever wi
         },
         failIf(approvalEnabled(boxRetriever)) {
           collectErrors(
-            () => ac8091.validate(boxRetriever),
-            () => ac198A.validate(boxRetriever),
+            ac8091.validate(boxRetriever),
+            ac198A.validate(boxRetriever),
             validateApproverRequired(boxRetriever),
             validateAtMost12Approvers(boxRetriever),
             validateAtMost12OtherApprovers(boxRetriever),
