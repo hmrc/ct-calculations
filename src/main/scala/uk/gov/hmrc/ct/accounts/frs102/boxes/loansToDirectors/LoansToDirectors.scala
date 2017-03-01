@@ -94,12 +94,12 @@ case class LoanToDirector(uuid: String,
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever with Frs10xDirectorsBoxRetriever): Set[CtValidation] =
     collectErrors(
-      () => ac304A.validate(boxRetriever),
-      () => ac305A.validate(boxRetriever),
-      () => ac306A.validate(boxRetriever),
-      () => ac307A.validate(boxRetriever),
-      () => ac308A.validate(boxRetriever),
-      () => globalValidationForLoan()
+      ac304A.validate(boxRetriever),
+      ac305A.validate(boxRetriever),
+      ac306A.validate(boxRetriever),
+      ac307A.validate(boxRetriever),
+      ac308A.validate(boxRetriever),
+      globalValidationForLoan()
     )
   
   def globalValidationForLoan(): Set[CtValidation] = {

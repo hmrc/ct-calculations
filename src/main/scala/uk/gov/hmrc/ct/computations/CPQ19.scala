@@ -38,11 +38,9 @@ case class CPQ19(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you 
       cannotExistIf(And(hasNonTradingProfit(boxRetriever), noTradingLoss(boxRetriever), valuePopulated)) ,
       cannotExistIf(And(noNonTradingProfit(boxRetriever), hasTradingLoss(boxRetriever), valuePopulated)) ,
       cannotExistIf(And(noNonTradingProfit(boxRetriever), noTradingLoss(boxRetriever), valuePopulated)) ,
-      { () =>
-        (cpQ17().value, value) match {
-          case (Some(_), Some(_)) => Set(CtValidation(Some(boxId), "error.CPQ19.cannot.exist.cpq17"))
-          case _ => Set.empty
-        }
+      (cpQ17().value, value) match {
+        case (Some(_), Some(_)) => Set(CtValidation(Some(boxId), "error.CPQ19.cannot.exist.cpq17"))
+        case _ => Set.empty[CtValidation]
       }
     )
 

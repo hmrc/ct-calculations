@@ -49,6 +49,26 @@ class AC491Spec extends ValidateAssetsEqualSharesSpec[Frs105AccountsBoxRetriever
 
 
   CompanyTypes.AllCompanyTypes.foreach { companyType =>
+    s"be valid when is empty and there's no PY for company type: $companyType" in {
+      val value = None
+      val boxRetriever = createMock()
+      when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
+      when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate())))
+      when(boxRetriever.ac69()).thenReturn(AC69(value))
+
+      AC491(value).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC491"), "error.AC491.required"))
+    }
+
+    s"be invalid when is empty and there's PY for company type: $companyType" in {
+      val value = None
+      val boxRetriever = createMock()
+      when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
+      when(boxRetriever.ac205()).thenReturn(AC205(None))
+      when(boxRetriever.ac69()).thenReturn(AC69(value))
+
+      AC491(value).validate(boxRetriever) shouldBe empty
+    }
+
     s"be valid when minimum for companyType: $companyType" in {
       val value = Some(STANDARD_MIN)
       val boxRetriever = createMock()

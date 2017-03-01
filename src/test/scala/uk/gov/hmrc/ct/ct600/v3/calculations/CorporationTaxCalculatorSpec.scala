@@ -153,5 +153,15 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
     }
   }
 
+  "B528" should {
+    "be equal to the sum of B525 and B527 if both are set" in new CorporationTaxCalculator {
+      calculateSelfAssessmentOfTaxPayable(B525(10), B527(Some(5))) shouldBe B528(Some(15))
+    }
+
+    "be equal to B525 if only B525 is set" in new CorporationTaxCalculator {
+      calculateSelfAssessmentOfTaxPayable(B525(12), B527(None)) shouldBe B528(Some(12))
+    }
+  }
+
   class Calc extends CorporationTaxCalculator
 }

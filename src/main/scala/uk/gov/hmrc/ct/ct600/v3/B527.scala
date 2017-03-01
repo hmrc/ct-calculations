@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.box.formats
+package uk.gov.hmrc.ct.ct600.v3
 
-import play.api.libs.json._
-import uk.gov.hmrc.ct.box.CtOptionalBoolean
+import uk.gov.hmrc.ct.box._
 
-class OptionalBooleanFormat[T <: CtOptionalBoolean](builder: (Option[Boolean] => T)) extends Format[T] {
-   override def reads(json: JsValue): JsResult[T] = {
-     JsSuccess(builder(json.asOpt[Boolean]))
-   }
-
-   override def writes(out: T): JsValue = {
-     Json.toJson[Option[Boolean]](out.value)
-   }
- }
+case class B527(value: Option[BigDecimal]) extends CtBoxIdentifier("Restitution tax") with CtOptionalBigDecimal with Input

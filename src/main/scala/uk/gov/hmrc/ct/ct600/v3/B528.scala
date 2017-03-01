@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.box.formats
+package uk.gov.hmrc.ct.ct600.v3
 
-import play.api.libs.json._
-import uk.gov.hmrc.ct.box.CtOptionalBoolean
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-class OptionalBooleanFormat[T <: CtOptionalBoolean](builder: (Option[Boolean] => T)) extends Format[T] {
-   override def reads(json: JsValue): JsResult[T] = {
-     JsSuccess(builder(json.asOpt[Boolean]))
-   }
+case class B528(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "Self-assessment of tax payable") with CtOptionalBigDecimal
 
-   override def writes(out: T): JsValue = {
-     Json.toJson[Option[Boolean]](out.value)
-   }
- }
+object B528 extends CorporationTaxCalculator with Calculated[B528, CT600BoxRetriever] {
+
+  override def calculate(fieldValueRetriever: CT600BoxRetriever): B528 = {
+    calculateSelfAssessmentOfTaxPayable(fieldValueRetriever.b525(), fieldValueRetriever.b527())
+  }
+
+}

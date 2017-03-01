@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.box.formats
+package uk.gov.hmrc
 
-import play.api.libs.json._
-import uk.gov.hmrc.ct.box.CtOptionalBoolean
+import uk.gov.hmrc.ct.box.CtValidation
 
-class OptionalBooleanFormat[T <: CtOptionalBoolean](builder: (Option[Boolean] => T)) extends Format[T] {
-   override def reads(json: JsValue): JsResult[T] = {
-     JsSuccess(builder(json.asOpt[Boolean]))
-   }
+package object ct {
 
-   override def writes(out: T): JsValue = {
-     Json.toJson[Option[Boolean]](out.value)
-   }
- }
+  implicit def validationsToValidationsFunction(xs: Set[CtValidation]): () => Set[CtValidation] = () => xs
+
+}

@@ -83,6 +83,8 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
 
   override def b515(): B515 = ???
 
+  override def b527(): B527 = ???
+
   override def b55(): B55 = ???
 
   override def b90A(): B90A = ???
