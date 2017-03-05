@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 trait Frs10xDormancyBoxRetriever extends AccountsBoxRetriever {
   self: FilingAttributesBoxValueRetriever =>
 
-  def acQ8999(): ACQ8999
+  def acq8999(): ACQ8999
 
-  def acQ8991(): ACQ8991
+  def acq8991(): ACQ8991
 }

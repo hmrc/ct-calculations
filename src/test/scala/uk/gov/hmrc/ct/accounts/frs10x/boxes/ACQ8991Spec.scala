@@ -29,21 +29,21 @@ class ACQ8991Spec extends WordSpec with Matchers with MockitoSugar with BeforeAn
   "ACQ8991 should" should {
 
     "validate successfully when not set and ACQ8999 is unset or false" in {
-      when(mockBoxRetriever.acQ8999()).thenReturn(ACQ8999(None))
+      when(mockBoxRetriever.acq8999()).thenReturn(ACQ8999(None))
       ACQ8991(None).validate(mockBoxRetriever) shouldBe Set.empty
 
-      when(mockBoxRetriever.acQ8999()).thenReturn(ACQ8999(Some(false)))
+      when(mockBoxRetriever.acq8999()).thenReturn(ACQ8999(Some(false)))
       ACQ8991(None).validate(mockBoxRetriever) shouldBe Set.empty
     }
 
     "validate successfully when set and ACQ8999 is true" in {
-      when(mockBoxRetriever.acQ8999()).thenReturn(ACQ8999(Some(true)))
+      when(mockBoxRetriever.acq8999()).thenReturn(ACQ8999(Some(true)))
       ACQ8991(Some(true)).validate(mockBoxRetriever) shouldBe Set.empty
       ACQ8991(Some(false)).validate(mockBoxRetriever) shouldBe Set.empty
     }
 
     "fail validation when not set and ACQ8999 is true" in {
-      when(mockBoxRetriever.acQ8999()).thenReturn(ACQ8999(Some(true)))
+      when(mockBoxRetriever.acq8999()).thenReturn(ACQ8999(Some(true)))
       ACQ8991(None).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("ACQ8991"), "error.ACQ8991.required", None))
     }
   }
