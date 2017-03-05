@@ -26,7 +26,7 @@ case class ACQ8991(value: Option[Boolean]) extends CtBoxIdentifier(name = "The c
   with Validators {
 
   override def validate(boxRetriever: Frs10xDormancyBoxRetriever): Set[CtValidation] = {
-    failIf(boxRetriever.acQ8999().orFalse) {
+    failIf(boxRetriever.acq8999().orFalse) {
       validateAsMandatory(this)
     }
   }
