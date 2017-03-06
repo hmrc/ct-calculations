@@ -92,10 +92,10 @@ trait TurnoverValidation extends Validators {
         collectErrors(
           failIf(x < min) {
             // TODO: use proper localised currency values in the message args
-            Set(CtValidation(Some(boxId), message+".below.min", Some(Seq(commaForThousands(x), commaForThousands(Math.abs(min))))))
+            Set(CtValidation(Some(boxId), message+".below.min", Some(Seq(commaForThousands(min), commaForThousands(Math.abs(max))))))
           },
           failIf(x > max) {
-            Set(CtValidation(Some(boxId), message+".above.max", Some(Seq(commaForThousands(x), commaForThousands(max)))))
+            Set(CtValidation(Some(boxId), message+".above.max", Some(Seq(commaForThousands(min), commaForThousands(max)))))
           }
         )
       }
