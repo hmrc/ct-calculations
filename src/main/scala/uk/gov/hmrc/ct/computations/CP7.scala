@@ -31,7 +31,7 @@ case class CP7(inputValue: Option[Int], defaultValue: Option[Int]) extends CtBox
   val compsEndDate = { br: ComputationsBoxRetriever => br.cp2() }
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    validateHmrcTurnover(boxRetriever, compsStartDate, compsEndDate)
+    validateHmrcTurnover(boxRetriever, compsStartDate, compsEndDate, errorSuffix = "")
   }
 }
 
