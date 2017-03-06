@@ -25,7 +25,6 @@ import uk.gov.hmrc.ct.domain.CompanyTypes
 
 class AC70Spec extends WordSpec with Matchers {
 
-
   "AC70 validation for NON limited by guarantee" should {
       val companyTypes = CompanyTypes.AllCompanyTypes.filterNot(CompanyTypes.LimitedByGuaranteeCompanyTypes.contains)
       companyTypes.foreach { companyType =>
@@ -89,7 +88,5 @@ class AC70Spec extends WordSpec with Matchers {
       }
     }
   }
-
-
 
 }
