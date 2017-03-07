@@ -54,11 +54,11 @@ trait ApportionedTurnoverCalculator {
                                         cp1: CP1,
                                         cp2: CP2,
                                         ac12: AC12): ApportionedTurnover = {
-    val periodOfAccountsStart = new LocalDate(ac3.value)
-    val periodOfAccountsEnd   = new LocalDate(ac4.value)
-    val accountingPeriodStart = new LocalDate(cp1.value)
-    val accountingPeriodEnd   = new LocalDate(cp2.value)
-    val turnover              = resolveAC12(ac12)
+    val periodOfAccountsStart = ac3.value
+    val periodOfAccountsEnd   = ac4.value
+    val accountingPeriodStart = cp1.value
+    val accountingPeriodEnd   = cp2.value
+    val turnover              = ac12.value
 
     val periodOfAccounts       = Days.daysBetween(periodOfAccountsStart, periodOfAccountsEnd).plus(1)
     val beforeAccountingPeriod = Days.daysBetween(periodOfAccountsStart, accountingPeriodStart)
@@ -69,17 +69,24 @@ trait ApportionedTurnoverCalculator {
       def prorate: Option[Int] = {
         val proportion = BigDecimal.valueOf(period.getDays) / BigDecimal.valueOf(periodOfAccounts.getDays)
 
-        Some((BigDecimal.valueOf(turnover) * proportion).setScale(0, RoundingMode.DOWN).toInt)
+        turnover match {
+          case None => None
+          case Some(x) =>
+            Some((BigDecimal.valueOf(x) * proportion).setScale(0, RoundingMode.DOWN).toInt)
+        }
       }
 
-      if (turnover >= 0 && periodOfAccounts.getDays > 0 && period.getDays > 0) prorate else None
+      if (periodOfAccounts.getDays > 0 && period.getDays > 0) prorate else None
     }
 
     val apportionedTurnover = ApportionedTurnover(beforeAccountingPeriod = prorateTurnover(beforeAccountingPeriod),
                                                   duringAccountingPeriod = prorateTurnover(duringAccountingPeriod),
                                                   afterAccountingPeriod  = prorateTurnover(afterAccountingPeriod))
 
-    val residual = turnover - apportionedTurnover.total
+    val residual = turnover match {
+      case Some(t) => t - apportionedTurnover.total
+      case _ => 0
+    }
 
     def reapportionRoundingErrors = {
       apportionedTurnover match {
@@ -98,20 +105,13 @@ trait ApportionedTurnoverCalculator {
 
     if (residual != 0) reapportionRoundingErrors else apportionedTurnover
   }
-
-  private def resolveAC12(ac12: AC12): Int = {
-    ac12.value match {
-      case Some(x) if x > 0 => x
-      case _ => 0
-    }
-  }
 }
 
 case class ApportionedTurnover(beforeAccountingPeriod: Option[Int],
                                duringAccountingPeriod: Option[Int],
                                afterAccountingPeriod: Option[Int]) {
 
-  def total = afterAccountingPeriod.getOrElse(0) + beforeAccountingPeriod.getOrElse(0) + duringAccountingPeriod.getOrElse(0)
+  def total: Int = afterAccountingPeriod.getOrElse(0) + beforeAccountingPeriod.getOrElse(0) + duringAccountingPeriod.getOrElse(0)
 }
 
 object ApportionedTurnover {
