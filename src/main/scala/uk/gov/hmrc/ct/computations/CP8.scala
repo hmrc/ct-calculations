@@ -27,7 +27,7 @@ case class CP8(value: Option[Int]) extends CtBoxIdentifier(name = "Cost Of Sales
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       failIf(value.nonEmpty){
-        validateMoney(value, min = 0)
+        validateMoney(value)
       },
       failIf(value.isEmpty){
         validateAsMandatory(this)
