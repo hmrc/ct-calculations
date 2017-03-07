@@ -70,15 +70,15 @@ class CP7Spec extends WordSpec with Matchers with MockitoSugar {
 
       val testTable = Table(
         ("poaStartDate",   "poaEndDate",  "abridgedFiling",  "ac12Value",  "required", "message"),
-        ("2015-01-01",     "2015-12-31",     false,             None,      false,      "1 year AP pre FRS empty NOT abridged"),
-        ("2015-01-01",     "2015-12-31",     true,              None,      false,      "1 year AP pre FRS empty abridged"),
-        ("2015-01-01",     "2015-12-01",     false,             None,      false,      "short AP pre FRS empty NOT abridged"),
-        ("2015-01-01",     "2015-12-01",     true,              None,      false,      "short AP pre FRS empty abridged"),
+        ("2015-01-01",     "2015-12-31",     false,             None,      true,      "1 year AP pre FRS empty NOT abridged"),
+        ("2015-01-01",     "2015-12-31",     true,              None,      true,      "1 year AP pre FRS empty abridged"),
+        ("2015-01-01",     "2015-12-01",     false,             None,      true,      "short AP pre FRS empty NOT abridged"),
+        ("2015-01-01",     "2015-12-01",     true,              None,      true,      "short AP pre FRS empty abridged"),
 
-        ("2016-01-01",     "2016-12-31",     false,             None,      false,      "1 year AP post FRS empty NOT abridged"),
-        ("2016-01-01",     "2016-12-31",     true,              None,      false,      "1 year AP post FRS empty abridged"),
-        ("2016-01-01",     "2016-12-01",     false,             None,      false,      "short AP post FRS empty NOT abridged"),
-        ("2016-01-01",     "2016-12-01",     true,              None,      false,      "short AP post FRS empty abridged")
+        ("2016-01-01",     "2016-12-31",     false,             None,      true,      "1 year AP post FRS empty NOT abridged"),
+        ("2016-01-01",     "2016-12-31",     true,              None,      true,      "1 year AP post FRS empty abridged"),
+        ("2016-01-01",     "2016-12-01",     false,             None,      true,      "short AP post FRS empty NOT abridged"),
+        ("2016-01-01",     "2016-12-01",     true,              None,      true,      "short AP post FRS empty abridged")
       )
 
       (CompanyTypes.AllCompanyTypes -- CompanyTypes.AllCharityTypes).foreach { companyType =>
