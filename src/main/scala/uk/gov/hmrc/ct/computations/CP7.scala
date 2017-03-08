@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.accounts.validation.TurnoverValidation
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.validation.TurnoverValidation
 
 case class CP7(inputValue: Option[Int], defaultValue: Option[Int]) extends CtBoxIdentifier(name = "Turnover/Sales")
   with CtOptionalInteger

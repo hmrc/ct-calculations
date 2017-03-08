@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.validation
+package uk.gov.hmrc.ct.validation
 
 import org.joda.time.{Days, LocalDate}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever

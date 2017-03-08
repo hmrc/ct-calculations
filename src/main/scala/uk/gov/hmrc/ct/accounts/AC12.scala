@@ -17,9 +17,9 @@
 package uk.gov.hmrc.ct.accounts
 
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.validation.TurnoverValidation
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.validation.TurnoverValidation
 
 
 case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turnover/Sales")
