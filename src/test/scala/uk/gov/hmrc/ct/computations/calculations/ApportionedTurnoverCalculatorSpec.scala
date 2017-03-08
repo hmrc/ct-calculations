@@ -90,6 +90,21 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
       result.total shouldBe periodOfAccountsTurnover
     }
 
+    "apportion turnover for period of accounts of 1st April 2013 to 31st March 2014 and accounting period of 1st May 2013 to 31st December 2013 for a negative number" in new ApportionedTurnoverCalculator {
+      val periodOfAccountsTurnover = -648300
+
+      val result = apportionPeriodOfAccountsTurnover(
+        AC3(new LocalDate(2013, 4, 1)),
+        AC4(new LocalDate(2014, 3, 31)),
+        CP1(new LocalDate(2013, 5, 1)),
+        CP2(new LocalDate(2013, 12, 31)),
+        AC12(periodOfAccountsTurnover)
+      )
+
+      result shouldBe ApportionedTurnover(Some(-53285), Some(-435160), Some(-159855))
+      result.total shouldBe periodOfAccountsTurnover
+    }
+
     "apportion a turnover of zero as Some(0) rather than None" in new ApportionedTurnoverCalculator {
       val periodOfAccountsTurnover = 0
 
@@ -105,19 +120,33 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
       result.total shouldBe periodOfAccountsTurnover
     }
 
-    "apportion a negative turnover as Some(0) " in new ApportionedTurnoverCalculator {
-      val periodOfAccountsTurnover = -100
+    "apportion a turnover of None as None" in new ApportionedTurnoverCalculator {
 
       val result = apportionPeriodOfAccountsTurnover(
         AC3(new LocalDate(2013, 4, 1)),
         AC4(new LocalDate(2014, 3, 31)),
         CP1(new LocalDate(2013, 5, 1)),
         CP2(new LocalDate(2013, 12, 31)),
+        AC12(None)
+      )
+
+      result shouldBe ApportionedTurnover(None, None, None)
+      result.total shouldBe 0
+    }
+
+    "apportion a negative turnover" in new ApportionedTurnoverCalculator {
+      val periodOfAccountsTurnover = -100
+
+      val result = apportionPeriodOfAccountsTurnover(
+        AC3(new LocalDate(2013, 4, 1)),
+        AC4(new LocalDate(2014, 3, 31)),
+        CP1(new LocalDate(2013, 4, 1)),
+        CP2(new LocalDate(2014, 3, 31)),
         AC12(periodOfAccountsTurnover)
       )
 
-      result shouldBe ApportionedTurnover(Some(0), Some(0), Some(0))
-      result.total shouldBe 0
+      result shouldBe ApportionedTurnover(None, Some(-100), None)
+      result.total shouldBe -100
     }
 
     "apportion turnover to periods before and after of length zero days as None rather than Some(0)" in new ApportionedTurnoverCalculator {

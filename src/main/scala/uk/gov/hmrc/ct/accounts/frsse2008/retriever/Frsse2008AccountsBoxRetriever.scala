@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.accounts.frsse2008.retriever
 
 import uk.gov.hmrc.ct.accounts.AC12
 import uk.gov.hmrc.ct.accounts.frsse2008._
+import uk.gov.hmrc.ct.accounts.frsse2008.micro._
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 

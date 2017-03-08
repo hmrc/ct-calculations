@@ -23,7 +23,7 @@ trait NetProfitsChargeableToCtCalculator extends CtTypeConverters {
 
   def calculateNetProfitsChargeableToCt(totalProfitsBeforeDeductions: CP293,
                                         tradingLossesOfThisPeriodAndLaterPeriods: CP294,
-                                        totalDonations: CP999):CP295 = {
+                                        totalDonations: CP999): CP295 = {
     val result = totalProfitsBeforeDeductions - tradingLossesOfThisPeriodAndLaterPeriods - totalDonations
     CP295(result max 0)
   }

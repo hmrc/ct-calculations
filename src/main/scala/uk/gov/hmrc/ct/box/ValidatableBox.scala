@@ -27,14 +27,6 @@ import ValidatableBox._
 
 trait ValidatableBox[T <: BoxRetriever] extends Validators {
 
-  type OptionalBooleanIdBox = OptionalCtValue[Boolean] with CtBoxIdentifier
-  type OptionalIntIdBox = OptionalCtValue[Int] with CtBoxIdentifier
-  type OptionalStringIdBox = OptionalCtValue[String] with CtBoxIdentifier
-  type StringIdBox = CtValue[String] with CtBoxIdentifier
-  type OptionalDateIdBox = OptionalCtValue[LocalDate] with CtBoxIdentifier
-  type OptionalBigDecimalIdBox = OptionalCtValue[BigDecimal] with CtBoxIdentifier
-
-
   // Taken from PostCodeType on http://www.hmrc.gov.uk/schemas/core-v2-0.xsd
   protected val postCodeRegex = """(GIR 0AA)|((([A-Z][0-9][0-9]?)|(([A-Z][A-HJ-Y][0-9][0-9]?)|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2})"""
 
@@ -342,4 +334,12 @@ object ValidatableBox {
   val ValidCoHoNamesCharacters = "[A-Za-z\\-'\\. \\,]*" // Based on the comment from CATO-3881
 
   def commaForThousands(i: Int) = f"$i%,d"
+
+  type OptionalBooleanIdBox = OptionalCtValue[Boolean] with CtBoxIdentifier
+  type OptionalIntIdBox = OptionalCtValue[Int] with CtBoxIdentifier
+  type OptionalStringIdBox = OptionalCtValue[String] with CtBoxIdentifier
+  type StringIdBox = CtValue[String] with CtBoxIdentifier
+  type OptionalDateIdBox = OptionalCtValue[LocalDate] with CtBoxIdentifier
+  type OptionalBigDecimalIdBox = OptionalCtValue[BigDecimal] with CtBoxIdentifier
+
 }
