@@ -21,7 +21,10 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP78(value: Option[Int]) extends CtBoxIdentifier(name = "Written down value brought forward") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
-    validateZeroOrPositiveInteger(this)
+    collectErrors(
+      cannotExistIf(boxRetriever.cpQ8().isTrue),
+      validateZeroOrPositiveInteger(this)
+    )
   }
 }
 
