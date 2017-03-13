@@ -18,22 +18,31 @@ package uk.gov.hmrc.ct.computations
 
 import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.{BeforeAndAfter, BeforeAndAfterEach, Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.BoxValidationFixture
+import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 
-class CP78Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] {
+class CP252Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] with BeforeAndAfterEach {
 
   val boxRetriever = mock[ComputationsBoxRetriever]
 
   override def setUpMocks = {
     when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+    when(boxRetriever.cp79()).thenReturn(CP79(Some(333)))
   }
 
-  testBoxIsZeroOrPositive("CP78", CP78.apply)
+  override def beforeEach = setUpMocks
 
-  testBecauseOfDependendBoxThenCannotExist("CP78", CP78.apply) {
-    when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(true))).getMock[ComputationsBoxRetriever]
+  testBoxIsZeroOrPositive("CP252", CP252.apply)
+
+  testBecauseOfDependendBoxThenCannotExist("CP252", CP252.apply) {
+    when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(true)))
+    when(boxRetriever.cp79()).thenReturn(CP79(Some(333))).getMock[ComputationsBoxRetriever]
+  }
+
+  "fail validation when higher than cp79" in {
+    CP252(Some(444)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP252"), "error.CP252.exceedsRelevantFYAExpenditure", None))
   }
 }

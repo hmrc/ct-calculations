@@ -17,32 +17,44 @@
 package uk.gov.hmrc.ct.accounts
 
 import org.scalatest.mock.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.box.retriever.BoxRetriever
+import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-trait BoxValidationFixture[T <: ComputationsBoxRetriever] extends WordSpec with Matchers with MockitoSugar {
+trait BoxValidationFixture[T <: ComputationsBoxRetriever] extends WordSpec with Matchers with MockitoSugar with BeforeAndAfter {
 
   def boxRetriever: T
 
   //This can be overridden if mock box retriever calls need to be made
   def setUpMocks(): Unit = Unit
 
-  def testBoxIsZeroOrPositive(boxId: String, builder: (Int) => ValidatableBox[T]) = {
+  def testBoxIsZeroOrPositive(boxId: String, builder: Option[Int] => ValidatableBox[T]) = {
 
     setUpMocks()
 
-    "fail validation when negative" in {
-      builder(-55).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.mustBeZeroOrPositive"))
+    "fail must be zero or positive validation when negative" in {
+      builder(Some(-55)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.mustBeZeroOrPositive"))
     }
 
-    "pass validation when zero" in {
-      builder(0).validate(boxRetriever) shouldBe Set.empty
+    "pass must be zero or positive validation when zero" in {
+      builder(Some(0)).validate(boxRetriever) shouldBe Set.empty
     }
 
-    "pass validation when positive" in {
-      builder(55).validate(boxRetriever) shouldBe Set.empty
+    "pass must be zero or positive validation when positive" in {
+      builder(Some(55)).validate(boxRetriever) shouldBe Set.empty
+    }
+  }
+
+  def testBecauseOfDependendBoxThenCannotExist(boxId: String, builder: Option[Int] => ValidatableBox[T])(boxRetriever: => T) = {
+
+    setUpMocks()
+
+    "fail cannot exist validation when box has value" in {
+      builder(Some(33)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.cannot.exist"))
+    }
+
+    "pass cannot exist validation when box has no value" in {
+      builder(None).validate(boxRetriever) shouldBe empty
     }
   }
 

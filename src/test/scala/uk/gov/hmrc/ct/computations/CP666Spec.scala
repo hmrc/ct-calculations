@@ -20,10 +20,12 @@ import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.BoxValidationFixture
+import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.version.calculations.ComputationsBoxRetrieverForTest
 
 
-class CP78Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] {
+class CP666Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] {
 
   val boxRetriever = mock[ComputationsBoxRetriever]
 
@@ -31,9 +33,10 @@ class CP78Spec extends WordSpec with MockitoSugar with Matchers with BoxValidati
     when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
   }
 
-  testBoxIsZeroOrPositive("CP78", CP78.apply)
 
-  testBecauseOfDependendBoxThenCannotExist("CP78", CP78.apply) {
+  testBoxIsZeroOrPositive("CP666", CP666.apply)
+
+  testBecauseOfDependendBoxThenCannotExist("CP666", CP666.apply) {
     when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(true))).getMock[ComputationsBoxRetriever]
   }
 }
