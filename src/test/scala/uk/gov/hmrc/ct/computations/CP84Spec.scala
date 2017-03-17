@@ -33,8 +33,4 @@ class CP84Spec extends WordSpec with MockitoSugar with Matchers with BoxValidati
 
 
   testBoxIsZeroOrPositive("CP84", CP84.apply)
-
-  testBecauseOfDependendBoxThenCannotExist("CP84", CP84.apply) {
-    when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(true))).getMock[ComputationsBoxRetriever]
-  }
 }

@@ -33,8 +33,4 @@ class CP673Spec extends WordSpec with MockitoSugar with Matchers with BoxValidat
 
 
   testBoxIsZeroOrPositive("CP673", CP673.apply)
-
-  testBecauseOfDependendBoxThenCannotExist("CP673", CP673.apply) {
-    when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(true))).getMock[ComputationsBoxRetriever]
-  }
 }
