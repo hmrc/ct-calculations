@@ -17,15 +17,15 @@
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import org.mockito.Mockito._
-import uk.gov.hmrc.ct.accounts.frs10x.boxes.ACQ8161
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.{ACQ8161, ACQ8999}
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xFilingQuestionsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.{Frs10xDormancyBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
 import uk.gov.hmrc.ct.accounts.{AC12, AccountsMoneyValidationFixture, MockFrs105AccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
-class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever] with MockFrs105AccountsRetriever {
+class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever with Frs10xDormancyBoxRetriever] with  MockFrs105AccountsRetriever {
 
   def setupCurrentYearMocks(ac12: AC12, ac405: AC405, ac410: AC410, ac415: AC415, ac420: AC420, ac425: AC425, ac34: AC34) = {
     when(boxRetriever.ac12()).thenReturn(ac12)
@@ -40,6 +40,7 @@ class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
   override def setUpMocks(): Unit = {
     setupCurrentYearMocks(AC12(None), AC405(None), AC410(Some(1)), AC415(None), AC420(None), AC425(None), AC34(None))
     when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+    when(boxRetriever.acq8999()).thenReturn(ACQ8999(None))
     super.setUpMocks()
   }
 
@@ -118,6 +119,16 @@ class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
       setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
 
       AC405(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
+    }
+
+    "pass validation if dormant where there would otherwise be an error" in {
+      when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
+      when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
+      when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(true)))
+      when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
+
+      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
+      AC405(None).validate(boxRetriever) shouldBe Set.empty
     }
   }
 }
