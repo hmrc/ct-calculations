@@ -19,8 +19,7 @@ package uk.gov.hmrc.ct.computations
 import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
-import uk.gov.hmrc.ct.CATO02
-import uk.gov.hmrc.ct.accounts.BoxValidationFixture
+import uk.gov.hmrc.ct.{BoxValidationFixture, CATO02}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 

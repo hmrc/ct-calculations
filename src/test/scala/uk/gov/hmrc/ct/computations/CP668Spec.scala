@@ -20,8 +20,7 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import org.mockito.Mockito._
-import uk.gov.hmrc.ct.CATO22
-import uk.gov.hmrc.ct.accounts.BoxValidationFixture
+import uk.gov.hmrc.ct.{BoxValidationFixture, CATO22}
 import uk.gov.hmrc.ct.box.CtValidation
 
 class CP668Spec extends WordSpec with Matchers with MockitoSugar with BoxValidationFixture[ComputationsBoxRetriever] {
