@@ -19,11 +19,13 @@ package uk.gov.hmrc.ct.computations
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Mockito._
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.CATO21
+import uk.gov.hmrc.ct.{BoxValidationFixture, CATO21}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class CP89Spec extends WordSpec with Matchers with MockitoSugar {
+class CP89Spec extends WordSpec with Matchers with MockitoSugar with BoxValidationFixture[ComputationsBoxRetriever] {
+
+  val boxRetriever = mock[ComputationsBoxRetriever]
 
   "CP89" should {
 
@@ -99,16 +101,15 @@ class CP89Spec extends WordSpec with Matchers with MockitoSugar {
       CP89(None).validate(mockRetriever) shouldBe empty
     }
 
-    "no errors should be returned if CPQ8 is true and CP89 is negative" in {
-
-      val mockRetriever = setupRetriever()
-
-      when(mockRetriever.cpQ8()).thenReturn(CPQ8(Some(true)))
-      when(mockRetriever.cpAux2()).thenReturn(CPAux2(50))
-      when(mockRetriever.cp78()).thenReturn(CP78(Some(25)))
-      when(mockRetriever.cp672()).thenReturn(CP672(Some(50)))
-
-      CP89(-20).validate(mockRetriever) shouldBe empty
+    testBecauseOfDependendBoxThenCannotExist("CP89", CP89.apply) {
+      val boxRetriever = setupRetriever
+      when(boxRetriever.cato21()).thenReturn(CATO21(10))
+      when(boxRetriever.cp81()).thenReturn(CP81(1000))
+      when(boxRetriever.cp88()).thenReturn(CP88(0))
+      when(boxRetriever.cpAux2()).thenReturn(CPAux2(150))
+      when(boxRetriever.cp78()).thenReturn(CP78(Some(50)))
+      when(boxRetriever.cp672()).thenReturn(CP672(Some(50)))
+      when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(true))).getMock[ComputationsBoxRetriever]
     }
 
   }

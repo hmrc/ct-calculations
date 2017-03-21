@@ -16,18 +16,23 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box._
+import org.mockito.Mockito.when
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.BoxValidationFixture
+import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.version.calculations.ComputationsBoxRetrieverForTest
 
-case class CP674(value: Option[Int]) extends CtBoxIdentifier(name = "Total additions")  with CtOptionalInteger with Input with SelfValidatableBox[ComputationsBoxRetriever, Option[Int]] {
-  override def validate(boxRetriever: ComputationsBoxRetriever) = {
-    collectErrors(
-      validateZeroOrPositiveInteger()
-    )
+
+class CP666Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] {
+
+  val boxRetriever = mock[ComputationsBoxRetriever]
+
+  override def setUpMocks = {
+    when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
   }
-}
 
-object CP674 {
 
-  def apply(value: Int): CP674 = CP674(Some(value))
+  testBoxIsZeroOrPositive("CP666", CP666.apply)
 }
