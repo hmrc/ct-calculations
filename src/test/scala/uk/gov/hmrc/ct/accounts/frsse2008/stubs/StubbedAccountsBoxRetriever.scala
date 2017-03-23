@@ -153,4 +153,6 @@ trait StubbedAccountsBoxRetriever extends Frsse2008AccountsBoxRetriever {
   override def acq8123(): ACQ8123 = ???
 
   override def acq8124(): ACQ8124 = ???
+
+  override def acq8999(): ACQ8999 = ???
 }

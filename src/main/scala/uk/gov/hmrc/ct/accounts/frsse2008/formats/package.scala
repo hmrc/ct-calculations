@@ -93,4 +93,6 @@ package object formats {
   implicit val acq8122Format: Format[ACQ8122] = new OptionalBooleanFormat[ACQ8122](ACQ8122.apply)
   implicit val acq8123Format: Format[ACQ8123] = new OptionalBooleanFormat[ACQ8123](ACQ8123.apply)
   implicit val acq8124Format: Format[ACQ8124] = new OptionalBooleanFormat[ACQ8124](ACQ8124.apply)
+
+  implicit val acq8999Format: Format[ACQ8999] = new OptionalBooleanFormat[ACQ8999](ACQ8999.apply)
 }
