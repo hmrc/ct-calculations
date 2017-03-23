@@ -18,8 +18,9 @@ package uk.gov.hmrc.ct.accounts.frsse2008
 
 import play.api.libs.json.Format
 import uk.gov.hmrc.ct.accounts.AC12
+import uk.gov.hmrc.ct.accounts.frsse2008.boxes._
 import uk.gov.hmrc.ct.accounts.frsse2008.micro._
-import uk.gov.hmrc.ct.box.formats.{OptionalDateFormat, OptionalIntegerFormat}
+import uk.gov.hmrc.ct.box.formats.{OptionalBooleanFormat, OptionalDateFormat, OptionalIntegerFormat}
 
 package object formats {
 
@@ -63,4 +64,24 @@ package object formats {
   implicit val ac426Format: Format[AC426] = new OptionalIntegerFormat[AC426](AC426.apply)
   implicit val ac435Format: Format[AC435] = new OptionalIntegerFormat[AC435](AC435.apply)
   implicit val ac436Format: Format[AC436] = new OptionalIntegerFormat[AC436](AC436.apply)
+
+  implicit val acq8001Format: Format[ACQ8001] = new OptionalBooleanFormat[ACQ8001](ACQ8001.apply)
+  implicit val acq8003Format: Format[ACQ8003] = new OptionalBooleanFormat[ACQ8003](ACQ8003.apply)
+  implicit val acq8004Format: Format[ACQ8004] = new OptionalBooleanFormat[ACQ8004](ACQ8004.apply)
+
+  implicit val acq8110Format: Format[ACQ8110] = new OptionalBooleanFormat[ACQ8110](ACQ8110.apply)
+  implicit val acq8111Format: Format[ACQ8111] = new OptionalBooleanFormat[ACQ8111](ACQ8111.apply)
+  implicit val acq8112Format: Format[ACQ8112] = new OptionalBooleanFormat[ACQ8112](ACQ8112.apply)
+  implicit val acq8113Format: Format[ACQ8113] = new OptionalBooleanFormat[ACQ8113](ACQ8113.apply)
+  implicit val acq8114Format: Format[ACQ8114] = new OptionalBooleanFormat[ACQ8114](ACQ8114.apply)
+  implicit val acq8115Format: Format[ACQ8115] = new OptionalBooleanFormat[ACQ8115](ACQ8115.apply)
+  implicit val acq8116Format: Format[ACQ8116] = new OptionalBooleanFormat[ACQ8116](ACQ8116.apply)
+  implicit val acq8117Format: Format[ACQ8117] = new OptionalBooleanFormat[ACQ8117](ACQ8117.apply)
+  implicit val acq8118Format: Format[ACQ8118] = new OptionalBooleanFormat[ACQ8118](ACQ8118.apply)
+  implicit val acq8119Format: Format[ACQ8119] = new OptionalBooleanFormat[ACQ8119](ACQ8119.apply)
+  implicit val acq8120Format: Format[ACQ8120] = new OptionalBooleanFormat[ACQ8120](ACQ8120.apply)
+  implicit val acq8121Format: Format[ACQ8121] = new OptionalBooleanFormat[ACQ8121](ACQ8121.apply)
+  implicit val acq8122Format: Format[ACQ8122] = new OptionalBooleanFormat[ACQ8122](ACQ8122.apply)
+  implicit val acq8123Format: Format[ACQ8123] = new OptionalBooleanFormat[ACQ8123](ACQ8123.apply)
+  implicit val acq8124Format: Format[ACQ8124] = new OptionalBooleanFormat[ACQ8124](ACQ8124.apply)
 }
