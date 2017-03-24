@@ -98,6 +98,12 @@ trait StubbedAccountsBoxRetriever extends Frsse2008AccountsBoxRetriever {
 
   override def ac205(): AC205 = ???
 
+  override def ac492(): AC492 = ???
+
+  override def ac493(): AC493 = ???
+
+  override def ac494(): AC494 = ???
+
   override def generateValues: Map[String, CtValue[_]] = ???
 
   override def acq8001(): ACQ8001 = ???

@@ -107,6 +107,12 @@ trait Frsse2008AccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac436(): AC436 = AC436.calculate(this)
 
+  def ac492(): AC492
+
+  def ac493(): AC493
+
+  def ac494(): AC494
+
   def acq8001(): ACQ8001
 
   def acq8003(): ACQ8003
