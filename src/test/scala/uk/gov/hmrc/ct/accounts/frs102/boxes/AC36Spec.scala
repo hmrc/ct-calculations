@@ -22,13 +22,13 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.AC12
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.{ACQ8161, ACQ8999}
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.{Frs10xDormancyBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.{Frs10xDirectorsBoxRetriever, Frs10xDormancyBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
 
-sealed trait AbridgedBoxRetrieverForTest extends AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever with Frs10xDormancyBoxRetriever
-sealed trait FullBoxRetrieverForTest extends FullAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever with Frs10xDormancyBoxRetriever
+sealed trait AbridgedBoxRetrieverForTest extends AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xDormancyBoxRetriever
+sealed trait FullBoxRetrieverForTest extends FullAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xDormancyBoxRetriever
 
 class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
 
