@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frsse2008.micro
+package uk.gov.hmrc.ct.accounts.frsse2008.boxes.micro
 
 import uk.gov.hmrc.ct.accounts.frsse2008.calculations.ProfitOrLossCalculator
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever

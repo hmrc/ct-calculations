@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frsse2008.micro
+package uk.gov.hmrc.ct.accounts.frsse2008.boxes.micro
 
-import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, Input}
 
-case class AC416(value: Option[Int]) extends CtBoxIdentifier(name = "Previous Staff costs")
-                                     with CtOptionalInteger with Input
-                                     with SelfValidatableBox[AccountsBoxRetriever, Option[Int]] {
-  override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
-    validateMoney(value)
-  }
-}
+case class AC493(value: Option[Boolean]) extends CtBoxIdentifier(name = "Micro note? Guarantee commitments")
+  with CtOptionalBoolean
+  with Input
