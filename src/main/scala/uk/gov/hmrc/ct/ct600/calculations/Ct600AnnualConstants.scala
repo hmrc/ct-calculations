@@ -36,10 +36,13 @@ case class AllCtConstants(lowerRelevantAmount: BigDecimal,
                           smallCompaniesRateOfTax: BigDecimal) extends CtConstants
 
 
-case class RateOfTax(private val taxRate: BigDecimal) extends CtConstants {
+case class UnifiedRateOfTax(private val taxRate: BigDecimal) extends CtConstants {
 
-  val lowerRelevantAmount, upperRelevantAmount, reliefFraction = BigDecimal("0")
-  val rateOfTax, smallCompaniesRateOfTax = taxRate
+  val lowerRelevantAmount= BigDecimal("0")
+  val upperRelevantAmount = BigDecimal("0")
+  val reliefFraction = BigDecimal("0")
+  val rateOfTax = taxRate
+  val smallCompaniesRateOfTax = taxRate
 
 }
 
@@ -100,17 +103,17 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
                                               rateOfTax = BigDecimal("0.21"),
                                               smallCompaniesRateOfTax = BigDecimal("0.20")),
 
-                  TaxYear(2015) -> RateOfTax(BigDecimal("0.20")),
+                  TaxYear(2015) -> UnifiedRateOfTax(BigDecimal("0.20")),
 
-                  TaxYear(2016) -> RateOfTax(BigDecimal("0.20")),
+                  TaxYear(2016) -> UnifiedRateOfTax(BigDecimal("0.20")),
 
-                  TaxYear(2017) -> RateOfTax(BigDecimal("0.19")),
+                  TaxYear(2017) -> UnifiedRateOfTax(BigDecimal("0.19")),
 
-                  TaxYear(2018) -> RateOfTax(BigDecimal("0.19")),
+                  TaxYear(2018) -> UnifiedRateOfTax(BigDecimal("0.19")),
 
-                  TaxYear(2019) -> RateOfTax(BigDecimal("0.19")),
+                  TaxYear(2019) -> UnifiedRateOfTax(BigDecimal("0.19")),
 
-                  TaxYear(2020) -> RateOfTax(BigDecimal("0.17"))
+                  TaxYear(2020) -> UnifiedRateOfTax(BigDecimal("0.17"))
 
 
   )
