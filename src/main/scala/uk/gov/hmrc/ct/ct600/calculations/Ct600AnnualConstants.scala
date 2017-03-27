@@ -49,7 +49,7 @@ case class UnifiedRateOfTax(private val unifiedTaxRate: BigDecimal) extends CtCo
 
 object Ct600AnnualConstants extends Ct600AnnualConstants {
 
-  val data = Map(TaxYear(2006) -> AllCtConstants(lowerRelevantAmount = BigDecimal("300000"),
+  val data: Map[TaxYear, CtConstants] = Map(TaxYear(2006) -> AllCtConstants(lowerRelevantAmount = BigDecimal("300000"),
                                               upperRelevantAmount = BigDecimal("1500000"),
                                               reliefFraction = BigDecimal("0.0275"),
                                               rateOfTax = BigDecimal("0.30"),
