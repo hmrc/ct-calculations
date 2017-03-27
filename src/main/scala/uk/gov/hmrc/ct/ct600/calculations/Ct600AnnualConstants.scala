@@ -38,7 +38,7 @@ case class AllCtConstants(lowerRelevantAmount: BigDecimal,
 
 case class UnifiedRateOfTax(private val unifiedTaxRate: BigDecimal) extends CtConstants {
 
-  val lowerRelevantAmount: BigDecimal= BigDecimal("0")
+  val lowerRelevantAmount: BigDecimal = BigDecimal("0")
   val upperRelevantAmount: BigDecimal = BigDecimal("0")
   val reliefFraction: BigDecimal = BigDecimal("0")
   val rateOfTax: BigDecimal = unifiedTaxRate
