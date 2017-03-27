@@ -167,6 +167,12 @@ trait Frsse2008AccountsBoxRetriever extends AccountsBoxRetriever {
 
   def acq8124(): ACQ8124
 
+  def acq8125(): ACQ8125
+
+  def acq8126(): ACQ8126
+
+  def acq8130(): ACQ8130
+
   def acq8200(): ACQ8200
 
   def acq8201(): ACQ8201
