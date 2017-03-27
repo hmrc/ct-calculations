@@ -39,7 +39,7 @@ case class AllCtConstants(lowerRelevantAmount: BigDecimal,
 case class RateOfTax(private val taxRate: BigDecimal) extends CtConstants {
 
   val lowerRelevantAmount, upperRelevantAmount, reliefFraction = BigDecimal("0")
-  val rateOfTax, smallCompaniesRateOfTax  = taxRate
+  val rateOfTax, smallCompaniesRateOfTax = taxRate
 
 }
 
