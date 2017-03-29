@@ -27,7 +27,7 @@ case class ACQ8009(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did a
   with ValidatableBox[Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever]
   with DirectorsReportEnabledCalculator {
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] =
-    if (directorsReportEnabled(boxRetriever))
+    if (calculateDirectorsReportEnabled(boxRetriever))
       validateBooleanAsMandatory("ACQ8009", this)
     else
       Set.empty
