@@ -17,36 +17,28 @@
 package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import org.mockito.Mockito._
-import org.scalatest.mock.MockitoSugar
-import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
+import org.scalatest.BeforeAndAfterEach
+import uk.gov.hmrc.ct.accounts.AccountStatementValidationFixture
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDormancyBoxRetriever
-import uk.gov.hmrc.ct.box.CtValidation
 
-class AC8089Spec extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach {
+class AC8089Spec extends AccountStatementValidationFixture[Frs10xDormancyBoxRetriever] with BeforeAndAfterEach {
 
-  val mockBoxRetriever = mock[Frs10xDormancyBoxRetriever]
+  override val boxRetriever = mock[Frs10xDormancyBoxRetriever] (RETURNS_SMART_NULLS)
 
-  "AC8089 should" should {
+  override def setupMocks() = {
+    when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(true)))
+  }
 
-    "validate fails if dormant and not set" in {
-      when(mockBoxRetriever.acq8999()).thenReturn(ACQ8999(Some(true)))
-      AC8089(None).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("AC8089"), "error.AC8089.required", None))
-    }
+  doStatementValidationTests("AC8089", AC8089.apply)
 
-    "validate passes if dormant and set" in {
-      when(mockBoxRetriever.acq8999()).thenReturn(ACQ8999(Some(true)))
-      AC8089(Some(true)).validate(mockBoxRetriever) shouldBe Set.empty
-    }
+  "validation passes if not dormant" in {
+      when(boxRetriever.acq8999()).thenReturn(ACQ8999(None))
+      AC8089(None).validate(boxRetriever) shouldBe Set.empty
 
-    "validate passes if not dormant" in {
-      when(mockBoxRetriever.acq8999()).thenReturn(ACQ8999(None))
-      AC8089(None).validate(mockBoxRetriever) shouldBe Set.empty
+      when(boxRetriever.acq8999()).thenReturn(ACQ8999(None))
+      AC8089(Some(true)).validate(boxRetriever) shouldBe Set.empty
 
-      when(mockBoxRetriever.acq8999()).thenReturn(ACQ8999(None))
-      AC8089(Some(true)).validate(mockBoxRetriever) shouldBe Set.empty
-
-      when(mockBoxRetriever.acq8999()).thenReturn(ACQ8999(Some(false)))
-      AC8089(Some(true)).validate(mockBoxRetriever) shouldBe Set.empty
-    }
+      when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(false)))
+      AC8089(Some(true)).validate(boxRetriever) shouldBe Set.empty
   }
 }
