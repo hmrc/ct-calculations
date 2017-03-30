@@ -66,12 +66,44 @@ class Ct600AnnualConstantsSpec extends WordSpec with Matchers {
       data.rateOfTax shouldBe BigDecimal("0.20")
     }
 
+    "return constants for 2017" in {
+      val data = Ct600AnnualConstants.constantsForTaxYear(TaxYear(2017))
+      data.lowerRelevantAmount shouldBe BigDecimal("0")
+      data.upperRelevantAmount shouldBe BigDecimal("0")
+      data.reliefFraction shouldBe BigDecimal("0.00")
+      data.rateOfTax shouldBe BigDecimal("0.19")
+    }
+
+    "return constants for 2018" in {
+      val data = Ct600AnnualConstants.constantsForTaxYear(TaxYear(2018))
+      data.lowerRelevantAmount shouldBe BigDecimal("0")
+      data.upperRelevantAmount shouldBe BigDecimal("0")
+      data.reliefFraction shouldBe BigDecimal("0.00")
+      data.rateOfTax shouldBe BigDecimal("0.19")
+    }
+
+    "return constants for 2019" in {
+      val data = Ct600AnnualConstants.constantsForTaxYear(TaxYear(2019))
+      data.lowerRelevantAmount shouldBe BigDecimal("0")
+      data.upperRelevantAmount shouldBe BigDecimal("0")
+      data.reliefFraction shouldBe BigDecimal("0.00")
+      data.rateOfTax shouldBe BigDecimal("0.19")
+    }
+
+    "return constants for 2020" in {
+      val data = Ct600AnnualConstants.constantsForTaxYear(TaxYear(2020))
+      data.lowerRelevantAmount shouldBe BigDecimal("0")
+      data.upperRelevantAmount shouldBe BigDecimal("0")
+      data.reliefFraction shouldBe BigDecimal("0.00")
+      data.rateOfTax shouldBe BigDecimal("0.17")
+    }
+
     "return max year when asked for something ahead of explicitly supported years" in {
       val data = Ct600AnnualConstants.constantsForTaxYear(TaxYear(2999))
       data.lowerRelevantAmount shouldBe BigDecimal("0")
       data.upperRelevantAmount shouldBe BigDecimal("0")
       data.reliefFraction shouldBe BigDecimal("0.00")
-      data.rateOfTax shouldBe BigDecimal("0.20")
+      data.rateOfTax shouldBe BigDecimal("0.17")
     }
   }
 }
