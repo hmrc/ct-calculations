@@ -47,6 +47,12 @@ class AC189Spec extends WordSpec
       AC189(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC189"), "error.AC189.required"))
     }
 
+    "pass validation when AC76 isn't empty and this box is empty for dormant filing" in {
+      when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(true)))
+      when(boxRetriever.ac76()).thenReturn(AC76(Some(10)))
+      AC189(None).validate(boxRetriever) shouldBe Set.empty
+    }
+
     "throw global error when note cannot be entered" in {
       val box = AC189(Some(10))
       when(boxRetriever.ac76()).thenReturn(AC76(None))
