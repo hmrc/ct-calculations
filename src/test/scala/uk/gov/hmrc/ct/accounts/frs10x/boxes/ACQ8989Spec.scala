@@ -17,25 +17,31 @@
 package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import org.mockito.Mockito._
-import org.scalatest.BeforeAndAfterEach
-import uk.gov.hmrc.ct.accounts.AccountStatementValidationFixture
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDormancyBoxRetriever
+import uk.gov.hmrc.ct.box.CtValidation
 
-class ACQ8989Spec extends AccountStatementValidationFixture[Frs10xDormancyBoxRetriever] with BeforeAndAfterEach {
+class ACQ8989Spec extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach {
 
-  override val boxRetriever = mock[Frs10xDormancyBoxRetriever] (RETURNS_SMART_NULLS)
-
-  override def setupMocks() = {
-    when(boxRetriever.notTradedStatementRequired()).thenReturn(NotTradedStatementRequired(true))
-  }
-
-  doStatementValidationTests("ACQ8989", ACQ8989.apply)
+  val mockBoxRetriever = mock[Frs10xDormancyBoxRetriever]
 
   "ACQ8989 should" should {
 
     "validate successfully when not set and notTradedStatementRequired false" in {
-      when(boxRetriever.notTradedStatementRequired()).thenReturn(NotTradedStatementRequired(false))
-      ACQ8989(None).validate(boxRetriever) shouldBe Set.empty
+      when(mockBoxRetriever.notTradedStatementRequired()).thenReturn(NotTradedStatementRequired(false))
+      ACQ8989(None).validate(mockBoxRetriever) shouldBe Set.empty
+    }
+
+    "validate successfully when set and notTradedStatementRequired true" in {
+      when(mockBoxRetriever.notTradedStatementRequired()).thenReturn(NotTradedStatementRequired(true))
+      ACQ8989(Some(true)).validate(mockBoxRetriever) shouldBe Set.empty
+      ACQ8989(Some(false)).validate(mockBoxRetriever) shouldBe Set.empty
+    }
+
+    "fail validation if not set and nd notTradedStatementRequired true" in {
+      when(mockBoxRetriever.notTradedStatementRequired()).thenReturn(NotTradedStatementRequired(true))
+      ACQ8989(None).validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("ACQ8989"), "error.ACQ8989.required", None))
     }
   }
 }
