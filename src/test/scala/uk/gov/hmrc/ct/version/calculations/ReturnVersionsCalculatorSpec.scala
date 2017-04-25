@@ -282,7 +282,11 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       ("2012-04-02", "2013-04-01", ComputationsCT20141001),
 
       ("2016-01-01", "2016-12-31", ComputationsCT20150201),
-      ("2015-04-01", "2016-03-31", ComputationsCT20150201)
+      ("2015-04-01", "2016-03-31", ComputationsCT20150201),
+
+      ("2016-04-02", "2017-04-01", ComputationsCT20161001),
+      ("2016-10-01", "2017-04-02", ComputationsCT20161001),
+      ("2017-04-01", "2017-10-31", ComputationsCT20161001)
     )
 
     "for any HMRC filing" when {
