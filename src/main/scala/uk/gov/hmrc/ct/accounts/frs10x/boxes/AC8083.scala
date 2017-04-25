@@ -27,7 +27,7 @@ case class AC8083(value: Option[Boolean]) extends CtBoxIdentifier(name = "The di
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateBooleanAsTrue("AC8083", this)
+      validateAsMandatory(this)
     )
   }
   

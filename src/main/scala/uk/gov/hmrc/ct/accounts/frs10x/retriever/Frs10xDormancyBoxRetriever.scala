@@ -31,8 +31,6 @@ trait Frs10xDormancyBoxRetriever extends AccountsBoxRetriever {
 
   def acq8990(): ACQ8990
 
-  def ac8089(): AC8089
-
   def notTradedStatementRequired(): NotTradedStatementRequired = NotTradedStatementRequired.calculate(this)
 
   def profitAndLossStatementRequired(): ProfitAndLossStatementRequired = ProfitAndLossStatementRequired.calculate(this)
