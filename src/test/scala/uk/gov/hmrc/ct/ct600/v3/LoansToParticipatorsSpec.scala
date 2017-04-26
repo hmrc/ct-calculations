@@ -121,9 +121,8 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
 
-      errors.size shouldBe 1
-      errors.head.boxId shouldBe Some("LoansToParticipators")
-      errors.head.errorMessageKey shouldBe "error.compoundList.loans.0.beforeApril2016Amount.value"
+      errors.size shouldBe 2
+      errors.contains(CtValidation(Some("LoansToParticipators"), "error.compoundList.loans.0.beforeApril2016Amount.value", Some(List("200")))) shouldBe true
     }
 
     "return an error if a loan has a negative amountBefore06042016" in {
@@ -610,10 +609,59 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
     "allow total of repayments and write offs amounts before April 2016 to be less to the one in Loan" in {
       val l2pBox = LoansToParticipators(List(validLoan.copy(
+        amount = Some(201),
         amountBefore06042016 = Some(200),
-        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBefore06042016 = Some(5))),
-        otherRepayments = List(validRepaymentAfter9Months.copy(amountBefore06042016 = Some(10))),
-        writeOffs = List(validWriteOff.copy(amountBefore06042016 = Some(0)))
+        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amount = Some(5), amountBefore06042016 = Some(5))),
+        otherRepayments = List(validRepaymentAfter9Months.copy(amount = Some(10), amountBefore06042016 = Some(10))),
+        writeOffs = List(validWriteOff.copy(amount = Some(1), amountBefore06042016 = Some(1)))
+      )))
+
+      val errors = l2pBox.validate(boxRetriever)
+
+      errors shouldBe empty
+    }
+
+    "not allow total of repayments and write offs amounts after April 2016 to exceed the one in Loan" in {
+      // Loans after April 2016 = 10. Repayments + writeoffs against those = 11
+      val l2pBox = LoansToParticipators(List(validLoan.copy(
+        amount = Some(20),
+        amountBefore06042016 = Some(10),
+        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amount = Some(10), amountBefore06042016 = Some(5))),
+        otherRepayments = List(validRepaymentAfter9Months.copy(amount = Some(6), amountBefore06042016 = Some(3))),
+        writeOffs = List(validWriteOff.copy(amount = Some(4), amountBefore06042016 = Some(1)))
+      )))
+
+      val errors = l2pBox.validate(boxRetriever)
+
+      errors.size shouldBe 1
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "error.compoundList.loans.0.unbalanced.afterApril2016Amount"
+      errors.head.args should be (Some(List("11", "10")))
+    }
+
+    "allow total of repayments and write offs amounts after April 2016 to be equal to the one in Loan" in {
+      // Loans after April 2016 = 10. Repayments + writeoffs against those = 10
+      val l2pBox = LoansToParticipators(List(validLoan.copy(
+        amount = Some(20),
+        amountBefore06042016 = Some(10),
+        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amount = Some(10), amountBefore06042016 = Some(5))),
+        otherRepayments = List(validRepaymentAfter9Months.copy(amount = Some(6), amountBefore06042016 = Some(3))),
+        writeOffs = List(validWriteOff.copy(amount = Some(3), amountBefore06042016 = Some(1)))
+      )))
+
+      val errors = l2pBox.validate(boxRetriever)
+
+      errors shouldBe empty
+    }
+
+    "allow total of repayments and write offs amounts after April 2016 to be less to the one in Loan" in {
+      // Loans after April 2016 = 10. Repayments + writeoffs against those = 9
+      val l2pBox = LoansToParticipators(List(validLoan.copy(
+        amount = Some(20),
+        amountBefore06042016 = Some(10),
+        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amount = Some(10), amountBefore06042016 = Some(5))),
+        otherRepayments = List(validRepaymentAfter9Months.copy(amount = Some(6), amountBefore06042016 = Some(3))),
+        writeOffs = List(validWriteOff.copy(amount = Some(3), amountBefore06042016 = Some(2)))
       )))
 
       val errors = l2pBox.validate(boxRetriever)

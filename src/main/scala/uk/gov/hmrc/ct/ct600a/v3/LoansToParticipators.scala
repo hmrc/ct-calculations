@@ -63,6 +63,7 @@ case class Loan ( id: String,
     validateLoan(invalidBalancedAmount, s"loans.$loanIndex.unbalanced", balancedAmountArgs) ++
     validateLoan(invalidLoanBeforeApril2016Amount, s"loans.$loanIndex.beforeApril2016Amount.value", Some(Seq(amount.getOrElse(0).toString))) ++
     validateLoan(invalidBalancedBeforeApril2016Amount, s"loans.$loanIndex.unbalanced.beforeApril2016Amount", balancedBeforeApril2016AmountArgs) ++
+    validateLoan(invalidBalancedAfterApril2016Amount, s"loans.$loanIndex.unbalanced.afterApril2016Amount", balancedAfterApril2016AmountArgs) ++
     repaymentWithin9Months.map(_.validateWithin9Months(boxRetriever, loanIndex)).getOrElse(Set()) ++
     otherRepayments.foldRight(Set[CtValidation]())((repayment, tail) => repayment.validateAfter9Months(boxRetriever, loansToParticipators, loanIndex) ++ tail) ++
     writeOffs.foldRight(Set[CtValidation]())((writeOff, tail) => writeOff.validate(boxRetriever, loansToParticipators, loanIndex) ++ tail)
@@ -85,6 +86,13 @@ case class Loan ( id: String,
     }
   }
 
+  private def invalidBalancedAfterApril2016Amount: Boolean = {
+    (amount, amountBefore06042016) match {
+      case (Some(a), Some(b)) => (a - b) < totalAmountAfterApril2016RepaymentsAndWriteOffs
+      case _ => false
+    }
+  }
+
   private def invalidLoanBeforeApril2016Amount: Boolean = amountBefore06042016.exists(ab => ab < 0 || amount.exists(_ < ab))
 
   def totalAmountRepaymentsAndWriteOffs: Int = {
@@ -104,9 +112,16 @@ case class Loan ( id: String,
     repaymentBefore2016Total + otherRepaymentBefore2016Total + writeOffBefore2016Total
   }
 
+  private def totalAmountAfterApril2016RepaymentsAndWriteOffs: Int = totalAmountRepaymentsAndWriteOffs - totalAmountBeforeApril2016RepaymentsAndWriteOffs
+
   private def balancedAmountArgs: Option[Seq[String]] = Some(Seq(totalAmountRepaymentsAndWriteOffs.toString, amount.getOrElse(0).toString))
 
   private def balancedBeforeApril2016AmountArgs: Option[Seq[String]] = Some(Seq(totalAmountBeforeApril2016RepaymentsAndWriteOffs.toString, amountBefore06042016.getOrElse(0).toString))
+
+  private def balancedAfterApril2016AmountArgs: Option[Seq[String]] = Some(Seq(
+    totalAmountAfterApril2016RepaymentsAndWriteOffs.toString,
+    (amount.getOrElse(0) - amountBefore06042016.getOrElse(0)).toString
+  ))
 
   def validateLoan(invalid: Boolean, errorMsg: String, errorArgs: Option[Seq[String]] = None): Set[CtValidation] = {
    invalid match {
