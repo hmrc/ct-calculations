@@ -28,9 +28,7 @@ case class AC8899(value: Option[Boolean]) extends CtBoxIdentifier(name = "Direct
   with DirectorsReportEnabledCalculator {
 
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] =
-    if (directorsReportEnabled(boxRetriever))
-      validateBooleanAsMandatory("AC8899", this)
-    else
-      Set.empty
-
+    failIf(boxRetriever.directorsReportEnabled().value) (
+      validateBooleanAsTrue("AC8899", this)
+    )
 }
