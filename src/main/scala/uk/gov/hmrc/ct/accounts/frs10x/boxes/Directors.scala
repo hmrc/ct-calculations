@@ -42,7 +42,7 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
   }
 
   private def validateCannotExist(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-    failIf(!directorsReportEnabled(boxRetriever) && directors.nonEmpty) {
+    failIf(!calculateDirectorsReportEnabled(boxRetriever) && directors.nonEmpty) {
       val boxId = if (boxRetriever.hmrcFiling().value) "AC8023" else "AC8021"
       Set(CtValidation(None, s"error.Directors.$boxId.cannot.exist"))
     }
@@ -50,7 +50,7 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
 
   private def validateAtLeastOneDirectorIsAppointedIfAppointmentsIsYes(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     failIf (
-      directorsReportEnabled(boxRetriever) &&
+      calculateDirectorsReportEnabled(boxRetriever) &&
       boxRetriever.acQ8003().value.getOrElse(false) &&
       directors.forall(_.ac8005.getOrElse(false) == false)
     ) {
@@ -60,7 +60,7 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
 
   private def validateAtLeastOneDirectorResignedIfResignationsIsYes(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     failIf (
-      directorsReportEnabled(boxRetriever) &&
+      calculateDirectorsReportEnabled(boxRetriever) &&
         boxRetriever.acQ8009().value.getOrElse(false) &&
         directors.forall(_.ac8011.getOrElse(false) == false)
     ) {
@@ -69,7 +69,7 @@ case class Directors(directors: List[Director] = List.empty) extends CtBoxIdenti
   }
 
   private def validateDirectorRequired(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-    failIf (directorsReportEnabled(boxRetriever) && directors.isEmpty) {
+    failIf (calculateDirectorsReportEnabled(boxRetriever) && directors.isEmpty) {
       Set(CtValidation(Some("ac8001"), "error.Directors.ac8001.global.atLeast1", None))
     }
   }

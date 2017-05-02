@@ -21,21 +21,24 @@ import org.scalatest.BeforeAndAfterEach
 import uk.gov.hmrc.ct.accounts.AccountStatementValidationFixture
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDormancyBoxRetriever
 
-class ACQ8990Spec extends AccountStatementValidationFixture[Frs10xDormancyBoxRetriever] with BeforeAndAfterEach {
+class AC8089Spec extends AccountStatementValidationFixture[Frs10xDormancyBoxRetriever] with BeforeAndAfterEach {
 
   override val boxRetriever = mock[Frs10xDormancyBoxRetriever] (RETURNS_SMART_NULLS)
 
   override def setupMocks() = {
-    when(boxRetriever.profitAndLossStatementRequired()).thenReturn(ProfitAndLossStatementRequired(true))
+    when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(true)))
   }
 
-  doStatementValidationTests("ACQ8990", ACQ8990.apply)
+  doStatementValidationTests("AC8089", AC8089.apply)
 
-  "ACQ8990 should" should {
+  "validation passes if not dormant" in {
+      when(boxRetriever.acq8999()).thenReturn(ACQ8999(None))
+      AC8089(None).validate(boxRetriever) shouldBe Set.empty
 
-    "validate successfully when not set and notTradedStatementRequired false" in {
-      when(boxRetriever.profitAndLossStatementRequired()).thenReturn(ProfitAndLossStatementRequired(false))
-      ACQ8990(None).validate(boxRetriever) shouldBe Set.empty
-    }
+      when(boxRetriever.acq8999()).thenReturn(ACQ8999(None))
+      AC8089(Some(true)).validate(boxRetriever) shouldBe Set.empty
+
+      when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(false)))
+      AC8089(Some(true)).validate(boxRetriever) shouldBe Set.empty
   }
 }
