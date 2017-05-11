@@ -16,11 +16,16 @@
 
 package uk.gov.hmrc.ct.computations
 
+import org.mockito.Mockito.when
+import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
+import uk.gov.hmrc.ct.CATO13
+import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.formats._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class CPQ21Spec extends WordSpec with Matchers {
+class CPQ21Spec extends WordSpec with Matchers with MockitoSugar {
 
   implicit val format = Json.format[CPQ21Holder]
 
@@ -43,6 +48,84 @@ class CPQ21Spec extends WordSpec with Matchers {
     "create false from valid json" in {
       val json = Json.parse("""{"cpq21":false}""")
       Json.fromJson[CPQ21Holder](json).get shouldBe CPQ21Holder(cpq21 = CPQ21(Some(false)))
+    }
+  }
+
+  "CPQ21" when {
+    val boxRetriever = mock[ComputationsBoxRetriever]
+
+    "is undefined" should {
+      "not validate the box" in {
+        CPQ21(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ21"), "error.CPQ21.required"))
+      }
+    }
+
+    "is false"  should {
+      "allow empty charitable donations boxes" in {
+        when(boxRetriever.cp301()).thenReturn(CP301(None))
+        when(boxRetriever.cp302()).thenReturn(CP302(None))
+        when(boxRetriever.cp303()).thenReturn(CP303(None))
+
+        CPQ21(Some(false)).validate(boxRetriever) shouldBe empty
+      }
+
+      "allow zero values in charitable donations boxes" in {
+        when(boxRetriever.cp301()).thenReturn(CP301(0))
+        when(boxRetriever.cp302()).thenReturn(CP302(0))
+        when(boxRetriever.cp303()).thenReturn(CP303(0))
+
+        CPQ21(Some(false)).validate(boxRetriever) shouldBe empty
+      }
+    }
+
+    "is true" should {
+      when(boxRetriever.cato13()).thenReturn(CATO13(20))
+
+      "not validate if charitable donations boxes are empty" in {
+        when(boxRetriever.cp301()).thenReturn(CP301(None))
+        when(boxRetriever.cp302()).thenReturn(CP302(None))
+        when(boxRetriever.cp303()).thenReturn(CP303(None))
+
+        CPQ21(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.CPQ21.no.charitable.donations"))
+      }
+
+      "not validate if total charitable donations exceeds net profit chargeable to CT without chartiable donations" in {
+        when(boxRetriever.cato13()).thenReturn(CATO13(2))
+        when(boxRetriever.cp301()).thenReturn(CP301(1))
+        when(boxRetriever.cp302()).thenReturn(CP302(2))
+
+        CPQ21(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.CPQ21.cannot.exceed.net.profit"))
+      }
+
+      "validate if total charitable donations is equal to net profit chargeable to CT without chartiable donations" in {
+        when(boxRetriever.cato13()).thenReturn(CATO13(2))
+        when(boxRetriever.cp301()).thenReturn(CP301(1))
+        when(boxRetriever.cp302()).thenReturn(CP302(1))
+
+        CPQ21(Some(true)).validate(boxRetriever) shouldBe empty
+      }
+
+      "validate when at least one of the charitable donations boxes has a positive value" in {
+        when(boxRetriever.cp301()).thenReturn(CP301(1))
+        when(boxRetriever.cp302()).thenReturn(CP302(None))
+        when(boxRetriever.cp303()).thenReturn(CP303(None))
+
+        CPQ21(Some(true)).validate(boxRetriever) shouldBe empty
+
+        when(boxRetriever.cp301()).thenReturn(CP301(None))
+        when(boxRetriever.cp302()).thenReturn(CP302(1))
+        when(boxRetriever.cp303()).thenReturn(CP303(None))
+
+        CPQ21(Some(true)).validate(boxRetriever) shouldBe empty
+
+        when(boxRetriever.cp301()).thenReturn(CP301(None))
+        when(boxRetriever.cp302()).thenReturn(CP302(None))
+        when(boxRetriever.cp303()).thenReturn(CP303(1))
+
+        CPQ21(Some(true)).validate(boxRetriever) shouldBe empty
+      }
+
+
     }
   }
 

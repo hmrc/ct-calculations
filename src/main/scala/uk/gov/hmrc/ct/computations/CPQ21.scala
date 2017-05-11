@@ -16,6 +16,22 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, Input}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CPQ21(value: Option[Boolean]) extends CtBoxIdentifier(name = "Donations made?") with CtOptionalBoolean with Input
+case class CPQ21(value: Option[Boolean]) extends CtBoxIdentifier(name = "Donations made?")
+  with CtOptionalBoolean with Input with ValidatableBox[ComputationsBoxRetriever] {
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateBooleanAsMandatory("CPQ21", this),
+      failIf(isTrue && !boxRetriever.cp301().isPositive && !boxRetriever.cp302().isPositive && !boxRetriever.cp303().isPositive) {
+        Set(CtValidation(None, "error.CPQ21.no.charitable.donations"))
+      },
+      failIf(isTrue && boxRetriever.cp301().plus(boxRetriever.cp302()) > boxRetriever.cato13()) {
+        Set(CtValidation(None, "error.CPQ21.cannot.exceed.net.profit"))
+      }
+    )
+  }
+}
+
+
