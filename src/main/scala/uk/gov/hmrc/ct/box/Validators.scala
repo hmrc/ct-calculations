@@ -34,7 +34,7 @@ trait Validators {
     existsTruePredicate
   }
 
-  protected def requiredIf(predicate: => Boolean)(): Set[CtValidation] = {
+  protected def requiredErrorIf(predicate: => Boolean)(): Set[CtValidation] = {
       if (predicate)
         Set(CtValidation(Some(boxId), s"error.$boxId.required"))
       else
@@ -63,7 +63,7 @@ trait Validators {
     }
   }
 
-  protected def cannotExistIf(predicate: => Boolean)(): Set[CtValidation] = {
+  protected def cannotExistErrorIf(predicate: => Boolean)(): Set[CtValidation] = {
     if (predicate)
       Set(CtValidation(Some(boxId), s"error.$boxId.cannot.exist"))
     else

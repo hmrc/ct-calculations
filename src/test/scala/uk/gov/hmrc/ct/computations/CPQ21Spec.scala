@@ -16,16 +16,18 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.mockito.Mockito.when
+import org.mockito.Mockito._
+import org.mockito.Matchers._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import uk.gov.hmrc.ct.CATO13
-import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
+import uk.gov.hmrc.ct.computations.Validators.{DonationsValidation, DonationsValidationFixture}
 import uk.gov.hmrc.ct.computations.formats._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class CPQ21Spec extends WordSpec with Matchers with MockitoSugar {
+class CPQ21Spec extends WordSpec with Matchers with MockitoSugar with DonationsValidationFixture {
 
   implicit val format = Json.format[CPQ21Holder]
 
@@ -53,6 +55,10 @@ class CPQ21Spec extends WordSpec with Matchers with MockitoSugar {
 
   "CPQ21" when {
     val boxRetriever = mock[ComputationsBoxRetriever]
+    when(boxRetriever.cp29()).thenReturn(CP29(10))
+    when(boxRetriever.cp999()).thenReturn(CP999(1))
+    when(boxRetriever.cp303()).thenReturn(CP303(0))
+    when(boxRetriever.cp3030()).thenReturn(CP3030(0))
 
     "is undefined" should {
       "not validate the box" in {
@@ -60,7 +66,7 @@ class CPQ21Spec extends WordSpec with Matchers with MockitoSugar {
       }
     }
 
-    "is false"  should {
+    "is false" should {
       "allow empty charitable donations boxes" in {
         when(boxRetriever.cp301()).thenReturn(CP301(None))
         when(boxRetriever.cp302()).thenReturn(CP302(None))
@@ -87,14 +93,6 @@ class CPQ21Spec extends WordSpec with Matchers with MockitoSugar {
         when(boxRetriever.cp303()).thenReturn(CP303(None))
 
         CPQ21(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.CPQ21.no.charitable.donations"))
-      }
-
-      "not validate if total charitable donations exceeds net profit chargeable to CT without chartiable donations" in {
-        when(boxRetriever.cato13()).thenReturn(CATO13(2))
-        when(boxRetriever.cp301()).thenReturn(CP301(1))
-        when(boxRetriever.cp302()).thenReturn(CP302(2))
-
-        CPQ21(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.CPQ21.cannot.exceed.net.profit"))
       }
 
       "validate if total charitable donations is equal to net profit chargeable to CT without chartiable donations" in {
@@ -124,11 +122,12 @@ class CPQ21Spec extends WordSpec with Matchers with MockitoSugar {
 
         CPQ21(Some(true)).validate(boxRetriever) shouldBe empty
       }
-
-
     }
   }
 
+  testGlobalDonationsValidationErrors(CPQ21(Some(true))) {
+    mock[ComputationsBoxRetriever]
+  }
 }
 
 case class CPQ21Holder(cpq21: CPQ21)

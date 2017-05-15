@@ -32,7 +32,7 @@ case class AC107(value: Option[Int]) extends CtBoxIdentifier(name = "Average num
     val havePreviousPoA = ac205.hasValue
 
     collectErrors(
-      cannotExistIf((!havePreviousPoA || !noteSelectedForInclusion) && value.nonEmpty),
+      cannotExistErrorIf((!havePreviousPoA || !noteSelectedForInclusion) && value.nonEmpty),
       validateMoney(value, min = 0, max = 99999)
     )
   }

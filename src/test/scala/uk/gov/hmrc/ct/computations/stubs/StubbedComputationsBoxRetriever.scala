@@ -131,6 +131,14 @@ class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with Stub
 
   override def cp301(): CP301 = ???
 
+  override def cp3010(): CP3010 = ???
+
+  override def cp3020(): CP3020 = ???
+
+  override def cp3030(): CP3030 = ???
+
+  override def cpQ321(): CPQ321 = ???
+
   override def cp28(): CP28 = ???
 
   override def cp22(): CP22 = ???

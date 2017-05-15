@@ -25,7 +25,7 @@ import scala.math.BigDecimal.RoundingMode
 
 case class CP89(value: Option[Int]) extends CtBoxIdentifier(name = "Writing Down Allowance claimed from main pool") with CtOptionalInteger with Input with ComputationValidatableBox[ComputationsBoxRetriever] with MachineryAndPlantCalculator {
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
-    cannotExistIf(hasValue && boxRetriever.cpQ8().isTrue) ++
+    cannotExistErrorIf(hasValue && boxRetriever.cpQ8().isTrue) ++
       mainPoolAllowanceRequired(boxRetriever) ++
       mainPoolClaimedNotGreaterThanMaxMainPool(boxRetriever)
   }

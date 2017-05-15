@@ -45,6 +45,19 @@ trait BoxValidationFixture[T <: ComputationsBoxRetriever] extends WordSpec with 
     }
   }
 
+  def testMandatoryWhen(boxId: String, builder: Option[Int] => ValidatableBox[T], validValue: Int) = {
+
+    setUpMocks()
+
+    "fail when no value" in {
+      builder(None).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.required"))
+    }
+
+    "pass when has value" in {
+      builder(Some(validValue)).validate(boxRetriever) shouldBe empty
+    }
+  }
+
   def testBecauseOfDependendBoxThenCannotExist(boxId: String, builder: Option[Int] => ValidatableBox[T])(boxRetriever: => T) = {
 
     setUpMocks()

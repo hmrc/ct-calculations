@@ -17,23 +17,21 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.Validators.DonationsValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP301(value: Option[Int]) extends CtBoxIdentifier(name = "Qualifying charitable donations UK")
-  with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
+case class CPQ321(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did your company make any donations to grassroots sports?")
+  with CtOptionalBoolean with Input with ValidatableBox[ComputationsBoxRetriever] with DonationsValidation {
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      cannotExistErrorIf(hasValue && boxRetriever.cpQ21().isFalse),
-      requiredErrorIf(!hasValue && boxRetriever.cpQ21().isTrue),
-      validateZeroOrPositiveInteger(this)
+      validateBooleanAsMandatory("CPQ321", this),
+      validateLessThanTotalDonationsInPAndL(boxRetriever),
+      validateLessThanNetProfit(boxRetriever),
+      failIf(isTrue && !boxRetriever.cp3010.isPositive && !boxRetriever.cp3020.isPositive && !boxRetriever.cp3030.isPositive) {
+        Set(CtValidation(None, "error.CPQ21.no.grassroots.donations"))
+      }
     )
   }
 }
 
-object CP301 {
 
-  def apply(int: Int): CP301 = CP301(Some(int))
-
-
-
-}
