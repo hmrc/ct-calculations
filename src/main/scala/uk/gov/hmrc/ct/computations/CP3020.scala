@@ -16,25 +16,42 @@
 
 package uk.gov.hmrc.ct.computations
 
+import org.joda.time.{Days, LocalDate, Period}
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.computations.CP3020._
 
 case class CP3020(value: Option[Int]) extends CtBoxIdentifier(name = "Qualifying donations to grassroots sports clubs")
   with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
-  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+  override def validate(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      requiredErrorIf(boxRetriever.cpQ321().isTrue && !hasValue),
+      requiredErrorIf(retriever.cpQ321().isTrue && !hasValue),
       validateZeroOrPositiveInteger(this),
-      cannotExistErrorIf(hasValue && boxRetriever.cpQ321().isFalse)
+      cannotExistErrorIf(hasValue && retriever.cpQ321().isFalse),
+      apportionedLimitErrors(retriever)
     )
+  }
+
+  private def apportionedLimitErrors(retriever: ComputationsBoxRetriever) = {
+    val limit = apportionedLimit(retriever.cp1.value, retriever.cp2.value)
+    failIf(orZero > limit) {
+      Set(CtValidation(Some("CP3020"), "error.CP3020.apportionedLimit.exceeded", Some(Seq("£" + limit.toString))))
+    }
+  }
+
+  private def apportionedLimit(apStart: LocalDate, apEnd: LocalDate) = {
+    val daysAfter010417 = Days.daysBetween(grassrootsStart, apEnd).getDays
+    val apDays = Days.daysBetween(apStart, apEnd).getDays
+    val eligibleDays =  (daysAfter010417 min apDays) + 1
+    (eligibleDays * 2500) / 365
   }
 }
 
 
 object CP3020 {
-
+  val grassrootsStart = LocalDate.parse("2017-04-01")
+  val maxValue = 2500
   def apply(int: Int): CP3020 = CP3020(Some(int))
-
 }
 
 
