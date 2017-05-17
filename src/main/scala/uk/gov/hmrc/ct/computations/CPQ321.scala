@@ -28,7 +28,7 @@ case class CPQ321(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did yo
       validateLessThanTotalDonationsInPAndL(boxRetriever),
       validateLessThanNetProfit(boxRetriever),
       failIf(isTrue && !boxRetriever.cp3010.isPositive && !boxRetriever.cp3020.isPositive && !boxRetriever.cp3030.isPositive) {
-        Set(CtValidation(None, "error.CPQ21.no.grassroots.donations"))
+        Set(CtValidation(None, "error.CPQ321.no.grassroots.donations"))
       }
     )
   }

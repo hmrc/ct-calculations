@@ -72,7 +72,7 @@ class CPQ321Spec extends WordSpec with Matchers with MockitoSugar with Donations
       when(retriever.cp3010).thenReturn(CP3010(0))
       when(retriever.cp3020).thenReturn(CP3020(0))
       when(retriever.cp3030).thenReturn(CP3030(0))
-      CPQ321(Some(true)).validate(retriever) shouldBe Set(CtValidation(None, "error.CPQ21.no.grassroots.donations"))
+      CPQ321(Some(true)).validate(retriever) shouldBe Set(CtValidation(None, "error.CPQ321.no.grassroots.donations"))
     }
     "pass if true and cp3010 is positive" in {
       when(retriever.cp3010).thenReturn(CP3010(1))
@@ -96,7 +96,6 @@ class CPQ321Spec extends WordSpec with Matchers with MockitoSugar with Donations
 
   testGlobalDonationsValidationErrors(CPQ321(Some(true))) {
     val retriever = mock[ComputationsBoxRetriever]
-//    when(retriever.cp29).thenReturn(CP29(100))
     when(retriever.cp3010).thenReturn(CP3010(1))
     when(retriever.cp3020).thenReturn(CP3020(0))
     when(retriever.cp3030).thenReturn(CP3030(0))
