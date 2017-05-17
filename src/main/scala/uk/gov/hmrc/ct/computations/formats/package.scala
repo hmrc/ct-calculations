@@ -340,6 +340,12 @@ package object formats {
 
   implicit val cp999Format: Format[CP999] = new IntegerFormat[CP999](CP999.apply)
 
+  implicit val cp3010Format: Format[CP3010] = new OptionalIntegerFormat[CP3010](CP3010.apply)
+
+  implicit val cp3020Format: Format[CP3020] = new OptionalIntegerFormat[CP3020](CP3020.apply)
+
+  implicit val cp3030Format: Format[CP3030] = new OptionalIntegerFormat[CP3030](CP3030.apply)
+
   implicit val cpAux1Format: Format[CPAux1] = new IntegerFormat[CPAux1](CPAux1.apply)
 
   implicit val cpAux2Format: Format[CPAux2] = new IntegerFormat[CPAux2](CPAux2.apply)
