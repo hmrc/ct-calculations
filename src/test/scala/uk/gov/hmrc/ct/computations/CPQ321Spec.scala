@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
+import org.joda.time.LocalDate
 import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
@@ -52,8 +53,9 @@ class CPQ321Spec extends WordSpec with Matchers with MockitoSugar with Donations
     }
   }
 
-  "CPQ321 validation" should {
+  "CPQ321 validation if the AP ends after 31/03/2017" should {
     val retriever = mock[ComputationsBoxRetriever]
+    when(retriever.cp2()).thenReturn(CP2(LocalDate.parse("2017-04-01")))
     when(retriever.cp29()).thenReturn(CP29(100))
     when(retriever.cp999()).thenReturn(CP999(0))
     when(retriever.cp303()).thenReturn(CP303(0))
@@ -94,8 +96,25 @@ class CPQ321Spec extends WordSpec with Matchers with MockitoSugar with Donations
     }
   }
 
+  "CPQ321 validation if the AP ends before 01/04/2017" should {
+    val retriever = mock[ComputationsBoxRetriever]
+    when(retriever.cp2()).thenReturn(CP2(LocalDate.parse("2017-03-31")))
+    when(retriever.cp29()).thenReturn(CP29(100))
+    when(retriever.cp999()).thenReturn(CP999(0))
+    when(retriever.cp303()).thenReturn(CP303(0))
+    when(retriever.cp3010()).thenReturn(CP3010(0))
+    when(retriever.cp3020()).thenReturn(CP3020(0))
+    when(retriever.cp3030()).thenReturn(CP3030(0))
+    when(retriever.cato13()).thenReturn(CATO13(0))
+
+    "fail if None" in {
+      CPQ321(None).validate(retriever) shouldBe Set.empty
+    }
+  }
+
   testGlobalDonationsValidationErrors(CPQ321(Some(true))) {
     val retriever = mock[ComputationsBoxRetriever]
+    when(retriever.cp2()).thenReturn(CP2(LocalDate.parse("2017-04-01")))
     when(retriever.cp3010).thenReturn(CP3010(1))
     when(retriever.cp3020).thenReturn(CP3020(0))
     when(retriever.cp3030).thenReturn(CP3030(0))
