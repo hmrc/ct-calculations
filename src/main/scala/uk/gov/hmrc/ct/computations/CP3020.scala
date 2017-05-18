@@ -40,9 +40,9 @@ case class CP3020(value: Option[Int]) extends CtBoxIdentifier(name = "Qualifying
   }
 
   private def apportionedLimit(apStart: LocalDate, apEnd: LocalDate) = {
-    val daysAfter010417 = Days.daysBetween(grassrootsStart, apEnd).getDays
-    val apDays = Days.daysBetween(apStart, apEnd).getDays
-    val eligibleDays =  (daysAfter010417 min apDays) + 1
+    val daysAfter010417 = Days.daysBetween(grassrootsStart, apEnd).getDays + 1
+    val apDays = Days.daysBetween(apStart, apEnd).getDays + 1
+    val eligibleDays =  (daysAfter010417 min apDays) max 0
     (eligibleDays * 2500) / 365
   }
 }

@@ -40,6 +40,17 @@ class CP3020Spec extends WordSpec with Matchers with MockitoSugar with BoxValida
         CP3020(0).validate(retriever) shouldBe empty
       }
     }
+    "the AP ends a long time before 1/4/17" should {
+      val retriever = makeBoxRetriever(true)
+      when(retriever.cp1()).thenReturn(CP1(LocalDate.parse("2016-04-01")))
+      when(retriever.cp2()).thenReturn(CP2(LocalDate.parse("2017-03-01")))
+      "not allow a positive value" in {
+        CP3020(1).validate(retriever) shouldBe Set(CtValidation(Some("CP3020"), "error.CP3020.apportionedLimit.exceeded", Some(Seq("£0"))))
+      }
+      "allow a 0 value" in {
+        CP3020(0).validate(retriever) shouldBe empty
+      }
+    }
     "the AP starts before 1/4/17 and it ends on 1/4/17" should {
       val retriever = makeBoxRetriever(true)
       when(retriever.cp1()).thenReturn(CP1(LocalDate.parse("2016-12-01")))
