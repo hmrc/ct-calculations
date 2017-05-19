@@ -117,6 +117,39 @@ class CP3020Spec extends WordSpec with Matchers with MockitoSugar with BoxValida
         CP3020(2501).validate(retriever) shouldBe Set(CtValidation(Some("CP3020"), "error.CP3020.apportionedLimit.exceeded", Some(Seq("£2500"))))
       }
     }
+    "the AP ends in a leap year and doesn't contain 29/2" should {
+      val retriever = makeBoxRetriever(true)
+      when(retriever.cp1()).thenReturn(CP1(LocalDate.parse("2019-02-01")))
+      when(retriever.cp2()).thenReturn(CP2(LocalDate.parse("2020-01-31")))
+      "allow the full amount of £2500 grassroots" in {
+        CP3020(2500).validate(retriever) shouldBe empty
+      }
+      "not allow more than the pro rata amount of £2500 grassroots" in {
+        CP3020(2501).validate(retriever) shouldBe Set(CtValidation(Some("CP3020"), "error.CP3020.apportionedLimit.exceeded", Some(Seq("£2500"))))
+      }
+    }
+    "the AP ends in a leap year and contains 29/2" should {
+      val retriever = makeBoxRetriever(true)
+      when(retriever.cp1()).thenReturn(CP1(LocalDate.parse("2019-04-01")))
+      when(retriever.cp2()).thenReturn(CP2(LocalDate.parse("2020-03-31")))
+      "allow the full amount of £2500 grassroots" in {
+        CP3020(2500).validate(retriever) shouldBe empty
+      }
+      "not allow more than the pro rata amount of £2500 grassroots" in {
+        CP3020(2501).validate(retriever) shouldBe Set(CtValidation(Some("CP3020"), "error.CP3020.apportionedLimit.exceeded", Some(Seq("£2500"))))
+      }
+    }
+    "the AP starts in a leap year and contains 29/2" should {
+      val retriever = makeBoxRetriever(true)
+      when(retriever.cp1()).thenReturn(CP1(LocalDate.parse("2020-02-01")))
+      when(retriever.cp2()).thenReturn(CP2(LocalDate.parse("2021-01-31")))
+      "allow the full amount of £2500 grassroots" in {
+        CP3020(2500).validate(retriever) shouldBe empty
+      }
+      "not allow more than the pro rata amount of £2500 grassroots" in {
+        CP3020(2501).validate(retriever) shouldBe Set(CtValidation(Some("CP3020"), "error.CP3020.apportionedLimit.exceeded", Some(Seq("£2500"))))
+      }
+    }
   }
 
   testMandatoryWhen("CP3020", CP3020.apply, validValue = 1)

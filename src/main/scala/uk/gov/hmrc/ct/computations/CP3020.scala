@@ -43,7 +43,21 @@ case class CP3020(value: Option[Int]) extends CtBoxIdentifier(name = "Qualifying
     val daysAfter010417 = Days.daysBetween(grassrootsStart, apEnd).getDays + 1
     val apDays = Days.daysBetween(apStart, apEnd).getDays + 1
     val eligibleDays =  (daysAfter010417 min apDays) max 0
-    (eligibleDays * 2500) / 365
+    (eligibleDays * 2500) / daysInYear(apStart, apEnd)
+  }
+
+  private def daysInYear(apStart: LocalDate, apEnd: LocalDate) = {
+    val leapYearOption = (apStart.year().isLeap, apEnd.year().isLeap) match {
+      case (true, _) => Some(apStart.getYear)
+      case (_, true) => Some(apEnd.getYear)
+      case _ => None
+    }
+
+    val leapDayInAp = leapYearOption
+      .map(new LocalDate(_, 2, 29))
+      .exists(l => !l.isBefore(apStart) && !l.isAfter(apEnd))
+
+    if (leapDayInAp) 366 else 365
   }
 }
 
