@@ -34,10 +34,10 @@ case class CPQ19(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you 
     val valuePopulated = () => value.nonEmpty
 
     collectErrors(
-      requiredIf(And(hasTradingLoss(boxRetriever), hasNonTradingProfit(boxRetriever), valueEmpty)),
-      cannotExistIf(And(hasNonTradingProfit(boxRetriever), noTradingLoss(boxRetriever), valuePopulated)) ,
-      cannotExistIf(And(noNonTradingProfit(boxRetriever), hasTradingLoss(boxRetriever), valuePopulated)) ,
-      cannotExistIf(And(noNonTradingProfit(boxRetriever), noTradingLoss(boxRetriever), valuePopulated)) ,
+      requiredErrorIf(And(hasTradingLoss(boxRetriever), hasNonTradingProfit(boxRetriever), valueEmpty)),
+      cannotExistErrorIf(And(hasNonTradingProfit(boxRetriever), noTradingLoss(boxRetriever), valuePopulated)) ,
+      cannotExistErrorIf(And(noNonTradingProfit(boxRetriever), hasTradingLoss(boxRetriever), valuePopulated)) ,
+      cannotExistErrorIf(And(noNonTradingProfit(boxRetriever), noTradingLoss(boxRetriever), valuePopulated)) ,
       (cpQ17().value, value) match {
         case (Some(_), Some(_)) => Set(CtValidation(Some(boxId), "error.CPQ19.cannot.exist.cpq17"))
         case _ => Set.empty[CtValidation]

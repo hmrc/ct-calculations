@@ -31,7 +31,7 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     collectErrors (
-      cannotExistIf(!boxRetriever.ac7800().orFalse && (transactions.nonEmpty || ac7806.value.nonEmpty)),
+      cannotExistErrorIf(!boxRetriever.ac7800().orFalse && (transactions.nonEmpty || ac7806.value.nonEmpty)),
 
       failIf(boxRetriever.ac7800().orFalse) {
         collectErrors(

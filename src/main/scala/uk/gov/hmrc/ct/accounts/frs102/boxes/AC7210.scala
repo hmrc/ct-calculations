@@ -28,7 +28,7 @@ case class AC7210(value: Option[String]) extends CtBoxIdentifier(name = "Dividen
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      cannotExistIf(hasValue && !boxRetriever.ac32().hasValue),
+      cannotExistErrorIf(hasValue && !boxRetriever.ac32().hasValue),
       validateOptionalStringByLength(min = 0, max = StandardCohoTextFieldLimit),
       validateCoHoStringReturnIllegalChars()
     )

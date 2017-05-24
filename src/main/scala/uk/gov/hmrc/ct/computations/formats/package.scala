@@ -340,6 +340,12 @@ package object formats {
 
   implicit val cp999Format: Format[CP999] = new IntegerFormat[CP999](CP999.apply)
 
+  implicit val cp3010Format: Format[CP3010] = new OptionalIntegerFormat[CP3010](CP3010.apply)
+
+  implicit val cp3020Format: Format[CP3020] = new OptionalIntegerFormat[CP3020](CP3020.apply)
+
+  implicit val cp3030Format: Format[CP3030] = new OptionalIntegerFormat[CP3030](CP3030.apply)
+
   implicit val cpAux1Format: Format[CPAux1] = new IntegerFormat[CPAux1](CPAux1.apply)
 
   implicit val cpAux2Format: Format[CPAux2] = new IntegerFormat[CPAux2](CPAux2.apply)
@@ -363,6 +369,8 @@ package object formats {
   implicit val cpq20Format: Format[CPQ20] = new OptionalBooleanFormat[CPQ20](CPQ20.apply)
 
   implicit val cpq21Format: Format[CPQ21] = new OptionalBooleanFormat[CPQ21](CPQ21.apply)
+
+  implicit val cpq321Format: Format[CPQ321] = new OptionalBooleanFormat[CPQ321](CPQ321.apply)
 
   implicit val carFormatter = Json.format[Car]
 

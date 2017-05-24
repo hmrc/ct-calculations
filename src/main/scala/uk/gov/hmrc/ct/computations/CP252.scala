@@ -26,7 +26,7 @@ case class CP252(value: Option[Int]) extends CtBoxIdentifier("Expenditure on des
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
     validateZeroOrPositiveInteger(this) ++
       environmentFriendlyExpenditureCannotExceedRelevantFYAExpenditure(boxRetriever, this) ++
-      cannotExistIf(hasValue && boxRetriever.cpQ8().isTrue)
+      cannotExistErrorIf(hasValue && boxRetriever.cpQ8().isTrue)
   }
 }
 

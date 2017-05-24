@@ -140,6 +140,12 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp303(): CP303
 
+  def cp3010() : CP3010
+
+  def cp3020() : CP3020
+
+  def cp3030() : CP3030
+
   def cp501(): CP501
 
   def cp502(): CP502
@@ -353,6 +359,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
   def cpQ20(): CPQ20
 
   def cpQ21(): CPQ21
+
+  def cpQ321(): CPQ321
 
   def cato01(): CATO01 = CATO01.calculate(this)
 

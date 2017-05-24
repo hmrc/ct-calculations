@@ -22,7 +22,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 case class CP82(value: Option[Int]) extends CtBoxIdentifier(name = "Additions qualifying for writing down allowance") with CtOptionalInteger with Input with SelfValidatableBox[ComputationsBoxRetriever, Option[Int]] {
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
     collectErrors(
-      cannotExistIf(hasValue && boxRetriever.cpQ8().isTrue),
+      cannotExistErrorIf(hasValue && boxRetriever.cpQ8().isTrue),
       validateZeroOrPositiveInteger()
     )
   }

@@ -27,7 +27,7 @@ with SelfValidatableBox[Frs105AccountsBoxRetriever, Option[String]] {
   override def validate(boxRetriever: Frs105AccountsBoxRetriever) = {
     import boxRetriever._
     collectErrors (
-      cannotExistIf(value.nonEmpty && ac7991().isFalse),
+      cannotExistErrorIf(value.nonEmpty && ac7991().isFalse),
 
       failIf (boxRetriever.ac7991().isTrue) (
         collectErrors (

@@ -30,8 +30,8 @@ case class CP286(value: Option[Int]) extends CtBoxIdentifier(name = "Losses clai
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-        requiredIf(value.isEmpty && boxRetriever.cpQ18.isTrue),
-        cannotExistIf(value.nonEmpty && !boxRetriever.cpQ18().orFalse),
+        requiredErrorIf(value.isEmpty && boxRetriever.cpQ18.isTrue),
+        cannotExistErrorIf(value.nonEmpty && !boxRetriever.cpQ18().orFalse),
         exceedsMax(value, calculateMaximumCP286(boxRetriever.cp117(), boxRetriever.cato01(), boxRetriever.cp998(), boxRetriever.cp281())),
         belowMin(value, 0)
     )

@@ -22,7 +22,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 case class CP667(value: Option[Int]) extends CtBoxIdentifier(name = "Proceeds from disposals from special rate pool")  with CtOptionalInteger with Input with SelfValidatableBox[ComputationsBoxRetriever, Option[Int]] {
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
     collectErrors(
-      cannotExistIf(hasValue && boxRetriever.cpQ8().isTrue),
+      cannotExistErrorIf(hasValue && boxRetriever.cpQ8().isTrue),
       validateZeroOrPositiveInteger()
     )
   }

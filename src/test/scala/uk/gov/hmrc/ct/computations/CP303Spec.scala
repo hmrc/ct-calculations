@@ -16,19 +16,27 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.scalatest.{FunSuite, Matchers, WordSpec}
+import org.mockito.Mockito.when
+import org.scalatest.{Matchers, WordSpec}
 import org.scalatest.mock.MockitoSugar
-import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.BoxValidationFixture
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class CP303Spec extends WordSpec with Matchers with MockitoSugar {
+class CP303Spec extends WordSpec with Matchers with MockitoSugar with BoxValidationFixture[ComputationsBoxRetriever] {
 
-  "CP303" when {
-    val boxRetriever = mock[ComputationsBoxRetriever]
-    "is negative" should {
-      "not validate" in {
-        CP303(-1).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP303"), "error.CP303.mustBeZeroOrPositive"))
-      }
-    }
+  override val boxRetriever = makeBoxRetriever(true)
+
+  testMandatoryWhen("CP303", CP303.apply, validValue = 1)
+
+  testBoxIsZeroOrPositive("CP303", CP303.apply)
+
+  testBecauseOfDependendBoxThenCannotExist("CP303", CP303.apply) {
+    makeBoxRetriever(false)
+  }
+
+  private def makeBoxRetriever(cpq21Value: Boolean) = {
+    val retriever = mock[ComputationsBoxRetriever]
+    when(retriever.cpQ21()).thenReturn(CPQ21(Some(cpq21Value)))
+    retriever
   }
 }
