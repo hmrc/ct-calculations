@@ -43,7 +43,7 @@ case class CP3020(value: Option[Int]) extends CtBoxIdentifier(name = "Qualifying
     val daysAfter010417 = Days.daysBetween(grassrootsStart, apEnd).getDays + 1
     val apDays = Days.daysBetween(apStart, apEnd).getDays + 1
     val eligibleDays =  (daysAfter010417 min apDays) max 0
-    (eligibleDays * 2500) / daysInYear(apStart, apEnd)
+    (eligibleDays * maxQualifyingAmount) / daysInYear(apStart, apEnd)
   }
 
   private def daysInYear(apStart: LocalDate, apEnd: LocalDate) = {
@@ -64,7 +64,7 @@ case class CP3020(value: Option[Int]) extends CtBoxIdentifier(name = "Qualifying
 
 object CP3020 {
   val grassrootsStart = LocalDate.parse("2017-04-01")
-  val maxValue = 2500
+  val maxQualifyingAmount = 2500
   def apply(int: Int): CP3020 = CP3020(Some(int))
 }
 

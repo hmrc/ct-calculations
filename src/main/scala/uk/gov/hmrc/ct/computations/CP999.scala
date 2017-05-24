@@ -24,10 +24,10 @@ case class CP999(value: Int) extends CtBoxIdentifier(name = "Total Donations") w
 object CP999 extends Calculated[CP999, ComputationsBoxRetriever] with CtTypeConverters {
 
   override def calculate(retriever: ComputationsBoxRetriever): CP999 = {
-    CP999(calculateNonGrassrootsDonations(retriever) + calculateGrassrootsDonations(retriever))
+    CP999(calculateCharitableDonations(retriever) + calculateGrassrootsDonations(retriever))
   }
 
-  private def calculateNonGrassrootsDonations(retriever: ComputationsBoxRetriever) = {
+  private def calculateCharitableDonations(retriever: ComputationsBoxRetriever) = {
 
     retriever.cpQ21().value match {
       case Some(true) => retriever.cp302() + retriever.cp301()
