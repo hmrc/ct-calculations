@@ -27,6 +27,8 @@ class CP281Spec extends WordSpec with Matchers with MockitoSugar {
 
   "CP281" should {
     val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
+    when(boxRetriever.cp281a()).thenReturn(CP281a(None))
+    when(boxRetriever.cp281b()).thenReturn(CP281b(None))
     "when empty" when {
       "pass validation when CPQ17 is empty" in {
         when(boxRetriever.cpQ17()).thenReturn(CPQ17(None))
@@ -69,6 +71,26 @@ class CP281Spec extends WordSpec with Matchers with MockitoSugar {
       "fail validation when CPQ17 is empty" in {
         when(boxRetriever.cpQ17()).thenReturn(CPQ17(None))
         CP281(Some(80)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP281"), "error.CP281.cannot.exist"))
+      }
+    }
+    "when the CP281a/b are supplied" when {
+      "fail validation when CP281a + CP281b < CP281" in {
+        when(boxRetriever.cpQ17()).thenReturn(CPQ17(Some(true)))
+        when(boxRetriever.cp281a()).thenReturn(CP281a(1))
+        when(boxRetriever.cp281b()).thenReturn(CP281b(1))
+        CP281(Some(3)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.CP281.breakdown.sum.incorrect"))
+      }
+      "fail validation when CP281a + CP281b > CP281" in {
+        when(boxRetriever.cpQ17()).thenReturn(CPQ17(Some(true)))
+        when(boxRetriever.cp281a()).thenReturn(CP281a(2))
+        when(boxRetriever.cp281b()).thenReturn(CP281b(2))
+        CP281(Some(3)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.CP281.breakdown.sum.incorrect"))
+      }
+      "pass validation when CP281a + CP281b = CP281" in {
+        when(boxRetriever.cpQ17()).thenReturn(CPQ17(Some(true)))
+        when(boxRetriever.cp281a()).thenReturn(CP281a(1))
+        when(boxRetriever.cp281b()).thenReturn(CP281b(2))
+        CP281(Some(3)).validate(boxRetriever) shouldBe empty
       }
     }
   }

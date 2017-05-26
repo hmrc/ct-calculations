@@ -32,8 +32,17 @@ case class CP281(value: Option[Int]) extends CtBoxIdentifier("Losses brought for
       requiredErrorIf(value.isEmpty && boxRetriever.cpQ17.isTrue),
       cannotExistErrorIf(value.nonEmpty && !boxRetriever.cpQ17().orFalse),
       exceedsMax(value),
-      belowMin(value, min = 1)
+      belowMin(value, min = 1),
+      sumBreakdownIncorrectErrors(boxRetriever)
     )
+  }
+
+  private def sumBreakdownIncorrectErrors(retriever: ComputationsBoxRetriever) = {
+    val cp281a = retriever.cp281a()
+    val cp281b = retriever.cp281b()
+    failIf((cp281a.value.isDefined || cp281b.value.isDefined) && cp281a + cp281b != this.orZero) {
+      Set(CtValidation(None, "error.CP281.breakdown.sum.incorrect"))
+    }
   }
 }
 

@@ -38,7 +38,7 @@ class CP87InputSpec extends WordSpec with MockitoSugar with Matchers with BoxVal
 
   testBoxIsZeroOrPositive("CP87Input", CP87Input.apply)
 
-  testBecauseOfDependendBoxThenCannotExist("CP87Input", CP87Input.apply) {
+  testCannotExistWhen("CP87Input", CP87Input.apply) {
     when(boxRetriever.cp81()).thenReturn(CP81(5555))
     when(boxRetriever.cpAux1()).thenReturn(CPAux1(5555))
     when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(true))).getMock[ComputationsBoxRetriever]

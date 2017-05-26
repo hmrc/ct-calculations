@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.ct.computations.Validators
 
-import uk.gov.hmrc.ct.box.{Validators}
+import uk.gov.hmrc.ct.box.{CtTypeConverters, CtValidation, Validators}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-trait TradingLossesValidation extends Validators {
+trait TradingLossesValidation extends Validators with CtTypeConverters {
   
    def allLossesOffsetByNonTradingProfit(cp118: Int, cato01: Int): Boolean = {
     cp118 <= cato01
@@ -107,5 +107,11 @@ trait TradingLossesValidation extends Validators {
 
    def noTradingProfitOrLoss(boxRetriever: ComputationsBoxRetriever)() = {
     And(noTradingProfit(boxRetriever), noTradingLoss(boxRetriever))
+  }
+
+  def sumOfBroughtForwardErrors(retriever: ComputationsBoxRetriever) = {
+    failIf(retriever.cp283a() + retriever.cp283b() > retriever.cp117()) {
+      Set(CtValidation(None, "error.CP283.exceeds.totalProfit"))
+    }
   }
 }

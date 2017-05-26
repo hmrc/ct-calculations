@@ -152,12 +152,14 @@ class CP3020Spec extends WordSpec with Matchers with MockitoSugar with BoxValida
     }
   }
 
-  testMandatoryWhen("CP3020", CP3020.apply, validValue = 1)
+  testMandatoryWhen("CP3020", CP3020.apply) {
+    makeBoxRetriever(cpq321Value = true)
+  }
 
   testBoxIsZeroOrPositive("CP3020", CP3020.apply)
 
-  testBecauseOfDependendBoxThenCannotExist("CP3020", CP3020.apply) {
-    makeBoxRetriever(false)
+  testCannotExistWhen("CP3020", CP3020.apply) {
+    makeBoxRetriever(cpq321Value = false)
   }
 
   private def makeBoxRetriever(cpq321Value: Boolean) = {

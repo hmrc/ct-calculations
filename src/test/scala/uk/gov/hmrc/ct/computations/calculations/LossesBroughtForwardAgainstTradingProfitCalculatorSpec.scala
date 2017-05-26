@@ -26,32 +26,51 @@ class LossesBroughtForwardAgainstTradingProfitCalculatorSpec extends WordSpec wi
     "return None if CPQ17 Trading losses not used from previous accounting periods is None" in new LossesBroughtForwardAgainstTradingProfitCalculator {
       val result = lossesBroughtForwardUsedAgainstTradingProfitCalculation(cpq17 = CPQ17(None),
         cp281 = CP281(100),
-        cp282 = CP282(Some(1000)))
+        cp282 = CP282(Some(1000)),
+        cp283a = CP283a(None),
+        cp283b = CP283b(None))
       result shouldBe CP283(None)
     }
     "return None if CPQ17 Trading losses not used from previous accounting periods is false" in new LossesBroughtForwardAgainstTradingProfitCalculator {
       val result = lossesBroughtForwardUsedAgainstTradingProfitCalculation(cpq17 = CPQ17(Some(false)),
                                                                                 cp281 = CP281(100),
-                                                                                cp282 = CP282(Some(1000)))
+                                                                                cp282 = CP282(Some(1000)),
+                                                                                cp283a = CP283a(None),
+                                                                                cp283b = CP283b(None))
       result shouldBe CP283(None)
     }
     "return lesser of losses and adjusted trading profit if CPQ17 Trading losses not used from previous accounting periods is true" in new LossesBroughtForwardAgainstTradingProfitCalculator {
       val result = lossesBroughtForwardUsedAgainstTradingProfitCalculation(cpq17 = CPQ17(Some(true)),
                                                                                 cp281 = CP281(100),
-                                                                                cp282 = CP282(Some(1000)))
+                                                                                cp282 = CP282(Some(1000)),
+                                                                                cp283a = CP283a(None),
+                                                                                cp283b = CP283b(None))
       result shouldBe CP283(Some(100))
     }
     "return adjusted trading profit if it is less than losses brought forward and if CPQ17 Trading losses not used from previous accounting periods is true" in new LossesBroughtForwardAgainstTradingProfitCalculator {
       val result = lossesBroughtForwardUsedAgainstTradingProfitCalculation(cpq17 = CPQ17(Some(true)),
                                                                                 cp281 = CP281(10000),
-                                                                                cp282 = CP282(Some(1000)))
+                                                                                cp282 = CP282(Some(1000)),
+                                                                                cp283a = CP283a(None),
+                                                                                cp283b = CP283b(None))
       result shouldBe CP283(Some(1000))
     }
     "return None if CP117 adjusted trading profit is None and CPQ17 Trading losses not used from previous accounting periods is true" in new LossesBroughtForwardAgainstTradingProfitCalculator {
       val result = lossesBroughtForwardUsedAgainstTradingProfitCalculation(cpq17 = CPQ17(Some(true)),
                                                                                 cp281 = CP281(100),
-                                                                                cp282 = CP282(None))
+                                                                                cp282 = CP282(None),
+                                                                                cp283a = CP283a(None),
+                                                                                cp283b = CP283b(None))
       result shouldBe CP283(None)
+    }
+    "return the sum of 283a and 283b if they are provided" in  new LossesBroughtForwardAgainstTradingProfitCalculator {
+      val result = lossesBroughtForwardUsedAgainstTradingProfitCalculation(cpq17 = CPQ17(Some(true)),
+        cp281 = CP281(100),
+        cp282 = CP282(None),
+        cp283a = CP283a(Some(10)),
+        cp283b = CP283b(Some(15)))
+
+      result shouldBe CP283(Some(25))
     }
   }
 

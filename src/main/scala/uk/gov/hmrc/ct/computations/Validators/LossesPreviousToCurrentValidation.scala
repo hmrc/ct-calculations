@@ -14,21 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.computations.Validators
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
-import uk.gov.hmrc.ct.computations.calculations.NetProfitsChargeableToCtCalculator
+import uk.gov.hmrc.ct.box.{CtTypeConverters, CtValidation, ValidatableBox}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP295(value: Int) extends CtBoxIdentifier(name = "Profits chargeable to CT") with CtInteger
+trait LossesPreviousToCurrentValidation extends CtTypeConverters {
 
-object CP295 extends Calculated[CP295, ComputationsBoxRetriever] with NetProfitsChargeableToCtCalculator {
-
-  override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP295 = {
-    calculateNetProfitsChargeableToCt(fieldValueRetriever.cp293(),
-      fieldValueRetriever.cp294(),
-      fieldValueRetriever.cp997(),
-      fieldValueRetriever.cp999())
-  }
+  self: ValidatableBox[ComputationsBoxRetriever] =>
 
 }

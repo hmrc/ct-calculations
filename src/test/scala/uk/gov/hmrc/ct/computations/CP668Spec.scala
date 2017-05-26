@@ -113,7 +113,7 @@ class CP668Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
       CP668(None).validate(mockBoxRetriever) shouldBe empty
     }
 
-    testBecauseOfDependendBoxThenCannotExist("CP668", CP668.apply) {
+    testCannotExistWhen("CP668", CP668.apply) {
       val boxRetriever = setupMockRetriever
       when(boxRetriever.cato22()).thenReturn(CATO22(10))
       when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))

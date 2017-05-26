@@ -26,6 +26,7 @@ object CP998 extends Calculated[CP998, ComputationsBoxRetriever] with LossesSetA
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP998 = {
     calculateLossesSetAgainstProfits(cato01 = fieldValueRetriever.cato01(),
+                                     cp997 = fieldValueRetriever.cp997(),
                                      cp118 = fieldValueRetriever.cp118(),
                                      cpq19 = fieldValueRetriever.cpQ19())
   }

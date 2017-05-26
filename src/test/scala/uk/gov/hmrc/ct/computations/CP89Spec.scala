@@ -101,7 +101,7 @@ class CP89Spec extends WordSpec with Matchers with MockitoSugar with BoxValidati
       CP89(None).validate(mockRetriever) shouldBe empty
     }
 
-    testBecauseOfDependendBoxThenCannotExist("CP89", CP89.apply) {
+    testCannotExistWhen("CP89", CP89.apply) {
       val boxRetriever = setupRetriever
       when(boxRetriever.cato21()).thenReturn(CATO21(10))
       when(boxRetriever.cp81()).thenReturn(CP81(1000))
