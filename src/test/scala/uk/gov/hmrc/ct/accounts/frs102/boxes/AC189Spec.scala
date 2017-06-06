@@ -34,6 +34,7 @@ class AC189Spec extends WordSpec
   override def setUpMocks(): Unit = {
     when(boxRetriever.acq8999()).thenReturn(ACQ8999(None))
     when(boxRetriever.ac76()).thenReturn(AC76(Some(100)))
+    when(boxRetriever.ac187()).thenReturn(AC187(Some(true)))
     when(boxRetriever.ac189()).thenReturn(AC189(Some(10)))
     when(boxRetriever.ac190()).thenReturn(AC190(Some(10)))
     when(boxRetriever.ac5076C()).thenReturn(AC5076C(Some("Test content")))
@@ -47,10 +48,25 @@ class AC189Spec extends WordSpec
       AC189(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC189"), "error.AC189.required"))
     }
 
-    "pass validation when AC76 isn't empty and this box is empty for dormant filing" in {
+    "pass validation when the company is dormant and AC187 is empty and this is empty" in {
       when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(true)))
+      when(boxRetriever.ac187()).thenReturn(AC187(None))
       when(boxRetriever.ac76()).thenReturn(AC76(Some(10)))
-      AC189(None).validate(boxRetriever) shouldBe Set.empty
+      AC189(None).validate(boxRetriever) shouldBe empty
+    }
+
+    "pass validation when the company is dormant and AC187 is false and this is empty" in {
+      when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(true)))
+      when(boxRetriever.ac187()).thenReturn(AC187(Some(false)))
+      when(boxRetriever.ac76()).thenReturn(AC76(Some(10)))
+      AC189(None).validate(boxRetriever) shouldBe empty
+    }
+
+    "fail validation when the company is dormant and AC187 is true and this is empty" in {
+      when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(true)))
+      when(boxRetriever.ac187()).thenReturn(AC187(Some(true)))
+      when(boxRetriever.ac76()).thenReturn(AC76(Some(10)))
+      AC189(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC189"), "error.AC189.required"))
     }
 
     "throw global error when note cannot be entered" in {

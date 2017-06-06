@@ -16,17 +16,18 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.calculations.RevaluationReserveCalculator
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDormancyBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
 
 case class AC190(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at [POA END DATE]")
                                        with CtOptionalInteger
-                                       with ValidatableBox[Frs102AccountsBoxRetriever]
+                                       with CtTypeConverters
+                                       with ValidatableBox[Frs102AccountsBoxRetriever  with Frs10xDormancyBoxRetriever]
                                        with Validators {
 
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs102AccountsBoxRetriever with Frs10xDormancyBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
 
     failIf (anyHaveValue(ac76(), ac77()))(
@@ -36,17 +37,14 @@ case class AC190(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at 
     )
   }
 
-  def validateTotalEqualToCurrentAmount(boxRetriever: Frs102AccountsBoxRetriever)() = {
+  def validateTotalEqualToCurrentAmount(boxRetriever: Frs102AccountsBoxRetriever with Frs10xDormancyBoxRetriever)() = {
     val ac76 = boxRetriever.ac76()
 
-    val notEqualToAC76 =
-      (ac76.hasValue, this.hasValue) match {
-        case (true, _) => ac76.value != this.value
-        case (false, true) => !this.value.contains(0) // This box must be set to 0 in order to balance it out.
-        case _ => false
-      }
+    val dormant = boxRetriever.acq8999().orFalse
 
-    failIf(notEqualToAC76) {
+    val notEqualToAC76 = ac76.value.getOrElse(0) != this.value.getOrElse(0)
+
+    failIf(notEqualToAC76 && (!dormant || boxRetriever.ac187())) {
       Set(CtValidation(None, "error.AC190.mustEqual.AC76"))
     }
   }
@@ -54,10 +52,17 @@ case class AC190(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at 
 }
 
 object AC190 extends Calculated[AC190, Frs102AccountsBoxRetriever]
-               with RevaluationReserveCalculator {
+               with CtTypeConverters {
 
   override def calculate(boxRetriever: Frs102AccountsBoxRetriever): AC190 = {
-    calculateAC190(boxRetriever.ac76(), boxRetriever.ac77(), boxRetriever.ac189())
+    // From now on AC189 should have a value only if AC187 is true. However, it needs to be checked
+    // in case there are incomplete filings that have AC189 only at the point of release.
+    if (boxRetriever.ac187() || boxRetriever.ac189().hasValue) {
+      AC190(Some(boxRetriever.ac77 + boxRetriever.ac189()))
+    }
+    else {
+      AC190(None)
+    }
   }
 
 }
