@@ -20,6 +20,7 @@ import org.joda.time.LocalDate
 
 trait CtTypeConverters {
   implicit def convert(catoBoolean: CtBoolean) : Boolean = catoBoolean.value
+  implicit def convert(catoBoolean: CtOptionalBoolean) : Boolean = catoBoolean.value.getOrElse(false)
   implicit def convert(catoInt: CtInteger) : Int = catoInt.value
   implicit def convert(catoInt: CtOptionalInteger) : Int = catoInt.value.getOrElse(0)
   implicit def convert(catoOptionalBigDecimal: CtOptionalBigDecimal) : Option[BigDecimal] = catoOptionalBigDecimal.value
