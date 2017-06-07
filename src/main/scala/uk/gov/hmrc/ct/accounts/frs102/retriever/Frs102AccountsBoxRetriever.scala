@@ -218,6 +218,8 @@ trait Frs102AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
 
   def ac5133(): AC5133
 
+  def ac187(): AC187
+
   def ac188(): AC188 = AC188(ac77())
 
   def ac189(): AC189
