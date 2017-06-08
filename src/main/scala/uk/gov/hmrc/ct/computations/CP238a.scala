@@ -18,8 +18,9 @@ package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
 
-case class CP290a(value: Option[Int]) extends CtBoxIdentifier(name = "Post 1/4/17 losses brought forward against TP") with CtOptionalInteger
+case class CP238a(value: Option[Int]) extends CtBoxIdentifier(name = "Losses used against non trading profits") with CtOptionalInteger
 
-object CP290a extends Linked[CP283b, CP290a] {
-  def apply(source: CP283b): CP290a = CP290a(source.value)
+object CP238a extends Linked[CP997, CP238a] {
+
+  override def apply(source: CP997): CP238a = CP238a(source.value)
 }

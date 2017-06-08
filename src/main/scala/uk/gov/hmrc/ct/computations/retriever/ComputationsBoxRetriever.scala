@@ -238,6 +238,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp238(): CP238 = CP238(cp290())
 
+  def cp238a(): CP238a = CP238a(cp997())
+
   def cp239(): CP239 = CP239(cp294())
 
   def cp240(): CP240 = CP240(cp288())
@@ -292,7 +294,7 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp290(): CP290 = CP290.calculate(this)
 
-  def cp290a(): CP290a = CP290a.calculate(this)
+  def cp290a(): CP290a = CP290a(cp283b())
 
   def cp291(): CP291 = CP291.calculate(this)
 
