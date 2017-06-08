@@ -33,14 +33,6 @@ class CP283bSpec extends WordSpec with Matchers with MockitoSugar with BoxValida
 
   testBoxIsZeroOrPositive("CP283b", CP283b.apply)
 
-  testCannotExistWhen("CP283b", CP283b.apply, testDetails = "CP281b is None") {
-    makeBoxRetriever(cp281bValue = None)
-  }
-
-  testCannotExistWhen("CP283b", CP283b.apply, testDetails = "CP281b is zero") {
-    makeBoxRetriever(cp281bValue = Some(0))
-  }
-
   testGlobalErrorsForBroughtForwardGtTotalProfit(b => b.cp283b()) {
     makeBoxRetriever()
   }

@@ -29,7 +29,6 @@ case class CP283b(value: Option[Int]) extends CtBoxIdentifier("Losses brought fo
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       requiredErrorIf(boxRetriever.cp281b().isPositive && !hasValue),
-      cannotExistErrorIf(!boxRetriever.cp281b().isPositive && hasValue),
       validateZeroOrPositiveInteger(this),
       sumOfBroughtForwardErrors(boxRetriever)
     )

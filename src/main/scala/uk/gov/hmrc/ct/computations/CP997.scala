@@ -29,7 +29,6 @@ case class CP997(value: Option[Int]) extends CtBoxIdentifier("Losses from previo
   override def validate(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       requiredErrorIf(retriever.cp281b().isPositive && !hasValue),
-      cannotExistErrorIf(hasValue && !retriever.cp281b().isPositive),
       validateZeroOrPositiveInteger(this),
       exceedsNonTradingProfitErrors(retriever)
     )

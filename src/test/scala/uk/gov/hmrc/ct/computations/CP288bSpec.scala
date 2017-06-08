@@ -32,14 +32,6 @@ class CP288bSpec extends WordSpec with Matchers with MockitoSugar with BoxValida
 
   testBoxIsZeroOrPositive("CP288b", CP288b.apply)
 
-  testCannotExistWhen("CP288b", CP288b.apply, testDetails = "CP281b is None") {
-    makeBoxRetriever(CP281bValue = None)
-  }
-
-  testCannotExistWhen("CP288b", CP288b.apply, testDetails = "CP281b is zero") {
-    makeBoxRetriever(CP281bValue = Some(0))
-  }
-
   private def makeBoxRetriever(CP281bValue: Option[Int] = Some(1)) = {
     val retriever = mock[ComputationsBoxRetriever]
     when(retriever.cp281b()).thenReturn(CP281b(CP281bValue))

@@ -29,7 +29,6 @@ case class CP288a(value: Option[Int]) extends CtBoxIdentifier("Losses carried fo
   override def validate(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       requiredErrorIf(retriever.cp281a().isPositive && !hasValue),
-      cannotExistErrorIf(hasValue && !retriever.cp281a().isPositive),
       validateZeroOrPositiveInteger(this)
     )
   }

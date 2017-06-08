@@ -33,14 +33,6 @@ class CP997Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
 
   testBoxIsZeroOrPositive("CP997", CP997.apply)
 
-  testCannotExistWhen("CP997", CP997.apply, testDetails = "CP281b is None") {
-    makeBoxRetriever(cp281bValue = None)
-  }
-
-  testCannotExistWhen("CP997", CP997.apply, testDetails = "CP281b is zero") {
-    makeBoxRetriever(cp281bValue = Some(0))
-  }
-
   "CP997" should {
     "fail validation if it exceeds non trading profit" in {
       CP997(2).validate(makeBoxRetriever(cato01Value = 1)).contains(CtValidation(Some("CP997"), "error.CP997.exceeds.nonTradingProfit")) shouldBe true
