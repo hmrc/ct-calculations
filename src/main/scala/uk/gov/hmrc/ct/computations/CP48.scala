@@ -21,7 +21,14 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP48(value: Option[Int]) extends CtBoxIdentifier(name = "Donations") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
 
-  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = validateZeroOrPositiveInteger(this)
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateZeroOrPositiveInteger(this),
+      failIf(boxRetriever.cp29().value != this.value) {
+        Set(CtValidation(Some("CP48"), "error.CP48.must.equal.CP29"))
+      }
+    )
+  }
 
 }
 
