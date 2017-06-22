@@ -52,7 +52,8 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
           collectErrors(
             validateCoHoTurnover(boxRetriever, accountsStart, accountEnd)
           )
-        )
+        ),
+        validateZeroOrPositiveInteger(this)
       )
 
     if(errors.isEmpty) {
