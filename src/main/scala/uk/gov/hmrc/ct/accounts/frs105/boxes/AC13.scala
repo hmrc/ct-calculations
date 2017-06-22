@@ -29,10 +29,15 @@ case class AC13(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover (pr
   with Validators {
 
   override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
+    val errors = collectErrors(
       validateInputAllowed("AC13", boxRetriever.ac205()),
-      validateMoney(value),
       validateZeroOrPositiveInteger(this)
     )
+
+    if(errors.isEmpty) {
+      validateMoney(value, 0)
+    } else {
+      errors
+    }
   }
 }
