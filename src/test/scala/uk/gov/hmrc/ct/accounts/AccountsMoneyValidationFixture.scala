@@ -40,15 +40,16 @@ trait AccountsMoneyValidationFixture[T <: AccountsBoxRetriever] extends WordSpec
     doTests(boxId, STANDARD_MIN, STANDARD_MAX, builder, testEmpty = testEmpty)
   }
 
-  def testAccountsMoneyValidationWithMin(boxId: String, minValue: Int, builder: (Option[Int]) => ValidatableBox[T], testEmpty: Boolean = true): Unit = {
-    doTests(boxId, minValue, STANDARD_MAX, builder, testEmpty = testEmpty)
+  //Used to test cases where the passing the minimum would be covered by another error (e.g. non-negative validation)
+  def testAccountsMoneyValidationWithMin(boxId: String, minValue: Int, builder: (Option[Int]) => ValidatableBox[T], testEmpty: Boolean = true, testMin: Boolean = true): Unit = {
+    doTests(boxId, minValue, STANDARD_MAX, builder, testEmpty = testEmpty, testMin)
   }
 
   def testAccountsMoneyValidationWithMinMax(boxId: String, minValue: Int, maxValue: Int, builder: (Option[Int]) => ValidatableBox[T], testEmpty: Boolean = true): Unit = {
     doTests(boxId, minValue, maxValue, builder, testEmpty = testEmpty)
   }
 
-  private def doTests(boxId: String, minValue: Int, maxValue: Int, builder: (Option[Int]) => ValidatableBox[T], testEmpty: Boolean): Unit = {
+  private def doTests(boxId: String, minValue: Int, maxValue: Int, builder: (Option[Int]) => ValidatableBox[T], testEmpty: Boolean, testMin: Boolean = true): Unit = {
     setUpMocks()
     s"$boxId" should {
       "be valid when minimum" in {
@@ -67,13 +68,16 @@ trait AccountsMoneyValidationFixture[T <: AccountsBoxRetriever] extends WordSpec
       "be valid when positive but equals upper limit" in {
         builder(Some(maxValue)).validate(boxRetriever) shouldBe empty
       }
-      "fail validation when less then min lower limit" in {
-        builder(Some(minValue - 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(minValue.toString, maxValue.toString))))
+
+      if(testMin) {
+        "fail validation when less then min lower limit" in {
+          builder(Some(minValue - 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(minValue.toString, maxValue.toString))))
+        }
       }
+
       "fail validation when positive but above upper limit" in {
         builder(Some(maxValue + 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", Some(Seq(minValue.toString, maxValue.toString))))
       }
     }
   }
-
 }
