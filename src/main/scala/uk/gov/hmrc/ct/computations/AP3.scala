@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
 
-case class AP3(inputValue: Option[Int], defaultValue: Option[Int]) extends CtBoxIdentifier(name = "Turnover apportioned after accounting period") with CtOptionalInteger with MustBeNoneOrZeroOrPositive with InputWithDefault[Int]
+case class AP3(inputValue: Option[Int], defaultValue: Option[Int]) extends CtBoxIdentifier(name = "Turnover apportioned after accounting period") with CtOptionalInteger with InputWithDefault[Int]
 
 object AP3 {
 
