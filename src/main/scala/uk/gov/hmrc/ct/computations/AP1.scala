@@ -17,8 +17,13 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class AP1(inputValue: Option[Int], defaultValue: Option[Int]) extends CtBoxIdentifier(name = "Turnover apportioned before accounting period") with CtOptionalInteger with InputWithDefault[Int]
+case class AP1(inputValue: Option[Int], defaultValue: Option[Int]) extends CtBoxIdentifier(name = "Turnover apportioned before accounting period") with CtOptionalInteger with InputWithDefault[Int] with ValidatableBox[ComputationsBoxRetriever] {
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    validateZeroOrPositiveInteger(this)
+  }
+}
 
 object AP1 {
 

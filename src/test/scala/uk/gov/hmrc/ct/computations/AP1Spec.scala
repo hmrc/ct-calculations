@@ -16,16 +16,14 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box._
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.BoxValidationFixture
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class AP3(inputValue: Option[Int], defaultValue: Option[Int]) extends CtBoxIdentifier(name = "Turnover apportioned after accounting period") with CtOptionalInteger with InputWithDefault[Int] with ValidatableBox[ComputationsBoxRetriever] {
-  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    validateZeroOrPositiveInteger(this)
-  }
-}
+class AP1Spec extends WordSpec with Matchers with MockitoSugar with BoxValidationFixture[ComputationsBoxRetriever] {
 
-object AP3 {
+  override val boxRetriever = mock[ComputationsBoxRetriever]
 
-  def apply(inputValue: Option[Int]): AP3 = AP3(inputValue = inputValue, defaultValue = None)
+  testBoxIsZeroOrPositive("AP1", v => AP1(v))
 }
