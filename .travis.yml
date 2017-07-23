@@ -7,7 +7,7 @@ cache:
     - $HOME/.sbt/boot/
 
 scala:
-- 2.11.7
+- 2.12.2
 
 jdk:
 - oraclejdk8

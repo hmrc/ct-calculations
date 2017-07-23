@@ -18,7 +18,6 @@ package uk.gov.hmrc.ct.computations
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.formats.Cars
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 
@@ -35,8 +34,6 @@ case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "L
   with ValidatableBox[ComputationsBoxRetriever] {
 
   override def value = cars
-
-  override def asBoxString = Cars.asBoxString(this)
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     (boxRetriever.cpQ1000(), value) match {

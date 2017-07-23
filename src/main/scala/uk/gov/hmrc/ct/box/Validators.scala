@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.box
 
-import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 trait Validators {

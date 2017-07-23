@@ -16,9 +16,6 @@
 
 package uk.gov.hmrc.ct.domain
 
-import play.api.data.validation.ValidationError
-import play.api.libs.json._
-
 
 object CompanyTypes {
 
@@ -77,13 +74,6 @@ object CompanyTypes {
     CASC, LimitedByGuaranteeCASC, LimitedBySharesCASC,
     Charity, LimitedByGuaranteeCharity, LimitedBySharesCharity
   )
-
-  implicit val reads: Reads[CompanyType] =
-    Reads.StringReads.collect(ValidationError("Not a valid company type.")){case companyClassName if registeredTypes.contains(companyClassName) => registeredTypes(companyClassName)}
-
-  implicit val writes: Writes[CompanyType] = new Writes[CompanyType] {
-    def writes(o: CompanyType): JsValue = JsString(o.toString)
-  }
 
   private val allCompanyTypesSerializable: Set[CompanyType with Product with Serializable] = AllCompanyTypes.asInstanceOf[Set[CompanyType with Product with Serializable]]
   private val registeredTypes: Map[String, CompanyType] = allCompanyTypesSerializable.map(t => t.productPrefix -> t).toMap

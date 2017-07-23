@@ -17,7 +17,6 @@
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import uk.gov.hmrc.ct.accounts.AccountsPreviousPeriodValidation
-import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 

@@ -17,7 +17,6 @@
 package uk.gov.hmrc.ct.ct600.v2
 
 import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalBoolean}
-import uk.gov.hmrc.ct.ct600a.v2.A6
 import uk.gov.hmrc.ct.ct600a.v2.A6._
 import uk.gov.hmrc.ct.ct600a.v2.retriever.CT600ABoxRetriever
 

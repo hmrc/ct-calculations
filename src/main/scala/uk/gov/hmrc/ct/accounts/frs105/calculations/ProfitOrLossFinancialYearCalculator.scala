@@ -17,8 +17,8 @@
 package uk.gov.hmrc.ct.accounts.frs105.calculations
 
 import uk.gov.hmrc.ct.accounts.AC12
-import uk.gov.hmrc.ct.accounts.frs105.boxes._
 import uk.gov.hmrc.ct.accounts.calculations.DebitAwareCalculation
+import uk.gov.hmrc.ct.accounts.frs105.boxes._
 
 trait ProfitOrLossFinancialYearCalculator extends DebitAwareCalculation{
 

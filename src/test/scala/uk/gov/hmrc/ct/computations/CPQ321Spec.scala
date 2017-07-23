@@ -20,38 +20,12 @@ import org.joda.time.LocalDate
 import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import play.api.libs.json.Json
 import uk.gov.hmrc.ct.CATO13
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.Validators.DonationsValidationFixture
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.computations.formats._
 
 class CPQ321Spec extends WordSpec with Matchers with MockitoSugar with DonationsValidationFixture {
-
-  implicit val format = Json.format[CPQ321Holder]
-
-  "CPQ321 to json" should {
-    "create valid json for true value" in {
-      val json = Json.toJson(CPQ321Holder(CPQ321(Some(true))))
-      json.toString shouldBe """{"cpq321":true}"""
-    }
-    "create valid json for false value" in {
-      val json = Json.toJson(CPQ321Holder(CPQ321(Some(false))))
-      json.toString shouldBe """{"cpq321":false}"""
-    }
-  }
-
-  "CPQ321 from json" should {
-    "create true from valid json" in {
-      val json = Json.parse("""{"cpq321":true}""")
-      Json.fromJson[CPQ321Holder](json).get shouldBe CPQ321Holder(cpq321 = CPQ321(Some(true)))
-    }
-    "create false from valid json" in {
-      val json = Json.parse("""{"cpq321":false}""")
-      Json.fromJson[CPQ321Holder](json).get shouldBe CPQ321Holder(cpq321 = CPQ321(Some(false)))
-    }
-  }
 
   "CPQ321 validation if the AP ends after 31/03/2017" should {
     val retriever = mock[ComputationsBoxRetriever]

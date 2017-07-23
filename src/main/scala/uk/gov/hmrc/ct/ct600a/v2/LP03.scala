@@ -18,7 +18,6 @@ package uk.gov.hmrc.ct.ct600a.v2
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtValue, Input}
-import uk.gov.hmrc.ct.ct600a.v2.formats.Loans
 import uk.gov.hmrc.ct.utils.DateImplicits._
 
 case class WriteOff(loanId: String, amountWrittenOff: Int, dateWrittenOff: LocalDate, endDateOfWriteOffAP : Option[LocalDate] = None) {
@@ -68,6 +67,4 @@ case class LP03(writeOffs: Option[List[WriteOff]] = None) extends CtBoxIdentifie
   override def value = writeOffs
 
   def +(other: LP03): LP03 = new LP03(Some(writeOffs.getOrElse(Nil) ++ other.writeOffs.getOrElse(Nil)))
-
-  override def asBoxString = Loans.asBoxString(this)
 }

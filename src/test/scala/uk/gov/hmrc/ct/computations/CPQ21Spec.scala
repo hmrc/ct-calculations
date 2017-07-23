@@ -17,41 +17,14 @@
 package uk.gov.hmrc.ct.computations
 
 import org.mockito.Mockito._
-import org.mockito.Matchers._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import play.api.libs.json.Json
 import uk.gov.hmrc.ct.CATO13
-import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
-import uk.gov.hmrc.ct.computations.Validators.{DonationsValidation, DonationsValidationFixture}
-import uk.gov.hmrc.ct.computations.formats._
+import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.computations.Validators.DonationsValidationFixture
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 class CPQ21Spec extends WordSpec with Matchers with MockitoSugar with DonationsValidationFixture {
-
-  implicit val format = Json.format[CPQ21Holder]
-
-  "CPQ21 to json" should {
-    "create valid json for true value" in {
-      val json = Json.toJson(CPQ21Holder(CPQ21(Some(true))))
-      json.toString shouldBe """{"cpq21":true}"""
-    }
-    "create valid json for false value" in {
-      val json = Json.toJson(CPQ21Holder(CPQ21(Some(false))))
-      json.toString shouldBe """{"cpq21":false}"""
-    }
-  }
-
-  "CPQ21 from json" should {
-    "create true from valid json" in {
-      val json = Json.parse("""{"cpq21":true}""")
-      Json.fromJson[CPQ21Holder](json).get shouldBe CPQ21Holder(cpq21 = CPQ21(Some(true)))
-    }
-    "create false from valid json" in {
-      val json = Json.parse("""{"cpq21":false}""")
-      Json.fromJson[CPQ21Holder](json).get shouldBe CPQ21Holder(cpq21 = CPQ21(Some(false)))
-    }
-  }
 
   "CPQ21" when {
     val boxRetriever = mock[ComputationsBoxRetriever]

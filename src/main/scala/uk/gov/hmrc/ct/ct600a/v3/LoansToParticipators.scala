@@ -16,22 +16,19 @@
 
 package uk.gov.hmrc.ct.ct600a.v3
 
-import org.joda.time.{DateTime, LocalDate}
+import org.joda.time.LocalDate
 import uk.gov.hmrc.cato.time.DateHelper
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600a.v3.formats.LoansFormatter
+import uk.gov.hmrc.ct.ct600a.v3.LoansToParticipators._
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 import uk.gov.hmrc.ct.utils.DateImplicits._
-import LoansToParticipators._
 
 case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIdentifier(name = "Loans to participators.") with CtValue[List[Loan]] with Input with ValidatableBox[CT600ABoxRetriever] {
 
   def +(other: LoansToParticipators): LoansToParticipators = LoansToParticipators(loans ++ other.loans)
 
   override def value = loans
-
-  override def asBoxString = LoansFormatter.asBoxString(this)
 
   override def validate(boxRetriever: CT600ABoxRetriever): Set[CtValidation] = {
     validateLoanRequired(boxRetriever) ++
