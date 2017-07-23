@@ -22,6 +22,7 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
 
 case class AC189(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus or deficit after revaluation") with CtOptionalInteger
+                                                                                                              with CtTypeConverters
                                                                                                               with Input
                                                                                                               with ValidatableBox[Frs102AccountsBoxRetriever with Frs10xDormancyBoxRetriever]
                                                                                                               with Validators {
@@ -32,7 +33,7 @@ case class AC189(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus or 
     val dormant = boxRetriever.acq8999().orFalse
 
     collectErrors (
-      failIf(hasReserve && !dormant)(validateIntegerAsMandatory("AC189", this)),
+      failIf(hasReserve && (!dormant || boxRetriever.ac187()))(validateIntegerAsMandatory("AC189", this)),
       failIf(!hasReserve)(validateNoteCannotExist(boxRetriever)),
       validateMoney(value)
     )

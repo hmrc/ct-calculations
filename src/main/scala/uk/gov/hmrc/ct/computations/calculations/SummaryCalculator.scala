@@ -29,8 +29,6 @@ trait SummaryCalculator extends CtTypeConverters{
 
   def calculateTradingLossesOfThisOrLaterAccountingPeriods(cp239: CP239): CP264 = CP264(cp239)
 
-  def calculateQualifyingCharitableDonations(cp301: CP301, cp302: CP302): CP305 = CP305(cp301 + cp302)
-
   def calculateTradeNetAllowancesForSummary(cp186: CP186, cp668: CP668, cp674: CP674, cp91: CP91, cp670: CP670): CP99 = CP99((cp186 + cp668 + cp674 - cp91 - cp670).max(0))
 
 }

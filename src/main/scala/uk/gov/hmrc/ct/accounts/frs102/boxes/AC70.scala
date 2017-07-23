@@ -30,7 +30,7 @@ case class AC70(value: Option[Int]) extends CtBoxIdentifier(name = "Called up sh
     val limitedByGuarantee = boxRetriever.companyType().isLimitedByGuarantee
     collectErrors(
       failIf(limitedByGuarantee) {
-        cannotExistIf(value.nonEmpty)
+        cannotExistErrorIf(value.nonEmpty)
       },
       failIf(!limitedByGuarantee)(
         collectErrors(

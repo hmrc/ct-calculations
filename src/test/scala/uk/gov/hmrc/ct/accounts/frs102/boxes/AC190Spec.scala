@@ -20,7 +20,7 @@ import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
-import uk.gov.hmrc.ct.accounts.frs102.calculations.RevaluationReserveCalculator
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.ACQ8999
 import uk.gov.hmrc.ct.box.CtValidation
 
 class AC190Spec extends WordSpec
@@ -30,11 +30,29 @@ class AC190Spec extends WordSpec
 
   "AC190" should {
     "fail validation when calculated value is not equal to AC76" in {
+      when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(false)))
+      when(boxRetriever.ac187()).thenReturn(AC187(Some(true)))
       when(boxRetriever.ac76()).thenReturn(AC76(Some(123)))
       AC190(Some(125)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.AC190.mustEqual.AC76"))
     }
 
-    "fail validation when calculated value is not equal to empty AC76" in {
+    "pass validation when AC190 is None but the company is dormant" in {
+      when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(true)))
+      when(boxRetriever.ac187()).thenReturn(AC187(None))
+      when(boxRetriever.ac76()).thenReturn(AC76(Some(123)))
+      AC190(Some(125)).validate(boxRetriever) shouldBe empty
+    }
+
+    "fail validation when the company is dormant but a note is added and AC190 doesn't equal AC76" in {
+      when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(true)))
+      when(boxRetriever.ac187()).thenReturn(AC187(Some(true)))
+      when(boxRetriever.ac76()).thenReturn(AC76(Some(123)))
+      AC190(Some(125)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.AC190.mustEqual.AC76"))
+    }
+
+    "fail validation when calculated value is not equal to empty AC76 and AC77 is present" in {
+      when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(false)))
+      when(boxRetriever.ac187()).thenReturn(AC187(Some(true)))
       when(boxRetriever.ac76()).thenReturn(AC76(None))
       when(boxRetriever.ac77()).thenReturn(AC77(Some(1)))
       AC190(Some(125)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.AC190.mustEqual.AC76"))
@@ -58,20 +76,25 @@ class AC190Spec extends WordSpec
       AC190(Some(125)).validate(boxRetriever) shouldBe Set.empty
     }
 
-    "calculate the value when both AC77 and AC189 are set" in new RevaluationReserveCalculator {
-      calculateAC190(AC76(Some(1)), AC77(Some(10)), AC189(Some(3))).value shouldEqual Some(13)
+    "calculate itself as None if AC187 is None" in {
+      when(boxRetriever.ac187()).thenReturn(AC187(None))
+      when(boxRetriever.ac77()).thenReturn(AC77(Some(1)))
+      when(boxRetriever.ac189()).thenReturn(AC189(None))
+      AC190.calculate(boxRetriever).value shouldEqual None
     }
 
-    "calculate the value when AC77 is set" in new RevaluationReserveCalculator {
-      calculateAC190(AC76(Some(1)), AC77(Some(10)), AC189(None)).value shouldEqual Some(10)
+    "calculate itself as None if AC187 is Some(false)" in {
+      when(boxRetriever.ac187()).thenReturn(AC187(Some(false)))
+      when(boxRetriever.ac77()).thenReturn(AC77(Some(1)))
+      when(boxRetriever.ac189()).thenReturn(AC189(None))
+      AC190.calculate(boxRetriever).value shouldEqual None
     }
 
-    "return 0 when AC76 is set and AC77 and AC189 are not set" in new RevaluationReserveCalculator {
-      calculateAC190(AC76(Some(1)), AC77(None), AC189(None)).value shouldEqual Some(0)
-    }
-
-    "return None when AC76, AC77 and AC189 are not set" in new RevaluationReserveCalculator {
-      calculateAC190(AC76(None), AC77(None), AC189(None)).value shouldEqual None
+    "calculate itself as Some(AC77 + AC189) if AC187 is Some(true)" in {
+      when(boxRetriever.ac187()).thenReturn(AC187(Some(true)))
+      when(boxRetriever.ac77()).thenReturn(AC77(Some(1)))
+      when(boxRetriever.ac189()).thenReturn(AC189(Some(1)))
+      AC190.calculate(boxRetriever).value shouldEqual Some(2)
     }
   }
 }

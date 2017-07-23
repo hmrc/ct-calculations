@@ -35,7 +35,7 @@ case class AC8023(value: Option[Boolean])
         failIf(isMicroHmrcFiling) {
           validateAsMandatory()
         },
-        cannotExistIf(!isMicroHmrcFiling && hasValue)
+        cannotExistErrorIf(!isMicroHmrcFiling && hasValue)
       )
   }
 }

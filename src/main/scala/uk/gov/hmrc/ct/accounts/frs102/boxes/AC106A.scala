@@ -30,7 +30,7 @@ case class AC106A(value: Option[String]) extends CtBoxIdentifier(name = "Employe
     val noteSelectedForInclusion = boxRetriever.ac7300().orFalse
 
     collectErrors (
-      cannotExistIf(!noteSelectedForInclusion && value.nonEmpty),
+      cannotExistErrorIf(!noteSelectedForInclusion && value.nonEmpty),
       validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit),
       validateCoHoStringReturnIllegalChars()
     )

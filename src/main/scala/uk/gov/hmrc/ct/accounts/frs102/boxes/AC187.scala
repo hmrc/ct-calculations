@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.calculations
+package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.frs102.boxes._
+import uk.gov.hmrc.ct.box._
 
-trait RevaluationReserveCalculator {
+case class AC187(value: Option[Boolean]) extends CtBoxIdentifier(name = "Revaluation reserve note included") with CtOptionalBoolean with Input
 
-  def calculateAC190(ac76: AC76, ac77: AC77, ac189: AC189): AC190 = {
-    (ac76.value, ac77.value, ac189.value) match {
-      case (Some(_), None, None) =>  AC190(Some(0))
-      case (_, None, None) => AC190(None)
-      case _ => AC190(Some(ac77.orZero + ac189.orZero))
-    }
-  }
+object AC187 {
 
+  def apply(value: Boolean): AC187 = AC187(Some(value))
 }

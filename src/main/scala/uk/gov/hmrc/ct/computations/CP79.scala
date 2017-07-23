@@ -23,7 +23,7 @@ case class CP79(value: Option[Int]) extends CtBoxIdentifier(name = "Relevant fir
 
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
     collectErrors(
-      cannotExistIf(hasValue && boxRetriever.cpQ8().isTrue),
+      cannotExistErrorIf(hasValue && boxRetriever.cpQ8().isTrue),
       validateZeroOrPositiveInteger()
     )
   }

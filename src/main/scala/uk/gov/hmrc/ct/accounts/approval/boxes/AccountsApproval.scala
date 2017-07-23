@@ -38,7 +38,7 @@ trait AccountsApproval extends Input with ValidatableBox[AccountsBoxRetriever wi
     collectWithBoxId(boxId) {
       collectErrors(
         failIf(!approvalEnabled(boxRetriever)) {
-          cannotExistIf(anyValuesPopulated)
+          cannotExistErrorIf(anyValuesPopulated)
         },
         failIf(approvalEnabled(boxRetriever)) {
           collectErrors(

@@ -24,7 +24,7 @@ case class CP87Input(value: Option[Int]) extends CtBoxIdentifier(name = "First y
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
     collectErrors(
       validateZeroOrPositiveInteger(this),
-      cannotExistIf(hasValue && boxRetriever.cpQ8().isTrue),
+      cannotExistErrorIf(hasValue && boxRetriever.cpQ8().isTrue),
       mandatoryIfCompanyIsTrading(boxRetriever,"CP87Input", value),
       firstYearAllowanceNotGreaterThanMaxFYA(boxRetriever)
     )

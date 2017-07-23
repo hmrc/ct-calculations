@@ -46,14 +46,6 @@ class SummaryCalculatorSpec extends WordSpec with Matchers {
     }
   }
 
-  "Calculating qualifying charitable donations (CP305)" should {
-    "return CP301 + CP302" in new SummaryCalculator {
-      val cp301 = CP301(Some(301))
-      val cp302 = CP302(Some(302))
-      calculateQualifyingCharitableDonations(cp301, cp302) shouldBe CP305(603)
-    }
-  }
-
   val CP99Table = Table(
     ("cp186", "cp668", "cp674", "cp91", "cp670", "cp99"),
     (Some(50), Some(40), None, Some(0), Some(0), 90),

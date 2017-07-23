@@ -20,6 +20,7 @@ import org.joda.time.LocalDate
 
 trait CtTypeConverters {
   implicit def convert(catoBoolean: CtBoolean) : Boolean = catoBoolean.value
+  implicit def convert(catoBoolean: CtOptionalBoolean) : Boolean = catoBoolean.value.getOrElse(false)
   implicit def convert(catoInt: CtInteger) : Int = catoInt.value
   implicit def convert(catoInt: CtOptionalInteger) : Int = catoInt.value.getOrElse(0)
   implicit def convert(catoOptionalBigDecimal: CtOptionalBigDecimal) : Option[BigDecimal] = catoOptionalBigDecimal.value
@@ -248,17 +249,6 @@ trait MustBeZeroOrPositive {
   self: CtInteger =>
 
   require(value >= 0, "This box must cannot have a negative value.")
-}
-
-trait MustBeNoneOrZeroOrPositive {
-
-  self: CtOptionalInteger =>
-
-  require(value match {
-    case Some(v) if v >= 0 => true
-    case None => true
-    case _ => false
-  })
 }
 
 trait MustBeNoneOrZeroOrPositiveDecimal {
