@@ -1,21 +1,17 @@
 sudo: false
-
 language: scala
 cache:
   directories:
-    - $HOME/.ivy2/cache
-    - $HOME/.sbt/boot/
-
+  - "$HOME/.ivy2/cache"
+  - "$HOME/.sbt/boot/"
 scala:
 - 2.12.2
-
 jdk:
 - oraclejdk8
-
-
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION -J-XX:ReservedCodeCacheSize=256M test
-
-  # Tricks to avoid unnecessary cache updates
-  - find $HOME/.sbt -name "*.lock" | xargs rm
-  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+- sbt ++$TRAVIS_SCALA_VERSION -J-XX:ReservedCodeCacheSize=256M test
+- find $HOME/.sbt -name "*.lock" | xargs rm
+- find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+deploy:
+  key:
+    secure: LJ10+aCnJmZ8uJBc3RNIvkZ42PjGBx09SwXnpONcMPePfs12+KXQGYq2vbIGDAh0qk+7nW4d8DmFlaNrHnXWjJzQXFXdlO7FVGEOIa8pQR7/ekn29C3Gy1cO1tVpWd/A8D10Lo9fzRSpeqc3HO6TYWDafzVbZZvpPyZKHQYikyGcL6s6/WSQMUQwJyRxcsrXKVQ6CwMZDpfOCwbWId/amuuhvI390jpiD7ZGpk4iy+snXRdpetFeOxtDdebc3DX7V/FoqvmVpJIFyg4lOygoy9/ehONwsNA67zF+B+rpCMarS72t6FsXvydhChwbbkSv2PS1gKR6v0J1hZzLMWsowLdFXfujTxubPS/gkXk5+GTi6OoBwpkjKOusYPi4gi8ons9wjADmS0AH+hVJnAyBEMNnFrP99D0ZUPlQySKkxCJNwUUAc3ws+wILQcKPD+xDpjB7VGGqmYlejOjmHYWQ/uHaN0jX7enjUhzD7ppumsE8EZAZK4U7APSWmLW0v8lQe5TM9JcJ+3vzCYCYx3OmAlfOGa5T87bHSw5YBI1S9r8+HSiGnljYE+bx/3GjBKgANnWi1os0fumMd0ys/PFYwyQI4AY7T762lBKODfQwgv9ass7NeAtHcgpDEDo1YUVAQIkeRo6YgJKcjmepcwyAmyR7lUSWYnRpYzkTU0+3Ka8=
