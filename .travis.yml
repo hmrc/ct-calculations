@@ -1,17 +1,15 @@
 sudo: false
 language: scala
+scala:
+- 2.12.2
+script:
+- sbt clean test publish
+jdk:
+- oraclejdk8
 cache:
   directories:
   - "$HOME/.ivy2/cache"
-  - "$HOME/.sbt/boot/"
-scala:
-- 2.12.2
-jdk:
-- oraclejdk8
-script:
-- sbt ++$TRAVIS_SCALA_VERSION -J-XX:ReservedCodeCacheSize=256M test
-- find $HOME/.sbt -name "*.lock" | xargs rm
-- find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
-deploy:
-  key:
-    secure: LJ10+aCnJmZ8uJBc3RNIvkZ42PjGBx09SwXnpONcMPePfs12+KXQGYq2vbIGDAh0qk+7nW4d8DmFlaNrHnXWjJzQXFXdlO7FVGEOIa8pQR7/ekn29C3Gy1cO1tVpWd/A8D10Lo9fzRSpeqc3HO6TYWDafzVbZZvpPyZKHQYikyGcL6s6/WSQMUQwJyRxcsrXKVQ6CwMZDpfOCwbWId/amuuhvI390jpiD7ZGpk4iy+snXRdpetFeOxtDdebc3DX7V/FoqvmVpJIFyg4lOygoy9/ehONwsNA67zF+B+rpCMarS72t6FsXvydhChwbbkSv2PS1gKR6v0J1hZzLMWsowLdFXfujTxubPS/gkXk5+GTi6OoBwpkjKOusYPi4gi8ons9wjADmS0AH+hVJnAyBEMNnFrP99D0ZUPlQySKkxCJNwUUAc3ws+wILQcKPD+xDpjB7VGGqmYlejOjmHYWQ/uHaN0jX7enjUhzD7ppumsE8EZAZK4U7APSWmLW0v8lQe5TM9JcJ+3vzCYCYx3OmAlfOGa5T87bHSw5YBI1S9r8+HSiGnljYE+bx/3GjBKgANnWi1os0fumMd0ys/PFYwyQI4AY7T762lBKODfQwgv9ass7NeAtHcgpDEDo1YUVAQIkeRo6YgJKcjmepcwyAmyR7lUSWYnRpYzkTU0+3Ka8=
+env:
+  global:
+  - secure: d7ttB5rGMisqVaqj58Ss65XULRe+8AJo722BgC7mSPG9pZPAtffCEXk3pU4XPSHC9xn+eUaKfrRpaWrxRU/1DeEYp7MxP/aeb9cQt2+Jvzqb5gZNcQH0PiY0pS2h5t6f7n2Lj87+j/VLTDUkn4rDgHulC8lP4Jp9nSbSf2Vbi5JIiFHrULXywn+pW1EfY86jWo2c3h8UpgBntaY+JXpFhP1a4jE6msE1vinPjbnhv9z/ZKAyXeJq9Rg3u8Zy5weBHto8CeuzQQJ1+oufVpaCF18BQ8z4MEQNS/GD3SfcKeQ6Kt01qepsU9UHjZkfCCoPz6AiBjQRQ+25vVwqRcX8nHiuicGotedRWusjoQngpVlZZlqOUubfkgx5yrLmN+M8QmW4JlQrVeG2o5cV0Z8mpx/T61WJxwTPTOUVrOeCjtdnJ8bJgdnRvfa18c18H+hyg/tHiw6yrpGqhU1GiW52dRnGlC0ov/VvQu1BADNVsyaf16w8NkCt1CZ4Jnbw5qf03t7xR79dtyTjEwBeu99ptXMvzdhiLrL/kjbPS1nqezl+RE96Q+tnFpCcLZbVwYAwvwVNVOcxb6CnXg0bR5cFcxqBYlF9ayTWgLtRl19jJuOqweV9e4rVDgNWyQLTt3VB02JXhaBweWe8Sewg8ON7KYAWHMlVKEoEFlYjDr64f6Q=
+  - secure: WkVHsq4J7OUehkbf3RNTBdVKaznZcJfu6v2TSpyLt9nu6XlW2uwEtC65n+OuMHOgNHhP2d3pfRSZCQYLuXzm1vzpU4JYgKRz7VJc7N0J4AxYxGo/whNFnqXAPscfXbjE3p938t4rlN1YUYS+nHhZ5JgOdftHQMYKA9w+sJGS95DcpuG053cWzoxmXWOfZlpZcM/k/8VENjhJpf7+GaatCZHzQQmWZ1P17yhQGp83Rr+izh5U2bZFPfYueOkaTCWBIPZQ+fDnmf394R+qh+wu51yfdpQPHiJF1byeHWtwh441Xt5V4VL3dDPRgoAH4DULV5FFa1bTyl9QOV9VTrtYb+X6jlhwM9BjbdhNt3JnXhAPo/m62dIjcgH2VbAh/7vGcR8/tgSmXW6iO51eZFTnpe4MpUYxm72CYfgU79Ar0L1VJSsHozOuf76W60rdgMmQ7YParACmSLA49lWTzb4q1J8W4OZtGsbl3ZojEm8fmq6bhGYLlt/saaAFRAvsdydGFQuhHbGxLRZTKWmFVVXIfsXwQymxPLYD7QSlsmx2gsifMVLzQFdSY6Iz6eGBYLgJ6VY0jeEmj4FLDc3S/0RhbC/ukIkz6FW1GjJuyGlPUDp402MZsfWX169DhYbXvI90wuDgIHK+4bbjZYrry0FUOm6MVeL3kBS2OUiPHHTkYkM=
