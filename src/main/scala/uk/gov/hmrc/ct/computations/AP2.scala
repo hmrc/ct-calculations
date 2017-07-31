@@ -16,9 +16,24 @@
 
 package uk.gov.hmrc.ct.computations
 
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class AP2(inputValue: Option[Int], defaultValue: Option[Int]) extends CtBoxIdentifier(name = "Turnover apportioned during accounting period") with CtOptionalInteger with InputWithDefault[Int]
+case class AP2(inputValue: Option[Int], defaultValue: Option[Int]) extends CtBoxIdentifier(name = "Turnover apportioned during accounting period") with CtOptionalInteger with InputWithDefault[Int] with ValidatableBox[AccountsBoxRetriever with ComputationsBoxRetriever] with CtTypeConverters {
+  override def validate(boxRetriever: AccountsBoxRetriever with ComputationsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateZeroOrPositiveInteger(this),
+      totalErrors(boxRetriever)
+    )
+  }
+
+  private def totalErrors(boxRetriever: AccountsBoxRetriever with ComputationsBoxRetriever) = {
+    failIf(boxRetriever.ap1() + boxRetriever.ap2() + boxRetriever.ap3() != boxRetriever.ac12().value.getOrElse(0)) {
+      Set(CtValidation(None, "error.apportionmentTurnover.total"))
+    }
+  }
+}
 
 object AP2 {
 
