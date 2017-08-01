@@ -25,5 +25,5 @@ case class CP257(value: Option[Int]) extends CtBoxIdentifier("Trading losses bro
 object CP257 extends Calculated[CP257, ComputationsBoxRetriever] with SummaryCalculator  {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP257 =
-    calculateTradingLossesBroughtForwardForSummary(fieldValueRetriever.cp238())
+    calculateTradingLossesBroughtForwardForSummary(fieldValueRetriever.cp238(), fieldValueRetriever.cp283b())
 }

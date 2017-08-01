@@ -163,5 +163,11 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
     }
   }
 
+  "B300" should {
+    "be equal to B235 - B275 - B285" in new CorporationTaxCalculator {
+      calculateProfitsChargeableToCorporationTax(B235(10), B275(3), B285(2)) shouldBe B300(5)
+    }
+  }
+
   class Calc extends CorporationTaxCalculator
 }

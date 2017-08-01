@@ -22,6 +22,17 @@ import org.scalatest.prop.TableDrivenPropertyChecks._
 
 class SummaryCalculatorSpec extends WordSpec with Matchers {
 
+  "Calculating TradingLossesBroughtForwardForSummary (CP257)" should {
+    "return None if CP238 and CP283b are both None" in new SummaryCalculator {
+      calculateTradingLossesBroughtForwardForSummary(CP238(None), CP283b(None)) shouldBe CP257(None)
+    }
+    "return CP238 if CP283b is None" in new SummaryCalculator {
+      calculateTradingLossesBroughtForwardForSummary(CP238(Some(20)), CP283b(None)) shouldBe CP257(Some(20))
+    }
+    "return CP238 - CP283b is Some" in new SummaryCalculator {
+      calculateTradingLossesBroughtForwardForSummary(CP238(Some(20)), CP283b(Some(10))) shouldBe CP257(Some(10))
+    }
+  }
   "Calculating net trading and professional profits (CP258)" should {
     "return CP256 - CP257 when CP257 is defined" in new SummaryCalculator {
       val cp256 = CP256(1000)
