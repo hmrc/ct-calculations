@@ -20,7 +20,7 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.AC12
 import uk.gov.hmrc.ct.{MicroEntityFiling, StatutoryAccountsFiling}
 import uk.gov.hmrc.ct.accounts.frsse2008._
-import uk.gov.hmrc.ct.accounts.frsse2008.micro._
+import uk.gov.hmrc.ct.accounts.frsse2008.boxes.micro._
 
 class ProfitOrLossCalculatorSpec extends WordSpec with Matchers with ProfitOrLossCalculator {
 

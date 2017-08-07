@@ -18,7 +18,8 @@ package uk.gov.hmrc.ct.accounts.frsse2008.stubs
 
 import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frsse2008._
-import uk.gov.hmrc.ct.accounts.frsse2008.micro._
+import uk.gov.hmrc.ct.accounts.frsse2008.boxes._
+import uk.gov.hmrc.ct.accounts.frsse2008.boxes.micro._
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
@@ -97,5 +98,87 @@ trait StubbedAccountsBoxRetriever extends Frsse2008AccountsBoxRetriever {
 
   override def ac205(): AC205 = ???
 
+  override def ac492(): AC492 = ???
+
+  override def ac493(): AC493 = ???
+
+  override def ac494(): AC494 = ???
+
   override def generateValues: Map[String, CtValue[_]] = ???
+
+  override def acq8001(): ACQ8001 = ???
+
+  override def acq8003(): ACQ8003 = ???
+
+  override def acq8004(): ACQ8004 = ???
+
+  override def acq8101(): ACQ8101 = ???
+
+  override def acq8102(): ACQ8102 = ???
+
+  override def acq8103(): ACQ8103 = ???
+
+  override def acq8104(): ACQ8104 = ???
+
+  override def acq8105(): ACQ8105 = ???
+
+  override def acq8106(): ACQ8106 = ???
+
+  override def acq8107(): ACQ8107 = ???
+
+  override def acq8108(): ACQ8108 = ???
+
+  override def acq8109(): ACQ8109 = ???
+
+  override def acq8110(): ACQ8110 = ???
+
+  override def acq8111(): ACQ8111 = ???
+
+  override def acq8112(): ACQ8112 = ???
+
+  override def acq8113(): ACQ8113 = ???
+
+  override def acq8114(): ACQ8114 = ???
+
+  override def acq8115(): ACQ8115 = ???
+
+  override def acq8116(): ACQ8116 = ???
+
+  override def acq8117(): ACQ8117 = ???
+
+  override def acq8118(): ACQ8118 = ???
+
+  override def acq8119(): ACQ8119 = ???
+
+  override def acq8120(): ACQ8120 = ???
+
+  override def acq8121(): ACQ8121 = ???
+
+  override def acq8122(): ACQ8122 = ???
+
+  override def acq8123(): ACQ8123 = ???
+
+  override def acq8124(): ACQ8124 = ???
+
+  override def acq8999(): ACQ8999 = ???
+
+  override def acq8125(): ACQ8125 = ???
+
+  override def acq8126(): ACQ8126 = ???
+
+  override def acq8130(): ACQ8130 = ???
+
+  override def acq8200(): ACQ8200 = ???
+
+  override def acq8201(): ACQ8201 = ???
+
+  override def acq8210(): ACQ8210 = ???
+
+  override def acq8211(): ACQ8211 = ???
+
+  override def acq8212(): ACQ8212 = ???
+
+  override def acq8213(): ACQ8213 = ???
+
+  override def acq8214(): ACQ8214 = ???
 }

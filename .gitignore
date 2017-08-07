@@ -6,3 +6,4 @@ lib_managed
 *.iws
 *.iml
 *.DS_Store
+project/project/

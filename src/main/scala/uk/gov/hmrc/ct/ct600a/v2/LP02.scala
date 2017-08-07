@@ -18,7 +18,6 @@ package uk.gov.hmrc.ct.ct600a.v2
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtValue, Input}
-import uk.gov.hmrc.ct.ct600a.v2.formats.Loans
 import uk.gov.hmrc.ct.utils.DateImplicits._
 
 /**
@@ -70,6 +69,4 @@ case class LP02(loans: Option[List[Loan]]) extends CtBoxIdentifier(name = "Loan 
   def +(other: LP02): LP02 = new LP02(Some(loans.getOrElse(Nil) ++ other.loans.getOrElse(Nil)))
 
   override def value = loans
-
-  override def asBoxString = Loans.asBoxString(this)
 }

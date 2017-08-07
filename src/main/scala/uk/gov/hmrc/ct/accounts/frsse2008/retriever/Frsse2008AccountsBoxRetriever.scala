@@ -18,7 +18,8 @@ package uk.gov.hmrc.ct.accounts.frsse2008.retriever
 
 import uk.gov.hmrc.ct.accounts.AC12
 import uk.gov.hmrc.ct.accounts.frsse2008._
-import uk.gov.hmrc.ct.accounts.frsse2008.micro._
+import uk.gov.hmrc.ct.accounts.frsse2008.boxes._
+import uk.gov.hmrc.ct.accounts.frsse2008.boxes.micro._
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
@@ -105,4 +106,86 @@ trait Frsse2008AccountsBoxRetriever extends AccountsBoxRetriever {
   def ac435(): AC435 = AC435.calculate(this)
 
   def ac436(): AC436 = AC436.calculate(this)
+
+  def ac492(): AC492
+
+  def ac493(): AC493
+
+  def ac494(): AC494
+
+  def acq8001(): ACQ8001
+
+  def acq8003(): ACQ8003
+
+  def acq8004(): ACQ8004
+
+  def acq8101(): ACQ8101
+
+  def acq8102(): ACQ8102
+
+  def acq8103(): ACQ8103
+
+  def acq8104(): ACQ8104
+
+  def acq8105(): ACQ8105
+
+  def acq8106(): ACQ8106
+
+  def acq8107(): ACQ8107
+
+  def acq8108(): ACQ8108
+
+  def acq8109(): ACQ8109
+
+  def acq8110(): ACQ8110
+
+  def acq8111(): ACQ8111
+
+  def acq8112(): ACQ8112
+
+  def acq8113(): ACQ8113
+
+  def acq8114(): ACQ8114
+
+  def acq8115(): ACQ8115
+
+  def acq8116(): ACQ8116
+
+  def acq8117(): ACQ8117
+
+  def acq8118(): ACQ8118
+
+  def acq8119(): ACQ8119
+
+  def acq8120(): ACQ8120
+
+  def acq8121(): ACQ8121
+
+  def acq8122(): ACQ8122
+
+  def acq8123(): ACQ8123
+
+  def acq8124(): ACQ8124
+
+  def acq8125(): ACQ8125
+
+  def acq8126(): ACQ8126
+
+  def acq8130(): ACQ8130
+
+  def acq8200(): ACQ8200
+
+  def acq8201(): ACQ8201
+
+  def acq8210(): ACQ8210
+
+  def acq8211(): ACQ8211
+
+  def acq8212(): ACQ8212
+
+  def acq8213(): ACQ8213
+
+  def acq8214(): ACQ8214
+
+  def acq8999(): ACQ8999
 }

@@ -16,8 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.joda.time.{Days, LocalDate}
-import play.api.libs.json.{Format, Json}
+import org.joda.time.Days
 import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4}
 import uk.gov.hmrc.ct.computations._
 
@@ -112,9 +111,4 @@ case class ApportionedTurnover(beforeAccountingPeriod: Option[Int],
                                afterAccountingPeriod: Option[Int]) {
 
   def total: Int = afterAccountingPeriod.getOrElse(0) + beforeAccountingPeriod.getOrElse(0) + duringAccountingPeriod.getOrElse(0)
-}
-
-object ApportionedTurnover {
-
-  implicit val apportionedTurnoverFormat: Format[ApportionedTurnover] = Json.format[ApportionedTurnover]
 }

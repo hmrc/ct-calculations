@@ -17,9 +17,9 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.CP3020.grassrootsStart
 import uk.gov.hmrc.ct.computations.Validators.DonationsValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import CP3020.grassrootsStart
 
 case class CPQ321(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did your company make any donations to grassroots sports?")
   with CtOptionalBoolean with Input with ValidatableBox[ComputationsBoxRetriever] with DonationsValidation {

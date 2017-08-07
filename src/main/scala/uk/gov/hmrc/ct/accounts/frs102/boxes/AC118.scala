@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.calculations.IntangibleAssetsCalculator
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box._
 
 case class AC118(value: Option[Int]) extends CtBoxIdentifier(name = "Amortisation at [POA START]")

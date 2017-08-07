@@ -17,11 +17,9 @@
 package uk.gov.hmrc.ct.box
 
 import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
-import uk.gov.hmrc.ct.domain.ValidationConstants._
-import uk.gov.hmrc.ct.utils.DateImplicits._
-import ValidatableBox._
 
 
 trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with ValidatableBox[T]{

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.Validators
 
-import uk.gov.hmrc.ct.box.{Validators}
+import uk.gov.hmrc.ct.box.Validators
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 trait TradingLossesValidation extends Validators {

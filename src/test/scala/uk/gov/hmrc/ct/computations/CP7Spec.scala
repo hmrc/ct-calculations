@@ -23,46 +23,15 @@ import org.scalatest.prop.TableDrivenPropertyChecks.forAll
 import org.scalatest.prop.TableFor6
 import org.scalatest.prop.Tables.Table
 import org.scalatest.{Matchers, WordSpec}
-import play.api.libs.json.Json
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.{AbridgedFiling, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes
 import uk.gov.hmrc.ct.domain.CompanyTypes.CompanyType
+import uk.gov.hmrc.ct.{AbridgedFiling, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
 
 class CP7Spec extends WordSpec with Matchers with MockitoSugar {
 
-  implicit val format = {
-    import uk.gov.hmrc.ct.computations.formats._
-    Json.format[CP7Holder]
-  }
-
-  "CP7 to json" should {
-    "create valid json for int value" in {
-      val json = Json.toJson(CP7Holder(CP7(Some(1234))))
-      json.toString shouldBe """{"cp7":1234}"""
-    }
-    "create valid json for None" in {
-      val json = Json.toJson(CP7Holder(CP7(None)))
-      json.toString shouldBe """{"cp7":null}"""
-    }
-    "create valid json for default" in {
-      val json = Json.toJson(CP7Holder(CP7(None, Some(54321))))
-      json.toString shouldBe """{"cp7":54321}"""
-    }
-  }
-
-  "CP7 from json" should {
-    "create +ve int from valid json" in {
-      val json = Json.parse("""{"cp7":1234}""")
-      Json.fromJson[CP7Holder](json).get shouldBe CP7Holder(cp7 = new CP7(Some(1234), None))
-    }
-    "create None from valid json" in {
-      val json = Json.parse("""{"cp7":null}""")
-      Json.fromJson[CP7Holder](json).get shouldBe CP7Holder(cp7 = new CP7(None, None))
-    }
-  }
 
   "CP7 validation" should {
 

@@ -19,7 +19,6 @@ package uk.gov.hmrc.ct.accounts.validation
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import play.api.data.validation.ValidationError
 import uk.gov.hmrc.ct.FilingCompanyType
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever

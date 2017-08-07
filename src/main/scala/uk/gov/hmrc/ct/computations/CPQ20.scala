@@ -27,8 +27,8 @@ case class CPQ20(value: Option[Boolean]) extends CtBoxIdentifier(name = "Is the 
   with TradingLossesValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    import boxRetriever._
     import CPQ20._
+    import boxRetriever._
 
     (value, cpQ19().value, cp118().value, cato01().value) match {
       case (None, Some(true), cp118, cato01) if moreLossesThanNonTradeProfit(cp118, cato01) => requiredError
