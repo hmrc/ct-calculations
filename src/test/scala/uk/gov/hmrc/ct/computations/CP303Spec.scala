@@ -26,11 +26,13 @@ class CP303Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
 
   override val boxRetriever = makeBoxRetriever(true)
 
-  testMandatoryWhen("CP303", CP303.apply, validValue = 1)
+  testMandatoryWhen("CP303", CP303.apply) {
+    makeBoxRetriever(cpq21Value = true)
+  }
 
   testBoxIsZeroOrPositive("CP303", CP303.apply)
 
-  testBecauseOfDependendBoxThenCannotExist("CP303", CP303.apply) {
+  testCannotExistWhen("CP303", CP303.apply) {
     makeBoxRetriever(false)
   }
 

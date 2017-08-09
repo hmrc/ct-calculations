@@ -27,6 +27,7 @@ object CP295 extends Calculated[CP295, ComputationsBoxRetriever] with NetProfits
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP295 = {
     calculateNetProfitsChargeableToCt(fieldValueRetriever.cp293(),
       fieldValueRetriever.cp294(),
+      fieldValueRetriever.cp997(),
       fieldValueRetriever.cp999())
   }
 

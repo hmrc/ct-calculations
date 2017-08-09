@@ -25,15 +25,12 @@ case class CP288(value: Option[Int]) extends CtBoxIdentifier(name = "Losses Carr
 object CP288 extends Calculated[CP288, ComputationsBoxRetriever] with LossesCarriedForwardsCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP288 = {
-    lossesCarriedForwardsCalculation(cpq17 = fieldValueRetriever.cpQ17(),
-                                     cpq19 = fieldValueRetriever.cpQ19(),
-                                     cpq20 = fieldValueRetriever.cpQ20(),
-                                     cp281 = fieldValueRetriever.cp281(),
+    lossesCarriedForwardsCalculation(cp281 = fieldValueRetriever.cp281(),
                                      cp118 = fieldValueRetriever.cp118(),
                                      cp283 = fieldValueRetriever.cp283(),
                                      cp998 = fieldValueRetriever.cp998(),
                                      cp287 = fieldValueRetriever.cp287(),
-                                     cato01 = fieldValueRetriever.cato01())
+                                     cp997 = fieldValueRetriever.cp997())
   }
 
 }

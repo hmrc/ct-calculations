@@ -26,11 +26,13 @@ class CP301Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
 
   override val boxRetriever = makeBoxRetriever(true)
 
-  testMandatoryWhen("CP301", CP301.apply, validValue = 1)
+  testMandatoryWhen("CP301", CP301.apply) {
+    makeBoxRetriever(cpq21Value = true)
+  }
 
   testBoxIsZeroOrPositive("CP301", CP301.apply)
 
-  testBecauseOfDependendBoxThenCannotExist("CP301", CP301.apply) {
+  testCannotExistWhen("CP301", CP301.apply) {
     makeBoxRetriever(false)
   }
 

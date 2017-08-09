@@ -30,7 +30,7 @@ class CP286Spec extends WordSpec with Matchers with MockitoSugar {
     "when empty" when {
       val box = new CP286(None) {
         override val boxId = "CP286"
-        override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp998: CP998, cp281: CP281) = 90
+        override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp283: CP283, cp997: CP997, cp998: CP998) = 90
       }
 
       "pass validation when CPQ18 is empty" in {
@@ -52,21 +52,21 @@ class CP286Spec extends WordSpec with Matchers with MockitoSugar {
         when(boxRetriever.cpQ18()).thenReturn(CPQ18(Some(true)))
         val box = new CP286(Some(90)) {
           override val boxId = "CP286"
-          override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp998: CP998, cp281: CP281) = 91
+          override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp283: CP283, cp997: CP997, cp998: CP998) = 91
         }
         box.validate(boxRetriever) shouldBe empty
       }
       "pass validation when CPQ18 is true and value == limit" in {
         when(boxRetriever.cpQ18()).thenReturn(CPQ18(Some(true)))
         val box = new CP286(Some(90)) {
-          override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp998: CP998, cp281: CP281) = 90
+          override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp283: CP283, cp997: CP997, cp998: CP998) = 90
         }
         box.validate(boxRetriever) shouldBe empty
       }
       "pass validation when CPQ18 is true and value == 0" in {
         when(boxRetriever.cpQ18()).thenReturn(CPQ18(Some(true)))
         val box = new CP286(Some(0)) {
-          override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp998: CP998, cp281: CP281) = 90
+          override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp283: CP283, cp997: CP997, cp998: CP998) = 90
         }
         box.validate(boxRetriever) shouldBe empty
       }
@@ -74,7 +74,7 @@ class CP286Spec extends WordSpec with Matchers with MockitoSugar {
         when(boxRetriever.cpQ18()).thenReturn(CPQ18(Some(true)))
         val box = new CP286(Some(90)) {
           override val boxId = "CP286"
-          override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp998: CP998, cp281: CP281) = 89
+          override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp283: CP283, cp997: CP997, cp998: CP998) = 89
         }
         box.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP286"), "error.CP286.exceeds.max", Some(Seq("89"))))
       }
@@ -82,7 +82,7 @@ class CP286Spec extends WordSpec with Matchers with MockitoSugar {
         when(boxRetriever.cpQ18()).thenReturn(CPQ18(Some(true)))
         val box = new CP286(Some(-1)) {
           override val boxId = "CP286"
-          override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp998: CP998, cp281: CP281) = 89
+          override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp283: CP283, cp997: CP997, cp998: CP998) = 89
         }
         box.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP286"), "error.CP286.below.min", Some(Seq("0"))))
       }
@@ -90,7 +90,7 @@ class CP286Spec extends WordSpec with Matchers with MockitoSugar {
         when(boxRetriever.cpQ18()).thenReturn(CPQ18(Some(false)))
         val box = new CP286(Some(90)) {
           override val boxId = "CP286"
-          override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp998: CP998, cp281: CP281) = 90
+          override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp283: CP283, cp997: CP997, cp998: CP998) = 90
         }
         box.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP286"), "error.CP286.cannot.exist"))
       }
@@ -98,7 +98,7 @@ class CP286Spec extends WordSpec with Matchers with MockitoSugar {
         when(boxRetriever.cpQ18()).thenReturn(CPQ18(None))
         val box = new CP286(Some(90)) {
           override val boxId = "CP286"
-          override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp998: CP998, cp281: CP281) = 90
+          override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp283: CP283, cp997: CP997, cp998: CP998) = 90
         }
         box.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP286"), "error.CP286.cannot.exist"))
       }

@@ -16,30 +16,26 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CPQ17(value: Option[Boolean]) extends CtBoxIdentifier(name = "Trading losses not used from previous accounting periods?")
-  with CtOptionalBoolean
+case class CP288b(value: Option[Int]) extends CtBoxIdentifier("Losses carried forward from on or after 01/04/2017")
+  with CtOptionalInteger
   with Input
   with ValidatableBox[ComputationsBoxRetriever]
   with TradingLossesValidation {
 
-  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-
+  override def validate(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      requiredErrorIf({ value.isEmpty && boxRetriever.cp117().value > 0 }),
-      cannotExistErrorIf(value.nonEmpty && boxRetriever.cp117().value == 0),
-      (value, boxRetriever.cpQ19().value) match {
-        case (Some(_), Some(_)) => Set(CtValidation(Some(boxId), "error.CPQ17.cannot.exist.cpq19"))
-        case _ => Set.empty[CtValidation]
-      }
+      requiredErrorIf(retriever.cp281b().isPositive && !hasValue),
+      validateZeroOrPositiveInteger(this)
     )
   }
 }
 
-object CPQ17 {
-  val lossReform2017 = LocalDate.parse("2017-04-01")
+object CP288b {
+
+  def apply(int: Int): CP288b = CP288b(Some(int))
 }
+

@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations.calculations
+package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.CATO01
-import uk.gov.hmrc.ct.box.CtTypeConverters
-import uk.gov.hmrc.ct.computations.{CP118, CP997, CP998, CPQ19}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
 
-trait LossesSetAgainstOtherProfitsCalculator extends CtTypeConverters {
+case class CP290a(value: Option[Int]) extends CtBoxIdentifier(name = "Post 1/4/17 losses brought forward against TP") with CtOptionalInteger
 
-  def calculateLossesSetAgainstProfits(cato01: CATO01, cp997: CP997, cp118: CP118, cpq19: CPQ19): CP998 = {
-    CP998(
-      cpq19.value match {
-        case Some(true) => Some(cp118.value min (cato01 - cp997))
-        case _ => None
-      }
-    )
-  }
+object CP290a extends Linked[CP283b, CP290a] {
+  def apply(source: CP283b): CP290a = CP290a(source.value)
 }

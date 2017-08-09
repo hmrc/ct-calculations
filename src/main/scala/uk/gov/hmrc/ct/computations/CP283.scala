@@ -27,7 +27,9 @@ object CP283 extends Calculated[CP283, ComputationsBoxRetriever] with LossesBrou
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP283 = {
     lossesBroughtForwardUsedAgainstTradingProfitCalculation(cpq17 = fieldValueRetriever.cpQ17(),
                                                             cp281 = fieldValueRetriever.cp281(),
-                                                            cp282 = fieldValueRetriever.cp282())
+                                                            cp282 = fieldValueRetriever.cp282(),
+                                                            cp283a = fieldValueRetriever.cp283a(),
+                                                            cp283b = fieldValueRetriever.cp283b())
   }
 
 }

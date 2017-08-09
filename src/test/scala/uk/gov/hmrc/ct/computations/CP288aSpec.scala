@@ -22,19 +22,19 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.BoxValidationFixture
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
+class CP288aSpec extends WordSpec with Matchers with MockitoSugar with BoxValidationFixture[ComputationsBoxRetriever] {
 
-class CP83Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] {
+  override val boxRetriever = makeBoxRetriever()
 
-  val boxRetriever = mock[ComputationsBoxRetriever]
-
-  override def setUpMocks = {
-    when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+  testMandatoryWhen("CP288a", CP288a.apply) {
+    makeBoxRetriever()
   }
 
+  testBoxIsZeroOrPositive("CP288a", CP288a.apply)
 
-  testBoxIsZeroOrPositive("CP83", CP83.apply)
-
-  testCannotExistWhen("CP83", CP83.apply) {
-    when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(true))).getMock[ComputationsBoxRetriever]
+  private def makeBoxRetriever(cp281aValue: Option[Int] = Some(1)) = {
+    val retriever = mock[ComputationsBoxRetriever]
+    when(retriever.cp281a()).thenReturn(CP281a(cp281aValue))
+    retriever
   }
 }

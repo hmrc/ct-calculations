@@ -32,7 +32,7 @@ case class CP286(value: Option[Int]) extends CtBoxIdentifier(name = "Losses clai
     collectErrors(
         requiredErrorIf(value.isEmpty && boxRetriever.cpQ18.isTrue),
         cannotExistErrorIf(value.nonEmpty && !boxRetriever.cpQ18().orFalse),
-        exceedsMax(value, calculateMaximumCP286(boxRetriever.cp117(), boxRetriever.cato01(), boxRetriever.cp998(), boxRetriever.cp281())),
+        exceedsMax(value, calculateMaximumCP286(boxRetriever.cp117(), boxRetriever.cato01(), boxRetriever.cp283(), boxRetriever.cp997(), boxRetriever.cp998())),
         belowMin(value, 0)
     )
   }

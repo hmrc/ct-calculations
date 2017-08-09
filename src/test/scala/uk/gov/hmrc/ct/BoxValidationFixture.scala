@@ -33,41 +33,41 @@ trait BoxValidationFixture[T <: ComputationsBoxRetriever] extends WordSpec with 
     setUpMocks()
 
     "fail must be zero or positive validation when negative" in {
-      builder(Some(-55)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.mustBeZeroOrPositive"))
+      builder(Some(-55)).validate(boxRetriever).contains(CtValidation(Some(boxId), s"error.$boxId.mustBeZeroOrPositive")) shouldBe true
     }
 
     "pass must be zero or positive validation when zero" in {
-      builder(Some(0)).validate(boxRetriever) shouldBe Set.empty
+      builder(Some(0)).validate(boxRetriever).contains(CtValidation(Some(boxId), s"error.$boxId.mustBeZeroOrPositive")) shouldBe false
     }
 
     "pass must be zero or positive validation when positive" in {
-      builder(Some(55)).validate(boxRetriever) shouldBe Set.empty
+      builder(Some(55)).validate(boxRetriever).contains(CtValidation(Some(boxId), s"error.$boxId.mustBeZeroOrPositive")) shouldBe false
     }
   }
 
-  def testMandatoryWhen(boxId: String, builder: Option[Int] => ValidatableBox[T], validValue: Int) = {
+  def testMandatoryWhen(boxId: String, builder: Option[Int] => ValidatableBox[T])(boxRetriever: => T) = {
 
     setUpMocks()
 
     "fail when no value" in {
-      builder(None).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.required"))
+      builder(None).validate(boxRetriever).contains(CtValidation(Some(boxId), s"error.$boxId.required")) shouldBe true
     }
 
     "pass when has value" in {
-      builder(Some(validValue)).validate(boxRetriever) shouldBe empty
+      builder(Some(1)).validate(boxRetriever).contains(CtValidation(Some(boxId), s"error.$boxId.required")) shouldBe false
     }
   }
 
-  def testBecauseOfDependendBoxThenCannotExist(boxId: String, builder: Option[Int] => ValidatableBox[T])(boxRetriever: => T) = {
+  def testCannotExistWhen(boxId: String, builder: Option[Int] => ValidatableBox[T], testDetails: String = "")(boxRetriever: => T) = {
 
     setUpMocks()
 
-    "fail cannot exist validation when box has value" in {
-      builder(Some(33)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.cannot.exist"))
+    s"fail cannot exist validation when box has value $testDetails" in {
+      builder(Some(33)).validate(boxRetriever).contains(CtValidation(Some(boxId), s"error.$boxId.cannot.exist")) shouldBe true
     }
 
-    "pass cannot exist validation when box has no value" in {
-      builder(None).validate(boxRetriever) shouldBe empty
+    s"pass cannot exist validation when box has no value $testDetails" in {
+      builder(None).validate(boxRetriever).contains(CtValidation(Some(boxId), s"error.$boxId.cannot.exist")) shouldBe false
     }
   }
 

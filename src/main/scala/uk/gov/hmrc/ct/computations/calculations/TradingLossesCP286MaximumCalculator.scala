@@ -17,19 +17,12 @@
 package uk.gov.hmrc.ct.computations.calculations
 
 import uk.gov.hmrc.ct.CATO01
-import uk.gov.hmrc.ct.computations.{CP117, CP281, CP998}
+import uk.gov.hmrc.ct.box.CtTypeConverters
+import uk.gov.hmrc.ct.computations._
 
-trait TradingLossesCP286MaximumCalculator {
+trait TradingLossesCP286MaximumCalculator extends CtTypeConverters {
 
-  def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp998: CP998, cp281: CP281): Int = {
-
-    (cp117.value, cato01.value, cp281.value, cp998.value) match {
-      case (0, ntp, _, Some(lossesCurrentToCurrent)) => (ntp - lossesCurrentToCurrent) max 0
-      case (0, ntp, _, _) => ntp
-      case (tp, ntp, None, None) => tp + ntp
-      case (tp, ntp, Some(lossesPreviousToCurrent), _) if lossesPreviousToCurrent > tp => ntp
-      case (tp, ntp, Some(lossesPreviousToCurrent), _) => tp + ntp - lossesPreviousToCurrent
-      case _ => 0
-    }
+  def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp283: CP283, cp997: CP997, cp998: CP998): Int = {
+    (cp117 + cato01 - cp283 - cp997 - cp998) max 0
   }
 }
