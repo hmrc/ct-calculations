@@ -22,12 +22,13 @@ import uk.gov.hmrc.ct.box._
 case class AC76(value: Option[Int]) extends CtBoxIdentifier(name = "Revaluation reserve (current PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[Frs102AccountsBoxRetriever]
+  with SelfValidatableBox[Frs102AccountsBoxRetriever, Option[Int]]
   with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateMoney(value)
+      validateMoney(value),
+      validateRequiredIf(boxRetriever.ac77().value.isDefined)
     )
   }
 }

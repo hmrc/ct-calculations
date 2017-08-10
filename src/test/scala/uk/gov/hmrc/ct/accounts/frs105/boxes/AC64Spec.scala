@@ -16,11 +16,14 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
+import org.mockito.Mockito.when
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, MockFrs105AccountsRetriever}
+import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, AccountsRequiredValidationFixture, MockFrs105AccountsRetriever}
 
-class AC64Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
-
+class AC64Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever]
+  with AccountsRequiredValidationFixture[Frs105AccountsBoxRetriever]
+  with MockFrs105AccountsRetriever {
+  when(boxRetriever.ac65()).thenReturn(AC65(None))
   testAccountsMoneyValidationWithMin("AC64", minValue = 0, AC64)
-
+  testAccountsRequiredValidation("AC64", AC64.apply, boxRetriever.ac65, AC65.apply, boxRetriever)
 }
