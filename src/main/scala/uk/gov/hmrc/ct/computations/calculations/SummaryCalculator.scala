@@ -21,7 +21,12 @@ import uk.gov.hmrc.ct.computations._
 
 trait SummaryCalculator extends CtTypeConverters{
 
-  def calculateTradingLossesBroughtForwardForSummary(cp238: CP238): CP257 = CP257(cp238.value)
+  def calculateTradingLossesBroughtForwardForSummary(cp238: CP238, cp283b: CP283b): CP257 = CP257(
+    (cp238.value, cp283b.value) match {
+      case (None, None) => None
+      case _ => Some(cp238.orZero - cp283b.orZero)
+    }
+  )
 
   def calculateNetTradingAndProfessionalProfits(cp256: CP256, cp257: CP257): CP258 = CP258(cp256 - cp257.orZero)
 

@@ -16,14 +16,10 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
 
+case class CP290b(value: Option[Int]) extends CtBoxIdentifier(name = "Post 1/4/17 losses brought forward against TP") with CtOptionalInteger
 
-case class CP265(value: Int) extends CtBoxIdentifier("Profits before other deductions and reliefs (box 21)") with CtInteger
-
-object CP265 extends Calculated[CP265, ComputationsBoxRetriever] with CtTypeConverters {
-  override def calculate(boxRetriever: ComputationsBoxRetriever): CP265 = {
-    CP265(boxRetriever.cp293() + boxRetriever.cp283b())
-  }
+object CP290b extends Linked[CP283b, CP290b] {
+  def apply(source: CP283b): CP290b = CP290b(source.value)
 }

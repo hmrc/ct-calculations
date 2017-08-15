@@ -62,6 +62,8 @@ package object formats {
 
   implicit val B280Format: Format[B280] = new BooleanFormat[B280](B280.apply)
 
+  implicit val B285Format: Format[B285] = new IntegerFormat[B285](B285.apply)
+
   implicit val B295Format: Format[B295] = new IntegerFormat[B295](B295.apply)
 
   implicit val B300Format: Format[B300] = new IntegerFormat[B300](B300.apply)

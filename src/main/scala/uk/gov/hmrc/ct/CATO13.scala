@@ -25,5 +25,5 @@ case class CATO13(value: Int) extends CtBoxIdentifier(name = "Net Profits Charge
 object CATO13 extends Calculated[CATO13, ComputationsBoxRetriever] with NetProfitsChargeableToCtWithoutDonationsCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CATO13 =
-    calculateNetProfitsChargeableToCtWithoutDonations(fieldValueRetriever.cp293(), fieldValueRetriever.cp294())
+    calculateNetProfitsChargeableToCtWithoutDonations(fieldValueRetriever.cp293(), fieldValueRetriever.cp294(), fieldValueRetriever.cp997())
 }

@@ -16,14 +16,11 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
-import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.CP263
 
-case class B300(value: Int) extends CtBoxIdentifier("Profits chargeable to Corporation Tax") with CtInteger
+case class B285(value: Int) extends CtBoxIdentifier(name = "(Post reform) Trading losses carried forward and claimed against total profits") with CtInteger
 
-object B300 extends CorporationTaxCalculator with Calculated[B300, CT600BoxRetriever] {
-
-  override def calculate(fieldValueRetriever: CT600BoxRetriever): B300 =
-    calculateProfitsChargeableToCorporationTax(fieldValueRetriever.b235(), fieldValueRetriever.b275(), fieldValueRetriever.b285())
+object B285 extends Linked[CP263, B285] with CtTypeConverters {
+  override def apply(source: CP263): B285 = B285(source.orZero)
 }

@@ -16,14 +16,24 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box._
+import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
+import org.scalatest.mock.MockitoSugar
+import org.mockito.Mockito._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
+class CP265Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter {
 
-case class CP265(value: Int) extends CtBoxIdentifier("Profits before other deductions and reliefs (box 21)") with CtInteger
+  val mockRetriever = mock[ComputationsBoxRetriever]
 
-object CP265 extends Calculated[CP265, ComputationsBoxRetriever] with CtTypeConverters {
-  override def calculate(boxRetriever: ComputationsBoxRetriever): CP265 = {
-    CP265(boxRetriever.cp293() + boxRetriever.cp283b())
+  before {
+    reset(mockRetriever)
+  }
+
+  "CP265" should {
+    "be CP293 with post-reform losses added back in" in {
+      when(mockRetriever.cp293()).thenReturn(CP293(3))
+      when(mockRetriever.cp283b()).thenReturn(CP283b(2))
+      CP265.calculate(mockRetriever) shouldBe CP265(5)
+    }
   }
 }

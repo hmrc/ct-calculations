@@ -65,8 +65,8 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B520(noneIfNegative(calc))
   }
 
-  def calculateProfitsChargeableToCorporationTax(b235: B235, b275: B275): B300 = {
-    B300(b235.minus(b275))
+  def calculateProfitsChargeableToCorporationTax(b235: B235, b275: B275, b285: B285): B300 = {
+    B300(b235.minus(b275.value + b285.value))
   }
 
   def calculateApportionedProfitsChargeableFy1(params: CorporationTaxCalculatorParameters): B335 = {

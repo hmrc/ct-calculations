@@ -236,6 +236,8 @@ package object formats {
 
   implicit val cp259Format: Format[CP259] = new IntegerFormat[CP259](CP259.apply)
 
+  implicit val cp263Format: Format[CP263] = new OptionalIntegerFormat[CP263](CP263.apply)
+
   implicit val cp264Format: Format[CP264] = new IntegerFormat[CP264](CP264.apply)
 
   implicit val cp265Format: Format[CP265] = new IntegerFormat[CP265](CP265.apply)
@@ -283,6 +285,8 @@ package object formats {
   implicit val cp290Format: Format[CP290] = new OptionalIntegerFormat[CP290](CP290.apply)
 
   implicit val cp290aFormat: Format[CP290a] = new OptionalIntegerFormat[CP290a](CP290a.apply)
+
+  implicit val cp290bFormat: Format[CP290b] = new OptionalIntegerFormat[CP290b](CP290b.apply)
 
   implicit val cp291Format: Format[CP291] = new OptionalIntegerFormat[CP291](CP291.apply)
 
