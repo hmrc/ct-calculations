@@ -178,6 +178,12 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
     super.validateStringByLength(box.id, value, errorCodeId, min, max)
   }
 
+  def validateRequiredIf(predicate: Boolean)()(implicit ev: <:<[B, Option[Int]]): Set[CtValidation] = {
+    failIf (predicate && box.value.isEmpty) {
+      super.validateAsMandatory(box)
+    }
+  }
+
   @Deprecated
   def validateStringMaxLength(value: String, max: Int)(): Set[CtValidation] = {
     super.validateStringMaxLength(box.id, value, max)

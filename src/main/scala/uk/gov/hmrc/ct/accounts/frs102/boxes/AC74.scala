@@ -22,12 +22,13 @@ import uk.gov.hmrc.ct.box._
 case class AC74(value: Option[Int]) extends CtBoxIdentifier(name = "Profit and loss account (current PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[Frs102AccountsBoxRetriever]
+  with SelfValidatableBox[Frs102AccountsBoxRetriever, Option[Int]]
   with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateMoney(value)
+      validateMoney(value),
+      validateRequiredIf(boxRetriever.ac75().value.isDefined)
     )
   }
 }
