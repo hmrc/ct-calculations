@@ -24,11 +24,11 @@ case class CP510(value: Option[Int]) extends CtBoxIdentifier(name = "Unallowable
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       validateZeroOrPositiveInteger(this),
-      unAllowableError(boxRetriever)
+      unAllowableExpensesError(boxRetriever)
     )
   }
 
-  private def unAllowableError(boxRetriever: ComputationsBoxRetriever) = {
+  private def unAllowableExpensesError(boxRetriever: ComputationsBoxRetriever) = {
     failIf(hasValue && value.get > boxRetriever.cp508().value) {
       Set(CtValidation(None, "block.incomeFromProperty.unAllowable.error"))
     }

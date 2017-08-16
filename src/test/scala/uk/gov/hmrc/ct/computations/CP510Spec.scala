@@ -45,6 +45,10 @@ class CP510Spec extends WordSpec with Matchers with MockitoSugar {
         when(boxRetriever.cp508()).thenReturn(CP508(CP503(Some(5))))
         CP510(Some(10)).validate(boxRetriever) shouldBe Set(CtValidation(None, "block.incomeFromProperty.unAllowable.error"))
       }
+      "fail validation when greater than CP508 (because CP503 is none, and replaced by zero CP508 in implementation)" in {
+        when(boxRetriever.cp508()).thenReturn(CP508(CP503(None)))
+        CP510(Some(5)).validate(boxRetriever) shouldBe Set(CtValidation(None, "block.incomeFromProperty.unAllowable.error"))
+      }
       "pass validation when smaller than CP508" in {
         when(boxRetriever.cp508()).thenReturn(CP508(CP503(Some(10))))
         CP510(Some(5)).validate(boxRetriever) shouldBe empty
