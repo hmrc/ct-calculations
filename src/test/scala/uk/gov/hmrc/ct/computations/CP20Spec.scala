@@ -16,18 +16,15 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box._
+import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.mock.MockitoSugar
+import uk.gov.hmrc.ct.BoxValidationFixture
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP37(value: Option[Int]) extends CtBoxIdentifier(name = "Sundry expenses (use only for small miscellaneous expenses)") with CtOptionalInteger with Input
-  with ValidatableBox[ComputationsBoxRetriever] {
-  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    validateZeroOrPositiveInteger(this)
-  }
-}
+class CP20Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] {
 
-object CP37 {
+  val boxRetriever = mock[ComputationsBoxRetriever]
 
-  def apply(int: Int): CP37 = CP37(Some(int))
+  testBoxIsZeroOrPositive("CP20", CP20.apply)
 
 }
