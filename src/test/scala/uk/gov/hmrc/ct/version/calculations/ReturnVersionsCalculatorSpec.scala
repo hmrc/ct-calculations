@@ -392,7 +392,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           hmrcFiling = HMRCFiling(true),
           companyType = FilingCompanyType(MembersClub)) shouldBe expectedResult
       }
-      "return version for AP starting on or after 2016-04-02" in new ReturnVersionsCalculatorWithDefaults{
+      "return version for AP starting on or after 2016-04-02" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
@@ -406,7 +406,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           hmrcFiling = HMRCFiling(true),
           companyType = FilingCompanyType(MembersClub)) shouldBe expectedResult
       }
-      "return version for AP starting on 2017-03-31" in new ReturnVersionsCalculatorWithDefaults{
+      "return version for AP starting on 2017-03-31" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
@@ -421,7 +421,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           companyType = FilingCompanyType(MembersClub)) shouldBe expectedResult
       }
 
-      "return version for AP starting on or after 2017-04-01" in new ReturnVersionsCalculatorWithDefaults{
+      "return version for AP starting on or after 2017-04-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
@@ -435,7 +435,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           hmrcFiling = HMRCFiling(true),
           companyType = FilingCompanyType(MembersClub)) shouldBe expectedResult
       }
-      "return version for AP starting on or after 2017-05-01" in new ReturnVersionsCalculatorWithDefaults{
+      "return version for AP starting on or after 2017-05-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
