@@ -254,7 +254,7 @@ trait ReturnVersionsCalculator {
 
   private def computationsVersionBasedOnDate(apStartDate: LocalDate, apEndDate: LocalDate): Version = {
     (apStartDate, apEndDate) match {
-      case (startDate, _) if startDate > LocalDate.parse("2017-03-31") =>
+      case (_ , endDate) if endDate > LocalDate.parse("2017-03-31") =>
         ComputationsCT20171001
       case (startDate, _) if startDate >= LocalDate.parse("2016-01-01") =>
         ComputationsCT20161001
