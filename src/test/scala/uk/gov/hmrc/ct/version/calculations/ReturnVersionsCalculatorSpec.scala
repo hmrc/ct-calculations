@@ -284,8 +284,11 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       ("2015-04-01", "2016-03-31", ComputationsCT20150201),
 
       ("2016-01-01", "2017-03-31", ComputationsCT20161001),
-      ("2016-04-02", "2017-04-01", ComputationsCT20161001),
-      ("2016-10-01", "2017-04-02", ComputationsCT20161001),
+      ("2016-04-02", "2016-12-31", ComputationsCT20161001),
+      ("2016-10-01", "2017-04-02", ComputationsCT20171001),
+      ("2017-03-31", "2017-10-31", ComputationsCT20171001),
+      ("2017-03-31", "2017-04-01", ComputationsCT20171001),
+
 
       ("2017-04-01", "2017-10-31", ComputationsCT20171001),
       ("2017-04-02", "2017-10-31", ComputationsCT20171001)
@@ -399,7 +402,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(Computations, ComputationsCT20161001))
 
         private val apStartDate = Some(LocalDate.parse("2016-04-02"))
-        private val apEndDate = Some(LocalDate.parse("2017-04-01"))
+        private val apEndDate = Some(LocalDate.parse("2017-03-31"))
 
         calculateReturnVersions(apStartDate = apStartDate,
           apEndDate = apEndDate,
@@ -410,7 +413,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2017-03-31"))
         private val apEndDate = Some(LocalDate.parse("2017-04-01"))
@@ -543,7 +546,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600e, CT600Version3),
                                  Return(CT600, CT600Version3),
                                  Return(CT600j, CT600Version3),
-                                 Return(Computations, ComputationsCT20161001))
+                                 Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2016-01-01"))
         private val apEndDate = Some(LocalDate.parse("2017-04-01"))
@@ -561,7 +564,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
                                  Return(CT600e, CT600Version3),
                                  Return(CT600, CT600Version3),
                                  Return(CT600j, CT600Version3),
-                                 Return(Computations, ComputationsCT20161001))
+                                 Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2016-04-02"))
         private val apEndDate = Some(LocalDate.parse("2017-04-01"))
@@ -579,7 +582,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(CT600e, CT600Version3),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2017-03-31"))
         private val apEndDate = Some(LocalDate.parse("2017-12-31"))
@@ -721,7 +724,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2016-01-01"))
         private val apEndDate = Some(LocalDate.parse("2017-12-31"))
@@ -739,7 +742,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2016-04-02"))
         private val apEndDate = Some(LocalDate.parse("2017-04-01"))
@@ -757,7 +760,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2017-03-31"))
         private val apEndDate = Some(LocalDate.parse("2017-12-31"))
@@ -921,7 +924,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(CT600e, CT600Version3),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2016-04-01"))
         private val apEndDate = Some(LocalDate.parse("2017-04-01"))
@@ -939,7 +942,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(CT600e, CT600Version3),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2017-03-31"))
         private val apEndDate = Some(LocalDate.parse("2017-12-31"))
@@ -1080,7 +1083,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2016-01-01"))
         private val apEndDate = Some(LocalDate.parse("2017-04-01"))
@@ -1098,7 +1101,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2016-04-01"))
         private val apEndDate = Some(LocalDate.parse("2017-04-01"))
@@ -1116,7 +1119,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2017-03-31"))
         private val apEndDate = Some(LocalDate.parse("2017-12-01"))
@@ -1263,7 +1266,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(CT600, CT600Version3),
           Return(CT600e, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2016-04-01")),
           apEndDate = Some(LocalDate.parse("2017-04-01")),
@@ -1278,7 +1281,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(CT600, CT600Version3),
           Return(CT600e, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2017-03-31")),
           apEndDate = Some(LocalDate.parse("2017-12-31")),
@@ -1410,7 +1413,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
         val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2016-04-01"))
         private val apEndDate = Some(LocalDate.parse("2017-04-01"))
@@ -1429,7 +1432,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
         val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2017-03-31"))
         private val apEndDate = Some(LocalDate.parse("2017-12-31"))
@@ -1579,7 +1582,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(CT600, CT600Version3),
           Return(CT600e, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2016-04-01")),
           apEndDate = Some(LocalDate.parse("2017-04-01")),
@@ -1594,7 +1597,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(CT600, CT600Version3),
           Return(CT600e, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2017-03-31")),
           apEndDate = Some(LocalDate.parse("2017-12-31")),
@@ -1745,7 +1748,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
         val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
           Return(CT600, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2017-03-31"))
         private val apEndDate = Some(LocalDate.parse("2017-12-31"))
@@ -1900,7 +1903,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(CT600a, CT600Version3),
           Return(CT600e, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2016-04-01")),
           apEndDate = Some(LocalDate.parse("2017-04-01")),
@@ -1916,7 +1919,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(CT600a, CT600Version3),
           Return(CT600e, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2017-03-31")),
           apEndDate = Some(LocalDate.parse("2017-12-31")),
@@ -2056,7 +2059,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(CT600, CT600Version3),
           Return(CT600a, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2016-04-01"))
         private val apEndDate = Some(LocalDate.parse("2017-04-01"))
@@ -2076,7 +2079,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(CT600, CT600Version3),
           Return(CT600a, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2017-03-31"))
         private val apEndDate = Some(LocalDate.parse("2017-12-31"))
@@ -2233,7 +2236,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(CT600a, CT600Version3),
           Return(CT600e, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2016-04-01")),
           apEndDate = Some(LocalDate.parse("2017-04-01")),
@@ -2249,7 +2252,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(CT600a, CT600Version3),
           Return(CT600e, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2017-03-31")),
           apEndDate = Some(LocalDate.parse("2017-12-31")),
@@ -2389,7 +2392,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(CT600, CT600Version3),
           Return(CT600a, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2016-04-01"))
         private val apEndDate = Some(LocalDate.parse("2017-04-01"))
@@ -2409,7 +2412,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           Return(CT600, CT600Version3),
           Return(CT600a, CT600Version3),
           Return(CT600j, CT600Version3),
-          Return(Computations, ComputationsCT20161001))
+          Return(Computations, ComputationsCT20171001))
 
         private val apStartDate = Some(LocalDate.parse("2016-04-01"))
         private val apEndDate = Some(LocalDate.parse("2017-04-01"))
