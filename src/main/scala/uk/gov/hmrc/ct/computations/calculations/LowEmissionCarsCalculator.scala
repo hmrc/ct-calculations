@@ -33,7 +33,8 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
       case (d) if d < new LocalDate("2009-04-01") => range1(car)
       case (d) if d < new LocalDate("2013-04-01") => range2(car)
       case (d) if d < new LocalDate("2015-04-01") => range3(car)
-      case _ => range4(car)
+      case (d) if d < new LocalDate("2018-04-01") => range4(car)
+      case _ => range5(car)
 
     }
   }
@@ -68,6 +69,14 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
     }
   }
 
+  private def range5(car: Car): String = {
+    (car.isNew, car.emissions) match {
+      case (true, em) if em <= 50 => firstYearAllowance
+      case (true, em) if em > 50 && em <= 110 => mainRate
+      case (false, em) if em <= 110 => mainRate
+      case (_, em) if em > 110 => specialRate
+    }
+  }
   def getFYAPoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, firstYearAllowance)  //CPaux1
 
   def getMainRatePoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, mainRate) //CPaux2
@@ -94,10 +103,16 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   //1st April 2013 - 31st March 2015	-	            > 130 g/km	  Special rate
 
   //RANGE4
-  //1st April 2015 and thereafter	    New	          <=75 g/km     FYA
-  //1st April 2015 and thereafter	    New	          76-130 g/km	  Main rate
-  //1st April 2015 and thereafter	    Second hand	  <=130 g/km    Main rate
-  //1st April 2015 and thereafter	    -	            >130 g/km	    Special rate
+  //1st April 2015 and 31st March 2018	    New	          <=75 g/km     FYA
+  //1st April 2015 and 31st March 2018	    New	          76-130 g/km	  Main rate
+  //1st April 2015 and 31st March 2018	    Second hand	  <=130 g/km    Main rate
+  //1st April 2015 and 31st March 2018	    -	            >130 g/km	    Special rate
+
+  //RANGE5
+  //1st April 2018 and thereafter	    New	          <=50 g/km     FYA
+  //1st April 2018 and thereafter	    New	          50-110 g/km	  Main rate
+  //1st April 2018 and thereafter	    Second hand	  <=110 g/km    Main rate
+  //1st April 2018 and thereafter	    -	            >110 g/km	    Special rate
 
   def calculateSpecialRatePoolBalancingCharge(cpq8: CPQ8,
                                               cp666: CP666,

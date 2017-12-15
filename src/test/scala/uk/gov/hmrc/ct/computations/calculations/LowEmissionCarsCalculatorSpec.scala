@@ -107,6 +107,21 @@ class LowEmissionCarsCalculatorSpec extends WordSpec with Matchers {
     }
 
 
+    "return correct pool for new range5 car with <=50 emissions" in {
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 45, dateOfPurchase = new LocalDate("2018-06-01"))) shouldBe "FYA"
+    }
+    "return correct pool for new range5 car with 51-110 emissions" in {
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 60, dateOfPurchase = new LocalDate("2018-06-01"))) shouldBe "MainRate"
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 110, dateOfPurchase = new LocalDate("2018-06-01"))) shouldBe "MainRate"
+    }
+
+    "return correct pool for 2nd had range5 car with <=110 emissions" in {
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = false, price = 10, emissions = 100, dateOfPurchase = new LocalDate("2018-06-01"))) shouldBe "MainRate"
+    }
+    "return correct pool for 2nd hand range5 car with >110 emissions" in {
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = false, price = 10, emissions = 140, dateOfPurchase = new LocalDate("2018-06-01"))) shouldBe "SpecialRate"
+    }
+
     "return x for fya eligible cars" in {
       val lec01 = LEC01(List(
         Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 1, dateOfPurchase = new LocalDate("2014-01-31")),
