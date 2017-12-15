@@ -107,19 +107,53 @@ class LowEmissionCarsCalculatorSpec extends WordSpec with Matchers {
     }
 
 
+    "return correct pool for new range4 car with <=75 emissions for the purchase date of 2018-03-31" in {
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 75, dateOfPurchase = new LocalDate("2018-03-31"))) shouldBe "FYA"
+    }
+    "return correct pool for new range4 car with 76-130 emissions for the purchase date of 2018-03-31" in {
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 76, dateOfPurchase = new LocalDate("2018-03-31"))) shouldBe "MainRate"
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 130, dateOfPurchase = new LocalDate("2018-03-31"))) shouldBe "MainRate"
+    }
+    "return correct pool for new range4 car with >130 emissions for the purchase date of 2018-03-31" in {
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 131, dateOfPurchase = new LocalDate("2018-03-31"))) shouldBe "SpecialRate"
+    }
+    "return correct pool for 2nd had range4 car with <=130 emissions for the purchase date of 2018-03-31" in {
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = false, price = 10, emissions = 130, dateOfPurchase = new LocalDate("2018-03-31"))) shouldBe "MainRate"
+    }
+    "return correct pool for 2nd hand range4 car with >130 emissions for the purchase date of 2018-03-31" in {
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = false, price = 10, emissions = 131, dateOfPurchase = new LocalDate("2018-03-31"))) shouldBe "SpecialRate"
+    }
+
+    "return correct pool for new range5 car with <=50 emissions for the purchase date of 2018-04-01" in {
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 45, dateOfPurchase = new LocalDate("2018-04-01"))) shouldBe "FYA"
+    }
+    "return correct pool for new range5 car with 51-110 emissions for the purchase date of 2018-04-01" in {
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 60, dateOfPurchase = new LocalDate("2018-04-01"))) shouldBe "MainRate"
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 110, dateOfPurchase = new LocalDate("2018-04-01"))) shouldBe "MainRate"
+    }
+
+    "return correct pool for 2nd had range5 car with <=110 emissions for the purchase date of 2018-04-01" in {
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = false, price = 10, emissions = 100, dateOfPurchase = new LocalDate("2018-04-01"))) shouldBe "MainRate"
+    }
+    "return correct pool for 2nd hand range5 car with >110 emissions for the purchase date of 2018-04-01" in {
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = false, price = 10, emissions = 140, dateOfPurchase = new LocalDate("2018-04-01"))) shouldBe "SpecialRate"
+    }
+
     "return correct pool for new range5 car with <=50 emissions" in {
-      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 45, dateOfPurchase = new LocalDate("2018-06-01"))) shouldBe "FYA"
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 49, dateOfPurchase = new LocalDate("2018-06-01"))) shouldBe "FYA"
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 50, dateOfPurchase = new LocalDate("2018-06-01"))) shouldBe "FYA"
+
     }
     "return correct pool for new range5 car with 51-110 emissions" in {
-      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 60, dateOfPurchase = new LocalDate("2018-06-01"))) shouldBe "MainRate"
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 51, dateOfPurchase = new LocalDate("2018-06-01"))) shouldBe "MainRate"
       calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = true, price = 10, emissions = 110, dateOfPurchase = new LocalDate("2018-06-01"))) shouldBe "MainRate"
     }
 
     "return correct pool for 2nd had range5 car with <=110 emissions" in {
-      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = false, price = 10, emissions = 100, dateOfPurchase = new LocalDate("2018-06-01"))) shouldBe "MainRate"
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = false, price = 10, emissions = 109, dateOfPurchase = new LocalDate("2018-06-01"))) shouldBe "MainRate"
     }
     "return correct pool for 2nd hand range5 car with >110 emissions" in {
-      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = false, price = 10, emissions = 140, dateOfPurchase = new LocalDate("2018-06-01"))) shouldBe "SpecialRate"
+      calculator.taxPoolForCar(Car(regNumber = "XYZ123A", isNew = false, price = 10, emissions = 111, dateOfPurchase = new LocalDate("2018-06-01"))) shouldBe "SpecialRate"
     }
 
     "return x for fya eligible cars" in {
