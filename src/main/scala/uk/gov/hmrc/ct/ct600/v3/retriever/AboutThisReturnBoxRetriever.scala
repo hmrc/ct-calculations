@@ -29,6 +29,14 @@ trait AboutThisReturnBoxRetriever extends BoxRetriever {
 
   self: AccountsBoxRetriever =>
 
+  def b5(): B5
+
+  def b6(): B6
+
+  def b7(): B7
+
+  def b8(): B8
+
   def b30(): B30 = {
     this match {
       case computationsBoxRetriever: ComputationsBoxRetriever => B30(computationsBoxRetriever.cp1())

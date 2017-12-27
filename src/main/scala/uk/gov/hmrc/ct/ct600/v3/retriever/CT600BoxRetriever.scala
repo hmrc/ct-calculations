@@ -34,14 +34,6 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b4(): B4 = B4(companyType())
 
-  def b5(): B5
-
-  def b6(): B6
-
-  def b7(): B7
-
-  def b8(): B8
-
   def b145(): B145 = B145(cp7())
 
   def b150(): B150
