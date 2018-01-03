@@ -28,8 +28,8 @@ case class CP281b(value: Option[Int]) extends CtBoxIdentifier("Losses brought fo
 
   override def validate(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      requiredErrorIf(retriever.cpQ17().isTrue && retriever.cp1().value.isAfter(CPQ17.lossReform2017) && !hasValue),
-      cannotExistErrorIf(hasValue && (retriever.cpQ17().isFalse || !retriever.cp1().value.isAfter(CPQ17.lossReform2017))),
+      requiredErrorIf(retriever.cpQ17().isTrue && CPQ17.lossReform2017Applies(retriever.cp2()) && !hasValue),
+      cannotExistErrorIf(hasValue && (retriever.cpQ17().isFalse || !CPQ17.lossReform2017Applies(retriever.cp2()))),
       validateZeroOrPositiveInteger(this),
       sumOfBreakdownErrors(retriever)
     )

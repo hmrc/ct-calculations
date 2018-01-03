@@ -39,7 +39,7 @@ class CP281aSpec extends WordSpec with Matchers with MockitoSugar with BoxValida
   }
 
   testCannotExistWhen("CP281a", CP281a.apply, testDetails = "before loss reform") {
-    makeBoxRetriever(cp1Value = CPQ17.lossReform2017)
+    makeBoxRetriever(cp2Value = CPQ17.lossReform2017)
   }
 
   "CP281a" should {
@@ -54,10 +54,10 @@ class CP281aSpec extends WordSpec with Matchers with MockitoSugar with BoxValida
     }
   }
 
-  private def makeBoxRetriever(cp1Value: LocalDate = CPQ17.lossReform2017.plusDays(1), cpq17Value: Boolean = true,
+  private def makeBoxRetriever(cp2Value: LocalDate = CPQ17.lossReform2017.plusDays(1), cpq17Value: Boolean = true,
                               cp283aValue: Option[Int] = Some(1), cp288aValue: Option[Int] = Some(1)) = {
     val retriever = mock[ComputationsBoxRetriever]
-    when(retriever.cp1()).thenReturn(CP1(cp1Value))
+    when(retriever.cp2()).thenReturn(CP2(cp2Value))
     when(retriever.cpQ17()).thenReturn(CPQ17(Some(cpq17Value)))
     when(retriever.cp283a()).thenReturn(CP283a(cp283aValue))
     when(retriever.cp288a()).thenReturn(CP288a(cp288aValue))
