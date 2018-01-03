@@ -41,5 +41,5 @@ case class CPQ17(value: Option[Boolean]) extends CtBoxIdentifier(name = "Trading
 }
 
 object CPQ17 {
-  val lossReform2017 = LocalDate.parse("2017-04-01")
+  val lossReform2017 = LocalDate.parse("2017-03-31")
 }
