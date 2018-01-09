@@ -16,8 +16,36 @@ The above boxes have been implemented and added to the HMTL and CT600 XML.
 ### B125 Northern Ireland - form CT600G
 CATO will not be supporting this form so this will always be false.
 
+### B160 Trading losses brought forward set against trading profits
 
+    B160 = CP257 = CP238 - CP283b
 
+### B165 Net trading profits
+
+    B165 = CP258 = CP256 - CP257
+
+### B235 Profits before other deductions and reliefs
+
+    Old calculation: B235 = CP265 = CP293 + CP283b (this looks wrong to me, why would profits add losses to get total profits?)
+        CP293 - Total profits before other deductions and reliefs
+        CP283b - Losses brought forward from on or after 01/04/2017 used against trading profit
+        
+    New calculation: as per the description on the form.
+        B235 = net sum of boxes 165 to 205 and 220 minus sum of boxes 225 and 230
+            B170 = CP259 = CP43 (part of NTP) 
+            B175 (N/A)
+            B180 (N/A)
+            B185 (N/A)
+            B190 = CP511 = CP509 + CP510 (part of NTP) 
+            B195 (N/A)
+            B200 (N/A)
+            B205 = CP502 (part of NTP) 
+            B210 (N/A)
+            B215 (N/A)
+            B220 (N/A)
+            B225 (N/A)
+            B230 (N/A)
+       
 
 ### B285 Total losses carried forward and claimed against total profits
     
