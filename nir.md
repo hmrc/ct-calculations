@@ -46,9 +46,9 @@ CATO will not be supporting this form so this will always be false.
             B225 (N/A)
             B230 (N/A)
             
-    New box B235a - Trading before other deductions and reliefs
+    New box B235a - Trading profit before other deductions and reliefs
         B235a = B165
-    New box B235b - Trading before other deductions and reliefs
+    New box B235b - NON Trading profit before other deductions and reliefs
         B235b = sum(B170 to B230) (also matches CATO01)
         
     B235 = B235a + B23b
