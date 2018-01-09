@@ -51,7 +51,7 @@ CATO will not be supporting this form so this will always be false.
     New box B235b - NON Trading profit before other deductions and reliefs
         B235b = sum(B170 to B230) (also matches CATO01)
         
-    B235 = B235a + B23b
+    B235 = B235a + B235b
        
 
 ### B285 Total losses carried forward and claimed against total profits
@@ -71,7 +71,7 @@ CATO will not be supporting this form so this will always be false.
     New box: B295a - total deductions and reliefs against trading profit
         B295a = B275 + B285a
     New box: B295b - total deductions and reliefs against NON trading profit
-        B295b = sum (B240 to B265) + B285b + 290
+        B295b = sum (B240 to B265) + B285b + B290
 
     B295 = B295a + B295b
 
