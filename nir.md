@@ -17,10 +17,16 @@ The above boxes have been implemented and added to the HMTL and CT600 XML.
 CATO will not be supporting this form so this will always be false.
 
 
+
+
 ### B285 Total losses carried forward and claimed against total profits
     
+    Old Calculation: B285 = CP263 = CP997 + CP283b
+    
     New box: B285a - Total losses carried forward and claimed against trading profit
+        B285a = CP283b
     New box: B285b - Total losses carried forward and claimed against NON trading profit
+        B285b = CP997
 
     B285 = B285a + B285b
 
@@ -28,7 +34,9 @@ CATO will not be supporting this form so this will always be false.
 ### B295 Total of deductions and reliefs
 
     New box: B295a - total deductions and reliefs against trading profit
+        B295a = B275 + B285a
     New box: B295b - total deductions and reliefs against NON trading profit
+        B295b = sum (B240 to B265) + B285b + 290
 
     B295 = B295a + B295b
 
