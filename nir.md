@@ -30,7 +30,7 @@ CATO will not be supporting this form so this will always be false.
         CP293 - Total profits before other deductions and reliefs
         CP283b - Losses brought forward from on or after 01/04/2017 used against trading profit
         
-    New calculation: as per the description on the form.
+    The description on the form.
         B235 = net sum of boxes 165 to 205 and 220 minus sum of boxes 225 and 230
             B170 = CP259 = CP43 (part of NTP) 
             B175 (N/A)
@@ -45,6 +45,13 @@ CATO will not be supporting this form so this will always be false.
             B220 (N/A)
             B225 (N/A)
             B230 (N/A)
+            
+    New box B235a - Trading before other deductions and reliefs
+        B235a = B165
+    New box B235b - Trading before other deductions and reliefs
+        B235b = sum(B170 to B230)
+        
+    B235 = B235a + B23b
        
 
 ### B285 Total losses carried forward and claimed against total profits
@@ -71,7 +78,9 @@ CATO will not be supporting this form so this will always be false.
 ### B300 Profits before qualifying donations and group relief
 
     New box: B300a - trading profit before qualifying donations and group relief
+        B300a = B235a - B295a
     New box: B300b - non trading profit before qualifying donations and group relief
+        B300b = B235b - B295b
 
     B300 = B300a + B300b
 
