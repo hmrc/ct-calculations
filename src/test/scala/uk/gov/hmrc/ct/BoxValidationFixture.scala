@@ -28,6 +28,19 @@ trait BoxValidationFixture[T <: ComputationsBoxRetriever] extends WordSpec with 
   //This can be overridden if mock box retriever calls need to be made
   def setUpMocks(): Unit = Unit
 
+  def noFailureIntegerBox(boxId: String, builder: Option[Int] => ValidatableBox[T]) = {
+
+    setUpMocks()
+
+    "the test should pass when entering any number" in {
+      val randomNumber = scala.util.Random.nextInt()
+
+      builder(Some(randomNumber)).validate(boxRetriever).contains(CtValidation(Some(boxId), "")) shouldBe false
+    }
+
+  }
+
+
   def testBoxIsZeroOrPositive(boxId: String, builder: Option[Int] => ValidatableBox[T]) = {
 
     setUpMocks()
