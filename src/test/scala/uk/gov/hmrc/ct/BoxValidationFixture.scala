@@ -28,7 +28,7 @@ trait BoxValidationFixture[T <: ComputationsBoxRetriever] extends WordSpec with 
   //This can be overridden if mock box retriever calls need to be made
   def setUpMocks(): Unit = Unit
 
-  def noConstrainsValidationForNegativeAndPositiveNumbers(boxId: String, builder: Option[Int] => ValidatableBox[T]) = {
+  def noFailureIntegerBox(boxId: String, builder: Option[Int] => ValidatableBox[T]) = {
 
     setUpMocks()
 

@@ -25,6 +25,6 @@ class CP33Spec extends WordSpec with MockitoSugar with Matchers with BoxValidati
 
   val boxRetriever = mock[ComputationsBoxRetriever]
 
-  noConstrainsValidationForNegativeAndPositiveNumbers("CP33", CP33.apply)
+  noFailureIntegerBox("CP33", CP33.apply)
 
 }

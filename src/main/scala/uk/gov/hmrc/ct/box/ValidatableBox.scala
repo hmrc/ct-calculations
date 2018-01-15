@@ -176,12 +176,6 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
-  protected def noValidation(box: OptionalIntIdBox)(): Set[CtValidation] = {
-    box.value match {
-      case _ => Set()
-    }
-  }
-
   protected def validateZeroOrPositiveInteger(box: OptionalIntIdBox)(): Set[CtValidation] = {
     box.value match {
       case Some(x) if x < 0 => Set(CtValidation(Some(box.id), s"error.${box.id}.mustBeZeroOrPositive"))
