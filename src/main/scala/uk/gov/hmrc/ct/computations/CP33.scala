@@ -22,7 +22,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 case class CP33(value: Option[Int]) extends CtBoxIdentifier(name = "Profit/Losses on disposal of assets") with CtOptionalInteger with Input
   with ValidatableBox[ComputationsBoxRetriever] {
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    validateZeroOrPositiveInteger(this)
+    isPositiveOrNegative(this)
   }
 }
 

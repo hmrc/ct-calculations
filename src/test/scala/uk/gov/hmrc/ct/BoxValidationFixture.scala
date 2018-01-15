@@ -28,6 +28,21 @@ trait BoxValidationFixture[T <: ComputationsBoxRetriever] extends WordSpec with 
   //This can be overridden if mock box retriever calls need to be made
   def setUpMocks(): Unit = Unit
 
+  def testIsPositiveOrNegative(boxId: String, builder: Option[Int] => ValidatableBox[T]) = {
+
+    setUpMocks()
+
+    "fail must be zero or positive validation when negative" in {
+      builder(Some(-55)).validate(boxRetriever).contains(CtValidation(Some(boxId), s"error.$boxId.mustBeZeroOrPositive")) shouldBe false
+    }
+    "pass must be zero or positive validation when zero" in {
+      builder(Some(0)).validate(boxRetriever).contains(CtValidation(Some(boxId), s"error.$boxId.mustBeZeroOrPositive")) shouldBe false
+    }
+    "pass must be zero or positive validation when positive" in {
+      builder(Some(55)).validate(boxRetriever).contains(CtValidation(Some(boxId), s"error.$boxId.mustBeZeroOrPositive")) shouldBe false
+    }
+  }
+
   def testBoxIsZeroOrPositive(boxId: String, builder: Option[Int] => ValidatableBox[T]) = {
 
     setUpMocks()
