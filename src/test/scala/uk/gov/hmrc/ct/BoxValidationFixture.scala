@@ -32,17 +32,12 @@ trait BoxValidationFixture[T <: ComputationsBoxRetriever] extends WordSpec with 
 
     setUpMocks()
 
-    "the test should pass when entering the negative number" in {
-      builder(Some(-55)).validate(boxRetriever).contains(CtValidation(Some(boxId), "")) shouldBe false
+    "the test should pass when entering any number" in {
+      val randomNumber = scala.util.Random.nextInt()
+
+      builder(Some(randomNumber)).validate(boxRetriever).contains(CtValidation(Some(boxId), "")) shouldBe false
     }
 
-    "the test should pass when entering 0" in {
-      builder(Some(0)).validate(boxRetriever).contains(CtValidation(Some(boxId), "")) shouldBe false
-    }
-
-    "the test should pass when entering the positive number" in {
-      builder(Some(55)).validate(boxRetriever).contains(CtValidation(Some(boxId), "")) shouldBe false
-    }
   }
 
 
