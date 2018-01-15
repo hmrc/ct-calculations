@@ -244,6 +244,14 @@ trait CtOptionalDate extends OptionalCtValue[LocalDate] {
 
 }
 
+trait IsNegativeOrPositive {
+
+  self: CtInteger =>
+
+  require(value >= 0 || value <= 0, "This box must be either positive or negative")
+}
+
+
 trait MustBeZeroOrPositive {
 
   self: CtInteger =>
