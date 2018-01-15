@@ -16,14 +16,14 @@
 
 package uk.gov.hmrc.ct.box
 
-import java.util.regex.{Matcher, Pattern}
+import java.util.regex.Pattern
 
 import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 import uk.gov.hmrc.ct.utils.DateImplicits._
-import ValidatableBox._
 
 trait ValidatableBox[T <: BoxRetriever] extends Validators {
 
@@ -172,6 +172,13 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
   protected def validateZeroOrPositiveBigDecimal(box: OptionalBigDecimalIdBox)(): Set[CtValidation] = {
     box.value match {
       case Some(x) if x < BigDecimal(0) => Set(CtValidation(Some(box.id), s"error.${box.id}.mustBeZeroOrPositive"))
+      case _ => Set()
+    }
+  }
+
+  protected def validateNegativeOrPositiveInteger(box: OptionalIntIdBox)(): Set[CtValidation] = {
+    box.value match {
+      case Some(x) => Set()
       case _ => Set()
     }
   }
