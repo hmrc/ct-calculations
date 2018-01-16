@@ -136,7 +136,7 @@ Validation:
 * Min 0
 
 Now calculated:
-* CP288b = CP281b - CP283b = CP997
+* CP288b = CP281b - CP283b - CP997
 
 ### CP997 (existing box) 
 Losses from previous AP after 01/04/2017 set against non trading profits this AP
