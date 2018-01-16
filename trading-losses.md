@@ -31,7 +31,7 @@ Type: Int
 
 Validation: 
 * Required if CPQ17 is true and loss reform applies
-* Cannot exist if CPQ17 is false or loss reform does not apply
+* Cannot exist if CPQ17 is false or l oss reform does not apply
 * Max 99999999
 * Min 0
 * Must equal CP283a + CP288a
@@ -47,6 +47,14 @@ Validation:
 * Max 99999999
 * Min 0
 * Must equal CP283b + CP288b + CP997
+
+# CP282 (existing box) 
+Adjusted Trading Profit for the Period
+
+Type: Int
+
+Calculated:
+* if CPQ17 is true then CP282 = CP117 else empty
 
 # CP283 (existing box) 
 Losses brought forward used against trading profit
@@ -74,6 +82,28 @@ Type: Int
 
 Validation: 
 * Required if CP281b is positive
+* Max 99999999
+* Min 0
+
+### CP283c (new box) 
+NIR Losses brought forward from on or after 01/04/2017 used against trading profit
+
+Type: Int
+
+Validation: 
+* Required if NIR applies and CP281b is positive ???
+* Cannot exist if NIR does not apply
+* Max 99999999
+* Min 0
+
+### CP283d (new box) 
+Main Rate Losses brought forward from on or after 01/04/2017 used against trading profit
+
+Type: Int
+
+Validation: 
+* Required if NIR applies and CP281b is positive ???
+* Cannot exist if NIR does not apply
 * Max 99999999
 * Min 0
 
@@ -117,9 +147,25 @@ Validation:
 * Min 0
 * Must be <= CATO01
 
-### CP??? (New box)
-`NI Trading` Losses from previous AP after 01/04/2017 set against non trading profits this AP
+### CP997c (new box) 
+NIR Losses from previous AP after 01/04/2017 set against non trading profits this AP
 
+Type: Int
+
+Validation: 
+* Required if NIR applies and CP281b is positive
+* Max 99999999
+* Min 0
+
+### CP997d (new box) 
+Main Rate Losses from previous AP after 01/04/2017 set against non trading profits this AP
+
+Type: Int
+
+Validation: 
+* Required if NIR applies and CP281b is positive
+* Max 99999999
+* Min 0
 
 ## Global Errors
 // sum of losses brought forward (checked by CP283a and CP283b)
