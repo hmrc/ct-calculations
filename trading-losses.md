@@ -117,6 +117,10 @@ Validation:
 * Min 0
 * Must be <= CATO01
 
+### CP??? (New box)
+`NI Trading` Losses from previous AP after 01/04/2017 set against non trading profits this AP
+
+
 ## Global Errors
 // sum of losses brought forward (checked by CP283a and CP283b)
 * Fail if CP283a + CP283b > CP117
