@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.box.CtValidation
 
 
 object CompoundBoxValidationHelper {
-  @deprecated
+  @deprecated("", "29-09-2016 or earlier")
   def contextualiseErrorKey(containerName: String, errorKey: String, index: Int): String = {
     val splitKey = errorKey.split('.')
     (splitKey.take(1) ++ Array("compoundList", containerName) ++ Array(index.toString) ++ splitKey.drop(1)).mkString(".")

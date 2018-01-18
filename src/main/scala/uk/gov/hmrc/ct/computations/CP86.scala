@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
 
-@deprecated("This box is no longer in use")
+@deprecated("This box is no longer in use", "5-11-2016 or earlier")
 case class CP86(value: Option[Int]) extends CtBoxIdentifier(name = "Other first year allowances claimed") with CtOptionalInteger with Input
 
 object CP86 {
