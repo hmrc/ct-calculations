@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtInteger, CtOptionalInteger}
 
-@deprecated("This box is no longer in use", "5-11-2016 or earlier")
-case class CP95(value: Option[Int]) extends CtBoxIdentifier("Total Allowances") with CtOptionalInteger
 
-object CP95 extends Linked[CP93, CP95]{
-
-  override def apply(source: CP93): CP95 = CP95(source.value)
-}
+case class B325(value: Option[Int]) extends CtBoxIdentifier(name = "Northern Ireland profits included") with CtOptionalInteger

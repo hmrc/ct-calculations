@@ -46,7 +46,6 @@ trait CT600JBoxRetriever extends BoxRetriever {
   def j3(): J3 = {
     this match {
       case br: AboutThisReturnBoxRetriever => J3(br.b30())
-      case br: ComputationsBoxRetriever => J3(br.cp1().value)
       case _ => throw new IllegalStateException("Could not get the AP start date.")
     }
   }
@@ -54,7 +53,6 @@ trait CT600JBoxRetriever extends BoxRetriever {
   def j4(): J4 = {
     this match {
       case br: AboutThisReturnBoxRetriever => J4(br.b35())
-      case br: ComputationsBoxRetriever => J4(br.cp2().value)
       case _ => throw new IllegalStateException("Could not get the AP end date.")
     }
   }

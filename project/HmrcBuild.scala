@@ -14,8 +14,8 @@ object HmrcBuild extends Build {
     .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning)
     .settings(
       name := appName,
-      scalaVersion := "2.11.7",
-      crossScalaVersions := Seq("2.11.7"),
+      scalaVersion := "2.11.12",
+      crossScalaVersions := Seq("2.11.12"),
       libraryDependencies ++= Seq(
         Compile.playJson,
         Compile.catoTime,
@@ -32,11 +32,11 @@ private object BuildDependencies {
 
   object Compile {
     val playJson = "com.typesafe.play" %% "play-json" % "2.5.8" % "provided"
-    val catoTime = "uk.gov.hmrc" %% "play-time" % "0.2.0" % "provided"
+    val catoTime = "uk.gov.hmrc" %% "play-time" % "0.3.0" % "provided"
   }
 
   sealed abstract class Test(scope: String) {
-    val scalaTest = "org.scalatest" %% "scalatest" % "2.2.4" % scope
+    val scalaTest = "org.scalatest" %% "scalatest" % "2.2.6" % scope
     val mockito = "org.mockito" % "mockito-all" % "1.9.5" % scope
     val pegdown = "org.pegdown" % "pegdown" % "1.5.0" % scope
     val hamcrest = "org.hamcrest" % "hamcrest-all" % "1.3" % scope

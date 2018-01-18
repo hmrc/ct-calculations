@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
 
-@Deprecated
+@deprecated("" ,"01-03-2016 or earlier")
 case class CP81Input(value: Option[Int]) extends CtBoxIdentifier(name = "Expenditure qualifying for first year allowance (FYA)") with CtOptionalInteger with Input
 
 object CP81Input {
