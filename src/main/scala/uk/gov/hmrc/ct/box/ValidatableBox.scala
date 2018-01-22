@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 HM Revenue & Customs
+ * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 package uk.gov.hmrc.ct.box
 
-import java.util.regex.{Matcher, Pattern}
+import java.util.regex.Pattern
 
 import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 import uk.gov.hmrc.ct.utils.DateImplicits._
-import ValidatableBox._
 
 trait ValidatableBox[T <: BoxRetriever] extends Validators {
 
@@ -283,7 +283,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
-  @Deprecated
+  @deprecated("", "29-09-2016 or earlier")
   def validateStringMaxLength(boxId: String, value: String, max: Int)(): Set[CtValidation] = {
     failIf (value.size > max) {
       Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(commaForThousands(max)))))

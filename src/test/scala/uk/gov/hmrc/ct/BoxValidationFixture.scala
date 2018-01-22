@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 HM Revenue & Customs
+ * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,19 @@ trait BoxValidationFixture[T <: ComputationsBoxRetriever] extends WordSpec with 
 
   //This can be overridden if mock box retriever calls need to be made
   def setUpMocks(): Unit = Unit
+
+  def noFailureIntegerBox(boxId: String, builder: Option[Int] => ValidatableBox[T]) = {
+
+    setUpMocks()
+
+    "the test should pass when entering any number" in {
+      val randomNumber = scala.util.Random.nextInt()
+
+      builder(Some(randomNumber)).validate(boxRetriever).contains(CtValidation(Some(boxId), "")) shouldBe false
+    }
+
+  }
+
 
   def testBoxIsZeroOrPositive(boxId: String, builder: Option[Int] => ValidatableBox[T]) = {
 

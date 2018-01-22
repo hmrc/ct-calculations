@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 HM Revenue & Customs
+ * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -178,7 +178,7 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
     super.validateStringByLength(box.id, value, errorCodeId, min, max)
   }
 
-  @Deprecated
+  @deprecated("", "29-09-2016 or earlier")
   def validateStringMaxLength(value: String, max: Int)(): Set[CtValidation] = {
     super.validateStringMaxLength(box.id, value, max)
   }
