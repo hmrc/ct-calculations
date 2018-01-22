@@ -172,9 +172,9 @@ trait CtOptionalBoolean extends OptionalCtValue[Boolean] {
 
   def inverse : Option[Boolean] = value.map { !_ }
 
-  def isTrue = value.getOrElse(false) == true
+  def isTrue = orFalse
 
-  def isFalse = value.getOrElse(false) == false
+  def isFalse = !orFalse
 }
 
 trait CtString extends CtValue[String] {

@@ -17,22 +17,16 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP997(value: Option[Int]) extends CtBoxIdentifier("Losses from previous AP after 01/04/2017 set against non trading profits this AP")
-  with CtOptionalInteger
-  with Input
+case class CP283d(value: Option[Int]) extends CtBoxIdentifier("Main Stream Losses brought forward from on or after 01/04/2017 used against trading profit") with CtOptionalInteger
 
-object CP997 extends Calculated[CP997, ComputationsBoxRetriever] {
-
-  def apply(int: Int): CP997 = CP997(Some(int))
-
-  override def calculate(boxRetriever: ComputationsBoxRetriever): CP997 = {
-    CP997(
-      if (nir.mayHaveNirLosses(boxRetriever)) Some(boxRetriever.cp997d().orZero + boxRetriever.cp997e().orZero)
-      else boxRetriever.cp997b.value
+object CP283d extends Calculated[CP283d, ComputationsBoxRetriever] {
+  override def calculate(boxRetriever: ComputationsBoxRetriever): CP283d = {
+    CP283d(
+      boxRetriever.cp283b().value.map { postLosses =>
+        postLosses - boxRetriever.cp283c.orZero
+      }
     )
   }
-
 }

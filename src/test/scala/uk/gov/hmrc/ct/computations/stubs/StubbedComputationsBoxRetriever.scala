@@ -210,4 +210,16 @@ class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with Stub
   override def generateValues: Map[String, CtValue[_]] = ???
 
   override def countryOfRegistration(): CountryOfRegistration = CountryOfRegistration.EnglandWales
+
+  override def cp281c(): CP281c = ???
+
+  override def cp283c(): CP283c = ???
+
+  override def cp997b(): CP997b = ???
+
+  override def cp997c(): CP997c = ???
+
+  override def cp997d(): CP997d = ???
+
+  override def cpQ117(): CPQ117 = ???
 }

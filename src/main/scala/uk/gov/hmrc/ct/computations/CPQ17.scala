@@ -39,8 +39,3 @@ case class CPQ17(value: Option[Boolean]) extends CtBoxIdentifier(name = "Trading
     )
   }
 }
-
-object CPQ17 {
-  def lossReform2017Applies(to: EndDate): Boolean = to.value.isAfter(lossReform2017)
-  private[computations] val lossReform2017 = LocalDate.parse("2017-03-31")
-}

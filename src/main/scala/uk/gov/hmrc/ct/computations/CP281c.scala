@@ -20,19 +20,28 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP997(value: Option[Int]) extends CtBoxIdentifier("Losses from previous AP after 01/04/2017 set against non trading profits this AP")
+case class CP281c(value: Option[Int]) extends CtBoxIdentifier("NIR Losses brought forward from on or after 01/04/2017")
   with CtOptionalInteger
   with Input
+  with ValidatableBox[ComputationsBoxRetriever]
+  with TradingLossesValidation {
 
-object CP997 extends Calculated[CP997, ComputationsBoxRetriever] {
+  override def validate(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    import uk.gov.hmrc.ct.computations.losses._
+    import uk.gov.hmrc.ct.computations.nir._
 
-  def apply(int: Int): CP997 = CP997(Some(int))
-
-  override def calculate(boxRetriever: ComputationsBoxRetriever): CP997 = {
-    CP997(
-      if (nir.mayHaveNirLosses(boxRetriever)) Some(boxRetriever.cp997d().orZero + boxRetriever.cp997e().orZero)
-      else boxRetriever.cp997b.value
+    collectErrors(
+      requiredErrorIf(retriever.cpQ17().isTrue &&
+                      lossReform2017Applies(retriever.cp2()) &&
+                      mayHaveNirLosses(retriever) &&
+                      !hasValue),
+      cannotExistErrorIf(
+        hasValue &&
+        (retriever.cpQ17().isFalse ||
+          !lossReform2017Applies(retriever.cp2()) ||
+          !mayHaveNirLosses(retriever))
+      ),
+      validateIntegerRange("CP281c", this, 0, retriever.cp281b())
     )
   }
-
 }

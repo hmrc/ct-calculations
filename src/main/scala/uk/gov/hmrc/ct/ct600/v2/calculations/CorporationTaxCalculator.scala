@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.ct600.v2.calculations
 
-import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
 import uk.gov.hmrc.ct.ct600._
@@ -27,27 +26,27 @@ import uk.gov.hmrc.ct.ct600.v2._
 trait CorporationTaxCalculator extends CtTypeConverters with NumberRounding {
 
   def financialYear1(accountingPeriod: HmrcAccountingPeriod): Int = {
-    fallsInFinancialYear(accountingPeriod.start.value)
+    startingFinancialYear(accountingPeriod.start)
   }
 
   def financialYear2(accountingPeriod: HmrcAccountingPeriod): Option[Int] = {
-    val fy2 = fallsInFinancialYear(accountingPeriod.end.value)
+    val fy2 = endingFinancialYear(accountingPeriod.end)
     if (financialYear1(accountingPeriod) != fy2) {
       Some(fy2)
     } else None
   }
 
   def rateOfTaxFy1(accountingPeriod: HmrcAccountingPeriod, b37: B37, b42: B42, b39: B39, b38: B38): BigDecimal = {
-    calculateRateOfTaxYear(accountingPeriod.start.value, b37, b42, b39, b38)
+    calculateRateOfTaxYear(TaxYear(startingFinancialYear(accountingPeriod.start)), b37, b42, b39, b38)
   }
 
   def rateOfTaxFy2(accountingPeriod: HmrcAccountingPeriod, b37: B37, b42: B42, b39: B39, b38: B38): BigDecimal = {
-    calculateRateOfTaxYear(accountingPeriod.end.value, b37, b42, b39, b38)
+    calculateRateOfTaxYear(TaxYear(endingFinancialYear(accountingPeriod.end)), b37, b42, b39, b38)
   }
 
   // smallCompaniesRateOfTax, rateOfTax,
-  private def calculateRateOfTaxYear(date: LocalDate, b37: B37, b42: B42, b39: B39, b38: B38): BigDecimal = {
-    val constantsForTaxYear = Ct600AnnualConstants.constantsForTaxYear(TaxYear(fallsInFinancialYear(date)))
+  private def calculateRateOfTaxYear(taxYear: TaxYear, b37: B37, b42: B42, b39: B39, b38: B38): BigDecimal = {
+    val constantsForTaxYear = Ct600AnnualConstants.constantsForTaxYear(taxYear)
     val rate = constantsForTaxYear.rateOfTax
 
     val taxable = b38 + b37
@@ -89,10 +88,10 @@ trait CorporationTaxCalculator extends CtTypeConverters with NumberRounding {
   }
 
   def calculateApportionedProfitsChargeableFy1(params: CorporationTaxCalculatorParameters): B44 = {
-    B44(CorporationTaxHelper.calculateApportionedProfitsChargeableFy1(params))
+    B44(HmrcValueApportioning.calculateApportionedProfitsChargeableFy1(params))
   }
 
   def calculateApportionedProfitsChargeableFy2(params: CorporationTaxCalculatorParameters): B54 = {
-    B54(CorporationTaxHelper.calculateApportionedProfitsChargeableFy2(params))
+    B54(HmrcValueApportioning.calculateApportionedProfitsChargeableFy2(params))
   }
 }

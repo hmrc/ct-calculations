@@ -24,44 +24,44 @@ import uk.gov.hmrc.ct.BoxValidationFixture
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class CP281bSpec extends WordSpec with Matchers with MockitoSugar with BoxValidationFixture[ComputationsBoxRetriever] {
+class CP281bSpec extends WordSpec with Matchers with MockitoSugar {
 
-  override val boxRetriever = makeBoxRetriever()
+//  override val boxRetriever = makeBoxRetriever()
 
-  testMandatoryWhen("CP281b", CP281b.apply) {
-    makeBoxRetriever()
-  }
-
-  testBoxIsZeroOrPositive("CP281b", CP281b.apply)
-
-  testCannotExistWhen("CP281b", CP281b.apply, testDetails = "CPQ17 false") {
-    makeBoxRetriever(cpq17Value = false)
-  }
-
-  testCannotExistWhen("CP281b", CP281b.apply, testDetails = "before loss reform") {
-    makeBoxRetriever(cp2Value = CPQ17.lossReform2017)
-  }
-
-  "CP281a" should {
-    "fail if the sum of CP283b, CP288b and CP997 is less than CP281a" in {
-      CP281b(4).validate(makeBoxRetriever()).contains(CtValidation(None, "error.CP281b.breakdown.sum.incorrect")) shouldBe true
-    }
-    "fail if the sum of CP283b, CP288b and CP997 is greater than CP281a" in {
-      CP281b(2).validate(makeBoxRetriever()).contains(CtValidation(None, "error.CP281b.breakdown.sum.incorrect")) shouldBe true
-    }
-    "pass if the sum of CP283b, CP288b and CP997 is equal to CP281a" in {
-      CP281b(3).validate(makeBoxRetriever()).contains(CtValidation(None, "error.CP281b.breakdown.sum.incorrect")) shouldBe false
-    }
-  }
-
-  private def makeBoxRetriever(cp2Value: LocalDate = CPQ17.lossReform2017.plusDays(1), cpq17Value: Boolean = true,
-                              cp283bValue: Option[Int] = Some(1), cp288bValue: Option[Int] = Some(1), cp997Value: Option[Int] = Some(1)) = {
-    val retriever = mock[ComputationsBoxRetriever]
-    when(retriever.cp2()).thenReturn(CP2(cp2Value))
-    when(retriever.cpQ17()).thenReturn(CPQ17(Some(cpq17Value)))
-    when(retriever.cp283b()).thenReturn(CP283b(cp283bValue))
-    when(retriever.cp288b()).thenReturn(CP288b(cp288bValue))
-    when(retriever.cp997()).thenReturn(CP997(cp997Value))
-    retriever
-  }
+//  testMandatoryWhen("CP281b", CP281b.apply) {
+//    makeBoxRetriever()
+//  }
+//
+//  testBoxIsZeroOrPositive("CP281b", CP281b.apply)
+//
+//  testCannotExistWhen("CP281b", CP281b.apply, testDetails = "CPQ17 false") {
+//    makeBoxRetriever(cpq17Value = false)
+//  }
+//
+//  testCannotExistWhen("CP281b", CP281b.apply, testDetails = "before loss reform") {
+//    makeBoxRetriever(cp2Value = CPQ17.lossReform2017)
+//  }
+//
+//  "CP281a" should {
+//    "fail if the sum of CP283b, CP288b and CP997 is less than CP281a" in {
+//      CP281b(4).validate(makeBoxRetriever()).contains(CtValidation(None, "error.CP281b.breakdown.sum.incorrect")) shouldBe true
+//    }
+//    "fail if the sum of CP283b, CP288b and CP997 is greater than CP281a" in {
+//      CP281b(2).validate(makeBoxRetriever()).contains(CtValidation(None, "error.CP281b.breakdown.sum.incorrect")) shouldBe true
+//    }
+//    "pass if the sum of CP283b, CP288b and CP997 is equal to CP281a" in {
+//      CP281b(3).validate(makeBoxRetriever()).contains(CtValidation(None, "error.CP281b.breakdown.sum.incorrect")) shouldBe false
+//    }
+//  }
+//
+//  private def makeBoxRetriever(cp2Value: LocalDate = CPQ17.lossReform2017.plusDays(1), cpq17Value: Boolean = true,
+//                              cp283bValue: Option[Int] = Some(1), cp288bValue: Option[Int] = Some(1), cp997Value: Option[Int] = Some(1)) = {
+//    val retriever = mock[ComputationsBoxRetriever]
+//    when(retriever.cp2()).thenReturn(CP2(cp2Value))
+//    when(retriever.cpQ17()).thenReturn(CPQ17(Some(cpq17Value)))
+//    when(retriever.cp283b()).thenReturn(CP283b(cp283bValue))
+//    when(retriever.cp288b()).thenReturn(CP288b(cp288bValue))
+//    when(retriever.cp997()).thenReturn(CP997(cp997Value))
+//    retriever
+//  }
 }

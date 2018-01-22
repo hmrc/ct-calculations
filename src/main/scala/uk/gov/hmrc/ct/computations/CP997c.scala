@@ -20,30 +20,26 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP281a(value: Option[Int]) extends CtBoxIdentifier("Losses brought forward from before 01/04/2017")
+case class CP997c(value: Option[Int]) extends CtBoxIdentifier("NIR Losses from previous AP after 01/04/2017 set against non trading profits this AP")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[ComputationsBoxRetriever]
-  with TradingLossesValidation {
+  with ValidatableBox[ComputationsBoxRetriever] {
 
   override def validate(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    import losses._
     collectErrors(
-      requiredErrorIf(retriever.cpQ17().isTrue && lossReform2017Applies(retriever.cp2()) && !hasValue),
-      cannotExistErrorIf(hasValue && (retriever.cpQ17().isFalse || !lossReform2017Applies(retriever.cp2()))),
+      requiredErrorIf(retriever.cp281b().isPositive &&
+                      nir.mayHaveNirLosses(retriever) &&
+                      !hasValue),
+      cannotExistErrorIf(!nir.mayHaveNirLosses(retriever) &&
+                         hasValue),
       validateZeroOrPositiveInteger(this),
-      sumOfBreakdownErrors(retriever)
+      exceedsNonTradingProfitErrors(retriever)
     )
   }
 
-  private def sumOfBreakdownErrors(retriever: ComputationsBoxRetriever) = {
-    failIf(retriever.cp283a() + retriever.cp288a() != this.orZero) {
-      Set(CtValidation(None, "error.CP281a.breakdown.sum.incorrect"))
+  private def exceedsNonTradingProfitErrors(retriever: ComputationsBoxRetriever) = {
+    failIf(losses.cp997ExceedsNonTradingProfit(retriever)) {
+      Set(CtValidation(Some("CP997c"), "error.CP997.exceeds.nonTradingProfit"))
     }
   }
-}
-
-object CP281a {
-
-  def apply(int: Int): CP281a = CP281a(Some(int))
 }

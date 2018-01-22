@@ -16,23 +16,15 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
+import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.box.EndDate
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP997(value: Option[Int]) extends CtBoxIdentifier("Losses from previous AP after 01/04/2017 set against non trading profits this AP")
-  with CtOptionalInteger
-  with Input
+package object losses {
 
-object CP997 extends Calculated[CP997, ComputationsBoxRetriever] {
+  val lossReform2017 = LocalDate.parse("2017-03-31")
 
-  def apply(int: Int): CP997 = CP997(Some(int))
+  def lossReform2017Applies(apEndDate: EndDate): Boolean = apEndDate.value.isAfter(lossReform2017)
 
-  override def calculate(boxRetriever: ComputationsBoxRetriever): CP997 = {
-    CP997(
-      if (nir.mayHaveNirLosses(boxRetriever)) Some(boxRetriever.cp997d().orZero + boxRetriever.cp997e().orZero)
-      else boxRetriever.cp997b.value
-    )
-  }
-
+  def cp997ExceedsNonTradingProfit(retriever: ComputationsBoxRetriever): Boolean = retriever.cato01() < retriever.cp997().orZero
 }

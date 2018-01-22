@@ -12,6 +12,15 @@ Validation:
 * Cannot exist if CP117 == 0
 * Cannot exist if CPQ19 exists
 
+### CPQ117 (new box)
+Do any of these arise whilst qualifying for NIR?
+
+Type: Boolean
+
+Validation:
+* Required if CPQ17 is true
+* Cannot exist if CPQ17 is not true
+
 # CP281 (existing box) 
 What is the total value of your trading losses from previous accounting periods?
 
@@ -93,7 +102,7 @@ NIR Losses brought forward from on or after 01/04/2017 used against trading prof
 Type: Int
 
 Validation: 
-* Required if NIR applies and CP283b is positive ???
+* Required if NIR applies and CP283b is positive
 * Cannot exist if NIR does not apply
 * Max 99999999
 * Min 0
@@ -104,7 +113,7 @@ Main Rate Losses brought forward from on or after 01/04/2017 used against tradin
 Type: Int
 
 Validation: 
-* Required if NIR applies and CP283b is positive ???
+* Required if NIR applies and CP283b is positive
 * Cannot exist if NIR does not apply
 * Max 99999999
 * Min 0
@@ -174,3 +183,4 @@ Validation:
 ## Global Errors
 // sum of losses brought forward (checked by CP283a and CP283b)
 * Fail if CP283a + CP283b > CP117
+
