@@ -62,53 +62,9 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
 
       val table = Table(
         ("message",                                                         "CP117",    "CATO01",      "cpq17",          "allLossesBroughtForward",                                                         "lossesBroughtForwardAgainstTradingProfit",                                                         "cp284",     "cp288",     "cp288a",     "cp288b",   "lossesBroughtForwardAgainstNonTradingProfit"),
-//        ("No TP, TL or NTP: losses should be carried forward",                    0,           0,         None,       Some(1000),     Some(0),       Some(1000),     Some(1000),     Some(0), )
         ("TP and no NTP: NIR losses == TP and should be applied 1:1",          1000,           0,    Some(true),         AllLossesBroughtForward(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     Some(0),     Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP)
 //        ("TP and no NTP: NIR losses < TP and should be applied 1:1",           2000,           0,    Some(true),       Some(1000),     Some(0),       Some(1000),     Some(1000),     Some(0),  Some(1000),   Some(0), Some(1000), Some(1000),    Some(0),  Some(1000),  Some(1000),      Some(0),   Some(1000),      None)
-//        ("TP and no NTP: NIR losses should be applied 1:1",                    1000,           0,    Some(true),       Some(1000),     Some(0),       Some(1000),     Some(1000),     Some(0),  Some(0),    Some(0), Some(1000), Some(1000),    Some(0),   Some(0),    Some(0),    Some(0),    Some(0))
 
-//        ("No TP, No TL with NTP",                                               0,          600,     Some(0),  Some(0),    Some(0),       600),
-//
-//        ("TP, No TL or NTP, no previous losses",                                1000,       0,      Some(0),   Some(0),    Some(0),       1000),
-//        ("TP, No TL or NTP, previous losses less than TP",                      1000,       0,      Some(0),   Some(0),    Some(400),     600),
-//        ("TP, No TL or NTP, previous losses equals TP",                         1000,       0,      Some(0),   Some(0),    Some(1000),    0),
-//
-//        ("TP, No TL with NTP, no previous losses",                              1000,       600,    Some(0),   Some(0),    Some(0),       1600),
-//        ("TP, No TL with NTP, previous losses less than TP",                    1000,       600,    Some(0),   Some(0),    Some(400),     1200),
-//        ("TP, No TL with NTP, previous losses equals TP",                       1000,       600,    Some(0),   Some(0),    Some(1000),    600),
-//        ("TP, No TL with NTP, previous losses equals TP, previous against NTP", 1000,       600,    Some(0),   Some(200),  Some(1000),    400),
-//
-//        ("TL, No TP or NTP, no previous losses",                                0,          0,      Some(0),    Some(0),  Some(0),       0),
-//        ("TL, No TP or NTP, previous losses less than TL",                      0,          0,      Some(400),  Some(0),  Some(0),       0),
-//        ("TL, No TP or NTP, previous losses equals TL",                         0,          0,      Some(800),  Some(0),  Some(0),       0),
-//        ("TL, No TP or NTP, previous losses greater than TL",                   0,          0,      Some(1200), Some(0),  Some(0),       0),
-//
-//        ("TL, No TP or NTP, no previous losses - None",                         0,          0,      None,       Some(0),  None,          0),
-//        ("TL, No TP or NTP, previous losses less than TL - None",               0,          0,      Some(400),  Some(0),  None,          0),
-//        ("TL, No TP or NTP, previous losses equals TL - None",                  0,          0,      Some(800),  Some(0),  None,          0),
-//        ("TL, No TP or NTP, previous losses greater than TL - None",            0,          0,      Some(1200), Some(0),  None,          0),
-//
-//        ("TL, No TP with NTP, losses less than NTP",                            0,          600,    Some(200),  Some(0),  Some(0),       400),
-//        ("TL, No TP with NTP, losses equals NTP",                               0,          600,    Some(600),  Some(0),  Some(0),       0),
-//        ("Tl, No TP with NTP, losses greater than NTP",                         0,          600,    Some(600),  Some(0),  Some(0),       0),
-//
-//        ("TL, No TP with NTP, losses less than NTP and cp998 is zero",          0,          600,    Some(0),    Some(0),  Some(0),       600),
-//        ("TL, No TP with NTP, losses equals NTP and cp998 is zero",             0,          600,    Some(0),    Some(0),  Some(0),       600),
-//        ("Tl, No TP with NTP, losses greater than NTP and cp998 is zero",       0,          600,    Some(0),    Some(0),  Some(0),       600),
-//
-//        ("TL, No TP with NTP, losses less than NTP - None",                     0,          600,    Some(200),  Some(0),  None,          400),
-//        ("TL, No TP with NTP, losses equals NTP - None",                        0,          600,    Some(600),  Some(0),  None,          0),
-//        ("Tl, No TP with NTP, losses greater than NTP - None",                  0,          600,    Some(600),  Some(0),  None,          0),
-//
-//        ("TL, No TP with NTP, losses less than NTP and cp998 is None",          0,          600,    None,       Some(0),  None,          600),
-//        ("TL, No TP with NTP, losses equals NTP and cp998 is None",             0,          600,    None,       Some(0),  None,          600),
-//        ("Tl, No TP with NTP, losses greater than NTP and cp998 is None",       0,          600,    None,       Some(0),  None,          600),
-//
-//        ("TP 1000, NTP 500, previous loss 2000",                                1000,       500,    None,       Some(0),  Some(1000),    500),
-//        ("TL 500, NTP 1000",                                                    0,          1000,   Some(500),  Some(0),  None,          500),
-//
-//        ("TP with no NTP, CP998 or CP281 empty",                                500099,     0,      None,       Some(0),  None,          500099),
-//        ("TP with NTP, CP998 or CP281 empty",                                   500099,     10000,  None,       Some(0),  None,          510099)
       )
 
       forAll(table) {
