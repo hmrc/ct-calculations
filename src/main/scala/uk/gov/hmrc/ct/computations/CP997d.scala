@@ -17,19 +17,22 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP997d(value: Option[Int]) extends CtBoxIdentifier("Main stream Losses from previous AP after 01/04/2017 set against non trading profits this AP")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[ComputationsBoxRetriever] {
+  with ValidatableBox[ComputationsBoxRetriever]
+  with NorthernIrelandRateValidation {
 
   override def validate(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       requiredErrorIf(retriever.cp281b().isPositive &&
-        nir.mayHaveNirLosses(retriever) &&
+        mayHaveNirLosses(retriever) &&
+        retriever.cato01().value > 0 &&
         !hasValue),
-      cannotExistErrorIf(!nir.mayHaveNirLosses(retriever) &&
+      cannotExistErrorIf(!mayHaveNirLosses(retriever) &&
         hasValue),
       validateZeroOrPositiveInteger(this),
       exceedsNonTradingProfitErrors(retriever)

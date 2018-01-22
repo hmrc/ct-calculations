@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.computations.nir
 
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.ct600.v3.retriever.AboutThisReturnBoxRetriever
+import org.scalatest.WordSpec
 
-package object nir {
-
-  def mayHaveNirLosses(computationsBoxRetriever: ComputationsBoxRetriever): Boolean = computationsBoxRetriever match {
-    case retriever: ComputationsBoxRetriever with AboutThisReturnBoxRetriever => retriever.b5().orFalse || retriever.cpQ117().orFalse
-    case retriever: ComputationsBoxRetriever => retriever.cpQ117().orFalse
-    case _ => false
-  }
-
+class NorthernIrelandCalculationsSpec extends WordSpec {
 
 }
