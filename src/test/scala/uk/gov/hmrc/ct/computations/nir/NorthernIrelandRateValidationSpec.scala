@@ -62,8 +62,8 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
 
       val table = Table(
         ("message",                                                         "CP117",    "CATO01",      "cpq17",          "allLossesBroughtForward",                                                         "lossesBroughtForwardAgainstTradingProfit",                                                         "cp284",     "cp288",     "cp288a",     "cp288b",   "lossesBroughtForwardAgainstNonTradingProfit"),
-        ("TP and no NTP: NIR losses == TP and should be applied 1:1",          1000,           0,    Some(true),         AllLossesBroughtForward(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     Some(0),     Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP)
-//        ("TP and no NTP: NIR losses < TP and should be applied 1:1",           2000,           0,    Some(true),       Some(1000),     Some(0),       Some(1000),     Some(1000),     Some(0),  Some(1000),   Some(0), Some(1000), Some(1000),    Some(0),  Some(1000),  Some(1000),      Some(0),   Some(1000),      None)
+        ("TP and no NTP: NIR losses == TP and should be applied 1:1",          1000,           0,    Some(true),         AllLossesBroughtForward(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     Some(0),     Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP),
+        ("TP and no NTP: NIR losses < TP and should be applied 1:1",           2000,           0,    Some(true),         AllLossesBroughtForward(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     Some(1000),  Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP)
 
       )
 
