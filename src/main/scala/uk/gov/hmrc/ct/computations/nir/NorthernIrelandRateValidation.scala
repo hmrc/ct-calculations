@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.nir
 
+import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.AboutThisReturnBoxRetriever
 
@@ -60,6 +61,10 @@ trait NorthernIrelandRateValidation {
 
   def mainStreamLossesCanBeOffsetAgainstNirTradingProfit(boxRetriever: ComputationsBoxRetriever): Boolean = {
     true
+  }
+
+  def lossesBroughtForwardTotalsCorrect(retriever: ComputationsBoxRetriever): Boolean = {
+    retriever.cp281c().orZero >= retriever.cp281b().orZero
   }
 
 //  private def whenNorthernIrelandRateActive(boxRetriever: ComputationsBoxRetriever)( predicates: (ComputationsBoxRetriever => Boolean)* ): Boolean = {

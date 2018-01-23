@@ -28,11 +28,6 @@ case class CP281c(value: Option[Int]) extends CtBoxIdentifier("NIR Losses brough
 
   override def validate(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
     import uk.gov.hmrc.ct.computations.losses._
-
-    def maxLossToBeOffsetAgainstTP(): Int = {
-      retriever.cp117().value min retriever.cp281b().orZero
-    }
-
     collectErrors(
       requiredErrorIf(retriever.cpQ17().isTrue &&
                       lossReform2017Applies(retriever.cp2()) &&
@@ -43,7 +38,9 @@ case class CP281c(value: Option[Int]) extends CtBoxIdentifier("NIR Losses brough
                           !lossReform2017Applies(retriever.cp2()) ||
                           !mayHaveNirLosses(retriever))
       ),
-      validateIntegerRange("CP281c", this, 0, maxLossToBeOffsetAgainstTP())
+      passIf(lossesBroughtForwardTotalsCorrect(retriever)){
+        Set(CtValidation(Some("CP281c"), "error.CP281b.breakdown.sum.incorrect"))
+      }
     )
   }
 }
