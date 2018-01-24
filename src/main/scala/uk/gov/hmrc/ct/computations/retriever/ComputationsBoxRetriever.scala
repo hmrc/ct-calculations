@@ -362,8 +362,6 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp997(): CP997 = CP997.calculate(this)
 
-  def cp997b(): CP997b
-
   def cp997c(): CP997c
 
   def cp997d(): CP997d

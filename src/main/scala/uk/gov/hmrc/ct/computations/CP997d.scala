@@ -32,8 +32,6 @@ case class CP997d(value: Option[Int]) extends CtBoxIdentifier("Main stream Losse
         mayHaveNirLosses(retriever) &&
         retriever.cato01().value > 0 &&
         !hasValue),
-      cannotExistErrorIf(!mayHaveNirLosses(retriever) &&
-        hasValue),
       validateZeroOrPositiveInteger(this),
       exceedsNonTradingProfitErrors(retriever)
     )
