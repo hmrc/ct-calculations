@@ -134,8 +134,8 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
 
 
       ("message",                                                "CP117",    "CATO01",      "cpq17",         "allLossesBroughtForward: Total      pre         post        NI_Loss  Main_Loss",  "lossesBroughtForwardAgainstTradingProfit: Total      pre       post        NI_Loss   Main_Loss",    "cp284",  "cp288",    "cp288a",   "cp288b",  "lossesBroughtForwardAgainstNonTradingProfit: Total     post  NI_Loss    Main_Loss NI_Loss_Revalued"),
-      ("Losses before 1/4/2017 & Losses after 1/4/2017, No NTP",  2000,      0,              Some(true),       AllLossesBroughtForward(Some(3000), Some(1500), Some(1500), Some(0), Some(1500)), LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(500), Some(1500), Some(0), Some(1500)),     Some(0), Some(1000), Some(1000), Some(0),    LossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP),
-      ("Rut's Business",                                          5000,      3000,           Some(true),       AllLossesBroughtForward(Some(10000), Some(3000), Some(7000), Some(0), Some(7000)), LossesBroughtForwardAgainstTradingProfit(Some(5000), Some(3000), Some(2000), Some(0), Some(2000)),  Some(0), Some(5000), Some(0),    Some(5000),  LossesBroughtForwardAgainstNonTradingProfit(CP997(Some(0)), CP997b(Some(0)), CP997c(Some(0)), CP997d(Some(0)), CP997e(Some(0)))
+      //("Losses before 1/4/2017 & Losses after 1/4/2017, No NTP",  2000,      0,              Some(true),    AllLossesBroughtForward(Some(3000), Some(1500), Some(1500), Some(0), Some(1500)),  LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(500), Some(1500), Some(0), Some(1500)),     Some(0), Some(1000), Some(1000), Some(0),    LossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP),
+      ("Rut's Business",                                          5000,      3000,           Some(true),      AllLossesBroughtForward(Some(10000), Some(3000), Some(7000), None, Some(7000)),    LossesBroughtForwardAgainstTradingProfit(Some(5000), Some(3000), Some(2000), None, Some(2000)),       Some(0),    Some(5000), Some(0),       Some(5000),  LossesBroughtForwardAgainstNonTradingProfit(CP997(Some(0)), CP997b(Some(0)), CP997c(None), CP997d(None), CP997e(None))
     ))
 
     forAll(table) {
@@ -238,5 +238,5 @@ case class CompsWithAboutReturn(override val cp1: CP1 = CP1(LocalDate.parse("201
 
   override def b90A(): B90A = ???
 
-  override def cpQ117(): CPQ117 = CPQ117(Some(true))
+  override def cpQ117(): CPQ117 = CPQ117(Some(false))
 }
