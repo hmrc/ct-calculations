@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.computations.nir
 import org.joda.time.LocalDate
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks._
+import org.scalatest.prop.TableFor11
 import org.scalatest.prop.Tables.Table
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.CATO01
@@ -61,10 +62,12 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
     "if NIR is active for current period with NIR losses carried forward from previous period" when {
 
       val table = Table(
-        ("message",                                                         "CP117",    "CATO01",      "cpq17",          "allLossesBroughtForward",                                                         "lossesBroughtForwardAgainstTradingProfit",                                                         "cp284",     "cp288",     "cp288a",     "cp288b",   "lossesBroughtForwardAgainstNonTradingProfit"),
+        ("message",                                                         "CP117",    "CATO01",       "cpq17",        "allLossesBroughtForward: Total      pre      post        NI_Loss     Main_Loss",  "lossesBroughtForwardAgainstTradingProfit: Total      pre      post        NI_Loss     Main_Loss",   "cp284",     "cp288",     "cp288a",     "cp288b",  "lossesBroughtForwardAgainstNonTradingProfit: Total      post        NI_Loss    Main_Loss   NI_Loss_Revalued"),
         ("TP and no NTP: NIR losses == TP and should be applied 1:1",          1000,           0,    Some(true),         AllLossesBroughtForward(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     Some(0),     Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP),
         ("TP and no NTP: NIR losses < TP and should be applied 1:1",           2000,           0,    Some(true),         AllLossesBroughtForward(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     Some(1000),  Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP),
-        ("TP and NTP: NIR losses > TP and no main stream losses",              2000,           1000, Some(true),         AllLossesBroughtForward(Some(3000), Some(0), Some(3000), Some(3000), Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(0), Some(2000), Some(2000), Some(0)),     Some(0),     Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit(Some(500), None, Some(1000), Some(0), Some(500)))
+        ("TP and NTP: NIR losses > TP and no main stream losses",              2000,           1000, Some(true),         AllLossesBroughtForward(Some(3000), Some(0), Some(3000), Some(3000), Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(0), Some(2000), Some(2000), Some(0)),     Some(0),     Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit(Some(500),  None,       Some(1000), Some(0),    Some(500))),
+        ("TP and NTP: NIR losses = TP and no main stream losses",              2000,           1000, Some(true),         AllLossesBroughtForward(Some(2000), Some(0), Some(2000), Some(2000), Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(0), Some(2000), Some(2000), Some(0)),     Some(0),     Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit(Some(0),    None,       Some(0),    Some(0),    Some(0))),
+        ("TP and NTP: NIR losses > TP and main stream losses",                 2000,           1000, Some(true),         AllLossesBroughtForward(Some(2000), Some(0), Some(2000), Some(1000), Some(1000)),  LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(0), Some(2000), Some(2000), Some(0)),     Some(0),     Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit(Some(0),    None,       Some(0),    Some(0),    Some(0)))
       )
 
       forAll(table) {
@@ -124,6 +127,73 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
       }
     }
   }
+
+  "Losses brought forward from previous period without Northern Ireland rate involved" when {
+
+    val table = Table(
+
+
+      ("message",                                                "CP117",    "CATO01",      "cpq17",         "allLossesBroughtForward: Total      pre         post        NI_Loss  Main_Loss",  "lossesBroughtForwardAgainstTradingProfit: Total      pre       post        NI_Loss   Main_Loss",    "cp284",  "cp288",    "cp288a",   "cp288b",  "lossesBroughtForwardAgainstNonTradingProfit: Total     post  NI_Loss    Main_Loss NI_Loss_Revalued"),
+      ("Losses before 1/4/2017 & Losses after 1/4/2017, No NTP", 2000,      0,              Some(true),       AllLossesBroughtForward(Some(3000), Some(1500), Some(1500), Some(0), Some(1500)), LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(500), Some(1500), Some(0), Some(1500)),     Some(0), Some(1000), Some(1000), Some(0),    LossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP)
+    )
+
+    forAll(table) {
+      (message: String,
+       cp117: Int,
+       cato01: Int,
+       cpq17: Option[Boolean],
+       allLossesBroughtForward: AllLossesBroughtForward,
+       lossesBroughtForwardAgainstTradingProfit: LossesBroughtForwardAgainstTradingProfit,
+       cp284: Option[Int],
+       cp288: Option[Int],
+       cp288a: Option[Int],
+       cp288b: Option[Int],
+       lossesBroughtForwardAgainstNonTradingProfit: LossesBroughtForwardAgainstNonTradingProfit
+      ) => {
+
+        message in {
+          val computationsBoxRetriever = CompsWithAboutReturn()(nirActive = true,
+            CP117(cp117),
+            CPQ17(cpq17),
+            CATO01(cato01),
+            allLossesBroughtForward.cp281,
+            allLossesBroughtForward.cp281a,
+            allLossesBroughtForward.cp281c,
+            lossesBroughtForwardAgainstTradingProfit.cp283a,
+            lossesBroughtForwardAgainstTradingProfit.cp283b,
+            lossesBroughtForwardAgainstTradingProfit.cp283c,
+            CP288(cp288),
+            CP288a(cp288a),
+            CP288b(cp288b),
+            lossesBroughtForwardAgainstNonTradingProfit.cp997b,
+            lossesBroughtForwardAgainstNonTradingProfit.cp997c,
+            lossesBroughtForwardAgainstNonTradingProfit.cp997d
+          )
+
+          computationsBoxRetriever.cp281b() shouldBe allLossesBroughtForward.cp281b
+          computationsBoxRetriever.cp281d() shouldBe allLossesBroughtForward.cp281d
+          computationsBoxRetriever.cp283() shouldBe lossesBroughtForwardAgainstTradingProfit.cp283
+          computationsBoxRetriever.cp283d() shouldBe lossesBroughtForwardAgainstTradingProfit.cp283d
+          computationsBoxRetriever.cp284() shouldBe CP284(cp284)
+          computationsBoxRetriever.cp997() shouldBe lossesBroughtForwardAgainstNonTradingProfit.cp997
+          computationsBoxRetriever.cp997e() shouldBe lossesBroughtForwardAgainstNonTradingProfit.cp997e
+
+          computationsBoxRetriever.cp281.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp281a.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp281c.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp283a.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp283b.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp283c.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp288a.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp288b.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp997b.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp997c.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp997d.validate(computationsBoxRetriever) shouldBe empty
+        }
+      }
+    }
+  }
+
 
 }
 
