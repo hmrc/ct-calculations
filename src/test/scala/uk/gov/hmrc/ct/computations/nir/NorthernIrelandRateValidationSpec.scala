@@ -46,11 +46,11 @@ object AllLossesBroughtForward {
   val emptyAllLossesBroughtForward = AllLossesBroughtForward()
 }
 
-case class LossesBroughtForwardAgainstNonTradingProfit(cp997: CP997 = CP997(None), cp997b: CP997b = CP997b(None), cp997c: CP997c = CP997c(None), cp997d: CP997d = CP997d(None), cp997e: CP997e = CP997e(None))
+case class LossesBroughtForwardAgainstNonTradingProfit(cp997: CP997 = CP997(None), cp997c: CP997c = CP997c(None), cp997d: CP997d = CP997d(None), cp997e: CP997e = CP997e(None))
 
 object LossesBroughtForwardAgainstNonTradingProfit {
-  def apply(cp997: Option[Int], cp997b: Option[Int], cp997c: Option[Int], cp997d: Option[Int], cp997e: Option[Int]) = {
-    new LossesBroughtForwardAgainstNonTradingProfit(CP997(cp997), CP997b(cp997b), CP997c(cp997c), CP997d(cp997d), CP997e(cp997e))
+  def apply(cp997: Option[Int], cp997c: Option[Int], cp997d: Option[Int], cp997e: Option[Int]) = {
+    new LossesBroughtForwardAgainstNonTradingProfit(CP997(cp997), CP997c(cp997c), CP997d(cp997d), CP997e(cp997e))
   }
 
   val emptyLossesBroughtForwardAgainstNTP = LossesBroughtForwardAgainstNonTradingProfit()
@@ -133,15 +133,15 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
     val table = Table(
 
 
-      ("message",                                                "CP117",    "CATO01",      "cpq17",         "allLossesBroughtForward: Total      pre         post        NI_Loss  Main_Loss",  "lossesBroughtForwardAgainstTradingProfit: Total      pre         post        NI_Loss   Main_Loss",    "cp284",  "cp288",    "cp288a",   "cp288b",  "lossesBroughtForwardAgainstNonTradingProfit: Total     post  NI_Loss    Main_Loss NI_Loss_Revalued"),
-      ("Losses before 1/4/2017 & Losses after 1/4/2017, No NTP",  2000,      0,              Some(true),    AllLossesBroughtForward(Some(3000), Some(1500), Some(1500),    None, Some(1500)),  LossesBroughtForwardAgainstTradingProfit(Some(2000),   Some(500),  Some(1500), Some(0), Some(1500)),     Some(0), Some(1000), Some(1000), Some(0),    LossesBroughtForwardAgainstNonTradingProfit(CP997(None), CP997b(Some(0)), CP997c(None), CP997d(None), CP997e(None))),
-      ("Rut's Business",                                          5000,      3000,           Some(true),      AllLossesBroughtForward(Some(10000), Some(3000), Some(7000), None, Some(7000)),    LossesBroughtForwardAgainstTradingProfit(Some(5000), Some(3000), Some(2000), None,    Some(2000)),     Some(0), Some(5000), Some(0),    Some(5000), LossesBroughtForwardAgainstNonTradingProfit(CP997(Some(0)), CP997b(Some(0)), CP997c(None), CP997d(None), CP997e(None))
-    ))
+      ("message",                                                "CP117",    "CATO01",      "cpq17",         "allLossesBroughtForward: Total      pre         post        NI_Loss  Main_Loss",  "lossesBroughtForwardAgainstTradingProfit: Total      pre         post        NI_Loss   Main_Loss",    "cp284",  "cp288",    "cp288a",   "cp288b",  "lossesBroughtForwardAgainstNonTradingProfit: Total            NI_Loss       Main_Loss     NI_Loss_Revalued"),
+      ("Losses before 1/4/2017 & Losses after 1/4/2017, No NTP",  2000,      0,              Some(true),    AllLossesBroughtForward(Some(3000), Some(1500), Some(1500),    None,  Some(1500)),  LossesBroughtForwardAgainstTradingProfit(Some(2000),   Some(500),  Some(1500), Some(0), Some(1500)),     Some(0), Some(1000), Some(1000), Some(0),    LossesBroughtForwardAgainstNonTradingProfit(CP997(None),     CP997c(None), CP997d(None), CP997e(None))),
+      ("Rut's Business",                                          5000,      3000,           Some(true),      AllLossesBroughtForward(Some(10000), Some(3000), Some(7000), None,  Some(7000)),    LossesBroughtForwardAgainstTradingProfit(Some(5000), Some(3000), Some(2000), None,    Some(2000)),     Some(0), Some(5000), Some(0),    Some(5000), LossesBroughtForwardAgainstNonTradingProfit(CP997(Some(0)),  CP997c(None), CP997d(None), CP997e(None))),
+      ("Rut's Business2",                                         0,         3000,           Some(true),      AllLossesBroughtForward(Some(5000), Some(1500), Some(3500),  None,  Some(3500)),    LossesBroughtForwardAgainstTradingProfit(Some(0),    Some(0),    Some(0),    None,    Some(0)),        Some(0), Some(5000),  Some(1500), Some(3500),LossesBroughtForwardAgainstNonTradingProfit(CP997(Some(3000)),CP997c(None), CP997d(Some(3000)), CP997e(None)))
+    )
 
     forAll(table) {
       (message: String,
        cp117: Int,
-       cato01: Int,
        cpq17: Option[Boolean],
        allLossesBroughtForward: AllLossesBroughtForward,
        lossesBroughtForwardAgainstTradingProfit: LossesBroughtForwardAgainstTradingProfit,
@@ -166,7 +166,6 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
             CP288(cp288),
             CP288a(cp288a),
             CP288b(cp288b),
-            lossesBroughtForwardAgainstNonTradingProfit.cp997b,
             lossesBroughtForwardAgainstNonTradingProfit.cp997c,
             lossesBroughtForwardAgainstNonTradingProfit.cp997d
           )
@@ -187,7 +186,6 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
             computationsBoxRetriever.cp283c.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp288a.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp288b.validate(computationsBoxRetriever) ++
-            computationsBoxRetriever.cp997b.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp997c.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp997d.validate(computationsBoxRetriever) shouldBe empty
         }
@@ -213,7 +211,6 @@ case class CompsWithAboutReturn(override val cp1: CP1 = CP1(LocalDate.parse("201
                                 override val cp288: CP288,
                                 override val cp288a: CP288a,
                                 override val cp288b: CP288b,
-                                override val cp997b: CP997b,
                                 override val cp997c: CP997c,
                                 override val cp997d: CP997d) extends StubbedComputationsBoxRetriever with AboutThisReturnBoxRetriever {
   override def b5(): B5 = B5(Some(nirActive))

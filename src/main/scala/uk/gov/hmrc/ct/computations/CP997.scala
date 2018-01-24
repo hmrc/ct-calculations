@@ -32,7 +32,7 @@ object CP997 extends Calculated[CP997, ComputationsBoxRetriever] with NorthernIr
     if (boxRetriever.cato01().value > 0) {
         CP997(
           if (mayHaveNirLosses(boxRetriever)) Some(boxRetriever.cp997d().orZero + boxRetriever.cp997e().orZero)
-        else boxRetriever.cp997b.value
+        else boxRetriever.cp997d.value
       )
     } else CP997(None)
   }
