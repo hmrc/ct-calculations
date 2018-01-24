@@ -30,8 +30,9 @@ object CP997 extends Calculated[CP997, ComputationsBoxRetriever] with NorthernIr
 
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP997 = {
     if (boxRetriever.cato01().value > 0) {
+      val retriverVal = boxRetriever.cp997d().orZero + boxRetriever.cp997e().orZero
       CP997(
-        if (mayHaveNirLosses(boxRetriever)) Some(boxRetriever.cp997d().orZero + boxRetriever.cp997e().orZero)
+        if (mayHaveNirLosses(boxRetriever) && retriverVal > 0 ) Some(boxRetriever.cp997d().orZero + boxRetriever.cp997e().orZero)
         else boxRetriever.cp997b.value
       )
     } else CP997(None)
