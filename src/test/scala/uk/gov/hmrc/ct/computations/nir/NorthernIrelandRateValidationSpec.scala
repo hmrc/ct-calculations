@@ -58,16 +58,16 @@ object LossesBroughtForwardAgainstNonTradingProfit {
 
 class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with MockitoSugar {
 
-/*  "NorthernIrelandRateValidation" should {
+  "NorthernIrelandRateValidation" should {
     "if NIR is active for current period with NIR losses carried forward from previous period" when {
 
       val table = Table(
         ("message",                                                         "CP117",    "CATO01",       "cpq17",        "allLossesBroughtForward: Total      pre      post        NI_Loss     Main_Loss",  "lossesBroughtForwardAgainstTradingProfit: Total      pre      post        NI_Loss     Main_Loss",   "cp284",     "cp288",     "cp288a",     "cp288b",  "lossesBroughtForwardAgainstNonTradingProfit: Total      post        NI_Loss    Main_Loss   NI_Loss_Revalued"),
         ("TP and no NTP: NIR losses == TP and should be applied 1:1",          1000,           0,    Some(true),         AllLossesBroughtForward(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     Some(0),     Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP),
         ("TP and no NTP: NIR losses < TP and should be applied 1:1",           2000,           0,    Some(true),         AllLossesBroughtForward(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(1000), Some(0), Some(1000), Some(1000), Some(0)),     Some(1000),  Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP),
-        ("TP and NTP: NIR losses > TP and no main stream losses",              2000,           1000, Some(true),         AllLossesBroughtForward(Some(3000), Some(0), Some(3000), Some(3000), Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(0), Some(2000), Some(2000), Some(0)),     Some(0),     Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit(Some(500),  None,       Some(1000), Some(0),    Some(500))),
-        ("TP and NTP: NIR losses = TP and no main stream losses",              2000,           1000, Some(true),         AllLossesBroughtForward(Some(2000), Some(0), Some(2000), Some(2000), Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(0), Some(2000), Some(2000), Some(0)),     Some(0),     Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit(Some(0),    None,       Some(0),    Some(0),    Some(0))),
-        ("TP and NTP: NIR losses > TP and main stream losses",                 2000,           1000, Some(true),         AllLossesBroughtForward(Some(2000), Some(0), Some(2000), Some(1000), Some(1000)),  LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(0), Some(2000), Some(2000), Some(0)),     Some(0),     Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit(Some(0),    None,       Some(0),    Some(0),    Some(0)))
+        ("TP and NTP: NIR losses > TP and no main stream losses",              2000,           1000, Some(true),         AllLossesBroughtForward(Some(3000), Some(0), Some(3000), Some(3000), Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(0), Some(2000), Some(2000), Some(0)),     Some(0),     Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit(Some(500),          Some(1000), Some(0),    Some(500))),
+        ("TP and NTP: NIR losses = TP and no main stream losses",              2000,           1000, Some(true),         AllLossesBroughtForward(Some(2000), Some(0), Some(2000), Some(2000), Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(0), Some(2000), Some(2000), Some(0)),     Some(0),     Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit(Some(0),            Some(0),    Some(0),    Some(0))),
+        ("TP and NTP: NIR losses > TP and main stream losses",                 2000,           1000, Some(true),         AllLossesBroughtForward(Some(2000), Some(0), Some(2000), Some(1000), Some(1000)),  LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(0), Some(2000), Some(2000), Some(0)),     Some(0),     Some(0),      Some(0),      Some(0),   LossesBroughtForwardAgainstNonTradingProfit(Some(0),            Some(0),    Some(0),    Some(0)))
       )
 
       forAll(table) {
@@ -85,7 +85,9 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
         ) => {
 
           message in {
-            val computationsBoxRetriever = CompsWithAboutReturn()(nirActive = true,
+            val computationsBoxRetriever = CompsWithAboutReturn()(
+              nirActive = true,
+              areLossesFromNIRActivity = true,
               CP117(cp117),
               CPQ17(cpq17),
               CATO01(cato01),
@@ -98,7 +100,6 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
               CP288(cp288),
               CP288a(cp288a),
               CP288b(cp288b),
-              lossesBroughtForwardAgainstNonTradingProfit.cp997b,
               lossesBroughtForwardAgainstNonTradingProfit.cp997c,
               lossesBroughtForwardAgainstNonTradingProfit.cp997d
             )
@@ -119,14 +120,13 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
             computationsBoxRetriever.cp283c.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp288a.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp288b.validate(computationsBoxRetriever) ++
-            computationsBoxRetriever.cp997b.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp997c.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp997d.validate(computationsBoxRetriever) shouldBe empty
           }
         }
       }
     }
-  }*/
+  }
 
   "Losses brought forward from previous period without Northern Ireland rate involved" when {
 
@@ -155,7 +155,9 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
       ) => {
 
         message in {
-          val computationsBoxRetriever = CompsWithAboutReturn()(nirActive = false,
+          val computationsBoxRetriever = CompsWithAboutReturn()(
+            nirActive = false,
+            areLossesFromNIRActivity=false,
             CP117(cp117),
             CPQ17(cpq17),
             CATO01(cato01),
@@ -201,6 +203,7 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
 case class CompsWithAboutReturn(override val cp1: CP1 = CP1(LocalDate.parse("2019-04-01")),
                                 override val cp2: CP2 = CP2(LocalDate.parse("2020-03-31")))
                                (nirActive: Boolean,
+                                areLossesFromNIRActivity:Boolean,
                                 override val cp117: CP117,
                                 override val cpQ17: CPQ17,
                                 override val cato01: CATO01,
@@ -237,5 +240,5 @@ case class CompsWithAboutReturn(override val cp1: CP1 = CP1(LocalDate.parse("201
 
   override def b90A(): B90A = ???
 
-  override def cpQ117(): CPQ117 = CPQ117(Some(false))
+  override def cpQ117(): CPQ117 = CPQ117(Some(areLossesFromNIRActivity))
 }
