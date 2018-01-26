@@ -75,7 +75,8 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
 
 //      "RU's spreadsheet scenarios"
         ("NIL & TP dont set against each other",                               4000 ,          2000, Some(true),         AllLossesBroughtForward(Some(8000), Some(2000),Some(6000),  Some(6000),Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(0),    Some(0),   Some(0),     Some(0),  Some(0)),   Some(4000),  Some(8000),  Some(2000),   Some(6000), LossesBroughtForwardAgainstNonTradingProfit(Some(0),       Some(0), Some(0),     Some(0))),
-        ("NIL & TP dont set ag",                                               6000 ,          0,    Some(true),         AllLossesBroughtForward(Some(6000), Some(5500),Some(500),  Some(0),    Some(500)),     LossesBroughtForwardAgainstTradingProfit(Some(6000),Some(5500),Some(500),  Some(0),  Some(500)),   Some(0),  Some(0),  Some(0),   Some(0), LossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP)
+        ("NIL & TP set TP against post and pre Main Loss",                     6000 ,          0,    Some(true),         AllLossesBroughtForward(Some(6000), Some(5500),Some(500),  Some(0),    Some(500)),     LossesBroughtForwardAgainstTradingProfit(Some(6000),Some(5500),Some(500),  Some(0),  Some(500)),   Some(0),  Some(0),  Some(0),   Some(0), LossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP)
+
 
 
       )
@@ -212,8 +213,87 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
     }
   }
 
+  "Losses brought from current period with Northern Ireland rate involved" when {
+    /*Need to figure out which CPs are needed for this*/
+    val table = Table(
 
-}
+
+      ("message",                                                "CP117",    "CP118","CATO01",      "cpq17",         "allLossesBroughtForward: Total      pre         post        NI_Loss  Main_Loss",  "lossesBroughtForwardAgainstTradingProfit: Total            pre         post     NI_Loss   Main_Loss",    "cp284",  "cp288",    "cp288a",   "cp288b",  "lossesBroughtForwardAgainstNonTradingProfit: Total             NI_Loss       Main_Loss           NI_Loss_Revalued"),
+      ("Losses before 1/4/2017 & Losses after 1/4/2017, No NTP",  2000,         0,   0,        Some(true),      AllLossesBroughtForward(Some(3000), Some(1500), Some(1500),    None,  Some(1500)),    LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(500),  Some(1500), Some(0), Some(1500)),     Some(0), Some(1000), Some(1000), Some(0),    LossesBroughtForwardAgainstNonTradingProfit(CP997(None),      CP997c(None), CP997d(None),         CP997e(None))),
+      ("ABC's Business",                                          5000,         0,3000,        Some(true),      AllLossesBroughtForward(Some(10000), Some(3000),Some(7000),    None,  Some(7000)),    LossesBroughtForwardAgainstTradingProfit(Some(5000), Some(3000), Some(2000), None,    Some(2000)),     Some(0), Some(5000), Some(0),    Some(5000), LossesBroughtForwardAgainstNonTradingProfit(CP997(None),      CP997c(None), CP997d(None),         CP997e(None))),
+      ("ABC's Business2",                                            0,         0,3000,        Some(true),      AllLossesBroughtForward(Some(5000), Some(1500), Some(3500),    None,  Some(3500)),    LossesBroughtForwardAgainstTradingProfit(Some(0),    Some(0),    Some(0),    None,    Some(0)),        Some(0), Some(5000),  Some(1500), Some(3500),LossesBroughtForwardAgainstNonTradingProfit(CP997(Some(3000)),CP997c(None), CP997d(Some(3000)),   CP997e(None))),
+      ("ABC's Business 3",                                        2000,         0,   0,        Some(true),      AllLossesBroughtForward(Some(1000), Some(500),  Some(500),     None,  Some(500)),     LossesBroughtForwardAgainstTradingProfit(Some(500),  Some(250),  Some(250),  None,    Some(250)),      Some(1500), Some(750),   Some(250),  Some(500), LossesBroughtForwardAgainstNonTradingProfit(CP997(None),   CP997c(None), CP997d(None),         CP997e(None))),
+      ("SE1",                                                     2000,         0,   0,        Some(true),      AllLossesBroughtForward(Some(3000), Some(1500), Some(1500),    None,  Some(1500)),    LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(500),  Some(1500), Some(0), Some(1500)),     Some(0),     Some(0),      Some(1000),   Some(0),      LossesBroughtForwardAgainstNonTradingProfit(None,           None,         None,         None)),
+      ("SE2",                                                     5000,         0,3000,        Some(true),      AllLossesBroughtForward(Some(10000),Some(3000),Some(7000),     None,  Some(7000)),    LossesBroughtForwardAgainstTradingProfit(Some(5000), Some(3000), Some(2000), Some(0), Some(2000)),     Some(0),     Some(5000),   Some(0),      Some(5000),   LossesBroughtForwardAgainstNonTradingProfit(Some(0),        None,      Some(0),         None)),
+      ("SE3",                                                        0,         0,3000,        Some(true),      AllLossesBroughtForward(Some(5000), Some(1500),Some(3500),     None,  Some(3500)),    LossesBroughtForwardAgainstTradingProfit(Some(0),    Some(0),    Some(0),    Some(0), Some(0)),        Some(0),     Some(5000),   Some(1500),   Some(3500),   LossesBroughtForwardAgainstNonTradingProfit(Some(0),        None,      Some(0),         None)),
+      ("SE4",                                                     2000,         0,   0,        Some(true),      AllLossesBroughtForward(Some(1000), Some(500), Some(500),      None,  Some(500)),     LossesBroughtForwardAgainstTradingProfit(Some(500),  Some(250),  Some(250),  Some(0), Some(250)),      Some(1500),  Some(500),    Some(250),    Some(250),    LossesBroughtForwardAgainstNonTradingProfit(None,           None,       None,           None))
+
+    )
+
+    forAll(table) {
+      (message: String,
+       cp117: Int,
+       cp118: Int,
+       cato01: Int,
+       cpq17: Option[Boolean],
+       allLossesBroughtForward: AllLossesBroughtForward,
+       lossesBroughtForwardAgainstTradingProfit: LossesBroughtForwardAgainstTradingProfit,
+       cp284: Option[Int],
+       cp288: Option[Int],
+       cp288a: Option[Int],
+       cp288b: Option[Int],
+       lossesBroughtForwardAgainstNonTradingProfit: LossesBroughtForwardAgainstNonTradingProfit
+      ) => {
+
+        message in {
+          val computationsBoxRetriever = CompsWithAboutReturn()(
+            nirActive = false,
+            areLossesFromNIRActivity=false,
+            CP117(cp117),
+            CP118(cp118),
+            CPQ17(cpq17),
+            CATO01(cato01),
+            allLossesBroughtForward.cp281,
+            allLossesBroughtForward.cp281a,
+            allLossesBroughtForward.cp281c,
+            lossesBroughtForwardAgainstTradingProfit.cp283a,
+            lossesBroughtForwardAgainstTradingProfit.cp283b,
+            lossesBroughtForwardAgainstTradingProfit.cp283c,
+            CP288(cp288),
+            CP288a(cp288a),
+            CP288b(cp288b),
+            lossesBroughtForwardAgainstNonTradingProfit.cp997c,
+            lossesBroughtForwardAgainstNonTradingProfit.cp997d
+          )
+
+          computationsBoxRetriever.cp281b() shouldBe allLossesBroughtForward.cp281b
+          computationsBoxRetriever.cp281d() shouldBe allLossesBroughtForward.cp281d
+          computationsBoxRetriever.cp283() shouldBe lossesBroughtForwardAgainstTradingProfit.cp283
+          computationsBoxRetriever.cp283d() shouldBe lossesBroughtForwardAgainstTradingProfit.cp283d
+          computationsBoxRetriever.cp284() shouldBe CP284(cp284)
+          computationsBoxRetriever.cp997() shouldBe lossesBroughtForwardAgainstNonTradingProfit.cp997
+          computationsBoxRetriever.cp997e() shouldBe lossesBroughtForwardAgainstNonTradingProfit.cp997e
+
+          computationsBoxRetriever.cp281.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp281a.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp281c.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp283a.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp283b.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp283c.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp288a.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp288b.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp997c.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp997d.validate(computationsBoxRetriever) shouldBe empty
+        }
+      }
+    }
+  }
+
+      }
+
+
+
+
 
 case class CompsWithAboutReturn(override val cp1: CP1 = CP1(LocalDate.parse("2019-04-01")),
                                 override val cp2: CP2 = CP2(LocalDate.parse("2020-03-31")))
