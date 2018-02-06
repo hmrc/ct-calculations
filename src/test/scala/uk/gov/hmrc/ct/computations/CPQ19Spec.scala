@@ -29,7 +29,6 @@ class CPQ19Spec extends WordSpec with Matchers with MockitoSugar {
     val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
 
     "when empty" when {
-      when(boxRetriever.cpQ17()).thenReturn(CPQ17(None))
       "pass validation when CP118 is zero" in {
         when(boxRetriever.cp118()).thenReturn(CP118(0))
         when(boxRetriever.cato01()).thenReturn(CATO01(10))
@@ -52,7 +51,6 @@ class CPQ19Spec extends WordSpec with Matchers with MockitoSugar {
       }
     }
     "when true" when {
-      when(boxRetriever.cpQ17()).thenReturn(CPQ17(None))
       "fail validation when CP118 is zero" in {
         when(boxRetriever.cp118()).thenReturn(CP118(0))
         when(boxRetriever.cato01()).thenReturn(CATO01(10))
@@ -75,7 +73,6 @@ class CPQ19Spec extends WordSpec with Matchers with MockitoSugar {
       }
     }
     "when false" when {
-      when(boxRetriever.cpQ17()).thenReturn(CPQ17(None))
       "fail validation when CP118 is zero" in {
         when(boxRetriever.cp118()).thenReturn(CP118(0))
         when(boxRetriever.cato01()).thenReturn(CATO01(10))
@@ -95,14 +92,6 @@ class CPQ19Spec extends WordSpec with Matchers with MockitoSugar {
         when(boxRetriever.cato01()).thenReturn(CATO01(10))
         when(boxRetriever.cp118()).thenReturn(CP118(10))
         CPQ19(Some(false)).validate(boxRetriever) shouldBe empty
-      }
-      "fail validation when CPQ17 is also answered" in {
-
-        when(boxRetriever.cpQ17()).thenReturn(CPQ17(Some(false)))
-
-        when(boxRetriever.cato01()).thenReturn(CATO01(10))
-        when(boxRetriever.cp118()).thenReturn(CP118(10))
-        CPQ19(Some(false)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ19"), "error.CPQ19.cannot.exist.cpq17"))
       }
     }
   }

@@ -28,7 +28,6 @@ case class CPQ19(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you 
   with Validators {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    import boxRetriever._
 
     val valueEmpty = () => value.isEmpty
     val valuePopulated = () => value.nonEmpty
@@ -37,11 +36,7 @@ case class CPQ19(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you 
       requiredErrorIf(And(hasTradingLoss(boxRetriever), hasNonTradingProfit(boxRetriever), valueEmpty)),
       cannotExistErrorIf(And(hasNonTradingProfit(boxRetriever), noTradingLoss(boxRetriever), valuePopulated)) ,
       cannotExistErrorIf(And(noNonTradingProfit(boxRetriever), hasTradingLoss(boxRetriever), valuePopulated)) ,
-      cannotExistErrorIf(And(noNonTradingProfit(boxRetriever), noTradingLoss(boxRetriever), valuePopulated)) ,
-      (cpQ17().value, value) match {
-        case (Some(_), Some(_)) => Set(CtValidation(Some(boxId), "error.CPQ19.cannot.exist.cpq17"))
-        case _ => Set.empty[CtValidation]
-      }
+      cannotExistErrorIf(And(noNonTradingProfit(boxRetriever), noTradingLoss(boxRetriever), valuePopulated))
     )
 
   }
