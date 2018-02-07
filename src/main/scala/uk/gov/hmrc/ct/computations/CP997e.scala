@@ -21,7 +21,9 @@ import uk.gov.hmrc.ct.computations.nir.NorthernIrelandCalculations
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.calculations.Ct600AnnualConstants
 
-case class CP997e(value: Option[Int]) extends CtBoxIdentifier("Value of revalued NIR Losses offset against non trading profits this AP") with CtOptionalInteger
+case class CP997e(value: Option[Int])
+  extends CtBoxIdentifier("Value of revalued NIR Losses offset against non trading profits this AP")
+  with CtOptionalInteger
 
 object CP997e extends Calculated[CP997e, ComputationsBoxRetriever] with NorthernIrelandCalculations {
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP997e =

@@ -37,10 +37,6 @@ class CP281aSpec extends WordSpec with Matchers with MockitoSugar with BoxValida
   testCannotExistWhen("CP281a", CP281a.apply, testDetails = "CPQ17 false") {
     makeBoxRetriever(cpq17Value = false)
   }
-//
-//  testCannotExistWhen("CP281a", CP281a.apply, testDetails = "before loss reform") {
-//    makeBoxRetriever(cp2Value = CPQ17.lossReform2017)
-//  }
 
   "CP281a" should {
     "fail if the sum of CP283a, CP288a is less than CP281a" in {

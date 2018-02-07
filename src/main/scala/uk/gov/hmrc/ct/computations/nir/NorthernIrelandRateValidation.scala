@@ -65,8 +65,5 @@ trait NorthernIrelandRateValidation {
   def lossesBroughtForwardTotalsCorrect(retriever: ComputationsBoxRetriever): Boolean = {
     retriever.cp281c().orZero <= retriever.cp281b().orZero
   }
-
-//  private def whenNorthernIrelandRateActive(boxRetriever: ComputationsBoxRetriever)( predicates: (ComputationsBoxRetriever => Boolean)* ): Boolean = {
-//    nirActiveForCurrentAccountingPeriod(boxRetriever) && predicates.fold(true)((incoming, pred) => incoming && pred(boxRetriever))
-//  }
+  
 }

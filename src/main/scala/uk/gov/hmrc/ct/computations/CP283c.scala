@@ -20,7 +20,8 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP283c(value: Option[Int]) extends CtBoxIdentifier("NIR Losses brought forward from on or after 01/04/2017 used against trading profit")
+case class CP283c(value: Option[Int])
+  extends CtBoxIdentifier("NIR Losses brought forward from on or after 01/04/2017 used against trading profit")
   with CtOptionalInteger
   with Input
   with ValidatableBox[ComputationsBoxRetriever] with NorthernIrelandRateValidation {

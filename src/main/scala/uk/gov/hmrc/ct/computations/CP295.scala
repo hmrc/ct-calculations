@@ -20,8 +20,9 @@ import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
 import uk.gov.hmrc.ct.computations.calculations.NetProfitsChargeableToCtCalculator
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-// this is the one I care about.
-case class CP295(value: Int) extends CtBoxIdentifier(name = "Profits chargeable to CT") with CtInteger
+case class CP295(value: Int)
+  extends CtBoxIdentifier(name = "Profits chargeable to CT")
+  with CtInteger
 
 object CP295 extends Calculated[CP295, ComputationsBoxRetriever] with NetProfitsChargeableToCtCalculator {
 

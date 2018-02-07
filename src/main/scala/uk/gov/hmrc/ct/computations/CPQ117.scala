@@ -19,7 +19,8 @@ package uk.gov.hmrc.ct.computations
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CPQ117(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did any of these losses arise from NIR activity?")
+case class CPQ117(value: Option[Boolean])
+  extends CtBoxIdentifier(name = "Did any of these losses arise from NIR activity?")
   with CtOptionalBoolean
   with Input
   with ValidatableBox[ComputationsBoxRetriever] {

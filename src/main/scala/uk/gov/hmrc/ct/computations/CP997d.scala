@@ -20,7 +20,8 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP997d(value: Option[Int]) extends CtBoxIdentifier("Main stream Losses from previous AP after 01/04/2017 set against non trading profits this AP")
+case class CP997d(value: Option[Int])
+  extends CtBoxIdentifier("Main stream Losses from previous AP after 01/04/2017 set against non trading profits this AP")
   with CtOptionalInteger
   with Input
   with ValidatableBox[ComputationsBoxRetriever]

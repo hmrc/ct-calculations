@@ -20,7 +20,8 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP281c(value: Option[Int]) extends CtBoxIdentifier("NIR Losses brought forward from on or after 01/04/2017")
+case class CP281c(value: Option[Int])
+  extends CtBoxIdentifier("NIR Losses brought forward from on or after 01/04/2017")
   with CtOptionalInteger
   with Input
   with ValidatableBox[ComputationsBoxRetriever]
@@ -39,8 +40,7 @@ case class CP281c(value: Option[Int]) extends CtBoxIdentifier("NIR Losses brough
                           !mayHaveNirLosses(retriever))
       ),
       passIf(lossesBroughtForwardTotalsCorrect(retriever)){
-        Set(CtValidation(Some("CP281c"), "error." +
-          "CP281b.breakdown.sum.incorrect"))
+        Set(CtValidation(Some("CP281c"), "error." + "CP281b.breakdown.sum.incorrect"))
       }
     )
   }
