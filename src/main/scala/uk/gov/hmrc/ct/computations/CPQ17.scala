@@ -30,12 +30,8 @@ case class CPQ17(value: Option[Boolean]) extends CtBoxIdentifier(name = "Trading
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      requiredErrorIf({ value.isEmpty && boxRetriever.cp117().value > 0 }),
-      cannotExistErrorIf(value.nonEmpty && boxRetriever.cp117().value == 0),
-      (value, boxRetriever.cpQ19().value) match {
-        case (Some(_), Some(_)) => Set(CtValidation(Some(boxId), "error.CPQ17.cannot.exist.cpq19"))
-        case _ => Set.empty[CtValidation]
-      }
+      requiredErrorIf({ value.isEmpty && hasTradingProfit(boxRetriever) }),
+      cannotExistErrorIf(value.nonEmpty && noTradingProfit(boxRetriever))
     )
   }
 }
