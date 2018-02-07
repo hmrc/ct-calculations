@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.computations.nir
 
-import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.AboutThisReturnBoxRetriever
 

@@ -39,7 +39,8 @@ case class CP281c(value: Option[Int]) extends CtBoxIdentifier("NIR Losses brough
                           !mayHaveNirLosses(retriever))
       ),
       passIf(lossesBroughtForwardTotalsCorrect(retriever)){
-        Set(CtValidation(Some("CP281c"), "error.CP281b.breakdown.sum.incorrect"))
+        Set(CtValidation(Some("CP281c"), "error." +
+          "CP281b.breakdown.sum.incorrect"))
       }
     )
   }
