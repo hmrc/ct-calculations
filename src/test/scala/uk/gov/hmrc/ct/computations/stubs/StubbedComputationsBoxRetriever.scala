@@ -49,8 +49,6 @@ class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with Stub
 
   override def cp281a(): CP281a = ???
 
-  override def cp281b(): CP281b = ???
-
   override def cp283a(): CP283a = ???
 
   override def cp283b(): CP283b = ???
@@ -58,8 +56,6 @@ class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with Stub
   override def cp288a(): CP288a = ???
 
   override def cp288b(): CP288b = ???
-
-  override def cp997(): CP997 = ???
 
   override def cp86(): CP86 = ???
 
@@ -210,4 +206,14 @@ class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with Stub
   override def generateValues: Map[String, CtValue[_]] = ???
 
   override def countryOfRegistration(): CountryOfRegistration = CountryOfRegistration.EnglandWales
+
+  override def cp281c(): CP281c = ???
+
+  override def cp283c(): CP283c = ???
+
+  override def cp997c(): CP997c = ???
+
+  override def cp997d(): CP997d = ???
+
+  override def cpQ117(): CPQ117 = ???
 }

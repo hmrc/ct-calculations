@@ -28,13 +28,21 @@ trait CtConstants {
   def smallCompaniesRateOfTax: BigDecimal
 }
 
+trait NorthernIrelandRate {
+
+  self: CtConstants =>
+
+  def northernIrelandRate: BigDecimal
+
+  def revaluationRatio: BigDecimal = northernIrelandRate / rateOfTax
+}
+
 
 case class AllCtConstants(lowerRelevantAmount: BigDecimal,
                           upperRelevantAmount: BigDecimal,
                           reliefFraction: BigDecimal,
                           rateOfTax: BigDecimal,
                           smallCompaniesRateOfTax: BigDecimal) extends CtConstants
-
 
 case class UnifiedRateOfTax(private val unifiedTaxRate: String) extends CtConstants {
 
@@ -111,7 +119,10 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
 
                   TaxYear(2018) -> UnifiedRateOfTax("0.19"),
 
-                  TaxYear(2019) -> UnifiedRateOfTax("0.19"),
+                  TaxYear(2019) -> new UnifiedRateOfTax("0.19") with NorthernIrelandRate {
+                    // This value is for testing and design purposes only.
+                    override def northernIrelandRate: BigDecimal = BigDecimal(0.095)
+                  },
 
                   TaxYear(2020) -> UnifiedRateOfTax("0.17")
 

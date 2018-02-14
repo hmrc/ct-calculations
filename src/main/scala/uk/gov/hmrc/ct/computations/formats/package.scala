@@ -258,6 +258,8 @@ package object formats {
 
   implicit val cp281bFormat: Format[CP281b] = new OptionalIntegerFormat[CP281b](CP281b.apply)
 
+  implicit val cp281cFormat: Format[CP281c] = new OptionalIntegerFormat[CP281c](CP281c.apply)
+
   implicit val cp282Format: Format[CP282] = new OptionalIntegerFormat[CP282](CP282.apply)
 
   implicit val cp283Format: Format[CP283] = new OptionalIntegerFormat[CP283](CP283.apply)
@@ -265,6 +267,8 @@ package object formats {
   implicit val cp283aFormat: Format[CP283a] = new OptionalIntegerFormat[CP283a](CP283a.apply)
 
   implicit val cp283Formatb: Format[CP283b] = new OptionalIntegerFormat[CP283b](CP283b.apply)
+
+  implicit val cp283Formatc: Format[CP283c] = new OptionalIntegerFormat[CP283c](CP283c.apply)
 
   implicit val cp284Format: Format[CP284] = new OptionalIntegerFormat[CP284](CP284.apply)
 
@@ -356,6 +360,10 @@ package object formats {
 
   implicit val cp997Format: Format[CP997] = new OptionalIntegerFormat[CP997](CP997.apply)
 
+  implicit val cp997cFormat: Format[CP997c] = new OptionalIntegerFormat[CP997c](CP997c.apply)
+
+  implicit val cp997dFormat: Format[CP997d] = new OptionalIntegerFormat[CP997d](CP997d.apply)
+
   implicit val cp998Format: Format[CP998] = new OptionalIntegerFormat[CP998](CP998.apply)
 
   implicit val cp999Format: Format[CP999] = new IntegerFormat[CP999](CP999.apply)
@@ -387,6 +395,8 @@ package object formats {
   implicit val cpq19Format: Format[CPQ19] = new OptionalBooleanFormat[CPQ19](CPQ19.apply)
 
   implicit val cpq20Format: Format[CPQ20] = new OptionalBooleanFormat[CPQ20](CPQ20.apply)
+
+  implicit val cpq117Format: Format[CPQ117] = new OptionalBooleanFormat[CPQ117](CPQ117.apply)
 
   implicit val cpq21Format: Format[CPQ21] = new OptionalBooleanFormat[CPQ21](CPQ21.apply)
 

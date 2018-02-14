@@ -17,21 +17,16 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
+import uk.gov.hmrc.ct.computations.nir.NorthernIrelandCalculations
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.ct600.calculations.Ct600AnnualConstants
 
-case class CPQ17(value: Option[Boolean])
-  extends CtBoxIdentifier(name = "Trading losses not used from previous accounting periods?")
-  with CtOptionalBoolean
-  with Input
-  with ValidatableBox[ComputationsBoxRetriever]
-  with TradingLossesValidation {
+case class CP997e(value: Option[Int])
+  extends CtBoxIdentifier("Value of revalued NIR Losses offset against non trading profits this AP")
+  with CtOptionalInteger
 
-  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-
-    collectErrors(
-      requiredErrorIf({ value.isEmpty && hasTradingProfit(boxRetriever) }),
-      cannotExistErrorIf(value.nonEmpty && noTradingProfit(boxRetriever))
-    )
-  }
+object CP997e extends Calculated[CP997e, ComputationsBoxRetriever] with NorthernIrelandCalculations {
+  override def calculate(boxRetriever: ComputationsBoxRetriever): CP997e =
+    revaluedNirLossesAgainstNonTradingProfit(Ct600AnnualConstants)(boxRetriever.cp997c,
+                                                                   HmrcAccountingPeriod(boxRetriever.cp1(), boxRetriever.cp2))
 }

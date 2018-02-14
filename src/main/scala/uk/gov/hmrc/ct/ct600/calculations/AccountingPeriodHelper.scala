@@ -17,10 +17,13 @@
 package uk.gov.hmrc.ct.ct600.calculations
 
 import org.joda.time.{Days, LocalDate}
+import uk.gov.hmrc.ct.box.{EndDate, StartDate}
 import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
 import uk.gov.hmrc.ct.utils.DateImplicits._
 
-object AccountingPeriodHelper {
+object AccountingPeriodHelper extends AccountingPeriodHelper
+
+trait AccountingPeriodHelper {
 
   def daysInAccountingPeriod(accountingPeriod: HmrcAccountingPeriod) = daysBetween(accountingPeriod.start.value, accountingPeriod.end.value)
 
@@ -32,12 +35,16 @@ object AccountingPeriodHelper {
   }
 
   def accountingPeriodSpansTwoFinancialYears(accountingPeriod: HmrcAccountingPeriod): Boolean = {
-    fallsInFinancialYear(accountingPeriod.end.value) > fallsInFinancialYear(accountingPeriod.start.value)
+    endingFinancialYear(accountingPeriod.end) > startingFinancialYear(accountingPeriod.start)
   }
 
   def financialYearStartingIn(year: Int): (LocalDate, LocalDate) = (new LocalDate(year, 4, 1), new LocalDate(year + 1, 3, 31))
 
-  def fallsInFinancialYear(date: LocalDate): Int = if (date.getMonthOfYear < 4) date.getYear - 1 else date.getYear
+  def startingFinancialYear(date: StartDate): Int = financialYearForDate(date.value)
+
+  def endingFinancialYear(date: EndDate): Int = financialYearForDate(date.value)
+
+  private def financialYearForDate(date: LocalDate): Int = if (date.getMonthOfYear < 4) date.getYear - 1 else date.getYear
 
   def daysBetween(start: LocalDate, end: LocalDate): Int = Days.daysBetween(start, end).getDays + 1
 

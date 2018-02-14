@@ -78,16 +78,29 @@ class AccountingPeriodHelperSpec extends WordSpec with Matchers {
     }
   }
 
-  "fallsInFinancialYear" should {
+  "startingFinancialYear" should {
 
     "return 2013 for a date in 2014 before 1st April" in {
-      AccountingPeriodHelper.fallsInFinancialYear(new LocalDate(2014, 1, 1)) shouldBe 2013
-      AccountingPeriodHelper.fallsInFinancialYear(new LocalDate(2014, 3, 31)) shouldBe 2013
+      AccountingPeriodHelper.startingFinancialYear(CP1(new LocalDate(2014, 1, 1))) shouldBe 2013
+      AccountingPeriodHelper.startingFinancialYear(CP1(new LocalDate(2014, 3, 31))) shouldBe 2013
     }
 
     "return 2014 for a date in 2014 after 1st April" in {
-      AccountingPeriodHelper.fallsInFinancialYear(new LocalDate(2014, 4, 1)) shouldBe 2014
-      AccountingPeriodHelper.fallsInFinancialYear(new LocalDate(2014, 12, 31)) shouldBe 2014
+      AccountingPeriodHelper.startingFinancialYear(CP1(new LocalDate(2014, 4, 1))) shouldBe 2014
+      AccountingPeriodHelper.startingFinancialYear(CP1(new LocalDate(2014, 12, 31))) shouldBe 2014
+    }
+  }
+
+  "endingFinancialYear" should {
+
+    "return 2013 for a date in 2014 before 1st April" in {
+      AccountingPeriodHelper.endingFinancialYear(CP2(new LocalDate(2014, 1, 1))) shouldBe 2013
+      AccountingPeriodHelper.endingFinancialYear(CP2(new LocalDate(2014, 3, 31))) shouldBe 2013
+    }
+
+    "return 2014 for a date in 2014 after 1st April" in {
+      AccountingPeriodHelper.endingFinancialYear(CP2(new LocalDate(2014, 4, 1))) shouldBe 2014
+      AccountingPeriodHelper.endingFinancialYear(CP2(new LocalDate(2014, 12, 31))) shouldBe 2014
     }
   }
 }

@@ -17,21 +17,22 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
+import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CPQ17(value: Option[Boolean])
-  extends CtBoxIdentifier(name = "Trading losses not used from previous accounting periods?")
-  with CtOptionalBoolean
+case class CP283c(value: Option[Int])
+  extends CtBoxIdentifier("NIR Losses brought forward from on or after 01/04/2017 used against trading profit")
+  with CtOptionalInteger
   with Input
-  with ValidatableBox[ComputationsBoxRetriever]
-  with TradingLossesValidation {
+  with ValidatableBox[ComputationsBoxRetriever] with NorthernIrelandRateValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-
     collectErrors(
-      requiredErrorIf({ value.isEmpty && hasTradingProfit(boxRetriever) }),
-      cannotExistErrorIf(value.nonEmpty && noTradingProfit(boxRetriever))
+      requiredErrorIf(
+        boxRetriever.cp283b().isPositive &&
+        mayHaveNirLosses(boxRetriever) &&
+          !hasValue),
+      validateIntegerRange("CP283c", this, 0, boxRetriever.cp283b.orZero)
     )
   }
 }

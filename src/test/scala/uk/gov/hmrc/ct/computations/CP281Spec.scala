@@ -77,19 +77,19 @@ class CP281Spec extends WordSpec with Matchers with MockitoSugar {
       "fail validation when CP281a + CP281b < CP281" in {
         when(boxRetriever.cpQ17()).thenReturn(CPQ17(Some(true)))
         when(boxRetriever.cp281a()).thenReturn(CP281a(1))
-        when(boxRetriever.cp281b()).thenReturn(CP281b(1))
+        when(boxRetriever.cp281b()).thenReturn(CP281b(Some(1)))
         CP281(Some(3)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.CP281.breakdown.sum.incorrect"))
       }
       "fail validation when CP281a + CP281b > CP281" in {
         when(boxRetriever.cpQ17()).thenReturn(CPQ17(Some(true)))
         when(boxRetriever.cp281a()).thenReturn(CP281a(2))
-        when(boxRetriever.cp281b()).thenReturn(CP281b(2))
+        when(boxRetriever.cp281b()).thenReturn(CP281b(Some(2)))
         CP281(Some(3)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.CP281.breakdown.sum.incorrect"))
       }
       "pass validation when CP281a + CP281b = CP281" in {
         when(boxRetriever.cpQ17()).thenReturn(CPQ17(Some(true)))
         when(boxRetriever.cp281a()).thenReturn(CP281a(1))
-        when(boxRetriever.cp281b()).thenReturn(CP281b(2))
+        when(boxRetriever.cp281b()).thenReturn(CP281b(Some(2)))
         CP281(Some(3)).validate(boxRetriever) shouldBe empty
       }
     }

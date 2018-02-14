@@ -16,7 +16,15 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.scalatest.mock.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.box.EndDate
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class CP281bSpec extends WordSpec with Matchers with MockitoSugar
+package object losses {
+
+  val lossReform2017 = LocalDate.parse("2017-03-31")
+
+  def lossReform2017Applies(apEndDate: EndDate): Boolean = apEndDate.value.isAfter(lossReform2017)
+
+  def cp997ExceedsNonTradingProfit(retriever: ComputationsBoxRetriever): Boolean = retriever.cato01() < retriever.cp997().orZero
+}

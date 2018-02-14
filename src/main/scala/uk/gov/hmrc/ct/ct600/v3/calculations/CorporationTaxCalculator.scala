@@ -41,16 +41,16 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B345(b340.multiply(b355))
   }
 
-  def rateOfTaxFy1(start: StartDate): BigDecimal = Ct600AnnualConstants.constantsForTaxYear(TaxYear(AccountingPeriodHelper.fallsInFinancialYear(start.value))).rateOfTax
+  def rateOfTaxFy1(start: StartDate): BigDecimal = Ct600AnnualConstants.constantsForTaxYear(TaxYear(startingFinancialYear(start))).rateOfTax
 
-  def rateOfTaxFy2(end: EndDate): BigDecimal = Ct600AnnualConstants.constantsForTaxYear(TaxYear(AccountingPeriodHelper.fallsInFinancialYear(end.value))).rateOfTax
+  def rateOfTaxFy2(end: EndDate): BigDecimal = Ct600AnnualConstants.constantsForTaxYear(TaxYear(endingFinancialYear(end))).rateOfTax
 
   def financialYear1(accountingPeriod: HmrcAccountingPeriod): Int = {
-    fallsInFinancialYear(accountingPeriod.start.value)
+    startingFinancialYear(accountingPeriod.start)
   }
 
   def financialYear2(accountingPeriod: HmrcAccountingPeriod): Option[Int] = {
-    val fy2 = fallsInFinancialYear(accountingPeriod.end.value)
+    val fy2 = endingFinancialYear(accountingPeriod.end)
     if (financialYear1(accountingPeriod) != fy2) {
       Some(fy2)
     } else None
@@ -70,11 +70,11 @@ trait CorporationTaxCalculator extends CtTypeConverters {
   }
 
   def calculateApportionedProfitsChargeableFy1(params: CorporationTaxCalculatorParameters): B335 = {
-    B335(CorporationTaxHelper.calculateApportionedProfitsChargeableFy1(params))
+    B335(HmrcValueApportioning.calculateApportionedProfitsChargeableFy1(params))
   }
 
   def calculateApportionedProfitsChargeableFy2(params: CorporationTaxCalculatorParameters): B385 = {
-    B385(CorporationTaxHelper.calculateApportionedProfitsChargeableFy2(params))
+    B385(HmrcValueApportioning.calculateApportionedProfitsChargeableFy2(params))
   }
 
   def calculateTotalTaxToPay(b525: B525, b595: B595): B600 = {

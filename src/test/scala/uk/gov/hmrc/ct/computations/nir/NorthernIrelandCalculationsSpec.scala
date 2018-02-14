@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.computations.nir
 
-import org.scalatest.mock.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.WordSpec
 
-class CP281bSpec extends WordSpec with Matchers with MockitoSugar
+class NorthernIrelandCalculationsSpec extends WordSpec {
+
+}

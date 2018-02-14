@@ -16,7 +16,19 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.scalatest.mock.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class CP281bSpec extends WordSpec with Matchers with MockitoSugar
+case class CP281d(value: Option[Int])
+  extends CtBoxIdentifier("Main stream Losses brought forward from on or after 01/04/2017")
+  with CtOptionalInteger
+
+object CP281d extends Calculated[CP281d, ComputationsBoxRetriever] {
+
+  override def calculate(boxRetriever: ComputationsBoxRetriever): CP281d = {
+    import boxRetriever._
+    CP281d(cp281b.value.map { postReformLosses =>
+      postReformLosses - cp281c.orZero
+    })
+  }
+}

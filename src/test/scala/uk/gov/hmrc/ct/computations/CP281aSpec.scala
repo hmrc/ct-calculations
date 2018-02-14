@@ -38,10 +38,6 @@ class CP281aSpec extends WordSpec with Matchers with MockitoSugar with BoxValida
     makeBoxRetriever(cpq17Value = false)
   }
 
-  testCannotExistWhen("CP281a", CP281a.apply, testDetails = "before loss reform") {
-    makeBoxRetriever(cp2Value = CPQ17.lossReform2017)
-  }
-
   "CP281a" should {
     "fail if the sum of CP283a, CP288a is less than CP281a" in {
       CP281a(3).validate(makeBoxRetriever()).contains(CtValidation(None, "error.CP281a.breakdown.sum.incorrect")) shouldBe true
@@ -54,7 +50,7 @@ class CP281aSpec extends WordSpec with Matchers with MockitoSugar with BoxValida
     }
   }
 
-  private def makeBoxRetriever(cp2Value: LocalDate = CPQ17.lossReform2017.plusDays(1), cpq17Value: Boolean = true,
+  private def makeBoxRetriever(cp2Value: LocalDate = losses.lossReform2017.plusDays(1), cpq17Value: Boolean = true,
                               cp283aValue: Option[Int] = Some(1), cp288aValue: Option[Int] = Some(1)) = {
     val retriever = mock[ComputationsBoxRetriever]
     when(retriever.cp2()).thenReturn(CP2(cp2Value))
