@@ -22,6 +22,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 case class CP281d(value: Option[Int])
   extends CtBoxIdentifier("Main stream Losses brought forward from on or after 01/04/2017")
   with CtOptionalInteger
+  with Input
 
 object CP281d extends Calculated[CP281d, ComputationsBoxRetriever] {
 
@@ -31,4 +32,6 @@ object CP281d extends Calculated[CP281d, ComputationsBoxRetriever] {
       postReformLosses - cp281c.orZero
     })
   }
+
+  def apply(int: Int): CP281d = CP281d(Some(int))
 }
