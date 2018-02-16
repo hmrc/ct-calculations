@@ -22,6 +22,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 case class CP281b(value: Option[Int])
   extends CtBoxIdentifier("Losses brought forward from on or after 01/04/2017")
     with CtOptionalInteger
+    with Input
 
 object CP281b extends Calculated[CP281b, ComputationsBoxRetriever] {
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP281b = {
@@ -30,4 +31,6 @@ object CP281b extends Calculated[CP281b, ComputationsBoxRetriever] {
       allLosses - cp281a.orZero
     })
   }
+
+  def apply(int: Int): CP281b = CP281b(Some(int))
 }
