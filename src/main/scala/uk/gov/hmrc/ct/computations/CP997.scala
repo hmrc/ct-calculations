@@ -17,9 +17,7 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.CP997.mayHaveNirLosses
 import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
-import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP997(value: Option[Int])
@@ -27,9 +25,7 @@ case class CP997(value: Option[Int])
   with CtOptionalInteger
   with Input
   with ValidatableBox[ComputationsBoxRetriever]
-  with TradingLossesValidation
-  with NorthernIrelandRateValidation
-  with Calculated[CP997, ComputationsBoxRetriever] {
+  with TradingLossesValidation {
 
   override def validate(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
@@ -43,16 +39,6 @@ case class CP997(value: Option[Int])
     failIf(retriever.cato01() < this.orZero) {
       Set(CtValidation(Some("CP997"), "error.CP997.exceeds.nonTradingProfit"))
     }
-  }
-
-  override def calculate(boxRetriever: ComputationsBoxRetriever): CP997 = {
-    if (boxRetriever.cato01().value > 0) {
-      CP997(
-        if (mayHaveNirLosses(boxRetriever)) Some(boxRetriever.cp997d().orZero + boxRetriever.cp997e().orZero)
-
-        else boxRetriever.cp997d.value
-      )
-    } else CP997(None)
   }
 
 }

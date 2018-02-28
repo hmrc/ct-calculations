@@ -40,7 +40,7 @@ case class CP997c(value: Option[Int]) extends CtBoxIdentifier("NIR Losses from p
   }
 
   private def exceedsNonTradingProfitErrors(retriever: ComputationsBoxRetriever) = {
-    failIf(losses.cp997ExceedsNonTradingProfit(retriever)) {
+    failIf(losses.cp997NIExceedsNonTradingProfit(retriever)) {
       Set(CtValidation(Some("CP997c"), "error.CP997.exceeds.nonTradingProfit"))
     }
   }
