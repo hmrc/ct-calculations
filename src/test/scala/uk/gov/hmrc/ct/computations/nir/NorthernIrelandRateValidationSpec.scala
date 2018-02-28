@@ -285,8 +285,8 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
             CP288(cp288),
             CP288a(cp288a),
             CP288b(cp288b),
-            null,
-            null
+            CP997c(None),
+            CP997d(None)
           )
 
           computationsBoxRetriever.cp281b() shouldBe allLossesBroughtForward.cp281b
@@ -352,8 +352,6 @@ case class CompsWithAboutReturn(override val cp1: CP1 = CP1(LocalDate.parse("201
   override def b85A(): B85A = ???
 
   override def b90A(): B90A = ???
-
-//  override def cp997NI(): CP997NI = ???
 
   override def cpQ117(): CPQ117 = CPQ117(Some(areLossesFromNIRActivity))
 
