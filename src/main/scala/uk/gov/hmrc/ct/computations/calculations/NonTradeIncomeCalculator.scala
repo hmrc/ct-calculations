@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import uk.gov.hmrc.ct.CATO01
+import uk.gov.hmrc.ct.{CATO01, CATO23}
 import uk.gov.hmrc.ct.box.CtTypeConverters
-import uk.gov.hmrc.ct.computations.{CP43, CP502, CP509, CP510}
+import uk.gov.hmrc.ct.computations._
 
 trait NonTradeIncomeCalculator extends CtTypeConverters {
 
@@ -27,5 +27,9 @@ trait NonTradeIncomeCalculator extends CtTypeConverters {
                                 cp509: CP509,
                                 cp510: CP510): CATO01 = {
     CATO01(cp43 + cp502 + cp509 + cp510)
+  }
+
+  def NetNonTradeIncomeCalculation(cato01: CATO01, cp997: CP997): CATO23 ={
+    CATO23(cato01 - cp997)
   }
 }

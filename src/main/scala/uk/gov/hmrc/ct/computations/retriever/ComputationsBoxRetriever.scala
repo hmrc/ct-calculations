@@ -308,6 +308,10 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp290b(): CP290b = CP290b(cp283b())
 
+  def cp290c(): CP290c = CP290c(cp283c())
+
+  def cp290d(): CP290d = CP290d(cp283d())
+
   def cp291(): CP291 = CP291.calculate(this)
 
   def cp292(): CP292 = CP292(cp58())
@@ -360,7 +364,9 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp674(): CP674
 
-  def cp997(): CP997 = CP997.calculate(this)
+  def cp997(): CP997
+
+  def cp997NI(): CP997NI = CP997NI.calculate(this)
 
   def cp997c(): CP997c
 
@@ -419,6 +425,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
   def cato21(): CATO21 = CATO21.calculate(this)
 
   def cato22(): CATO22 = CATO22.calculate(this)
+
+  def cato23(): CATO23 = CATO23.calculate(this)
 
   def lec01(): LEC01
 

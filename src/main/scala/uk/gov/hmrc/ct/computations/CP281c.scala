@@ -45,3 +45,8 @@ case class CP281c(value: Option[Int])
     )
   }
 }
+
+object CP281c {
+
+  def apply(int: Int): CP281c = new CP281c(Some(int))
+}
