@@ -360,6 +360,8 @@ package object formats {
 
   implicit val cp997Format: Format[CP997] = new OptionalIntegerFormat[CP997](CP997.apply)
 
+  implicit val cp997NIFormat: Format[CP997NI] = new OptionalIntegerFormat[CP997NI](CP997NI.apply)
+
   implicit val cp997cFormat: Format[CP997c] = new OptionalIntegerFormat[CP997c](CP997c.apply)
 
   implicit val cp997dFormat: Format[CP997d] = new OptionalIntegerFormat[CP997d](CP997d.apply)
@@ -435,5 +437,7 @@ package object formats {
   implicit val cato21Format: Format[CATO21] = new BigDecimalFormat[CATO21](CATO21.apply)
 
   implicit val cato22Format: Format[CATO22] = new BigDecimalFormat[CATO22](CATO22.apply)
+
+  implicit val cato23Format: Format[CATO23] = new IntegerFormat[CATO23](CATO23.apply)
 
 }
