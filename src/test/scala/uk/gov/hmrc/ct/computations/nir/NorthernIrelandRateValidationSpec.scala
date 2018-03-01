@@ -21,7 +21,7 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.CATO01
+import uk.gov.hmrc.ct.{CATO01, CP997NI}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
@@ -287,6 +287,7 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
             CP288b(cp288b),
             null,
             null
+
           )
 
           computationsBoxRetriever.cp281b() shouldBe allLossesBroughtForward.cp281b
@@ -352,8 +353,6 @@ case class CompsWithAboutReturn(override val cp1: CP1 = CP1(LocalDate.parse("201
   override def b85A(): B85A = ???
 
   override def b90A(): B90A = ???
-
-//  override def cp997NI(): CP997NI = ???
 
   override def cpQ117(): CPQ117 = CPQ117(Some(areLossesFromNIRActivity))
 
