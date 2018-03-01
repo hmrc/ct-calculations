@@ -16,13 +16,19 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtInteger, Linked}
-import uk.gov.hmrc.ct.computations.CP117
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
+import uk.gov.hmrc.ct.ct600.v3.calculations.B325Calculator
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 
 case class B325(value: Int) extends CtBoxIdentifier(name = "Northern Ireland profits included") with CtInteger
 
-object B325 extends Linked[CP117, B325] {
+object B325 extends Calculated[B325,CT600BoxRetriever] with B325Calculator {
 
-  override def apply(source: CP117): B325 = B325(source.value)
+  override def calculate(fieldValueRetriever: CT600BoxRetriever): B325 = {
+
+    calculateB325(fieldValueRetriever.cp117(), fieldValueRetriever.b315())
+
+  }
+
 }
