@@ -21,7 +21,7 @@ import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP997NI (value: Option[Int])
-  extends CtBoxIdentifier("Losses from previous AP after 01/04/2017 set against non trading profits this AP")
+  extends CtBoxIdentifier("Losses from previous AP after 01/04/2017 set against non-trading profits this AP")
   with CtOptionalInteger
 
 

@@ -26,7 +26,5 @@ package object losses {
 
   def lossReform2017Applies(apEndDate: EndDate): Boolean = apEndDate.value.isAfter(lossReform2017)
 
-  def cp997ExceedsNonTradingProfit(retriever: ComputationsBoxRetriever): Boolean = retriever.cato01() < retriever.cp997().orZero
-
   def cp997NIExceedsNonTradingProfit(retriever: ComputationsBoxRetriever): Boolean = retriever.cato01() < retriever.cp997NI().orZero
 }
