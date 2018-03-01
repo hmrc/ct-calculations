@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct
 
-import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.EndDate
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
+import uk.gov.hmrc.ct.computations.calculations._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-package object losses {
+case class CATO23 (value: Int) extends CtBoxIdentifier(name = "Net non-trading income") with CtInteger
 
-  val lossReform2017 = LocalDate.parse("2017-03-31")
+object CATO23 extends Calculated[CATO23, ComputationsBoxRetriever] with NonTradeIncomeCalculator {
 
-  def lossReform2017Applies(apEndDate: EndDate): Boolean = apEndDate.value.isAfter(lossReform2017)
+  override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CATO23 = {
 
-  def cp997NIExceedsNonTradingProfit(retriever: ComputationsBoxRetriever): Boolean = retriever.cato01() < retriever.cp997NI().orZero
+    NetNonTradeIncomeCalculation(cato01 = fieldValueRetriever.cato01(),
+                                 cp997 = fieldValueRetriever.cp997())
+  }
 }

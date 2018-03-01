@@ -14,22 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations.calculations
+package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.{CATO01, CATO23}
-import uk.gov.hmrc.ct.box.CtTypeConverters
-import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
 
-trait NonTradeIncomeCalculator extends CtTypeConverters {
+case class CP290d(value: Option[Int]) extends CtBoxIdentifier(name = "Post 1/4/17 main land losses brought forward against Northern Ireland TP") with CtOptionalInteger
 
-  def nonTradeIncomeCalculation(cp43: CP43,
-                                cp502: CP502,
-                                cp509: CP509,
-                                cp510: CP510): CATO01 = {
-    CATO01(cp43 + cp502 + cp509 + cp510)
-  }
-
-  def NetNonTradeIncomeCalculation(cato01: CATO01, cp997: CP997): CATO23 ={
-    CATO23(cato01 - cp997)
-  }
+object CP290d extends Linked[CP283d, CP290d] {
+  def apply(source: CP283d): CP290d = CP290d(source.value)
 }

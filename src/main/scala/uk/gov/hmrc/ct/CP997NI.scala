@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct
 
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP281d(value: Option[Int])
-  extends CtBoxIdentifier("Mainstream losses brought forward from on or after 01/04/2017")
+case class CP997NI (value: Option[Int])
+  extends CtBoxIdentifier("Losses from previous AP after 01/04/2017 set against non-trading profit this AP")
   with CtOptionalInteger
-  with Input
 
-object CP281d extends Calculated[CP281d, ComputationsBoxRetriever] {
 
-  override def calculate(boxRetriever: ComputationsBoxRetriever): CP281d = {
-    import boxRetriever._
-    CP281d(cp281b.value.map { postReformLosses =>
-      postReformLosses - cp281c.orZero
-    })
+object CP997NI extends NorthernIrelandRateValidation with Calculated[CP997NI, ComputationsBoxRetriever] {
+
+  override def calculate(boxRetriever: ComputationsBoxRetriever): CP997NI = {
+    if (boxRetriever.cato01().value > 0) {
+      CP997NI(
+        if (mayHaveNirLosses(boxRetriever)) Some(boxRetriever.cp997d().orZero + boxRetriever.cp997e().orZero)
+
+        else boxRetriever.cp997d.value
+      )
+    } else CP997NI(None)
   }
 
-  def apply(int: Int): CP281d = CP281d(Some(int))
 }

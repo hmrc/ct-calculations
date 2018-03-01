@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP997c(value: Option[Int]) extends CtBoxIdentifier("NIR Losses from previous AP after 01/04/2017 set against non trading profits this AP")
+case class CP997c(value: Option[Int]) extends CtBoxIdentifier("NIR Losses from previous AP after 01/04/2017 set against non-trading profit this AP")
   with CtOptionalInteger
   with Input
   with ValidatableBox[ComputationsBoxRetriever]
@@ -40,7 +40,7 @@ case class CP997c(value: Option[Int]) extends CtBoxIdentifier("NIR Losses from p
   }
 
   private def exceedsNonTradingProfitErrors(retriever: ComputationsBoxRetriever) = {
-    failIf(losses.cp997ExceedsNonTradingProfit(retriever)) {
+    failIf(losses.cp997NIExceedsNonTradingProfit(retriever)) {
       Set(CtValidation(Some("CP997c"), "error.CP997.exceeds.nonTradingProfit"))
     }
   }

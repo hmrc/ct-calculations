@@ -39,7 +39,7 @@ case class CP997d(value: Option[Int])
   }
 
   private def exceedsNonTradingProfitErrors(retriever: ComputationsBoxRetriever) = {
-    failIf(losses.cp997ExceedsNonTradingProfit(retriever)) {
+    failIf(losses.cp997NIExceedsNonTradingProfit(retriever)) {
       Set(CtValidation(Some("CP997d"), "error.CP997.exceeds.nonTradingProfit"))
     }
   }
