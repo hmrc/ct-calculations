@@ -27,6 +27,6 @@ object CATO23 extends Calculated[CATO23, ComputationsBoxRetriever] with NonTrade
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CATO23 = {
 
     NetNonTradeIncomeCalculation(cato01 = fieldValueRetriever.cato01(),
-                                 cp997 = fieldValueRetriever.cp997())
+                                 cp997NI = fieldValueRetriever.cp997NI())
   }
 }

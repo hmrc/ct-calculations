@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct
+package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
