@@ -29,7 +29,8 @@ trait NonTradeIncomeCalculator extends CtTypeConverters {
     CATO01(cp43 + cp502 + cp509 + cp510)
   }
 
-  def NetNonTradeIncomeCalculation(cato01: CATO01, cp997: CP997): CATO23 ={
-    CATO23(cato01 - cp997)
+  def NetNonTradeIncomeCalculation(cato01: CATO01, cp997NI: CP997NI): CATO23 ={
+    CATO23(cato01 - cp997NI)
+
   }
 }
