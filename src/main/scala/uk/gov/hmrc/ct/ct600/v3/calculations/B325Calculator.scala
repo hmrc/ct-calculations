@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct.ct600.v3.calculations
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
-import uk.gov.hmrc.ct.ct600.v3.calculations.B325Calculator
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.box.CtTypeConverters
+import uk.gov.hmrc.ct.computations.CP117
+import uk.gov.hmrc.ct.ct600.v3.{B315, B325}
 
+trait B325Calculator extends CtTypeConverters {
 
-case class B325(value: Int) extends CtBoxIdentifier(name = "Northern Ireland profits included") with CtInteger
+  def calculateB325(cp117:CP117, b315:B315): B325 = {
 
-object B325 extends Calculated[B325,CT600BoxRetriever] with B325Calculator {
-
-  override def calculate(fieldValueRetriever: CT600BoxRetriever): B325 = {
-
-    calculateB325(fieldValueRetriever.cp117(), fieldValueRetriever.b315())
+    if (cp117.value == b315.value) {
+      B325(cp117)
+    } else {
+      B325(0)
+    }
 
   }
-
 }
