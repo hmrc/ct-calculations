@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP281d(value: Option[Int])
-  extends CtBoxIdentifier("Main stream Losses brought forward from on or after 01/04/2017")
+  extends CtBoxIdentifier("Mainstream losses brought forward from on or after 01/04/2017")
   with CtOptionalInteger
   with Input
 

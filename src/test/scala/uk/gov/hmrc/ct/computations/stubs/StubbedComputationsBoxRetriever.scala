@@ -23,6 +23,7 @@ import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.{CATO11, CATO12, CountryOfRegistration}
 
+
 class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with StubbedAccountsBoxRetriever with StubbedFilingAttributesBoxValueRetriever {
 
   override def ap1(): AP1 = ???
@@ -210,6 +211,8 @@ class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with Stub
   override def cp281c(): CP281c = ???
 
   override def cp283c(): CP283c = ???
+
+  override def cp997(): CP997 = ???
 
   override def cp997c(): CP997c = ???
 

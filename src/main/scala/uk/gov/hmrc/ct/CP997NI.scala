@@ -16,19 +16,25 @@
 
 package uk.gov.hmrc.ct
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
-import uk.gov.hmrc.ct.computations.calculations._
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
+case class CP997NI (value: Option[Int])
+  extends CtBoxIdentifier("Losses from previous AP after 01/04/2017 set against non-trading profit this AP")
+  with CtOptionalInteger
 
-case class CATO23 (value: Int) extends CtBoxIdentifier(name = "Net non-trading income") with CtInteger
 
-object CATO23 extends Calculated[CATO23, ComputationsBoxRetriever] with NonTradeIncomeCalculator {
+object CP997NI extends NorthernIrelandRateValidation with Calculated[CP997NI, ComputationsBoxRetriever] {
 
-  override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CATO23 = {
+  override def calculate(boxRetriever: ComputationsBoxRetriever): CP997NI = {
+    if (boxRetriever.cato01().value > 0) {
+      CP997NI(
+        if (mayHaveNirLosses(boxRetriever)) Some(boxRetriever.cp997d().orZero + boxRetriever.cp997e().orZero)
 
-    NetNonTradeIncomeCalculation(cato01 = fieldValueRetriever.cato01(),
-                                 cp997NI = fieldValueRetriever.cp997NI())
-
+        else boxRetriever.cp997d.value
+      )
+    } else CP997NI(None)
   }
+
 }

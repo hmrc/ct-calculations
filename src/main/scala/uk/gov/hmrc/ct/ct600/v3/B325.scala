@@ -16,7 +16,13 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtInteger, CtOptionalInteger}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtInteger, Linked}
+import uk.gov.hmrc.ct.computations.CP117
 
 
-case class B325(value: Option[Int]) extends CtBoxIdentifier(name = "Northern Ireland profits included") with CtOptionalInteger
+case class B325(value: Int) extends CtBoxIdentifier(name = "Northern Ireland profits included") with CtInteger
+
+object B325 extends Linked[CP117, B325] {
+
+  override def apply(source: CP117): B325 = B325(source.value)
+}
