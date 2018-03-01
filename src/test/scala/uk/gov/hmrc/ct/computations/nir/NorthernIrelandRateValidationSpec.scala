@@ -285,8 +285,8 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
             CP288(cp288),
             CP288a(cp288a),
             CP288b(cp288b),
-            null,
-            null
+            CP997c(None),
+            CP997d(None)
 
           )
 
