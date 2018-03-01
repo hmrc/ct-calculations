@@ -21,7 +21,7 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.{CATO01, CP997NI}
+import uk.gov.hmrc.ct.CATO01
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
@@ -287,6 +287,7 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
             CP288b(cp288b),
             CP997c(None),
             CP997d(None)
+
           )
 
           computationsBoxRetriever.cp281b() shouldBe allLossesBroughtForward.cp281b
