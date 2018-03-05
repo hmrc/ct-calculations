@@ -142,7 +142,7 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp283c(): CP283c
 
-  def cp283d(): CP283d = CP283d.calculate(this)
+  def cp283d(): CP283d
 
   def cp285(): CP285
 
