@@ -17,18 +17,32 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP283d(value: Option[Int])
   extends CtBoxIdentifier("Main Stream Losses brought forward from on or after 01/04/2017 used against trading profit")
   with CtOptionalInteger
+  with Input
+  with ValidatableBox[ComputationsBoxRetriever] with NorthernIrelandRateValidation {
 
-object CP283d extends Calculated[CP283d, ComputationsBoxRetriever] {
-  override def calculate(boxRetriever: ComputationsBoxRetriever): CP283d = {
-    CP283d(
-      boxRetriever.cp283b().value.map { postLosses =>
-        postLosses - boxRetriever.cp283c.orZero
-      }
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      requiredErrorIf(
+        boxRetriever.cp283b().isPositive &&
+          mayHaveNirLosses(boxRetriever) &&
+          !hasValue),
+      validateIntegerRange("CP283d", this, 0, boxRetriever.cp283b.orZero),
+      sumOfBreakDownError(boxRetriever)
     )
   }
+
+  private def sumOfBreakDownError(retriever: ComputationsBoxRetriever)={
+    failIf(this.orZero + retriever.cp283c.orZero > retriever.cp117){
+      Set(CtValidation(None, "error.exceeds.tradingProfit.error"))
+
+    }
+  }
+
 }
+
