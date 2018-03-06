@@ -17,19 +17,32 @@
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.computations.CP117
-import uk.gov.hmrc.ct.ct600.v3.{B315, B325}
+import uk.gov.hmrc.ct.ct600.v3._
 
 class B325CalculatorSpec extends WordSpec with Matchers {
-  "B325" should {
-    "be same as CP117 if CP117 == B315" in new B325Calculator {
+
+  "B325" should{
+
+    "be same as B335 if B335 <= B315 for the single financial year" in new B325Calculator {
       {
-        calculateB325(CP117(123), B315(123)) shouldBe B325(123)
+        calculateB325(B335(100), B385(0), B315(100), B330(2017), B380(None)) shouldBe B325(100)
       }
     }
-    "be 0 when CP117 != B315" in new B325Calculator {
+
+    "be same as total figure of (B335 + B385) if (B335 + B385) <= B315 for the two financial year" in new B325Calculator {
       {
-        calculateB325(CP117(123), B315(12)) shouldBe B325(0)
+        calculateB325(B335(200), B385(200), B315(400), B330(2017), B380(Some(2018))) shouldBe B325(400)
+      }
+    }
+    "be 0 when value of B335 exceed the value in B315 for the single financial year" in new B325Calculator {
+      {
+        calculateB325(B335(10), B385(0), B315(5), B330(2017), B380(None)) shouldBe B325(0)
+      }
+    }
+
+    "be 0 when value of (B335 + B385) exceed the value in B315 for the two financial year" in new B325Calculator {
+      {
+        calculateB325(B335(20), B385(20), B315(15), B330(2017), B380(Some(2018))) shouldBe B325(0)
       }
     }
   }

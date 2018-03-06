@@ -16,19 +16,23 @@
 
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
-import uk.gov.hmrc.ct.box.CtTypeConverters
+import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.ct600.v3._
 
-trait B325Calculator extends CtTypeConverters {
+class B586CalculatorSpec extends WordSpec with Matchers {
 
-  def calculateB325(b335: B335, b385: B385, b315: B315, b330: B330, b380: B380): B325 = {
+  "B586" should{
 
-    (b330, b380) match {
+    "be same as B345 for the single financial year" in new B586Calculator {
+      {
+        calculateB586(B345(200), B395(0), B330(2017), B380(None)) shouldBe B586(200)
+      }
+    }
 
-      case singleFinancialYear if singleFinancialYear._1.isPositive && singleFinancialYear._2.noValue &&  b335.value <= b315.value => B325(b335.value)
-      case twoFinancialYears if twoFinancialYears._1.isPositive && twoFinancialYears._2.hasValue && (b335.value + b385.value) <= b315.value  => B325(b335.value + b385.value)
-      case _ => B325(0)
+    "be same as total figure of (B345 + B395) for the two financial year" in new B586Calculator {
+      {
+        calculateB586(B345(400), B395(400), B330(2017), B380(Some(2018))) shouldBe B586(800)
+      }
     }
   }
-
 }
