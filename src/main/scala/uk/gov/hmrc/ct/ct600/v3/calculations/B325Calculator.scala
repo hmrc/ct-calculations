@@ -25,9 +25,9 @@ trait B325Calculator extends CtTypeConverters {
 
     (b330, b380) match {
 
-      case singleFinancialYear if singleFinancialYear._1.isPositive && singleFinancialYear._2.noValue &&  b335.value <= b315.value => B325(b335.value)
-      case twoFinancialYears if twoFinancialYears._1.isPositive && twoFinancialYears._2.hasValue && (b335.value + b385.value) <= b315.value  => B325(b335.value + b385.value)
-      case _ => B325(0)
+      case singleFinancialYear if singleFinancialYear._1.isPositive && singleFinancialYear._2.noValue &&  b335.value <= b315.value => B325(Some(b335.value))
+      case twoFinancialYears if twoFinancialYears._1.isPositive && twoFinancialYears._2.hasValue && (b335.value + b385.value) <= b315.value  => B325(Some(b335.value + b385.value))
+      case _ => B325(Some(0))
     }
   }
 

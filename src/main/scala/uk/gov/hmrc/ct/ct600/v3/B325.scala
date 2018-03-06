@@ -16,12 +16,12 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger}
 import uk.gov.hmrc.ct.ct600.v3.calculations.B325Calculator
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 
-case class B325(value: Int) extends CtBoxIdentifier(name = "Northern Ireland profits included") with CtInteger
+case class B325(value: Option[Int]) extends CtBoxIdentifier(name = "Northern Ireland profits included") with CtOptionalInteger
 
 object B325 extends Calculated[B325,CT600BoxRetriever] with B325Calculator {
 
