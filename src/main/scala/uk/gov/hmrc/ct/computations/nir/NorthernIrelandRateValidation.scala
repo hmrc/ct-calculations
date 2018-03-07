@@ -32,7 +32,6 @@ trait NorthernIrelandRateValidation {
 
   def nirLossesAllOffsetAgainstNITradingProfit(boxRetriever: ComputationsBoxRetriever): Boolean = {
     import boxRetriever._
-
     cp283c().orZero == cp281c().orZero
   }
 
