@@ -21,7 +21,8 @@ import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.box.stubs.StubbedFilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.{CATO11, CATO12, CP997NI, CountryOfRegistration}
+import uk.gov.hmrc.ct.{CATO11, CATO12, CountryOfRegistration}
+
 
 class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with StubbedAccountsBoxRetriever with StubbedFilingAttributesBoxValueRetriever {
 
@@ -210,6 +211,8 @@ class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with Stub
   override def cp281c(): CP281c = ???
 
   override def cp283c(): CP283c = ???
+
+  override def cp283d(): CP283d = ???
 
   override def cp997(): CP997 = ???
 
