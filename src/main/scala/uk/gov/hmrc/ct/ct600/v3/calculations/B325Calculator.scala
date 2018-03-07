@@ -24,13 +24,20 @@ trait B325Calculator extends CtTypeConverters {
 
   def calculateB325(b335: B335, b385: B385, b315: B315, b330: B330, b380: B380, cp291: CP291): B325 = {
 
-    (b330, b380) match {
+    val ZERO = Some(0)
 
-      case singleFinancialYear if singleFinancialYear._1.isPositive && singleFinancialYear._2.noValue &&  b335.value <= b315.value => B325(Some(b335.value))
-      case twoFinancialYears if twoFinancialYears._1.isPositive && twoFinancialYears._2.hasValue && (b335.value + b385.value) <= b315.value  => B325(Some(b335.value + b385.value))
-      case noTradingProfit if (noTradingProfit._1.isPositive && noTradingProfit._2.noValue && cp291.noValue) || (noTradingProfit._1.isPositive && noTradingProfit._2.hasValue && cp291.noValue) => B325(Some(0))
-      case _ => B325(None)
-    }
+    val value =
+      if (!b330.isPositive) None
+      else b380 match {
+        case noTradingProfit if cp291.noValue => ZERO
+        case singleFinancialYear if singleFinancialYear.noValue =>
+          if (b335.value <= b315.value) Some(b335.value)
+          else ZERO
+        case twoFinancialYears if twoFinancialYears.hasValue =>
+          if ((b335.value + b385.value) <= b315.value) Some(b335.value + b385.value)
+          else ZERO
+      }
+
+    B325(value)
   }
-
 }
