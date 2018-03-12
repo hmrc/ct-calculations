@@ -35,15 +35,15 @@ class B325CalculatorSpec extends WordSpec with Matchers {
         calculateB325(B335(200), B385(200), B315(400), B330(2017), B380(Some(2018)),CP291(Some(123))) shouldBe B325(Some(400))
       }
     }
-    "be None when value of B335 exceed the value in B315 for the single financial year" in new B325Calculator {
+    "be 0 when value of B335 exceed the value in B315 for the single financial year" in new B325Calculator {
       {
-        calculateB325(B335(10), B385(0), B315(5), B330(2017), B380(None),CP291(Some(123))) shouldBe B325(None)
+        calculateB325(B335(10), B385(0), B315(5), B330(2017), B380(None),CP291(Some(123))) shouldBe B325(Some(0))
       }
     }
 
-    "be None when value of (B335 + B385) exceed the value in B315 for the two financial year" in new B325Calculator {
+    "be 0 when value of (B335 + B385) exceed the value in B315 for the two financial year" in new B325Calculator {
       {
-        calculateB325(B335(20), B385(20), B315(15), B330(2017), B380(Some(2018)),CP291(Some(123))) shouldBe B325(None)
+        calculateB325(B335(20), B385(20), B315(15), B330(2017), B380(Some(2018)),CP291(Some(123))) shouldBe B325(Some(0))
       }
     }
     "be 0 when no net trading profit available for the single financial year" in new B325Calculator {
