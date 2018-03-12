@@ -26,6 +26,10 @@ object HmrcVersions {
     override def name: String = "v2"
   }
 
+  case object ComputationsCT20180406 extends Version {
+    override def name: String = "ct-2018-04-06"
+  }
+
   case object ComputationsCT20171001 extends Version {
     override def name: String = "ct-2017-10-01"
   }

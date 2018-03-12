@@ -20,22 +20,16 @@ import org.joda.time.LocalDate
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct._
-import uk.gov.hmrc.ct.accounts.{AC2, AC205, AC206, AC3}
-import uk.gov.hmrc.ct.accounts.frsse2008._
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
-import uk.gov.hmrc.ct.box.CtValue
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.accounts.{AC2, AC205, AC206, AC3}
 import uk.gov.hmrc.ct.box.stubs.StubbedFilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations._
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes._
-import uk.gov.hmrc.ct.version.CoHoAccounts._
-import uk.gov.hmrc.ct.version.CoHoVersions.{FRS102, FRS105, FRSSE2008}
+import uk.gov.hmrc.ct.version.CoHoVersions.FRSSE2008
 import uk.gov.hmrc.ct.version.HmrcReturns._
 import uk.gov.hmrc.ct.version.HmrcVersions._
-import uk.gov.hmrc.ct.version.calculations.ReturnVersionsFixture.coHoOnlyMicroEntityFRSSE2008Returns
 import uk.gov.hmrc.ct.version.{Return, Version}
 
 class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
@@ -289,9 +283,16 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       ("2017-03-31", "2017-10-31", ComputationsCT20171001),
       ("2017-03-31", "2017-04-01", ComputationsCT20171001),
 
-
       ("2017-04-01", "2017-10-31", ComputationsCT20171001),
-      ("2017-04-02", "2017-10-31", ComputationsCT20171001)
+      ("2017-04-02", "2017-10-31", ComputationsCT20171001),
+
+      ("2017-10-01", "2018-04-07", ComputationsCT20180406),
+      ("2018-04-05", "2018-10-31", ComputationsCT20180406),
+      ("2018-04-05", "2018-04-06", ComputationsCT20180406),
+
+      ("2018-04-06", "2018-10-31", ComputationsCT20180406),
+      ("2018-04-07", "2018-10-31", ComputationsCT20180406)
+
     )
 
     "for any HMRC filing" when {
@@ -423,7 +424,6 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           hmrcFiling = HMRCFiling(true),
           companyType = FilingCompanyType(MembersClub)) shouldBe expectedResult
       }
-
       "return version for AP starting on or after 2017-04-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
@@ -446,6 +446,49 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
         private val apStartDate = Some(LocalDate.parse("2017-05-01"))
         private val apEndDate = Some(LocalDate.parse("2017-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          companyType = FilingCompanyType(MembersClub)) shouldBe expectedResult
+      }
+      "return version for AP starting on or after 2017-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20171001))
+
+        private val apStartDate = Some(LocalDate.parse("2017-04-06"))
+        private val apEndDate = Some(LocalDate.parse("2018-04-05"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          companyType = FilingCompanyType(MembersClub)) shouldBe expectedResult
+      }
+      "return version for AP starting on 2018-04-05" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-04-05"))
+        private val apEndDate = Some(LocalDate.parse("2018-04-06"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          companyType = FilingCompanyType(MembersClub)) shouldBe expectedResult
+      }
+
+      "return version for AP starting on or after 2018-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-04-07"))
+        private val apEndDate = Some(LocalDate.parse("2018-10-31"))
 
         calculateReturnVersions(apStartDate = apStartDate,
           apEndDate = apEndDate,
@@ -632,6 +675,98 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           charityAllExempt = Some(false)) shouldBe expectedResult
       }
 
+
+      "return versions when NOT all proceeds used for charitable purposes for AP starting on or after 2017-01-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600e, CT600Version3),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2017-01-06"))
+        private val apEndDate = Some(LocalDate.parse("2018-04-06"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(Charity),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions when NOT all proceeds used for charitable purposes for AP starting on or after 2017-04-07" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600e, CT600Version3),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2017-04-07"))
+        private val apEndDate = Some(LocalDate.parse("2018-04-06"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(Charity),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions when NOT all proceeds used for charitable purposes for AP starting on 2018-04-05" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600e, CT600Version3),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-04-05"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(Charity),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions when NOT all proceeds used for charitable purposes for AP starting on or after 2018-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600e, CT600Version3),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-04-06"))
+        private val apEndDate = Some(LocalDate.parse("2018-10-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(Charity),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions when NOT all proceeds used for charitable purposes for AP starting on or after 2018-05-01" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600e, CT600Version3),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-05-01"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(Charity),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+
       "return versions when no income for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
                                  Return(CT600e, CT600Version2),
@@ -800,6 +935,79 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
         private val apStartDate = Some(LocalDate.parse("2017-05-01"))
         private val apEndDate = Some(LocalDate.parse("2017-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(Charity),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+
+      "return versions when not claiming for AP starting on or after 2017-04-07" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2017-04-07"))
+        private val apEndDate = Some(LocalDate.parse("2018-04-06"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(Charity),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on 2018-04-05" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-04-05"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(Charity),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on or after 2018-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-04-06"))
+        private val apEndDate = Some(LocalDate.parse("2018-10-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(Charity),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on or after 2018-05-01" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-05-01"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-31"))
 
         calculateReturnVersions(apStartDate = apStartDate,
           apEndDate = apEndDate,
@@ -991,6 +1199,79 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           companyType = FilingCompanyType(CASC),
           charityAllExempt = Some(false)) shouldBe expectedResult
       }
+
+      "return versions when NOT all proceeds used for charitable purposes for AP starting on or after 2017-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600e, CT600Version3),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2017-04-06"))
+        private val apEndDate = Some(LocalDate.parse("2018-04-06"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(CASC),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions when NOT all proceeds used for charitable purposes for AP starting on 2018-04-05" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600e, CT600Version3),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-04-05"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(CASC),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions when NOT all proceeds used for charitable purposes for AP starting on or after 2018-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600e, CT600Version3),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-04-06"))
+        private val apEndDate = Some(LocalDate.parse("2018-10-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(CASC),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions when NOT all proceeds used for charitable purposes for AP starting on or after 2018-05-01" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600e, CT600Version3),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-05-01"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(CASC),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
       "return versions when no income for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
                                  Return(CT600e, CT600Version2),
@@ -1169,6 +1450,79 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           charityAllExempt = None,
           charityNoIncome = None) shouldBe expectedResult
       }
+
+      "return versions when not claiming for AP starting on or after 2017-01-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2017-01-06"))
+        private val apEndDate = Some(LocalDate.parse("2018-04-06"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(CASC),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on 2018-04-05" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-04-05"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-01"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(CASC),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on orafter 2018-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-04-06"))
+        private val apEndDate = Some(LocalDate.parse("2018-10-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(CASC),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on or after 2018-05-01" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-05-01"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          companyType = FilingCompanyType(CASC),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
     }
 
     "for HMRC only filing for a Company (limited by guarantee) that is a charity" when {
@@ -1320,6 +1674,67 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
             statutoryAccountsFiling = StatutoryAccountsFiling(true),
             companyType = FilingCompanyType(LimitedByGuaranteeCharity),
             charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+
+      "return versions where NOT all proceeds used for charity for AP starting on or after 2017-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2017-04-06")),
+          apEndDate = Some(LocalDate.parse("2018-04-06")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedByGuaranteeCharity),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions where NOT all proceeds used for charity for AP starting on 2018-04-05" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2018-04-05")),
+          apEndDate = Some(LocalDate.parse("2018-12-31")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedByGuaranteeCharity),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions where NOT all proceeds used for charity for AP starting on or after 2018-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2018-04-06")),
+          apEndDate = Some(LocalDate.parse("2018-10-31")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedByGuaranteeCharity),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions where NOT all proceeds used for charity for AP starting on or after 2018-05-01" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2018-05-01")),
+          apEndDate = Some(LocalDate.parse("2018-12-31")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedByGuaranteeCharity),
+          charityAllExempt = Some(false)) shouldBe expectedResult
       }
 
       "throw illegal argument exception for micro entity charity for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
@@ -1485,6 +1900,82 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           charityAllExempt = None,
           charityNoIncome = None) shouldBe expectedResult
       }
+
+      "return versions when not claiming for AP starting on or after 2017-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2017-04-06"))
+        private val apEndDate = Some(LocalDate.parse("2018-04-06"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedByGuaranteeCharity),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on 2018-04-05" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+        private val apStartDate = Some(LocalDate.parse("2018-04-05"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedByGuaranteeCharity),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on or after 2018-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-04-06"))
+        private val apEndDate = Some(LocalDate.parse("2018-10-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedByGuaranteeCharity),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on or after 2018-05-01" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-05-01"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedByGuaranteeCharity),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
     }
 
     "for HMRC only filing for a Company (limited by guarantee) that is a CASC" when {
@@ -1631,6 +2122,67 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2017-05-01")),
           apEndDate = Some(LocalDate.parse("2017-12-31")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedByGuaranteeCASC),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+
+      "return versions where NOT all proceeds used for charity for AP starting after 2017-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2017-04-06")),
+          apEndDate = Some(LocalDate.parse("2018-04-06")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedByGuaranteeCASC),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions where NOT all proceeds used for charity for AP starting on 2018-04-05" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2018-04-05")),
+          apEndDate = Some(LocalDate.parse("2018-12-31")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedByGuaranteeCASC),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions where NOT all proceeds used for charity for AP starting after 2018-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2018-04-06")),
+          apEndDate = Some(LocalDate.parse("2018-10-31")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedByGuaranteeCASC),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions where NOT all proceeds used for charity for AP starting on or after 2018-05-01" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2018-05-01")),
+          apEndDate = Some(LocalDate.parse("2018-12-31")),
           hmrcFiling = HMRCFiling(true),
           coHoFiling = CompaniesHouseFiling(false),
           statutoryAccountsFiling = StatutoryAccountsFiling(true),
@@ -1801,6 +2353,64 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           charityAllExempt = None,
           charityNoIncome = None) shouldBe expectedResult
       }
+
+      "return versions when not claiming for AP starting on 2018-04-05" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-04-05"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedByGuaranteeCASC),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on or after 2018-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-04-06"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedByGuaranteeCASC),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on or after 2018-05-31" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-05-31"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedByGuaranteeCASC),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
     }
 
     "for HMRC only filing for a Company (limited by shares) that is a charity" when {
@@ -1955,6 +2565,71 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2017-05-01")),
           apEndDate = Some(LocalDate.parse("2017-12-31")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedBySharesCharity),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+
+      "return versions where NOT all proceeds used for charity for AP starting after 2017-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2017-04-06")),
+          apEndDate = Some(LocalDate.parse("2018-04-06")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedBySharesCharity),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions where NOT all proceeds used for charity for AP starting on 2018-04-05" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2018-04-05")),
+          apEndDate = Some(LocalDate.parse("2018-12-31")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedBySharesCharity),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions where NOT all proceeds used for charity for AP starting after 2018-04-05" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2018-04-05")),
+          apEndDate = Some(LocalDate.parse("2018-10-31")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedBySharesCharity),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions where NOT all proceeds used for charity for AP starting on or after 2018-05-01" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2018-05-01")),
+          apEndDate = Some(LocalDate.parse("2018-12-31")),
           hmrcFiling = HMRCFiling(true),
           coHoFiling = CompaniesHouseFiling(false),
           statutoryAccountsFiling = StatutoryAccountsFiling(true),
@@ -2134,6 +2809,87 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
           charityAllExempt = None,
           charityNoIncome = None) shouldBe expectedResult
       }
+
+      "return versions when not claiming for AP starting on or after 2017-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2017-04-06"))
+        private val apEndDate = Some(LocalDate.parse("2018-04-06"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedBySharesCharity),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on 2018-04-05" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-04-05"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedBySharesCharity),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on or after 2018-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-04-06"))
+        private val apEndDate = Some(LocalDate.parse("2018-10-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedBySharesCharity),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on or after 2018-05-01" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-05-01"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedBySharesCharity),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
     }
 
     "for HMRC only filing for a Company (limited by shares) that is a CASC" when {
@@ -2288,6 +3044,71 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
         calculateReturnVersions(apStartDate = Some(LocalDate.parse("2017-05-01")),
           apEndDate = Some(LocalDate.parse("2017-12-31")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedBySharesCASC),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+
+      "return versions where NOT all proceeds used for charity for AP starting after 2017-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2017-04-06")),
+          apEndDate = Some(LocalDate.parse("2018-04-06")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedBySharesCASC),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions where NOT all proceeds used for charity for AP starting on 2018-04-05" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2018-04-05")),
+          apEndDate = Some(LocalDate.parse("2018-12-31")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedBySharesCASC),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions where NOT all proceeds used for charity for AP starting after 2018-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2018-04-06")),
+          apEndDate = Some(LocalDate.parse("2018-10-31")),
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedBySharesCASC),
+          charityAllExempt = Some(false)) shouldBe expectedResult
+      }
+      "return versions where NOT all proceeds used for charity for AP starting after 2018-05-01" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600e, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        calculateReturnVersions(apStartDate = Some(LocalDate.parse("2018-05-01")),
+          apEndDate = Some(LocalDate.parse("2018-12-31")),
           hmrcFiling = HMRCFiling(true),
           coHoFiling = CompaniesHouseFiling(false),
           statutoryAccountsFiling = StatutoryAccountsFiling(true),
@@ -2456,6 +3277,67 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
         private val apStartDate = Some(LocalDate.parse("2017-05-01"))
         private val apEndDate = Some(LocalDate.parse("2017-12-31"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedBySharesCASC),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+
+      "return versions when not claiming for AP starting on or after 2018-04-06" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2017-04-06"))
+        private val apEndDate = Some(LocalDate.parse("2018-04-06"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedBySharesCASC),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on or after 2018-04-05" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2017-04-06"))
+        private val apEndDate = Some(LocalDate.parse("2018-04-06"))
+
+        calculateReturnVersions(apStartDate = apStartDate,
+          apEndDate = apEndDate,
+          hmrcFiling = HMRCFiling(true),
+          coHoFiling = CompaniesHouseFiling(false),
+          microEntityFiling = MicroEntityFiling(false),
+          statutoryAccountsFiling = StatutoryAccountsFiling(true),
+          companyType = FilingCompanyType(LimitedBySharesCASC),
+          charityAllExempt = None,
+          charityNoIncome = None) shouldBe expectedResult
+      }
+      "return versions when not claiming for AP starting on or after 2018-05-01" in new ReturnVersionsCalculatorWithDefaults {
+        val expectedResult = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+          Return(CT600, CT600Version3),
+          Return(CT600a, CT600Version3),
+          Return(CT600j, CT600Version3),
+          Return(Computations, ComputationsCT20180406))
+
+        private val apStartDate = Some(LocalDate.parse("2018-05-01"))
+        private val apEndDate = Some(LocalDate.parse("2018-12-31"))
 
         calculateReturnVersions(apStartDate = apStartDate,
           apEndDate = apEndDate,
