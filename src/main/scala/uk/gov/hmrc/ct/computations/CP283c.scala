@@ -32,7 +32,20 @@ case class CP283c(value: Option[Int])
         boxRetriever.cp283b().isPositive &&
         mayHaveNirLosses(boxRetriever) &&
           !hasValue),
-      validateIntegerRange("CP283c", this, 0, boxRetriever.cp283b.orZero)
+      validateIntegerRange("CP283c", this, 0, boxRetriever.cp283b.orZero),
+      sumOfBreakDownError(boxRetriever)
     )
   }
+
+  private def sumOfBreakDownError(retriever: ComputationsBoxRetriever)={
+    failIf(this.orZero + retriever.cp283d.orZero > retriever.cp117){
+        Set(CtValidation(None, "error.exceeds.tradingProfit.error"))
+
+    }
+  }
+}
+
+object CP283c {
+
+  def apply(int: Int): CP283c = CP283c(Some(int))
 }

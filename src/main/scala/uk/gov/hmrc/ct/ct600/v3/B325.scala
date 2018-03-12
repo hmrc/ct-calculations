@@ -31,4 +31,5 @@ object B325 extends Calculated[B325,CT600BoxRetriever] with B325Calculator {
 
   }
 
+  override def apply(source: CP117): B325 = B325(Some(source.value))
 }

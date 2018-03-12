@@ -21,7 +21,7 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.{CATO01, CP997NI}
+import uk.gov.hmrc.ct.CATO01
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
@@ -97,9 +97,7 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
         ("NITL (NO NITL) with post 01/04/17 MSTL and should carry forward when you cant set off",    0,           0,      Some(true),        AllLossesBroughtForward(Some(1500), Some(0),   Some(1500), Some(0),       Some(1500)),  LossesBroughtForwardAgainstTradingProfit(Some(0),    Some(0),   Some(0),    Some(0),  Some(0)),   Some(0),   Some(1500),  Some(0),      Some(1500),         NILossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP),
         ("TP & NTP with pre & post 01/04/17 MSTL can only set post 01/04/17 against TP",          4000,        2000,      Some(true),        AllLossesBroughtForward(Some(4000), Some(2000), Some(2000), Some(0),      Some(2000)),  LossesBroughtForwardAgainstTradingProfit(Some(4000), Some(2000),Some(2000), Some(0),  Some(2000)),Some(0),   Some(0),     Some(0),      Some(0),            NILossesBroughtForwardAgainstNonTradingProfit(Some(0),    Some(0),    Some(0),    Some(0))),
         ("TP & NTP with pre & post 01/04/17 MSTL can set pre MSL against TP and/or post MSL against NTP", 3000,4000,      Some(true),        AllLossesBroughtForward(Some(6000), Some(3000), Some(3000), Some(0),      Some(3000)),  LossesBroughtForwardAgainstTradingProfit(Some(3000), Some(1500),Some(1500), Some(0),  Some(1500)),Some(0),   Some(3000),  Some(1500),   Some(1500),         NILossesBroughtForwardAgainstNonTradingProfit(Some(1500), Some(0),    Some(1500), Some(0))),
-        ("NTP with post & pre TL brought forward and use post against NTP and carry forward pre",     0,        3000,     Some(true),        AllLossesBroughtForward(Some(5000), Some(2000), Some(3000), Some(1500),   Some(1500)),  LossesBroughtForwardAgainstTradingProfit(Some(0),    Some(0),   Some(0),    Some(0),  Some(0)),   Some(0),   Some(2000),  Some(2000),   Some(3000),         NILossesBroughtForwardAgainstNonTradingProfit(Some(2250), Some(1500),    Some(1500), Some(750))),
-        ("NITP & NTP with MSTL pre and post and unused NIR post ",                                 6000,        3000,     Some(true),        AllLossesBroughtForward(Some(10000),Some(4000), Some(6000), Some(2000),   Some(4000)),  LossesBroughtForwardAgainstTradingProfit(Some(6000), Some(2000),Some(4000), Some(1000),Some(3000)),Some(0),  Some(4000),  Some(2000),    Some(2000),        NILossesBroughtForwardAgainstNonTradingProfit(Some(3000), Some(2000),    Some(2000), Some(1000)))
-
+        ("NTP with post & pre TL brought forward and use post against NTP and carry forward pre",     0,        3000,     Some(true),        AllLossesBroughtForward(Some(5000), Some(2000), Some(3000), Some(1500),   Some(1500)),  LossesBroughtForwardAgainstTradingProfit(Some(0),    Some(0),   Some(0),    Some(0),  Some(0)),   Some(0),   Some(2000),  Some(2000),   Some(3000),         NILossesBroughtForwardAgainstNonTradingProfit(Some(2250), Some(1500),    Some(1500), Some(750)))
       )
 
       forAll(table) {
@@ -129,6 +127,7 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
               lossesBroughtForwardAgainstTradingProfit.cp283a,
               lossesBroughtForwardAgainstTradingProfit.cp283b,
               lossesBroughtForwardAgainstTradingProfit.cp283c,
+              lossesBroughtForwardAgainstTradingProfit.cp283d,
               CP288(cp288),
               CP288a(cp288a),
               CP288b(cp288b),
@@ -139,7 +138,6 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
             computationsBoxRetriever.cp281b() shouldBe allLossesBroughtForward.cp281b
             computationsBoxRetriever.cp281d() shouldBe allLossesBroughtForward.cp281d
             computationsBoxRetriever.cp283() shouldBe lossesBroughtForwardAgainstTradingProfit.cp283
-            computationsBoxRetriever.cp283d() shouldBe lossesBroughtForwardAgainstTradingProfit.cp283d
             computationsBoxRetriever.cp284() shouldBe CP284(cp284)
             computationsBoxRetriever.cp997NI() shouldBe northernIrelandlossesBroughtForwardAgainstNonTradingProfit.cp997NI
             computationsBoxRetriever.cp997e() shouldBe northernIrelandlossesBroughtForwardAgainstNonTradingProfit.cp997e
@@ -150,6 +148,7 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
             computationsBoxRetriever.cp283a.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp283b.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp283c.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp283d.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp288a.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp288b.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp997c.validate(computationsBoxRetriever) ++
@@ -163,7 +162,7 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
 
       val table = Table(
         ("message",                                                                                                     "CP117",    "CATO01",       "cpq17",        "allLossesBroughtForward: Total      pre(MS)     post        NI_Loss     Main_Loss",     "lossesBroughtForwardAgainstTradingProfit: Total      pre      post        NI_Loss     Main_Loss",   "cp284",     "cpnewbox",     "cpnewboxa","cpnewboxb", "NIlossesBroughtForwardAgainstNonTradingProfit: Total       NI_Loss    Main_Loss   NI_Loss_Revalued", "Exceptions"),
-        ("It should throw error msg after using too many losses against TP than what you have",                          500,           0,          Some(true),     AllLossesBroughtForward(Some(1000), Some(0), Some(1000), Some(1000),       Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(0), Some(2000), Some(2000), Some(0)),       Some(-1500),  Some(0),        Some(0),    Some(0),     NILossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP, Set(CtValidation(None,"error.CP283.exceeds.totalProfit",None))),
+        ("It should throw error msg after using too many losses against TP than what you have",                          500,           0,          Some(true),     AllLossesBroughtForward(Some(1000), Some(0), Some(1000), Some(1000),       Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(2000), Some(0), Some(2000), Some(2000), Some(0)),       Some(-1500),  Some(0),        Some(0),    Some(0),     NILossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP, Set(CtValidation(None,"error.CP283.exceeds.totalProfit",None),CtValidation(None,"error.exceeds.tradingProfit.error",None))),
         ("It should throw error msg after using too many losses against NTP than what you have",                           0,         200,          Some(true),     AllLossesBroughtForward(Some(1000), Some(0), Some(1000), Some(1000),       Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(0),    Some(0), Some(0),    Some(0),    Some(0)),       Some(0),     Some(0),        Some(0),    Some(0),      NILossesBroughtForwardAgainstNonTradingProfit(Some(500),  Some(1000), Some(0),    Some(500)), Set(CtValidation(Some("CP997c"), "error.CP997.exceeds.nonTradingProfit",None),CtValidation(Some("CP997d"), "error.CP997.exceeds.nonTradingProfit",None))),
         ("It should throw error msg when trying to carry forward more pre 01/04/17 MSTL where NTL & NO NTP ",            200,           0,          Some(true),     AllLossesBroughtForward(Some(2000), Some(2000),Some(0),  Some(0),          Some(0)),     LossesBroughtForwardAgainstTradingProfit(Some(0),    Some(0), Some(0),    Some(0),    Some(0)),       Some(200),   Some(2000),     Some(3000), Some(0),      NILossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP,  Set(CtValidation(None, "error.CP281a.breakdown.sum.incorrect",None))),
         ("It should throw error msg when losses brought forward totals is not correct",                                 1000,           0,          Some(true),     AllLossesBroughtForward(Some(2000), Some(1000),Some(1000),  Some(500),     Some(500)),   LossesBroughtForwardAgainstTradingProfit(Some(0),    Some(0), Some(0),    Some(0),    Some(0)),       Some(1000),  Some(2000),     Some(0),    Some(2000),   NILossesBroughtForwardAgainstNonTradingProfit.emptyLossesBroughtForwardAgainstNTP,  Set(CtValidation(None, "error.CP281a.breakdown.sum.incorrect",None))),
@@ -200,6 +199,7 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
               lossesBroughtForwardAgainstTradingProfit.cp283a,
               lossesBroughtForwardAgainstTradingProfit.cp283b,
               lossesBroughtForwardAgainstTradingProfit.cp283c,
+              lossesBroughtForwardAgainstTradingProfit.cp283d,
               CP288(cp288),
               CP288a(cp288a),
               CP288b(cp288b),
@@ -212,7 +212,6 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
             computationsBoxRetriever.cp281c shouldBe allLossesBroughtForward.cp281c
             computationsBoxRetriever.cp281d() shouldBe allLossesBroughtForward.cp281d
             computationsBoxRetriever.cp283() shouldBe  lossesBroughtForwardAgainstTradingProfit.cp283
-            computationsBoxRetriever.cp283d() shouldBe lossesBroughtForwardAgainstTradingProfit.cp283d
             computationsBoxRetriever.cp284() shouldBe CP284(cp284)
             computationsBoxRetriever.cp997NI() shouldBe northernIrelandLossesBroughtForwardAgainstNonTradingProfit.cp997NI
             computationsBoxRetriever.cp997e() shouldBe northernIrelandLossesBroughtForwardAgainstNonTradingProfit.cp997e
@@ -223,6 +222,7 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
               computationsBoxRetriever.cp283a.validate(computationsBoxRetriever) ++
               computationsBoxRetriever.cp283b.validate(computationsBoxRetriever) ++
               computationsBoxRetriever.cp283c.validate(computationsBoxRetriever) ++
+              computationsBoxRetriever.cp283d.validate(computationsBoxRetriever) ++
               computationsBoxRetriever.cp288a.validate(computationsBoxRetriever) ++
               computationsBoxRetriever.cp288b.validate(computationsBoxRetriever) ++
               computationsBoxRetriever.cp997c.validate(computationsBoxRetriever) ++
@@ -282,17 +282,18 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
             lossesBroughtForwardAgainstTradingProfit.cp283a,
             lossesBroughtForwardAgainstTradingProfit.cp283b,
             lossesBroughtForwardAgainstTradingProfit.cp283c,
+            lossesBroughtForwardAgainstTradingProfit.cp283d,
             CP288(cp288),
             CP288a(cp288a),
             CP288b(cp288b),
             CP997c(None),
             CP997d(None)
+
           )
 
           computationsBoxRetriever.cp281b() shouldBe allLossesBroughtForward.cp281b
           computationsBoxRetriever.cp281d() shouldBe allLossesBroughtForward.cp281d
           computationsBoxRetriever.cp283() shouldBe lossesBroughtForwardAgainstTradingProfit.cp283
-          computationsBoxRetriever.cp283d() shouldBe lossesBroughtForwardAgainstTradingProfit.cp283d
           computationsBoxRetriever.cp284() shouldBe CP284(cp284)
 
 
@@ -302,6 +303,7 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
             computationsBoxRetriever.cp283a.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp283b.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp283c.validate(computationsBoxRetriever) ++
+            computationsBoxRetriever.cp283d.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp288a.validate(computationsBoxRetriever) ++
             lossesBroughtForwardAgainstNonTradingProfit.cp997.validate(computationsBoxRetriever) ++
             computationsBoxRetriever.cp288b.validate(computationsBoxRetriever) shouldBe empty
@@ -326,6 +328,7 @@ case class CompsWithAboutReturn(override val cp1: CP1 = CP1(LocalDate.parse("201
                                 override val cp283a: CP283a,
                                 override val cp283b: CP283b,
                                 override val cp283c: CP283c,
+                                override val cp283d: CP283d,
                                 override val cp288: CP288,
                                 override val cp288a: CP288a,
                                 override val cp288b: CP288b,

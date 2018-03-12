@@ -43,7 +43,7 @@ case class CP997(value: Option[Int])
 
 }
 
-object CP997  {
+object CP997 {
 
   def apply(int: Int): CP997 = CP997(Some(int))
 

@@ -40,5 +40,4 @@ trait B325Calculator extends CtTypeConverters {
 
     B325(value)
   }
-
 }
