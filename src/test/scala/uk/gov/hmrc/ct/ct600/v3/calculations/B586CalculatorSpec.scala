@@ -14,20 +14,25 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct.ct600.v3.calculations
 
-import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.calculations.B586Calculator
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.ct600.v3._
 
-case class B586(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "NI Corporation Tax included") with CtOptionalBigDecimal
+class B586CalculatorSpec extends WordSpec with Matchers {
 
-object B586 extends Calculated[B586,CT600BoxRetriever] with B586Calculator {
+  "B586" should{
 
-  override def calculate(fieldValueRetriever: CT600BoxRetriever): B586 = {
+    "be same as B345 for the single financial year" in new B586Calculator {
+      {
+        calculateB586(B345(200), B395(0), B330(2017), B380(None)) shouldBe B586(Some(200))
+      }
+    }
 
-    calculateB586(fieldValueRetriever.b345(), fieldValueRetriever.b395(), fieldValueRetriever.b330(), fieldValueRetriever.b380())
-
+    "be same as total figure of (B345 + B395) for the two financial year" in new B586Calculator {
+      {
+        calculateB586(B345(400), B395(400), B330(2017), B380(Some(2018))) shouldBe B586(Some(800))
+      }
+    }
   }
-
 }

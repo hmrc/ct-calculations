@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct.ct600.v3.calculations
 
-import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.ct600.v3.calculations.B586Calculator
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.box.CtTypeConverters
+import uk.gov.hmrc.ct.ct600.v3._
 
-case class B586(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "NI Corporation Tax included") with CtOptionalBigDecimal
+trait B586Calculator extends CtTypeConverters{
 
-object B586 extends Calculated[B586,CT600BoxRetriever] with B586Calculator {
+  def calculateB586(b345: B345, b395: B395, b330: B330, b380: B380): B586 = {
 
-  override def calculate(fieldValueRetriever: CT600BoxRetriever): B586 = {
+    (b330, b380) match {
 
-    calculateB586(fieldValueRetriever.b345(), fieldValueRetriever.b395(), fieldValueRetriever.b330(), fieldValueRetriever.b380())
+      case twoFinancialYears if twoFinancialYears._1.isPositive && twoFinancialYears._2.hasValue => B586(Some(b345.value + b395.value))
+      case _ => B586(Some(b345.value))
+    }
 
   }
 
