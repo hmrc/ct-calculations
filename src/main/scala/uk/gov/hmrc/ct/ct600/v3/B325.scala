@@ -30,6 +30,4 @@ object B325 extends Calculated[B325,CT600BoxRetriever] with B325Calculator {
     calculateB325(fieldValueRetriever.b335(), fieldValueRetriever.b385(), fieldValueRetriever.b315(),fieldValueRetriever.b330(), fieldValueRetriever.b380(), fieldValueRetriever.cp291())
 
   }
-
-  override def apply(source: CP117): B325 = B325(Some(source.value))
 }

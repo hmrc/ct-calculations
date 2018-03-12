@@ -16,19 +16,19 @@
 
 package uk.gov.hmrc.ct.ct600.v3.stubs
 
-import uk.gov.hmrc.ct.accounts.{AC2, AC205, AC206}
+import uk.gov.hmrc.ct.CountryOfRegistration
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.{AC2, AC205, AC206}
+import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.box.stubs.StubbedFilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
+import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600BoxRetriever, CT600DeclarationBoxRetriever}
 import uk.gov.hmrc.ct.ct600a.v3._
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 import uk.gov.hmrc.ct.ct600j.v3._
 import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
-import uk.gov.hmrc.ct.{CATO10, CATO11, CATO12, CountryOfRegistration}
-import uk.gov.hmrc.ct.box.CtValue
-import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600BoxRetriever, CT600DeclarationBoxRetriever}
 
 class StubbedCT600BoxRetriever extends CT600BoxRetriever
                                   with StubbedAccountsBoxRetriever
