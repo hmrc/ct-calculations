@@ -114,4 +114,5 @@ trait TradingLossesValidation extends Validators with CtTypeConverters {
       Set(CtValidation(None, "error.CP283.exceeds.totalProfit"))
     }
   }
+
 }

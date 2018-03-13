@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
@@ -24,7 +25,7 @@ case class CP283c(value: Option[Int])
   extends CtBoxIdentifier("NIR Losses brought forward from on or after 01/04/2017 used against trading profit")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[ComputationsBoxRetriever] with NorthernIrelandRateValidation {
+  with ValidatableBox[ComputationsBoxRetriever] with NorthernIrelandRateValidation with TradingLossesValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
@@ -34,20 +35,20 @@ case class CP283c(value: Option[Int])
           !hasValue),
       validateIntegerRange("CP283c", this, 0, boxRetriever.cp283b.orZero),
       sumOfBreakDownError(boxRetriever),
-      notAllNirLossesNITradingProfit(boxRetriever)
+      lossesBroughtForwardError(boxRetriever)
     )
   }
 
-  private def sumOfBreakDownError(retriever: ComputationsBoxRetriever)={
+  private def sumOfBreakDownError(retriever: ComputationsBoxRetriever) = {
     failIf(this.orZero + retriever.cp283d.orZero > retriever.cp117){
         Set(CtValidation(None, "error.exceeds.tradingProfit.error"))
 
     }
   }
 
-  private def notAllNirLossesNITradingProfit(retriever: ComputationsBoxRetriever) ={
-    failIf(nirLossesNotAllOffsetAgainstNITradingProfit(retriever)){
-     Set(CtValidation(None, "error.CP283c.notAllMainstreamLossesSetAgainstTradingProfit"))
+  private def lossesBroughtForwardError(retriever: ComputationsBoxRetriever) = {
+    failIf(nirLossesNotAllOffsetAgainstNITradingProfit(retriever) || notAllProfitUsedAgainstLosses(retriever)){
+      Set(CtValidation(None, "error.lossesBroughtForwardError.error"))
     }
   }
 

@@ -47,6 +47,7 @@ trait NorthernIrelandRateValidation {
     cp997d().orZero < cp281d().orZero
   }
 
+
   def mainStreamLossesAllOffsetAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever): Boolean = {
     import boxRetriever._
 
@@ -58,11 +59,35 @@ trait NorthernIrelandRateValidation {
   }
 
   def mainStreamLossesCanBeOffsetAgainstNirTradingProfit(boxRetriever: ComputationsBoxRetriever): Boolean = {
-    true
+    nirLossesNotAllOffsetAgainstNITradingProfit(boxRetriever) && tradingProfitRemainingAfterOffSettingAgainstNILoss(boxRetriever)
   }
 
   def lossesBroughtForwardTotalsCorrect(retriever: ComputationsBoxRetriever): Boolean = {
     retriever.cp281c().orZero <= retriever.cp281b().orZero
+  }
+
+  def tradingProfitRemainingAfterOffSettingAgainstNILoss(boxRetriever: ComputationsBoxRetriever): Boolean = {
+    import boxRetriever._
+
+    cp117().value > cp283c().orZero
+  }
+
+  def lessTradingProfitThanLosses(boxRetriever: ComputationsBoxRetriever): Boolean = {
+    import boxRetriever._
+
+    cp117().value < cp281c().orZero
+  }
+
+  def notAllProfitUsedAgainstLosses(boxRetriever: ComputationsBoxRetriever): Boolean = {
+    import boxRetriever._
+
+    lessTradingProfitThanLosses(boxRetriever) && cp281c().orZero != cp117().value
+  }
+
+  def lessNonTradingProfitThanLosses(boxRetriever: ComputationsBoxRetriever): Boolean ={
+    import boxRetriever._
+
+    cato01().value < cp281b().orZero
   }
   
 }
