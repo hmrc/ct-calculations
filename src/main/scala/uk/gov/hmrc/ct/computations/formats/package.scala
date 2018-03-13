@@ -260,6 +260,8 @@ package object formats {
 
   implicit val cp281cFormat: Format[CP281c] = new OptionalIntegerFormat[CP281c](CP281c.apply)
 
+  implicit val cp281dFormat: Format[CP281d] = new OptionalIntegerFormat[CP281d](CP281d.apply)
+
   implicit val cp282Format: Format[CP282] = new OptionalIntegerFormat[CP282](CP282.apply)
 
   implicit val cp283Format: Format[CP283] = new OptionalIntegerFormat[CP283](CP283.apply)

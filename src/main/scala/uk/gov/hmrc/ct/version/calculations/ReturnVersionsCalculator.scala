@@ -18,19 +18,18 @@ package uk.gov.hmrc.ct.version.calculations
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct._
-import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600e.v2.retriever.{CT600EBoxRetriever => V2CT600EBoxRetriever}
 import uk.gov.hmrc.ct.ct600e.v3.retriever.{CT600EBoxRetriever => V3CT600EBoxRetriever}
 import uk.gov.hmrc.ct.domain.CompanyTypes._
+import uk.gov.hmrc.ct.utils.DateImplicits._
 import uk.gov.hmrc.ct.version.CoHoAccounts._
 import uk.gov.hmrc.ct.version.CoHoVersions.{FRS102, FRS105, FRSSE2008}
 import uk.gov.hmrc.ct.version.HmrcReturns._
 import uk.gov.hmrc.ct.version.HmrcVersions._
 import uk.gov.hmrc.ct.version.{Return, Version}
-import uk.gov.hmrc.ct.utils.DateImplicits._
 
 object ReturnVersionsCalculator extends ReturnVersionsCalculator
 
@@ -257,6 +256,8 @@ trait ReturnVersionsCalculator {
 
   private def computationsVersionBasedOnDate(apStartDate: LocalDate, apEndDate: LocalDate): Version = {
     (apStartDate, apEndDate) match {
+      case (_ , endDate) if endDate > LocalDate.parse("2018-04-05") =>
+        ComputationsCT20180406
       case (_ , endDate) if endDate > LocalDate.parse("2017-03-31") =>
         ComputationsCT20171001
       case (startDate, _) if startDate >= LocalDate.parse("2016-01-01") =>
