@@ -27,6 +27,9 @@ case class CP997e(value: Option[Int])
 
 object CP997e extends Calculated[CP997e, ComputationsBoxRetriever] with NorthernIrelandCalculations {
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP997e =
-    revaluedNirLossesAgainstNonTradingProfit(Ct600AnnualConstants)(boxRetriever.cp997c,
-                                                                   HmrcAccountingPeriod(boxRetriever.cp1(), boxRetriever.cp2))
+    revaluedNirLossesAgainstNonTradingProfit(Ct600AnnualConstants)(
+      boxRetriever.cp997c,
+      HmrcAccountingPeriod(boxRetriever.cp1(), boxRetriever.cp2),
+      boxRetriever.cpQ19()
+    )
 }

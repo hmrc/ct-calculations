@@ -16,17 +16,21 @@
 
 package uk.gov.hmrc.ct.computations.nir
 
-import uk.gov.hmrc.ct.computations.{CP997c, CP997e, HmrcAccountingPeriod}
+import uk.gov.hmrc.ct.computations.{CP997c, CP997e, CPQ19, HmrcAccountingPeriod}
 import uk.gov.hmrc.ct.ct600.calculations.{Ct600AnnualConstants, HmrcValueApportioning, NorthernIrelandRate, TaxYear}
 
 import scala.math.BigDecimal.RoundingMode
 
 trait NorthernIrelandCalculations extends HmrcValueApportioning {
 
-  def revaluedNirLossesAgainstNonTradingProfit(ct600AnnualConstants: Ct600AnnualConstants)(cp997c: CP997c, hmrcAccountingPeriod: HmrcAccountingPeriod): CP997e = {
+  def revaluedNirLossesAgainstNonTradingProfit(ct600AnnualConstants: Ct600AnnualConstants)
+                                              (cp997c: CP997c,
+                                               hmrcAccountingPeriod: HmrcAccountingPeriod,
+                                               cpq19: CPQ19): CP997e = {
 
     CP997e(cp997c.value.map { nirLosses =>
-      val apportionedValues: Map[TaxYear, Int] = calculateApportionedValuesForAccountingPeriod(nirLosses, hmrcAccountingPeriod)
+      val adjustedNirLosses = if(cpq19.value.exists(a=>a)) nirLosses/2 else nirLosses
+      val apportionedValues: Map[TaxYear, Int] = calculateApportionedValuesForAccountingPeriod(adjustedNirLosses, hmrcAccountingPeriod)
       apportionedValues.map {
         case (taxYear, apportionedLoss) =>
           val ctRates = ct600AnnualConstants.constantsForTaxYear(taxYear)
