@@ -58,7 +58,7 @@ trait NorthernIrelandRateValidation {
   }
 
   def mainStreamLossesCanBeOffsetAgainstNirTradingProfit(boxRetriever: ComputationsBoxRetriever): Boolean = {
-    nirLossesNotAllOffsetAgainstNITradingProfit(boxRetriever)
+    true
   }
 
   def lossesBroughtForwardTotalsCorrect(retriever: ComputationsBoxRetriever): Boolean = {
