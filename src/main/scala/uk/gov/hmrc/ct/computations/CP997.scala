@@ -31,7 +31,7 @@ case class CP997(value: Option[Int])
     collectErrors(
       requiredErrorIf(retriever.cp281b().isPositive && !hasValue),
       validateZeroOrPositiveInteger(this),
-      cp997ExceedsErrors(retriever),
+      cp997ExceedsNonTradingProfitAfterCPQ19(retriever),
       exceedsNonTradingProfitErrors(retriever)
     )
   }
@@ -42,12 +42,12 @@ case class CP997(value: Option[Int])
     }
   }
 
-  private def cp997ExceedsErrors(retriever: ComputationsBoxRetriever) = {
-    failIf(retriever.cato01() < this.orZero + retriever.cp998().orZero){
+  private def cp997ExceedsNonTradingProfitAfterCPQ19(retriever: ComputationsBoxRetriever) = {
+    failIf(retriever.cp44() < this.orZero){
       Set(CtValidation(Some("CP997"), "error.CP997.exceeds.nonTradingProfit"))
     }
   }
-
+CATOC_
 }
 
 object CP997 {
