@@ -43,7 +43,6 @@ case class CP283d(value: Option[Int])
 
     }
   }
-
 }
 
 object CP283d {
