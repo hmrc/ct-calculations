@@ -34,20 +34,13 @@ case class CP997d(value: Option[Int])
         retriever.cato01().value > 0 &&
         !hasValue),
       validateZeroOrPositiveInteger(this),
-      exceedsNonTradingProfitErrors(retriever),
-      notAllMainStreamLossSetAgainstNTP(retriever)
+      exceedsNonTradingProfitErrors(retriever)
     )
   }
 
   private def exceedsNonTradingProfitErrors(retriever: ComputationsBoxRetriever) = {
     failIf(retriever.cato01() < this.orZero + retriever.cp997c.orZero) {
       Set(CtValidation(Some("CP997d"), "error.CP997.exceeds.nonTradingProfit"))
-    }
-  }
-
-  private def notAllMainStreamLossSetAgainstNTP(retriever: ComputationsBoxRetriever) = {
-    failIf(mainStreamLossesNotAllOffsetAgainstNonTradingProfit(retriever)){
-      Set(CtValidation(None, "error.CP997d.notAllMainstreamLossesSetAgainstNTP"))
     }
   }
 }

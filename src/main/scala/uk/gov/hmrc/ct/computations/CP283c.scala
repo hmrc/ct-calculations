@@ -34,8 +34,7 @@ case class CP283c(value: Option[Int])
         mayHaveNirLosses(boxRetriever) &&
           !hasValue),
       validateIntegerRange("CP283c", this, 0, boxRetriever.cp283b.orZero),
-      sumOfBreakDownError(boxRetriever),
-      lossesBroughtForwardError(boxRetriever)
+      sumOfBreakDownError(boxRetriever)
     )
   }
 
@@ -43,12 +42,6 @@ case class CP283c(value: Option[Int])
     failIf(this.orZero + retriever.cp283d.orZero > retriever.cp117){
         Set(CtValidation(None, "error.exceeds.tradingProfit.error"))
 
-    }
-  }
-
-  private def lossesBroughtForwardError(retriever: ComputationsBoxRetriever) = {
-    failIf(nirLossesNotAllOffsetAgainstNITradingProfit(retriever) || notAllProfitUsedAgainstLosses(retriever)){
-      Set(CtValidation(None, "error.lossesBroughtForwardError.error"))
     }
   }
 

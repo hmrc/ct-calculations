@@ -47,7 +47,6 @@ case class CP997(value: Option[Int])
       Set(CtValidation(Some("CP997"), "error.CP997.exceeds.nonTradingProfit"))
     }
   }
-CATOC_
 }
 
 object CP997 {

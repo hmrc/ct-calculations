@@ -33,8 +33,7 @@ case class CP283d(value: Option[Int])
           mayHaveNirLosses(boxRetriever) &&
           !hasValue),
       validateIntegerRange("CP283d", this, 0, boxRetriever.cp283b.orZero),
-      sumOfBreakDownError(boxRetriever),
-      notAllNirLossesNITradingProfit(boxRetriever)
+      sumOfBreakDownError(boxRetriever)
     )
   }
 
@@ -42,12 +41,6 @@ case class CP283d(value: Option[Int])
     failIf(this.orZero + retriever.cp283c.orZero > retriever.cp117){
       Set(CtValidation(None, "error.exceeds.tradingProfit.error"))
 
-    }
-  }
-
-  private def notAllNirLossesNITradingProfit(retriever: ComputationsBoxRetriever) ={
-    failIf(nirLossesNotAllOffsetAgainstNITradingProfit(retriever)){
-      Set(CtValidation(None, "error.CP283c.notAllNorthernIrelandLossesSetAgainstTradingProfit"))
     }
   }
 }
