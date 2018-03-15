@@ -18,8 +18,9 @@ package uk.gov.hmrc.ct.ct600.v3.calculations
 
 import org.joda.time.LocalDate
 import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.CATO23
 import uk.gov.hmrc.ct.computations._
-import uk.gov.hmrc.ct.ct600.calculations.CorporationTaxCalculatorParameters
+import uk.gov.hmrc.ct.ct600.calculations.{CorporationTaxCalculatorParameters, NINonTradingProfitCalculationParameters, NITradingProfitCalculationParameters}
 import uk.gov.hmrc.ct.ct600.v3._
 
 class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
@@ -63,6 +64,16 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
     }
   }
 
+  "B360 = B355 * B350" in new CorporationTaxCalculator {
+
+    calculateTaxForTradingProfitForFirstFinancialYear(B350(40), B355(BigDecimal("40.41"))) shouldBe B360(BigDecimal("1616.4"))
+  }
+
+  "B410 = B405 * B400" in new CorporationTaxCalculator {
+
+    calculateTaxForTradingProfitForSecondFinancialYear(B400(20), B405(BigDecimal("20.21"))) shouldBe B410(BigDecimal("404.20"))
+  }
+
   "B395 = B385v3 * B390v3" in new CorporationTaxCalculator {
     calculateTaxForSecondFinancialYear(B385(10), B390(BigDecimal("11.11"))) shouldBe B395(BigDecimal("111.1"))
   }
@@ -76,6 +87,15 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
     rateOfTaxFy2(new CP2(new LocalDate(2015, 4, 1))) shouldBe 0.20
   }
 
+  "B355" in new CorporationTaxCalculator {
+    rateOfTaxFy1(new CP1(new LocalDate(2018, 4, 9))) shouldBe 0.19
+  }
+
+  "B405" in new CorporationTaxCalculator {
+    rateOfTaxFy2(new CP2(new LocalDate(2019, 4, 8))) shouldBe 0.19
+  }
+
+
   "B335 apportioned profits chargeable FY1" in new CorporationTaxCalculator {
     calculateApportionedProfitsChargeableFy1(
       CorporationTaxCalculatorParameters(CP295(20000),
@@ -86,6 +106,30 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
     calculateApportionedProfitsChargeableFy2(
       CorporationTaxCalculatorParameters(CP295(20000),
         HmrcAccountingPeriod(CP1(new LocalDate(2014, 10, 1)), CP2(new LocalDate(2015, 9, 30))))) shouldBe B385(10027)
+  }
+
+  "B335 apportioned non trading profit for FY1 when Northern Ireland is active" in new CorporationTaxCalculator {
+    calculateNIApportionedNonTradingProfitsChargeableFy1(
+      NINonTradingProfitCalculationParameters(CATO23(1000),
+        HmrcAccountingPeriod(CP1(new LocalDate(2018, 4, 12)), CP2(new LocalDate(2019, 4, 11))))) shouldBe B335(970)
+  }
+
+  "B385 apportioned non trading profit for FY2 when Northern Ireland is active" in new CorporationTaxCalculator {
+    calculateNIApportionedNonTradingProfitsChargeableFy2(
+      NINonTradingProfitCalculationParameters(CATO23(1000),
+        HmrcAccountingPeriod(CP1(new LocalDate(2018, 4, 12)), CP2(new LocalDate(2019, 4, 11))))) shouldBe B385(30)
+  }
+
+  "B350 apportioned trading profit for FY1 when Northern Ireland is active" in new CorporationTaxCalculator {
+    calculateNIApportionedTradingProfitsChargeableFy1(
+      NITradingProfitCalculationParameters(CP291(Some(2000)),
+        HmrcAccountingPeriod(CP1(new LocalDate(2018, 4, 12)), CP2(new LocalDate(2019, 4, 11))))) shouldBe B350(1940)
+  }
+
+  "B400 apportioned trading profit for FY2 when Northern Ireland is active" in new CorporationTaxCalculator {
+    calculateNIApportionedTradingProfitsChargeableFy2(
+      NITradingProfitCalculationParameters(CP291(Some(3000)),
+        HmrcAccountingPeriod(CP1(new LocalDate(2018, 4, 12)), CP2(new LocalDate(2019, 4, 11))))) shouldBe B400(90)
   }
   // ----------------------------------------------------------------------
 

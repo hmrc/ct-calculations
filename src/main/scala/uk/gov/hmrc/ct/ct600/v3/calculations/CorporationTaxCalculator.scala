@@ -37,8 +37,12 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B430(b345.plus(b395))
   }
 
-  def calculateTaxForFirstFinancialYear(b355: B335, b340: B340): B345 = {
-    B345(b340.multiply(b355))
+  def calculateTaxForFirstFinancialYear(b335: B335, b340: B340): B345 = {
+    B345(b340.multiply(b335))
+  }
+
+  def calculateTaxForTradingProfitForFirstFinancialYear(b350:B350, b355:B355): B360 = {
+    B360(b355.multiply(b350))
   }
 
   def rateOfTaxFy1(start: StartDate): BigDecimal = Ct600AnnualConstants.constantsForTaxYear(TaxYear(startingFinancialYear(start))).rateOfTax
@@ -54,6 +58,10 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     if (financialYear1(accountingPeriod) != fy2) {
       Some(fy2)
     } else None
+  }
+
+  def calculateTaxForTradingProfitForSecondFinancialYear(b400: B400, b405: B405) = {
+    B410(b405.multiply(b400))
   }
 
   def calculateTaxForSecondFinancialYear(b385: B385, b390: B390) = {
@@ -75,6 +83,22 @@ trait CorporationTaxCalculator extends CtTypeConverters {
 
   def calculateApportionedProfitsChargeableFy2(params: CorporationTaxCalculatorParameters): B385 = {
     B385(HmrcValueApportioning.calculateApportionedProfitsChargeableFy2(params))
+  }
+
+  def calculateNIApportionedTradingProfitsChargeableFy1(params: NITradingProfitCalculationParameters): B350 = {
+    B350(HmrcValueApportioning.calculateNIApportionedTradingProfitsChargeableFy1(params))
+  }
+
+  def calculateNIApportionedTradingProfitsChargeableFy2(params: NITradingProfitCalculationParameters): B400 = {
+    B400(HmrcValueApportioning.calculateNIApportionedTradingProfitsChargeableFy2(params))
+  }
+
+  def calculateNIApportionedNonTradingProfitsChargeableFy1(params: NINonTradingProfitCalculationParameters): B335 = {
+    B335(HmrcValueApportioning.calculateNIApportionedNonTradingProfitsChargeableFy1(params))
+  }
+
+  def calculateNIApportionedNonTradingProfitsChargeableFy2(params: NINonTradingProfitCalculationParameters): B385 = {
+    B385(HmrcValueApportioning.calculateNIApportionedNonTradingProfitsChargeableFy2(params))
   }
 
   def calculateTotalTaxToPay(b525: B525, b595: B595): B600 = {

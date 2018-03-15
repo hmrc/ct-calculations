@@ -26,35 +26,35 @@ class B325CalculatorSpec extends WordSpec with Matchers {
 
     "be same as B335 if B335 <= B315 for the single financial year" in new B325Calculator {
       {
-        calculateB325(B335(100), B385(0), B315(100), B330(2017), B380(None), CP291(Some(123))) shouldBe B325(Some(100))
+        calculateB325(B350(100), B400(0), B315(100), B330(2017), B380(None), CP291(Some(123))) shouldBe B325(Some(100))
       }
     }
 
     "be same as total figure of (B335 + B385) if (B335 + B385) <= B315 for the two financial year" in new B325Calculator {
       {
-        calculateB325(B335(200), B385(200), B315(400), B330(2017), B380(Some(2018)),CP291(Some(123))) shouldBe B325(Some(400))
+        calculateB325(B350(200), B400(200), B315(400), B330(2017), B380(Some(2018)),CP291(Some(123))) shouldBe B325(Some(400))
       }
     }
     "be 0 when value of B335 exceed the value in B315 for the single financial year" in new B325Calculator {
       {
-        calculateB325(B335(10), B385(0), B315(5), B330(2017), B380(None),CP291(Some(123))) shouldBe B325(Some(0))
+        calculateB325(B350(10), B400(0), B315(5), B330(2017), B380(None),CP291(Some(123))) shouldBe B325(Some(0))
       }
     }
 
     "be 0 when value of (B335 + B385) exceed the value in B315 for the two financial year" in new B325Calculator {
       {
-        calculateB325(B335(20), B385(20), B315(15), B330(2017), B380(Some(2018)),CP291(Some(123))) shouldBe B325(Some(0))
+        calculateB325(B350(20), B400(20), B315(15), B330(2017), B380(Some(2018)),CP291(Some(123))) shouldBe B325(Some(0))
       }
     }
     "be 0 when no net trading profit available for the single financial year" in new B325Calculator {
       {
-        calculateB325(B335(10), B385(0), B315(5), B330(2017), B380(None),CP291(None)) shouldBe B325(Some(0))
+        calculateB325(B350(10), B400(0), B315(5), B330(2017), B380(None),CP291(None)) shouldBe B325(Some(0))
       }
     }
 
     "be 0 when there is no net trading profit available for the two financial year" in new B325Calculator {
       {
-        calculateB325(B335(20), B385(20), B315(15), B330(2017), B380(Some(2018)),CP291(None)) shouldBe B325(Some(0))
+        calculateB325(B350(20), B400(20), B315(15), B330(2017), B380(Some(2018)),CP291(None)) shouldBe B325(Some(0))
       }
     }
   }
