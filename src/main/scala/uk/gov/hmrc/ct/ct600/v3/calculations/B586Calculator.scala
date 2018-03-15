@@ -25,7 +25,7 @@ trait B586Calculator extends CtTypeConverters{
 
     (b330, b380) match {
 
-      case twoFinancialYears if twoFinancialYears._1.isPositive && twoFinancialYears._2.hasValue => B586(Some(b360.value + b410.value))
+      case (B330(_), B380(_)) => B586(Some(b360.value + b410.value))
       case _ => B586(Some(b360.value))
     }
 

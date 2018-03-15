@@ -22,22 +22,29 @@ import uk.gov.hmrc.ct.ct600.v3._
 
 trait B325Calculator extends CtTypeConverters {
 
-  def calculateB325(b350: B350, b400: B400, b315: B315, b330: B330, b380: B380, cp291: CP291): B325 = {
 
-    val ZERO = Some(0)
+  def calculateB325(b350: B350, b400: B400, b330: B330, b380: B380, b315: B315): B325 = {
 
-    val value =
-      if (!b330.isPositive) None
-      else b380 match {
-        case noTradingProfit if cp291.noValue => ZERO
-        case singleFinancialYear if singleFinancialYear.noValue =>
-          if (b350.value <= b315.value) Some(b350.value)
-          else ZERO
-        case twoFinancialYears if twoFinancialYears.hasValue =>
-          if ((b350.value + b400.value) <= b315.value) Some(b350.value + b400.value)
-          else ZERO
-      }
+    def isTwoFinancialYears: Boolean = {
 
-    B325(value)
+      if(b330.isPositive && b380.hasValue)
+        true
+      else
+        false
+    }
+
+    if(isTwoFinancialYears && (b350.value + b400.value) <= b315.value){
+
+      B325(Some(b350.value + b400.value))
+    }
+    else if(!isTwoFinancialYears && b350.value <= b315.value){
+
+      B325(Some(b350.value))
+    }
+    else{
+
+      B325(Some(0))
+    }
+
   }
 }
