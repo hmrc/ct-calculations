@@ -29,7 +29,7 @@ trait NorthernIrelandCalculations extends HmrcValueApportioning {
                                                cpq19: CPQ19): CP997e = {
 
     CP997e(cp997c.value.map { nirLosses =>
-      val adjustedNirLosses = if(cpq19.value.exists(a=>a)) nirLosses/2 else nirLosses
+      val adjustedNirLosses = if(cpq19.isTrue) nirLosses/2 else nirLosses
       val apportionedValues: Map[TaxYear, Int] = calculateApportionedValuesForAccountingPeriod(adjustedNirLosses, hmrcAccountingPeriod)
       apportionedValues.map {
         case (taxYear, apportionedLoss) =>
