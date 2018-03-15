@@ -27,13 +27,7 @@ object B315 extends Calculated[B315,CT600BoxRetriever] {
   override def calculate(boxRetriever: CT600BoxRetriever): B315 = {
 
 
-    def isTwoFinancialYears: Boolean = {
-
-      if(boxRetriever.b330().isPositive && boxRetriever.b380().hasValue)
-        true
-      else
-        false
-    }
+    def isTwoFinancialYears: Boolean = boxRetriever.b330().isPositive && boxRetriever.b380().hasValue
 
 
     if(isTwoFinancialYears && boxRetriever.b5().isTrue){
