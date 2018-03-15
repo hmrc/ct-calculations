@@ -47,7 +47,7 @@ trait AdjustedTradingProfitOrLossCalculator extends CtTypeConverters {
   private def profit(cp44: CP44, cp54: CP54, cp59: CP59, cp186: CP186, cp91: CP91, cp670: CP670, cp668: CP668, cpq19: CPQ19, cp997c: CP997c): Int = {
     val profit = cp44 + cp54 - cp59 - cp186 + cp91 + cp670 - cp668
     if(cpq19.value.exists(a=>a)) {
-      profit - cp997c.value.getOrElse(0)
+      profit - (cp997c.value.getOrElse(0)/2)
     } else {
       profit
     }
