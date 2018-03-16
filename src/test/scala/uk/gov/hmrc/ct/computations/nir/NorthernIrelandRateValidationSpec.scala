@@ -364,4 +364,6 @@ case class CompsWithAboutReturn(override val cp1: CP1 = CP1(LocalDate.parse("201
 
   override def cpQ117(): CPQ117 = CPQ117(Some(areLossesFromNIRActivity))
 
+  override def cpQ19(): CPQ19 = CPQ19(Some(false))
+
 }
