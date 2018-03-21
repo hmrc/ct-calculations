@@ -64,4 +64,28 @@ trait NorthernIrelandRateValidation {
   def lossesBroughtForwardTotalsCorrect(retriever: ComputationsBoxRetriever): Boolean = {
     retriever.cp281c().orZero <= retriever.cp281b().orZero
   }
+
+  def excessNorthernIrelandTradingProfit(boxRetriever: ComputationsBoxRetriever): Boolean = {
+    import boxRetriever._
+
+    cp117().value > cp281c().orZero
+  }
+
+  def moreLossThanTradingProfit(boxRetriever: ComputationsBoxRetriever): Boolean = {
+    import boxRetriever._
+
+    cp117().value < cp281c().orZero
+  }
+
+  def lossesUsedAgainstTradingProfitNotEqualToNorthernIrelandLoss(boxRetriever: ComputationsBoxRetriever): Boolean = {
+    import boxRetriever._
+
+    excessNorthernIrelandTradingProfit(boxRetriever) && (cp283().orZero !=cp281c().orZero)
+  }
+
+  def lossesUsedAgainstTradingProfitNotEqualToNorthernIrelandTradingProfit(boxRetriever: ComputationsBoxRetriever): Boolean = {
+    import boxRetriever._
+
+    moreLossThanTradingProfit(boxRetriever) && cp283c().orZero != cp117().value
+  }
 }
