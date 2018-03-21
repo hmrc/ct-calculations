@@ -27,7 +27,7 @@ object B325 extends Calculated[B325,CT600BoxRetriever] with B325Calculator {
 
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B325 = {
 
-    calculateB325(fieldValueRetriever.b335(), fieldValueRetriever.b385(), fieldValueRetriever.b315(),fieldValueRetriever.b330(), fieldValueRetriever.b380(), fieldValueRetriever.cp291())
+    calculateB325(fieldValueRetriever.b350(), fieldValueRetriever.b400(), fieldValueRetriever.b330(), fieldValueRetriever.b380(), fieldValueRetriever.b315())
 
   }
 }

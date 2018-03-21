@@ -21,12 +21,12 @@ import uk.gov.hmrc.ct.ct600.v3._
 
 trait B586Calculator extends CtTypeConverters{
 
-  def calculateB586(b345: B345, b395: B395, b330: B330, b380: B380): B586 = {
+  def calculateB586(b360: B360, b410: B410, b330: B330, b380: B380): B586 = {
 
     (b330, b380) match {
 
-      case twoFinancialYears if twoFinancialYears._1.isPositive && twoFinancialYears._2.hasValue => B586(Some(b345.value + b395.value))
-      case _ => B586(Some(b345.value))
+      case (B330(_), B380(_)) => B586(Some(b360.value + b410.value))
+      case _ => B586(Some(b360.value))
     }
 
   }

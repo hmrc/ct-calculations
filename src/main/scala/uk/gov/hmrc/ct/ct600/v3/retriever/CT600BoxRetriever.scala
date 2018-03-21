@@ -64,7 +64,7 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b305(): B305 = B305(cp305())
 
-  def b315(): B315 = B315(cp295())
+  def b315(): B315 = B315.calculate(this)
 
   def b325(): B325 = B325.calculate(this)
 
@@ -76,6 +76,12 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b345() : B345 = B345.calculate(this)
 
+  def b350() : B350 = B350.calculate(this)
+
+  def b355() : B355 = B355.calculate(this)
+
+  def b360() : B360 = B360.calculate(this)
+
   def b380() : B380 = B380.calculate(this)
 
   def b385() : B385 = B385.calculate(this)
@@ -83,6 +89,12 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
   def b390() : B390 = B390.calculate(this)
 
   def b395() : B395 = B395.calculate(this)
+
+  def b400() : B400 = B400.calculate(this)
+
+  def b405() : B405 = B405.calculate(this)
+
+  def b410() : B410 = B410.calculate(this)
 
   def b430() : B430 = B430.calculate(this)
 
