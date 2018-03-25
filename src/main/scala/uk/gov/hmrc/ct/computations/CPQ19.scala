@@ -35,8 +35,7 @@ case class CPQ19(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you 
     collectErrors(
       requiredErrorIf(And(hasTradingLoss(boxRetriever), hasNonTradingProfit(boxRetriever), valueEmpty)),
       cannotExistErrorIf(And(hasNonTradingProfit(boxRetriever), noTradingLoss(boxRetriever), valuePopulated)) ,
-      cannotExistErrorIf(And(noNonTradingProfit(boxRetriever), hasTradingLoss(boxRetriever), valuePopulated)) ,
-      cannotExistErrorIf(And(noNonTradingProfit(boxRetriever), noTradingLoss(boxRetriever), valuePopulated))
+      cannotExistErrorIf(And(noNonTradingProfit(boxRetriever), valuePopulated))
     )
 
   }
