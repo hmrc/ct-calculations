@@ -88,4 +88,5 @@ trait NorthernIrelandRateValidation {
 
     moreLossThanTradingProfit(boxRetriever) && cp283c().orZero != cp117().value
   }
+
 }
