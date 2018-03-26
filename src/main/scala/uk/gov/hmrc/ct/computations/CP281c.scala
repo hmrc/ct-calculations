@@ -30,12 +30,12 @@ case class CP281c(value: Option[Int])
   override def validate(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
     import uk.gov.hmrc.ct.computations.losses._
     collectErrors(
-      requiredErrorIf(retriever.cpQ17().isTrue &&
+      requiredErrorIf(retriever.cpQ117().isTrue &&
                       lossReform2017Applies(retriever.cp2()) &&
                       mayHaveNirLosses(retriever) &&
                       !hasValue),
       cannotExistErrorIf(hasValue &&
-                        (retriever.cpQ17().isFalse ||
+                        (retriever.cpQ117().isFalse ||
                           !lossReform2017Applies(retriever.cp2()) ||
                           !mayHaveNirLosses(retriever))
       ),

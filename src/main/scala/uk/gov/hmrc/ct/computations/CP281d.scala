@@ -23,13 +23,30 @@ case class CP281d(value: Option[Int])
   extends CtBoxIdentifier("Mainstream losses brought forward from on or after 01/04/2017")
   with CtOptionalInteger
   with Input
+  with ValidatableBox[ComputationsBoxRetriever] {
+
+  override def validate(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    import uk.gov.hmrc.ct.computations.losses._
+    collectErrors(
+      requiredErrorIf(retriever.cpQ117().isTrue &&
+        lossReform2017Applies(retriever.cp2()) &&
+        !hasValue),
+      cannotExistErrorIf(hasValue &&
+        (retriever.cpQ117().isFalse ||
+          !lossReform2017Applies(retriever.cp2())
+        )
+      )
+      // FIXME validation was missing at all
+    )
+  }
+}
 
 object CP281d extends Calculated[CP281d, ComputationsBoxRetriever] {
 
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP281d = {
     import boxRetriever._
-    CP281d(cp281b.value.map { postReformLosses =>
-      postReformLosses - cp281c.orZero
+    CP281d(cp281b().value.map { postReformLosses =>
+      postReformLosses - cp281c().orZero
     })
   }
 
