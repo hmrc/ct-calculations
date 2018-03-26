@@ -31,4 +31,5 @@ package object losses {
 
   def northernIrelandJourneyActive(retriever: AboutThisReturnBoxRetriever): Boolean = retriever.b7().orFalse
 
+
 }
