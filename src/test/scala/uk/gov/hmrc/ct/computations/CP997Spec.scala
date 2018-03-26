@@ -35,7 +35,7 @@ class CP997Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
 
   "CP997" should {
     "fail validation if it exceeds non trading profit" in {
-      CP997(2).validate(makeBoxRetriever(cato01Value = 1, cp44Value = 1)).contains(CtValidation(Some("CP997"), "error.CP997.exceeds.nonTradingProfit")) shouldBe true
+      CP997(2).validate(makeBoxRetriever()).contains(CtValidation(Some("CP997"), "error.CP997.exceeds.nonTradingProfit")) shouldBe true
     }
     "pass validation if it equals non trading profit" in {
       CP997(2).validate(makeBoxRetriever(cato01Value = 2, cp44Value = 2)).contains(CtValidation(Some("CP997"), "error.CP997.exceeds.nonTradingProfit")) shouldBe false

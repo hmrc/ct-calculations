@@ -43,21 +43,21 @@ class CP281bSpec extends WordSpec with Matchers with MockitoSugar with BoxValida
     makeBoxRetriever(cp2Value = lossReform2017)
   }
 
-  "CP281a" should {
-    "fail if the sum of CP283b, CP288b and CP997 is less than CP281a" in {
-      CP281b(4).validate(makeBoxRetriever()).contains(CtValidation(None, "error.CP281b.breakdown.sum.incorrect")) shouldBe true
+  "CP281b" should {
+    "fail if the sum of CP283b, CP288b and CP997 is not equal to CP281b or 0" in {
+      CP281b(4).validate(makeBoxRetriever(cp281aValue = Some(2),cp283bValue = Some(1), cp288bValue = Some(2), cp997Value = Some(3))).contains(CtValidation(None, "error.CP281b.breakdown.sum.incorrect")) shouldBe true
     }
-    "fail if the sum of CP283b, CP288b and CP997 is greater than CP281a" in {
-      CP281b(2).validate(makeBoxRetriever()).contains(CtValidation(None, "error.CP281b.breakdown.sum.incorrect")) shouldBe true
-    }
-    "pass if the sum of CP283b, CP288b and CP997 is equal to CP281a" in {
-      CP281b(3).validate(makeBoxRetriever()).contains(CtValidation(None, "error.CP281b.breakdown.sum.incorrect")) shouldBe false
+    "pass if the sum of CP283b, CP288b and CP997 is equal to CP281b" in {
+      CP281b(3).validate(makeBoxRetriever(cp281aValue = Some(0),cp283bValue = Some(1), cp288bValue = Some(0), cp997Value = Some(2))).contains(CtValidation(None, "error.CP281b.breakdown.sum.incorrect")) shouldBe false
     }
   }
 
-  private def makeBoxRetriever(cp2Value: LocalDate = lossReform2017.plusDays(1), cpq17Value: Boolean = true,
+  private def makeBoxRetriever(cp281aValue: Option[Int] = Some(1), cp281cValue: Option[Int] = Some(1), cp281dValue: Option[Int] = Some(1), cp2Value: LocalDate = lossReform2017.plusDays(1), cpq17Value: Boolean = true,
                                cp283bValue: Option[Int] = Some(1), cp288bValue: Option[Int] = Some(1), cp997Value: Option[Int] = Some(1)) = {
     val retriever = mock[ComputationsBoxRetriever]
+    when(retriever.cp281a()).thenReturn(CP281a(cp281aValue))
+    when(retriever.cp281c()).thenReturn(CP281c(cp281cValue))
+    when(retriever.cp281d()).thenReturn(CP281d(cp281dValue))
     when(retriever.cp2()).thenReturn(CP2(cp2Value))
     when(retriever.cpQ17()).thenReturn(CPQ17(Some(cpq17Value)))
     when(retriever.cp283b()).thenReturn(CP283b(cp283bValue))
