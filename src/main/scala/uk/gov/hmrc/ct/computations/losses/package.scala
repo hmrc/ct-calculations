@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.computations
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.EndDate
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.retriever.AboutThisReturnBoxRetriever
 
 package object losses {
 
@@ -27,4 +28,7 @@ package object losses {
   def lossReform2017Applies(apEndDate: EndDate): Boolean = apEndDate.value.isAfter(lossReform2017)
 
   def cp997NIExceedsNonTradingProfit(retriever: ComputationsBoxRetriever): Boolean = retriever.cato01() < retriever.cp997NI().orZero
+
+  def northernIrelandJourneyActive(retriever: AboutThisReturnBoxRetriever): Boolean = retriever.b7().orFalse
+
 }

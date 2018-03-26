@@ -121,7 +121,7 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
 
                   TaxYear(2019) -> new UnifiedRateOfTax("0.19") with NorthernIrelandRate {
                     // This value is for testing and design purposes only.
-                    override def northernIrelandRate: BigDecimal = BigDecimal(0.095)
+                    override def northernIrelandRate: BigDecimal = BigDecimal(12.5)
                   },
 
                   TaxYear(2020) -> UnifiedRateOfTax("0.17")
