@@ -22,6 +22,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.calculations.{CorporationTaxCalculatorParameters, NINonTradingProfitCalculationParameters}
 import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.computations.losses._
 
 //was B54
 case class B385(value: Int) extends CtBoxIdentifier("Amount of Profit FY2") with CtInteger
@@ -34,7 +35,7 @@ object B385 extends CorporationTaxCalculator with Calculated[B385, CT600BoxRetri
    */
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B385 = {
 
-    if(fieldValueRetriever.b5().isTrue){
+    if(northernIrelandJourneyActive(fieldValueRetriever)){
 
       calculateNIApportionedNonTradingProfitsChargeableFy2(
         NINonTradingProfitCalculationParameters(

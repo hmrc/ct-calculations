@@ -27,12 +27,12 @@ import uk.gov.hmrc.ct.ct600.v3._
 class CP997NISpec extends WordSpec with Matchers with MockitoSugar with NorthernIrelandRateValidation {
 
 
-    def makeBoxRetriever(cpq117Value: Option[Boolean] = Some(true), cato01Value: Int = 1000, cp997dValue: Option[Int] = Some(200), cp997eValue: Option[Int] = Some(200), b5Value: Option[Boolean] = Some(true)) = {
+    def makeBoxRetriever(cpq117Value: Option[Boolean] = Some(true), cato01Value: Int = 1000, cp997dValue: Option[Int] = Some(200), cp997eValue: Option[Int] = Some(200), b7Value: Option[Boolean] = Some(true)) = {
 
       val retriever = new NorthernIrelandStubbedComputationsBoxRetriever {
         override def cato01(): CATO01 = CATO01(cato01Value)
         override def cpQ117(): CPQ117 = CPQ117(cpq117Value)
-        override def b5(): B5 = B5(b5Value)
+        override def b7(): B7 = B7(b7Value)
         override def cp997d(): CP997d = CP997d(cp997dValue)
         override def cp997e(): CP997e = CP997e(cp997eValue)
 
