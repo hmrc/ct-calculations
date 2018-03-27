@@ -341,11 +341,11 @@ case class CompsWithAboutReturn(override val cp1: CP1 = CP1(LocalDate.parse("201
                                 override val cp997c: CP997c,
                                 override val cp997d: CP997d,
                                 override val cp44: CP44) extends StubbedComputationsBoxRetriever with AboutThisReturnBoxRetriever {
-  override def b5(): B5 = B5(Some(nirActive))
+  override def b5(): B5 = ???
 
   override def b6(): B6 = ???
 
-  override def b7(): B7 = ???
+  override def b7(): B7 = B7(Some(nirActive))
 
   override def b8(): B8 = ???
 
