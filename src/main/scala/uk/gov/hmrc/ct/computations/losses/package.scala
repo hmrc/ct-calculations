@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.computations
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.EndDate
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.ct600.v3.B7
 import uk.gov.hmrc.ct.ct600.v3.retriever.AboutThisReturnBoxRetriever
 
 package object losses {
@@ -31,5 +32,6 @@ package object losses {
 
   def northernIrelandJourneyActive(retriever: AboutThisReturnBoxRetriever): Boolean = retriever.b7().orFalse
 
+  def b7Retriever(b7:B7): Boolean = b7.isTrue
 
 }

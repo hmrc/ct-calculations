@@ -29,11 +29,8 @@ case class CP286a (value: Option[Int])
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      requiredErrorIf(value.isEmpty && boxRetriever.cpQ18.isTrue),
+      requiredErrorIf(value.isEmpty && boxRetriever.cpQ18().isTrue),
       cannotExistErrorIf(value.nonEmpty && !boxRetriever.cpQ18().orFalse),
-      requiredErrorIf(
-          mayHaveNirLosses(boxRetriever) &&
-          !hasValue),
       validateIntegerRange("CP286", this, 0, boxRetriever.cp286().orZero),
       sumOfBreakDownError(boxRetriever)
     )

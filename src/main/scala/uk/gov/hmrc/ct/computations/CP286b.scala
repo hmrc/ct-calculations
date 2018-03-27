@@ -21,7 +21,7 @@ import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP286b (value: Option[Int])
+case class CP286b(value: Option[Int])
   extends CtBoxIdentifier("Later to current stuff....")
     with CtOptionalInteger
     with Input
@@ -31,9 +31,6 @@ case class CP286b (value: Option[Int])
     collectErrors(
       requiredErrorIf(value.isEmpty && boxRetriever.cpQ18.isTrue),
       cannotExistErrorIf(value.nonEmpty && !boxRetriever.cpQ18().orFalse),
-      requiredErrorIf(
-          mayHaveNirLosses(boxRetriever) &&
-          !hasValue),
       validateIntegerRange("CP286", this, 0, boxRetriever.cp286().orZero),
       sumOfBreakDownError(boxRetriever)
     )
