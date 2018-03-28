@@ -148,6 +148,10 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp286(): CP286
 
+  def cp286a(): CP286a
+
+  def cp286b(): CP286b
+
   def cp287(): CP287
 
   def cp288a(): CP288a
