@@ -34,7 +34,6 @@ class CP286aSpec extends WordSpec with Matchers with MockitoSugar with NorthernI
       }
 
       "pass validation when CPQ18 is empty" in {
-        //when(mayHaveNirLosses(boxRetriever)).thenReturn(true)
         when(boxRetriever.cpQ18()).thenReturn(CPQ18(None))
         when(boxRetriever.cp286()).thenReturn(CP286(None))
         when(boxRetriever.cp286b()).thenReturn(CP286b(None))
