@@ -21,8 +21,9 @@ import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP286a (value: Option[Int])
-  extends CtBoxIdentifier("Later to current stuff...")
+case class CP286a
+(value: Option[Int])
+  extends CtBoxIdentifier("How much of those losses were made in the Northern Ireland")
     with CtOptionalInteger
     with Input
     with ValidatableBox[ComputationsBoxRetriever] with NorthernIrelandRateValidation with TradingLossesValidation{
