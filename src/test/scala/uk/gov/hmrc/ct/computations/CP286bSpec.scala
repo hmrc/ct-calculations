@@ -28,7 +28,10 @@ class CP286bSpec extends WordSpec with Matchers with MockitoSugar with NorthernI
   "CP286b" should {
     val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
     "when empty and Northern Ireland journey is active" when {
-      val CP286b = new CP286b(None)
+      val CP286b = new CP286b(None){
+        override val boxId = "CP286b"
+        override def mayHaveNirLosses (boxRetriever:ComputationsBoxRetriever): Boolean = true
+      }
 
       "pass validation when CPQ18 is empty" in {
 
