@@ -47,6 +47,10 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
     calculateCorporationTax(B345(BigDecimal("10.5")),B395(BigDecimal("10.3"))) shouldBe B430(BigDecimal("20.8"))
   }
 
+  "B430 = B345v3 + B360v3 + B395v3 + B410v3 when Northern Ireland is active" in new CorporationTaxCalculator {
+    calculateCorportationTaxForNIJourney(B345(BigDecimal("10.5")),B360(BigDecimal("10.6")), B395(BigDecimal("10.3")), B410(BigDecimal("10.4"))) shouldBe B430(BigDecimal("41.8"))
+  }
+
   "B345 = B335v3 * B340v3" in new CorporationTaxCalculator {
     calculateTaxForFirstFinancialYear(B335(10),B340(BigDecimal("10.11"))) shouldBe B345(BigDecimal("101.1"))
   }
