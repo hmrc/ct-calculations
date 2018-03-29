@@ -33,8 +33,8 @@ case class CP281b(value: Option[Int])
       requiredErrorIf(retriever.cpQ17().isTrue && lossReform2017Applies(retriever.cp2()) && !hasValue),
       cannotExistErrorIf(hasValue && (retriever.cpQ17().isFalse || !lossReform2017Applies(retriever.cp2()))),
       validateZeroOrPositiveInteger(this),
-      sumOfBreakdownErrors(retriever),
-      nirSumOfBreakdownErrors(retriever)
+      sumOfBreakdownErrors(retriever)/*,
+      nirSumOfBreakdownErrors(retriever)*/
     )
   }
 
@@ -43,11 +43,11 @@ case class CP281b(value: Option[Int])
       Set(CtValidation(None, "error.CP281b.breakdown.sum.incorrect"))
     }
   }
-  private def nirSumOfBreakdownErrors(retriever: ComputationsBoxRetriever) = {
+/*  private def nirSumOfBreakdownErrors(retriever: ComputationsBoxRetriever) = {
     failIf(retriever.cp281c() + retriever.cp281d() <= this.orZero) {
       Set(CtValidation(None, "error.CP281b.breakdown.sumNIR.incorrect"))
     }
-  }
+  }*/
 }
 
 object CP281b extends Calculated[CP281b, ComputationsBoxRetriever] {

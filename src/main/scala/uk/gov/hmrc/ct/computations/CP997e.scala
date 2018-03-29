@@ -43,4 +43,5 @@ object CP997e extends Calculated[CP997e, ComputationsBoxRetriever] with Northern
       cpq19
     )
   }
+
 }

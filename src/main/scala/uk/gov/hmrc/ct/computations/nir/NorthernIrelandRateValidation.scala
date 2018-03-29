@@ -65,4 +65,18 @@ trait NorthernIrelandRateValidation {
   def lossesBroughtForwardTotalsCorrect(retriever: ComputationsBoxRetriever): Boolean = {
     retriever.cp281c().orZero <= retriever.cp281b().orZero
   }
+
+  def excessNorthernIrelandTradingProfit(boxRetriever: ComputationsBoxRetriever): Boolean = {
+    import boxRetriever._
+
+    cp117().value > cp281c().orZero
+  }
+
+  def moreLossThanTradingProfit(boxRetriever: ComputationsBoxRetriever): Boolean = {
+    import boxRetriever._
+
+    cp117().value < cp281c().orZero
+  }
+
+
 }
