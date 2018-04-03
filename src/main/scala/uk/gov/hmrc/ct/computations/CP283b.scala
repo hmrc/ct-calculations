@@ -35,6 +35,7 @@ case class CP283b(value: Option[Int]) extends CtBoxIdentifier("Losses brought fo
   }
 }
 
+
 object CP283b {
 
   def apply(int: Int): CP283b = CP283b(Some(int))
