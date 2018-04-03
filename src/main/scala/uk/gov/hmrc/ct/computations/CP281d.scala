@@ -35,9 +35,15 @@ case class CP281d(value: Option[Int])
         (retriever.cpQ117().isFalse ||
           !lossReform2017Applies(retriever.cp2())
         )
-      )
-      // FIXME validation was missing at all
+      ),
+      sumOfLossesBroughtForwardError(retriever)
     )
+  }
+
+  private def sumOfLossesBroughtForwardError(retriever: ComputationsBoxRetriever) = {
+    failIf(retriever.cpQ117().isTrue && this.orZero + retriever.cp281c().orZero > retriever.cp281b().orZero){
+      Set(CtValidation(None,"error.lossesBroughtForward.incorrect"))
+    }
   }
 }
 

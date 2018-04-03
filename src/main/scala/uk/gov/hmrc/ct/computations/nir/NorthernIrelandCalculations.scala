@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.nir
 
+import uk.gov.hmrc.ct.box.StartDate
 import uk.gov.hmrc.ct.computations.{CP997c, CP997e, CPQ19, HmrcAccountingPeriod}
 import uk.gov.hmrc.ct.ct600.calculations.{Ct600AnnualConstants, HmrcValueApportioning, NorthernIrelandRate, TaxYear}
 
@@ -31,17 +32,11 @@ trait NorthernIrelandCalculations extends HmrcValueApportioning {
     CP997e(cp997c.value.map { nirLosses =>
 
 
-      val adjustedNirLosses: Map[TaxYear, Int] = calculateApportionedValuesForAccountingPeriod(nirLosses,hmrcAccountingPeriod)
-      adjustedNirLosses.map {
-        case (taxYear,apportionedLoss) =>
-          val ctRates = ct600AnnualConstants.constantsForTaxYear(taxYear)
-          ctRates match {
-            case nir:NorthernIrelandRate => if(cpq19.isTrue)(BigDecimal.valueOf(apportionedLoss) * nir.revaluationRatio).setScale(0,RoundingMode.DOWN).toInt
-            case _ => apportionedLoss
-          }
-      }
+      val niRatio = getNorthernIrelandTaxRevaluationRatio(hmrcAccountingPeriod.start,ct600AnnualConstants)
 
-      val apportionedValues: Map[TaxYear, Int] = calculateApportionedValuesForAccountingPeriod(adjustedNirLosses.head._2, hmrcAccountingPeriod)
+      val lossesAfterCPQ19 = if(cpq19.isTrue) nirLosses*niRatio.setScale(0, RoundingMode.DOWN).toInt else nirLosses
+
+      val apportionedValues: Map[TaxYear, Int] = calculateApportionedValuesForAccountingPeriod(lossesAfterCPQ19, hmrcAccountingPeriod)
       apportionedValues.map {
         case (taxYear, apportionedLoss) =>
           val ctRates = ct600AnnualConstants.constantsForTaxYear(taxYear)
@@ -51,5 +46,11 @@ trait NorthernIrelandCalculations extends HmrcValueApportioning {
           }
       }.sum
     })
+  }
+
+  def getNorthernIrelandTaxRevaluationRatio(startDate: StartDate, annualConstants:Ct600AnnualConstants): BigDecimal =  annualConstants match {
+
+    case nir:NorthernIrelandRate => nir.revaluationRatio
+    case _ => annualConstants.constantsForTaxYear(TaxYear(startingFinancialYear(startDate))).rateOfTax
   }
 }
