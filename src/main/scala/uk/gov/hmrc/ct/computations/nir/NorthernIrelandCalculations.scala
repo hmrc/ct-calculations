@@ -31,26 +31,31 @@ trait NorthernIrelandCalculations extends HmrcValueApportioning {
 
     CP997e(cp997c.value.map { nirLosses =>
 
+      val niRatio = getNorthernIrelandTaxRevaluationRatio(hmrcAccountingPeriod.start, ct600AnnualConstants)
 
-      val niRatio = getNorthernIrelandTaxRevaluationRatio(hmrcAccountingPeriod.start,ct600AnnualConstants)
+      val lossesAfterCPQ19 = if (cpq19.isTrue)
+        (BigDecimal(nirLosses) * niRatio)
+          .setScale(0, RoundingMode.DOWN).toInt
+      else nirLosses
 
-      val lossesAfterCPQ19 = if(cpq19.isTrue) nirLosses*niRatio.setScale(0, RoundingMode.DOWN).toInt else nirLosses
-
-      val apportionedValues: Map[TaxYear, Int] = calculateApportionedValuesForAccountingPeriod(lossesAfterCPQ19, hmrcAccountingPeriod)
+      val apportionedValues: Map[TaxYear, Int] =
+        calculateApportionedValuesForAccountingPeriod(lossesAfterCPQ19, hmrcAccountingPeriod)
       apportionedValues.map {
         case (taxYear, apportionedLoss) =>
           val ctRates = ct600AnnualConstants.constantsForTaxYear(taxYear)
           ctRates match {
-            case nir: NorthernIrelandRate => (BigDecimal.valueOf(apportionedLoss) * nir.revaluationRatio).setScale(0, RoundingMode.DOWN).toInt
+            case nir: NorthernIrelandRate =>
+              (BigDecimal(apportionedLoss) * nir.revaluationRatio)
+                .setScale(0, RoundingMode.DOWN).toInt
             case _ => apportionedLoss
           }
       }.sum
     })
   }
 
-  def getNorthernIrelandTaxRevaluationRatio(startDate: StartDate, annualConstants:Ct600AnnualConstants): BigDecimal =  annualConstants match {
-
-    case nir:NorthernIrelandRate => nir.revaluationRatio
+  def getNorthernIrelandTaxRevaluationRatio(startDate: StartDate, annualConstants: Ct600AnnualConstants): BigDecimal =
+    annualConstants match {
+    case nir: NorthernIrelandRate => nir.revaluationRatio
     case _ => annualConstants.constantsForTaxYear(TaxYear(startingFinancialYear(startDate))).rateOfTax
   }
 }
