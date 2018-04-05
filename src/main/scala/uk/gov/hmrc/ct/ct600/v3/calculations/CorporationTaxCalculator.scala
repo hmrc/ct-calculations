@@ -37,6 +37,10 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B430(b345.plus(b395))
   }
 
+  def calculateCorportationTaxForNIJourney(b345: B345, b360: B360, b395: B395, b410: B410): B430 = {
+    B430(b345.plus(b360.plus(b395.plus(b410))))
+  }
+
   def calculateTaxForFirstFinancialYear(b335: B335, b340: B340): B345 = {
     B345(b340.multiply(b335))
   }

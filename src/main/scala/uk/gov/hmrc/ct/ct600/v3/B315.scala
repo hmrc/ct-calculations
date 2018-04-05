@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger, Linked}
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.computations.losses._
 
 // was B37
 case class B315(value: Int) extends CtBoxIdentifier(name = "Profits chargeable to corporation tax") with CtInteger
@@ -26,23 +27,22 @@ object B315 extends Calculated[B315,CT600BoxRetriever] {
 
   override def calculate(boxRetriever: CT600BoxRetriever): B315 = {
 
+    def isTwoFinancialYears: Boolean =
+      boxRetriever.b330().isPositive &&
+      boxRetriever.b380().hasValue
 
-    def isTwoFinancialYears: Boolean = boxRetriever.b330().isPositive && boxRetriever.b380().hasValue
-
-
-    if(isTwoFinancialYears && boxRetriever.b5().isTrue){
-
-      B315(boxRetriever.b335().value + boxRetriever.b350().value + boxRetriever.b385().value + boxRetriever.b400().value)
+    if(northernIrelandJourneyActive(boxRetriever)) {
+      if (isTwoFinancialYears)
+        B315(boxRetriever.b335().value +
+          boxRetriever.b350().value +
+          boxRetriever.b385().value +
+          boxRetriever.b400().value
+        )
+      else
+        B315(boxRetriever.b350().value)
     }
-    else if(!isTwoFinancialYears && boxRetriever.b5().isTrue){
-
-      B315(boxRetriever.b335().value + boxRetriever.b350().value)
-    }
-    else{
-
+    else
       B315(boxRetriever.cp295().value)
-    }
-
 
   }
 
