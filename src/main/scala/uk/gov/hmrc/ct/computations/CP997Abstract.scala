@@ -14,21 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger, Linked}
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
-import uk.gov.hmrc.ct.computations.losses._
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger}
 
-// was B37
-case class B315(value: Int) extends CtBoxIdentifier(name = "Profits chargeable to corporation tax") with CtInteger
-
-object B315 extends Calculated[B315,CT600BoxRetriever] {
-
-  override def calculate(boxRetriever: CT600BoxRetriever): B315 = {
-
-    B315(boxRetriever.cp295().value)
-
-  }
-
-}
+abstract class CP997Abstract (value: Option[Int])
+  extends CtBoxIdentifier("Losses from previous AP after 01/04/2017 set against non-trading profits this AP")
+    with CtOptionalInteger

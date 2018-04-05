@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.computations.calculations
 
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 class NetProfitsChargeableToCtCalculatorSpec extends WordSpec with Matchers {
 

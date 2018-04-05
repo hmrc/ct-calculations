@@ -20,9 +20,7 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP997(value: Option[Int])
-  extends CtBoxIdentifier("Losses from previous AP after 01/04/2017 set against non trading profits this AP")
-  with CtOptionalInteger
+case class CP997(value: Option[Int]) extends CP997Abstract(value)
   with Input
   with ValidatableBox[ComputationsBoxRetriever]
   with TradingLossesValidation {

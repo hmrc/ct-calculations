@@ -18,15 +18,28 @@ package uk.gov.hmrc.ct.computations.calculations
 
 import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.computations.losses._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 trait NetProfitsChargeableToCtCalculator extends CtTypeConverters {
 
+  // tricky! losses.northernIrelandJourneyActive should be used. Failed on retriever type integration.
+  def chooseCp997(boxRetriever: ComputationsBoxRetriever): CP997Abstract = {
+    val ni = boxRetriever.cp997NI()
+    if ( ni.value.isDefined )
+      ni
+    else
+      boxRetriever.cp997()
+  }
+
   def calculateNetProfitsChargeableToCt(totalProfitsBeforeDeductions: CP293,
                                         tradingLossesOfThisPeriodAndLaterPeriods: CP294,
-                                        tradingLossesFromEarlierPeriodsUsedAgainstNonTradingProfit: CP997,
+                                        tradingLossesFromEarlierPeriodsUsedAgainstNonTradingProfit: CP997Abstract,
                                         totalDonations: CP999): CP295 = {
-    val result = totalProfitsBeforeDeductions - tradingLossesOfThisPeriodAndLaterPeriods -
-      tradingLossesFromEarlierPeriodsUsedAgainstNonTradingProfit - totalDonations
+    val cp997 = tradingLossesFromEarlierPeriodsUsedAgainstNonTradingProfit.value.getOrElse(0)
+    val result = totalProfitsBeforeDeductions - tradingLossesOfThisPeriodAndLaterPeriods - cp997 - totalDonations
+
     CP295(result max 0)
   }
 }

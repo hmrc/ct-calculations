@@ -96,7 +96,7 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
   }
 
   "B405" in new CorporationTaxCalculator {
-    rateOfTaxFy2(new CP2(new LocalDate(2019, 4, 8))) shouldBe 0.19
+    rateOfTaxFy2(new CP2(new LocalDate(2019, 4, 8))) shouldBe 0.125
   }
 
 

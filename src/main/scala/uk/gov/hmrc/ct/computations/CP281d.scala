@@ -41,8 +41,8 @@ case class CP281d(value: Option[Int])
   }
 
   private def sumOfLossesBroughtForwardError(retriever: ComputationsBoxRetriever) = {
-    failIf(retriever.cpQ117().isTrue && this.orZero + retriever.cp281c().orZero > retriever.cp281b().orZero){
-      Set(CtValidation(None,"error.lossesBroughtForward.incorrect"))
+    failIf(retriever.cpQ117().isTrue && this.orZero + retriever.cp281c().orZero != retriever.cp281b().orZero){
+      Set(CtValidation(None,"error.CP281.breakdown.sum.incorrect"))
     }
   }
 }

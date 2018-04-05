@@ -49,9 +49,25 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B360(b355.multiply(b350))
   }
 
-  def rateOfTaxFy1(start: StartDate): BigDecimal = Ct600AnnualConstants.constantsForTaxYear(TaxYear(startingFinancialYear(start))).rateOfTax
+  def rateOfTaxFy1(start: StartDate): BigDecimal =  {
+    val ct600Annuals = Ct600AnnualConstants.constantsForTaxYear(TaxYear(startingFinancialYear(start)))
 
-  def rateOfTaxFy2(end: EndDate): BigDecimal = Ct600AnnualConstants.constantsForTaxYear(TaxYear(endingFinancialYear(end))).rateOfTax
+    ct600Annuals match {
+      case nir: NorthernIrelandRate => nir.northernIrelandRate
+      case _ => ct600Annuals.rateOfTax
+    }
+  }
+
+  def rateOfTaxFy2(end: EndDate): BigDecimal = {
+
+
+    val ct600Annuals = Ct600AnnualConstants.constantsForTaxYear(TaxYear(endingFinancialYear(end)))
+
+    ct600Annuals match {
+      case nir: NorthernIrelandRate => nir.northernIrelandRate
+      case _ => ct600Annuals.rateOfTax
+    }
+  }
 
   def financialYear1(accountingPeriod: HmrcAccountingPeriod): Int = {
     startingFinancialYear(accountingPeriod.start)

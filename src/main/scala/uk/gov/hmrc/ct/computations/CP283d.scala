@@ -38,7 +38,7 @@ case class CP283d(value: Option[Int])
   }
 
   private def sumOfBreakDownError(retriever: ComputationsBoxRetriever)={
-    failIf(this.orZero + retriever.cp283c.orZero > retriever.cp117){
+    failIf(this.orZero + retriever.cp283c.orZero != retriever.cp283b().orZero){
       Set(CtValidation(None, "error.exceeds.tradingProfit.error"))
 
     }
