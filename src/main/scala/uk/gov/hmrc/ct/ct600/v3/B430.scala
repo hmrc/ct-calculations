@@ -30,7 +30,12 @@ object B430 extends CorporationTaxCalculator with Calculated[B430, CT600BoxRetri
 
     if(northernIrelandJourneyActive(fieldValueRetriever)){
 
-      calculateCorportationTaxForNIJourney(fieldValueRetriever.b345(), fieldValueRetriever.b360(),fieldValueRetriever.b395(), fieldValueRetriever.b410())
+      calculateCorportationTaxForNIJourney(
+        fieldValueRetriever.b345(),
+        fieldValueRetriever.b360(),
+        fieldValueRetriever.b395(),
+        fieldValueRetriever.b410()
+      )
 
     }else{
 
