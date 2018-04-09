@@ -30,7 +30,7 @@ object CP288 extends Calculated[CP288, ComputationsBoxRetriever] with LossesCarr
                                      cp283 = fieldValueRetriever.cp283(),
                                      cp998 = fieldValueRetriever.cp998(),
                                      cp287 = fieldValueRetriever.cp287(),
-                                     cp997 = fieldValueRetriever.cp997())
+                                     cp997 = fieldValueRetriever.chooseCp997())
   }
 
 }

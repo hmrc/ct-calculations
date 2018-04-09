@@ -41,7 +41,7 @@ case class CP281b(value: Option[Int])
   }
 
   private def sumOfBreakdownErrors(retriever: ComputationsBoxRetriever) = {
-    failIf(retriever.cp283b() + retriever.cp288b() + retriever.cp997() != this.orZero) {
+    failIf(retriever.cp283b() + retriever.cp288b() + retriever.chooseCp997() != this.orZero) {
       Set(CtValidation(None, "error.CP281b.breakdown.sum.incorrect"))
     }
   }
