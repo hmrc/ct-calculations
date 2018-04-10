@@ -62,7 +62,7 @@ class CP281bSpec extends WordSpec with Matchers with MockitoSugar with BoxValida
     when(retriever.cpQ17()).thenReturn(CPQ17(Some(cpq17Value)))
     when(retriever.cp283b()).thenReturn(CP283b(cp283bValue))
     when(retriever.cp288b()).thenReturn(CP288b(cp288bValue))
-    when(retriever.cp997()).thenReturn(CP997(cp997Value))
+    when(retriever.chooseCp997()).thenReturn(CP997(cp997Value))
     retriever
   }
 

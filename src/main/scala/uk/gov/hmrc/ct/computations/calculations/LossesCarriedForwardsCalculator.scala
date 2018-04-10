@@ -27,7 +27,7 @@ trait LossesCarriedForwardsCalculator extends CtTypeConverters {
                                        cp283: CP283,
                                        cp998: CP998,
                                        cp287: CP287,
-                                       cp997: CP997): CP288 =
+                                       cp997: CP997Abstract): CP288 =
     CP288(Some((cp281 + cp118 - cp283 - cp998 - cp997 - cp287) max 0))
 
 }

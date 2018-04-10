@@ -250,7 +250,7 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp238(): CP238 = CP238(cp290())
 
-  def cp238a(): CP238a = CP238a(cp997())
+  def cp238a(): CP238a = CP238a(chooseCp997())
 
   def cp239(): CP239 = CP239(cp294())
 
@@ -441,4 +441,13 @@ trait ComputationsBoxRetriever extends BoxRetriever {
   def lec12(): LEC12 = LEC12.calculate(this)
 
   def lec13(): LEC13 = LEC13.calculate(this)
+
+  // tricky! losses.northernIrelandJourneyActive should be used. Failed on retriever type integration.
+  def chooseCp997(): CP997Abstract = {
+    val ni = this.cp997NI()
+    if ( ni.value.isDefined )
+      ni
+    else
+      this.cp997()
+  }
 }

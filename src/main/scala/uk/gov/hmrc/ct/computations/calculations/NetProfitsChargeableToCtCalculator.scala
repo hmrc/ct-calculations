@@ -24,15 +24,6 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 trait NetProfitsChargeableToCtCalculator extends CtTypeConverters {
 
-  // tricky! losses.northernIrelandJourneyActive should be used. Failed on retriever type integration.
-  def chooseCp997(boxRetriever: ComputationsBoxRetriever): CP997Abstract = {
-    val ni = boxRetriever.cp997NI()
-    if ( ni.value.isDefined )
-      ni
-    else
-      boxRetriever.cp997()
-  }
-
   def calculateNetProfitsChargeableToCt(totalProfitsBeforeDeductions: CP293,
                                         tradingLossesOfThisPeriodAndLaterPeriods: CP294,
                                         tradingLossesFromEarlierPeriodsUsedAgainstNonTradingProfit: CP997Abstract,
