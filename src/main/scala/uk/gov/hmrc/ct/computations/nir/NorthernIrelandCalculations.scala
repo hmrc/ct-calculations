@@ -33,13 +33,13 @@ trait NorthernIrelandCalculations extends HmrcValueApportioning {
 
       val niRatio = getNorthernIrelandTaxRevaluationRatio(hmrcAccountingPeriod.start, ct600AnnualConstants)
 
-      val lossesAfterCPQ19 = if (cpq19.isTrue)
+      val revalued =
         (BigDecimal(nirLosses) * niRatio)
           .setScale(0, RoundingMode.DOWN).toInt
-      else nirLosses
 
       val apportionedValues: Map[TaxYear, Int] =
-        calculateApportionedValuesForAccountingPeriod(lossesAfterCPQ19, hmrcAccountingPeriod)
+        calculateApportionedValuesForAccountingPeriod(revalued, hmrcAccountingPeriod)
+
       apportionedValues.map {
         case (taxYear, apportionedLoss) =>
           val ctRates = ct600AnnualConstants.constantsForTaxYear(taxYear)
@@ -55,7 +55,7 @@ trait NorthernIrelandCalculations extends HmrcValueApportioning {
 
   def getNorthernIrelandTaxRevaluationRatio(startDate: StartDate, annualConstants: Ct600AnnualConstants): BigDecimal =
     annualConstants match {
-    case nir: NorthernIrelandRate => nir.revaluationRatio
-    case _ => annualConstants.constantsForTaxYear(TaxYear(startingFinancialYear(startDate))).rateOfTax
-  }
+      case nir: NorthernIrelandRate => nir.revaluationRatio
+      case _ => annualConstants.constantsForTaxYear(TaxYear(startingFinancialYear(startDate))).rateOfTax
+    }
 }
