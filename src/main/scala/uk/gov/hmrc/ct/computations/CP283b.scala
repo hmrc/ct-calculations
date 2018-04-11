@@ -30,8 +30,22 @@ case class CP283b(value: Option[Int]) extends CtBoxIdentifier("Losses brought fo
     collectErrors(
       requiredErrorIf(boxRetriever.cp281b().isPositive && !hasValue),
       validateZeroOrPositiveInteger(this),
-      sumOfBroughtForwardErrors(boxRetriever)
+      sumOfBroughtForwardErrors(boxRetriever),
+      sumOfBreakDownError(boxRetriever),
+      sumError(boxRetriever)
     )
+  }
+
+  private def sumError(retriever: ComputationsBoxRetriever) = {
+    failIf(retriever.cp283d().orZero + retriever.cp283c().orZero > this.orZero) {
+      Set(CtValidation(None, "error.CP283b.breakdown.sum.error"))
+    }
+  }
+
+  private def sumOfBreakDownError(retriever: ComputationsBoxRetriever) = {
+    failIf(this.orZero > retriever.cp117().value) {
+      Set(CtValidation(None, "error.CP283b.exceeds.tradingProfit.error"))
+    }
   }
 }
 

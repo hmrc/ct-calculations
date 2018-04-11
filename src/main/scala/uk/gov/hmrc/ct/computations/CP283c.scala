@@ -23,37 +23,27 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP283c(value: Option[Int])
   extends CtBoxIdentifier("NIR Losses brought forward from on or after 01/04/2017 used against trading profit")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[ComputationsBoxRetriever] with NorthernIrelandRateValidation with TradingLossesValidation {
+    with CtOptionalInteger
+    with Input
+    with ValidatableBox[ComputationsBoxRetriever] with NorthernIrelandRateValidation with TradingLossesValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       requiredErrorIf(
         boxRetriever.cp283b().isPositive &&
-        mayHaveNirLosses(boxRetriever) &&
+          mayHaveNirLosses(boxRetriever) &&
           !hasValue),
       validateIntegerRange("CP283c", this, 0, boxRetriever.cp283b().orZero),
-      sumOfBreakDownError(boxRetriever),
       lossesBroughtForwardError(boxRetriever)
     )
   }
 
-  private def sumOfBreakDownError(retriever: ComputationsBoxRetriever) = {
-    failIf(this.orZero + retriever.cp283d().orZero > retriever.cp117){
-        Set(CtValidation(None, "error.exceeds.tradingProfit.error"))
-
+  private def lossesBroughtForwardError(retriever: ComputationsBoxRetriever) = {
+    failIf(this.orZero != Math.min(retriever.cp117().value, retriever.cp281c().orZero)) {
+      Set(CtValidation(None, "error.lossesBroughtForwardError.error1"))
     }
   }
-
-  private def lossesBroughtForwardError(retriever: ComputationsBoxRetriever) = {
-      failIf(this.orZero !=  Math.min(retriever.cp117().value, retriever.cp281c().orZero)){
-        Set(CtValidation(None, "error.lossesBroughtForwardError.error1"))
-      }
-
-  }
 }
-
 
 
 object CP283c {

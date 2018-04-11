@@ -92,16 +92,7 @@ class CP286bSpec extends WordSpec with Matchers with MockitoSugar with NorthernI
       when(boxRetriever.cp286a()).thenReturn(CP286a(Some(0)))
       val CP286b = new CP286b(Some(1001))
 
-      CP286b.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP286"),"error.CP286.outOfRange",Some(List("0", "1,000"))), CtValidation(None,"error.exceeds.tradingProfit.error",None))
-    }
-
-    "fail validation when CPQ18 is true, cp286 is 1000, cp286b is 500 and value + cp286b > cp286" in {
-      when(boxRetriever.cpQ18()).thenReturn(CPQ18(Some(true)))
-      when(boxRetriever.cp286()).thenReturn(CP286(Some(1000)))
-      when(boxRetriever.cp286a()).thenReturn(CP286a(Some(500)))
-      val CP286b = new CP286b(Some(501))
-
-      CP286b.validate(boxRetriever) shouldBe Set(CtValidation(None,"error.exceeds.tradingProfit.error",None))
+      CP286b.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP286"),"error.CP286.outOfRange",Some(List("0", "1,000"))))
     }
 
   }
