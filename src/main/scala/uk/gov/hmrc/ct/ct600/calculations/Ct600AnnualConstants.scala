@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.ct600.calculations
 case class TaxYear(year: Int)
 
 
-trait CtConstants {
+sealed trait CtConstants {
   
   def lowerRelevantAmount: BigDecimal
   def upperRelevantAmount: BigDecimal
@@ -28,15 +28,14 @@ trait CtConstants {
   def smallCompaniesRateOfTax: BigDecimal
 }
 
-trait NorthernIrelandRate {
+abstract class RateFromString(private val unifiedTaxRate: String) extends CtConstants {
 
-  self: CtConstants =>
-
-  def northernIrelandRate: BigDecimal
-
-  def revaluationRatio: BigDecimal = northernIrelandRate / rateOfTax
+  val lowerRelevantAmount: BigDecimal = BigDecimal("0")
+  val upperRelevantAmount: BigDecimal = BigDecimal("0")
+  val reliefFraction: BigDecimal = BigDecimal("0")
+  val rateOfTax: BigDecimal = BigDecimal(unifiedTaxRate)
+  val smallCompaniesRateOfTax: BigDecimal = BigDecimal(unifiedTaxRate)
 }
-
 
 case class AllCtConstants(lowerRelevantAmount: BigDecimal,
                           upperRelevantAmount: BigDecimal,
@@ -44,18 +43,16 @@ case class AllCtConstants(lowerRelevantAmount: BigDecimal,
                           rateOfTax: BigDecimal,
                           smallCompaniesRateOfTax: BigDecimal) extends CtConstants
 
-case class UnifiedRateOfTax(private val unifiedTaxRate: String) extends CtConstants {
-
-  val lowerRelevantAmount: BigDecimal = BigDecimal("0")
-  val upperRelevantAmount: BigDecimal = BigDecimal("0")
-  val reliefFraction: BigDecimal = BigDecimal("0")
-  val rateOfTax: BigDecimal = BigDecimal(unifiedTaxRate)
-  val smallCompaniesRateOfTax: BigDecimal = BigDecimal(unifiedTaxRate)
-
+case class NorthernIrelandRate (private val unifiedTaxRate: String, northernIrelandRate: BigDecimal)  extends RateFromString(unifiedTaxRate) {
+  def revaluationRatio: BigDecimal = northernIrelandRate / rateOfTax
 }
+
+case class UnifiedRateOfTax(private val unifiedTaxRate: String) extends RateFromString(unifiedTaxRate)
 
 
 object Ct600AnnualConstants extends Ct600AnnualConstants {
+  // This value is for testing and design purposes only.
+  private val TEST_DATA = NorthernIrelandRate("0.17", BigDecimal(0.125))
 
   val data: Map[TaxYear, CtConstants] = Map(TaxYear(2006) -> AllCtConstants(lowerRelevantAmount = BigDecimal("300000"),
                                               upperRelevantAmount = BigDecimal("1500000"),
@@ -119,14 +116,9 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
 
                   TaxYear(2018) -> UnifiedRateOfTax("0.19"),
 
-                  TaxYear(2019) -> new UnifiedRateOfTax("0.19") with NorthernIrelandRate {
-                    // This value is for testing and design purposes only.
-                    override def northernIrelandRate: BigDecimal = BigDecimal(0.125)
-                  },
+                  TaxYear(2019) -> NorthernIrelandRate("0.19", BigDecimal(0.125)),
 
-                  TaxYear(2020) -> UnifiedRateOfTax("0.17")
-
-
+                  TaxYear(2020) -> TEST_DATA
   )
 
   val minYear = data.keys.reduceLeft((y1: TaxYear, y2: TaxYear) => if (y1.year < y2.year) y1 else y2)
@@ -146,7 +138,9 @@ trait Ct600AnnualConstants {
     assert(taxYear.year >= minYear.year, s"Cannot operate on years before ${minYear.year}")
     data.get(taxYear) match {
       case Some(x) => x
-      case _ => data.get(Ct600AnnualConstants.maxYear).get
+      case _ =>
+        // get the newest year from the collection
+        data(Ct600AnnualConstants.maxYear)
     }
   }
 }
