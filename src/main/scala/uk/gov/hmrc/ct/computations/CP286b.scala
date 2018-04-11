@@ -25,7 +25,7 @@ case class CP286b(value: Option[Int])
   extends CtBoxIdentifier("How much of those losses were made outside Northern Ireland?")
     with CtOptionalInteger
     with Input
-    with ValidatableBox[ComputationsBoxRetriever] with NorthernIrelandRateValidation with TradingLossesValidation{
+    with ValidatableBox[ComputationsBoxRetriever] with NorthernIrelandRateValidation with TradingLossesValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
@@ -33,22 +33,14 @@ case class CP286b(value: Option[Int])
         && mayHaveNirLosses(boxRetriever) &&
         !hasValue),
       cannotExistErrorIf(value.nonEmpty && !boxRetriever.cpQ18().orFalse),
-      validateIntegerRange("CP286", this, 0, boxRetriever.cp286().orZero),
-      sumOfBreakDownError(boxRetriever)
+      validateIntegerRange("CP286", this, 0, boxRetriever.cp286().orZero)
     )
-  }
-
-  private def sumOfBreakDownError(retriever: ComputationsBoxRetriever) = {
-    failIf(this.orZero + retriever.cp286a().orZero > retriever.cp286().orZero){
-      Set(CtValidation(None, "error.exceeds.tradingProfit.error"))
-
-    }
   }
 
 }
 
 object CP286b {
 
-  def apply(int: Int): CP286b = CP286b (Some(int))
+  def apply(int: Int): CP286b = CP286b(Some(int))
 }
 

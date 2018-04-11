@@ -21,12 +21,11 @@ import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP286a
-(value: Option[Int])
+case class CP286a(value: Option[Int])
   extends CtBoxIdentifier("How much of those losses were made in the Northern Ireland")
     with CtOptionalInteger
     with Input
-    with ValidatableBox[ComputationsBoxRetriever] with NorthernIrelandRateValidation with TradingLossesValidation{
+    with ValidatableBox[ComputationsBoxRetriever] with NorthernIrelandRateValidation with TradingLossesValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
@@ -34,16 +33,8 @@ case class CP286a
         && mayHaveNirLosses(boxRetriever) &&
         !hasValue),
       cannotExistErrorIf(value.nonEmpty && !boxRetriever.cpQ18().orFalse),
-      validateIntegerRange("CP286", this, 0, boxRetriever.cp286().orZero),
-      sumOfBreakDownError(boxRetriever)
+      validateIntegerRange("CP286", this, 0, boxRetriever.cp286().orZero)
     )
-  }
-
-  private def sumOfBreakDownError(retriever: ComputationsBoxRetriever) = {
-    failIf(this.orZero + retriever.cp286b().orZero > retriever.cp286().orZero){
-      Set(CtValidation(None, "error.exceeds.tradingProfit.error"))
-
-    }
   }
 
 }
