@@ -27,8 +27,8 @@ object CP44 extends Calculated[CP44, ComputationsBoxRetriever] with ProfitAndLos
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP44 = {
     calculateGrossProfitOrLossBeforeTax(cp14 = fieldValueRetriever.cp14(),
                                         cp40 = fieldValueRetriever.cp40(),
-                                        cp43 =fieldValueRetriever.cp43(),
-                                        cp509 =fieldValueRetriever.cp509(),
+                                        cp43 = fieldValueRetriever.cp43(),
+                                        cp509 = fieldValueRetriever.cp509(),
                                         cp502 = fieldValueRetriever.cp502())
   }
 }

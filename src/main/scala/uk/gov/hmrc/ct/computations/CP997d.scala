@@ -22,10 +22,10 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP997d(value: Option[Int])
   extends CtBoxIdentifier("Main stream Losses from previous AP after 01/04/2017 set against non trading profits this AP")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[ComputationsBoxRetriever]
-  with NorthernIrelandRateValidation {
+    with CtOptionalInteger
+    with Input
+    with ValidatableBox[ComputationsBoxRetriever]
+    with NorthernIrelandRateValidation {
 
   override def validate(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
@@ -40,14 +40,16 @@ case class CP997d(value: Option[Int])
   }
 
   private def exceedsNonTradingProfitErrors(retriever: ComputationsBoxRetriever) = {
-    failIf(retriever.cato01() < this.orZero + CP997e.calculate(retriever)) {
+    failIf(this.value.isDefined &&
+      retriever.cato01() < this.orZero + CP997e.calculate(retriever)) {
       Set(CtValidation(Some("CP997d"), "error.CP997.exceeds.nonTradingProfit"))
     }
   }
 
   private def exceedsNonTradingProfitErrorsAfterCPQ19(retriever: ComputationsBoxRetriever) = {
-    failIf(retriever.cpQ19().isTrue && retriever.cp44().value < this.orZero + CP997e.calculate(retriever)) {
-      Set(CtValidation(Some("CP997d"), "error.CP997.exceeds.nonTradingProfit"))
+    failIf(retriever.cpQ19().isTrue && this.value.isDefined &&
+      retriever.cp44().value < this.orZero + CP997e.calculate(retriever)) {
+      Set(CtValidation(Some("CP997d"), "error.CP997.exceeds.nonTradingProfit.CPQ19"))
     }
   }
 
