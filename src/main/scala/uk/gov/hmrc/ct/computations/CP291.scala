@@ -25,7 +25,7 @@ case class CP291(value: Option[Int]) extends CtBoxIdentifier(name = "Net trading
 object CP291 extends Calculated[CP291, ComputationsBoxRetriever] with NetTradingProfitCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP291 = {
-    netTradingProfitForProfitsChargeable(fieldValueRetriever.cp284(), fieldValueRetriever.cp283())
+    netTradingProfitForProfitsChargeable(fieldValueRetriever.cp284())
   }
 
 }

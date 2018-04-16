@@ -32,7 +32,7 @@ class AdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
         cp670 = CP670(Some(5000)),
         cp668 = CP668(Some(300)),
         cpq19 = CPQ19(Some(false)),
-        cp997c = CP997c(None)
+        cp997e = CP997e(None)
       )
       cp117 shouldBe CP117(10950)
     }
@@ -46,7 +46,7 @@ class AdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
         cp670 = CP670(Some(7000)),
         cp668 = CP668(Some(3000)),
         cpq19 = CPQ19(Some(false)),
-        cp997c = CP997c(None)
+        cp997e = CP997e(None)
       )
       cp117 shouldBe CP117(0)
     }
@@ -61,7 +61,7 @@ class AdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
         cp670 = CP670(Some(5000)),
         cp668 = CP668(Some(300)),
         cpq19 = CPQ19(Some(true)),
-        cp997c = CP997c(Some(2000))
+        cp997e = CP997e(Some(1000))
       )
       cp117 shouldBe CP117(9950)
     }
@@ -77,7 +77,7 @@ class AdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
                                               cp670 = CP670(Some(10000)),
                                               cp668 = CP668(Some(500)),
                                               cpq19 = CPQ19(Some(false)),
-                                              cp997c = CP997c(None))
+                                              cp997e = CP997e(None))
       cp118 shouldBe CP118(0)
     }
     "return a trading loss if there is a loss CP44 + CP54 - CP59 - CP186 + CP91 + CP670 - CP668" in new AdjustedTradingProfitOrLossCalculator {
@@ -89,7 +89,7 @@ class AdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
                                               cp670 = CP670(Some(7000)),
                                               cp668 = CP668(Some(3000)),
                                               cpq19 = CPQ19(Some(false)),
-                                              cp997c = CP997c(None))
+                                              cp997e = CP997e(None))
       cp118 shouldBe CP118(34750)
     }
 
@@ -102,7 +102,7 @@ class AdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
         cp670 = CP670(Some(7000)),
         cp668 = CP668(Some(3000)),
         cpq19 = CPQ19(Some(true)),
-        cp997c = CP997c(Some(2000)))
+        cp997e = CP997e(Some(1000)))
 
       cp118 shouldBe CP118(35750)
     }
