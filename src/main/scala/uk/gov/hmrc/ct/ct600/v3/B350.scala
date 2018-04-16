@@ -22,7 +22,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.calculations.NITradingProfitCalculationParameters
 import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
 
-case class B350(value: Int) extends CtBoxIdentifier(name = "Net trading profits") with CtInteger
+case class B350(value: Int) extends CtBoxIdentifier(name = "Amount of profit with tax rate: B355 FY1") with CtInteger
 
 object B350 extends CorporationTaxCalculator with Calculated[B350, ComputationsBoxRetriever] {
 

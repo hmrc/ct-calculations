@@ -26,11 +26,9 @@ trait NetTradingProfitCalculator extends CtTypeConverters {
     CP284(Some(cp117.value - cp283.orZero))
   }
 
-  def netTradingProfitForProfitsChargeable(netTradingProfit: CP284, lossesBroughtForwardUsedAgainstTradingProfit: CP283): CP291 = {
-    val result = lossesBroughtForwardUsedAgainstTradingProfit.value match {
-      case Some(x) if x > 0 => netTradingProfit.value
-      case _ => None
-    }
+  def netTradingProfitForProfitsChargeable(netTradingProfit: CP284): CP291 = {
+    val result = netTradingProfit.value
+
     CP291(result)
   }
 }

@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.box.{AnnualConstant, Calculated, CtBigDecimal, CtBoxIdenti
 import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-case class B355(value: BigDecimal) extends CtBoxIdentifier(name = "Rate Of Tax FY1") with AnnualConstant with CtBigDecimal
+case class B355(value: BigDecimal) extends CtBoxIdentifier(name = "Second Rate Of Tax FY1") with AnnualConstant with CtBigDecimal
 
 object B355 extends CorporationTaxCalculator with Calculated[B355, CT600BoxRetriever] {
 

@@ -38,22 +38,9 @@ class NetTradingProfitCalculatorSpec extends WordSpec with Matchers {
 
   "NetTradingProfitCalculator for profits chargeable" should {
 
-    "return value of CP284 if CP283 > 0" in new NetTradingProfitCalculator {
-      val result = netTradingProfitForProfitsChargeable(netTradingProfit = CP284(Some(1000)),
-        lossesBroughtForwardUsedAgainstTradingProfit = CP283(Some(500)))
+    "return value of CP284" in new NetTradingProfitCalculator {
+      val result = netTradingProfitForProfitsChargeable(netTradingProfit = CP284(Some(1000)))
       result shouldBe CP291(Some(1000))
-    }
-
-    "return None if CP283 = 0" in new NetTradingProfitCalculator {
-      val result = netTradingProfitForProfitsChargeable(netTradingProfit = CP284(Some(1000)),
-        lossesBroughtForwardUsedAgainstTradingProfit = CP283(Some(0)))
-      result shouldBe CP291(None)
-    }
-
-    "return None if CP283 < 0" in new NetTradingProfitCalculator {
-      val result = netTradingProfitForProfitsChargeable(netTradingProfit = CP284(Some(1000)),
-        lossesBroughtForwardUsedAgainstTradingProfit = CP283(Some(-1)))
-      result shouldBe CP291(None)
     }
   }
 }
