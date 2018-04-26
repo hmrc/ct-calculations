@@ -25,11 +25,11 @@ case class CP997NI (value: Option[Int]) extends CP997Abstract(value)
 object CP997NI extends NorthernIrelandRateValidation with Calculated[CP997NI, ComputationsBoxRetriever] {
 
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP997NI = {
-    if (boxRetriever.cato01().value > 0) {
+    if (boxRetriever.cato01().value > 0 && nirActiveForCurrentAccountingPeriod(boxRetriever)) {
       CP997NI(
         if (mayHaveNirLosses(boxRetriever)) Some(boxRetriever.cp997d().orZero + boxRetriever.cp997e().orZero)
 
-        else boxRetriever.cp997d.value
+        else boxRetriever.cp997d().value
       )
     } else CP997NI(None)
   }

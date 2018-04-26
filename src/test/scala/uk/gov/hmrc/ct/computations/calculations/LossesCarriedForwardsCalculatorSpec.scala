@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.computations.calculations
 
 import org.scalatest.prop.TableDrivenPropertyChecks.forAll
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.computations.{CP997c, _}
 import org.scalatest.prop.Tables.Table
 
 class LossesCarriedForwardsCalculatorSpec extends WordSpec with Matchers {
@@ -45,7 +45,8 @@ class LossesCarriedForwardsCalculatorSpec extends WordSpec with Matchers {
        result: Int) => {
         lossesCarriedForwardsCalculation(
           CP281(cp281), CP118(cp118), CP283(Some(cp283)),
-          CP998(Some(cp998)), CP287(cp287), CP997(cp997)
+          CP998(Some(cp998)), CP287(cp287), CP997(cp997),
+          CP997d(None), CP997c(None)
         ) shouldBe CP288(Some(result))
       }
     }

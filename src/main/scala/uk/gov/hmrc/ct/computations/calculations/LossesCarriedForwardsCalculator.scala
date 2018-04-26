@@ -27,7 +27,15 @@ trait LossesCarriedForwardsCalculator extends CtTypeConverters {
                                        cp283: CP283,
                                        cp998: CP998,
                                        cp287: CP287,
-                                       cp997: CP997Abstract): CP288 =
-    CP288(Some((cp281 + cp118 - cp283 - cp998 - cp997 - cp287) max 0))
+                                       cp997: CP997,
+                                       cp997d: CP997d,
+                                       cp997c: CP997c
+                                      ): CP288 = {
+    val finalLike997 = if(cp997.hasValue)
+      cp997.orZero
+    else
+      cp997c + cp997d
+    CP288(Some((cp281 + cp118 - cp283 - cp998 - cp287 - finalLike997) max 0))
+  }
 
 }
