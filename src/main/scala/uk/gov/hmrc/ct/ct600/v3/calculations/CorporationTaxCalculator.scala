@@ -45,25 +45,47 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B345(b340.multiply(b335))
   }
 
-  def calculateTaxForTradingProfitForFirstFinancialYear(b350:B350, b355:B355): B360 = {
+  def calculateTaxForTradingProfitForFirstFinancialYear(b350: B350, b355: B355): B360 = {
     B360(b355.multiply(b350))
   }
 
-  def rateOfTaxFy1(start: StartDate): BigDecimal =  {
-    val ct600Annuals = Ct600AnnualConstants.constantsForTaxYear(TaxYear(startingFinancialYear(start)))
+  def rateOfTaxFy1(start: StartDate): BigDecimal = {
+    getConstantsFromYear(
+      startingFinancialYear(start)
+    ).rateOfTax
+  }
 
-    ct600Annuals match {
-      case nir: NorthernIrelandRate => nir.northernIrelandRate
-      case _ => ct600Annuals.rateOfTax
-    }
+  private def getConstantsFromYear(year: Int) = {
+    Ct600AnnualConstants.constantsForTaxYear(TaxYear(year))
   }
 
   def rateOfTaxFy2(end: EndDate): BigDecimal = {
-    val ct600Annuals = Ct600AnnualConstants.constantsForTaxYear(TaxYear(endingFinancialYear(end)))
+    getConstantsFromYear(
+      endingFinancialYear(end)
+    ).rateOfTax
+  }
 
+  def nIRrateOfTaxFy1(start: StartDate): BigDecimal = {
+    val ct600Annuals = getConstantsFromYear(
+      startingFinancialYear(start)
+    )
+
+    getNirRate(ct600Annuals)
+  }
+
+  def nIRrateOfTaxFy2(end: EndDate): BigDecimal = {
+    val ct600Annuals = getConstantsFromYear(
+      endingFinancialYear(end)
+    )
+
+    getNirRate(ct600Annuals)
+  }
+
+  private def getNirRate(ct600Annuals: CtConstants) = {
     ct600Annuals match {
       case nir: NorthernIrelandRate => nir.northernIrelandRate
-      case _ => ct600Annuals.rateOfTax
+      case _ =>
+        throw new IllegalStateException("No NIR rate detected.")
     }
   }
 
@@ -78,15 +100,15 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     } else None
   }
 
-  def calculateTaxForTradingProfitForSecondFinancialYear(b400: B400, b405: B405) = {
+  def calculateTaxForTradingProfitForSecondFinancialYear(b400: B400, b405: B405): B410 = {
     B410(b405.multiply(b400))
   }
 
-  def calculateTaxForSecondFinancialYear(b385: B385, b390: B390) = {
+  def calculateTaxForSecondFinancialYear(b385: B385, b390: B390): B395 = {
     B395(b390.multiply(b385))
   }
 
-  def calculateIncomeTaxRepayable(b515: B515, b510: B510) = {
+  def calculateIncomeTaxRepayable(b515: B515, b510: B510): B520 = {
     val calc = b515.minus(b510)
     B520(noneIfNegative(calc))
   }
@@ -143,7 +165,7 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     case _ => B280(false)
   }
 
-  def defaultSetIfLossCarriedForward(b45input:B45Input, cp287:CP287): B45 = {
+  def defaultSetIfLossCarriedForward(b45input: B45Input, cp287: CP287): B45 = {
     if (cp287.orZero > 0) {
       B45(Some(true))
     } else {
