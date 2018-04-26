@@ -52,7 +52,7 @@ case class UnifiedRateOfTax(private val unifiedTaxRate: String) extends RateFrom
 
 object Ct600AnnualConstants extends Ct600AnnualConstants {
   // This value is for testing and design purposes only.
-  private val TEST_DATA = NorthernIrelandRate("0.17", BigDecimal(0.125))
+  private val TEST_DATA = NorthernIrelandRate("0.17", BigDecimal("0.19"))
 
   val data: Map[TaxYear, CtConstants] = Map(TaxYear(2006) -> AllCtConstants(lowerRelevantAmount = BigDecimal("300000"),
                                               upperRelevantAmount = BigDecimal("1500000"),
@@ -121,10 +121,10 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
                   TaxYear(2020) -> TEST_DATA
   )
 
-  val minYear = data.keys.reduceLeft((y1: TaxYear, y2: TaxYear) => if (y1.year < y2.year) y1 else y2)
-  val maxYear = data.keys.reduceLeft((y1: TaxYear, y2: TaxYear) => if (y1.year > y2.year) y1 else y2)
+  val minYear: TaxYear = data.keys.reduceLeft((y1: TaxYear, y2: TaxYear) => if (y1.year < y2.year) y1 else y2)
+  val maxYear: TaxYear = data.keys.reduceLeft((y1: TaxYear, y2: TaxYear) => if (y1.year > y2.year) y1 else y2)
 
-  def lowProfitsThreshold(numberOfCompanies :Option[Int]) = 300000 / (numberOfCompanies.getOrElse(0) + 1)
+  def lowProfitsThreshold(numberOfCompanies :Option[Int]): Int = 300000 / (numberOfCompanies.getOrElse(0) + 1)
 }
 
 

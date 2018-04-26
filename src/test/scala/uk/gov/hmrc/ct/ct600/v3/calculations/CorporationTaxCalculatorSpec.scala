@@ -56,15 +56,15 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
   }
 
   "B330" in new CorporationTaxCalculator {
-    financialYear1(HmrcAccountingPeriod(new CP1(new LocalDate(2014, 6, 1)),new CP2(new LocalDate(2015, 5, 31)) )) shouldBe 2014
+    financialYear1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 6, 1)),CP2(new LocalDate(2015, 5, 31)) )) shouldBe 2014
   }
 
   "B380" should {
     "be none when period end is in same financial year" in new CorporationTaxCalculator {
-      financialYear2(HmrcAccountingPeriod(new CP1(new LocalDate(2014, 6, 1)), new CP2(new LocalDate(2014, 5, 31)))) shouldBe None
+      financialYear2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 6, 1)), CP2(new LocalDate(2014, 5, 31)))) shouldBe None
     }
     "be the following year when period end in next financial year" in new CorporationTaxCalculator {
-      financialYear2(HmrcAccountingPeriod(new CP1(new LocalDate(2014, 6, 1)), new CP2(new LocalDate(2015, 5, 31)))) shouldBe Some(2015)
+      financialYear2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 6, 1)), CP2(new LocalDate(2015, 5, 31)))) shouldBe Some(2015)
     }
   }
 
@@ -84,19 +84,19 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
 
   // These tests assume that delegate code is tested thoroughly by v2 tests
   "B340" in new CorporationTaxCalculator {
-    rateOfTaxFy1(new CP1(new LocalDate(2014, 4, 1))) shouldBe 0.21
+    rateOfTaxFy1(CP1(new LocalDate(2014, 4, 1))) shouldBe 0.21
   }
 
   "B390" in new CorporationTaxCalculator {
-    rateOfTaxFy2(new CP2(new LocalDate(2015, 4, 1))) shouldBe 0.20
+    rateOfTaxFy2(CP2(new LocalDate(2015, 4, 1))) shouldBe 0.20
   }
 
   "B355" in new CorporationTaxCalculator {
-    rateOfTaxFy1(new CP1(new LocalDate(2018, 4, 9))) shouldBe 0.19
+    nIRrateOfTaxFy1(CP1(new LocalDate(2019, 4, 9))) shouldBe 0.125
   }
 
   "B405" in new CorporationTaxCalculator {
-    rateOfTaxFy2(new CP2(new LocalDate(2019, 4, 8))) shouldBe 0.125
+    nIRrateOfTaxFy2(CP2(new LocalDate(2019, 4, 8))) shouldBe 0.125
   }
 
 
