@@ -59,8 +59,6 @@ trait CorporationTaxCalculator extends CtTypeConverters {
   }
 
   def rateOfTaxFy2(end: EndDate): BigDecimal = {
-
-
     val ct600Annuals = Ct600AnnualConstants.constantsForTaxYear(TaxYear(endingFinancialYear(end)))
 
     ct600Annuals match {
