@@ -33,13 +33,13 @@ trait B325Calculator extends CtTypeConverters {
         false
     }
 
-    if(isTwoFinancialYears && (b350.value + b400.value) <= b315.value){
+    if(isTwoFinancialYears && (b350 + b400) <= b315.value){
 
-      B325(Some(b350.value + b400.value))
+      B325(Some(b350 + b400))
     }
-    else if(!isTwoFinancialYears && b350.value <= b315.value){
+    else if(!isTwoFinancialYears && b350 <= b315.value){
 
-      B325(Some(b350.value))
+      B325(Some(b350))
     }
     else{
 

@@ -25,13 +25,13 @@ class B586CalculatorSpec extends WordSpec with Matchers {
 
     "be same as B345 for the single financial year" in new B586Calculator {
       {
-        calculateB586(B360(200), B410(0), B330(2017), B380(None)) shouldBe B586(Some(200))
+        calculateB586(B360(Some(200)), B410(Some(0)), B330(2017), B380(None)) shouldBe B586(Some(200))
       }
     }
 
     "be same as total figure of (B345 + B395) for the two financial year" in new B586Calculator {
       {
-        calculateB586(B360(400), B410(400), B330(2017), B380(Some(2018))) shouldBe B586(Some(800))
+        calculateB586(B360(Some(400)), B410(Some(400)), B330(2017), B380(Some(2018))) shouldBe B586(Some(800))
       }
     }
   }

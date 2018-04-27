@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{AnnualConstant, Calculated, CtBigDecimal, CtBoxIdentifier}
-import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.nir.NorthernIrelandCalculations
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-case class B405(value: BigDecimal) extends CtBoxIdentifier(name = "Rate Of Tax FY1") with AnnualConstant with CtBigDecimal
+case class B405(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "Rate Of Tax FY1") with AnnualConstant with CtOptionalBigDecimal
 
-object B405 extends CorporationTaxCalculator with Calculated[B405, CT600BoxRetriever] {
+object B405 extends NorthernIrelandCalculations with Calculated[B405, CT600BoxRetriever] {
 
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B405 = {
     B405(nIRrateOfTaxFy1(fieldValueRetriever.cp1()))

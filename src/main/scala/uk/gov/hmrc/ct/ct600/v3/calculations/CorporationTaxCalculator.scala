@@ -45,48 +45,16 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B345(b340.multiply(b335))
   }
 
-  def calculateTaxForTradingProfitForFirstFinancialYear(b350: B350, b355: B355): B360 = {
-    B360(b355.multiply(b350))
-  }
-
   def rateOfTaxFy1(start: StartDate): BigDecimal = {
-    getConstantsFromYear(
+    Ct600AnnualConstants.getConstantsFromYear(
       startingFinancialYear(start)
     ).rateOfTax
-  }
-
-  private def getConstantsFromYear(year: Int) = {
-    Ct600AnnualConstants.constantsForTaxYear(TaxYear(year))
   }
 
   def rateOfTaxFy2(end: EndDate): BigDecimal = {
-    getConstantsFromYear(
+    Ct600AnnualConstants.getConstantsFromYear(
       endingFinancialYear(end)
     ).rateOfTax
-  }
-
-  def nIRrateOfTaxFy1(start: StartDate): BigDecimal = {
-    val ct600Annuals = getConstantsFromYear(
-      startingFinancialYear(start)
-    )
-
-    getNirRate(ct600Annuals)
-  }
-
-  def nIRrateOfTaxFy2(end: EndDate): BigDecimal = {
-    val ct600Annuals = getConstantsFromYear(
-      endingFinancialYear(end)
-    )
-
-    getNirRate(ct600Annuals)
-  }
-
-  private def getNirRate(ct600Annuals: CtConstants) = {
-    ct600Annuals match {
-      case nir: NorthernIrelandRate => nir.northernIrelandRate
-      case _ =>
-        throw new IllegalStateException("No NIR rate detected.")
-    }
   }
 
   def financialYear1(accountingPeriod: HmrcAccountingPeriod): Int = {
@@ -98,10 +66,6 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     if (financialYear1(accountingPeriod) != fy2) {
       Some(fy2)
     } else None
-  }
-
-  def calculateTaxForTradingProfitForSecondFinancialYear(b400: B400, b405: B405): B410 = {
-    B410(b405.multiply(b400))
   }
 
   def calculateTaxForSecondFinancialYear(b385: B385, b390: B390): B395 = {
@@ -123,14 +87,6 @@ trait CorporationTaxCalculator extends CtTypeConverters {
 
   def calculateApportionedProfitsChargeableFy2(params: CorporationTaxCalculatorParameters): B385 = {
     B385(HmrcValueApportioning.calculateApportionedProfitsChargeableFy2(params))
-  }
-
-  def calculateNIApportionedTradingProfitsChargeableFy1(params: NITradingProfitCalculationParameters): B350 = {
-    B350(HmrcValueApportioning.calculateNIApportionedTradingProfitsChargeableFy1(params))
-  }
-
-  def calculateNIApportionedTradingProfitsChargeableFy2(params: NITradingProfitCalculationParameters): B400 = {
-    B400(HmrcValueApportioning.calculateNIApportionedTradingProfitsChargeableFy2(params))
   }
 
   def calculateNIApportionedNonTradingProfitsChargeableFy1(params: NINonTradingProfitCalculationParameters): B335 = {
