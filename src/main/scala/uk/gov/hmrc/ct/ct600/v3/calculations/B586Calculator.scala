@@ -25,8 +25,10 @@ trait B586Calculator extends CtTypeConverters{
 
     (b330, b380) match {
 
-      case (B330(_), B380(_)) => B586(Some(b360.value + b410.value))
-      case _ => B586(Some(b360.value))
+      case (B330(_), B380(_)) =>
+        B586(b360.value.map(_ + b410.orZero))
+      case _ =>
+        B586(b360.value)
     }
 
   }

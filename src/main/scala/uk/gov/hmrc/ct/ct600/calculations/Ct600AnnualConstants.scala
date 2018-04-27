@@ -143,4 +143,8 @@ trait Ct600AnnualConstants {
         data(Ct600AnnualConstants.maxYear)
     }
   }
+
+  def getConstantsFromYear(year: Int): CtConstants =
+    Ct600AnnualConstants.constantsForTaxYear(TaxYear(year))
+
 }

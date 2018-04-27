@@ -16,23 +16,24 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.CATO23
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
+import uk.gov.hmrc.ct.computations.nir.NorthernIrelandCalculations
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.calculations.NITradingProfitCalculationParameters
-import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
 
-case class B400(value: Int) extends CtBoxIdentifier(name = "Net trading profits") with CtInteger
+case class B400(value: Option[Int]) extends CtBoxIdentifier(name = "Net trading profits") with CtOptionalInteger
 
-object B400 extends CorporationTaxCalculator with Calculated[B400, ComputationsBoxRetriever] {
+object B400 extends NorthernIrelandCalculations with Calculated[B400, ComputationsBoxRetriever] {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): B400 = {
-    calculateNIApportionedTradingProfitsChargeableFy2(
-      NITradingProfitCalculationParameters(
-        fieldValueRetriever.cp291(),
-        HmrcAccountingPeriod(fieldValueRetriever.cp1(), fieldValueRetriever.cp2())
+    B400(nirOpt(fieldValueRetriever)(
+      calculateNIApportionedTradingProfitsChargeableFy2(
+        NITradingProfitCalculationParameters(
+          fieldValueRetriever.cp291(),
+          HmrcAccountingPeriod(fieldValueRetriever.cp1(), fieldValueRetriever.cp2())
+        )
       )
-    )
+    ))
   }
 }

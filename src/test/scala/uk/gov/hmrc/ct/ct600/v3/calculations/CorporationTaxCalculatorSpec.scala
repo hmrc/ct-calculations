@@ -48,7 +48,7 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
   }
 
   "B430 = B345v3 + B360v3 + B395v3 + B410v3 when Northern Ireland is active" in new CorporationTaxCalculator {
-    calculateCorportationTaxForNIJourney(B345(BigDecimal("10.5")),B360(BigDecimal("10.6")), B395(BigDecimal("10.3")), B410(BigDecimal("10.4"))) shouldBe B430(BigDecimal("41.8"))
+    calculateCorportationTaxForNIJourney(B345(BigDecimal("10.5")),B360(Some(BigDecimal("10.6"))), B395(BigDecimal("10.3")), B410(Some(BigDecimal("10.4")))) shouldBe B430(BigDecimal("41.8"))
   }
 
   "B345 = B335v3 * B340v3" in new CorporationTaxCalculator {
@@ -68,15 +68,7 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
     }
   }
 
-  "B360 = B355 * B350" in new CorporationTaxCalculator {
 
-    calculateTaxForTradingProfitForFirstFinancialYear(B350(40), B355(BigDecimal("40.41"))) shouldBe B360(BigDecimal("1616.4"))
-  }
-
-  "B410 = B405 * B400" in new CorporationTaxCalculator {
-
-    calculateTaxForTradingProfitForSecondFinancialYear(B400(20), B405(BigDecimal("20.21"))) shouldBe B410(BigDecimal("404.20"))
-  }
 
   "B395 = B385v3 * B390v3" in new CorporationTaxCalculator {
     calculateTaxForSecondFinancialYear(B385(10), B390(BigDecimal("11.11"))) shouldBe B395(BigDecimal("111.1"))
@@ -91,13 +83,6 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
     rateOfTaxFy2(CP2(new LocalDate(2015, 4, 1))) shouldBe 0.20
   }
 
-  "B355" in new CorporationTaxCalculator {
-    nIRrateOfTaxFy1(CP1(new LocalDate(2019, 4, 9))) shouldBe 0.125
-  }
-
-  "B405" in new CorporationTaxCalculator {
-    nIRrateOfTaxFy2(CP2(new LocalDate(2019, 4, 8))) shouldBe 0.125
-  }
 
 
   "B335 apportioned profits chargeable FY1" in new CorporationTaxCalculator {
@@ -124,17 +109,6 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
         HmrcAccountingPeriod(CP1(new LocalDate(2018, 4, 12)), CP2(new LocalDate(2019, 4, 11))))) shouldBe B385(30)
   }
 
-  "B350 apportioned trading profit for FY1 when Northern Ireland is active" in new CorporationTaxCalculator {
-    calculateNIApportionedTradingProfitsChargeableFy1(
-      NITradingProfitCalculationParameters(CP291(Some(2000)),
-        HmrcAccountingPeriod(CP1(new LocalDate(2018, 4, 12)), CP2(new LocalDate(2019, 4, 11))))) shouldBe B350(1940)
-  }
-
-  "B400 apportioned trading profit for FY2 when Northern Ireland is active" in new CorporationTaxCalculator {
-    calculateNIApportionedTradingProfitsChargeableFy2(
-      NITradingProfitCalculationParameters(CP291(Some(3000)),
-        HmrcAccountingPeriod(CP1(new LocalDate(2018, 4, 12)), CP2(new LocalDate(2019, 4, 11))))) shouldBe B400(90)
-  }
   // ----------------------------------------------------------------------
 
   "B520v3 = B515v3 - B510v3" should {
