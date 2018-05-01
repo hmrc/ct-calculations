@@ -27,9 +27,8 @@ trait AdjustedTradingProfitOrLossCalculator extends CtTypeConverters {
                                      cp91: CP91,
                                      cp670: CP670,
                                      cp668: CP668,
-                                     cpq19: CPQ19,
-                                     cp997e: CP997e): CP117 = {
-    CP117(profit(cp44, cp54, cp59, cp186, cp91, cp670, cp668, cpq19, cp997e) max 0)
+                                     cpq19: CPQ19): CP117 = {
+    CP117(profit(cp44, cp54, cp59, cp186, cp91, cp670, cp668, cpq19) max 0)
   }
 
   def calculateAdjustedTradingLoss(cp44: CP44,
@@ -39,18 +38,19 @@ trait AdjustedTradingProfitOrLossCalculator extends CtTypeConverters {
                                    cp91: CP91,
                                    cp670: CP670,
                                    cp668: CP668,
-                                   cpq19: CPQ19,
-                                   cp997e: CP997e): CP118 = {
-    CP118((profit(cp44, cp54, cp59, cp186, cp91, cp670, cp668, cpq19, cp997e) min 0).abs)
+                                   cpq19: CPQ19): CP118 = {
+    CP118((profit(cp44, cp54, cp59, cp186, cp91, cp670, cp668, cpq19) min 0).abs)
   }
 
-  private def profit(cp44: CP44, cp54: CP54, cp59: CP59, cp186: CP186, cp91: CP91, cp670: CP670, cp668: CP668, cpq19: CPQ19, cp997e: CP997e): Int = {
-    val profit = cp44 + cp54 - cp59 - cp186 + cp91 + cp670 - cp668
-    if(cpq19.isTrue) {
-      profit - cp997e
-    } else {
-      profit
-    }
+  private def profit(cp44: CP44,
+                     cp54: CP54,
+                     cp59: CP59,
+                     cp186: CP186,
+                     cp91: CP91,
+                     cp670: CP670,
+                     cp668: CP668,
+                     cpq19: CPQ19) = {
+    cp44 + cp54 - cp59 - cp186 + cp91 + cp670 - cp668
   }
 }
 
