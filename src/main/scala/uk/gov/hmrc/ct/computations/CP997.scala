@@ -30,7 +30,8 @@ case class CP997(value: Option[Int]) extends CP997Abstract(value)
       requiredErrorIf(retriever.cp281b().isPositive && !hasValue),
       validateZeroOrPositiveInteger(this),
       cp997ExceedsNonTradingProfitAfterCPQ19(retriever),
-      exceedsNonTradingProfitErrors(retriever)
+      exceedsNonTradingProfitErrors(retriever),
+      lossesAlreadyUsed(retriever)
     )
   }
 
@@ -45,6 +46,11 @@ case class CP997(value: Option[Int]) extends CP997Abstract(value)
       Set(CtValidation(Some("CP997"), "error.CP997.exceeds.nonTradingProfit"))
     }
   }
+  private def lossesAlreadyUsed(retriever: ComputationsBoxRetriever) = {
+    failIf(retriever.cp281b().orZero - retriever.cp283b().orZero < this.orZero){
+      Set(CtValidation(Some("CP997"), "error.CP997.exceeds.leftLosses"))
+    }
+  }
 }
 
 object CP997 {
@@ -52,3 +58,4 @@ object CP997 {
   def apply(int: Int): CP997 = CP997(Some(int))
 
 }
+//CP997 saying “cannot exceed CP281b minus CP283b
