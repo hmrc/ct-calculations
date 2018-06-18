@@ -111,7 +111,9 @@ trait TradingLossesValidation extends Validators with CtTypeConverters {
 
   def sumOfBroughtForwardErrors(retriever: ComputationsBoxRetriever) = {
     failIf(retriever.cp283a() + retriever.cp283b() > retriever.cp117()) {
-      Set(CtValidation(None, "error.CP283.exceeds.totalProfit"))
+      Set(CtValidation(Some("CP283a"), "error.CP283.exceeds.totalProfit"),
+        CtValidation(Some("CP283b"), "error.CP283.exceeds.totalProfit")
+      )
     }
   }
 

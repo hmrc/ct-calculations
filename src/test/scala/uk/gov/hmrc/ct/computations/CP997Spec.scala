@@ -37,6 +37,9 @@ class CP997Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
     "fail validation if it exceeds non trading profit" in {
       CP997(2).validate(makeBoxRetriever()).contains(CtValidation(Some("CP997"), "error.CP997.exceeds.nonTradingProfit")) shouldBe true
     }
+    "fail validation if cp281b and cp283b don't sum up" in {
+      CP997(2).validate(makeBoxRetriever()).contains(CtValidation(Some("CP997"), "error.CP997.exceeds.leftLosses")) shouldBe true
+    }
     "pass validation if it equals non trading profit" in {
       CP997(2).validate(makeBoxRetriever(cato01Value = 2, cp44Value = 2)).contains(CtValidation(Some("CP997"), "error.CP997.exceeds.nonTradingProfit")) shouldBe false
     }
@@ -45,9 +48,10 @@ class CP997Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
     }
   }
 
-  private def makeBoxRetriever(cp281bValue: Option[Int] = Some(1), cato01Value: Int = 1, cp44Value: Int = 1) = {
+  private def makeBoxRetriever(cp281bValue: Option[Int] = Some(1), cato01Value: Int = 1, cp44Value: Int = 1, cp283bValue: Option[Int] = Some(1)) = {
     val retriever = mock[ComputationsBoxRetriever]
     when(retriever.cp281b()).thenReturn(CP281b(cp281bValue))
+    when(retriever.cp283b()).thenReturn(CP283b(cp283bValue))
     when(retriever.cato01()).thenReturn(CATO01(cato01Value))
     when(retriever.cp44()).thenReturn(CP44(cp44Value))
     retriever

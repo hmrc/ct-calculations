@@ -32,19 +32,20 @@ trait LossesPreviousToCurrentFixture extends WordSpec with Matchers with Mockito
         when(boxRetriever.cp117()).thenReturn(CP117(100))
         when(boxRetriever.cp283a()).thenReturn(CP283a(50))
         when(boxRetriever.cp283b()).thenReturn(CP283b(50))
-        box(boxRetriever).validate(boxRetriever).contains(CtValidation(None, "error.CP283.exceeds.totalProfit")) shouldBe false
+        box(boxRetriever).validate(boxRetriever).contains(CtValidation(Some("CP283a"), "error.CP283.exceeds.totalProfit")) shouldBe false
       }
       "be allowed to be less than total profit" in {
         when(boxRetriever.cp117()).thenReturn(CP117(100))
         when(boxRetriever.cp283a()).thenReturn(CP283a(49))
         when(boxRetriever.cp283b()).thenReturn(CP283b(50))
-        box(boxRetriever).validate(boxRetriever).contains(CtValidation(None, "error.CP283.exceeds.totalProfit")) shouldBe false
+        box(boxRetriever).validate(boxRetriever).contains(CtValidation(Some("CP283a"), "error.CP283.exceeds.totalProfit")) shouldBe false
       }
       "no be allowed to be greater than total profit" in {
         when(boxRetriever.cp117()).thenReturn(CP117(100))
         when(boxRetriever.cp283a()).thenReturn(CP283a(51))
         when(boxRetriever.cp283b()).thenReturn(CP283b(50))
-        box(boxRetriever).validate(boxRetriever).contains(CtValidation(None, "error.CP283.exceeds.totalProfit")) shouldBe true
+        box(boxRetriever).validate(boxRetriever).contains(CtValidation(Some("CP283a"), "error.CP283.exceeds.totalProfit")) shouldBe true
+        box(boxRetriever).validate(boxRetriever).contains(CtValidation(Some("CP283b"), "error.CP283.exceeds.totalProfit")) shouldBe true
       }
     }
   }
