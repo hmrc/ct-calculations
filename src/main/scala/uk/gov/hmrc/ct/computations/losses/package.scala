@@ -30,8 +30,8 @@ package object losses {
 
   def cp997NIExceedsNonTradingProfit(retriever: ComputationsBoxRetriever): Boolean = retriever.cato01() < retriever.cp997NI().orZero
 
-  def northernIrelandJourneyActive(retriever: AboutThisReturnBoxRetriever): Boolean = retriever.b7().orFalse
+  def northernIrelandJourneyActive(retriever: AboutThisReturnBoxRetriever): Boolean = northernIrelandJourneyActive(retriever.b7())
 
-  def b7Retriever(b7:B7): Boolean = b7.isTrue
+  def northernIrelandJourneyActive(b7: B7): Boolean = b7.isTrue
 
 }
