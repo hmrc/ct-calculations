@@ -92,7 +92,7 @@ class CP286aSpec extends WordSpec with Matchers with MockitoSugar with NorthernI
       when(boxRetriever.cp286b()).thenReturn(CP286b(Some(0)))
       val CP286a = new CP286a(Some(1001))
 
-      CP286a.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP286"),"error.CP286.outOfRange",Some(List("0", "1,000"))))
+      CP286a.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP286a"),"error.CP286a.outOfRange",Some(List("0", "1,000"))))
     }
 
   }
