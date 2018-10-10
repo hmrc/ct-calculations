@@ -1,9 +1,8 @@
 import sbt.{Def, _}
 import sbt.Keys._
-import uk.gov.hmrc.SbtAutoBuildPlugin
+import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
 import uk.gov.hmrc.versioning.SbtGitVersioning
 import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
-import uk.gov.hmrc.SbtArtifactory
 import uk.gov.hmrc.SbtArtifactory.autoImport.makePublicallyAvailableOnBintray
 
 
@@ -15,8 +14,9 @@ object HmrcBuild extends Build {
   val appName = "ct-calculations"
 
   lazy val CtCalculations = (project in file("."))
-    .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning)
+    .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
     .settings(majorVersion := 2)
+    .settings(makePublicallyAvailableOnBintray := true)
     .settings(
       name := appName,
       scalaVersion := "2.11.12",
@@ -53,5 +53,5 @@ private object BuildDependencies {
 
 object Developers {
 
-  def apply() = developers := List[Developer]()
+  def apply(): Def.Setting[List[Developer]] = developers := List[Developer]()
 }
