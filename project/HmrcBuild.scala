@@ -1,7 +1,11 @@
-import sbt._
+import sbt.{Def, _}
 import sbt.Keys._
 import uk.gov.hmrc.SbtAutoBuildPlugin
 import uk.gov.hmrc.versioning.SbtGitVersioning
+import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
+import uk.gov.hmrc.SbtArtifactory
+import uk.gov.hmrc.SbtArtifactory.autoImport.makePublicallyAvailableOnBintray
+
 
 object HmrcBuild extends Build {
 
@@ -12,6 +16,7 @@ object HmrcBuild extends Build {
 
   lazy val CtCalculations = (project in file("."))
     .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning)
+    .settings(majorVersion := 2)
     .settings(
       name := appName,
       scalaVersion := "2.11.12",
@@ -31,8 +36,8 @@ object HmrcBuild extends Build {
 private object BuildDependencies {
 
   object Compile {
-    val playJson = "com.typesafe.play" %% "play-json" % "2.5.8" % "provided"
-    val catoTime = "uk.gov.hmrc" %% "play-time" % "0.3.0" % "provided"
+    val playJson = "com.typesafe.play" %% "play-json" % "2.5.19" % "provided"
+    val catoTime = "uk.gov.hmrc" %% "play-time" % "0.4.0" % "provided"
   }
 
   sealed abstract class Test(scope: String) {
