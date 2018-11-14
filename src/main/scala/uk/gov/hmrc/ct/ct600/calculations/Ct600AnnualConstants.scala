@@ -116,9 +116,12 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
 
                   TaxYear(2018) -> UnifiedRateOfTax("0.19"),
 
-                  TaxYear(2019) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal(0.125)),
+                  TaxYear(2019) -> UnifiedRateOfTax("0.19"),
 
-                  TaxYear(2020) -> TEST_DATA // Everything 2021+ has the same rates as year 2020. Last entry with the highest year number matters.
+                  TaxYear(2020) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal(0.125)),
+
+                  TaxYear(2021) -> TEST_DATA
+    // Everything after last year entry has the same rates. Last entry with the highest year number matters.
   )
 
   val minYear: TaxYear = data.keys.reduceLeft((y1: TaxYear, y2: TaxYear) => if (y1.year < y2.year) y1 else y2)

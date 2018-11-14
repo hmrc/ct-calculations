@@ -35,21 +35,21 @@ class NorthernIrelandCalculationsSpec extends WordSpec with NorthernIrelandCalcu
   }
 
   "B355" in new CorporationTaxCalculator {
-    nIRrateOfTaxFy1(CP1(new LocalDate(2019, 4, 9))) shouldBe Some(0.125)
+    nIRrateOfTaxFy1(CP1(new LocalDate(2020, 4, 9))) shouldBe Some(0.125)
   }
 
   "B405" in new CorporationTaxCalculator {
-    nIRrateOfTaxFy2(CP2(new LocalDate(2019, 4, 8))) shouldBe Some(0.125)
+    nIRrateOfTaxFy2(CP2(new LocalDate(2020, 4, 8))) shouldBe Some(0.125)
   }
   "B350 apportioned trading profit for FY1 when Northern Ireland is active" in new CorporationTaxCalculator {
     calculateNIApportionedTradingProfitsChargeableFy1(
       NITradingProfitCalculationParameters(CP291(Some(2000)),
-        HmrcAccountingPeriod(CP1(new LocalDate(2018, 4, 12)), CP2(new LocalDate(2019, 4, 11))))) shouldBe 1940
+        HmrcAccountingPeriod(CP1(new LocalDate(2019, 4, 12)), CP2(new LocalDate(2020, 4, 11))))) shouldBe 1940
   }
 
   "B400 apportioned trading profit for FY2 when Northern Ireland is active" in new CorporationTaxCalculator {
     calculateNIApportionedTradingProfitsChargeableFy2(
       NITradingProfitCalculationParameters(CP291(Some(3000)),
-        HmrcAccountingPeriod(CP1(new LocalDate(2018, 4, 12)), CP2(new LocalDate(2019, 4, 11))))) shouldBe 90
+        HmrcAccountingPeriod(CP1(new LocalDate(2019, 4, 12)), CP2(new LocalDate(2020, 4, 11))))) shouldBe 90
   }
 }
