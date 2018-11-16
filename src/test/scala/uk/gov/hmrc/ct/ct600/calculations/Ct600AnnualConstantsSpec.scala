@@ -95,7 +95,7 @@ class Ct600AnnualConstantsSpec extends WordSpec with Matchers {
       data.lowerRelevantAmount shouldBe BigDecimal("0")
       data.upperRelevantAmount shouldBe BigDecimal("0")
       data.reliefFraction shouldBe BigDecimal("0.00")
-      data.rateOfTax shouldBe BigDecimal("0.19")
+      data.rateOfTax shouldBe BigDecimal("0.17")
     }
 
     "return max year when asked for something ahead of explicitly supported years" in {

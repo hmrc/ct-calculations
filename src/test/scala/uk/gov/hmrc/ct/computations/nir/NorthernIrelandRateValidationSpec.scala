@@ -321,8 +321,8 @@ class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with Mock
 
 
 
-case class CompsWithAboutReturn(override val cp1: CP1 = CP1(LocalDate.parse("2020-04-01")),
-                                override val cp2: CP2 = CP2(LocalDate.parse("2021-03-31")))
+case class CompsWithAboutReturn(override val cp1: CP1 = CP1(LocalDate.parse("2019-04-01")),
+                                override val cp2: CP2 = CP2(LocalDate.parse("2020-03-31")))
                                (nirActive: Boolean,
                                 areLossesFromNIRActivity:Boolean,
                                 override val cp117: CP117,
