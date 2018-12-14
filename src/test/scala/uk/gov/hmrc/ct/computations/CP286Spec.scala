@@ -88,7 +88,7 @@ class CP286Spec extends WordSpec with Matchers with MockitoSugar {
         }
         box.validate(boxRetriever) shouldBe Set(
           CtValidation(Some("CP286"), "error.CP286.below.min", Some(Seq("0"))),
-          CtValidation(None,"error.CP286.breakdown.sum.incorrect",None))
+          CtValidation(Some("CP286"), "error.CP286.breakdown.sum.incorrect", None))
       }
       "fail validation when CPQ18 is false and has value" in {
         when(boxRetriever.cpQ18()).thenReturn(CPQ18(Some(false)))
@@ -115,7 +115,7 @@ class CP286Spec extends WordSpec with Matchers with MockitoSugar {
           override def calculateMaximumCP286(cp117: CP117, cato01: CATO01, cp283: CP283, cp997: CP997Abstract, cp998: CP998) = 9999
         }
 
-        CP286.validate(boxRetriever) shouldBe Set(CtValidation(None,"error.CP286.breakdown.sum.incorrect",None))
+        CP286.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP286"),"error.CP286.breakdown.sum.incorrect",None))
       }
     }
   }

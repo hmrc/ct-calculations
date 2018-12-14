@@ -42,7 +42,7 @@ case class CP286(value: Option[Int]) extends CtBoxIdentifier(name = "Losses clai
 
   private def sumOfBreakDownError(retriever: ComputationsBoxRetriever) = {
     failIf(retriever.cp286a().orZero + retriever.cp286b().orZero > this.orZero) {
-      Set(CtValidation(None, "error.CP286.breakdown.sum.incorrect"))
+      Set(CtValidation(Some("CP286"), "error.CP286.breakdown.sum.incorrect"))
     }
   }
 }
