@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,9 @@ import scala.math.BigDecimal.RoundingMode
 
 case class PoolPercentageCalculator(oldMainRate: Int = 20,
                                     newMainRate: Int = 18,
-                                    oldSpecialRate: Int = 10,
-                                    newSpecialRate: Int = 8,
-                                    newRateStartDate: LocalDate = new LocalDate("2012-04-01")) {
+                                    oldSpecialRate: Int = 8,
+                                    newSpecialRate: Int = 6,
+                                    newRateStartDate: LocalDate = new LocalDate("2019-04-01")) {
 
   def apportionedMainRate(cp1: CP1, cp2: CP2): BigDecimal = {
     val daysInAP = daysInPeriodIncludingStartAndEndDays(cp1.value, cp2.value)
