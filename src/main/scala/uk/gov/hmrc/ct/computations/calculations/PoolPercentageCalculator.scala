@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.utils.DateImplicits._
 import scala.math.BigDecimal.RoundingMode
 
 
-case class PoolPercentageCalculator(oldMainRate: Int = 20,
+case class PoolPercentageCalculator(oldMainRate: Int = 18,
                                     newMainRate: Int = 18,
                                     oldSpecialRate: Int = 8,
                                     newSpecialRate: Int = 6,

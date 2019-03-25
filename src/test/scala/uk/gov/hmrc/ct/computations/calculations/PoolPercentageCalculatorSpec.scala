@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.computations.{CP1, CP2}
 
 class PoolPercentageCalculatorSpec extends WordSpec with Matchers  {
 
-  val calculator = PoolPercentageCalculator(oldMainRate = 20, newMainRate = 18, newRateStartDate =  new LocalDate("2019-01-01"))
+  val calculator = PoolPercentageCalculator(oldMainRate = 18, newMainRate = 18, oldSpecialRate = 8, newSpecialRate = 6, newRateStartDate =  new LocalDate("2019-01-01"))
 
   "days before" should {
     "return x days when start date is before change over date and end date is on change over" in {
@@ -73,13 +73,13 @@ class PoolPercentageCalculatorSpec extends WordSpec with Matchers  {
 
   "apportionedMainRate" should {
     "return correct apportioned rate when evenly split across rate change date" in {
-      calculator.apportionedMainRate(CP1(new LocalDate("2018-12-31")),CP2( new LocalDate("2019-01-01"))) shouldBe 19
+      calculator.apportionedMainRate(CP1(new LocalDate("2018-12-31")),CP2( new LocalDate("2019-01-01"))) shouldBe 18
     }
     "return correct apportioned rate when unevenly split across rate change date" in {
-      calculator.apportionedMainRate(CP1(new LocalDate("2018-12-30")),CP2(new LocalDate("2019-01-01"))) shouldBe 19.33
+      calculator.apportionedMainRate(CP1(new LocalDate("2018-12-30")),CP2(new LocalDate("2019-01-01"))) shouldBe 18
     }
     "return correct apportioned rate when entirely within old range" in {
-      calculator.apportionedMainRate(CP1(new LocalDate("2018-12-29")), CP2(new LocalDate("2018-12-31"))) shouldBe 20
+      calculator.apportionedMainRate(CP1(new LocalDate("2018-12-29")), CP2(new LocalDate("2018-12-31"))) shouldBe 18
     }
     "return correct apportioned rate when entirely within new range" in {
       calculator.apportionedMainRate(CP1(new LocalDate("2019-01-01")), CP2(new LocalDate("2019-01-03"))) shouldBe 18
@@ -103,13 +103,15 @@ class PoolPercentageCalculatorSpec extends WordSpec with Matchers  {
 
   val jiraAcceptanceTable = Table(
     ("startDate", "endDate", "mainPoolRate", "specialPoolRate"),
-    ("2018-01-03", "2018-09-08", 20.00, 8.00),
-    ("2019-01-01", "2019-12-31", 18.49, 6.49),
-    ("2018-10-01", "2019-09-03", 19.08, 7.08),
-    ("2018-10-01", "2019-09-30", 19.00, 7.00),
-    ("2019-03-01", "2020-02-28", 18.17, 6.17),
+    ("2018-01-03", "2018-09-08", 18.00, 8.00),
+    ("2019-01-01", "2019-12-31", 18.00, 6.49),
+    ("2018-10-01", "2019-09-03", 18.00, 7.08),
+    ("2018-10-01", "2019-09-30", 18.00, 7.00),
+    ("2019-03-01", "2020-02-28", 18.00, 6.17),
     ("2019-06-09", "2020-04-25", 18.00, 6.00),
-    ("2019-04-04", "2019-04-05", 18.00, 6.00)
+    ("2019-04-04", "2019-04-05", 18.00, 6.00),
+    ("2019-01-01", "2019-03-31", 18.00, 8.00),
+    ("2019-01-01", "2019-12-31", 18.00, 6.49)
   )
 
   "apportionedMainRate" should {
