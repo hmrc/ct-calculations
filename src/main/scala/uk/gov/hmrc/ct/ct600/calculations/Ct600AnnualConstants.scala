@@ -55,8 +55,6 @@ case class UnifiedRateOfTax(private val unifiedTaxRate: String) extends RateFrom
 
 
 object Ct600AnnualConstants extends Ct600AnnualConstants {
-  // This value is for testing and design purposes only.
-  private val TEST_DATA = NorthernIrelandRate(unifiedTaxRate = "0.17", northernIrelandRate = BigDecimal("0.19"))
 
   val data: Map[TaxYear, CtConstants] = Map(
 
@@ -124,7 +122,7 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
 
     TaxYear(2019) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal("0.125")),
 
-    TaxYear(2020) -> TEST_DATA
+    TaxYear(2020) -> NorthernIrelandRate(unifiedTaxRate = "0.17", northernIrelandRate = BigDecimal("0.19"))
     // Everything after last year entry has the same rates. Last entry with the highest year number matters.
   )
 
