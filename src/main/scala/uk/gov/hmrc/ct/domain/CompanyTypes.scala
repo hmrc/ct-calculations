@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.domain
 
-import play.api.data.validation.ValidationError
 import play.api.libs.json._
 
 
@@ -79,7 +78,7 @@ object CompanyTypes {
   )
 
   implicit val reads: Reads[CompanyType] =
-    Reads.StringReads.collect(ValidationError("Not a valid company type.")){case companyClassName if registeredTypes.contains(companyClassName) => registeredTypes(companyClassName)}
+    Reads.StringReads.collect(JsonValidationError("Not a valid company type.")){case companyClassName if registeredTypes.contains(companyClassName) => registeredTypes(companyClassName)}
 
   implicit val writes: Writes[CompanyType] = new Writes[CompanyType] {
     def writes(o: CompanyType): JsValue = JsString(o.toString)
