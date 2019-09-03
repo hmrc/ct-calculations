@@ -19,6 +19,8 @@ package uk.gov.hmrc.ct.box.formats
 import org.joda.time.LocalDate
 import play.api.libs.json._
 import uk.gov.hmrc.ct.box.CtOptionalDate
+import play.api.libs.json.JodaWrites._
+import play.api.libs.json.JodaReads._
 
 class OptionalDateFormat[T <: CtOptionalDate](builder: (Option[LocalDate] => T)) extends Format[T] {
 

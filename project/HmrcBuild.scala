@@ -24,6 +24,7 @@ object HmrcBuild extends Build {
       libraryDependencies ++= Seq(
         Compile.playJson,
         Compile.catoTime,
+        Compile.jodaJson,
         Test.scalaTest,
         Test.pegdown,
         Test.mockito,
@@ -36,7 +37,8 @@ object HmrcBuild extends Build {
 private object BuildDependencies {
 
   object Compile {
-    val playJson = "com.typesafe.play" %% "play-json" % "2.5.19" % "provided"
+    val playJson = "com.typesafe.play" %% "play-json" % "2.6.13" % "provided"
+    val jodaJson = "com.typesafe.play" % "play-json-joda_2.11" % "2.6.0"
     val catoTime = "uk.gov.hmrc" %% "play-time" % "0.4.0" % "provided"
   }
 
