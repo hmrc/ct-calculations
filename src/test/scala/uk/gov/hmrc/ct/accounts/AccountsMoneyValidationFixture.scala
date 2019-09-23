@@ -56,7 +56,7 @@ trait AccountsMoneyValidationFixture[T <: AccountsBoxRetriever] extends WordSpec
         builder(Some(minValue)).validate(boxRetriever) shouldBe empty
       }
       "be valid when empty" in {
-        if(testEmpty) {
+        if (testEmpty) {
           builder(None).validate(boxRetriever) shouldBe empty
         } else {
           assert(true)
@@ -69,7 +69,7 @@ trait AccountsMoneyValidationFixture[T <: AccountsBoxRetriever] extends WordSpec
         builder(Some(maxValue)).validate(boxRetriever) shouldBe empty
       }
 
-      if(testMin) {
+      if (testMin) {
         "fail validation when less then min lower limit" in {
           builder(Some(minValue - 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(minValue.toString, maxValue.toString))))
         }
@@ -77,6 +77,58 @@ trait AccountsMoneyValidationFixture[T <: AccountsBoxRetriever] extends WordSpec
 
       "fail validation when positive but above upper limit" in {
         builder(Some(maxValue + 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", Some(Seq(minValue.toString, maxValue.toString))))
+      }
+    }
+  }
+
+  def testIntegerFieldValidation(boxId: String, builder: Option[Int] => ValidatableBox[T], testLowerLimit: Option[Int] = None, testUpperLimit: Option[Int] = None, testMandatory: Option[Boolean] = Some(false)) = {
+
+    if (testMandatory.contains(true)) {
+      "fail validation when empty integer" in {
+        builder(None).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.required", None))
+      }
+    } else if (testMandatory.contains(false)) {
+      "pass validation when empty integer" in {
+        builder(None).validate(boxRetriever) shouldBe Set.empty
+      }
+    } else {
+      //'None' disables validation on empty strings, required to avoid failures in cases when a box being mandatory depends on the value of another box.
+    }
+
+
+    "pass validation with valid integer value" in {
+      builder(Some(50)).validate(boxRetriever) shouldBe Set.empty
+    }
+
+    if(testLowerLimit.isDefined && testUpperLimit.isDefined) {
+      val lowerLimit = testLowerLimit.get
+      val upperLimit = testUpperLimit.get
+
+      s"pass validation when integer is $upperLimit characters long" in {
+        builder(Some(12345)).validate(boxRetriever) shouldBe Set.empty
+      }
+
+//      s"fail validation when integer is longer than $upperLimit characters long" in {
+//        builder(Some(123456)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(s"$lowerLimit", s"$upperLimit"))))
+//      }
+
+      s"fail validation when integer is shorter than $lowerLimit characters long" in {
+        if(lowerLimit > 1) {
+
+          builder(Some(12)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(s"$lowerLimit", s"$upperLimit"))))
+        }
+      }
+    }
+
+    if(testLowerLimit.isEmpty && testUpperLimit.isDefined) {
+      val upperLimit = testUpperLimit.get
+
+      s"pass validation when integer is $upperLimit characters long" in {
+        builder(Some(12345)).validate(boxRetriever) shouldBe Set.empty
+      }
+
+      s"fail validation when integer is longer than $upperLimit characters long" in {
+        builder(Some(123456)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(f"$upperLimit%,d"))))
       }
     }
   }
