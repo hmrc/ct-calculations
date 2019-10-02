@@ -283,7 +283,11 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
-  @deprecated("", "29-09-2016 or earlier")
+
+  /*
+  This was labelled as @deprecated("", "29-09-2016 or earlier").
+  This was used for a filing period before the date provided.
+ */
   def validateStringMaxLength(boxId: String, value: String, max: Int)(): Set[CtValidation] = {
     failIf (value.size > max) {
       Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(commaForThousands(max)))))

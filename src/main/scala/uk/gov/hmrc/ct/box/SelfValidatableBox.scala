@@ -17,12 +17,11 @@
 package uk.gov.hmrc.ct.box
 
 import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
-import uk.gov.hmrc.ct.domain.ValidationConstants._
-import uk.gov.hmrc.ct.utils.DateImplicits._
-import ValidatableBox._
 
+import scala.language.implicitConversions
 
 trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with ValidatableBox[T]{
 
@@ -178,7 +177,10 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
     super.validateStringByLength(box.id, value, errorCodeId, min, max)
   }
 
-  @deprecated("", "29-09-2016 or earlier")
+  /*
+  This was labelled as @deprecated("", "29-09-2016 or earlier")
+  This was used for a filing period before the date provided.
+ */
   def validateStringMaxLength(value: String, max: Int)(): Set[CtValidation] = {
     super.validateStringMaxLength(box.id, value, max)
   }
