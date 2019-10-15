@@ -114,6 +114,8 @@ trait Frs105AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
 
   def ac7997(): AC7997
 
+  def ac7998(): AC7998
+
   def ac7999(): AC7999
 
   def ac7999a(): AC7999a

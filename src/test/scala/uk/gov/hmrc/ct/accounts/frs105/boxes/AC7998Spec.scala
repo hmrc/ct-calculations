@@ -16,16 +16,12 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
-import org.joda.time.LocalDate
-import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AC205, AccountsMoneyValidationFixture, MockFrs105AccountsRetriever}
+import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, MockFrs105AccountsRetriever}
 
 class AC7998Spec extends WordSpec with Matchers with MockitoSugar with AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
-
-  override val setUpMocks: Unit = when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate())))
 
   private val boxID = "AC7998"
   private val minValue = 0
@@ -34,6 +30,12 @@ class AC7998Spec extends WordSpec with Matchers with MockitoSugar with AccountsM
   private val maxLength = Some(5)
   private val isMandatory = Some(true)
 
-  testAccountsMoneyValidationWithMinMax(boxID, minValue, maxValue, AC7998, false)
+//  testAccountsMoneyValidationWithMinMax(boxID, minValue, maxValue, AC7998, false)
   testIntegerFieldValidation(boxID, AC7998, minLength, maxLength, isMandatory)
 }
+
+
+
+// Only digits allowed
+// limit of employees up to CATO standard.
+//

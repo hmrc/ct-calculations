@@ -25,8 +25,10 @@ case class AC7998(value: Option[Int]) extends CtBoxIdentifier(name = "Employee i
   private val minValue = 0
   private val maxValue = 99999
 
-  override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = collectErrors(
-    validateMoney(value, minValue, maxValue)(),
-    validateAsMandatory()
-  )
+  override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
+        collectErrors(
+//          validateIntegerRange(minValue, maxValue),
+          validateIntegerAsMandatory()
+        )
+  }
 }

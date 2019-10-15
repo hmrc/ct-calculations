@@ -29,6 +29,7 @@ case class AC7999(value: Option[String])
   override def validate(
       boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
     val yesButton = boxRetriever.ac7999a()
+
     failIf(yesButton.isTrue) {
       collectErrors(
         requiredErrorIf(value.isEmpty),
