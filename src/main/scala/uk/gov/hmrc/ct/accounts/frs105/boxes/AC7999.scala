@@ -29,14 +29,30 @@ case class AC7999(value: Option[String])
   override def validate(
       boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
     val yesButton = boxRetriever.ac7999a()
+    val noButton = boxRetriever.ac7999b()
 
-    failIf(yesButton.isTrue) {
-      collectErrors(
-        requiredErrorIf(value.isEmpty),
-        validateStringAsMandatory(),
-        validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
-        validateCoHoStringReturnIllegalChars()
-      )
-    }
+    requiredErrorIf(yesButton.isFalse && noButton.isFalse)
+
+//    collectErrors(
+//      failIf(yesButton.isTrue){
+////        validateAsMandatory()
+//        validateStringAsMandatory()
+////        validateCohoNameField()
+//      })
+
+
+
+
+
+    //    failIf(yesButton.isTrue) {
+    //      collectErrors(
+    //        requiredErrorIf(value.isEmpty),
+    //        validateStringAsMandatory(),
+    //        validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
+    //        validateCoHoStringReturnIllegalChars()
+    //      )
+    //    }
+    //  }
+
   }
 }
