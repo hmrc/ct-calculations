@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
-import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.MockFrs105AccountsRetriever
@@ -25,18 +24,15 @@ import uk.gov.hmrc.ct.box.CtValidation
 class AC7999aSpec extends WordSpec with Matchers with MockitoSugar with MockFrs105AccountsRetriever {
 
   private def fieldRequiredError(boxID: String) = CtValidation(Some(boxID),s"error.$boxID.required")
-  private val boxID = "AC7999a"
-
-  when(boxRetriever.ac7999b()).thenReturn(AC7999b(None))
+  private val boxId = "AC7999a"
 
   "AC7999a" should {
-    "fail validation if this radio button and AC7999b are unchecked" in {
-      AC7999a(Some(false)).validate(boxRetriever) shouldBe Set(fieldRequiredError(boxID))
-      AC7999a(None).validate(boxRetriever) shouldBe Set(fieldRequiredError(boxID))
+    "fail validation when neither radio buttons are checked" in {
+      AC7999a(None).validate(boxRetriever) shouldBe Set(fieldRequiredError(boxId))
     }
-
-    "pass validation if this radio button is checked and AC7999b is unchecked" in {
-      AC7999a(Some(true)).validate(boxRetriever) shouldBe Set.empty
+    "pass validation when 'no' button is checked" in {
+        AC7999a(Some(true)).validate(boxRetriever) shouldBe Set.empty
+      }
     }
-  }
 }
+

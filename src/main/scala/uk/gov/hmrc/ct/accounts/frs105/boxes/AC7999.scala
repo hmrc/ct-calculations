@@ -17,42 +17,23 @@
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.ValidatableBox.StandardCohoTextFieldLimit
+import uk.gov.hmrc.ct.accounts.frs105.validation.OffBalanceSheetArrangementsValidator
+import uk.gov.hmrc.ct.box.ValidatableBox.{StandardCohoTextFieldLimit, ValidNonForeignMoreRestrictiveCharacters}
 import uk.gov.hmrc.ct.box._
 
 case class AC7999(value: Option[String])
     extends CtBoxIdentifier(name = "Off balance sheet disclosure note")
     with CtOptionalString
     with Input
-    with SelfValidatableBox[Frs105AccountsBoxRetriever, Option[String]] {
-
+    with SelfValidatableBox[Frs105AccountsBoxRetriever, Option[String]]
+    with OffBalanceSheetArrangementsValidator
+{
   override def validate(
       boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
-    val yesButton = boxRetriever.ac7999a()
-    val noButton = boxRetriever.ac7999b()
-
-    requiredErrorIf(yesButton.isFalse && noButton.isFalse)
-
-//    collectErrors(
-//      failIf(yesButton.isTrue){
-////        validateAsMandatory()
-//        validateStringAsMandatory()
-////        validateCohoNameField()
-//      })
-
-
-
-
-
-    //    failIf(yesButton.isTrue) {
-    //      collectErrors(
-    //        requiredErrorIf(value.isEmpty),
-    //        validateStringAsMandatory(),
-    //        validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
-    //        validateCoHoStringReturnIllegalChars()
-    //      )
-    //    }
-    //  }
-
+    collectErrors(
+      validateAgainstAC7999a(boxRetriever, this.boxId, value),
+      validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
+      validateOptionalStringByRegex(boxId, this, ValidNonForeignMoreRestrictiveCharacters)
+    )
   }
 }

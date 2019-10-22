@@ -16,56 +16,55 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
-import org.scalatest.{Matchers, WordSpec}
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
-import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFrs105AccountsRetriever}
+import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFrs105AccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.box.ValidatableBox._
+import uk.gov.hmrc.ct.box.ValidatableBox.StandardCohoTextFieldLimit
 
 class AC7999Spec extends WordSpec with Matchers with MockitoSugar with AccountsFreeTextValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
 
-  private val boxID = "AC7999"
-  private val minLength = Some(1)
-  private val isMandatory = true
-  private lazy val yesButton = boxRetriever.ac7999a()
-  private lazy val noButton = boxRetriever.ac7999b()
-
-//  when(boxRetriever.ac7999a()) thenReturn AC7999a(Some(true))
-//  testTextFieldValidation(boxID, AC7999, minLength, Some(StandardCohoTextFieldLimit), Some(isMandatory))
+  private def validateAC7999(inputField: Option[String], validationResult: Set[CtValidation]) = AC7999(inputField).validate(boxRetriever) shouldBe validationResult
 
     "validation should pass successfully" when {
-      //      "'No' button has been pressed" in {
-      //        when(boxRetriever.ac7999b()) thenReturn AC7999b(Some(true))
-      //        AC7999(None).validate(boxRetriever) shouldBe Set.empty
-      //      }
 
-      "'Yes' button has been pressed and the text field is non-empty" in {
-        when(yesButton) thenReturn AC7999a(Some(true))
-        when(noButton) thenReturn AC7999b(Some(false))
-        AC7999(Some("many off-balance sheet arrangements")).validate(boxRetriever) shouldBe Set()
+      val input = "Some very off balance arrangements"
+      val validationSuccess: Set[CtValidation] = Set.empty
+
+      "'Yes' button has been pressed and there is content in the text field" in {
+        when(boxRetriever.ac7999a()) thenReturn AC7999a(Some(true))
+        validateAC7999(Some(input), validationSuccess)
       }
-      //
-      //      "'Yes' button has been pressed and the text field is the minimum length - 1" in {
-      //        when(yesButton) thenReturn AC7999a(Some(true))
-      //        when(noButton) thenReturn AC7999b(Some(false))
-      //        AC7999(Some("m")).validate(boxRetriever) shouldBe Set()
-      //      }
-          }
+      "'No' button has been pressed and there is content in the text field" in {
+        when(boxRetriever.ac7999a()) thenReturn AC7999a(Some(false))
+        validateAC7999(Some(input), validationSuccess)
+      }
+    }
 
       "validation should fail successfully" when {
 
-        "'Yes' button has been pressed and the text field is empty" in {
-          when(yesButton) thenReturn AC7999a(Some(true))
-          when(noButton) thenReturn AC7999b(Some(false))
-          AC7999(None).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxID),"error.AC7999.required", None))
-        }
-      }
-}
+      val fieldRequiredError = Set(CtValidation(Some("AC7999"), "error.AC7999.required", None))
 
-// should succeed if you press no.
-// should succeed if you press yes and enter in box ac7999.
-// should fail if you press nothing
-// should fail if you press yes and enter nothing in the text box
-// should fail if you write inappropriate characters in the text box
+      "'Yes' button has been pressed and there is no content in the text field" in {
+        when(boxRetriever.ac7999a()) thenReturn AC7999a(Some(true))
+        validateAC7999(Some(""), fieldRequiredError)
+        validateAC7999(None, fieldRequiredError)
+       }
+      }
+
+      "the string entered contains more than 20,000" in {
+        when(boxRetriever.ac7999a()) thenReturn AC7999a(Some(true))
+        val input = "a" * StandardCohoTextFieldLimit + 1
+        val tooManyCharactersErrorMsg = Set(CtValidation(Some("AC7999"), "error.AC7999.text.sizeRange", Some(List("1", "20000"))))
+        validateAC7999(Some(input), tooManyCharactersErrorMsg)
+      }
+
+      "the input contains illegal special characters" in {
+       when(boxRetriever.ac7999a()) thenReturn AC7999a(Some(false))
+        val regexFailureError = Set(CtValidation(Some("AC7999"),"error.AC7999.regexFailure",None))
+        val cheekyRegex = Some("<^*(£")
+        validateAC7999(cheekyRegex, regexFailureError)
+        }
+}

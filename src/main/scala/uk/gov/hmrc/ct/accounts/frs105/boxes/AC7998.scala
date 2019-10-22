@@ -22,12 +22,12 @@ import uk.gov.hmrc.ct.box._
 
 case class AC7998(value: Option[Int]) extends CtBoxIdentifier(name = "Employee information note") with CtOptionalInteger with Input with SelfValidatableBox[Frs105AccountsBoxRetriever, Option[Int]] {
 
-  private val minValue = 0
-  private val maxValue = 99999
+  private val minNumberOfEmployees = 1
+  private val maxNumberOfEmployees = 99999
 
   override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
         collectErrors(
-//          validateIntegerRange(minValue, maxValue),
+          validateIntegerRange(minNumberOfEmployees, maxNumberOfEmployees),
           validateIntegerAsMandatory()
         )
   }

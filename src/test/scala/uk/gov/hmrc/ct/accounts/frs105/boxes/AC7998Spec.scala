@@ -24,18 +24,12 @@ import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, MockFrs105Accoun
 class AC7998Spec extends WordSpec with Matchers with MockitoSugar with AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
 
   private val boxID = "AC7998"
-  private val minValue = 0
-  private val maxValue = 99999
-  private val minLength = Some(0)
+  private val minLength = Some(1)
   private val maxLength = Some(5)
   private val isMandatory = Some(true)
 
-//  testAccountsMoneyValidationWithMinMax(boxID, minValue, maxValue, AC7998, false)
+
   testIntegerFieldValidation(boxID, AC7998, minLength, maxLength, isMandatory)
 }
 
 
-
-// Only digits allowed
-// limit of employees up to CATO standard.
-//
