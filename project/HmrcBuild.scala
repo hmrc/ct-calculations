@@ -22,38 +22,17 @@ object HmrcBuild extends Build {
       scalaVersion := "2.11.12",
       crossScalaVersions := Seq("2.11.12"),
       libraryDependencies ++= Seq(
-        Compile.playJson,
-        Compile.catoTime,
-        Compile.jodaJson,
-        Test.scalaTest,
-        Test.pegdown,
-        Test.mockito,
-        Test.hamcrest
+        "com.typesafe.play" % "play-json-joda_2.11" % "2.6.0",
+        "uk.gov.hmrc" %% "play-time" % "0.4.0" % "provided",
+
+        "org.scalatest" %% "scalatest" % "2.2.6" % "test",
+        "org.mockito" % "mockito-all" % "1.10.19" % "test",
+        "org.pegdown" % "pegdown" % "1.6.0" % "test"
       ),
       Developers()
     )
 }
 
-private object BuildDependencies {
-
-  object Compile {
-    val playJson = "com.typesafe.play" %% "play-json" % "2.6.13" % "provided"
-    val jodaJson = "com.typesafe.play" % "play-json-joda_2.11" % "2.6.0"
-    val catoTime = "uk.gov.hmrc" %% "play-time" % "0.4.0" % "provided"
-  }
-
-  sealed abstract class Test(scope: String) {
-    val scalaTest = "org.scalatest" %% "scalatest" % "2.2.6" % scope
-    val mockito = "org.mockito" % "mockito-all" % "1.10.19" % scope
-    val pegdown = "org.pegdown" % "pegdown" % "1.6.0" % scope
-    val hamcrest = "org.hamcrest" % "hamcrest-all" % "1.3" % scope
-  }
-
-  object Test extends Test("test")
-
-}
-
 object Developers {
-
   def apply(): Def.Setting[List[Developer]] = developers := List[Developer]()
 }
