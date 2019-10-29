@@ -19,9 +19,9 @@ package uk.gov.hmrc.ct.accounts.frs105.boxes
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, MockFrs105AccountsRetriever}
+import uk.gov.hmrc.ct.accounts.{AccountsIntegerValidationFixture, MockFrs105AccountsRetriever}
 
-class AC7998Spec extends WordSpec with Matchers with MockitoSugar with AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
+class AC7998Spec extends WordSpec with Matchers with MockitoSugar with AccountsIntegerValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
 
   private val boxID = "AC7998"
   private val minLength = Some(1)

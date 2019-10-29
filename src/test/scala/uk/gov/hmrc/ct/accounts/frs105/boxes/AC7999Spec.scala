@@ -61,10 +61,5 @@ class AC7999Spec extends WordSpec with Matchers with MockitoSugar with AccountsF
         validateAC7999(Some(input), tooManyCharactersErrorMsg)
       }
 
-      "the input contains illegal special characters" in {
-       when(boxRetriever.ac7999a()) thenReturn AC7999a(Some(false))
-        val regexFailureError = Set(CtValidation(Some("AC7999"),"error.AC7999.regexFailure",None))
-        val cheekyRegex = Some("<^*(£")
-        validateAC7999(cheekyRegex, regexFailureError)
-        }
+
 }

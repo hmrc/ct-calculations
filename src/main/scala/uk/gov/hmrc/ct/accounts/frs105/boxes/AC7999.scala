@@ -32,8 +32,8 @@ case class AC7999(value: Option[String])
       boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       validateAgainstAC7999a(boxRetriever, this.boxId, value),
-      validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
-      validateOptionalStringByRegex(boxId, this, ValidNonForeignMoreRestrictiveCharacters)
+      validateOptionalStringByLength(1, StandardCohoTextFieldLimit)
+//      validateOptionalStringByRegex(boxId, this, ValidNonForeignMoreRestrictiveCharacters) Implement regex here to prevent XSS.
     )
   }
 }
