@@ -17,26 +17,18 @@
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.ValidatableBox._
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, SelfValidatableBox}
 import uk.gov.hmrc.ct.box._
 
-case class AC7995(value: Option[String]) extends CtBoxIdentifier(name = "Commitments by way of guarantee note") with CtOptionalString
-with Input
-with SelfValidatableBox[Frs105AccountsBoxRetriever, Option[String]] {
+case class AC7998(value: Option[Int]) extends CtBoxIdentifier(name = "Employee information note") with CtOptionalInteger with Input with SelfValidatableBox[Frs105AccountsBoxRetriever, Option[Int]] {
 
-  override def validate(boxRetriever: Frs105AccountsBoxRetriever) = {
+  private val minNumberOfEmployees = 1
+  private val maxNumberOfEmployees = 99999
 
-    import boxRetriever._
-    collectErrors (
-      cannotExistErrorIf(value.nonEmpty && ac7991().isFalse),
-
-      failIf (boxRetriever.ac7991().isTrue) (
-        collectErrors (
-          validateStringAsMandatory(),
-          validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
-          validateCoHoStringReturnIllegalChars()
+  override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
+        collectErrors(
+          validateIntegerRange(minNumberOfEmployees, maxNumberOfEmployees),
+          validateIntegerAsMandatory()
         )
-      )
-    )
   }
 }

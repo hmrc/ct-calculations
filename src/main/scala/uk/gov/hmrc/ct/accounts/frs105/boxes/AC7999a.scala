@@ -17,26 +17,19 @@
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.ValidatableBox._
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, CtValidation, Input, SelfValidatableBox}
 
-case class AC7995(value: Option[String]) extends CtBoxIdentifier(name = "Commitments by way of guarantee note") with CtOptionalString
-with Input
-with SelfValidatableBox[Frs105AccountsBoxRetriever, Option[String]] {
+case class AC7999a(value: Option[Boolean]) extends CtBoxIdentifier(name = "Company does have off balance sheet arrangements")
+  with CtOptionalBoolean
+  with Input
+  with SelfValidatableBox[Frs105AccountsBoxRetriever, Option[Boolean]] {
 
-  override def validate(boxRetriever: Frs105AccountsBoxRetriever) = {
+  override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
 
-    import boxRetriever._
-    collectErrors (
-      cannotExistErrorIf(value.nonEmpty && ac7991().isFalse),
-
-      failIf (boxRetriever.ac7991().isTrue) (
-        collectErrors (
-          validateStringAsMandatory(),
-          validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
-          validateCoHoStringReturnIllegalChars()
-        )
-      )
+    collectErrors(
+      failIf(value.isEmpty) {
+        validateAsMandatory()
+      }
     )
   }
 }

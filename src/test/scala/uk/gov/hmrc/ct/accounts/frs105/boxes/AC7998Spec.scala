@@ -16,27 +16,19 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.ValidatableBox._
-import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.accounts.{AccountsIntegerValidationFixture, MockFrs105AccountsRetriever}
 
-case class AC7995(value: Option[String]) extends CtBoxIdentifier(name = "Commitments by way of guarantee note") with CtOptionalString
-with Input
-with SelfValidatableBox[Frs105AccountsBoxRetriever, Option[String]] {
+class AC7998Spec extends WordSpec with Matchers with MockitoSugar with AccountsIntegerValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
 
-  override def validate(boxRetriever: Frs105AccountsBoxRetriever) = {
+  private val boxID = "AC7998"
+  private val minNumberOfEmployees = Some(1)
+  private val maxNumberOfEmployees = Some(99999)
+  private val isMandatory = Some(true)
 
-    import boxRetriever._
-    collectErrors (
-      cannotExistErrorIf(value.nonEmpty && ac7991().isFalse),
-
-      failIf (boxRetriever.ac7991().isTrue) (
-        collectErrors (
-          validateStringAsMandatory(),
-          validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
-          validateCoHoStringReturnIllegalChars()
-        )
-      )
-    )
-  }
+  testIntegerFieldValidation(boxID, AC7998, minNumberOfEmployees, maxNumberOfEmployees, isMandatory)
 }
+
+

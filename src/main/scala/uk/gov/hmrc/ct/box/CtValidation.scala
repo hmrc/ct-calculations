@@ -24,5 +24,5 @@ case class CtValidation(boxId: Option[String], errorMessageKey: String, args:Opt
 
 object CtValidation {
 
-  implicit val format = Json.format[CtValidation]
+ lazy implicit val format = Json.format[CtValidation]
 }

@@ -56,7 +56,7 @@ trait AccountsMoneyValidationFixture[T <: AccountsBoxRetriever] extends WordSpec
         builder(Some(minValue)).validate(boxRetriever) shouldBe empty
       }
       "be valid when empty" in {
-        if(testEmpty) {
+        if (testEmpty) {
           builder(None).validate(boxRetriever) shouldBe empty
         } else {
           assert(true)
@@ -69,7 +69,7 @@ trait AccountsMoneyValidationFixture[T <: AccountsBoxRetriever] extends WordSpec
         builder(Some(maxValue)).validate(boxRetriever) shouldBe empty
       }
 
-      if(testMin) {
+      if (testMin) {
         "fail validation when less then min lower limit" in {
           builder(Some(minValue - 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(minValue.toString, maxValue.toString))))
         }
