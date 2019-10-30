@@ -25,10 +25,9 @@ case class AC7999a(value: Option[Boolean]) extends CtBoxIdentifier(name = "Compa
   with SelfValidatableBox[Frs105AccountsBoxRetriever, Option[Boolean]] {
 
   override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
-    val radioButtons = this.value
 
     collectErrors(
-      failIf(radioButtons.isEmpty) {
+      failIf(value.isEmpty) {
         validateAsMandatory()
       }
     )
