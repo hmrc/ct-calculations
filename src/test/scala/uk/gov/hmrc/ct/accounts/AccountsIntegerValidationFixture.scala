@@ -44,33 +44,35 @@ trait AccountsIntegerValidationFixture[T <: AccountsBoxRetriever] extends WordSp
 
     if(testLowerLimit.isDefined && testUpperLimit.isDefined) {
       val lowerLimit = testLowerLimit.get
+      val lowerLimitWithCommas = f"$lowerLimit%,d"
       val upperLimit = testUpperLimit.get
+      val upperLimitWithCommas = f"$upperLimit%,d"
 
       s"pass validation when integer is the same as the $upperLimit" in {
         builder(Some(upperLimit)).validate(boxRetriever) shouldBe Set.empty
       }
 
       s"fail validation when integer is bigger than $upperLimit" in {
-        builder(Some(upperLimit + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(s"$lowerLimit", s"$upperLimit"))))
+        builder(Some(upperLimit + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(s"$lowerLimitWithCommas", s"$upperLimitWithCommas"))))
       }
 
       s"fail validation when integer is lower than $lowerLimit characters long" in {
         if(lowerLimit > 1) {
 
-          builder(Some(lowerLimit)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(s"$lowerLimit", s"$upperLimit"))))
+          builder(Some(lowerLimit)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(s"$lowerLimitWithCommas", s"$upperLimitWithCommas"))))
         }
       }
     }
 
     if(testLowerLimit.isEmpty && testUpperLimit.isDefined) {
       val upperLimit = testUpperLimit.get
-
+      val upperLimitWithCommas = f"$upperLimit%,d"
       s"pass validation when integer is the same as the $upperLimit" in {
         builder(Some(upperLimit)).validate(boxRetriever) shouldBe Set.empty
       }
 
       s"fail validation when integer is bigger than $upperLimit" in {
-        builder(Some(upperLimit + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(f"$upperLimit%,d"))))
+        builder(Some(upperLimit + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(upperLimitWithCommas))))
       }
     }
   }
