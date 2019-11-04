@@ -22,8 +22,8 @@ object HmrcBuild extends Build {
       scalaVersion := "2.11.12",
       crossScalaVersions := Seq("2.11.12"),
       libraryDependencies ++= Seq(
-        "com.typesafe.play" % "play-json-joda_2.11" % "2.6.0",
-        "uk.gov.hmrc" %% "play-time" % "0.4.0" % "provided",
+        "com.typesafe.play" % "play-json-joda_2.11" % "2.7.4",
+        "uk.gov.hmrc" %% "play-time" % "0.7.0" % "provided",
 
         "org.scalatest" %% "scalatest" % "2.2.6" % "test",
         "org.mockito" % "mockito-all" % "1.10.19" % "test",
