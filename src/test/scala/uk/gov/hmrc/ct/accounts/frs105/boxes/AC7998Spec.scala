@@ -16,19 +16,36 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
+import org.joda.time.LocalDate
+import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AccountsIntegerValidationFixture, MockFrs105AccountsRetriever}
+import uk.gov.hmrc.ct.accounts.frs105.validation.MandatoryNotesIntegerValidationFixture
+import uk.gov.hmrc.ct.accounts.{MockMandatoryNotesRetriever, TestMandatoryNotesAccountsRetriever}
+import uk.gov.hmrc.ct.computations.CP2
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class AC7998Spec extends WordSpec with Matchers with MockitoSugar with AccountsIntegerValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
+class AC7998Spec extends WordSpec with Matchers with MockitoSugar with MandatoryNotesIntegerValidationFixture[ComputationsBoxRetriever] with MockMandatoryNotesRetriever {
 
   private val boxID = "AC7998"
   private val minNumberOfEmployees = Some(1)
   private val maxNumberOfEmployees = Some(99999)
   private val isMandatory = Some(true)
 
-  testIntegerFieldValidation(boxID, AC7998, minNumberOfEmployees, maxNumberOfEmployees, isMandatory)
+  "validate appropriately when accounting period is before 01/01/2017 and employee information box is not empty" when {
+    val mandatoryNotesStartDate = LocalDate.parse("2017-01-01")
+
+    when(boxRetriever.cp2()) thenReturn CP2(mandatoryNotesStartDate)
+    testIntegerFieldValidation(boxID, AC7998, minNumberOfEmployees, maxNumberOfEmployees, isMandatory)
+  }
+
+  "pass validation when accounting period is before 01/01/2017 and employee information box is empty" in {
+    val mandatoryNotesNotEnabledDate = LocalDate.parse("2016-12-31")
+    when(boxRetriever.cp2()) thenReturn CP2(mandatoryNotesNotEnabledDate)
+
+    AC7998(None).validate(boxRetriever) shouldBe Set.empty
+}
 }
 
 

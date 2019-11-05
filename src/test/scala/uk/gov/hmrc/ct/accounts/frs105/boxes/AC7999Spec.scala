@@ -16,20 +16,25 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
+import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFrs105AccountsRetriever}
+import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFrs105AccountsRetriever, MockMandatoryNotesRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox.StandardCohoTextFieldLimit
+import uk.gov.hmrc.ct.computations.CP2
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class AC7999Spec extends WordSpec with Matchers with MockitoSugar with AccountsFreeTextValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
+class AC7999Spec extends WordSpec with Matchers with MockitoSugar with AccountsFreeTextValidationFixture[Frs105AccountsBoxRetriever with ComputationsBoxRetriever] with MockMandatoryNotesRetriever {
 
   private def validateAC7999(inputField: Option[String], validationResult: Set[CtValidation]) = AC7999(inputField).validate(boxRetriever) shouldBe validationResult
+  private val mandatoryNotesStartDate = LocalDate.parse("2017-01-01")
+  private val mandatoryNotesNotEnabledDate = LocalDate.parse("2016-12-31")
 
-    "validation should pass successfully" when {
-
+  "validation should pass successfully" when {
+    when(boxRetriever.cp2()) thenReturn CP2(mandatoryNotesStartDate)
       val input = "Some very off balance arrangements"
       val validationSuccess: Set[CtValidation] = Set.empty
 
@@ -41,25 +46,29 @@ class AC7999Spec extends WordSpec with Matchers with MockitoSugar with AccountsF
         when(boxRetriever.ac7999a()) thenReturn AC7999a(Some(false))
         validateAC7999(Some(input), validationSuccess)
       }
+
+    "There is no content in the text field and the account period is before 2017-01-01" in {
+      when(boxRetriever.cp2()) thenReturn CP2(mandatoryNotesNotEnabledDate)
+      when(boxRetriever.ac7999a()) thenReturn AC7999a(None)
+      validateAC7999(None, validationSuccess)
+    }
     }
 
       "validation should fail successfully" when {
+        val fieldRequiredError = Set(CtValidation(Some("AC7999"), "error.AC7999.required", None))
 
-      val fieldRequiredError = Set(CtValidation(Some("AC7999"), "error.AC7999.required", None))
+        "'Yes' button has been pressed and there is no content in the text field" in {
+          when(boxRetriever.cp2()) thenReturn CP2(mandatoryNotesStartDate)
+          when(boxRetriever.ac7999a()) thenReturn AC7999a(Some(true))
+          validateAC7999(Some(""), fieldRequiredError)
+          validateAC7999(None, fieldRequiredError)
+        }
 
-      "'Yes' button has been pressed and there is no content in the text field" in {
-        when(boxRetriever.ac7999a()) thenReturn AC7999a(Some(true))
-        validateAC7999(Some(""), fieldRequiredError)
-        validateAC7999(None, fieldRequiredError)
-       }
+        "the string entered contains more than 20,000" in {
+          when(boxRetriever.ac7999a()) thenReturn AC7999a(Some(true))
+          val input = "a" * StandardCohoTextFieldLimit + 1
+          val tooManyCharactersErrorMsg = Set(CtValidation(Some("AC7999"), "error.AC7999.text.sizeRange", Some(List("1", "20000"))))
+          validateAC7999(Some(input), tooManyCharactersErrorMsg)
+        }
       }
-
-      "the string entered contains more than 20,000" in {
-        when(boxRetriever.ac7999a()) thenReturn AC7999a(Some(true))
-        val input = "a" * StandardCohoTextFieldLimit + 1
-        val tooManyCharactersErrorMsg = Set(CtValidation(Some("AC7999"), "error.AC7999.text.sizeRange", Some(List("1", "20000"))))
-        validateAC7999(Some(input), tooManyCharactersErrorMsg)
-      }
-
-
 }

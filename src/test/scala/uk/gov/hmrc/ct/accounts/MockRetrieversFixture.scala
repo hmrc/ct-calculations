@@ -23,6 +23,7 @@ import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.{Frs10xAccountsBoxRetriever, Frs10xDirectorsBoxRetriever, Frs10xDormancyBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 
 sealed trait TestAccountsRetriever extends AccountsBoxRetriever with FilingAttributesBoxValueRetriever
@@ -36,6 +37,8 @@ sealed trait TestFrs105AccountsRetriever extends Frs105AccountsBoxRetriever with
 sealed trait TestAbridgedAccountsRetriever extends AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
 
 sealed trait TestFullAccountsRetriever extends FullAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
+
+sealed trait TestMandatoryNotesAccountsRetriever extends TestFrs105AccountsRetriever with ComputationsBoxRetriever
 
 trait MockAccountsRetriever extends MockitoSugar {
   val boxRetriever = mock[TestAccountsRetriever]
@@ -55,6 +58,10 @@ trait MockFrs105AccountsRetriever extends MockitoSugar {
 
 trait MockAbridgedAccountsRetriever extends MockitoSugar {
   val boxRetriever = mock[TestAbridgedAccountsRetriever]
+}
+
+trait MockMandatoryNotesRetriever extends MockitoSugar {
+  val boxRetriever = mock[TestMandatoryNotesAccountsRetriever](RETURNS_SMART_NULLS)
 }
 
 trait MockFullAccountsRetriever extends MockitoSugar {
