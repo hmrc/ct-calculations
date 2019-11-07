@@ -21,6 +21,6 @@ import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 
 case class E110(value: Option[Int]) extends CtBoxIdentifier("Expenditure: All grants and donations made within the UK") with CtOptionalInteger with Input with ValidatableBox[CT600EBoxRetriever] {
   override def validate(boxRetriever: CT600EBoxRetriever): Set[CtValidation] = {
-    validatePositiveInteger(this)
+    validateZeroOrPositiveInteger(this)
   }
 }
