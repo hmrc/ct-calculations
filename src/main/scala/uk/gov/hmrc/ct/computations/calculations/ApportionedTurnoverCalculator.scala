@@ -16,9 +16,8 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.joda.time.{Days, LocalDate}
+import org.joda.time.Days
 import play.api.libs.json.{Format, Json}
-import uk.gov.hmrc.ct.accounts.frs105.boxes.AC405
 import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4}
 import uk.gov.hmrc.ct.computations._
 
