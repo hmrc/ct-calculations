@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.ct.accounts
 
+import org.joda.time.LocalDate
+import org.mockito.Mockito.when
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
@@ -27,10 +29,15 @@ trait AccountsIntegerValidationFixture[T <: AccountsBoxRetriever] extends WordSp
 
   def setUpMocks(): Unit = Unit
 
-  def testIntegerFieldValidation(boxId: String, builder: Option[Int] => ValidatableBox[T], testLowerLimit: Option[Int] = None, testUpperLimit: Option[Int] = None, testMandatory: Option[Boolean] = Some(false)) = {
-    if (testMandatory.contains(true)) {
-      "fail validation when empty integer" in {
-        builder(None).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.required", None))
+  private val mandatoryNotesStartDate = LocalDate.parse("2017-01-01")
+
+  def testIntegerFieldValidation[S](boxId: String, builder: Option[Int] => ValidatableBox[T], testLowerLimit: Option[Int] = None, testUpperLimit: Option[Int] = None, testMandatory: Option[Boolean] = Some(false), isMandatoryNotes: Boolean) = {
+
+
+      if (testMandatory.contains(true)) {
+        "fail validation when empty integer" in {
+          if (isMandatoryNotes) when(boxRetriever.ac4()) thenReturn AC4(mandatoryNotesStartDate)
+          builder(None).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.required", None))
       }
     } else if (testMandatory.contains(false)) {
       "pass validation when empty integer" in {
@@ -53,6 +60,7 @@ trait AccountsIntegerValidationFixture[T <: AccountsBoxRetriever] extends WordSp
       }
 
       s"fail validation when integer is bigger than $upperLimit" in {
+        if (isMandatoryNotes) when(boxRetriever.ac4()) thenReturn AC4(mandatoryNotesStartDate)
         builder(Some(upperLimit + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(s"$lowerLimitWithCommas", s"$upperLimitWithCommas"))))
       }
 

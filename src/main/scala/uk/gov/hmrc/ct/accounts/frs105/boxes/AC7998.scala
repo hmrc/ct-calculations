@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
+import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, SelfValidatableBox}
 import uk.gov.hmrc.ct.box._
@@ -24,11 +25,17 @@ case class AC7998(value: Option[Int]) extends CtBoxIdentifier(name = "Employee i
 
   private val minNumberOfEmployees = 1
   private val maxNumberOfEmployees = 99999
+  private val mandatoryNotesStartDate: LocalDate = new LocalDate(2017,1,1)
 
   override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
-        collectErrors(
-          validateIntegerRange(minNumberOfEmployees, maxNumberOfEmployees),
-          validateIntegerAsMandatory()
-        )
+
+    val endOfAccountingPeriod: LocalDate = boxRetriever.ac4().value
+
+    passIf(endOfAccountingPeriod.isBefore(mandatoryNotesStartDate)) {
+      collectErrors(
+        validateIntegerRange(minNumberOfEmployees, maxNumberOfEmployees),
+        validateIntegerAsMandatory()
+      )
+    }
   }
 }
