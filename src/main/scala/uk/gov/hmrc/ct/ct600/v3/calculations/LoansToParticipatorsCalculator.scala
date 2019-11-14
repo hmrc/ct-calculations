@@ -172,8 +172,8 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
 
   def calculateA80(a20: A20, a45: A45, a70: A70): A80 = {
 
-    val reliefDueBeforeNineMonths = a45.value.getOrElse(BigDecimal(0))
-    val reliefDueAfterNineMonths = a70.value.getOrElse(BigDecimal(0))
+    val reliefDueBeforeNineMonths = a45.value.getOrElse(BigDecimal(0)).setScale(2, BigDecimal.RoundingMode.HALF_UP)
+    val reliefDueAfterNineMonths = a70.value.getOrElse(BigDecimal(0)).setScale(2, BigDecimal.RoundingMode.HALF_UP)
 
     A80 (
       a20.value.map { tax =>
