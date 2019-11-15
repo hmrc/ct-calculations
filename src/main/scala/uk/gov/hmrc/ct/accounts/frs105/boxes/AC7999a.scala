@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
+import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, CtValidation, Input, SelfValidatableBox}
+import uk.gov.hmrc.ct.box._
 
 case class AC7999a(value: Option[Boolean]) extends CtBoxIdentifier(name = "Company does have off balance sheet arrangements")
   with CtOptionalBoolean
@@ -26,10 +27,15 @@ case class AC7999a(value: Option[Boolean]) extends CtBoxIdentifier(name = "Compa
 
   override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
 
-    collectErrors(
-      failIf(value.isEmpty) {
-        validateAsMandatory()
-      }
-    )
+    val endOfAccountingPeriod: LocalDate = boxRetriever.ac4().value
+    val mandatoryNotesStartDate: LocalDate = new LocalDate(2017,1,1)
+
+    passIf(endOfAccountingPeriod.isBefore(mandatoryNotesStartDate)) {
+      collectErrors(
+        failIf(value.isEmpty) {
+          validateAsMandatory()
+        }
+      )
+    }
   }
 }
