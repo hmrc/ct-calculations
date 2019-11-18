@@ -164,6 +164,23 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
       result.total shouldBe periodOfAccountsTurnover
     }
 
+    "apportion turnover include other income if supplied" in new ApportionedTurnoverCalculator {
+      val periodOfAccountsTurnover = 10234
+      val periodOfAccountsOtherTurnover = 1080
+
+      val result = apportionPeriodOfAccountsTurnover(
+        ac3,
+        ac4,
+        CP1(new LocalDate(2012, 4, 1)),
+        CP2(new LocalDate(2013, 3, 31)),
+        AC12(periodOfAccountsTurnover),
+        Some(periodOfAccountsOtherTurnover)
+      )
+
+      result shouldBe ApportionedTurnover(Some(1883), Some(7549), Some(1882))
+      result.total shouldBe periodOfAccountsTurnover + periodOfAccountsOtherTurnover
+    }
+
     "throw an exception when accounting period is outside the period of accounts" in new ApportionedTurnoverCalculator {
       val periodOfAccountsTurnover = 10234
 
