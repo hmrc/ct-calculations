@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
+import org.joda.time.LocalDate
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
@@ -23,6 +24,7 @@ import uk.gov.hmrc.ct._
 
 class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
                                      cpq8: Option[Boolean] = None,
+                                     cp1: LocalDate = new LocalDate("2019-04-02"),
                                      cp78: Option[Int] = None,
                                      cp79: Option[Int] = None,
                                      cp80: Option[Int] = None,
@@ -50,6 +52,8 @@ class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
   override def lec01: LEC01 = LEC01(lec01)
 
   override def cpQ8: CPQ8 = CPQ8(cpq8)
+
+  override def cp1: CP1 = CP1(cp1)
 
   override def cp78: CP78 = CP78(cp78)
 
