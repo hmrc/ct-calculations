@@ -31,13 +31,7 @@ case class AP2(inputValue: Option[Int], defaultValue: Option[Int]) extends CtBox
   }
 
   private def totalErrors(boxRetriever: AccountsBoxRetriever with ComputationsBoxRetriever) = {
-    val otherValue: Int = boxRetriever match {
-      case retriever: Frs105AccountsBoxRetriever => retriever.ac405().value.getOrElse(0)
-      case retriever: FullAccountsBoxRetriever => retriever.ac22().value.getOrElse(0)
-      case _ => 0
-    }
-
-    failIf(boxRetriever.ap1() + boxRetriever.ap2() + boxRetriever.ap3() != boxRetriever.ac12().value.getOrElse(0) + otherValue) {
+    failIf(boxRetriever.ap1() + boxRetriever.ap2() + boxRetriever.ap3() != boxRetriever.ac12().value.getOrElse(0)) {
       Set(CtValidation(None, "error.apportionmentTurnover.total"))
     }
   }

@@ -29,40 +29,36 @@ trait ApportionedTurnoverCalculator {
                                                 ac4: AC4,
                                                 cp1: CP1,
                                                 cp2: CP2,
-                                                ac12: AC12,
-                                                otherIncome: Option[Int] = None): AP1 = {
-    AP1(apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12, otherIncome).beforeAccountingPeriod)
+                                                ac12: AC12): AP1 = {
+    AP1(apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12).beforeAccountingPeriod)
   }
 
   def turnoverApportionedDuringAccountingPeriod(ac3: AC3,
                                                 ac4: AC4,
                                                 cp1: CP1,
                                                 cp2: CP2,
-                                                ac12: AC12,
-                                                otherIncome: Option[Int] = None): AP2 = {
-    AP2(None, apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12, otherIncome).duringAccountingPeriod)
+                                                ac12: AC12): AP2 = {
+    AP2(None, apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12).duringAccountingPeriod)
   }
 
   def turnoverApportionedAfterAccountingPeriod(ac3: AC3,
                                                ac4: AC4,
                                                cp1: CP1,
                                                cp2: CP2,
-                                               ac12: AC12,
-                                               otherIncome: Option[Int] = None): AP3 = {
-    AP3(apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12, otherIncome).afterAccountingPeriod)
+                                               ac12: AC12): AP3 = {
+    AP3(apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12).afterAccountingPeriod)
   }
 
   def apportionPeriodOfAccountsTurnover(ac3: AC3,
                                         ac4: AC4,
                                         cp1: CP1,
                                         cp2: CP2,
-                                        ac12: AC12,
-                                        otherIncome: Option[Int] = None): ApportionedTurnover = {
+                                        ac12: AC12): ApportionedTurnover = {
     val periodOfAccountsStart = ac3.value
     val periodOfAccountsEnd   = ac4.value
     val accountingPeriodStart = cp1.value
     val accountingPeriodEnd   = cp2.value
-    val turnover              = (ac12.value ++ otherIncome).reduceOption(_+_)
+    val turnover              = ac12.value
 
     val periodOfAccounts       = Days.daysBetween(periodOfAccountsStart, periodOfAccountsEnd).plus(1)
     val beforeAccountingPeriod = Days.daysBetween(periodOfAccountsStart, accountingPeriodStart)
