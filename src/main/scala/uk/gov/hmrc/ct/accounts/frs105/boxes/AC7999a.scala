@@ -27,10 +27,10 @@ case class AC7999a(value: Option[Boolean]) extends CtBoxIdentifier(name = "Compa
 
   override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
 
-    val endOfAccountingPeriod: LocalDate = boxRetriever.ac4().value
+    val startOfAccountingPeriod: LocalDate = boxRetriever.ac3().value
     val mandatoryNotesStartDate: LocalDate = new LocalDate(2017,1,1)
 
-    passIf(endOfAccountingPeriod.isBefore(mandatoryNotesStartDate)) {
+    passIf(startOfAccountingPeriod.isBefore(mandatoryNotesStartDate)) {
       collectErrors(
         failIf(value.isEmpty) {
           validateAsMandatory()

@@ -36,7 +36,7 @@ trait AccountsIntegerValidationFixture[T <: AccountsBoxRetriever] extends WordSp
 
       if (testMandatory.contains(true)) {
         "fail validation when empty integer" in {
-          if (isMandatoryNotes) when(boxRetriever.ac4()) thenReturn AC4(mandatoryNotesStartDate)
+          if (isMandatoryNotes) when(boxRetriever.ac3()) thenReturn AC3(mandatoryNotesStartDate)
           builder(None).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.required", None))
       }
     } else if (testMandatory.contains(false)) {
