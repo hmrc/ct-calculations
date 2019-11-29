@@ -23,15 +23,15 @@ import uk.gov.hmrc.ct.box._
 
 case class AC7998(value: Option[Int]) extends CtBoxIdentifier(name = "Employee information note") with CtOptionalInteger with Input with SelfValidatableBox[Frs105AccountsBoxRetriever, Option[Int]] {
 
-  private val minNumberOfEmployees = 1
+  private val minNumberOfEmployees = 0
   private val maxNumberOfEmployees = 99999
   private val mandatoryNotesStartDate: LocalDate = new LocalDate(2017,1,1)
 
   override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
 
-    val endOfAccountingPeriod: LocalDate = boxRetriever.ac4().value
+    val startOfAccountingPeriod: LocalDate = boxRetriever.ac3().value
 
-    passIf(endOfAccountingPeriod.isBefore(mandatoryNotesStartDate)) {
+    passIf(startOfAccountingPeriod.isBefore(mandatoryNotesStartDate)) {
       collectErrors(
         validateIntegerRange(minNumberOfEmployees, maxNumberOfEmployees),
         validateIntegerAsMandatory()
