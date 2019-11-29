@@ -34,10 +34,10 @@ trait AccountsIntegerValidationFixture[T <: AccountsBoxRetriever] extends WordSp
   def testIntegerFieldValidation[S](boxId: String, builder: Option[Int] => ValidatableBox[T], testLowerLimit: Option[Int] = None, testUpperLimit: Option[Int] = None, testMandatory: Option[Boolean] = Some(false), isMandatoryNotes: Boolean) = {
 
 
-      if (testMandatory.contains(true)) {
-        "fail validation when empty integer" in {
-          if (isMandatoryNotes) when(boxRetriever.ac3()) thenReturn AC3(mandatoryNotesStartDate)
-          builder(None).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.required", None))
+    if (testMandatory.contains(true)) {
+      "fail validation when empty integer" in {
+        if (isMandatoryNotes) when(boxRetriever.ac3()) thenReturn AC3(mandatoryNotesStartDate)
+        builder(None).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.required", None))
       }
     } else if (testMandatory.contains(false)) {
       "pass validation when empty integer" in {
@@ -48,8 +48,7 @@ trait AccountsIntegerValidationFixture[T <: AccountsBoxRetriever] extends WordSp
     }
 
 
-
-    if(testLowerLimit.isDefined && testUpperLimit.isDefined) {
+    if (testLowerLimit.isDefined && testUpperLimit.isDefined) {
       val lowerLimit = testLowerLimit.get
       val lowerLimitWithCommas = f"$lowerLimit%,d"
       val upperLimit = testUpperLimit.get
@@ -60,27 +59,24 @@ trait AccountsIntegerValidationFixture[T <: AccountsBoxRetriever] extends WordSp
       }
 
       s"fail validation when integer is bigger than $upperLimit" in {
-        if (isMandatoryNotes) when(boxRetriever.ac4()) thenReturn AC4(mandatoryNotesStartDate)
+        if (isMandatoryNotes) when(boxRetriever.ac3()) thenReturn AC3(mandatoryNotesStartDate)
         builder(Some(upperLimit + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(s"$lowerLimitWithCommas", s"$upperLimitWithCommas"))))
       }
 
       s"fail validation when integer is lower than $lowerLimit characters long" in {
-        if(lowerLimit > 1) {
+        builder(Some(lowerLimit - 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(s"$lowerLimitWithCommas", s"$upperLimitWithCommas"))))
+      }
 
-          builder(Some(lowerLimit)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(s"$lowerLimitWithCommas", s"$upperLimitWithCommas"))))
+      if (testLowerLimit.isEmpty && testUpperLimit.isDefined) {
+        val upperLimit = testUpperLimit.get
+        val upperLimitWithCommas = f"$upperLimit%,d"
+        s"pass validation when integer is the same as the $upperLimit" in {
+          builder(Some(upperLimit)).validate(boxRetriever) shouldBe Set.empty
         }
-      }
-    }
 
-    if(testLowerLimit.isEmpty && testUpperLimit.isDefined) {
-      val upperLimit = testUpperLimit.get
-      val upperLimitWithCommas = f"$upperLimit%,d"
-      s"pass validation when integer is the same as the $upperLimit" in {
-        builder(Some(upperLimit)).validate(boxRetriever) shouldBe Set.empty
-      }
-
-      s"fail validation when integer is bigger than $upperLimit" in {
-        builder(Some(upperLimit + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(upperLimitWithCommas))))
+        s"fail validation when integer is bigger than $upperLimit" in {
+          builder(Some(upperLimit + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(upperLimitWithCommas))))
+        }
       }
     }
   }
