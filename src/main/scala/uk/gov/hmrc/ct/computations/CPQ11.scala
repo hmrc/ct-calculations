@@ -16,16 +16,9 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.Validators.AllowancesQuestionsValidation
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, Input}
 
-case class CPQ8(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did the company cease trading?")
+case class CPQ11(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did you have machinery or plant?")
   with CtOptionalBoolean
   with Input
-  with ValidatableBox[ComputationsBoxRetriever]
-  with AllowancesQuestionsValidation {
 
-  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = validateAgainstCPQ7(boxRetriever, "CPQ8", value)
-
-}

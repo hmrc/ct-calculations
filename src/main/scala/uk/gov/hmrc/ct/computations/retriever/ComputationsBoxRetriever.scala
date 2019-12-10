@@ -396,6 +396,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cpQ10(): CPQ10
 
+  def cpQ11(): CPQ11
+
   def cpQ17(): CPQ17
 
   def cpQ117(): CPQ117

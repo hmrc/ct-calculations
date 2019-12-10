@@ -52,7 +52,7 @@ class CPQ8Spec extends WordSpec with Matchers with MockitoSugar {
 
   "CPQ8" should {
     val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
-    
+
     "when empty" when {
       "pass validation when CPQ7 is false" in {
         when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(false)))

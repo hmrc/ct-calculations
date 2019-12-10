@@ -20,6 +20,7 @@ import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, CtValidation, Val
 import uk.gov.hmrc.ct.computations.CPQ7
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
+
 trait AllowancesQuestionsValidation {
 
   self: CtOptionalBoolean with ValidatableBox[ComputationsBoxRetriever] with CtBoxIdentifier =>
