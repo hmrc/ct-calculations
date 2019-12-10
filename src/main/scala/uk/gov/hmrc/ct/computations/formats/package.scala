@@ -400,6 +400,8 @@ package object formats {
 
   implicit val cpq10Format: Format[CPQ10] = new OptionalBooleanFormat[CPQ10](CPQ10.apply)
 
+  implicit val cpq11Format: Format[CPQ11] = new OptionalBooleanFormat[CPQ11](CPQ11.apply)
+
   implicit val cpq17Format: Format[CPQ17] = new OptionalBooleanFormat[CPQ17](CPQ17.apply)
 
   implicit val cpq18Format: Format[CPQ18] = new OptionalBooleanFormat[CPQ18](CPQ18.apply)
