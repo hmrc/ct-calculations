@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
+import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
@@ -24,7 +25,12 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 class CPQ10Spec extends WordSpec with Matchers with MockitoSugar {
 
+
+
   val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
+  val beforeSBA = LocalDate.parse("2018-10-29")
+  when(boxRetriever.cp2()).thenReturn(CP2(beforeSBA))
+
 
   "CPQ10" should {
     "when empty" when {
