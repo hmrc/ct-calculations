@@ -16,13 +16,11 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.computations.formats._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 class CPQ8Spec extends WordSpec with Matchers with MockitoSugar {
@@ -53,10 +51,6 @@ class CPQ8Spec extends WordSpec with Matchers with MockitoSugar {
 
   "CPQ8" should {
     val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
-
-    val beforeSBAActive = LocalDate.parse("2019-03-15")
-    val afterSBAActive = "2019-04-02"
-
 
     "when empty" when {
       "pass validation when CPQ7 is false" in {
