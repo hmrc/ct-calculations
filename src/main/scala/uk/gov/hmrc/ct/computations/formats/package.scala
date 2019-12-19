@@ -21,6 +21,7 @@ import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.formats._
 import play.api.libs.json.JodaWrites._
 import play.api.libs.json.JodaReads._
+import uk.gov.hmrc.ct.accounts.frs105.boxes.{Building, SBA01}
 
 package object formats {
 
@@ -417,6 +418,10 @@ package object formats {
   implicit val cpq321Format: Format[CPQ321] = new OptionalBooleanFormat[CPQ321](CPQ321.apply)
 
   implicit val carFormatter = Json.format[Car]
+
+  implicit val buildingFormatter = Json.format[Building]
+
+  implicit val sba01Format: Format[SBA01] = Json.format[SBA01]
 
   implicit val lec01Format: Format[LEC01] = Json.format[LEC01]
 
