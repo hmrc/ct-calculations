@@ -34,7 +34,7 @@ trait AllowancesQuestionsValidation {
     }
   }
 
-  val sbaLiveAP = LocalDate.parse("2019-04-01")
+  val sbaLiveAP = LocalDate.parse("2020-04-01")
 
-  def isSBALive(apStartDate: LocalDate) = apStartDate.isAfter(sbaLiveAP)
+  def isSBALive = LocalDate.now.isAfter(sbaLiveAP)
 }

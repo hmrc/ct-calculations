@@ -55,62 +55,48 @@ class CPQ8Spec extends WordSpec with Matchers with MockitoSugar {
     val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
 
     val beforeSBAActive = LocalDate.parse("2019-03-15")
-    val afterSBAActive = LocalDate.parse("2019-04-02")
+    val afterSBAActive = "2019-04-02"
 
 
     "when empty" when {
       "pass validation when CPQ7 is false" in {
-        when(boxRetriever.cp1()).thenReturn(CP1(beforeSBAActive))
         when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(false)))
         CPQ8(None).validate(boxRetriever) shouldBe empty
       }
       "pass validation when CPQ7 is empty" in {
-        when(boxRetriever.cp1()).thenReturn(CP1(beforeSBAActive))
         when(boxRetriever.cpQ7()).thenReturn(CPQ7(None))
         CPQ8(None).validate(boxRetriever) shouldBe empty
       }
       "fail validation when CPQ7 is true" in {
-        when(boxRetriever.cp1()).thenReturn(CP1(beforeSBAActive))
         when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(true)))
         CPQ8(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ8"), "error.CPQ8.required"))
       }
     }
     "when false" when {
       "pass validation when CPQ7 is false" in {
-        when(boxRetriever.cp1()).thenReturn(CP1(beforeSBAActive))
         when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(false)))
         CPQ8(Some(false)).validate(boxRetriever) shouldBe empty
       }
       "pass validation when CPQ7 is empty" in {
-        when(boxRetriever.cp1()).thenReturn(CP1(beforeSBAActive))
         when(boxRetriever.cpQ7()).thenReturn(CPQ7(None))
         CPQ8(Some(false)).validate(boxRetriever) shouldBe empty
       }
       "pass validation when CPQ7 is true" in {
-        when(boxRetriever.cp1()).thenReturn(CP1(beforeSBAActive))
         when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(true)))
         CPQ8(Some(false)).validate(boxRetriever) shouldBe empty
       }
     }
     "when true" when {
       "fail validation when CPQ7 is false" in {
-        when(boxRetriever.cp1()).thenReturn(CP1(beforeSBAActive))
         when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(false)))
         CPQ8(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ8"), "error.CPQ8.notClaiming.required"))
       }
       "pass validation when CPQ7 is empty" in {
-        when(boxRetriever.cp1()).thenReturn(CP1(beforeSBAActive))
         when(boxRetriever.cpQ7()).thenReturn(CPQ7(None))
         CPQ8(Some(true)).validate(boxRetriever) shouldBe empty
       }
       "pass validation when CPQ7 is true" in {
-        when(boxRetriever.cp1()).thenReturn(CP1(beforeSBAActive))
         when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(true)))
-        CPQ8(Some(true)).validate(boxRetriever) shouldBe empty
-      }
-      "pass validation after SBA is live" in {
-        when(boxRetriever.cp1()).thenReturn(CP1(afterSBAActive))
-        when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(false)))
         CPQ8(Some(true)).validate(boxRetriever) shouldBe empty
       }
     }
