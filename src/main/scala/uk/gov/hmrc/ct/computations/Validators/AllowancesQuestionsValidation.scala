@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.Validators
 
+import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, CtValidation, ValidatableBox}
 import uk.gov.hmrc.ct.computations.CPQ7
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
@@ -32,4 +33,8 @@ trait AllowancesQuestionsValidation {
       case _ => Set.empty
     }
   }
+
+  val sbaLiveAP = LocalDate.parse("2019-04-01")
+
+  def isSBALive(apStartDate: LocalDate) = apStartDate.isAfter(sbaLiveAP)
 }
