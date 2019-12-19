@@ -28,6 +28,9 @@ class CPQ10Spec extends WordSpec with Matchers with MockitoSugar {
 
 
   val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
+  val beforeSBA = LocalDate.parse("2018-10-29")
+  when(boxRetriever.cp2()).thenReturn(CP2(beforeSBA))
+
 
   "CPQ10" should {
     "when empty" when {

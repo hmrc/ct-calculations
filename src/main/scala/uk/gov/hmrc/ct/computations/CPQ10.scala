@@ -28,7 +28,7 @@ case class CPQ10(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did you
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
 
-    if(isSBALive) Set.empty[CtValidation]
+    if(isSBALive(boxRetriever.cp2())) Set.empty[CtValidation]
     else
       validateAgainstCPQ7(boxRetriever, "CPQ10", value)
 

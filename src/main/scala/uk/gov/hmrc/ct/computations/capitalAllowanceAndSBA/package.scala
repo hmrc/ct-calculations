@@ -23,7 +23,7 @@ package object capitalAllowanceAndSBA {
 
   val sbaApplies2019 = LocalDate.parse("2018-10-29")
 
-  def sbaApplies(apStartDate: StartDate): Boolean = apStartDate.value.isAfter(sbaApplies2019)
+  def sbaApplies(apEndDate: StartDate): Boolean = apEndDate.value.isAfter(sbaApplies2019)
 
 
 }
