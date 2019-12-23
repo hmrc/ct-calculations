@@ -30,7 +30,6 @@ case class CPQ8(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did the 
 
 
     if(isSBALive(boxRetriever.cp2())) {
-      println(boxRetriever.cp2())
       Set.empty[CtValidation]
     }
     else
