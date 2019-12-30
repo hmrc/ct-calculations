@@ -16,10 +16,9 @@
 
 package uk.gov.hmrc.ct.computations.retriever
 
-import uk.gov.hmrc.ct.accounts.frs105.boxes.SBA01
 import uk.gov.hmrc.ct.{CATO01, CATO02, CATO03, CATO13, CATO14, CATO15, CATO16, CATO20, CATO21, CATO22, CATO23}
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
-import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.computations.{SBA01, _}
 
 trait ComputationsBoxRetriever extends BoxRetriever {
 
