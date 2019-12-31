@@ -31,4 +31,14 @@ trait OffBalanceSheetArrangementsValidator {
       case (_, _) => Set()
     }
   }
+
+//  def validateAgainstAC(boxRetriever: Frs105AccountsBoxRetriever, boxId: String, value: Option[String]): Set[CtValidation] = {
+//    (boxRetriever.ac7999a(), value) match {
+//      case (AC7999a(Some(true)), None) => validateStringAsMandatory(boxId, AC7999(value))
+//      case (AC7999a(Some(true)), Some("")) => validateStringAsMandatory(boxId, AC7999(value))
+//      case (_, _) => Set()
+//    }
+//  }
+
+
 }
