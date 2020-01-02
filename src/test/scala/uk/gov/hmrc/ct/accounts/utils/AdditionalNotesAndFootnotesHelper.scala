@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs105.boxes
+package uk.gov.hmrc.ct.accounts.utils
 
-import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, MockFrs105AccountsRetriever}
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{Matchers, WordSpec}
+import uk.gov.hmrc.ct.box.CtValidation
 
-class AC466Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
+trait AdditionalNotesAndFootnotesHelper extends WordSpec with Matchers with MockitoSugar {
 
-  testAccountsMoneyValidationWithMin("AC466", minValue = 0, AC466)
+  val input: String = "Some very off balance arrangements"
 
+  val validationSuccess: Set[CtValidation] = Set.empty
+
+  val boxId: String
+
+  val fieldRequiredError: String => Set[CtValidation] =
+    boxId => Set(CtValidation(Some(boxId), s"error.$boxId.required", None))
 }
