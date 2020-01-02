@@ -146,6 +146,10 @@ trait Frs102AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
 
   def ac132(): AC132 = AC132.calculate(this)
 
+  def ac200a(): AC200A
+
+  def ac200(): AC200
+
   def ac212(): AC212
 
   def ac213(): AC213
