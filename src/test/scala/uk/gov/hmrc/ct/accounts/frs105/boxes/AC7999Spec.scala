@@ -25,7 +25,7 @@ import uk.gov.hmrc.ct.box.ValidatableBox.StandardCohoTextFieldLimit
 
 class AC7999Spec extends AdditionalNotesAndFootnotesHelper with AccountsFreeTextValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
 
-  private def validateAC7999(inputField: Option[String], validationResult: Set[CtValidation]) = validateBox(inputField) shouldBe validationResult
+  private def validateAC7999(inputField: Option[String], validationResult: Set[CtValidation]) = AC7999(inputField).validate(boxRetriever) shouldBe validationResult
 
    override val boxId: String = "AC7999"
 

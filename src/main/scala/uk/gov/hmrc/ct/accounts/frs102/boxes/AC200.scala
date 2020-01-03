@@ -21,7 +21,7 @@ import uk.gov.hmrc.ct.box.ValidatableBox.StandardCohoTextFieldLimit
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalString, CtValidation, Input, SelfValidatableBox}
 
 case class AC200(value: Option[String])
-extends CtBoxIdentifier(name = "Off balance sheet disclosure note")
+extends CtBoxIdentifier(name = "OffAC107Spec balance sheet disclosure note")
 with CtOptionalString
 with Input
 with SelfValidatableBox[Frs102AccountsBoxRetriever, Option[String]]

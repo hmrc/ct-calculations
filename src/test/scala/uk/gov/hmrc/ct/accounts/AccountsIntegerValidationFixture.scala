@@ -31,7 +31,7 @@ trait AccountsIntegerValidationFixture[T <: AccountsBoxRetriever] extends WordSp
 
   private val mandatoryNotesStartDate = LocalDate.parse("2017-01-01")
 
-  def testIntegerFieldValidation[S](boxId: String, builder: Option[Int] => ValidatableBox[T], testLowerLimit: Option[Int] = None, testUpperLimit: Option[Int] = None, testMandatory: Option[Boolean] = Some(false), isMandatoryNotes: Boolean) = {
+  def testIntegerFieldValidation[S](boxId: String, builder: Option[Int] => ValidatableBox[T], testLowerLimit: Option[Int] = None, testUpperLimit: Option[Int] = None, testMandatory: Option[Boolean] = Some(false), isMandatoryNotes: Boolean = false) = {
 
 
     if (testMandatory.contains(true)) {
