@@ -22,18 +22,23 @@ import uk.gov.hmrc.ct.box._
 case class AC107(value: Option[Int]) extends CtBoxIdentifier(name = "Average number of employees (previous PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[Frs102AccountsBoxRetriever]
+  with SelfValidatableBox[Frs102AccountsBoxRetriever, Option[Int]]
   with Validators
   with CtTypeConverters {
 
+  private val minNumberOfEmployees = 0
+  private val maxNumberOfEmployees = 99999
+
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
-    val noteSelectedForInclusion = ac7300().orFalse
-    val havePreviousPoA = ac205.hasValue
+    val doesNotHavePreviousPoA = !ac205().hasValue
 
-    collectErrors(
-      cannotExistErrorIf((!havePreviousPoA || !noteSelectedForInclusion) && value.nonEmpty),
-      validateMoney(value, min = 0, max = 99999)
-    )
+    passIf(doesNotHavePreviousPoA) {
+      collectErrors(
+        validateAsMandatory(),
+          validateIntegerRange(minNumberOfEmployees, maxNumberOfEmployees)
+      )
+    }
+    // if 7300 isnt selected or if it doesnt have a previous POA, then there needs to be a required error
   }
 }

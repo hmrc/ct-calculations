@@ -17,27 +17,28 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import org.mockito.Mockito._
-import uk.gov.hmrc.ct.accounts.{MockFrs102AccountsRetriever, AccountsMoneyValidationFixture}
+import uk.gov.hmrc.ct.accounts.{AccountsIntegerValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.utils.AdditionalNotesAndFootnotesHelper
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC106Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever {
+class AC106Spec extends AccountsIntegerValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever with AdditionalNotesAndFootnotesHelper {
 
   override def setUpMocks() = {
     super.setUpMocks()
-    when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
+
     when(boxRetriever.ac106A()).thenReturn(AC106A(None))
     when(boxRetriever.ac107()).thenReturn(AC107(None))
   }
+
+  override val boxId = "AC106"
+testIntegerFieldValidation(boxId, )
 
   testAccountsMoneyValidationWithMinMax("AC106", 0, 99999, AC106.apply, testEmpty = false)
 
   "AC106" should {
 
     "validate with global error when blank, AC106A blank, AC107 blank and AC7300 is true" in {
-
-      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
-
       AC106(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.abridged.additional.employees.note.one.box.required"))
     }
 
@@ -84,7 +85,6 @@ class AC106Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetrieve
     }
 
     "validate with should not exist error when AC7300 is false and AC106 has a value" in {
-      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(false)))
 
       AC106(Some(100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC106"), "error.AC106.cannot.exist"))
     }
