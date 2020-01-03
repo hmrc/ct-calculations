@@ -39,6 +39,5 @@ case class AC107(value: Option[Int]) extends CtBoxIdentifier(name = "Average num
           validateIntegerRange(minNumberOfEmployees, maxNumberOfEmployees)
       )
     }
-    // if 7300 isnt selected or if it doesnt have a previous POA, then there needs to be a required error
   }
 }
