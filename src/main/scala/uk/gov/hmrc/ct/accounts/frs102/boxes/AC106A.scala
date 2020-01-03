@@ -27,11 +27,8 @@ case class AC106A(value: Option[String]) extends CtBoxIdentifier(name = "Employe
   with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    val noteSelectedForInclusion = boxRetriever.ac7300().orFalse
-
     collectErrors (
-      cannotExistErrorIf(!noteSelectedForInclusion && value.nonEmpty),
-      validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit),
+      validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
       validateCoHoStringReturnIllegalChars()
     )
   }

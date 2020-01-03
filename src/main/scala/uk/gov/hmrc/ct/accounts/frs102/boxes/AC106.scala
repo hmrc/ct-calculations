@@ -22,7 +22,7 @@ import uk.gov.hmrc.ct.box._
 case class AC106(value: Option[Int]) extends CtBoxIdentifier(name = "Average number of employees (current PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[Frs102AccountsBoxRetriever]
+  with SelfValidatableBox[Frs102AccountsBoxRetriever, Option[Int]]
   with Validators
   with CtTypeConverters {
 
@@ -31,8 +31,10 @@ case class AC106(value: Option[Int]) extends CtBoxIdentifier(name = "Average num
     import boxRetriever._
     collectErrors(
       validateMoney(value, min = 0, max = 99999),
-      failIf(noValue && ac7300().orFalse && ac107.noValue && ac106A.noValue)
-        (Set(CtValidation(None, "error.abridged.additional.employees.note.one.box.required")))
+      failIf(noValue && ac107().noValue && ac106A().noValue) {
+        validateIntegerAsMandatory(boxId, this)
+      }
+
     )
   }
 }

@@ -28,6 +28,9 @@ trait AdditionalNotesAndFootnotesHelper extends WordSpec with Matchers with Mock
 
   val boxId: String
 
+   val minNumberOfEmployees = 0
+   val maxNumberOfEmployees = 99999
+
   val fieldRequiredError: String => Set[CtValidation] =
     boxId => Set(CtValidation(Some(boxId), s"error.$boxId.required", None))
 }
