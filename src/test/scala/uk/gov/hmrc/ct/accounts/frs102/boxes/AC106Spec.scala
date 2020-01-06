@@ -17,78 +17,47 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import org.mockito.Mockito._
-import uk.gov.hmrc.ct.accounts.{MockFrs102AccountsRetriever, AccountsMoneyValidationFixture}
+import uk.gov.hmrc.ct.accounts.{AccountsIntegerValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.utils.AdditionalNotesAndFootnotesHelper
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC106Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever {
+class AC106Spec extends AccountsIntegerValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever with AdditionalNotesAndFootnotesHelper {
 
   override def setUpMocks() = {
     super.setUpMocks()
-    when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
+
     when(boxRetriever.ac106A()).thenReturn(AC106A(None))
     when(boxRetriever.ac107()).thenReturn(AC107(None))
   }
 
-  testAccountsMoneyValidationWithMinMax("AC106", 0, 99999, AC106.apply, testEmpty = false)
+  override val boxId = "AC106"
+  private def validateAC106(inputField: Option[Int], validationResult: Set[CtValidation]) = AC106(inputField).validate(boxRetriever) shouldBe validationResult
 
   "AC106" should {
 
-    "validate with global error when blank, AC106A blank, AC107 blank and AC7300 is true" in {
-
-      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
-
-      AC106(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.abridged.additional.employees.note.one.box.required"))
+    "validate with an error when blank, AC106A blank and AC107 blank" in {
+      setUpMocks()
+      validateAC106(None, fieldRequiredError(boxId))
     }
 
-    "not throw any errors when blank, AC106A has a value, AC107 blank and AC7300 is true" in {
-
-      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
+    "not throw any errors when blank, AC106A has a value, AC107 blank" in {
       when(boxRetriever.ac106A()).thenReturn(AC106A(Some("A note")))
-
-      AC106(None).validate(boxRetriever) shouldBe empty
+      when(boxRetriever.ac107()).thenReturn(AC107(None))
+      validateAC106(None, validationSuccess)
     }
-    
-    "not throw any errors when blank, AC106A blank, AC107 has a value and AC7300 is true" in {
 
-      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
+    "not throw any errors when blank, AC106A blank, AC107 has a value" in {
       when(boxRetriever.ac107()).thenReturn(AC107(Some(20)))
-
-      AC106(None).validate(boxRetriever) shouldBe empty
+      validateAC106(None, validationSuccess)
     }
 
-    "not validate with any errors when AC7300 is true and AC106 has a value" in {
-
-      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
-
-      AC106(Some(10)).validate(boxRetriever) shouldBe empty
+    "not validate with any errors when AC106 has a value" in {
+      validateAC106(Some(10), validationSuccess)
     }
 
-    "not validate with any errors when AC7300 is false and AC106 has no value" in {
-
-      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(false)))
-
-      AC106(None).validate(boxRetriever) shouldBe empty
+    "validate the input values correctly" when {
+      testIntegerFieldValidation(boxId, AC106, Some(minNumberOfEmployees), Some(maxNumberOfEmployees))
     }
-
-    "not validate with any errors when AC7300 is None and AC106 has no value" in {
-      when(boxRetriever.ac7300()).thenReturn(AC7300(None))
-
-      AC106(None).validate(boxRetriever) shouldBe empty
-    }
-
-    "validate with should not exist error when AC7300 is None and AC106 has a value" in {
-      when(boxRetriever.ac7300()).thenReturn(AC7300(None))
-
-      AC106(Some(100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC106"), "error.AC106.cannot.exist"))
-    }
-
-    "validate with should not exist error when AC7300 is false and AC106 has a value" in {
-      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(false)))
-
-      AC106(Some(100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC106"), "error.AC106.cannot.exist"))
-    }
-
   }
-
 }
