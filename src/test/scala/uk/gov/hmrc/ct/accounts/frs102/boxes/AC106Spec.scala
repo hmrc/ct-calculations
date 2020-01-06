@@ -34,15 +34,14 @@ class AC106Spec extends AccountsIntegerValidationFixture[Frs102AccountsBoxRetrie
   override val boxId = "AC106"
   private def validateAC106(inputField: Option[Int], validationResult: Set[CtValidation]) = AC106(inputField).validate(boxRetriever) shouldBe validationResult
 
-
   "AC106" should {
 
-    "validate with global error when blank, AC106A blank and AC107 blank" in {
+    "validate with an error when blank, AC106A blank and AC107 blank" in {
       setUpMocks()
       validateAC106(None, fieldRequiredError(boxId))
     }
 
-    "not throw any errors when blank, AC106A has a value, AC107 blank" in { // I need clarity on whether this validated differently to the other mandatory notes
+    "not throw any errors when blank, AC106A has a value, AC107 blank" in {
       when(boxRetriever.ac106A()).thenReturn(AC106A(Some("A note")))
       when(boxRetriever.ac107()).thenReturn(AC107(None))
       validateAC106(None, validationSuccess)
@@ -53,18 +52,12 @@ class AC106Spec extends AccountsIntegerValidationFixture[Frs102AccountsBoxRetrie
       validateAC106(None, validationSuccess)
     }
 
-    "not validate with any errors when AC7300 is true and AC106 has a value" in {
-      AC106(Some(10)).validate(boxRetriever) shouldBe empty
+    "not validate with any errors when AC106 has a value" in {
+      validateAC106(Some(10), validationSuccess)
     }
 
-    "not validate with any errors when AC7300 is false and AC106 has no value" in {
-      validateAC106(None, validationSuccess)
-    }
-
-    "not validate with any errors and AC106 has no value" in {
-      validateAC106(None, validationSuccess)
+    "validate the input values correctly" when {
+      testIntegerFieldValidation(boxId, AC106, Some(minNumberOfEmployees), Some(maxNumberOfEmployees))
     }
   }
-//  testIntegerFieldValidation(boxId, AC106, Some(minNumberOfEmployees), Some(maxNumberOfEmployees))
-
 }

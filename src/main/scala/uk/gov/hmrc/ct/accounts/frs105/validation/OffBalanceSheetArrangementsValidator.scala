@@ -34,9 +34,4 @@ trait OffBalanceSheetArrangementsValidator {
       case (_, _) => Set()
     }
   }
-
-//  def failIfBoxIsEmpty[T](value: Option[T]): Set[CtValidation] =
-//    failIf(value.isEmpty) {
-//      validateAsMandatory()
-//    }
 }
