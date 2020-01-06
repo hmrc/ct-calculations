@@ -30,10 +30,8 @@ class AC107Spec extends AccountsIntegerValidationFixture[Frs102AccountsBoxRetrie
 
   override val boxId: String = "AC107"
 
-  testIntegerFieldValidation(boxId, AC107, Some(minNumberOfEmployees), Some(maxNumberOfEmployees), Some(true))
-
- private val previousPeriodOfAccounts:  AC205 = AC205(Some(LocalDate.now()))
- private val emptyPreviousPeriodOfAccounts:  AC205 = AC205(None)
+  private val previousPeriodOfAccounts:  AC205 = AC205(Some(LocalDate.now()))
+  private val emptyPreviousPeriodOfAccounts:  AC205 = AC205(None)
 
   "AC107" should {
 
@@ -54,6 +52,7 @@ class AC107Spec extends AccountsIntegerValidationFixture[Frs102AccountsBoxRetrie
 
     "validate correctly when the user has a previous accounting period" when {
       when(boxRetriever.ac205()) thenReturn previousPeriodOfAccounts
+
       testIntegerFieldValidation(boxId, AC107, Some(minNumberOfEmployees), Some(maxNumberOfEmployees), Some(false))
     }
   }
