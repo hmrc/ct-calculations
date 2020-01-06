@@ -17,22 +17,19 @@
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import org.mockito.Mockito._
-import org.scalatest.mock.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.utils.AdditionalNotesAndFootnotesHelper
 import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFrs105AccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox.StandardCohoTextFieldLimit
 
-class AC7999Spec extends WordSpec with Matchers with MockitoSugar with AccountsFreeTextValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
+class AC7999Spec extends AdditionalNotesAndFootnotesHelper with AccountsFreeTextValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
 
   private def validateAC7999(inputField: Option[String], validationResult: Set[CtValidation]) = AC7999(inputField).validate(boxRetriever) shouldBe validationResult
 
+   override val boxId: String = "AC7999"
+
     "validation should pass successfully" when {
-
-      val input = "Some very off balance arrangements"
-      val validationSuccess: Set[CtValidation] = Set.empty
-
       "'Yes' button has been pressed and there is content in the text field" in {
         when(boxRetriever.ac7999a()) thenReturn AC7999a(Some(true))
         validateAC7999(Some(input), validationSuccess)
@@ -44,20 +41,17 @@ class AC7999Spec extends WordSpec with Matchers with MockitoSugar with AccountsF
     }
 
       "validation should fail successfully" when {
-
-      val fieldRequiredError = Set(CtValidation(Some("AC7999"), "error.AC7999.required", None))
-
       "'Yes' button has been pressed and there is no content in the text field" in {
         when(boxRetriever.ac7999a()) thenReturn AC7999a(Some(true))
-        validateAC7999(Some(""), fieldRequiredError)
-        validateAC7999(None, fieldRequiredError)
+        validateAC7999(Some(""), fieldRequiredError(boxId))
+        validateAC7999(None, fieldRequiredError(boxId))
        }
       }
 
       "the string entered contains more than 20,000" in {
         when(boxRetriever.ac7999a()) thenReturn AC7999a(Some(true))
         val input = "a" * StandardCohoTextFieldLimit + 1
-        val tooManyCharactersErrorMsg = Set(CtValidation(Some("AC7999"), "error.AC7999.text.sizeRange", Some(List("1", "20000"))))
+        val tooManyCharactersErrorMsg = Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(List("1", "20000"))))
         validateAC7999(Some(input), tooManyCharactersErrorMsg)
       }
 

@@ -172,6 +172,10 @@ package object formats {
   implicit val ac121BFormat = new OptionalIntegerFormat[AC121B](AC121B.apply)
   implicit val ac122Format = new OptionalIntegerFormat[AC122](AC122.apply)
   implicit val ac122AFormat = new OptionalIntegerFormat[AC122A](AC122A.apply)
+
+  implicit val ac200AFormat = new OptionalBooleanFormat[AC200A](AC200A.apply)
+  implicit val ac200Format = new OptionalStringFormat[AC200](AC200.apply)
+
   implicit val ac122BFormat = new OptionalIntegerFormat[AC122B](AC122B.apply)
   implicit val ac209Format = new OptionalIntegerFormat[AC209](AC209.apply)
   implicit val ac209AFormat = new OptionalIntegerFormat[AC209A](AC209A.apply)

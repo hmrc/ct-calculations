@@ -16,67 +16,44 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
+
+import org.joda.time.LocalDate
 import org.mockito.Mockito._
-import uk.gov.hmrc.ct.accounts.{MockFrs102AccountsRetriever, AccountsMoneyValidationFixture, AC205}
+import uk.gov.hmrc.ct.accounts.{AC205, AccountsIntegerValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.utils.AdditionalNotesAndFootnotesHelper
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC107Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever {
+class AC107Spec extends AccountsIntegerValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever with AdditionalNotesAndFootnotesHelper {
 
-  override def setUpMocks() = {
-    super.setUpMocks()
-    when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
-  }
+  private def validateAC107(inputField: Option[Int], validationResult: Set[CtValidation]) = AC107(inputField).validate(boxRetriever) shouldBe validationResult
 
-  testAccountsMoneyValidationWithMinMax("AC107", 0, 99999, AC107.apply, testEmpty = false)
+  override val boxId: String = "AC107"
+
+  private val previousPeriodOfAccounts:  AC205 = AC205(Some(LocalDate.now()))
+  private val emptyPreviousPeriodOfAccounts:  AC205 = AC205(None)
 
   "AC107" should {
 
-    "have no errors if blank and  AC7300 is true" in {
-
-      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
-
-      AC107(None).validate(boxRetriever) shouldBe empty
+    "have errors if blank and the user has a previous period of accounts" in {
+      when(boxRetriever.ac205()) thenReturn previousPeriodOfAccounts
+      validateAC107(None, fieldRequiredError(boxId))
     }
 
-    "not validate with any errors when AC7300 is true and AC107 has a value" in {
-
-      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(true)))
-
-      AC107(Some(10)).validate(boxRetriever) shouldBe empty
+    "not validate with any errors when AC107 has a value and user has a previous period of accounts" in {
+      when(boxRetriever.ac205()) thenReturn previousPeriodOfAccounts
+      validateAC107(Some(10), validationSuccess)
     }
 
-    "not validate with any errors when AC7300 is false and AC107 has no value" in {
-
-      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(false)))
-
-      AC107(None).validate(boxRetriever) shouldBe empty
+    "not validate with any errors AC107 has no value and the user does not have a previous period of accounts" in {
+      when(boxRetriever.ac205()) thenReturn emptyPreviousPeriodOfAccounts
+      validateAC107(None, validationSuccess)
     }
 
-    "not validate with any errors when AC7300 is None and AC107 has no value" in {
-      when(boxRetriever.ac7300()).thenReturn(AC7300(None))
+    "validate correctly when the user has a previous accounting period" when {
+      when(boxRetriever.ac205()) thenReturn previousPeriodOfAccounts
 
-      AC107(None).validate(boxRetriever) shouldBe empty
-    }
-
-    "validate with should return exist error when AC7300 is None and AC107 has a value" in {
-      when(boxRetriever.ac7300()).thenReturn(AC7300(None))
-
-      AC107(Some(100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC107"), "error.AC107.cannot.exist"))
-    }
-
-    "validate with should return exist error when AC7300 is false and AC107 has a value" in {
-      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(false)))
-
-      AC107(Some(100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC107"), "error.AC107.cannot.exist"))
-    }
-
-    "validate with should return exist error when AC7300 is true, AC107 has a value and Previous PoA is empty" in {
-      when(boxRetriever.ac205()).thenReturn(AC205(None))
-      when(boxRetriever.ac7300()).thenReturn(AC7300(Some(false)))
-
-      AC107(Some(100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC107"), "error.AC107.cannot.exist"))
+      testIntegerFieldValidation(boxId, AC107, Some(minNumberOfEmployees), Some(maxNumberOfEmployees), Some(false))
     }
   }
-
 }

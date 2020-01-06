@@ -18,21 +18,13 @@ package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
-import org.scalatest.mock.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.{AC3, AC4, MockFrs105AccountsRetriever}
-import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.accounts.utils.AdditionalNotesAndFootnotesHelper
+import uk.gov.hmrc.ct.accounts.{AC3, MockFrs105AccountsRetriever}
 
-class AC7999aSpec
-    extends WordSpec
-    with Matchers
-    with MockitoSugar
+class AC7999aSpec extends AdditionalNotesAndFootnotesHelper
     with MockFrs105AccountsRetriever {
 
-  private def fieldRequiredError(boxID: String) =
-    CtValidation(Some(boxID), s"error.$boxID.required")
-
-  private val boxId = "AC7999a"
+  override val boxId = "AC7999a"
   private val lastDayBeforeMandatoryNotes = LocalDate.parse("2016-12-31")
   private val mandatoryNotesStartDate = LocalDate.parse("2017-01-01")
 
@@ -40,7 +32,7 @@ class AC7999aSpec
     "pass validation" when {
       "neither buttons are checked" in {
         when(boxRetriever.ac3()) thenReturn AC3(lastDayBeforeMandatoryNotes)
-        AC7999a(None).validate(boxRetriever) shouldBe Set()
+        AC7999a(None).validate(boxRetriever) shouldBe validationSuccess
       }
     }
   }
@@ -49,15 +41,15 @@ class AC7999aSpec
     "fail validation" when {
       "when neither radio buttons are checked" in {
         when(boxRetriever.ac3()) thenReturn AC3(mandatoryNotesStartDate)
-
-        AC7999a(None).validate(boxRetriever) shouldBe Set(
-          fieldRequiredError(boxId))
+        AC7999a(None).validate(boxRetriever) shouldBe
+          fieldRequiredError(boxId)
       }
     }
+
     "pass validation" when {
       "either 'yes' or 'no' button is pressed" in {
         when(boxRetriever.ac3()) thenReturn AC3(mandatoryNotesStartDate)
-        AC7999a(Some(true)).validate(boxRetriever) shouldBe Set()
+        AC7999a(Some(true)).validate(boxRetriever) shouldBe validationSuccess
       }
     }
   }

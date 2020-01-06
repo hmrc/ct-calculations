@@ -16,8 +16,11 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.validation
 
+import uk.gov.hmrc.ct.accounts.frs102.boxes.{AC200, AC200A}
 import uk.gov.hmrc.ct.accounts.frs105.boxes.{AC7999, AC7999a}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtValidation, ValidatableBox}
 
 trait OffBalanceSheetArrangementsValidator {
@@ -31,4 +34,9 @@ trait OffBalanceSheetArrangementsValidator {
       case (_, _) => Set()
     }
   }
+
+//  def failIfBoxIsEmpty[T](value: Option[T]): Set[CtValidation] =
+//    failIf(value.isEmpty) {
+//      validateAsMandatory()
+//    }
 }
