@@ -30,7 +30,7 @@ class AC107Spec extends AccountsIntegerValidationFixture[Frs102AccountsBoxRetrie
 
   override val boxId: String = "AC107"
 
-  testIntegerFieldValidation(boxId, AC107, Some(minNumberOfEmployees), Some(maxNumberOfEmployees), Some(true), false)
+  testIntegerFieldValidation(boxId, AC107, Some(minNumberOfEmployees), Some(maxNumberOfEmployees), Some(true))
 
  private val previousPeriodOfAccounts:  AC205 = AC205(Some(LocalDate.now()))
  private val emptyPreviousPeriodOfAccounts:  AC205 = AC205(None)
@@ -54,25 +54,7 @@ class AC107Spec extends AccountsIntegerValidationFixture[Frs102AccountsBoxRetrie
 
     "validate correctly when the user has a previous accounting period" when {
       when(boxRetriever.ac205()) thenReturn previousPeriodOfAccounts
-      testIntegerFieldValidation(boxId, AC107, Some(minNumberOfEmployees), Some(maxNumberOfEmployees), Some(true), false)
+      testIntegerFieldValidation(boxId, AC107, Some(minNumberOfEmployees), Some(maxNumberOfEmployees), Some(false))
     }
-
-    // need to decide whether we're going to keep the exists errors.
-
-//    "validate with should return exist error when AC7300 is None and AC107 has a value" in {
-//
-//      AC107(Some(100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC107"), "error.AC107.cannot.exist"))
-//    }
-
-//    "validate with should return exist error when AC107 has a value" in {
-//
-//      AC107(Some(100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC107"), "error.AC107.cannot.exist"))
-//    }
-//
-//    "validate with should return exist error when AC7300 is true, AC107 has a value and Previous PoA is empty" in {
-//      when(boxRetriever.ac205()).thenReturn(AC205(None))
-//
-//      AC107(Some(100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC107"), "error.AC107.cannot.exist"))
-//    }
   }
 }
