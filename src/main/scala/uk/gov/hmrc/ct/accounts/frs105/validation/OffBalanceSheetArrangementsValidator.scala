@@ -16,11 +16,8 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.validation
 
-import uk.gov.hmrc.ct.accounts.frs102.boxes.{AC200, AC200A}
 import uk.gov.hmrc.ct.accounts.frs105.boxes.{AC7999, AC7999a}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtValidation, ValidatableBox}
 
 trait OffBalanceSheetArrangementsValidator {
@@ -29,8 +26,8 @@ trait OffBalanceSheetArrangementsValidator {
 
   def validateAgainstAC7999a(boxRetriever: Frs105AccountsBoxRetriever, boxId: String, value: Option[String]): Set[CtValidation] = {
     (boxRetriever.ac7999a(), value) match {
-      case (AC7999a(Some(true)), None) => validateStringAsMandatory(boxId, AC7999(value))
-      case (AC7999a(Some(true)), Some("")) => validateStringAsMandatory(boxId, AC7999(value))
+      case (AC7999a(Some(true)), None) => validateStringAsMandatoryWithNoTrailingWhitespace(boxId, AC7999(value))
+      case (AC7999a(Some(true)), Some("")) => validateStringAsMandatoryWithNoTrailingWhitespace(boxId, AC7999(value))
       case (_, _) => Set()
     }
   }

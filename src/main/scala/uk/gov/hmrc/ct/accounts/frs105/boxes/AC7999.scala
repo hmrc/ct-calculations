@@ -33,7 +33,6 @@ case class AC7999(value: Option[String])
     collectErrors(
       validateAgainstAC7999a(boxRetriever, this.boxId, value),
       validateOptionalStringByLength(1, StandardCohoTextFieldLimit)
-//      validateOptionalStringByRegex(boxId, this, ValidNonForeignMoreRestrictiveCharacters) Implement regex here to prevent XSS.
     )
   }
 }

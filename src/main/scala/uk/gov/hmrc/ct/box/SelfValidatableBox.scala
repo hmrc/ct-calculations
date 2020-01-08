@@ -51,6 +51,10 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
     super.validateStringAsMandatory(box.id, box)
   }
 
+  protected def validateStringAsMandatoryWithNoTrailingWhitespace()(): Set[CtValidation] = {
+    super.validateStringAsMandatoryWithNoTrailingWhitespace(box.id, box)
+  }
+
   protected def validateAsMandatory()(): Set[CtValidation] = {
     validateAsMandatory(box)
   }
@@ -158,6 +162,7 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
   protected def validateOptionalStringByLength(min: Int, max: Int)(): Set[CtValidation] = {
     super.validateOptionalStringByLength(box.id, box, min, max)
   }
+
 
   protected def validateStringByLength(min:Int, max:Int)(): Set[CtValidation] = {
     super.validateStringByLength(box.id, box, min, max)

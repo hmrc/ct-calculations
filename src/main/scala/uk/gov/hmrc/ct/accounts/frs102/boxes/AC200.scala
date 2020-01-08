@@ -29,8 +29,8 @@ with SelfValidatableBox[Frs102AccountsBoxRetriever, Option[String]]
 
   def validateAgainstAC200A(boxRetriever: Frs102AccountsBoxRetriever, boxId: String, value: Option[String]): Set[CtValidation] = {
     (boxRetriever.ac200a(), value) match {
-      case (AC200A(Some(true)), None) => validateStringAsMandatory(boxId, AC200(value))
-      case (AC200A(Some(true)), Some("")) => validateStringAsMandatory(boxId, AC200(value))
+      case (AC200A(Some(true)), None) => validateStringAsMandatoryWithNoTrailingWhitespace(boxId, AC200(value))
+      case (AC200A(Some(true)), Some("")) => validateStringAsMandatoryWithNoTrailingWhitespace(boxId, AC200(value))
       case (_, _) => Set()
     }
   }

@@ -47,12 +47,17 @@ class AC200Spec extends AdditionalNotesAndFootnotesHelper with AccountsFreeTextV
       validateAC200(Some(""), fieldRequiredError(boxId))
       validateAC200(None, fieldRequiredError(boxId))
     }
-  }
 
-  "the string entered contains more than 20,000" in {
+
+    "the string entered contains more than 20,000" in {
+      when(boxRetriever.ac200a()) thenReturn AC200A(Some(true))
+      val input = "a" * StandardCohoTextFieldLimit + 1
+      val tooManyCharactersErrorMsg = Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(List("1", "20000"))))
+      validateAC200(Some(input), tooManyCharactersErrorMsg)
+    }
+  }
+  "the string contains characters" in {
     when(boxRetriever.ac200a()) thenReturn AC200A(Some(true))
-    val input = "a" * StandardCohoTextFieldLimit + 1
-    val tooManyCharactersErrorMsg = Set(CtValidation(Some(boxId),s"error.$boxId.text.sizeRange", Some(List("1", "20000"))))
-    validateAC200(Some(input), tooManyCharactersErrorMsg)
+    validateAC200(Some(" "), Set())
   }
 }

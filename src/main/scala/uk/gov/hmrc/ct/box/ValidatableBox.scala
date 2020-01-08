@@ -62,6 +62,14 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
     }
   }
 
+  protected def validateStringAsMandatoryWithNoTrailingWhitespace(boxId: String, box: OptionalStringIdBox)(): Set[CtValidation] = {
+    box.value match {
+      case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
+      case Some(x) if x.trim.isEmpty => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
+      case _ => Set()
+    }
+  }
+
   protected def validateAsMandatory[U](box: CtValue[U] with CtBoxIdentifier)(): Set[CtValidation] = {
     box.value match {
       case None => Set(CtValidation(Some(box.id), s"error.${box.id}.required"))

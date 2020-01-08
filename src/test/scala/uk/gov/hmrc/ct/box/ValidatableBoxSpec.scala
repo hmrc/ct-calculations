@@ -63,6 +63,20 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
     }
   }
 
+  "validateMandatoryStringByLengthWithNoTrailingWhitespace" should {
+    "return error if None" in {
+      validateStringAsMandatoryWithNoTrailingWhitespace("testBox", testOptStringBox(None)) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.required"))
+    }
+
+    "return error if the box only contains whitespace" in {
+      validateStringAsMandatoryWithNoTrailingWhitespace("testBox", testOptStringBox(Some("  "))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.required"))
+    }
+
+    "return no errors if any value present" in {
+      validateStringAsMandatoryWithNoTrailingWhitespace("testBox", testOptStringBox(Some("wibble"))) shouldBe Set()
+    }
+  }
+
   "validateStringAsBlank" should {
     "return error if any value is present" in {
       validateStringAsBlank("testBox", testOptStringBox(Some("wibble"))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.nonBlankValue"))
