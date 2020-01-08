@@ -56,8 +56,8 @@ class AC200Spec extends AdditionalNotesAndFootnotesHelper with AccountsFreeTextV
       validateAC200(Some(input), tooManyCharactersErrorMsg)
     }
   }
-  "the string contains characters" in {
+  "the string only contains whitespace characters" in {
     when(boxRetriever.ac200a()) thenReturn AC200A(Some(true))
-    validateAC200(Some(" "), Set())
+    validateAC200(Some(" "), fieldRequiredError(boxId))
   }
 }

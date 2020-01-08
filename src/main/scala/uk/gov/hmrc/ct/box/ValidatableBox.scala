@@ -67,6 +67,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators {
       case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
       case Some(x) if x.trim.isEmpty => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
       case _ => Set()
+
     }
   }
 
