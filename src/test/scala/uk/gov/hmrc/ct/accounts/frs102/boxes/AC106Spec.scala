@@ -35,29 +35,24 @@ class AC106Spec extends AccountsIntegerValidationFixture[Frs102AccountsBoxRetrie
   private def validateAC106(inputField: Option[Int], validationResult: Set[CtValidation]) = AC106(inputField).validate(boxRetriever) shouldBe validationResult
 
   "AC106" should {
-
     "validate with an error when blank, AC106A blank and AC107 blank" in {
       setUpMocks()
       validateAC106(None, fieldRequiredError(boxId))
     }
 
-    "not throw any errors when blank, AC106A has a value, AC107 blank" in {
+    "throw an error when blank, AC106A has a value, AC107 blank" in {
       when(boxRetriever.ac106A()).thenReturn(AC106A(Some("A note")))
       when(boxRetriever.ac107()).thenReturn(AC107(None))
-      validateAC106(None, validationSuccess)
+      validateAC106(None, fieldRequiredError(boxId))
     }
 
-    "not throw any errors when blank, AC106A blank, AC107 has a value" in {
-      when(boxRetriever.ac107()).thenReturn(AC107(Some(20)))
-      validateAC106(None, validationSuccess)
-    }
-
-    "not validate with any errors when AC106 has a value" in {
+    "not validate with any errors when AC106 has an integer value" in {
       validateAC106(Some(10), validationSuccess)
     }
 
     "validate the input values correctly" when {
-      testIntegerFieldValidation(boxId, AC106, Some(minNumberOfEmployees), Some(maxNumberOfEmployees))
+
+      testIntegerFieldValidation(boxId, AC106, Some(minNumberOfEmployees), Some(maxNumberOfEmployees), Some(true))
     }
   }
 }
