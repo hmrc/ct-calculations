@@ -30,16 +30,9 @@ case class AC106(value: Option[Int]) extends CtBoxIdentifier(name = "Average num
   private val maxNumberOfEmployees = 99999
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-
-
-
-    import boxRetriever._
     collectErrors(
       validateIntegerRange(this.boxId, this, minNumberOfEmployees, maxNumberOfEmployees),
-      failIf(noValue && ac107().noValue && ac106A().noValue) {
         validateIntegerAsMandatory(boxId, this)
-      }
-
     )
   }
 }

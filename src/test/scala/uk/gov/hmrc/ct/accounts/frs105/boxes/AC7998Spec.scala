@@ -44,7 +44,7 @@ class AC7998Spec extends WordSpec with Matchers with MockitoSugar with AccountsI
   "When the beginning of the accounting period is after 2016-31-12, AC7998" should {
     "validate correctly" when {
       when(boxRetriever.ac3()) thenReturn AC3(mandatoryNotesStartDate)
-      testIntegerFieldValidation(boxID, AC7998, minNumberOfEmployees, maxNumberOfEmployees, isMandatory, true)
+      testIntegerFieldValidation(boxID, AC7998, minNumberOfEmployees, maxNumberOfEmployees, isMandatory)
     }
   }
 }
