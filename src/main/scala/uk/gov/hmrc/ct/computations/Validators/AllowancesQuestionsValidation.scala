@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,5 +37,7 @@ trait AllowancesQuestionsValidation {
 
   val sbaLiveDate = LocalDate.parse("2020-04-01")
 
-  def isSBALive(apEndDate: EndDate) =  sbaApplies2019.isAfter(apEndDate.value) && LocalDate.now.isAfter(sbaLiveDate)
+  def isSBALive(apEndDate: EndDate): Boolean =  {
+    sbaApplies2019.isBefore(apEndDate.value) && LocalDate.now.isAfter(sbaLiveDate)
+  }
 }

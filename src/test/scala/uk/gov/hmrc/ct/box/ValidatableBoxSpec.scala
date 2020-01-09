@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,6 +60,20 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
 
     "return no errors if any value present" in {
       validateStringAsMandatory("testBox", testOptStringBox(Some("wibble"))) shouldBe Set()
+    }
+  }
+
+  "validateMandatoryStringByLengthWithNoTrailingWhitespace" should {
+    "return error if None" in {
+      validateStringAsMandatoryWithNoTrailingWhitespace("testBox", testOptStringBox(None)) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.required"))
+    }
+
+    "return error if the box only contains whitespace" in {
+      validateStringAsMandatoryWithNoTrailingWhitespace("testBox", testOptStringBox(Some("  "))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.required"))
+    }
+
+    "return no errors if any value present" in {
+      validateStringAsMandatoryWithNoTrailingWhitespace("testBox", testOptStringBox(Some("wibble"))) shouldBe Set()
     }
   }
 

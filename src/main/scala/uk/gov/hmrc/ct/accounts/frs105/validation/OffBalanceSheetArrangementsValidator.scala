@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,8 @@ trait OffBalanceSheetArrangementsValidator {
 
   def validateAgainstAC7999a(boxRetriever: Frs105AccountsBoxRetriever, boxId: String, value: Option[String]): Set[CtValidation] = {
     (boxRetriever.ac7999a(), value) match {
-      case (AC7999a(Some(true)), None) => validateStringAsMandatory(boxId, AC7999(value))
-      case (AC7999a(Some(true)), Some("")) => validateStringAsMandatory(boxId, AC7999(value))
+      case (AC7999a(Some(true)), None) => validateStringAsMandatoryWithNoTrailingWhitespace(boxId, AC7999(value))
+      case (AC7999a(Some(true)), Some("")) => validateStringAsMandatoryWithNoTrailingWhitespace(boxId, AC7999(value))
       case (_, _) => Set()
     }
   }

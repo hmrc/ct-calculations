@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -146,6 +146,10 @@ trait Frs102AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
 
   def ac132(): AC132 = AC132.calculate(this)
 
+  def ac200a(): AC200A
+
+  def ac200(): AC200
+
   def ac212(): AC212
 
   def ac213(): AC213
@@ -243,8 +247,6 @@ trait Frs102AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
   def ac7210A(): AC7210A
 
   def ac7210B(): AC7210B
-
-  def ac7300(): AC7300
 
   def ac7400(): AC7400
 

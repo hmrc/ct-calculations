@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -262,6 +262,10 @@ trait FullAccountsBoxRetriever extends Frs102AccountsBoxRetriever {
   def ac162(): AC162 = AC162.calculate(this)
 
   def ac163(): AC163 = AC163.calculate(this)
+
+  def ac200(): AC200
+
+  def ac200a(): AC200A
 
   override def ac209(): AC209 = AC209.calculate(this)
 

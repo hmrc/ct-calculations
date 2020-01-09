@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import uk.gov.hmrc.ct.box.ValidatableBox.{StandardCohoTextFieldLimit, ValidNonFo
 import uk.gov.hmrc.ct.box._
 
 case class AC7999(value: Option[String])
-    extends CtBoxIdentifier(name = "Off balance sheet disclosure note")
+    extends CtBoxIdentifier(name = "Off balance sheet disclosure footnote")
     with CtOptionalString
     with Input
     with SelfValidatableBox[Frs105AccountsBoxRetriever, Option[String]]
@@ -33,7 +33,6 @@ case class AC7999(value: Option[String])
     collectErrors(
       validateAgainstAC7999a(boxRetriever, this.boxId, value),
       validateOptionalStringByLength(1, StandardCohoTextFieldLimit)
-//      validateOptionalStringByRegex(boxId, this, ValidNonForeignMoreRestrictiveCharacters) Implement regex here to prevent XSS.
     )
   }
 }

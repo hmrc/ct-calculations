@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,9 +28,13 @@ case class CPQ10(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did you
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
 
-    if(isSBALive(boxRetriever.cp2())) Set.empty[CtValidation]
+    if(isSBALive(boxRetriever.cp2())) {
+      Set.empty[CtValidation]
+    }
     else
-      validateAgainstCPQ7(boxRetriever, "CPQ10", value)
+      {
+        validateAgainstCPQ7(boxRetriever, "CPQ10", value)
+      }
 
   }
 }
