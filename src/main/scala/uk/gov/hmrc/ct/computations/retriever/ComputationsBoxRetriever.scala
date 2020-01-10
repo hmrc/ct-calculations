@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.computations.retriever
 
 import uk.gov.hmrc.ct.{CATO01, CATO02, CATO03, CATO13, CATO14, CATO15, CATO16, CATO20, CATO21, CATO22, CATO23}
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
-import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.computations.{SBA01, _}
 
 trait ComputationsBoxRetriever extends BoxRetriever {
 
@@ -435,6 +435,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
   def cato23(): CATO23 = CATO23.calculate(this)
 
   def lec01(): LEC01
+
+  def sba01(): SBA01
 
   def lec10(): LEC10 = LEC10.calculate(this)
 
