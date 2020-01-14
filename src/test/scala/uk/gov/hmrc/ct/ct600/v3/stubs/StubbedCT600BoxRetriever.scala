@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -376,4 +376,6 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def cpQ117(): CPQ117 = ???
 
   override def cpQ11(): CPQ11 = ???
+
+  override def sba01: SBA01 = ???
 }

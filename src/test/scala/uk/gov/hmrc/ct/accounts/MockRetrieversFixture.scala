@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ trait MockFrs10xAccountsRetriever extends MockitoSugar {
 }
 
 trait MockFrs102AccountsRetriever extends MockitoSugar {
-  val boxRetriever = mock[TestFrs102AccountsRetriever]
+  val boxRetriever = mock[TestFrs102AccountsRetriever](RETURNS_SMART_NULLS)
 }
 
 trait MockFrs105AccountsRetriever extends MockitoSugar {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ class AC7998Spec extends WordSpec with Matchers with MockitoSugar with AccountsI
   "When the beginning of the accounting period is after 2016-31-12, AC7998" should {
     "validate correctly" when {
       when(boxRetriever.ac3()) thenReturn AC3(mandatoryNotesStartDate)
-      testIntegerFieldValidation(boxID, AC7998, minNumberOfEmployees, maxNumberOfEmployees, isMandatory, true)
+      testIntegerFieldValidation(boxID, AC7998, minNumberOfEmployees, maxNumberOfEmployees, isMandatory)
     }
   }
 }

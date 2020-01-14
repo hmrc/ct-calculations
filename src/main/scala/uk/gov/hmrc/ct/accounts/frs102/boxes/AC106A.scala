@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,11 +27,8 @@ case class AC106A(value: Option[String]) extends CtBoxIdentifier(name = "Employe
   with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    val noteSelectedForInclusion = boxRetriever.ac7300().orFalse
-
     collectErrors (
-      cannotExistErrorIf(!noteSelectedForInclusion && value.nonEmpty),
-      validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit),
+      validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
       validateCoHoStringReturnIllegalChars()
     )
   }

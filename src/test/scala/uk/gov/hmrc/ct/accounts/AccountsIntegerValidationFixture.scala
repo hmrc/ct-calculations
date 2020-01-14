@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,16 +27,18 @@ trait AccountsIntegerValidationFixture[T <: AccountsBoxRetriever] extends WordSp
 
   def boxRetriever: T
 
-  def setUpMocks(): Unit = Unit
+  def setUpMocks(): Unit = {
+    when(boxRetriever.ac205()) thenReturn previousPeriodOfAccounts
+    when(boxRetriever.ac3()) thenReturn AC3(mandatoryNotesStartDate)
+  }
 
   private val mandatoryNotesStartDate = LocalDate.parse("2017-01-01")
+  private val previousPeriodOfAccounts:  AC205 = AC205(Some(LocalDate.now()))
 
-  def testIntegerFieldValidation[S](boxId: String, builder: Option[Int] => ValidatableBox[T], testLowerLimit: Option[Int] = None, testUpperLimit: Option[Int] = None, testMandatory: Option[Boolean] = Some(false), isMandatoryNotes: Boolean) = {
-
-
+  def testIntegerFieldValidation[S](boxId: String, builder: Option[Int] => ValidatableBox[T], testLowerLimit: Option[Int] = None, testUpperLimit: Option[Int] = None, testMandatory: Option[Boolean] = Some(false)): Unit = {
     if (testMandatory.contains(true)) {
       "fail validation when empty integer" in {
-        if (isMandatoryNotes) when(boxRetriever.ac3()) thenReturn AC3(mandatoryNotesStartDate)
+        setUpMocks()
         builder(None).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.required", None))
       }
     } else if (testMandatory.contains(false)) {
@@ -59,12 +61,14 @@ trait AccountsIntegerValidationFixture[T <: AccountsBoxRetriever] extends WordSp
       }
 
       s"fail validation when integer is bigger than $upperLimit" in {
-        if (isMandatoryNotes) when(boxRetriever.ac3()) thenReturn AC3(mandatoryNotesStartDate)
+       setUpMocks()
         builder(Some(upperLimit + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(s"$lowerLimitWithCommas", s"$upperLimitWithCommas"))))
       }
 
+      if (lowerLimit > 0) {
       s"fail validation when integer is lower than $lowerLimit characters long" in {
-        builder(Some(lowerLimit - 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(s"$lowerLimitWithCommas", s"$upperLimitWithCommas"))))
+         builder(Some(lowerLimit - 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(s"$lowerLimitWithCommas", s"$upperLimitWithCommas"))))
+       }
       }
 
       if (testLowerLimit.isEmpty && testUpperLimit.isDefined) {
