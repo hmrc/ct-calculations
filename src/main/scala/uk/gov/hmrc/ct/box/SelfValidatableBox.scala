@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,6 +49,10 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
 
   protected def validateStringAsMandatory()(): Set[CtValidation] = {
     super.validateStringAsMandatory(box.id, box)
+  }
+
+  protected def validateStringAsMandatoryWithNoTrailingWhitespace()(): Set[CtValidation] = {
+    super.validateStringAsMandatoryWithNoTrailingWhitespace(box.id, box)
   }
 
   protected def validateAsMandatory()(): Set[CtValidation] = {
@@ -158,6 +162,7 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
   protected def validateOptionalStringByLength(min: Int, max: Int)(): Set[CtValidation] = {
     super.validateOptionalStringByLength(box.id, box, min, max)
   }
+
 
   protected def validateStringByLength(min:Int, max:Int)(): Set[CtValidation] = {
     super.validateStringByLength(box.id, box, min, max)
