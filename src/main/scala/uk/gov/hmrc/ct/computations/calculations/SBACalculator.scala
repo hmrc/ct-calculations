@@ -1,15 +1,15 @@
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.joda.time.{Days, LocalDate}
+import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
 import uk.gov.hmrc.ct.ct600.NumberRounding
 import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper
 
 trait SBACalculator extends NumberRounding with AccountingPeriodHelper{
 
-  val rate: Int
+  val rate: BigDecimal
 
-  val daysInyear: LocalDate => Int = (year: LocalDate) => if (year.getYear % 4 == 0) 366 else 365
+  def daysInyear(year: LocalDate): Int = if (year.getYear % 4 == 0) 366 else 365
 
   def getDaysInAP(apStart: CP1, apEnd: CP2): Int = daysBetween(apStart.value, apEnd.value)
 
@@ -19,11 +19,13 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper{
 
   def isEarliestWrittenContractAfterAPStart(contractDate: LocalDate, apStartDate: LocalDate): Boolean = apStartDate.isAfter(contractDate)
 
-  /*This is the 2%*/
-  def getAmountClaimableForSBA(apStartDate: CP1, apEndDate: CP2, contractDate: LocalDate,cost: Int, daysIntTheYear: Int): Int = {
-    val dailyRate = apportionedCostOfBuilding(cost, daysIntTheYear(apStartDate))
+  /* This is the 2% */
+  def getAmountClaimableForSBA(apStartDate: CP1, apEndDate: CP2, contractDate: LocalDate,cost: Int): Int = {
+    val dailyRate = apportionedCostOfBuilding(cost, daysInyear(apStartDate.value))
 
-    val  totalCost = if(isEarliestWrittenContractAfterAPStart(contractDate, apEndDate.value)) {
+    println("Daily Rate " + dailyRate)
+
+    val totalCost = if(isEarliestWrittenContractAfterAPStart(contractDate, apEndDate.value)) {
       daysBetween(contractDate, apEndDate.value) * dailyRate
     } else {
       getDaysInAP(apStartDate, apEndDate) * dailyRate
