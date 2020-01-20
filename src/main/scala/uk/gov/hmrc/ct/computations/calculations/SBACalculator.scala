@@ -11,13 +11,14 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
   def apportionedCostOfBuilding(cost: BigDecimal, daysIntTheYear: Int): BigDecimal = (cost * rate) / daysIntTheYear
 
-  def getDaysBetweenEarliestWrittenContractAndEndDate(dateOfPurchase: LocalDate, apEndDate: CP2): Int = daysBetween(dateOfPurchase, apEndDate.value)
-
   def isEarliestWrittenContractAfterAPStart(contractDate: LocalDate, apStartDate: LocalDate): Boolean = contractDate.isAfter(apStartDate)
 
-  /*This is the 2%*/
+  /* This is the 2% */
   def getAmountClaimableForSBA(apStartDate: LocalDate, apEndDate: LocalDate, contractDate: LocalDate, cost: BigDecimal): Int = {
-    val dailyRate = apportionedCostOfBuilding(cost, daysBetween(apStartDate, apEndDate))
+
+
+    val daysInTheYear = if (apEndDate.year().isLeap) 366 else 365
+    val dailyRate = apportionedCostOfBuilding(cost, daysInTheYear)
 
     val  totalCost = if(isEarliestWrittenContractAfterAPStart(contractDate, apStartDate)) {
       daysBetween(contractDate, apEndDate) * dailyRate
