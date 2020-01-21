@@ -67,6 +67,21 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       result shouldBe Some(200)
     }
 
+    "apportion and calculate the right amount of sba claimable for a building for 12 months during a 2024 leap year where accounting period starts before 1st April" in new SBACalculator {
+
+      val apStartDate: LocalDate = new LocalDate("2024-02-29")
+      val endDate: LocalDate = new LocalDate("2025-02-28")
+      val cost: Int = 10000
+      val contractStartDate: LocalDate = new LocalDate("2024-02-29")
+
+      override val rate: BigDecimal = 0.02
+
+      getDaysIntheYear(apStartDate) shouldBe 366
+      val result = getAmountClaimableForSBA(apStartDate, endDate, Option(contractStartDate), Option(cost))
+
+      result shouldBe Some(200)
+    }
+
     "apportion and calculate the right amount of sba claimable for a building for 12 months during a leap year where accounting period starts on or after 1st April" in new SBACalculator {
 
       val apStartDate: LocalDate = new LocalDate("2020-03-01")

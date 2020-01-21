@@ -23,11 +23,11 @@ import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper
 trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
 
-  val leapYearDateCutOff = new LocalDate("2020-03-01")
+  def leapYearDateCutOff(localDate: LocalDate) = new LocalDate(s"${localDate.getYear}-03-01")
 
   val rate: BigDecimal = 0.02
 
-  def getDaysIntheYear(apStartDate: LocalDate) = if (apStartDate.year().isLeap && apStartDate.isBefore(leapYearDateCutOff)) 366 else 365
+  def getDaysIntheYear(apStartDate: LocalDate) = if (apStartDate.year().isLeap && apStartDate.isBefore(leapYearDateCutOff(apStartDate))) 366 else 365
 
   def apportionedCostOfBuilding(cost: BigDecimal, daysInTheYear: Int): BigDecimal = (cost * rate) / daysInTheYear
 
