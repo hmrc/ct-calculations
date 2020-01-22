@@ -40,5 +40,6 @@ case class Building(
                      postcode: Option[String],
                      earliestWrittenContract: Option[LocalDate],
                      nonResidentialActivityStart: Option[LocalDate],
-                     cost: Option[BigDecimal]
+                     cost: Option[BigDecimal],
+                     claim: Option[BigDecimal]
                    )
