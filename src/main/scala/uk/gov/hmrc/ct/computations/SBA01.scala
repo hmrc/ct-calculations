@@ -41,5 +41,5 @@ case class Building(
                      earliestWrittenContract: Option[LocalDate],
                      nonResidentialActivityStart: Option[LocalDate],
                      cost: Option[BigDecimal],
-                     claims: Option[Int]
+                     claim: Option[Int]
                    )
