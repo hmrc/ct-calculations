@@ -97,9 +97,7 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
                        cpAux2: CPAux2): CP92 = {
 
     val result = (cpq8.value, cp91.value) match {
-      case (Some(false), None) => {
-        (cp78 + cp82 + cpAux2 + cato20 - cp89 - cp672).max(0)
-      }
+      case (Some(false), None) => (cp78 + cp82 + cpAux2 + cato20 - cp89 - cp672).max(0)
       case _ => 0
     }
 
