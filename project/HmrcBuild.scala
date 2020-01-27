@@ -24,7 +24,6 @@ object HmrcBuild extends Build {
       libraryDependencies ++= Seq(
         "com.typesafe.play" % "play-json-joda_2.11" % "2.7.4",
         "uk.gov.hmrc" %% "play-time" % "0.7.0" % "provided",
-
         "org.scalatest" %% "scalatest" % "2.2.6" % "test",
         "org.mockito" % "mockito-all" % "1.10.19" % "test",
         "org.pegdown" % "pegdown" % "1.6.0" % "test"
