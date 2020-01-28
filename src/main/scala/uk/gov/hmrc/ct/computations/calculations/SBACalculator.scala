@@ -34,7 +34,7 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
   def isEarliestWrittenContractAfterAPStart(contractDate: LocalDate, apStartDate: LocalDate): Boolean = contractDate.isAfter(apStartDate)
 
   /* This is the 2% rounded up*/
-  def getAmountClaimableForSBA(apStartDate: LocalDate, apEndDate: LocalDate, contract: Option[LocalDate], firstUsage: Option[LocalDate], cost: Option[BigDecimal]): Option[Int] = {
+  def getAmountClaimableForSBA(apStartDate: LocalDate, apEndDate: LocalDate, contract: Option[LocalDate], firstUsage: Option[LocalDate], cost: Option[Int]): Option[Int] = {
 
     val daysInTheYear = getDaysIntheYear(apStartDate)
 
