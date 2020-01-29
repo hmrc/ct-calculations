@@ -30,7 +30,6 @@ object CP296 extends Calculated[CP296, ComputationsBoxRetriever] with SBACalcula
       building => getAmountClaimableForSBA(
         boxRetriever.cp1().value,
         boxRetriever.cp2().value,
-        building.earliestWrittenContract,
         building.nonResidentialActivityStart,
         building.cost
       )

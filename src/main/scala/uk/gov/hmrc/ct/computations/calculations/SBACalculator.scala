@@ -22,29 +22,28 @@ import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper
 
 trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
-
-  def leapYearDateCutOff(localDate: LocalDate) = new LocalDate(s"${localDate.getYear}-03-01")
-
   val rate: BigDecimal = 0.02
 
-  def getDaysIntheYear(apStartDate: LocalDate) = if (apStartDate.year().isLeap && apStartDate.isBefore(leapYearDateCutOff(apStartDate))) 366 else 365
+  def getDaysIntheYear(apStartDate: LocalDate) = {
+    val yearAfterApStart = apStartDate.plusYears(1)
+    daysBetween(apStartDate, yearAfterApStart) - 1
+  }
 
   def apportionedCostOfBuilding(cost: BigDecimal, daysInTheYear: Int): BigDecimal = (cost * rate) / daysInTheYear
 
   def isEarliestWrittenContractAfterAPStart(contractDate: LocalDate, apStartDate: LocalDate): Boolean = contractDate.isAfter(apStartDate)
 
   /* This is the 2% rounded up*/
-  def getAmountClaimableForSBA(apStartDate: LocalDate, apEndDate: LocalDate, contract: Option[LocalDate], firstUsage: Option[LocalDate], cost: Option[Int]): Option[Int] = {
+  def getAmountClaimableForSBA(apStartDate: LocalDate, apEndDate: LocalDate, firstUsage: Option[LocalDate], cost: Option[Int]): Option[Int] = {
 
     val daysInTheYear = getDaysIntheYear(apStartDate)
 
-    (contract, firstUsage, cost) match {
-      case (Some(contractDate), Some(firstUsageDate), Some(maybeCost)) => {
+    (firstUsage, cost) match {
+      case (Some(firstUsageDate), Some(maybeCost)) => {
         val dailyRate = apportionedCostOfBuilding(maybeCost, daysInTheYear)
-        val firstClaimableDate = if(contractDate.isBefore(firstUsageDate)) contractDate else firstUsageDate
 
-        val totalCost = if (isEarliestWrittenContractAfterAPStart(firstClaimableDate, apStartDate)) {
-          daysBetween(firstClaimableDate, apEndDate) * dailyRate
+        val totalCost = if (isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) {
+          daysBetween(firstUsageDate, apEndDate) * dailyRate
         } else {
           daysBetween(apStartDate, apEndDate) * dailyRate
         }
