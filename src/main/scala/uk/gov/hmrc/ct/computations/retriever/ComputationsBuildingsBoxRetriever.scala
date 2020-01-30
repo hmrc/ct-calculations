@@ -24,7 +24,7 @@ trait ComputationsBuildingsBoxRetriever extends ComputationsBoxRetriever { //may
 
     def sba01A(): SBA01A
 
-    def sba01B(): SBA01B
+//    def sba01B(): SBA01B
 
     def sba02(): List[Option[Int]] = CP296.getAllowanceForEachBuilding(this)
 
