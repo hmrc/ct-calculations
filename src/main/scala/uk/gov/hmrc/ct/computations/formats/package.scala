@@ -427,6 +427,8 @@ package object formats {
 
   implicit val sba01Format: Format[SBA01] = Json.format[SBA01]
 
+  implicit val sba01AFormat: Format[SBA01A] = Json.format[SBA01A]
+
   implicit val lec01Format: Format[LEC01] = Json.format[LEC01]
 
   implicit val cato01Format: Format[CATO01] = new IntegerFormat[CATO01](CATO01.apply)

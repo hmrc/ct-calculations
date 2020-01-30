@@ -36,7 +36,7 @@ case class SBA01(buildings: List[Building] = List.empty) extends CtBoxIdentifier
 }
 
 case class Building(
-                     name: Option[String],
+                     name: SBA01A,
                      postcode: Option[String],
                      earliestWrittenContract: Option[LocalDate],
                      nonResidentialActivityStart: Option[LocalDate],
