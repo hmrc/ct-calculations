@@ -17,14 +17,14 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBuildingsBoxRetriever
+import uk.gov.hmrc.ct.computations.retriever.{ComputationsBoxRetriever, ComputationsBuildingsBoxRetriever}
 
 case class SBA01A(value: Option[String]) extends CtBoxIdentifier(name = "Building name")
   with CtOptionalString
   with Input
-  with ValidatableBox[ComputationsBuildingsBoxRetriever] {
+  with ValidatableBox[ComputationsBoxRetriever] {
 
-  override def validate(boxRetriever: ComputationsBuildingsBoxRetriever): Set[CtValidation ] = {
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation ] = {
     collectErrors(
       validateStringAsMandatory("SBA01", this),
       validateOptionalStringByLength("SBA01", this, 1, 100)

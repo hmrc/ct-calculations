@@ -18,14 +18,14 @@ package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.calculations.SBACalculator
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBuildingsBoxRetriever
+import uk.gov.hmrc.ct.computations.retriever.{ComputationsBoxRetriever, ComputationsBuildingsBoxRetriever}
 
 case class CP296(value: Option[Int]) extends CtBoxIdentifier(name = "Total Structure and Building Allowance") with CtOptionalInteger
 
-object CP296 extends Calculated[CP296, ComputationsBuildingsBoxRetriever] with SBACalculator {
+object CP296 extends Calculated[CP296, ComputationsBoxRetriever] with SBACalculator {
 
 
-  def getAllowanceForEachBuilding(boxRetriever: ComputationsBuildingsBoxRetriever): List[Option[Int]] = {
+  def getAllowanceForEachBuilding(boxRetriever: ComputationsBoxRetriever): List[Option[Int]] = {
     boxRetriever.sba01().buildings.map(
       building => getAmountClaimableForSBA(
         boxRetriever.cp1().value,
@@ -37,7 +37,7 @@ object CP296 extends Calculated[CP296, ComputationsBuildingsBoxRetriever] with S
   }
 
 
-  override def calculate(boxRetriever: ComputationsBuildingsBoxRetriever): CP296 = {
+  override def calculate(boxRetriever: ComputationsBoxRetriever): CP296 = {
 
     CP296(sumAmount(getAllowanceForEachBuilding(boxRetriever)))
   }

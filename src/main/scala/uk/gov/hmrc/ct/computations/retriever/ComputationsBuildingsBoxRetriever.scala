@@ -16,20 +16,10 @@
 
 package uk.gov.hmrc.ct.computations.retriever
 
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.computations.{CP296, CP297, SBA01, SBA01A, SBA01B}
 
-trait ComputationsBuildingsBoxRetriever extends ComputationsBoxRetriever { //maybe just box retriever????
+trait ComputationsBuildingsBoxRetriever extends BoxRetriever { //maybe just box retriever????
 
-    def sba01(): SBA01
-
-    def sba01A(): SBA01A
-
-//    def sba01B(): SBA01B
-
-    def sba02(): List[Option[Int]] = CP296.getAllowanceForEachBuilding(this)
-
-    def cp296(): CP296 = CP296.calculate(this)
-
-    def cp297(): CP297 = CP297.calculate(this)
 
 }
