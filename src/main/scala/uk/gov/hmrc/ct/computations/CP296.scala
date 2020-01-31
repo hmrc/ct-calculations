@@ -25,20 +25,15 @@ case class CP296(value: Option[Int]) extends CtBoxIdentifier(name = "Total Struc
 object CP296 extends Calculated[CP296, ComputationsBoxRetriever] with SBACalculator {
 
 
-  def getAllowanceForEachBuilding(boxRetriever: ComputationsBoxRetriever): List[Option[Int]] = {
+  def getCostForEachBuilding(boxRetriever: ComputationsBoxRetriever): List[Option[Int]] = {
     boxRetriever.sba01().buildings.map(
-      building => getAmountClaimableForSBA(
-        boxRetriever.cp1().value,
-        boxRetriever.cp2().value,
-        building.nonResidentialActivityStart,
-        building.cost
-      )
+      building => building.cost
     )
   }
 
 
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP296 = {
-
-    CP296(sumAmount(getAllowanceForEachBuilding(boxRetriever)))
+    println("HELLLOOOOOOOO")
+    CP296(sumAmount(getCostForEachBuilding(boxRetriever)))
   }
 }

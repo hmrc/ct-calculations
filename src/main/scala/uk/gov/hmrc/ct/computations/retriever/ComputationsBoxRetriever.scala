@@ -442,7 +442,7 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def sba01(): SBA01
 
-  def sba02(): List[Option[Int]] = CP296.getAllowanceForEachBuilding(this)
+  def sba02(): List[Option[Int]] = CP296.getCostForEachBuilding(this)
 
   def lec10(): LEC10 = LEC10.calculate(this)
 
