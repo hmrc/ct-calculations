@@ -42,5 +42,3 @@ object CP296 extends Calculated[CP296, ComputationsBoxRetriever] with SBACalcula
     CP296(sumAmount(getAllowanceForEachBuilding(boxRetriever)))
   }
 }
-
-

@@ -26,7 +26,7 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
   def getDaysIntheYear(apStartDate: LocalDate) = {
     val yearAfterApStart = apStartDate.plusYears(1)
-    daysBetween(apStartDate, yearAfterApStart) - 1
+    if(apStartDate.getDayOfMonth == yearAfterApStart.getDayOfMonth) daysBetween(apStartDate, yearAfterApStart) - 1 else 366
   }
 
   def apportionedCostOfBuilding(cost: BigDecimal, daysInTheYear: Int): BigDecimal = (cost * rate) / daysInTheYear

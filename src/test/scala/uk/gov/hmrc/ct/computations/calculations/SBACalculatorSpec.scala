@@ -27,12 +27,9 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val apStartDate: LocalDate = new LocalDate("2020-01-01")
       val endDate: LocalDate = new LocalDate("2020-6-30")
       val cost: Int = 10000
-      val contractStartDate: LocalDate = new LocalDate("2020-01-01")
-      val firstUsageDate: LocalDate = new LocalDate("2021-01-01")
+      val firstUsageDate: LocalDate = new LocalDate("2020-01-01")
 
-      override val rate: BigDecimal = 0.02
-
-      val result = getAmountClaimableForSBA(apStartDate, endDate, Option(contractStartDate), Some(firstUsageDate), Option(cost))
+      val result = getAmountClaimableForSBA(apStartDate, endDate, Some(firstUsageDate), Option(cost))
 
       result shouldBe Some(99)
     }
@@ -42,14 +39,11 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val apStartDate: LocalDate = new LocalDate("2020-01-01")
       val endDate: LocalDate = new LocalDate("2020-12-31")
       val cost: Int = 10000
-      val contractStartDate: LocalDate = new LocalDate("2020-01-01")
-      val firstUsageDate: LocalDate = new LocalDate("2021-01-01")
-
-      override val rate: BigDecimal = 0.02
+      val firstUsageDate: LocalDate = new LocalDate("2020-01-01")
 
       getDaysIntheYear(apStartDate) shouldBe 366
 
-      val result = getAmountClaimableForSBA(apStartDate, endDate, Option(contractStartDate), Some(firstUsageDate), Option(cost))
+      val result = getAmountClaimableForSBA(apStartDate, endDate, Some(firstUsageDate), Option(cost))
 
       result shouldBe Some(200)
     }
@@ -59,13 +53,10 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val apStartDate: LocalDate = new LocalDate("2020-02-29")
       val endDate: LocalDate = new LocalDate("2021-02-28")
       val cost: Int = 10000
-      val contractStartDate: LocalDate = new LocalDate("2020-02-29")
-      val firstUsageDate: LocalDate = new LocalDate("2021-02-28")
-
-      override val rate: BigDecimal = 0.02
+      val firstUsageDate: LocalDate = new LocalDate("2020-02-29")
 
       getDaysIntheYear(apStartDate) shouldBe 366
-      val result = getAmountClaimableForSBA(apStartDate, endDate, Option(contractStartDate), Some(firstUsageDate), Option(cost))
+      val result = getAmountClaimableForSBA(apStartDate, endDate, Some(firstUsageDate), Option(cost))
 
       result shouldBe Some(200)
     }
@@ -75,13 +66,10 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val apStartDate: LocalDate = new LocalDate("2024-02-29")
       val endDate: LocalDate = new LocalDate("2025-02-28")
       val cost: Int = 10000
-      val contractStartDate: LocalDate = new LocalDate("2024-02-29")
-      val firstUsageDate: LocalDate = new LocalDate("2025-02-28")
-
-      override val rate: BigDecimal = 0.02
+      val firstUsageDate: LocalDate = new LocalDate("2024-02-28")
 
       getDaysIntheYear(apStartDate) shouldBe 366
-      val result = getAmountClaimableForSBA(apStartDate, endDate, Option(contractStartDate), Some(firstUsageDate), Option(cost))
+      val result = getAmountClaimableForSBA(apStartDate, endDate, Some(firstUsageDate), Option(cost))
 
       result shouldBe Some(200)
     }
@@ -91,13 +79,10 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val apStartDate: LocalDate = new LocalDate("2020-03-01")
       val endDate: LocalDate = new LocalDate("2021-02-28")
       val cost: Int = 10000
-      val contractStartDate: LocalDate = new LocalDate("2020-02-29")
-      val firstUsageDate: LocalDate = new LocalDate("2021-02-28")
-
-      override val rate: BigDecimal = 0.02
+      val firstUsageDate: LocalDate = new LocalDate("2020-02-28")
 
       getDaysIntheYear(apStartDate) shouldBe 365
-      val result = getAmountClaimableForSBA(apStartDate, endDate, Option(contractStartDate), Some(firstUsageDate), Option(cost))
+      val result = getAmountClaimableForSBA(apStartDate, endDate, Some(firstUsageDate), Option(cost))
 
       result shouldBe Some(200)
     }
@@ -107,12 +92,9 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val apStartDate: LocalDate = new LocalDate("2020-01-01")
       val endDate: LocalDate = new LocalDate("2020-12-31")
       val cost: Int = 10000
-      val contractStartDate: LocalDate = new LocalDate("2020-10-01")
-      val firstUsageDate: LocalDate = new LocalDate("2021-10-01")
+      val firstUsageDate: LocalDate = new LocalDate("2020-10-01")
 
-      override val rate: BigDecimal = 0.02
-
-      val result = getAmountClaimableForSBA(apStartDate, endDate, Option(contractStartDate), Some(firstUsageDate), Option(cost))
+      val result = getAmountClaimableForSBA(apStartDate, endDate, Some(firstUsageDate), Option(cost))
 
       result shouldBe Some(50)
     }
@@ -122,12 +104,9 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val apStartDate: LocalDate = new LocalDate("2020-01-01")
       val endDate: LocalDate = new LocalDate("2020-12-31")
       val cost: Int = 10000
-      val contractStartDate: LocalDate = new LocalDate("2020-02-01")
-      val firstUsageDate: LocalDate = new LocalDate("2021-02-01")
+      val firstUsageDate: LocalDate = new LocalDate("2020-02-01")
 
-      override val rate: BigDecimal = 0.02
-
-      val result = getAmountClaimableForSBA(apStartDate, endDate, Option(contractStartDate), Some(firstUsageDate), Option(cost))
+      val result = getAmountClaimableForSBA(apStartDate, endDate, Some(firstUsageDate), Option(cost))
 
       result shouldBe Some(183)
     }
@@ -138,13 +117,10 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val apStartDate: LocalDate = new LocalDate("2021-01-01")
       val endDate: LocalDate = new LocalDate("2021-12-31")
       val cost: Int = 10000
-      val contractStartDate: LocalDate = new LocalDate("2021-02-01")
-      val firstUsageDate: LocalDate = new LocalDate("2022-02-01")
+      val firstUsageDate: LocalDate = new LocalDate("2021-02-01")
 
 
-      override val rate: BigDecimal = 0.02
-
-      val result = getAmountClaimableForSBA(apStartDate, endDate, Option(contractStartDate), Some(firstUsageDate), Option(cost))
+      val result = getAmountClaimableForSBA(apStartDate, endDate, Some(firstUsageDate), Option(cost))
 
       result shouldBe Some(183)
     }
@@ -154,29 +130,19 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val apStartDate: LocalDate = new LocalDate("2021-01-01")
       val endDate: LocalDate = new LocalDate("2021-12-31")
       val cost: Int = 10000
-      val contractStartDate: LocalDate = new LocalDate("2021-03-01")
-      val firstUsageDate: LocalDate = new LocalDate("2022-03-01")
+      val firstUsageDate: LocalDate = new LocalDate("2021-03-01")
 
-      override val rate: BigDecimal = 0.02
-
-      val result = getAmountClaimableForSBA(apStartDate, endDate, Option(contractStartDate), Some(firstUsageDate), Option(cost))
+      val result = getAmountClaimableForSBA(apStartDate, endDate, Some(firstUsageDate), Option(cost))
 
       result shouldBe Some(168)
     }
 
-    "apportion and calculate the right amount using the firstUsageDate if it is before the contract date" in new SBACalculator {
-
-      val apStartDate: LocalDate = new LocalDate("2021-01-01")
-      val endDate: LocalDate = new LocalDate("2021-12-31")
-      val cost: Int = 10000
-      val contractStartDate: LocalDate = new LocalDate("2021-12-01")
-      val firstUsageDate: LocalDate = new LocalDate("2021-03-01")
-
-      override val rate: BigDecimal = 0.02
-
-      val result = getAmountClaimableForSBA(apStartDate, endDate, Option(contractStartDate), Some(firstUsageDate), Option(cost))
-
-      result shouldBe Some(168)
+    "getDaysIntheYear produces correct amount of days for dates surrounding leap year" in new SBACalculator {
+      getDaysIntheYear(new LocalDate("2020-01-01")) shouldBe 366
+      getDaysIntheYear(new LocalDate("2020-02-28")) shouldBe 366
+      getDaysIntheYear(new LocalDate("2020-02-29")) shouldBe 366
+      getDaysIntheYear(new LocalDate("2020-03-01")) shouldBe 365
+      getDaysIntheYear(new LocalDate("2100-01-01")) shouldBe 365
     }
   }
 }
