@@ -33,7 +33,6 @@ object CP296 extends Calculated[CP296, ComputationsBoxRetriever] with SBACalcula
 
 
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP296 = {
-    println("HELLLOOOOOOOO")
     CP296(sumAmount(getCostForEachBuilding(boxRetriever)))
   }
 }
