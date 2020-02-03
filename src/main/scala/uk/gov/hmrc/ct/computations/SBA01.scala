@@ -36,10 +36,16 @@ case class SBA01(buildings: List[Building] = List.empty) extends CtBoxIdentifier
 }
 
 case class Building(
-                     name: SBA01A,
+                     name: Option[String],
                      postcode: Option[String],
                      earliestWrittenContract: Option[LocalDate],
                      nonResidentialActivityStart: Option[LocalDate],
                      cost: Option[Int],
                      claim: Option[Int]
-                   )
+                   ) extends ValidatableBox[ComputationsBoxRetriever] {
+
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    collectErrors(validateDateAsMandatory("SBA01C", earliestWrittenContract, "hurro"),
+        validateDateAsMandatory("SBA01D", nonResidentialActivityStart, "yolo"))
+  }
+}

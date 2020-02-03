@@ -26,8 +26,8 @@ case class SBA01A(value: Option[String]) extends CtBoxIdentifier(name = "Buildin
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation ] = {
     collectErrors(
-      validateStringAsMandatory("SBA01", this),
-      validateOptionalStringByLength("SBA01", this, 1, 100)
+      validateStringAsMandatory("SBA01A", this),
+      validateOptionalStringByLength("SBA01A", this, 1, 100)
     )
   }
 }
