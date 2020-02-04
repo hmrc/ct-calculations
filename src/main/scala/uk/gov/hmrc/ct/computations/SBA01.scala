@@ -31,7 +31,9 @@ case class SBA01(buildings: List[Building] = List.empty) extends CtBoxIdentifier
   override def asBoxString = Buildings.asBoxString(this)
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    Set.empty
+    buildings.foldRight(Set[CtValidation]())( (acc, x) =>
+    acc.validate(boxRetriever) ++ x
+    )
   }
 }
 
@@ -45,7 +47,7 @@ case class Building(
                    ) extends ValidatableBox[ComputationsBoxRetriever] {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    collectErrors(validateDateAsMandatory("SBA01C", earliestWrittenContract, "hurro"),
-        validateDateAsMandatory("SBA01D", nonResidentialActivityStart, "yolo"))
+    collectErrors(validateDateAsMandatory("SBA01C", earliestWrittenContract, "SBA01C"),
+        validateDateAsMandatory("SBA01D", nonResidentialActivityStart, "SBA01D"))
   }
 }
