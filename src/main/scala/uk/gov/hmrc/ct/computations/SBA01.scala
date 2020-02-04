@@ -44,10 +44,38 @@ case class Building(
                      nonResidentialActivityStart: Option[LocalDate],
                      cost: Option[Int],
                      claim: Option[Int]
-                   ) extends ValidatableBox[ComputationsBoxRetriever] {
+                   ) extends ValidatableBox[ComputationsBoxRetriever] with ExtraValidation with SBAHelper {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    collectErrors(validateDateAsMandatory("SBA01C", earliestWrittenContract, "SBA01C"),
-        validateDateAsMandatory("SBA01D", nonResidentialActivityStart, "SBA01D"))
+
+    val endOfAccountingPeriod: LocalDate = boxRetriever.cp2().value
+
+      collectErrors(
+      validateAsMandatory(nameId, name),
+      validateAsMandatory(postcodeId, postcode),
+      dateValidation(endOfAccountingPeriod),
+      validateAsMandatory(costId, cost),
+      validateAsMandatory(claimId, claim)
+    )
+  }
+
+
+  private def dateValidation(dateUpperBound: LocalDate): Set[CtValidation] =
+  collectErrors(
+    earliestWrittenContractValidation(dateUpperBound) ++ nonResidentialActivityValidation(dateUpperBound)
+  )
+
+  private def earliestWrittenContractValidation(dateUpperBound: LocalDate) = {
+    collectErrors(
+      validateAsMandatory(earliestWrittenContractId, earliestWrittenContract),
+      validateDateIsInclusive(earliestWrittenContractId, dateLowerBound, earliestWrittenContract, dateUpperBound)
+    )
+  }
+
+    private def nonResidentialActivityValidation(dateUpperBound: LocalDate) = {
+    collectErrors(
+      validateAsMandatory(nonResActivityId, nonResidentialActivityStart),
+      validateDateIsInclusive(nonResActivityId, dateLowerBound, nonResidentialActivityStart, dateUpperBound)
+    )
   }
 }
