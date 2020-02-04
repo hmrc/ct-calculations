@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.computations
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.calculations.SBACalculator
 import uk.gov.hmrc.ct.computations.formats.Buildings
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
@@ -31,7 +32,22 @@ case class SBA01(buildings: List[Building] = List.empty) extends CtBoxIdentifier
   override def asBoxString = Buildings.asBoxString(this)
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    Set.empty
+    buildings.zipWithIndex.flatMap(b => {
+      val (building, buildingIndex) = b
+      building.claim match {
+        case Some(claimAmount) => {
+          if (claimAmount < 0) {
+            Some(CtValidation (Some(s"SBA01F.building$buildingIndex"), "Claim amount cannot be below zero", None) )
+          } else if(claimAmount > building.apportionedTwoPercent(boxRetriever.cp1().value, boxRetriever.cp2().value)) {
+            Some(CtValidation (Some(s"SBA01F.building$buildingIndex"), "Claim amount cannot be greater than apportioned 2%", None) )
+
+          } else {
+            None
+          }
+        }
+        case None => None
+      }
+    }).toSet
   }
 }
 
@@ -42,4 +58,6 @@ case class Building(
                      nonResidentialActivityStart: Option[LocalDate],
                      cost: Option[Int],
                      claim: Option[Int]
-                   )
+                   ) extends SBACalculator {
+  def apportionedTwoPercent(apStartDate: LocalDate, apEndDate: LocalDate) = getAmountClaimableForSBA(apStartDate, apEndDate, nonResidentialActivityStart, cost).getOrElse(0)
+}
