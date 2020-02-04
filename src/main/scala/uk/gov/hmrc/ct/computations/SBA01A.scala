@@ -17,7 +17,8 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.retriever.{ComputationsBoxRetriever, ComputationsBuildingsBoxRetriever}
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+
 
 case class SBA01A(value: Option[String]) extends CtBoxIdentifier(name = "Building name")
   with CtOptionalString
@@ -28,6 +29,7 @@ case class SBA01A(value: Option[String]) extends CtBoxIdentifier(name = "Buildin
     collectErrors(
       validateStringAsMandatory("SBA01A", this),
       validateOptionalStringByLength("SBA01A", this, 1, 100)
+
     )
   }
 }

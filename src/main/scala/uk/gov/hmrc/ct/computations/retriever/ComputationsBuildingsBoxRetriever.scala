@@ -21,5 +21,4 @@ import uk.gov.hmrc.ct.computations.{CP296, CP297, SBA01, SBA01A, SBA01B}
 
 trait ComputationsBuildingsBoxRetriever extends BoxRetriever { //maybe just box retriever????
 
-
 }
