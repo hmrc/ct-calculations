@@ -16,4 +16,5 @@ trait SBAHelper  {
     boxId => Set(CtValidation(Some(boxId), s"error.$boxId.required", None))
 
    val dateLowerBound = new LocalDate(2018, 10, 28)
+   val exampleUpperBoundDate = new LocalDate(2019, 10, 28)
 }

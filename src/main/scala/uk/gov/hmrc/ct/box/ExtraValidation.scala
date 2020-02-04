@@ -16,7 +16,7 @@ trait ExtraValidation {
   def validateDateIsInclusive(boxId: String, minDate: LocalDate, dateToCompare: Option[LocalDate], maxDate: LocalDate): Set[CtValidation] = {
     dateToCompare match {
       case None => Set()
-      case Some(dateToComp) if minDate < dateToComp && dateToComp < maxDate => Set()
+      case Some(dateToComp) if minDate <= dateToComp && dateToComp <= maxDate => Set()
       case _ => Set(CtValidation(Some(boxId), s"error.$boxId.not.betweenInclusive", Some(Seq(toErrorArgsFormat(minDate), toErrorArgsFormat(maxDate)))))
     }
   }
