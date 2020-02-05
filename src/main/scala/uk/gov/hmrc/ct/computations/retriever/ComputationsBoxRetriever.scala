@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.ct.computations.retriever
 
-import uk.gov.hmrc.ct.{CATO01, CATO02, CATO03, CATO13, CATO14, CATO15, CATO16, CATO20, CATO21, CATO22, CATO23}
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
-import uk.gov.hmrc.ct.computations.{SBA01, _}
+import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.computations.formats._
+import uk.gov.hmrc.ct.{CATO01, CATO02, CATO03, CATO13, CATO14, CATO15, CATO16, CATO20, CATO21, CATO22, CATO23}
 
 trait ComputationsBoxRetriever extends BoxRetriever {
 
@@ -326,10 +327,6 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp295(): CP295 = CP295.calculate(this)
 
-  def cp296(): CP296 = CP296.calculate(this)
-
-  def cp297(): CP297 = CP297.calculate(this)
-
   def cp305(): CP305 = CP305.calculate(this)
 
   def cp500(): CP500 = CP500.calculate(this)
@@ -442,7 +439,16 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def sba01(): SBA01
 
-  def sba02(): List[Option[Int]] = CP296.getCostForEachBuilding(this)
+//  def sba01A(): SBA01A
+
+  //    def sba01B(): SBA01B
+
+  def sba02(): List[Option[Int]] = CP296.getAllowanceForEachBuilding(this)
+
+  def cp296(): CP296 = CP296.calculate(this)
+
+  def cp297(): CP297 = CP297.calculate(this)
+
 
   def lec10(): LEC10 = LEC10.calculate(this)
 

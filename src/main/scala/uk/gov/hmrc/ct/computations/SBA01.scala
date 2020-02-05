@@ -32,22 +32,9 @@ case class SBA01(buildings: List[Building] = List.empty) extends CtBoxIdentifier
   override def asBoxString = Buildings.asBoxString(this)
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    buildings.zipWithIndex.flatMap(b => {
-      val (building, buildingIndex) = b
-      building.claim match {
-        case Some(claimAmount) => {
-          if (claimAmount < 0) {
-            Some(CtValidation (Some(s"SBA01F.building$buildingIndex"), "Claim amount cannot be below zero", None) )
-          } else if(claimAmount > building.apportionedTwoPercent(boxRetriever.cp1().value, boxRetriever.cp2().value)) {
-            Some(CtValidation (Some(s"SBA01F.building$buildingIndex"), "Claim amount cannot be greater than apportioned 2%", None) )
-
-          } else {
-            None
-          }
-        }
-        case None => None
-      }
-    }).toSet
+    buildings.foldRight(Set[CtValidation]())( (acc, x) =>
+    acc.validate(boxRetriever) ++ x
+    )
   }
 }
 
@@ -58,6 +45,57 @@ case class Building(
                      nonResidentialActivityStart: Option[LocalDate],
                      cost: Option[Int],
                      claim: Option[Int]
-                   ) extends SBACalculator {
+                   ) extends ValidatableBox[ComputationsBoxRetriever] with ExtraValidation with SBAHelper with SBACalculator {
   def apportionedTwoPercent(apStartDate: LocalDate, apEndDate: LocalDate) = getAmountClaimableForSBA(apStartDate, apEndDate, nonResidentialActivityStart, cost).getOrElse(0)
+
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+
+    val endOfAccountingPeriod: LocalDate = boxRetriever.cp2().value
+    val startOfAccountingPeriod: LocalDate = boxRetriever.cp1().value
+
+      collectErrors(
+      validateAsMandatory(nameId, name),
+      validateAsMandatory(postcodeId, postcode),
+      dateValidation(endOfAccountingPeriod),
+      validateAsMandatory(costId, cost),
+      validateAsMandatory(claimId, claim),
+      claimAmountValidation(startOfAccountingPeriod, endOfAccountingPeriod)
+    )
+  }
+
+
+  private def dateValidation(dateUpperBound: LocalDate): Set[CtValidation] =
+  collectErrors(
+    earliestWrittenContractValidation(dateUpperBound) ++ nonResidentialActivityValidation(dateUpperBound)
+  )
+
+  private def earliestWrittenContractValidation(dateUpperBound: LocalDate) = {
+    collectErrors(
+      validateAsMandatory(earliestWrittenContractId, earliestWrittenContract),
+      validateDateIsInclusive(earliestWrittenContractId, dateLowerBound, earliestWrittenContract, dateUpperBound)
+    )
+  }
+
+  private def nonResidentialActivityValidation(dateUpperBound: LocalDate) = {
+    collectErrors(
+      validateAsMandatory(nonResActivityId, nonResidentialActivityStart),
+      validateDateIsInclusive(nonResActivityId, dateLowerBound, nonResidentialActivityStart, dateUpperBound)
+    )
+  }
+
+  private def claimAmountValidation(apStart: LocalDate, epEnd: LocalDate) = {
+    claim match {
+      case Some(claimAmount) => {
+        if (claimAmount < 0) {
+          Some(CtValidation(Some(s"SBA01F.building0"), "Claim amount cannot be below zero", None))
+        } else if (claimAmount > apportionedTwoPercent(apStart, epEnd)) {
+          Some(CtValidation(Some(s"SBA01F.building0"), "Claim amount cannot be greater than apportioned 2%", None))
+
+        } else {
+          None
+        }
+      }
+      case None => None
+    }
+  }
 }
