@@ -38,7 +38,6 @@ trait BoxRetriever {
   }
 
 
-
 }
 
 object BoxRetriever {
