@@ -51,14 +51,14 @@ case class Building(
     val endOfAccountingPeriod: LocalDate = boxRetriever.cp2().value
 
       collectErrors(
-      validateAsMandatory(nameId, name),
-      validateAsMandatory(postcodeId, postcode),
-      dateValidation(endOfAccountingPeriod),
-      validateAsMandatory(costId, cost),
-      validateAsMandatory(claimId, claim)
+        validateAsMandatory(nameId, name),
+        validateStringMaxLength(nameId, name.getOrElse(""), 100),
+        validateAsMandatory(postcodeId, postcode),
+        dateValidation(endOfAccountingPeriod),
+        validateAsMandatory(costId, cost)
+//      validateAsMandatory(claimId, claim)
     )
   }
-
 
   private def dateValidation(dateUpperBound: LocalDate): Set[CtValidation] =
   collectErrors(
