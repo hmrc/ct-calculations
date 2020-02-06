@@ -53,12 +53,16 @@ case class Building(
       collectErrors(
         validateAsMandatory(nameId, name),
         validateStringMaxLength(nameId, name.getOrElse(""), 100),
-        validateAsMandatory(postcodeId, postcode),
         dateValidation(endOfAccountingPeriod),
         validateAsMandatory(costId, cost)
 //      validateAsMandatory(claimId, claim)
     )
   }
+
+  private def postCodeValidation(): Set[CtValidation] =
+    collectErrors(
+      validateAsMandatory(postcodeId, postcode) ++ validatePostcode("SBA01B", this)
+    )
 
   private def dateValidation(dateUpperBound: LocalDate): Set[CtValidation] =
   collectErrors(

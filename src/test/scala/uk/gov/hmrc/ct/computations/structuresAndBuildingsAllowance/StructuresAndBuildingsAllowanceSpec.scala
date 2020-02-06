@@ -47,6 +47,15 @@ class StructuresAndBuildingsAllowanceSpec extends  WordSpec with MockitoSugar wi
             Set(CtValidation(Some(earliestWrittenContractId), s"error.$earliestWrittenContractId.not.betweenInclusive",
               Some(List("28 October 2018", "28 October 2019"))))
           }
+
+          "date is after the end of accounting period" in {
+            when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
+
+            happyFullBuilding.copy(earliestWrittenContract = Some(exampleUpperBoundDate.plusDays(1))).validate(mockBoxRetriever) shouldBe
+            Set(CtValidation(Some(earliestWrittenContractId), s"error.$earliestWrittenContractId.not.betweenInclusive",
+              Some(List("28 October 2018", "28 October 2019"))))
+          }
+
         }
 
         //      "name is over 100 characters long" in {

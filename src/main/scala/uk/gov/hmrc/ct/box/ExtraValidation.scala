@@ -20,4 +20,6 @@ trait ExtraValidation {
       case _ => Set(CtValidation(Some(boxId), s"error.$boxId.not.betweenInclusive", Some(Seq(toErrorArgsFormat(minDate), toErrorArgsFormat(maxDate)))))
     }
   }
+
+//  def validatePostcode() =
 }
