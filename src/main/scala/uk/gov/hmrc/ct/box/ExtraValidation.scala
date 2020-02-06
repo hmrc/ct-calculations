@@ -4,22 +4,43 @@ import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.domain.ValidationConstants.toErrorArgsFormat
 import uk.gov.hmrc.ct.utils.DateImplicits._
 
-trait ExtraValidation {
+trait ExtraValidation extends Validators {
+
+  private val validationSuccess: Set[CtValidation] = Set()
+  protected val postCodeRegex = """(GIR 0AA)|((([A-Z][0-9][0-9]?)|(([A-Z][A-HJ-Y][0-9][0-9]?)|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2})"""
+
   def validateAsMandatory[A](boxId: String, value: Option[A])(): Set[CtValidation] = {
     value match {
       case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
       case Some(x: String) if x.isEmpty => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
-      case _ => Set()
+      case _ => validationSuccess
     }
   }
 
   def validateDateIsInclusive(boxId: String, minDate: LocalDate, dateToCompare: Option[LocalDate], maxDate: LocalDate): Set[CtValidation] = {
     dateToCompare match {
-      case None => Set()
-      case Some(dateToComp) if minDate <= dateToComp && dateToComp <= maxDate => Set()
+      case None => validationSuccess
+      case Some(dateToComp) if minDate <= dateToComp && dateToComp <= maxDate => validationSuccess
       case _ => Set(CtValidation(Some(boxId), s"error.$boxId.not.betweenInclusive", Some(Seq(toErrorArgsFormat(minDate), toErrorArgsFormat(maxDate)))))
     }
   }
 
-//  def validatePostcode() =
+  def validatePostcode(boxId: String, postcode: Option[String]) =
+    if(postcode.isEmpty) {
+      validationSuccess
+    } else {
+      validatePostcodeLength(boxId, postcode.get) ++ validatePostcodeRegex(boxId, postcode.get)
+    }
+    def validatePostcodeLength(boxId: String, postcode: String): Set[CtValidation] = {
+      if (postcode.size < 6 || postcode.size > 8) Set(CtValidation(Some(boxId), s"error.$boxId.invalidPostcode"))
+      else validationSuccess
+    }
+
+  def validatePostcodeRegex(boxId: String, postcode: String): Set[CtValidation] =
+    validateStringByRegex(boxId, postcode, postCodeRegex)
+
+ def validateStringByRegex(boxId: String, str: String, regex: String): Set[CtValidation] =
+   passIf(str.matches(regex)) {
+     Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
+   }
 }
