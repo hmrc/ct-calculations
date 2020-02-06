@@ -1,26 +1,23 @@
 package uk.gov.hmrc.ct.computations.structuresAndBuildingsAllowance
 
-import org.joda.time.LocalDate
-import org.scalatest.mock.MockitoSugar
-import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
+import org.mockito.Mockito._
 import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.{Building, CP2, SBAHelper}
-import org.mockito.Mockito._
-import uk.gov.hmrc.ct.computations
+import uk.gov.hmrc.ct.utils.UnitSpec
 
-class StructuresAndBuildingsAllowanceSpec extends  WordSpec with MockitoSugar with Matchers with SBAHelper {
+class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
 
-  private val today = LocalDate.now
   private val arbitraryPrice = 100
-  private val sba01BoxId = "SBA01"
   private val someText = "bingBong12"
   private val hundredCharacters = someText * 10
   private val overHundredCharacters = someText * 15
   private val dateUnderLowerBound = dateLowerBound.minusDays(1)
-
+  private val dateInclusiveErrorMsg = Some(List("28 October 2018", "28 October 2019"))
   private val emptyBuilding = Building(None, None, None, None, None, None)
-  private val happyFullBuilding = Building(Some(someText), Some("postcode"), Some(exampleUpperBoundDate),
+
+  private val happyFullBuilding = Building(Some(someText), Some("BN3 8BB"), Some(exampleUpperBoundDate),
     Some(exampleUpperBoundDate), Some(arbitraryPrice), Some(arbitraryPrice))
 
   private val mockBoxRetriever = mock[ComputationsBoxRetriever]
@@ -28,57 +25,99 @@ class StructuresAndBuildingsAllowanceSpec extends  WordSpec with MockitoSugar wi
   "A building" should {
     "validate with an error" when {
       "any of the fields in a building are empty" in {
+        when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
+
         happyFullBuilding.copy(name = None).validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01A")
         happyFullBuilding.copy(postcode = None).validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01B")
         happyFullBuilding.copy(earliestWrittenContract = None).validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01C")
         happyFullBuilding.copy(nonResidentialActivityStart = None).validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01D")
         happyFullBuilding.copy(cost = None).validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01E")
-        happyFullBuilding.copy(claim = None).validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01F")
       }
     }
   }
 
-      "earliestWrittenContract" should {
+      "building name" should {
         "validate with an error" when {
-          "date is before 2018-10-29" in {
-            when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
-
-            happyFullBuilding.copy(earliestWrittenContract = Some(dateUnderLowerBound)).validate(mockBoxRetriever) shouldBe
-            Set(CtValidation(Some(earliestWrittenContractId), s"error.$earliestWrittenContractId.not.betweenInclusive",
-              Some(List("28 October 2018", "28 October 2019"))))
+          "characters exceeds 100 limit" in {
+            happyFullBuilding.copy(name = Some(overHundredCharacters)).validate(mockBoxRetriever) shouldBe
+              Set(CtValidation(Some(nameId), s"error.$nameId.max.length", Some(Seq(commaForThousands(100)))))
           }
         }
+          "validate with a success" when {
+            "building name is less than 100 character limit" in {
+              happyFullBuilding.copy(name = Some(someText)).validate(mockBoxRetriever) shouldBe validationSuccess
+            }
+          }
+      }
 
-        //      "name is over 100 characters long" in {
-        //        val illegalName = legalBuildingName.copy(value = Some(overHundredCharacters))
-        //        illegalName.validate(mockBoxRetriever) shouldBe sizeRangeError(sba01BoxId, 100)
-        //      }
-        //
-        //      "postcode is over 8 characters long" in {
-        //        val invalidPostcode = SBA01B(Some(someText))
-        //        postCodeError(invalidPostcode)
-        //      }
-        //
-        //      "postcode invalidates with the regex" in {
-        //        val invalidPostcode = SBA01B(Some("ss7 %%%"))
-        //        postCodeError(invalidPostcode)
-        //      }
-
-        "postcode does not fit the correct format" in {
+      "building postcode" should {
+        "validate with an error" when {
+          "the postcode is over 8 characters" in {
+            happyFullBuilding.copy(postcode = Some(someText)).validate(mockBoxRetriever) shouldBe
+            postcodeError(postcodeId) ++ regexError(postcodeId)
+          }
+          "the postcode is under 6 characters" in {
+            happyFullBuilding.copy(postcode = Some("ab")).validate(mockBoxRetriever) shouldBe
+              postcodeError(postcodeId) ++ regexError(postcodeId)
+          }
+          "the postcode fails just the regex" in {
+            happyFullBuilding.copy(postcode = Some("BN3 3!!")).validate(mockBoxRetriever) shouldBe
+              regexError(postcodeId)
+          }
+        }
+        "validate with a success" when {
+          "the postcode is between 6 and 8 characters and satisfies the regex" in {
+            happyFullBuilding.validate(mockBoxRetriever) shouldBe validationSuccess
+          }
         }
       }
 
-    private def validateParameter(building: Building, validationResult: Set[CtValidation]) =
-      building.validate(mockBoxRetriever) shouldBe validationResult
+      "earliestWrittenContract" should {
+        when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
 
+        "validate with an error" when {
+          "date is before 2018-10-29" in {
+            happyFullBuilding.copy(earliestWrittenContract = Some(dateUnderLowerBound)).validate(mockBoxRetriever) shouldBe
+              Set(CtValidation(Some(earliestWrittenContractId), s"error.$earliestWrittenContractId.not.betweenInclusive",
+                dateInclusiveErrorMsg))
+          }
+
+          "date is after the end of accounting period" in {
+            happyFullBuilding.copy(earliestWrittenContract = Some(exampleUpperBoundDate.plusDays(1))).validate(mockBoxRetriever) shouldBe
+              Set(CtValidation(Some(earliestWrittenContractId), s"error.$earliestWrittenContractId.not.betweenInclusive",
+                dateInclusiveErrorMsg))
+          }
+        }
+
+        "validate with a success" when {
+          "date is between 2018-10-29 and the end of the accounting period" in {
+            happyFullBuilding.copy(earliestWrittenContract = Some(exampleUpperBoundDate.minusDays(1))).validate(mockBoxRetriever) shouldBe
+              validationSuccess
+          }
+        }
+      }
+        "nonResidentialActivity" should {
+          when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
+
+          "validate with an error" when {
+            "date is before 2018-10-29" in {
+              happyFullBuilding.copy(nonResidentialActivityStart = Some(dateUnderLowerBound)).validate(mockBoxRetriever) shouldBe
+                Set(CtValidation(Some(nonResActivityId), s"error.$nonResActivityId.not.betweenInclusive",
+                  dateInclusiveErrorMsg))
+            }
+
+            "date is after the end of accounting period" in {
+              happyFullBuilding.copy(nonResidentialActivityStart = Some(exampleUpperBoundDate.plusDays(1))).validate(mockBoxRetriever) shouldBe
+                Set(CtValidation(Some(nonResActivityId), s"error.$nonResActivityId.not.betweenInclusive",
+                  dateInclusiveErrorMsg))
+            }
+          }
+          "validate with a success" when {
+            "date is between 2018-10-29 and the end of the accounting period" in {
+              happyFullBuilding.copy(nonResidentialActivityStart = Some(exampleUpperBoundDate.minusDays(1))).validate(mockBoxRetriever) shouldBe
+                validationSuccess
+            }
+          }
+        }
 }
-
-//  private val postCodeError: Option[String] => Unit = {
-//    invalidPostcode => invalidPostcode.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some(sba01BoxId),"error.SBA01.invalidPostcode", None))
-//  }
-//
-
-//  private def sizeRangeError(boxId: String, max: Int): Set[CtValidation] =
-//    Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(1.toString, max.toString))))
-
 

@@ -56,27 +56,27 @@ case class Building(
 
     collectErrors(
       validateAsMandatory(nameId, name),
-      validateAsMandatory(postcodeId, postcode),
+      validateStringMaxLength(nameId, name.getOrElse(""), 100),
+      postCodeValidation(postcodeId, postcode),
       dateValidation(endOfAccountingPeriod),
       validateAsMandatory(costId, cost),
       claimAmountValidation(startOfAccountingPeriod, endOfAccountingPeriod, buildingIndex)
     )
   }
 
+  private def postCodeValidation(boxId: String, postcode: Option[String]): Set[CtValidation] =
+      validateAsMandatory(boxId, postcode) ++ validatePostcode(boxId, postcode)
 
   private def dateValidation(dateUpperBound: LocalDate): Set[CtValidation] =
-  collectErrors(
     earliestWrittenContractValidation(dateUpperBound) ++ nonResidentialActivityValidation(dateUpperBound)
-  )
 
-  private def earliestWrittenContractValidation(dateUpperBound: LocalDate) = {
+  private def earliestWrittenContractValidation(dateUpperBound: LocalDate): Set[CtValidation] =
     collectErrors(
       validateAsMandatory(earliestWrittenContractId, earliestWrittenContract),
       validateDateIsInclusive(earliestWrittenContractId, dateLowerBound, earliestWrittenContract, dateUpperBound)
     )
-  }
 
-  private def nonResidentialActivityValidation(dateUpperBound: LocalDate) = {
+  private def nonResidentialActivityValidation(dateUpperBound: LocalDate): Set[CtValidation] = {
     collectErrors(
       validateAsMandatory(nonResActivityId, nonResidentialActivityStart),
       validateDateIsInclusive(nonResActivityId, dateLowerBound, nonResidentialActivityStart, dateUpperBound)
