@@ -449,6 +449,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp297(): CP297 = CP297.calculate(this)
 
+  def cp298(): CP298 = CP298.calculate(this)
+
 
   def lec10(): LEC10 = LEC10.calculate(this)
 
