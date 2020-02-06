@@ -52,14 +52,14 @@ case class Building(
 
     val endOfAccountingPeriod: LocalDate = boxRetriever.cp2().value
     val startOfAccountingPeriod: LocalDate = boxRetriever.cp1().value
+    val buildingIndex: Int = boxRetriever.sba01().buildings.indexOf(this)
 
-      collectErrors(
+    collectErrors(
       validateAsMandatory(nameId, name),
       validateAsMandatory(postcodeId, postcode),
       dateValidation(endOfAccountingPeriod),
       validateAsMandatory(costId, cost),
-      validateAsMandatory(claimId, claim),
-      claimAmountValidation(startOfAccountingPeriod, endOfAccountingPeriod)
+      claimAmountValidation(startOfAccountingPeriod, endOfAccountingPeriod, buildingIndex)
     )
   }
 
@@ -83,19 +83,19 @@ case class Building(
     )
   }
 
-  private def claimAmountValidation(apStart: LocalDate, epEnd: LocalDate) = {
+  private def claimAmountValidation(apStart: LocalDate, epEnd: LocalDate, buildingIndex: Int): Set[CtValidation] = {
     claim match {
       case Some(claimAmount) => {
         if (claimAmount < 0) {
-          Some(CtValidation(Some(s"SBA01F.building0"), "Claim amount cannot be below zero", None))
+          Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "Claim amount cannot be below zero", None))
         } else if (claimAmount > apportionedTwoPercent(apStart, epEnd)) {
-          Some(CtValidation(Some(s"SBA01F.building0"), "Claim amount cannot be greater than apportioned 2%", None))
+          Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "Claim amount cannot be greater than apportioned 2%", None))
 
         } else {
-          None
+          Set.empty
         }
       }
-      case None => None
+      case None => Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "Must enter claim", None))
     }
   }
 }
