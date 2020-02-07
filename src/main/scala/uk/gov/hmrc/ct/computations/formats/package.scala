@@ -428,9 +428,7 @@ package object formats {
 
   lazy implicit val sba01Format: Format[SBA01] = Json.format[SBA01]
 
-  lazy implicit val buildingFormatter: OFormat[Building] = Json.format[Building]
-
-  lazy implicit val sba01AFormat: OFormat[SBA01A] = Json.format[SBA01A]
+  lazy implicit val buildingFormat: OFormat[Building] = Json.format[Building]
 
   implicit val lec01Format: Format[LEC01] = Json.format[LEC01]
 

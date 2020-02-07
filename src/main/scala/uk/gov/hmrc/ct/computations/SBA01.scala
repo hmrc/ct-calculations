@@ -51,13 +51,15 @@ case class Building(
     val endOfAccountingPeriod: LocalDate = boxRetriever.cp2().value
 
       collectErrors(
-        validateAsMandatory(nameId, name),
-        validateStringMaxLength(nameId, name.getOrElse(""), 100),
+        nameValidation(nameId, name),
         postCodeValidation(postcodeId, postcode),
         dateValidation(endOfAccountingPeriod),
         validateAsMandatory(costId, cost)
     )
   }
+
+  private def nameValidation(boxId: String, name: Option[String]) =
+    validateAsMandatory(boxId, name) ++ validateStringMaxLength(boxId, name.getOrElse(""), 100)
 
   private def postCodeValidation(boxId: String, postcode: Option[String]): Set[CtValidation] =
       validateAsMandatory(boxId, postcode) ++ validatePostcode(boxId, postcode)
