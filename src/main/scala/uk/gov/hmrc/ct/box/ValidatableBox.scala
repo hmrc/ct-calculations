@@ -25,10 +25,9 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 import uk.gov.hmrc.ct.utils.DateImplicits._
 
-trait ValidatableBox[T <: BoxRetriever] extends Validators {
+trait ValidatableBox[T <: BoxRetriever] extends Validators with ExtraValidation {
 
   // Taken from PostCodeType on http://www.hmrc.gov.uk/schemas/core-v2-0.xsd
-  protected val postCodeRegex = """(GIR 0AA)|((([A-Z][0-9][0-9]?)|(([A-Z][A-HJ-Y][0-9][0-9]?)|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2})"""
 
   def validate(boxRetriever: T): Set[CtValidation]
 

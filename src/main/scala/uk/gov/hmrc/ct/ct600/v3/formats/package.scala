@@ -110,6 +110,10 @@ package object formats {
 
   implicit val B775Format: Format[B775] = new IntegerFormat[B775](B775.apply)
 
+  implicit val B711Format: Format[B711] = new OptionalIntegerFormat[B711](B711.apply)
+
+  implicit val B771Format: Format[B771] = new OptionalIntegerFormat[B771](B771.apply)
+
   implicit val B780Format: Format[B780] = new IntegerFormat[B780](B780.apply)
 
   implicit val B860Format: Format[B860] = new OptionalIntegerFormat[B860](B860.apply)

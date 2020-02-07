@@ -16,12 +16,11 @@
 
 package uk.gov.hmrc.ct.computations
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Format, Json, OFormat}
 import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.formats._
 import play.api.libs.json.JodaWrites._
 import play.api.libs.json.JodaReads._
-
 
 package object formats {
 
@@ -317,6 +316,8 @@ package object formats {
 
   implicit val cp297Format: Format[CP297] = new OptionalIntegerFormat[CP297](CP297.apply)
 
+  implicit val cp298Format: Format[CP298] = new OptionalIntegerFormat[CP298](CP298.apply)
+
   implicit val cp301Format: Format[CP301] = new OptionalIntegerFormat[CP301](CP301.apply)
 
   implicit val cp302Format: Format[CP302] = new OptionalIntegerFormat[CP302](CP302.apply)
@@ -421,11 +422,11 @@ package object formats {
 
   implicit val cpq321Format: Format[CPQ321] = new OptionalBooleanFormat[CPQ321](CPQ321.apply)
 
-  implicit val carFormatter = Json.format[Car]
+  implicit val carFormatter: OFormat[Car] = Json.format[Car]
 
-  implicit val buildingFormatter = Json.format[Building]
+  lazy implicit val sba01Format: Format[SBA01] = Json.format[SBA01]
 
-  implicit val sba01Format: Format[SBA01] = Json.format[SBA01]
+  lazy implicit val buildingFormat: OFormat[Building] = Json.format[Building]
 
   implicit val lec01Format: Format[LEC01] = Json.format[LEC01]
 

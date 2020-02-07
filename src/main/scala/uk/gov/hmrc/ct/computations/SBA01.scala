@@ -31,7 +31,9 @@ case class SBA01(buildings: List[Building] = List.empty) extends CtBoxIdentifier
   override def asBoxString = Buildings.asBoxString(this)
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    Set.empty
+    buildings.foldRight(Set[CtValidation]())( (building, errors) =>
+    building.validate(boxRetriever) ++ errors
+    )
   }
 }
 
@@ -42,4 +44,40 @@ case class Building(
                      nonResidentialActivityStart: Option[LocalDate],
                      cost: Option[Int],
                      claim: Option[Int]
-                   )
+                   ) extends ValidatableBox[ComputationsBoxRetriever] with ExtraValidation with SBAHelper {
+
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+
+    val endOfAccountingPeriod: LocalDate = boxRetriever.cp2().value
+
+      collectErrors(
+        nameValidation(nameId, name),
+        postCodeValidation(postcodeId, postcode),
+        dateValidation(endOfAccountingPeriod),
+        validateAsMandatory(costId, cost)
+    )
+  }
+
+
+  private def nameValidation(boxId: String, name: Option[String]) =
+    validateAsMandatory(boxId, name) ++ validateStringMaxLength(boxId, name.getOrElse(""), 100)
+
+  private def postCodeValidation(boxId: String, postcode: Option[String]): Set[CtValidation] =
+      validateAsMandatory(boxId, postcode) ++ validatePostcode(boxId, postcode)
+
+  private def dateValidation(dateUpperBound: LocalDate): Set[CtValidation] =
+    earliestWrittenContractValidation(dateUpperBound) ++ nonResidentialActivityValidation(dateUpperBound)
+
+  private def earliestWrittenContractValidation(dateUpperBound: LocalDate): Set[CtValidation] =
+    collectErrors(
+      validateAsMandatory(earliestWrittenContractId, earliestWrittenContract),
+      validateDateIsInclusive(earliestWrittenContractId, dateLowerBound, earliestWrittenContract, dateUpperBound)
+    )
+
+    private def nonResidentialActivityValidation(dateUpperBound: LocalDate): Set[CtValidation] = {
+    collectErrors(
+      validateAsMandatory(nonResActivityId, nonResidentialActivityStart),
+      validateDateIsInclusive(nonResActivityId, dateLowerBound, nonResidentialActivityStart, dateUpperBound)
+    )
+  }
+}
