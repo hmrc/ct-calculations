@@ -16,13 +16,11 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
-import play.api.libs.json.{Format, JsPath, Json, OFormat, OWrites, Reads, Writes}
+import play.api.libs.json.{Format, Json, OFormat}
 import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.formats._
 import play.api.libs.json.JodaWrites._
 import play.api.libs.json.JodaReads._
-import play.api.libs.functional.syntax._
 
 package object formats {
 

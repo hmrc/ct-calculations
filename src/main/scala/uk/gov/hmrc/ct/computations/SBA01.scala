@@ -58,6 +58,7 @@ case class Building(
     )
   }
 
+
   private def nameValidation(boxId: String, name: Option[String]) =
     validateAsMandatory(boxId, name) ++ validateStringMaxLength(boxId, name.getOrElse(""), 100)
 
