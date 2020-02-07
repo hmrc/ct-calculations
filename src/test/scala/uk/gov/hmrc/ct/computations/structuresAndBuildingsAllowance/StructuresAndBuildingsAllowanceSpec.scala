@@ -69,18 +69,18 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
       "building postcode" should {
         "validate with an error" when {
           "the postcode is over 8 characters" in {
-            happyFullBuilding.copy(postcode = Some(someText)).validate(mockBoxRetriever) shouldBe
-            postcodeError(postcodeId) ++ regexError(postcodeId)
+              happyFullBuilding.copy(postcode = Some(someText)).validate(mockBoxRetriever) shouldBe
+                postcodeError(postcodeId)
+            }
+            "the postcode is under 6 characters" in {
+              happyFullBuilding.copy(postcode = Some("ab")).validate(mockBoxRetriever) shouldBe
+                postcodeError(postcodeId)
+            }
+            "the postcode fails just the regex" in {
+              happyFullBuilding.copy(postcode = Some("BN3 3!!")).validate(mockBoxRetriever) shouldBe
+                postcodeError(postcodeId)
+            }
           }
-          "the postcode is under 6 characters" in {
-            happyFullBuilding.copy(postcode = Some("ab")).validate(mockBoxRetriever) shouldBe
-              postcodeError(postcodeId) ++ regexError(postcodeId)
-          }
-          "the postcode fails just the regex" in {
-            happyFullBuilding.copy(postcode = Some("BN3 3!!")).validate(mockBoxRetriever) shouldBe
-              regexError(postcodeId)
-          }
-        }
         "validate with a success" when {
           "the postcode is between 6 and 8 characters and satisfies the regex" in {
             happyFullBuilding.validate(mockBoxRetriever) shouldBe validationSuccess
