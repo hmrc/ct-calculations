@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.calculations.SBACalculator
-import uk.gov.hmrc.ct.computations.retriever.{ComputationsBoxRetriever, ComputationsBuildingsBoxRetriever}
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP296(value: Option[Int]) extends CtBoxIdentifier(name = "Total Structure and Building Allowance") with CtOptionalInteger
 

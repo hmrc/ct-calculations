@@ -31,8 +31,8 @@ case class SBA01(buildings: List[Building] = List.empty) extends CtBoxIdentifier
   override def asBoxString = Buildings.asBoxString(this)
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    buildings.foldRight(Set[CtValidation]())( (acc, x) =>
-    acc.validate(boxRetriever) ++ x
+    buildings.foldRight(Set[CtValidation]())( (building, errors) =>
+    building.validate(boxRetriever) ++ errors
     )
   }
 }
