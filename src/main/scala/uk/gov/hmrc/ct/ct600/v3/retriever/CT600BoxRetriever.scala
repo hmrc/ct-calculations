@@ -168,4 +168,5 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
   def b780(): B780 = B780(cp118())
 
   def bFQ1(): BFQ1
+
 }
