@@ -56,14 +56,16 @@ case class Building(
     val buildingIndex: Int = boxRetriever.sba01().buildings.indexOf(this)
 
     collectErrors(
-      validateAsMandatory(nameId, name),
-      validateStringMaxLength(nameId, name.getOrElse(""), 100),
+      nameValidation(nameId, name),
       postCodeValidation(postcodeId, postcode),
       dateValidation(endOfAccountingPeriod),
       validateAsMandatory(costId, cost),
       claimAmountValidation(startOfAccountingPeriod, endOfAccountingPeriod, buildingIndex)
     )
   }
+
+  private def nameValidation(boxId: String, name: Option[String]) =
+    validateAsMandatory(boxId, name) ++ validateStringMaxLength(boxId, name.getOrElse(""), 100)
 
   private def postCodeValidation(boxId: String, postcode: Option[String]): Set[CtValidation] =
       validateAsMandatory(boxId, postcode) ++ validatePostcode(boxId, postcode)
