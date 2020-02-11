@@ -9,6 +9,7 @@ import uk.gov.hmrc.SbtArtifactory.autoImport.makePublicallyAvailableOnBintray
 
   lazy val CtCalculations = (project in file("."))
     .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
+    .disablePlugins(JUnitXmlReportPlugin)
     .settings(majorVersion := 2)
     .settings(makePublicallyAvailableOnBintray := true)
     .settings(
