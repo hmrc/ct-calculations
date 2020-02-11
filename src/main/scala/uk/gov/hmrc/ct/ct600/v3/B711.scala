@@ -26,4 +26,3 @@ object B711 extends Linked[CP298, B711] {
 
   override def apply(source: CP298): B711 = B711(source.value)
 }
-}
