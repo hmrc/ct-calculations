@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.computations
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.calculations.SBACalculator
 import uk.gov.hmrc.ct.computations.formats.Buildings
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
@@ -31,6 +32,7 @@ case class SBA01(buildings: List[Building] = List.empty) extends CtBoxIdentifier
   override def asBoxString = Buildings.asBoxString(this)
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+
     buildings.foldRight(Set[CtValidation]())( (building, errors) =>
     building.validate(boxRetriever) ++ errors
     )
@@ -44,20 +46,23 @@ case class Building(
                      nonResidentialActivityStart: Option[LocalDate],
                      cost: Option[Int],
                      claim: Option[Int]
-                   ) extends ValidatableBox[ComputationsBoxRetriever] with ExtraValidation with SBAHelper {
+                   ) extends ValidatableBox[ComputationsBoxRetriever] with ExtraValidation with SBAHelper with SBACalculator {
+  def apportionedTwoPercent(apStartDate: LocalDate, apEndDate: LocalDate) = getAmountClaimableForSBA(apStartDate, apEndDate, nonResidentialActivityStart, cost).getOrElse(0)
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
 
     val endOfAccountingPeriod: LocalDate = boxRetriever.cp2().value
+    val startOfAccountingPeriod: LocalDate = boxRetriever.cp1().value
+    val buildingIndex: Int = boxRetriever.sba01().buildings.indexOf(this)
 
-      collectErrors(
-        nameValidation(nameId, name),
-        postCodeValidation(postcodeId, postcode),
-        dateValidation(endOfAccountingPeriod),
-        validateAsMandatory(costId, cost)
+    collectErrors(
+      nameValidation(nameId, name),
+      postCodeValidation(postcodeId, postcode),
+      dateValidation(endOfAccountingPeriod),
+      validateAsMandatory(costId, cost),
+      claimAmountValidation(startOfAccountingPeriod, endOfAccountingPeriod, buildingIndex)
     )
   }
-
 
   private def nameValidation(boxId: String, name: Option[String]) =
     validateAsMandatory(boxId, name) ++ validateStringMaxLength(boxId, name.getOrElse(""), 100)
@@ -79,5 +84,21 @@ case class Building(
       validateAsMandatory(nonResActivityId, nonResidentialActivityStart),
       validateDateIsInclusive(nonResActivityId, dateLowerBound, nonResidentialActivityStart, dateUpperBound)
     )
+  }
+
+  private def claimAmountValidation(apStart: LocalDate, epEnd: LocalDate, buildingIndex: Int): Set[CtValidation] = {
+    claim match {
+      case Some(claimAmount) => {
+        if (claimAmount < 0) {
+          Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "error.SBA01F.lessThanZero", None))
+        } else if (claimAmount > apportionedTwoPercent(apStart, epEnd)) {
+          Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "error.SBA01F.greaterThanMax", None))
+
+        } else {
+          Set.empty
+        }
+      }
+      case None => Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "error.SBA01F.required", None))
+    }
   }
 }
