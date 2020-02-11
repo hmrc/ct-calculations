@@ -90,15 +90,15 @@ case class Building(
     claim match {
       case Some(claimAmount) => {
         if (claimAmount < 0) {
-          Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "Claim amount cannot be below zero", None))
+          Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "error.SBA01F.lessThanZero", None))
         } else if (claimAmount > apportionedTwoPercent(apStart, epEnd)) {
-          Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "Claim amount cannot be greater than apportioned 2%", None))
+          Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "error.SBA01F.greaterThanMax", None))
 
         } else {
           Set.empty
         }
       }
-      case None => Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "Must enter claim", None))
+      case None => Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "error.SBA01F.required", None))
     }
   }
 }
