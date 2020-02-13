@@ -79,7 +79,7 @@ case class Building(
       validateDateIsInclusive(earliestWrittenContractId, dateLowerBound, earliestWrittenContract, dateUpperBound)
     )
 
-    private def nonResidentialActivityValidation(dateUpperBound: LocalDate): Set[CtValidation] = {
+  private def nonResidentialActivityValidation(dateUpperBound: LocalDate): Set[CtValidation] = {
     collectErrors(
       validateAsMandatory(nonResActivityId, nonResidentialActivityStart),
       validateDateIsInclusive(nonResActivityId, dateLowerBound, nonResidentialActivityStart, dateUpperBound)

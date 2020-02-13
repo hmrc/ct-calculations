@@ -135,4 +135,12 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
             }
           }
         }
+
+//        "claim" should {
+//          "validate with an error" when {
+//            "empty" in {
+//              happyFullBuilding.copy(claim = None).validate(mockBoxRetriever) shouldBe Set(CtValidation)
+//            }
+//          }
+//        }
 }
