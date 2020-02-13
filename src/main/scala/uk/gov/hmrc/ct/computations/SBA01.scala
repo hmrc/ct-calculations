@@ -89,8 +89,8 @@ case class Building(
   private def claimAmountValidation(apStart: LocalDate, epEnd: LocalDate, buildingIndex: Int): Set[CtValidation] = {
     claim match {
       case Some(claimAmount) => {
-        if (claimAmount < 0) {
-          Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "error.SBA01F.lessThanZero", None))
+        if (claimAmount < 1) {
+          Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "error.SBA01F.lessThanOne", None))
         } else if (claimAmount > apportionedTwoPercent(apStart, epEnd)) {
           Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "error.SBA01F.greaterThanMax", None))
 
