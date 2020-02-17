@@ -43,7 +43,7 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
       "any of the fields in a building are empty" in {
         when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
 
-        happyFullBuilding.copy(name = None).validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01A")
+        happyFullBuilding.copy(firstLineOfAddress = None).validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01A")
         happyFullBuilding.copy(postcode = None).validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01B")
         happyFullBuilding.copy(earliestWrittenContract = None).validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01C")
         happyFullBuilding.copy(nonResidentialActivityStart = None).validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01D")
@@ -55,13 +55,13 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
       "building name" should {
         "validate with an error" when {
           "characters exceeds 100 limit" in {
-            happyFullBuilding.copy(name = Some(overHundredCharacters)).validate(mockBoxRetriever) shouldBe
-              Set(CtValidation(Some(nameId), s"error.$nameId.max.length", Some(Seq(commaForThousands(100)))))
+            happyFullBuilding.copy(firstLineOfAddress = Some(overHundredCharacters)).validate(mockBoxRetriever) shouldBe
+              Set(CtValidation(Some(firstLineOfAddressId), s"error.$firstLineOfAddressId.max.length", Some(Seq(commaForThousands(100)))))
           }
         }
           "validate with a success" when {
             "building name is less than 100 character limit" in {
-              happyFullBuilding.copy(name = Some(someText)).validate(mockBoxRetriever) shouldBe validationSuccess
+              happyFullBuilding.copy(firstLineOfAddress = Some(someText)).validate(mockBoxRetriever) shouldBe validationSuccess
             }
           }
       }
