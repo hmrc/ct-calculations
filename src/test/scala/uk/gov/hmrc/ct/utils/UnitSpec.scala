@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.utils
 
 import org.scalatest.{Matchers, WordSpec}
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.box.CtValidation
 
 trait UnitSpec extends WordSpec with MockitoSugar with Matchers {
