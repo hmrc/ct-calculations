@@ -32,8 +32,8 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
   private val dateUnderLowerBound = dateLowerBound.minusDays(1)
   private val dateInclusiveErrorMsg = Some(List("28 October 2018", "28 October 2019"))
 
-  private val happyFullBuilding = Building(Some(someText), Some("BN3 8BB"), Some(dateLowerBound),
-    Some(dateLowerBound), Some(arbitraryPrice), Some(arbitraryClaim))
+  private val happyFullBuilding = Building(Some(someText), Some(someText), Some("BN3 8BB"), Some(dateLowerBound),
+    Some(dateLowerBound), Some(arbitraryPrice), Some(true), Some(arbitraryClaim))
 
   private val mockBoxRetriever = mock[ComputationsBoxRetriever]
 
@@ -43,43 +43,43 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
         when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
         when(mockBoxRetriever.cp1()) thenReturn CP1(dateLowerBound)
 
-        val b1 = happyFullBuilding.copy(name = None)
+        val b1 = happyFullBuilding.copy(firstLineOfAddress = None)
         when(mockBoxRetriever.sba01()) thenReturn SBA01(List(b1))
-        b1.validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01A")
+        b1.validate(mockBoxRetriever) shouldBe fieldRequiredError(firstLineOfAddressId)
 
         val b2 = happyFullBuilding.copy(postcode = None)
         when(mockBoxRetriever.sba01()) thenReturn SBA01(List(b2))
-        b2.validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01B")
+        b2.validate(mockBoxRetriever) shouldBe fieldRequiredError(postcodeId)
 
         val b3 = happyFullBuilding.copy(earliestWrittenContract = None)
           when(mockBoxRetriever.sba01()) thenReturn SBA01(List(b3))
-        b3.validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01C")
+        b3.validate(mockBoxRetriever) shouldBe fieldRequiredError(earliestWrittenContractId)
 
         val b4 = happyFullBuilding.copy(nonResidentialActivityStart = None)
           when(mockBoxRetriever.sba01()) thenReturn SBA01(List(b4))
-        b4.validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01D") ++ Set(CtValidation(Some("SBA01F.building0"), "error.SBA01F.greaterThanMax" ,None))
+        b4.validate(mockBoxRetriever) shouldBe fieldRequiredError(nonResActivityId) ++ greaterThanMaxClaimError
 
         val b5 = happyFullBuilding.copy(cost = None)
           when(mockBoxRetriever.sba01()) thenReturn SBA01(List(b5))
-        b5.validate(mockBoxRetriever) shouldBe fieldRequiredError("SBA01E") ++ Set(CtValidation(Some("SBA01F.building0"), "error.SBA01F.greaterThanMax" ,None))
+        b5.validate(mockBoxRetriever) shouldBe fieldRequiredError(costId) ++ greaterThanMaxClaimError
 
         val b6 = happyFullBuilding.copy(claim = None)
           when(mockBoxRetriever.sba01()) thenReturn SBA01(List(b6))
-        b6.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("SBA01F.building0"), "error.SBA01F.required", None))
+        b6.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some(s"$claimId.building0"), s"error.$claimId.required", None))
       }
     }
   }
 
-      "building name" should {
+      "building first line of address" should {
         "validate with an error" when {
           "characters exceeds 100 limit" in {
-            happyFullBuilding.copy(name = Some(overHundredCharacters)).validate(mockBoxRetriever) shouldBe
-              Set(CtValidation(Some(nameId), s"error.$nameId.max.length", Some(Seq(commaForThousands(100)))))
+            happyFullBuilding.copy(firstLineOfAddress = Some(overHundredCharacters)).validate(mockBoxRetriever) shouldBe
+              Set(CtValidation(Some(firstLineOfAddressId), s"error.$firstLineOfAddressId.max.length", Some(Seq(commaForThousands(100)))))
           }
         }
           "validate with a success" when {
             "building name is less than 100 character limit" in {
-              happyFullBuilding.copy(name = Some(someText)).validate(mockBoxRetriever) shouldBe validationSuccess
+              happyFullBuilding.copy(firstLineOfAddress = Some(someText)).validate(mockBoxRetriever) shouldBe validationSuccess
             }
           }
       }
@@ -108,6 +108,7 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
 
       "earliestWrittenContract" should {
         when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
+        when(mockBoxRetriever.cp1()) thenReturn CP1(dateLowerBound)
 
         "validate with an error" when {
           "date is before 2018-10-29" in {
@@ -146,7 +147,7 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
 
               building.validate(mockBoxRetriever) shouldBe
                 Set(CtValidation(Some(nonResActivityId), s"error.$nonResActivityId.not.betweenInclusive",
-                  dateInclusiveErrorMsg)) ++ Set(CtValidation(Some("SBA01F.building0"), "error.SBA01F.greaterThanMax", None))
+                  dateInclusiveErrorMsg)) ++ greaterThanMaxClaimError
             }
           }
           "validate with a success" when {
@@ -166,7 +167,8 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
               val building = happyFullBuilding.copy(claim = Some(0))
               when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
 
-              building.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("SBA01F.building0"), "error.SBA01F.lessThanOne", None))
+              building.validate(mockBoxRetriever) shouldBe Set(CtValidation(
+                Some(s"$claimId.building0"), s"error.$claimId.lessThanOne", None))
             }
 
             "claim more than apportioned 2%" in {
@@ -176,7 +178,7 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
               val building = happyFullBuilding.copy(claim = Some(arbitraryPrice))
               when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
 
-              building.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some("SBA01F.building0"), "error.SBA01F.greaterThanMax", None))
+              building.validate(mockBoxRetriever) shouldBe greaterThanMaxClaimError
             }
           }
         }

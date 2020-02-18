@@ -29,10 +29,12 @@ case class SBA01(buildings: List[Building] = List.empty) extends CtBoxIdentifier
 }
 
 case class Building(
-                     name: Option[String],
+                     description: Option[String],
+                     firstLineOfAddress: Option[String],
                      postcode: Option[String],
                      earliestWrittenContract: Option[LocalDate],
                      nonResidentialActivityStart: Option[LocalDate],
+                     filingPeriodQuestion: Option[Boolean],
                      cost: Option[Int],
                      claim: Option[Int],
                      broughtForward: Option[Int] = None,
@@ -48,7 +50,7 @@ case class Building(
     val buildingIndex: Int = boxRetriever.sba01().buildings.indexOf(this)
 
     collectErrors(
-      nameValidation(nameId, name),
+      nameValidation(firstLineOfAddressId, firstLineOfAddress),
       postCodeValidation(postcodeId, postcode),
       dateValidation(endOfAccountingPeriod),
       validateAsMandatory(costId, cost),
@@ -82,15 +84,15 @@ case class Building(
     claim match {
       case Some(claimAmount) => {
         if (claimAmount < 1) {
-          Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "error.SBA01F.lessThanOne", None))
+          Set(CtValidation(Some(s"SBA01H.building$buildingIndex"), "error.SBA01H.lessThanOne", None))
         } else if (claimAmount > apportionedTwoPercent(apStart, epEnd)) {
-          Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "error.SBA01F.greaterThanMax", None))
+          Set(CtValidation(Some(s"SBA01H.building$buildingIndex"), "error.SBA01H.greaterThanMax", None))
 
         } else {
           Set.empty
         }
       }
-      case None => Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "error.SBA01F.required", None))
+      case None => Set(CtValidation(Some(s"SBA01H.building$buildingIndex"), "error.SBA01H.required", None))
     }
   }
 }
