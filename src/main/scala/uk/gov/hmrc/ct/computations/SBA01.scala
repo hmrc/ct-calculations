@@ -1,6 +1,17 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.computations
@@ -29,11 +40,13 @@ case class SBA01(buildings: List[Building] = List.empty) extends CtBoxIdentifier
 }
 
 case class Building(
-                     name: Option[String],
+                     description: Option[String],
+                     firstLineOfAddress: Option[String],
                      postcode: Option[String],
                      earliestWrittenContract: Option[LocalDate],
                      nonResidentialActivityStart: Option[LocalDate],
                      cost: Option[Int],
+                     filingPeriodQuestion: Option[Boolean],
                      claim: Option[Int]
                    ) extends ValidatableBox[ComputationsBoxRetriever] with ExtraValidation with SBAHelper with SBACalculator {
   def apportionedTwoPercent(apStartDate: LocalDate, apEndDate: LocalDate) = getAmountClaimableForSBA(apStartDate, apEndDate, nonResidentialActivityStart, cost).getOrElse(0)
@@ -45,7 +58,7 @@ case class Building(
     val buildingIndex: Int = boxRetriever.sba01().buildings.indexOf(this)
 
     collectErrors(
-      nameValidation(nameId, name),
+      nameValidation(firstLineOfAddressId, firstLineOfAddress),
       postCodeValidation(postcodeId, postcode),
       dateValidation(endOfAccountingPeriod),
       validateAsMandatory(costId, cost),
@@ -79,15 +92,15 @@ case class Building(
     claim match {
       case Some(claimAmount) => {
         if (claimAmount < 1) {
-          Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "error.SBA01F.lessThanOne", None))
+          Set(CtValidation(Some(s"SBA01H.building$buildingIndex"), "error.SBA01H.lessThanOne", None))
         } else if (claimAmount > apportionedTwoPercent(apStart, epEnd)) {
-          Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "error.SBA01F.greaterThanMax", None))
+          Set(CtValidation(Some(s"SBA01H.building$buildingIndex"), "error.SBA01H.greaterThanMax", None))
 
         } else {
           Set.empty
         }
       }
-      case None => Set(CtValidation(Some(s"SBA01F.building$buildingIndex"), "error.SBA01F.required", None))
+      case None => Set(CtValidation(Some(s"SBA01H.building$buildingIndex"), "error.SBA01H.required", None))
     }
   }
 }
