@@ -45,9 +45,12 @@ case class Building(
                      postcode: Option[String],
                      earliestWrittenContract: Option[LocalDate],
                      nonResidentialActivityStart: Option[LocalDate],
-                     cost: Option[Int],
                      filingPeriodQuestion: Option[Boolean],
-                     claim: Option[Int]
+                     cost: Option[Int],
+                     claim: Option[Int],
+                     broughtForward: Option[Int] = None,
+                     carriedForward: Option[Int] = None,
+                     claimNote: Option[String] = None
                    ) extends ValidatableBox[ComputationsBoxRetriever] with ExtraValidation with SBAHelper with SBACalculator {
   def apportionedTwoPercent(apStartDate: LocalDate, apEndDate: LocalDate) = getAmountClaimableForSBA(apStartDate, apEndDate, nonResidentialActivityStart, cost).getOrElse(0)
 
