@@ -34,7 +34,7 @@ case class Building(
                      postcode: Option[String],
                      earliestWrittenContract: Option[LocalDate],
                      nonResidentialActivityStart: Option[LocalDate],
-                     filingPeriodQuestion: Option[Boolean],
+                     costsClaimedInThisPeriod: Option[Boolean],
                      cost: Option[Int],
                      claim: Option[Int],
                      broughtForward: Option[Int] = None,
