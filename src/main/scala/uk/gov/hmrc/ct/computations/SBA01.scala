@@ -88,25 +88,10 @@ case class Building(
     claim match {
       case Some(claimAmount) => {
         if (claimAmount < 1) {
-          Set(CtValidation(Some(s"building$buildingIndex.SBA01H"), "error.SBA01H.lessThanOne", None))
+          Set(CtValidation(Some(s"building$buildingIndex.SBA01I"), "error.SBA01I.lessThanOne", None))
         } else if (claimAmount > apportionedTwoPercent(apStart, epEnd)) {
-          Set(CtValidation(Some(s"building$buildingIndex.SBA01H"), "error.SBA01H.greaterThanMax", None))
-
-        } else {
-          Set.empty
-        }
-      }
-      case None => Set(CtValidation(Some(s"SBA01H.building$buildingIndex"), "error.SBA01H.required", None))
-    }
-  }
-
-  private def broughtForwardValidation(buildingIndex: Int): Set[CtValidation] = {
-    broughtForward match {
-      case Some(broughtForwardAmount) => {
-        if (broughtForwardAmount < 0) {
-          Set(CtValidation(Some(s"building$buildingIndex.SBA01I"), "error.SBA01I.lessthanZero", None))
-        } else if (broughtForwardAmount > cost.getOrElse(0)) {
           Set(CtValidation(Some(s"building$buildingIndex.SBA01I"), "error.SBA01I.greaterThanMax", None))
+
         } else {
           Set.empty
         }
@@ -115,11 +100,26 @@ case class Building(
     }
   }
 
+  private def broughtForwardValidation(buildingIndex: Int): Set[CtValidation] = {
+    broughtForward match {
+      case Some(broughtForwardAmount) => {
+        if (broughtForwardAmount < 0) {
+          Set(CtValidation(Some(s"building$buildingIndex.SBA01H"), "error.SBA01H.lessthanZero", None))
+        } else if (broughtForwardAmount > cost.getOrElse(0)) {
+          Set(CtValidation(Some(s"building$buildingIndex.SBA01H"), "error.SBA01H.greaterThanMax", None))
+        } else {
+          Set.empty
+        }
+      }
+      case None => Set(CtValidation(Some(s"building$buildingIndex.SBA01H"), "error.SBA01H.required", None))
+    }
+  }
+
   private def carriedForwardValidation(buildingIndex: Int): Set[CtValidation] = {
     carriedForward match {
       case Some(carriedForwardAmount) => {
-        if (carriedForwardAmount < 1) {
-          Set(CtValidation(Some(s"building$buildingIndex.SBA01J"), "error.SBA01J.lessThanOne", None))
+        if (carriedForwardAmount < 0) {
+          Set(CtValidation(Some(s"building$buildingIndex.SBA01J"), "error.SBA01J.lessthanZero", None))
         } else if (carriedForwardAmount > cost.getOrElse(0)) {
           Set(CtValidation(Some(s"building$buildingIndex.SBA01J"), "error.SBA01J.greaterThanMax", None))
         } else {
