@@ -17,8 +17,10 @@ trait SBAHelper  {
   val earliestWrittenContractId = "SBA01D"
   val nonResActivityId = "SBA01E"
   val costId = "SBA01F"
-  val claimId = "SBA01G"
-  val filingPeriodQuestionId = "SBA01H"
+  val filingPeriodQuestionId = "SBA01G"
+  val broughtForwardId = "SBA01H"
+  val claimId = "SBA01I"
+  val carriedForwardId = "SBA01J"
 
   val dateLowerBound = new LocalDate(2018, 10, 28)
   val exampleUpperBoundDate = new LocalDate(2019, 10, 28)
