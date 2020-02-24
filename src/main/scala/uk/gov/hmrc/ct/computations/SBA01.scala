@@ -51,18 +51,20 @@ case class Building(
     val buildingIndex: Int = boxRetriever.sba01().buildings.indexOf(this)
 
     collectErrors(
-      nameValidation(firstLineOfAddressId, firstLineOfAddress),
+      mandatoryTextValidation(firstLineOfAddressId, firstLineOfAddress),
+      mandatoryTextValidation(descriptionId, description),
       postCodeValidation(postcodeId, postcode),
       dateValidation(endOfAccountingPeriod),
-      validateAsMandatory(costId, cost),
-      claimAmountValidation(startOfAccountingPeriod, endOfAccountingPeriod, buildingIndex),
-      broughtForwardValidation(buildingIndex),
-      carriedForwardValidation(buildingIndex),
-      validateOptionalStringByLength(claimNote, 1, StandardCohoTextFieldLimit, "SBA01K", Some(s"building$buildingIndex."))
+      totalCostValidation(costId, cost),
+      validateAsMandatory(filingPeriodQuestionId, costsClaimedInThisPeriod),
+      claimAmountValidation(claimId, startOfAccountingPeriod, endOfAccountingPeriod, buildingIndex),
+      broughtForwardValidation(broughtForwardId, buildingIndex),
+      carriedForwardValidation(carriedForwardId, buildingIndex),
+      validateOptionalStringByLength(claimNote, 1, StandardCohoTextFieldLimit, claimNoteId, Some(s"building$buildingIndex."))
     )
   }
 
-  private def nameValidation(boxId: String, name: Option[String]) =
+  private def mandatoryTextValidation(boxId: String, name: Option[String]) =
     validateAsMandatory(boxId, name) ++ validateStringMaxLength(boxId, name.getOrElse(""), 100)
 
   private def postCodeValidation(boxId: String, postcode: Option[String]): Set[CtValidation] =
@@ -84,49 +86,58 @@ case class Building(
     )
   }
 
-  private def claimAmountValidation(apStart: LocalDate, epEnd: LocalDate, buildingIndex: Int): Set[CtValidation] = {
+  private def totalCostValidation(boxId: String, totalCost: Option[Int]): Set[CtValidation] = {
+    totalCost match {
+      case Some(cost) if(cost < 1) => Set(CtValidation(Some(boxId), s"error.$boxId.lessThanOne", None))
+      case Some(cost) if(cost > 99999999) => Set(CtValidation(Some(boxId), s"error.$boxId.moreThanMax", None))
+      case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
+      case _ => Set.empty
+    }
+  }
+
+  private def claimAmountValidation(boxId: String, apStart: LocalDate, epEnd: LocalDate, buildingIndex: Int): Set[CtValidation] = {
     claim match {
       case Some(claimAmount) => {
         if (claimAmount < 1) {
-          Set(CtValidation(Some(s"building$buildingIndex.SBA01I"), "error.SBA01I.lessThanOne", None))
+          Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.lessThanOne", None))
         } else if (claimAmount > apportionedTwoPercent(apStart, epEnd)) {
-          Set(CtValidation(Some(s"building$buildingIndex.SBA01I"), "error.SBA01I.greaterThanMax", None))
+          Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.greaterThanMax", None))
 
         } else {
           Set.empty
         }
       }
-      case None => Set(CtValidation(Some(s"building$buildingIndex.SBA01I"), "error.SBA01I.required", None))
+      case None => Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.required", None))
     }
   }
 
-  private def broughtForwardValidation(buildingIndex: Int): Set[CtValidation] = {
+  private def broughtForwardValidation(boxId: String, buildingIndex: Int): Set[CtValidation] = {
     broughtForward match {
       case Some(broughtForwardAmount) => {
         if (broughtForwardAmount < 0) {
-          Set(CtValidation(Some(s"building$buildingIndex.SBA01H"), "error.SBA01H.lessthanZero", None))
+          Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.lessthanZero", None))
         } else if (broughtForwardAmount > cost.getOrElse(0)) {
-          Set(CtValidation(Some(s"building$buildingIndex.SBA01H"), "error.SBA01H.greaterThanMax", None))
+          Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.greaterThanMax", None))
         } else {
           Set.empty
         }
       }
-      case None => Set(CtValidation(Some(s"building$buildingIndex.SBA01H"), "error.SBA01H.required", None))
+      case None => Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.required", None))
     }
   }
 
-  private def carriedForwardValidation(buildingIndex: Int): Set[CtValidation] = {
+  private def carriedForwardValidation(boxId: String, buildingIndex: Int): Set[CtValidation] = {
     carriedForward match {
       case Some(carriedForwardAmount) => {
         if (carriedForwardAmount < 0) {
-          Set(CtValidation(Some(s"building$buildingIndex.SBA01J"), "error.SBA01J.lessthanZero", None))
+          Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.lessthanZero", None))
         } else if (carriedForwardAmount > cost.getOrElse(0)) {
-          Set(CtValidation(Some(s"building$buildingIndex.SBA01J"), "error.SBA01J.greaterThanMax", None))
+          Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.greaterThanMax", None))
         } else {
           Set.empty
         }
       }
-      case None => Set(CtValidation(Some(s"building$buildingIndex.SBA01J"), "error.SBA01J.required", None))
+      case None => Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.required", None))
     }
   }
 }
