@@ -33,7 +33,7 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
   private val dateInclusiveErrorMsg = Some(List("28 October 2018", "28 October 2019"))
 
   private val happyFullBuilding = Building(Some(someText), Some(someText), Some("BN3 8BB"), Some(dateLowerBound),
-    Some(dateLowerBound), Some(arbitraryPrice), Some(true), Some(arbitraryClaim))
+    Some(dateLowerBound),  Some(true), Some(arbitraryPrice), Some(arbitraryClaim))
 
   private val mockBoxRetriever = mock[ComputationsBoxRetriever]
 
