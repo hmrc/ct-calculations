@@ -115,7 +115,7 @@ case class Building(
     broughtForward match {
       case Some(broughtForwardAmount) => {
         if (broughtForwardAmount < 0) {
-          Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.lessthanZero", None))
+          Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.lessThanZero", None))
         } else if (broughtForwardAmount > cost.getOrElse(0)) {
           Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.greaterThanMax", None))
         } else {
@@ -130,7 +130,7 @@ case class Building(
     carriedForward match {
       case Some(carriedForwardAmount) => {
         if (carriedForwardAmount < 0) {
-          Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.lessthanZero", None))
+          Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.lessThanZero", None))
         } else if (carriedForwardAmount > cost.getOrElse(0)) {
           Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.greaterThanMax", None))
         } else {
