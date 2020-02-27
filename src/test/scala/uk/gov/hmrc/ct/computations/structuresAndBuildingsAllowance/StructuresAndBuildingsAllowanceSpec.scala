@@ -46,59 +46,59 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
         when(mockBoxRetriever.cp1()) thenReturn CP1(dateLowerBound)
 
       "description is missing" in {
-        val b1 = happyFullBuilding.copy(description = None)
-        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(b1))
-        b1.validate(mockBoxRetriever) shouldBe fieldRequiredError(descriptionId)
+        val building = happyFullBuilding.copy(description = None)
+        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
+        building.validate(mockBoxRetriever) shouldBe fieldRequiredError(descriptionId)
       }
 
       "firstLineOfAddress is missing" in {
-        val b1 = happyFullBuilding.copy(firstLineOfAddress = None)
-        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(b1))
-        b1.validate(mockBoxRetriever) shouldBe fieldRequiredError(firstLineOfAddressId)
+        val building = happyFullBuilding.copy(firstLineOfAddress = None)
+        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
+        building.validate(mockBoxRetriever) shouldBe fieldRequiredError(firstLineOfAddressId)
       }
 
       "postcode is missing" in {
-        val b2 = happyFullBuilding.copy(postcode = None)
-        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(b2))
-        b2.validate(mockBoxRetriever) shouldBe fieldRequiredError(postcodeId)
+        val building = happyFullBuilding.copy(postcode = None)
+        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
+        building.validate(mockBoxRetriever) shouldBe fieldRequiredError(postcodeId)
       }
 
       "earliestWrittenContract is missing" in {
-        val b3 = happyFullBuilding.copy(earliestWrittenContract = None)
-        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(b3))
-        b3.validate(mockBoxRetriever) shouldBe fieldRequiredError(earliestWrittenContractId)
+        val building = happyFullBuilding.copy(earliestWrittenContract = None)
+        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
+        building.validate(mockBoxRetriever) shouldBe fieldRequiredError(earliestWrittenContractId)
       }
 
       "nonResidentialActivityStart is missing" in {
-        val b4 = happyFullBuilding.copy(nonResidentialActivityStart = None)
-        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(b4))
-        b4.validate(mockBoxRetriever) shouldBe fieldRequiredError(nonResActivityId) ++ greaterThanMaxClaimError
+        val building = happyFullBuilding.copy(nonResidentialActivityStart = None)
+        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
+        building.validate(mockBoxRetriever) shouldBe fieldRequiredError(nonResActivityId) ++ greaterThanMaxClaimError
       }
 
       "cost is missing" in {
-        val b5 = happyFullBuilding.copy(cost = None)
-        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(b5))
-        b5.validate(mockBoxRetriever) shouldBe fieldRequiredError(costId) ++ Set(CtValidation(Some(s"building0.$claimId"), s"error.$claimId.greaterThanMax" ,None),
+        val building = happyFullBuilding.copy(cost = None)
+        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
+        building.validate(mockBoxRetriever) shouldBe fieldRequiredError(costId) ++ Set(CtValidation(Some(s"building0.$claimId"), s"error.$claimId.greaterThanMax" ,None),
           CtValidation(Some(s"building0.$broughtForwardId"), s"error.$broughtForwardId.greaterThanMax" ,None),
           CtValidation(Some(s"building0.$carriedForwardId"), s"error.$carriedForwardId.greaterThanMax" ,None))
       }
 
       "claim is missing" in {
-        val b6 = happyFullBuilding.copy(claim = None)
-        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(b6))
-        b6.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some(s"building0.$claimId"), s"error.$claimId.required", None))
+        val building = happyFullBuilding.copy(claim = None)
+        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
+        building.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some(s"building0.$claimId"), s"error.$claimId.required", None))
       }
 
       "broughtForward is missing" in {
-        val b6 = happyFullBuilding.copy(broughtForward = None)
-        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(b6))
-        b6.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some(s"building0.$broughtForwardId"), s"error.$broughtForwardId.required", None))
+        val building = happyFullBuilding.copy(broughtForward = None)
+        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
+        building.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some(s"building0.$broughtForwardId"), s"error.$broughtForwardId.required", None))
       }
 
       "carriedForward is missing" in {
-        val b6 = happyFullBuilding.copy(carriedForward = None)
-        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(b6))
-        b6.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some(s"building0.$carriedForwardId"), s"error.$carriedForwardId.required", None))
+        val building = happyFullBuilding.copy(carriedForward = None)
+        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
+        building.validate(mockBoxRetriever) shouldBe Set(CtValidation(Some(s"building0.$carriedForwardId"), s"error.$carriedForwardId.required", None))
       }
     }
   }
