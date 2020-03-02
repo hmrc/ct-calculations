@@ -53,7 +53,7 @@ case class Building(
     collectErrors(
       mandatoryTextValidation(firstLineOfAddressId, firstLineOfAddress),
       mandatoryTextValidation(descriptionId, description),
-      postCodeValidation(postcodeId, postcode),
+      validatePostcode(postcodeId, postcode),
       dateValidation(endOfAccountingPeriod),
       totalCostValidation(costId, cost),
       validateAsMandatory(filingPeriodQuestionId, costsClaimedInThisPeriod),
@@ -66,9 +66,6 @@ case class Building(
 
   private def mandatoryTextValidation(boxId: String, name: Option[String]) =
     validateAsMandatory(boxId, name) ++ validateStringMaxLength(boxId, name.getOrElse(""), 100)
-
-  private def postCodeValidation(boxId: String, postcode: Option[String]): Set[CtValidation] =
-    validatePostcode(boxId, postcode)
 
   private def dateValidation(dateUpperBound: LocalDate): Set[CtValidation] =
     earliestWrittenContractValidation(dateUpperBound) ++ nonResidentialActivityValidation(dateUpperBound)
