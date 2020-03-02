@@ -25,6 +25,4 @@ trait SBAHelper  {
 
   val dateLowerBound = new LocalDate(2018, 10, 28)
   val exampleUpperBoundDate = new LocalDate(2019, 10, 28)
-
-  val greaterThanMaxClaimError = Set(CtValidation(Some(s"$claimId.building0"), s"error.$claimId.greaterThanMax" ,None))
 }
