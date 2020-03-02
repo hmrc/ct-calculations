@@ -57,12 +57,6 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
         building.validate(mockBoxRetriever) shouldBe fieldRequiredError(firstLineOfAddressId)
       }
 
-      "postcode is missing" in {
-        val building = happyFullBuilding.copy(postcode = None)
-        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
-        building.validate(mockBoxRetriever) shouldBe fieldRequiredError(postcodeId)
-      }
-
       "earliestWrittenContract is missing" in {
         val building = happyFullBuilding.copy(earliestWrittenContract = None)
         when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
