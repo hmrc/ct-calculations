@@ -68,7 +68,7 @@ case class Building(
     validateAsMandatory(boxId, name) ++ validateStringMaxLength(boxId, name.getOrElse(""), 100)
 
   private def postCodeValidation(boxId: String, postcode: Option[String]): Set[CtValidation] =
-      validateAsMandatory(boxId, postcode) ++ validatePostcode(boxId, postcode)
+    validatePostcode(boxId, postcode)
 
   private def dateValidation(dateUpperBound: LocalDate): Set[CtValidation] =
     earliestWrittenContractValidation(dateUpperBound) ++ nonResidentialActivityValidation(dateUpperBound)
