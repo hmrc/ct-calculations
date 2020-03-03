@@ -6,7 +6,6 @@
 package uk.gov.hmrc.ct.computations
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.CtValidation
 
 trait SBAHelper  {
 
