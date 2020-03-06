@@ -161,7 +161,7 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b775(): B775 = B775(cp253())
 
-  def b711():B711 = B711(cp298())
+  def b711():B711 = B711(cp297())
 
   def b771():B771 = B771(cp296())
 

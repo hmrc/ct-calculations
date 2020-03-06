@@ -35,7 +35,6 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
   /* This is the 2% rounded up*/
   def getAmountClaimableForSBA(apStartDate: LocalDate, apEndDate: LocalDate, firstUsage: Option[LocalDate], cost: Option[Int]): Option[Int] = {
-
     val daysInTheYear = getDaysIntheYear(apStartDate)
 
     (firstUsage, cost) match {
@@ -60,7 +59,10 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
   def sumAmount(xs:List[Option[Int]]) = {
     xs.fold(Option(0)){
       (accumulator, element) =>
-        accumulator.flatMap(accum => element.map(ele => accum + ele))
+        for {
+          accum <- accumulator
+          ele <- element
+        } yield accum + ele
     }
   }
 }
