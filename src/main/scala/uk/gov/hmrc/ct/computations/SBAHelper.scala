@@ -33,6 +33,6 @@ trait SBAHelper  {
   val carriedForwardId = "SBA01J"
   val claimNoteId = "SBA01K"
 
-  val dateLowerBound = new LocalDate(2018, 10, 28)
+  val dateLowerBound = new LocalDate(2018, 10, 29)
   val exampleUpperBoundDate = new LocalDate(2019, 10, 28)
 }
