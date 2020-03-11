@@ -147,13 +147,19 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
       "date is after the end of accounting period" in {
         happyFullBuilding.copy(earliestWrittenContract = Some(exampleUpperBoundDate.plusDays(1))).validate(mockBoxRetriever) shouldBe
           Set(CtValidation(Some(earliestWrittenContractId), s"error.$earliestWrittenContractId.not.betweenInclusive",
-            dateInclusiveErrorMsg))
+            dateInclusiveErrorMsg), CtValidation(Some("SBA01E"), "error.SBA01E.not.betweenInclusive" ,Some(List("29 October 2019", "28 October 2019"))))
+      }
+
+      "nonResidentialActivityStart is before earliestWrittenContract" in {
+        happyFullBuilding.copy(earliestWrittenContract = Some(dateLowerBound.plusDays(2)), nonResidentialActivityStart = Some(dateLowerBound.plusDays(1))).validate(mockBoxRetriever) shouldBe
+          Set(CtValidation(Some("SBA01E"), "error.SBA01E.not.betweenInclusive" ,Some(List("31 October 2018", "28 October 2019"))))
       }
     }
 
     "validate with a success" when {
       "date is between 2018-10-29 and the end of the accounting period" in {
-        happyFullBuilding.copy(earliestWrittenContract = Some(exampleUpperBoundDate.minusDays(1))).validate(mockBoxRetriever) shouldBe
+        happyFullBuilding.copy(earliestWrittenContract = Some(dateLowerBound.plusDays(1)),
+          nonResidentialActivityStart = Some(dateLowerBound.plusDays(1))).validate(mockBoxRetriever) shouldBe
           validationSuccess
       }
     }
