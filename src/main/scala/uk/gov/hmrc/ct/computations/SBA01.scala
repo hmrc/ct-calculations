@@ -87,9 +87,11 @@ case class Building(
     )
 
   private def nonResidentialActivityValidation(dateUpperBound: LocalDate): Set[CtValidation] = {
+    val earliestDate = earliestWrittenContract.map(date => if(dateLowerBound.isBefore(date)) date else dateLowerBound).getOrElse(dateLowerBound)
+
     collectErrors(
       validateAsMandatory(nonResActivityId, nonResidentialActivityStart),
-      validateDateIsInclusive(nonResActivityId, dateLowerBound, nonResidentialActivityStart, dateUpperBound)
+      validateDateIsInclusive(nonResActivityId, earliestDate, nonResidentialActivityStart, dateUpperBound)
     )
   }
 
