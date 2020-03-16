@@ -23,7 +23,7 @@ case class SBA01(buildings: List[Building] = List.empty) extends CtBoxIdentifier
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     buildings.foldRight(Set[CtValidation]())( (building, errors) =>
-    building.validate(boxRetriever) ++ errors
+      building.validate(boxRetriever) ++ errors
     )
   }
 }
@@ -130,8 +130,16 @@ case class Building(
         val correctAmount = for {
           broughtForwardAmount <- broughtForward
           claimAmount <- claim
-        } yield broughtForwardAmount - claimAmount
-        
+          costAmount <- cost
+        } yield {
+          if(broughtForwardAmount == 0){
+            costAmount - claimAmount
+          }
+          else{
+            broughtForwardAmount - claimAmount
+          }
+        }
+
         if (carriedForwardAmount < 0) {
           Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.lessThanZero", None))
         } else if (correctAmount.nonEmpty && carriedForwardAmount != correctAmount.get) {
@@ -144,3 +152,4 @@ case class Building(
     }
   }
 }
+
