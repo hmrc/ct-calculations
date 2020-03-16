@@ -131,10 +131,7 @@ case class Building(
           broughtForwardAmount <- broughtForward
           claimAmount <- claim
         } yield broughtForwardAmount - claimAmount
-
-        println("asdfghjklsdfghjk")
-        println(correctAmount.get)
-
+        
         if (carriedForwardAmount < 0) {
           Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.lessThanZero", None))
         } else if (correctAmount.nonEmpty && carriedForwardAmount != correctAmount.get) {
