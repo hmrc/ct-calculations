@@ -14,10 +14,13 @@ case class CP296(value: Option[Int]) extends CtBoxIdentifier(name = "Total Struc
 object CP296 extends Calculated[CP296, ComputationsBoxRetriever] with SBACalculator {
 
   def getCostForEachBuilding(boxRetriever: ComputationsBoxRetriever): List[Option[Int]] = {
-    boxRetriever.sba01().buildings.filter(
-      building => building.nonResidentialActivityStart.get.isAfter(boxRetriever.cp1().value)).map(
-      building => building.cost
-    )
+    boxRetriever.sba01().buildings.filter(building => {
+        building.nonResidentialActivityStart match {
+          case None => false
+          case Some(date) => date.isAfter(boxRetriever.cp1().value)
+        }
+      }
+    ).map(building => building.cost)
   }
   
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP296 = {
