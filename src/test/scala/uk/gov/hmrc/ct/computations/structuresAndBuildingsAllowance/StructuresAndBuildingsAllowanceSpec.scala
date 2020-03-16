@@ -73,8 +73,7 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
         val building = happyFullBuilding.copy(cost = None)
         when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
         building.validate(mockBoxRetriever) shouldBe fieldRequiredError(costId) ++ Set(CtValidation(Some(s"building0.$claimId"), s"error.$claimId.greaterThanMax" ,None),
-          CtValidation(Some(s"building0.$broughtForwardId"), s"error.$broughtForwardId.greaterThanMax" ,None),
-          CtValidation(Some(s"building0.$carriedForwardId"), s"error.$carriedForwardId.greaterThanMax" ,None))
+          CtValidation(Some(s"building0.$broughtForwardId"), s"error.$broughtForwardId.greaterThanMax" ,None))
       }
 
       "claim is missing" in {
@@ -202,7 +201,8 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
         when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
 
         building.validate(mockBoxRetriever) shouldBe Set(CtValidation(
-          Some(s"building0.$claimId"), s"error.$claimId.lessThanOne", None))
+          Some(s"building0.$claimId"), s"error.$claimId.lessThanOne", None),
+          CtValidation(Some(s"building0.$carriedForwardId"), s"error.$carriedForwardId.greaterThanMax", None))
       }
 
       "claim more than apportioned 2%" in {
@@ -212,7 +212,7 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
         val building = happyFullBuilding.copy(claim = Some(arbitraryPrice))
         when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
 
-        building.validate(mockBoxRetriever) shouldBe greaterThanMaxClaimError
+        building.validate(mockBoxRetriever) shouldBe greaterThanMaxClaimError ++ Set(CtValidation(Some(s"building0.$carriedForwardId"), s"error.$carriedForwardId.greaterThanMax", None))
       }
     }
   }
@@ -227,7 +227,8 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
         when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
 
         building.validate(mockBoxRetriever) shouldBe Set(CtValidation(
-          Some(s"building0.$broughtForwardId"), s"error.$broughtForwardId.lessThanZero", None))
+          Some(s"building0.$broughtForwardId"), s"error.$broughtForwardId.lessThanZero", None),
+          CtValidation(Some(s"building0.$carriedForwardId"), s"error.$carriedForwardId.greaterThanMax" ,None))
       }
 
       "claim more than totalCost" in {
@@ -238,7 +239,8 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
         when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
 
         building.validate(mockBoxRetriever) shouldBe Set(CtValidation(
-          Some(s"building0.$broughtForwardId"), s"error.$broughtForwardId.greaterThanMax", None))
+          Some(s"building0.$broughtForwardId"), s"error.$broughtForwardId.greaterThanMax", None),
+          CtValidation(Some(s"building0.$carriedForwardId"), s"error.$carriedForwardId.greaterThanMax" ,None))
       }
     }
   }

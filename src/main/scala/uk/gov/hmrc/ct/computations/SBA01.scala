@@ -1,17 +1,6 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.computations
@@ -138,9 +127,14 @@ case class Building(
   private def carriedForwardValidation(boxId: String, buildingIndex: Int): Set[CtValidation] = {
     carriedForward match {
       case Some(carriedForwardAmount) => {
+        val correctAmount = for {
+          broughtForwardAmount <- broughtForward
+          claimAmount <- claim
+        } yield broughtForwardAmount - claimAmount
+        
         if (carriedForwardAmount < 0) {
           Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.lessThanZero", None))
-        } else if (carriedForwardAmount > cost.getOrElse(0)) {
+        } else if (correctAmount.nonEmpty && carriedForwardAmount != correctAmount.get) {
           Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.greaterThanMax", None))
         } else {
           Set.empty
