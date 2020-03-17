@@ -42,8 +42,8 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
 
   "A building" should {
     "validate with an error" when {
-        when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
-        when(mockBoxRetriever.cp1()) thenReturn CP1(dateLowerBound)
+      when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
+      when(mockBoxRetriever.cp1()) thenReturn CP1(dateLowerBound)
 
       "description is missing" in {
         val building = happyFullBuilding.copy(description = None)
@@ -103,28 +103,28 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
           Set(CtValidation(Some(firstLineOfAddressId), s"error.$firstLineOfAddressId.max.length", Some(Seq(commaForThousands(100)))))
       }
     }
-      "validate with a success" when {
-        "building name is less than 100 character limit" in {
-          happyFullBuilding.copy(firstLineOfAddress = Some(someText)).validate(mockBoxRetriever) shouldBe validationSuccess
-        }
+    "validate with a success" when {
+      "building name is less than 100 character limit" in {
+        happyFullBuilding.copy(firstLineOfAddress = Some(someText)).validate(mockBoxRetriever) shouldBe validationSuccess
       }
+    }
   }
 
   "building postcode" should {
     "validate with an error" when {
       "the postcode is over 8 characters" in {
-          happyFullBuilding.copy(postcode = Some(someText)).validate(mockBoxRetriever) shouldBe
-            postcodeError(postcodeId)
-        }
-        "the postcode is under 6 characters" in {
-          happyFullBuilding.copy(postcode = Some("ab")).validate(mockBoxRetriever) shouldBe
-            postcodeError(postcodeId)
-        }
-        "the postcode fails just the regex" in {
-          happyFullBuilding.copy(postcode = Some("BN3 3!!")).validate(mockBoxRetriever) shouldBe
-            postcodeError(postcodeId)
-        }
+        happyFullBuilding.copy(postcode = Some(someText)).validate(mockBoxRetriever) shouldBe
+          postcodeError(postcodeId)
       }
+      "the postcode is under 6 characters" in {
+        happyFullBuilding.copy(postcode = Some("ab")).validate(mockBoxRetriever) shouldBe
+          postcodeError(postcodeId)
+      }
+      "the postcode fails just the regex" in {
+        happyFullBuilding.copy(postcode = Some("BN3 3!!")).validate(mockBoxRetriever) shouldBe
+          postcodeError(postcodeId)
+      }
+    }
     "validate with a success" when {
       "the postcode is between 6 and 8 characters and satisfies the regex" in {
         happyFullBuilding.validate(mockBoxRetriever) shouldBe validationSuccess
@@ -246,6 +246,73 @@ class StructuresAndBuildingsAllowanceSpec extends UnitSpec with SBAHelper {
   }
 
   "carriedForward" should {
+    "validate correct amount" when {
+      "broughtForward is zero should fail for less than cost - claim" in {
+        when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
+        when(mockBoxRetriever.cp1()) thenReturn CP1(dateLowerBound)
+
+        val building = happyFullBuilding.copy(broughtForward = Some(0), carriedForward = Some(arbitraryPrice - arbitraryClaim - 1))
+        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
+
+        building.validate(mockBoxRetriever) shouldBe Set(CtValidation(
+          Some(s"building0.$carriedForwardId"), s"error.$carriedForwardId.greaterThanMax", None))
+      }
+
+      "broughtForward is zero should fail for more than cost - claim" in {
+        when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
+        when(mockBoxRetriever.cp1()) thenReturn CP1(dateLowerBound)
+
+        val building = happyFullBuilding.copy(broughtForward = Some(0), carriedForward = Some(arbitraryPrice - arbitraryClaim + 1))
+        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
+
+        building.validate(mockBoxRetriever) shouldBe Set(CtValidation(
+          Some(s"building0.$carriedForwardId"), s"error.$carriedForwardId.greaterThanMax", None))
+      }
+
+      "broughtForward is zero should pass for cost - claim" in {
+        when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
+        when(mockBoxRetriever.cp1()) thenReturn CP1(dateLowerBound)
+
+        val building = happyFullBuilding.copy(broughtForward = Some(0), carriedForward = Some(arbitraryPrice - arbitraryClaim))
+        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
+
+        building.validate(mockBoxRetriever) shouldBe Set.empty
+      }
+
+      "broughtForward of 80 should fail for less than broughtForward - claim" in {
+        when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
+        when(mockBoxRetriever.cp1()) thenReturn CP1(dateLowerBound)
+
+        val building = happyFullBuilding.copy(carriedForward = Some(testBroughtForward - arbitraryClaim - 1))
+        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
+
+        building.validate(mockBoxRetriever) shouldBe Set(CtValidation(
+          Some(s"building0.$carriedForwardId"), s"error.$carriedForwardId.greaterThanMax", None))
+      }
+
+      "broughtForward of 80 should fail for more than broughtForward - claim" in {
+        when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
+        when(mockBoxRetriever.cp1()) thenReturn CP1(dateLowerBound)
+
+        val building = happyFullBuilding.copy(carriedForward = Some(testBroughtForward - arbitraryClaim + 1))
+        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
+
+        building.validate(mockBoxRetriever) shouldBe Set(CtValidation(
+          Some(s"building0.$carriedForwardId"), s"error.$carriedForwardId.greaterThanMax", None))
+      }
+
+
+      "broughtForward of 80 should pass for broughtForward - claim" in {
+        when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
+        when(mockBoxRetriever.cp1()) thenReturn CP1(dateLowerBound)
+
+        val building = happyFullBuilding.copy(carriedForward = Some(testBroughtForward - arbitraryClaim))
+        when(mockBoxRetriever.sba01()) thenReturn SBA01(List(building))
+
+        building.validate(mockBoxRetriever) shouldBe Set.empty
+      }
+    }
+
     "validate with an error" when {
       "claim less than zero" in {
         when(mockBoxRetriever.cp2()) thenReturn CP2(exampleUpperBoundDate)
