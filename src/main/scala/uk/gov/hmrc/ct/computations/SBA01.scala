@@ -11,6 +11,7 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.calculations.SBACalculator
 import uk.gov.hmrc.ct.computations.formats.Buildings
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.domain.ValidationConstants.toErrorArgsFormat
 
 case class SBA01(buildings: List[Building] = List.empty) extends CtBoxIdentifier(name = "Structures and buildings allowance buildings")
   with CtValue[List[Building]]
@@ -76,12 +77,22 @@ case class Building(
     )
 
   private def nonResidentialActivityValidation(dateUpperBound: LocalDate): Set[CtValidation] = {
-    val earliestDate = earliestWrittenContract.map(date => if(dateLowerBound.isBefore(date)) date else dateLowerBound).getOrElse(dateLowerBound)
+    val (earliestDate: LocalDate, errorMessage: String) = earliestWrittenContract.map(date => {
+      if(dateLowerBound.isBefore(date)) (date, Some(s"error.$nonResActivityId.not.greaterThenEarliestContract")) else dateLowerBound
+    }).getOrElse((dateLowerBound, s"error.$nonResActivityId.not.betweenInclusive"))
 
-    collectErrors(
-      validateAsMandatory(nonResActivityId, nonResidentialActivityStart),
-      validateDateIsInclusive(nonResActivityId, earliestDate, nonResidentialActivityStart, dateUpperBound)
-    )
+    nonResidentialActivityStart match {
+      case Some(nonResStartDateAmount) => {
+        if (earliestDate.isAfter(nonResStartDateAmount)) {
+          Set(CtValidation(Some(nonResActivityId), errorMessage, Some(Seq(toErrorArgsFormat(earliestDate), toErrorArgsFormat(dateUpperBound)))))
+        } else if (dateUpperBound.isAfter(nonResStartDateAmount)) {
+          Set(CtValidation(Some(nonResActivityId), s"error.$nonResActivityId.greaterThanMax", None))
+        } else {
+          Set.empty
+        }
+      }
+      case None => Set(CtValidation(Some(nonResActivityId), s"error.$nonResActivityId.required", None))
+    }
   }
 
   private def totalCostValidation(boxId: String, totalCost: Option[Int]): Set[CtValidation] = {
