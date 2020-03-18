@@ -127,23 +127,19 @@ case class Building(
   private def carriedForwardValidation(boxId: String, buildingIndex: Int): Set[CtValidation] = {
     carriedForward match {
       case Some(carriedForwardAmount) => {
-        val correctAmount = for {
+        val correctAmountWithMessage: Option[(Int, String)] = for {
           broughtForwardAmount <- broughtForward
           claimAmount <- claim
           costAmount <- cost
         } yield {
-          if(broughtForwardAmount == 0){
-            costAmount - claimAmount
-          }
-          else{
-            broughtForwardAmount - claimAmount
-          }
+          if(broughtForwardAmount == 0) (costAmount - claimAmount, "greaterThanCost")
+          else (broughtForwardAmount - claimAmount, "greaterThanBrought")
         }
 
         if (carriedForwardAmount < 0) {
           Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.lessThanZero", None))
-        } else if (correctAmount.nonEmpty && carriedForwardAmount != correctAmount.get) {
-          Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.greaterThanMax", None))
+        } else if (correctAmountWithMessage.nonEmpty && carriedForwardAmount != correctAmountWithMessage.get._1) {
+          Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.${correctAmountWithMessage.get._2}", None))
         } else {
           Set.empty
         }
