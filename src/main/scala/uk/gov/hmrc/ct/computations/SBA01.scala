@@ -77,16 +77,17 @@ case class Building(
     )
 
   private def nonResidentialActivityValidation(dateUpperBound: LocalDate): Set[CtValidation] = {
+    val betweenErrorMessage = s"error.$nonResActivityId.not.betweenInclusive"
     val (earliestDate: LocalDate, errorMessage: String) = earliestWrittenContract.map(date => {
-      if(dateLowerBound.isBefore(date)) (date, Some(s"error.$nonResActivityId.not.greaterThenEarliestContract")) else dateLowerBound
-    }).getOrElse((dateLowerBound, s"error.$nonResActivityId.not.betweenInclusive"))
+      if(dateLowerBound.isBefore(date)) (date, s"error.$nonResActivityId.not.greaterThenEarliestContract") else (dateLowerBound, betweenErrorMessage)
+    }).getOrElse((dateLowerBound, betweenErrorMessage))
 
     nonResidentialActivityStart match {
       case Some(nonResStartDateAmount) => {
         if (earliestDate.isAfter(nonResStartDateAmount)) {
           Set(CtValidation(Some(nonResActivityId), errorMessage, Some(Seq(toErrorArgsFormat(earliestDate), toErrorArgsFormat(dateUpperBound)))))
-        } else if (dateUpperBound.isAfter(nonResStartDateAmount)) {
-          Set(CtValidation(Some(nonResActivityId), s"error.$nonResActivityId.greaterThanMax", None))
+        } else if (dateUpperBound.isBefore(nonResStartDateAmount)) {
+          Set(CtValidation(Some(nonResActivityId), betweenErrorMessage, Some(Seq(toErrorArgsFormat(earliestDate), toErrorArgsFormat(dateUpperBound)))))
         } else {
           Set.empty
         }
