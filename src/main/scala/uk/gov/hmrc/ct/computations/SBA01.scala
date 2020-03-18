@@ -79,7 +79,7 @@ case class Building(
   private def nonResidentialActivityValidation(dateUpperBound: LocalDate): Set[CtValidation] = {
     val betweenErrorMessage = s"error.$nonResActivityId.not.betweenInclusive"
     val (earliestDate: LocalDate, errorMessage: String) = earliestWrittenContract.map(date => {
-      if(dateLowerBound.isBefore(date)) (date, s"error.$nonResActivityId.not.greaterThenEarliestContract") else (dateLowerBound, betweenErrorMessage)
+      if(dateLowerBound.isBefore(date)) (date, s"error.$nonResActivityId.not.greaterThanEarliestContract") else (dateLowerBound, betweenErrorMessage)
     }).getOrElse((dateLowerBound, betweenErrorMessage))
 
     nonResidentialActivityStart match {
