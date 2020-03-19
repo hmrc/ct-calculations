@@ -358,15 +358,15 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp674(): CP674
 
-  def cp984(): CP984
-
-  def cp997(): CP997
-
   def cp980(): CP980
 
   def cp981(): CP981
 
   def cp982(): CP982
+
+  def cp983(): CP983
+
+  def cp997(): CP997
 
   def cp997NI(): CP997NI = CP997NI.calculate(this)
 
