@@ -11,6 +11,7 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.calculations.SBACalculator
 import uk.gov.hmrc.ct.computations.formats.Buildings
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.domain.ValidationConstants.toErrorArgsFormat
 
 case class SBA01(buildings: List[Building] = List.empty) extends CtBoxIdentifier(name = "Structures and buildings allowance buildings")
   with CtValue[List[Building]]
@@ -76,12 +77,23 @@ case class Building(
     )
 
   private def nonResidentialActivityValidation(dateUpperBound: LocalDate): Set[CtValidation] = {
-    val earliestDate = earliestWrittenContract.map(date => if(dateLowerBound.isBefore(date)) date else dateLowerBound).getOrElse(dateLowerBound)
+    val betweenErrorMessage = s"error.$nonResActivityId.not.betweenInclusive"
+    val (earliestDate: LocalDate, errorMessage: String) = earliestWrittenContract.map(date => {
+      if(dateLowerBound.isBefore(date)) (date, s"error.$nonResActivityId.not.greaterThanEarliestContract") else (dateLowerBound, betweenErrorMessage)
+    }).getOrElse((dateLowerBound, betweenErrorMessage))
 
-    collectErrors(
-      validateAsMandatory(nonResActivityId, nonResidentialActivityStart),
-      validateDateIsInclusive(nonResActivityId, earliestDate, nonResidentialActivityStart, dateUpperBound)
-    )
+    nonResidentialActivityStart match {
+      case Some(nonResStartDateAmount) => {
+        if (earliestDate.isAfter(nonResStartDateAmount)) {
+          Set(CtValidation(Some(nonResActivityId), errorMessage, Some(Seq(toErrorArgsFormat(earliestDate), toErrorArgsFormat(dateUpperBound)))))
+        } else if (dateUpperBound.isBefore(nonResStartDateAmount)) {
+          Set(CtValidation(Some(nonResActivityId), betweenErrorMessage, Some(Seq(toErrorArgsFormat(earliestDate), toErrorArgsFormat(dateUpperBound)))))
+        } else {
+          Set.empty
+        }
+      }
+      case None => Set(CtValidation(Some(nonResActivityId), s"error.$nonResActivityId.required", None))
+    }
   }
 
   private def totalCostValidation(boxId: String, totalCost: Option[Int]): Set[CtValidation] = {
@@ -127,23 +139,19 @@ case class Building(
   private def carriedForwardValidation(boxId: String, buildingIndex: Int): Set[CtValidation] = {
     carriedForward match {
       case Some(carriedForwardAmount) => {
-        val correctAmount = for {
+        val correctAmountWithMessage: Option[(Int, String)] = for {
           broughtForwardAmount <- broughtForward
           claimAmount <- claim
           costAmount <- cost
         } yield {
-          if(broughtForwardAmount == 0){
-            costAmount - claimAmount
-          }
-          else{
-            broughtForwardAmount - claimAmount
-          }
+          if(broughtForwardAmount == 0) (costAmount - claimAmount, "greaterThanCost")
+          else (broughtForwardAmount - claimAmount, "greaterThanBrought")
         }
 
         if (carriedForwardAmount < 0) {
           Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.lessThanZero", None))
-        } else if (correctAmount.nonEmpty && carriedForwardAmount != correctAmount.get) {
-          Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.greaterThanMax", None))
+        } else if (correctAmountWithMessage.nonEmpty && carriedForwardAmount != correctAmountWithMessage.get._1) {
+          Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.${correctAmountWithMessage.get._2}", None))
         } else {
           Set.empty
         }
