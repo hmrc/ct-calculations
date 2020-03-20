@@ -380,4 +380,12 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def sba01: SBA01 = ???
 
   override def sba02: List[Option[Int]] = ???
+
+  override def cp980(): CP980 = ???
+
+  override def cp981(): CP981 = ???
+
+  override def cp982(): CP982 = ???
+
+  override def cp983(): CP983 = ???
 }
