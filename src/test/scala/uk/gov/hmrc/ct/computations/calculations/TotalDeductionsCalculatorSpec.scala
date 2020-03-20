@@ -27,7 +27,8 @@ class TotalDeductionsCalculatorSpec extends WordSpec with Matchers {
                                  cp57 = CP57(Some(2)),
                                  cp58 = CP58(3),
                                  cp509 = CP509(4),
-                                 cp505 = CP505(Some(5))) shouldBe CP59(15)
+                                 cp505 = CP505(Some(5)),
+                                 cp983 = CP983(Some(10))) shouldBe CP59(5)
     }
   }
 }
