@@ -9,7 +9,7 @@ import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.EndDate
 
 package object offPayRollWorking {
-  val opwApplies2020 = new LocalDate(2017, 4, 6)
+  val opwApplies2020 = new LocalDate("06-04-2017")
 
   def isOPWEnabled(apEndDate: EndDate) = apEndDate.value.isAfter(opwApplies2020)
 }
