@@ -42,6 +42,14 @@ trait Frs105AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
 
   def ac69(): AC69 = AC69.calculate(this)
 
+  def ac401(): AC401
+
+  def ac402(): AC402
+
+  def ac403(): AC403
+
+  def ac404(): AC404
+
   def ac405(): AC405
 
   def ac406(): AC406
