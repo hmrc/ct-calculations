@@ -6,6 +6,7 @@
 package uk.gov.hmrc.ct.accounts.frs105
 
 import play.api.libs.json.{JsResult, JsValue, Reads, _}
+import uk.gov.hmrc.ct.accounts.{AC401, AC402, AC403, AC404}
 import uk.gov.hmrc.ct.accounts.frs105.boxes._
 import uk.gov.hmrc.ct.box.formats._
 
@@ -26,6 +27,10 @@ package object formats {
   implicit val ac65Frs105Format = new OptionalIntegerFormat[AC65](AC65.apply)
   implicit val ac66Frs105Format = new OptionalIntegerFormat[AC66](AC66.apply)
   implicit val ac67Frs105Format = new OptionalIntegerFormat[AC67](AC67.apply)
+  implicit val ac401Frs105Format = new OptionalIntegerFormat[AC401](AC401.apply)
+  implicit val ac402Frs105Format = new OptionalIntegerFormat[AC402](AC402.apply)
+  implicit val ac403Frs105Format = new OptionalIntegerFormat[AC403](AC403.apply)
+  implicit val ac404Frs105Format = new OptionalIntegerFormat[AC404](AC404.apply)
   implicit val ac405Frs105Format = new OptionalIntegerFormat[AC405](AC405.apply)
   implicit val ac406Frs105Format = new OptionalIntegerFormat[AC406](AC406.apply)
   implicit val ac410Frs105Format = new OptionalIntegerFormat[AC410](AC410.apply)

@@ -5,6 +5,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.retriever
 
+import uk.gov.hmrc.ct.accounts.{AC401, AC402, AC403, AC404}
 import uk.gov.hmrc.ct.accounts.frs105.boxes._
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
@@ -42,6 +43,14 @@ trait Frs105AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
   def ac68(): AC68 = AC68.calculate(this)
 
   def ac69(): AC69 = AC69.calculate(this)
+
+  def ac401(): AC401
+
+  def ac402(): AC402
+
+  def ac403(): AC403
+
+  def ac404(): AC404
 
   def ac405(): AC405
 
