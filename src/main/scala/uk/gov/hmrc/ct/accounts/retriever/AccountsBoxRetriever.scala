@@ -24,6 +24,14 @@ trait AccountsBoxRetriever extends BoxRetriever {
 
   def ac12(): AC12
 
+  def ac401(): AC401
+
+  def ac402(): AC402
+
+  def ac403(): AC403
+
+  def ac404(): AC404
+
   def ac205(): AC205
 
   def ac206(): AC206

@@ -17,6 +17,10 @@ package object formats {
   implicit val ac3Format: Format[AC3] = new DateFormat[AC3](AC3.apply)
   implicit val ac4Format: Format[AC4] = new DateFormat[AC4](AC4.apply)
   implicit val ac12Format: Format[AC12] = new OptionalIntegerFormat[AC12](AC12.apply)
+  implicit val ac401Format = new OptionalIntegerFormat[AC401](AC401.apply)
+  implicit val ac402Format = new OptionalIntegerFormat[AC402](AC402.apply)
+  implicit val ac403Format = new OptionalIntegerFormat[AC403](AC403.apply)
+  implicit val ac404Format = new OptionalIntegerFormat[AC404](AC404.apply)
 
   implicit val ac205Format: Format[AC205] = new OptionalDateFormat[AC205](AC205.apply)
   implicit val ac206Format: Format[AC206] = new OptionalDateFormat[AC206](AC206.apply)
