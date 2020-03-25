@@ -1,11 +1,22 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.accounts.frsse2008.calculations
 
-import uk.gov.hmrc.ct.accounts.AC12
+import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frsse2008._
 import uk.gov.hmrc.ct.accounts.frsse2008.micro._
 import uk.gov.hmrc.ct.box.CtOptionalInteger
@@ -13,23 +24,23 @@ import uk.gov.hmrc.ct.{MicroEntityFiling, StatutoryAccountsFiling}
 
 trait ProfitOrLossCalculator {
 
-  def calculateCurrentProfitOrLoss(ac12: AC12, ac405: AC405, ac410: AC410, ac415: AC415, ac420: AC420, ac425: AC425, ac34: AC34, microEntityFiling: MicroEntityFiling): AC435 = {
+  def calculateCurrentProfitOrLoss(ac12: AC12, ac405: AC405, ac410: AC410, ac415: AC415, ac420: AC420, ac425: AC425, ac34: AC34, ac401: AC401, ac403: AC403, microEntityFiling: MicroEntityFiling): AC435 = {
     AC435 (
       if (microEntityFiling.value) {
         calculateMicroProfitAndLoss(turnover = ac12, otherIncome = ac405, rawMaterials = ac410,
                                     staffCosts = ac415, depreciation = ac420,
-                                    otherCharges = ac425, tax = ac34)
+                                    otherCharges = ac425, tax = ac34, opwTurnover = ac401, opwDeduction = ac403)
       }
       else None
     )
   }
 
-  def calculatePreviousProfitOrLoss(ac13: AC13, ac406: AC406, ac411: AC411, ac416: AC416, ac421: AC421, ac426: AC426, ac35: AC35, microEntityFiling: MicroEntityFiling): AC436 = {
+  def calculatePreviousProfitOrLoss(ac13: AC13, ac406: AC406, ac411: AC411, ac416: AC416, ac421: AC421, ac426: AC426, ac35: AC35,ac402: AC402, ac404: AC404, microEntityFiling: MicroEntityFiling): AC436 = {
     AC436 (
       if (microEntityFiling.value) {
         calculateMicroProfitAndLoss(turnover = ac13, otherIncome = ac406, rawMaterials = ac411,
                                     staffCosts = ac416, depreciation = ac421,
-                                    otherCharges = ac426, tax = ac35)
+                                    otherCharges = ac426, tax = ac35, opwTurnover = ac402, opwDeduction = ac404)
       }
       else None
     )
@@ -37,14 +48,14 @@ trait ProfitOrLossCalculator {
 
   private def calculateMicroProfitAndLoss(turnover: CtOptionalInteger, otherIncome: CtOptionalInteger,
                                           rawMaterials: CtOptionalInteger, staffCosts: CtOptionalInteger,
-                                          depreciation: CtOptionalInteger, otherCharges: CtOptionalInteger, tax: CtOptionalInteger): Option[Int] = {
+                                          depreciation: CtOptionalInteger, otherCharges: CtOptionalInteger, tax: CtOptionalInteger, opwTurnover: CtOptionalInteger, opwDeduction: CtOptionalInteger): Option[Int] = {
 
     def enteredValuesOnly(seq: Seq[CtOptionalInteger]): Seq[Int] = {
       seq.filterNot(_.value.isEmpty).map(_.orZero)
     }
 
-    val additions = enteredValuesOnly(Seq(turnover, otherIncome))
-    val deductions = enteredValuesOnly(Seq(rawMaterials, staffCosts, depreciation, otherCharges, tax))
+    val additions = enteredValuesOnly(Seq(turnover, otherIncome, opwTurnover))
+    val deductions = enteredValuesOnly(Seq(rawMaterials, staffCosts, depreciation, otherCharges, tax, opwDeduction))
 
     if (additions.nonEmpty || deductions.nonEmpty) {
       Some(additions.sum - deductions.sum)
@@ -52,19 +63,19 @@ trait ProfitOrLossCalculator {
   }
 
 
-  def calculateCurrentGrossProfitOrLoss(ac12: AC12, ac14: AC14, statutoryAccountsFiling: StatutoryAccountsFiling): AC16 = {
+  def calculateCurrentGrossProfitOrLoss(ac12: AC12, ac14: AC14, ac401: AC401, ac403: AC403, statutoryAccountsFiling: StatutoryAccountsFiling): AC16 = {
     AC16(
       if (statutoryAccountsFiling.value) {
-        calculateProfitOrLoss(ac12.value, ac14.value)
+        calculateProfitOrLoss(ac12.value, ac14.value, ac401.value, ac403.value)
       }
       else None
     )
   }
 
-  def calculatePreviousGrossProfitOrLoss(ac13: AC13, ac15: AC15, statutoryAccountsFiling: StatutoryAccountsFiling): AC17 = {
+  def calculatePreviousGrossProfitOrLoss(ac13: AC13, ac15: AC15, ac402: AC402, ac404: AC404, statutoryAccountsFiling: StatutoryAccountsFiling): AC17 = {
     AC17(
       if (statutoryAccountsFiling.value) {
-        calculateProfitOrLoss(ac13.value, ac15.value)
+        calculateProfitOrLoss(ac13.value, ac15.value, ac402.value, ac404.value)
       }
       else None
     )
@@ -122,10 +133,10 @@ trait ProfitOrLossCalculator {
     }
   }
 
-  private def calculateProfitOrLoss(turnover: Option[Int], costs: Option[Int]): Option[Int] = {
-    (turnover, costs) match {
-      case (None, None) => None
-      case (t, c) => Some(t.getOrElse(0) - c.getOrElse(0))
+  private def calculateProfitOrLoss(turnover: Option[Int], costs: Option[Int], opwTurnover: Option[Int], opwCost: Option[Int]): Option[Int] = {
+    (turnover, costs, opwTurnover, opwCost) match {
+      case (None, None, None, None) => None
+      case (t, c, ot, oc) => Some((t.getOrElse(0)+ ot.getOrElse(0)) - (c.getOrElse(0) + oc.getOrElse(0)))
     }
   }
 
