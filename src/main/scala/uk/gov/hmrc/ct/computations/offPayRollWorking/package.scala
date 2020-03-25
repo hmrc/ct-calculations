@@ -22,7 +22,7 @@ import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, EndDate}
 package object offPayRollWorking {
   val opwApplies2020 = new LocalDate("2017-04-05")
 
-  def isOPWEnabled(apEndDate: EndDate) = apEndDate.value.isAfter(opwApplies2020)
+  def isOPWEnabled(apEndDate: LocalDate) = apEndDate.isAfter(opwApplies2020)
 
   def DeductionCannotBeGreaterThanProfit(profit: CtOptionalInteger, loss: CtOptionalInteger): Set[CtValidation] ={
 

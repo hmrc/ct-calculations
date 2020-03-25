@@ -105,6 +105,5 @@ trait StubbedAccountsBoxRetriever extends Frsse2008AccountsBoxRetriever {
 
   override def ac404(): AC404 = ???
 
-
   override def generateValues: Map[String, CtValue[_]] = ???
 }
