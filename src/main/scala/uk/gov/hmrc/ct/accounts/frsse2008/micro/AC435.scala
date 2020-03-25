@@ -1,6 +1,17 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.accounts.frsse2008.micro
@@ -17,6 +28,7 @@ object AC435 extends Calculated[AC435, Frsse2008AccountsBoxRetriever with Filing
     calculateCurrentProfitOrLoss(ac12 = boxRetriever.ac12(), ac405 = boxRetriever.ac405(),
                                  ac410 = boxRetriever.ac410(), ac415 = boxRetriever.ac415(),
                                  ac420 = boxRetriever.ac420(), ac425 = boxRetriever.ac425(),
-                                 ac34 = boxRetriever.ac34(), boxRetriever.microEntityFiling())
+                                 ac34 = boxRetriever.ac34(), ac401 = boxRetriever.ac401(),
+                                 ac403 = boxRetriever.ac403(), boxRetriever.microEntityFiling())
   }
 }
