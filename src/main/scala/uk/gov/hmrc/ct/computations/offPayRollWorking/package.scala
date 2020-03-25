@@ -11,5 +11,5 @@ import uk.gov.hmrc.ct.box.EndDate
 package object offPayRollWorking {
   val opwApplies2020 = new LocalDate("2017-04-06")
 
-  def isOPWEnabled(apEndDate: EndDate) = apEndDate.value.isAfter(opwApplies2020)
+  def isOPWEnabled(apEndDate: LocalDate) = apEndDate.isAfter(opwApplies2020)
 }
