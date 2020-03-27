@@ -38,7 +38,6 @@ class AP2Spec extends WordSpec with Matchers with BoxValidationFixture[AccountsB
     when(boxRetriever.ap3()).thenReturn(AP3(Some(1)))
     when(boxRetriever.ac12()).thenReturn(AC12(Some(3)))
     when(boxRetriever.ac401()).thenReturn(AC401(Some(4)))
-    when(boxRetriever.ac403()).thenReturn(AC403(Some(2)))
   }
 
   "AP2" should {
@@ -52,7 +51,7 @@ class AP2Spec extends WordSpec with Matchers with BoxValidationFixture[AccountsB
     }
     "allow the total of it, AP1 and AP3 to be equal to AC12 + AC401 - AC403" in {
       when(boxRetriever.ac12()).thenReturn(AC12(Some(3)))
-      AP2(Some(3)).validate(boxRetriever) shouldBe empty
+      AP2(Some(5)).validate(boxRetriever) shouldBe empty
     }
   }
 }
