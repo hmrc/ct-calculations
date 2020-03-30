@@ -5,6 +5,7 @@
 
 package uk.gov.hmrc.ct.computations
 
+import uk.gov.hmrc.ct.accounts.AC403
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
@@ -18,7 +19,6 @@ case class CP981(value: Option[Int]) extends CtBoxIdentifier(name = "Deductions 
 
 }
 
-object CP981 {
-
-  def apply(value: Int): CP981 = CP981(Some(value))
+object CP981 extends Linked[AC403, CP981] {
+  override def apply(source: AC403): CP981 = CP981(source.value)
 }
