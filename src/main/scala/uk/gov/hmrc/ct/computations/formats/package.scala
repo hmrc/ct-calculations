@@ -1,17 +1,6 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.computations
@@ -380,7 +369,7 @@ package object formats {
 
   implicit val CP982Format: Format[CP982] = new OptionalIntegerFormat[CP982](CP982.apply)
 
-  implicit val cp983Format: Format[CP983] = new OptionalIntegerFormat[CP983](CP983.apply)
+  implicit val cp983Format: Format[CP983] = new IntegerFormat[CP983](CP983.apply)
 
   implicit val cp997Format: Format[CP997] = new OptionalIntegerFormat[CP997](CP997.apply)
 
