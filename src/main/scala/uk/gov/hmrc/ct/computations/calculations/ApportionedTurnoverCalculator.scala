@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.Days
 import play.api.libs.json.{Format, Json}
-import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4}
+import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4, AC401, AC403}
 import uk.gov.hmrc.ct.computations._
 
 import scala.math.BigDecimal.RoundingMode
@@ -29,36 +29,40 @@ trait ApportionedTurnoverCalculator {
                                                 ac4: AC4,
                                                 cp1: CP1,
                                                 cp2: CP2,
-                                                ac12: AC12): AP1 = {
-    AP1(apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12).beforeAccountingPeriod)
+                                                ac12: AC12,
+                                                ac401: AC401): AP1 = {
+    AP1(apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12, ac401).beforeAccountingPeriod)
   }
 
   def turnoverApportionedDuringAccountingPeriod(ac3: AC3,
                                                 ac4: AC4,
                                                 cp1: CP1,
                                                 cp2: CP2,
-                                                ac12: AC12): AP2 = {
-    AP2(None, apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12).duringAccountingPeriod)
+                                                ac12: AC12,
+                                                ac401: AC401): AP2 = {
+    AP2(None, apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12, ac401).duringAccountingPeriod)
   }
 
   def turnoverApportionedAfterAccountingPeriod(ac3: AC3,
                                                ac4: AC4,
                                                cp1: CP1,
                                                cp2: CP2,
-                                               ac12: AC12): AP3 = {
-    AP3(apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12).afterAccountingPeriod)
+                                               ac12: AC12,
+                                                ac401: AC401): AP3 = {
+    AP3(apportionPeriodOfAccountsTurnover(ac3, ac4, cp1, cp2, ac12, ac401).afterAccountingPeriod)
   }
 
   def apportionPeriodOfAccountsTurnover(ac3: AC3,
                                         ac4: AC4,
                                         cp1: CP1,
                                         cp2: CP2,
-                                        ac12: AC12): ApportionedTurnover = {
+                                        ac12: AC12,
+                                        ac401: AC401): ApportionedTurnover = {
     val periodOfAccountsStart = ac3.value
     val periodOfAccountsEnd   = ac4.value
     val accountingPeriodStart = cp1.value
     val accountingPeriodEnd   = cp2.value
-    val turnover              = ac12.value
+    val turnover              = ac12.value.map(ac12Val => ac12Val + ac401.value.getOrElse(0))
 
     val periodOfAccounts       = Days.daysBetween(periodOfAccountsStart, periodOfAccountsEnd).plus(1)
     val beforeAccountingPeriod = Days.daysBetween(periodOfAccountsStart, accountingPeriodStart)

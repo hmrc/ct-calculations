@@ -21,13 +21,13 @@ import uk.gov.hmrc.ct.accounts.frs10x.boxes.{ACQ8161, ACQ8999}
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.{Frs10xDormancyBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
-import uk.gov.hmrc.ct.accounts.{AC12, AccountsMoneyValidationFixture, MockFrs105AccountsRetriever}
+import uk.gov.hmrc.ct.accounts.{AC12, AC401, AC403, AccountsMoneyValidationFixture, MockFrs105AccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
 class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever with Frs10xDormancyBoxRetriever] with  MockFrs105AccountsRetriever {
 
-  def setupCurrentYearMocks(ac12: AC12, ac405: AC405, ac410: AC410, ac415: AC415, ac420: AC420, ac425: AC425, ac34: AC34) = {
+  def setupCurrentYearMocks(ac12: AC12, ac405: AC405, ac410: AC410, ac415: AC415, ac420: AC420, ac425: AC425, ac34: AC34, ac401: AC401, ac403: AC403) = {
     when(boxRetriever.ac12()).thenReturn(ac12)
     when(boxRetriever.ac405()).thenReturn(ac405)
     when(boxRetriever.ac410()).thenReturn(ac410)
@@ -35,10 +35,12 @@ class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
     when(boxRetriever.ac420()).thenReturn(ac420)
     when(boxRetriever.ac425()).thenReturn(ac425)
     when(boxRetriever.ac34()).thenReturn(ac34)
+    when(boxRetriever.ac401()).thenReturn(ac401)
+    when(boxRetriever.ac403()).thenReturn(ac403)
   }
 
   override def setUpMocks(): Unit = {
-    setupCurrentYearMocks(AC12(None), AC405(None), AC410(Some(1)), AC415(None), AC420(None), AC425(None), AC34(None))
+    setupCurrentYearMocks(AC12(None), AC405(None), AC410(Some(1)), AC415(None), AC420(None), AC425(None), AC34(None), AC401(None), AC403(None))
     when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
     when(boxRetriever.acq8999()).thenReturn(ACQ8999(None))
     super.setUpMocks()
@@ -49,7 +51,7 @@ class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
   "AC405 validation" should {
     "fail if no current year box populated" in {
       when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
-      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
+      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None), AC401(None), AC403(None))
 
       AC405(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.profit.loss.one.box.required", None))
     }
@@ -59,25 +61,31 @@ class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
     "pass if at least one current year box populated" in {
       when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
 
-      setupCurrentYearMocks(AC12(Some(1)), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
+      setupCurrentYearMocks(AC12(Some(1)), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None), AC401(None), AC403(None))
       AC405(None).validate(boxRetriever) shouldBe Set.empty
 
-      setupCurrentYearMocks(AC12(None), AC405(Some(1)), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
+      setupCurrentYearMocks(AC12(None), AC405(Some(1)), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None), AC401(None), AC403(None))
       AC405(None).validate(boxRetriever) shouldBe Set.empty
 
-      setupCurrentYearMocks(AC12(None), AC405(None), AC410(Some(1)), AC415(None), AC420(None), AC425(None), AC34(None))
+      setupCurrentYearMocks(AC12(None), AC405(None), AC410(Some(1)), AC415(None), AC420(None), AC425(None), AC34(None), AC401(None), AC403(None))
       AC405(None).validate(boxRetriever) shouldBe Set.empty
 
-      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(Some(1)), AC420(None), AC425(None), AC34(None))
+      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(Some(1)), AC420(None), AC425(None), AC34(None), AC401(None), AC403(None))
       AC405(None).validate(boxRetriever) shouldBe Set.empty
 
-      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(Some(1)), AC425(None), AC34(None))
+      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(Some(1)), AC425(None), AC34(None), AC401(None), AC403(None))
       AC405(None).validate(boxRetriever) shouldBe Set.empty
 
-      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(Some(1)), AC34(None))
+      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(Some(1)), AC34(None), AC401(None), AC403(None))
       AC405(None).validate(boxRetriever) shouldBe Set.empty
 
-      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(Some(1)))
+      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(Some(1)), AC401(None), AC403(None))
+      AC405(None).validate(boxRetriever) shouldBe Set.empty
+
+      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(Some(1)), AC401(1), AC403(None))
+      AC405(None).validate(boxRetriever) shouldBe Set.empty
+
+      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(Some(1)), AC401(None), AC403(1))
       AC405(None).validate(boxRetriever) shouldBe Set.empty
     }
 
@@ -86,7 +94,7 @@ class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
       when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
       when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(false)))
 
-      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
+      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None), AC401(None), AC403(None))
 
       AC405(None).validate(boxRetriever) shouldBe Set()
     }
@@ -96,7 +104,7 @@ class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
       when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
       when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
 
-      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
+      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None), AC401(None), AC403(None))
 
       AC405(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
     }
@@ -106,7 +114,7 @@ class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
       when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
       when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(false)))
 
-      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
+      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None), AC401(None), AC403(None))
 
       AC405(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
     }
@@ -116,7 +124,7 @@ class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
       when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
       when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
 
-      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
+      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None), AC401(None), AC403(None))
 
       AC405(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
     }
@@ -127,7 +135,7 @@ class AC405Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
       when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(true)))
       when(boxRetriever.acq8161()).thenReturn(ACQ8161(Some(true)))
 
-      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None))
+      setupCurrentYearMocks(AC12(None), AC405(None), AC410(None), AC415(None), AC420(None), AC425(None), AC34(None), AC401(None), AC403(None))
       AC405(None).validate(boxRetriever) shouldBe Set.empty
     }
   }

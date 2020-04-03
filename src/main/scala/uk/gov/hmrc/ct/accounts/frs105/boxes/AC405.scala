@@ -39,6 +39,8 @@ case class AC405(value: Option[Int]) extends CtBoxIdentifier(name = "Other incom
 
     val anyCurrentYearFieldHasAValue = (
         boxRetriever.ac12().value orElse
+        boxRetriever.ac401().value orElse
+        boxRetriever.ac403().value orElse
         boxRetriever.ac405().value orElse
         boxRetriever.ac410().value orElse
         boxRetriever.ac415().value orElse
