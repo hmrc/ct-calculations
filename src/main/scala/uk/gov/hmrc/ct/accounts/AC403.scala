@@ -12,9 +12,10 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations.offPayRollWorking.DeductionCannotBeGreaterThanProfit
 
 case class AC403(value: Option[Int]) extends CtBoxIdentifier(name = "Current Deductions from OPW")
-with CtOptionalInteger
-with Input
-  with ValidatableBox[AccountsBoxRetriever] with Debit {
+  with CtOptionalInteger
+  with Input
+  with Debit
+  with ValidatableBox[AccountsBoxRetriever] {
   override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
     val ac401 = boxRetriever.ac401()
     collectErrors(
