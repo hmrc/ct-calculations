@@ -33,15 +33,6 @@ class AC403Spec extends WordSpec with Matchers with MockitoSugar {
       val validationResult = AC403(10001).validate(boxRetriever)
 
       validationResult shouldBe Set(CtValidation(Some("AC403"),"error.AC403.exceeds.AC401"))
-
-    }
-
-    "show error if AC403 is present when AC401 doesnt Exist" in {
-      when(boxRetriever.ac401())thenReturn AC401(None)
-      val validationResult = AC403(1).validate(boxRetriever)
-
-      validationResult shouldBe Set(CtValidation(Some("AC403"),"error.AC403.cannot.exist"))
-
     }
 
     "show error if AC403 isnt present when AC401 exists" in {
@@ -49,7 +40,6 @@ class AC403Spec extends WordSpec with Matchers with MockitoSugar {
       val validationResult = AC403(None).validate(boxRetriever)
 
       validationResult shouldBe Set(CtValidation(Some("AC403"),"error.AC403.required"))
-
     }
   }
 }
