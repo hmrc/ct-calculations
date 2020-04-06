@@ -1,12 +1,24 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.computations.retriever
 
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.computations.formats._
 import uk.gov.hmrc.ct.{CATO01, CATO02, CATO03, CATO13, CATO14, CATO15, CATO16, CATO20, CATO21, CATO22, CATO23}
 
@@ -17,6 +29,14 @@ trait ComputationsBoxRetriever extends BoxRetriever {
   def ap2(): AP2
 
   def ap3(): AP3
+
+  def ac401(): AC401
+
+  def ac402(): AC402
+
+  def ac403(): AC403
+
+  def ac404(): AC404
 
   def cp1(): CP1
 
@@ -360,11 +380,11 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp980(): CP980
 
-  def cp981(): CP981
+  def cp981(): CP981  = CP981(ac403())
 
   def cp982(): CP982
 
-  def cp983(): CP983
+  def cp983(): CP983 = CP983(ac401())
 
   def cp997(): CP997
 
