@@ -43,13 +43,13 @@ class AC402Spec extends WordSpec with MockitoSugar with Matchers {
     }
 
 
-    "show correct error message when AC401 doesn't need to be present" in{
+    "show correct error message when AC402 doesn't need to be present" in{
       when(boxRetriever.ac404()).thenReturn(AC404(Some(1)))
 
       AC402(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC402"),"error.AC402.required",None))
     }
 
-    "don't show error message when AC401 should be present" in{
+    "don't show error message when AC402 should be present" in{
       when(boxRetriever.ac404()).thenReturn(AC404(None))
 
       AC402(None).validate(boxRetriever) shouldBe Set.empty[CtValidation]
