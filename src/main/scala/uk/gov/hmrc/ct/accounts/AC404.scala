@@ -20,7 +20,6 @@ case class AC404(value: Option[Int]) extends CtBoxIdentifier(name = "Previous De
     val ac402 = boxRetriever.ac402()
 
     collectErrors(
-      cannotExistErrorIf(value.isDefined && ac402.value.isEmpty),
       failIf(ac402.value.isDefined && value.isEmpty) {
         Set(CtValidation(Some("AC404"), "error.AC404.required"))
       },

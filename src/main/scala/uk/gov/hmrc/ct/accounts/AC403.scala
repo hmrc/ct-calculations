@@ -9,6 +9,7 @@ import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.computations.offPayRollWorking
 import uk.gov.hmrc.ct.computations.offPayRollWorking.DeductionCannotBeGreaterThanProfit
 
 case class AC403(value: Option[Int]) extends CtBoxIdentifier(name = "Current Deductions from OPW")
@@ -19,15 +20,12 @@ case class AC403(value: Option[Int]) extends CtBoxIdentifier(name = "Current Ded
   override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
     val ac401 = boxRetriever.ac401()
     collectErrors(
-      cannotExistErrorIf(value.isDefined && ac401.value.isEmpty),
       failIf(ac401.value.isDefined && value.isEmpty){
         Set(CtValidation(Some("AC403"), "error.AC403.required"))
       },
       DeductionCannotBeGreaterThanProfit(boxRetriever.ac401(), this)
     )
   }
-
-
 }
 
 object AC403 {
