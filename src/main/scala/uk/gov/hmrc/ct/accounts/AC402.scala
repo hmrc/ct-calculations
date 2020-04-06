@@ -25,7 +25,12 @@ with CtOptionalInteger
 with Input
   with ValidatableBox[AccountsBoxRetriever] {
   override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
+    val ac404 = boxRetriever.ac404()
+
     collectErrors(
+      failIf(ac404.value.isDefined && value.isEmpty){
+        Set(CtValidation(Some("AC402"), "error.AC402.required"))
+      },
       exceedsMax(value,999999),
       validateZeroOrPositiveInteger(this)
     )
