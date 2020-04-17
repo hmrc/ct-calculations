@@ -13,6 +13,7 @@ import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
     .settings(majorVersion := 2)
     .settings(makePublicallyAvailableOnBintray := true)
     .settings(
+      //TODO: Remove before master merge
       headerLicense := Some(HeaderLicense.Custom(
         """Copyright 2020 HM Revenue & Customs
           |
