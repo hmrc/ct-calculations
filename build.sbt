@@ -1,9 +1,9 @@
-import sbt.{Def, _}
 import sbt.Keys._
-import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
+import sbt._
+import uk.gov.hmrc.SbtArtifactory.autoImport.makePublicallyAvailableOnBintray
 import uk.gov.hmrc.versioning.SbtGitVersioning
 import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
-import uk.gov.hmrc.SbtArtifactory.autoImport.makePublicallyAvailableOnBintray
+import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
 
   val appName = "ct-calculations"
 
@@ -13,6 +13,11 @@ import uk.gov.hmrc.SbtArtifactory.autoImport.makePublicallyAvailableOnBintray
     .settings(majorVersion := 2)
     .settings(makePublicallyAvailableOnBintray := true)
     .settings(
+      headerLicense := Some(HeaderLicense.Custom(
+        """Copyright 2020 HM Revenue & Customs
+          |
+          |""".stripMargin
+      )),
       name := appName,
       scalaVersion := "2.11.12",
       crossScalaVersions := Seq("2.11.12"),
