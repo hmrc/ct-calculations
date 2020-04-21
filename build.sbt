@@ -7,10 +7,24 @@ import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
 
   val appName = "ct-calculations"
 
+
+  lazy val scoverageSettings = {
+    import scoverage._
+    Seq(
+      ScoverageKeys.coverageMinimum := 80,
+      ScoverageKeys.coverageFailOnMinimum := false,
+      ScoverageKeys.coverageHighlighting := true,
+      ScoverageKeys.coverageExcludedFiles := ";.*Routes.*;views.*",
+      ScoverageKeys.coverageExcludedPackages := """<empty>;.*javascript.*;.*models.*;.*Routes.*;.*testonly.*""",
+      parallelExecution in Test := false
+    )
+  }
+
   lazy val CtCalculations = (project in file("."))
     .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
     .disablePlugins(JUnitXmlReportPlugin)
     .settings(majorVersion := 2)
+    .settings(scoverageSettings: _*)
     .settings(makePublicallyAvailableOnBintray := true)
     .settings(
       //TODO: Remove before master merge

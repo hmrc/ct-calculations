@@ -6,9 +6,7 @@
 package uk.gov.hmrc.ct.computations
 
 import org.scalatest.{Matchers, WordSpec}
-import org.scalatest.mockito.MockitoSugar
-import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.accounts.{AC401, AC403}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
@@ -42,7 +40,5 @@ class CP980Spec extends WordSpec with Matchers with MockitoSugar {
 
       result shouldBe Set.empty
     }
-
-
   }
 }
