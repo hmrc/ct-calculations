@@ -1,17 +1,6 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.computations.calculations
@@ -223,8 +212,7 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
       }
     }
 
-
-    "apportion turnover includes non-OPW turnover and OPW turnover.scala" in new ApportionedTurnoverCalculator {
+    "apportion turnover includes non-OPW turnover and OPW turnover" in new ApportionedTurnoverCalculator {
       val periodOfAccountsTurnover = 7
       val opwTurnover = 10
 
@@ -239,6 +227,53 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
 
       result shouldBe ApportionedTurnover(None, Some(periodOfAccountsTurnover + opwTurnover), None)
       result.total shouldBe periodOfAccountsTurnover + opwTurnover
+    }
+
+    "methods returning correct apportion" should {
+      "for before" in new ApportionedTurnoverCalculator {
+        val periodOfAccountsTurnover = 648300
+
+        val result = turnoverApportionedBeforeAccountingPeriod(
+          AC3(new LocalDate(2013, 4, 1)),
+          AC4(new LocalDate(2014, 3, 31)),
+          CP1(new LocalDate(2013, 5, 1)),
+          CP2(new LocalDate(2013, 12, 31)),
+          AC12(periodOfAccountsTurnover),
+          AC401(None)
+        )
+
+        result.inputValue shouldBe Some(53285)
+      }
+
+      "for during" in new ApportionedTurnoverCalculator {
+        val periodOfAccountsTurnover = 648300
+
+        val result = turnoverApportionedDuringAccountingPeriod(
+          AC3(new LocalDate(2013, 4, 1)),
+          AC4(new LocalDate(2014, 3, 31)),
+          CP1(new LocalDate(2013, 5, 1)),
+          CP2(new LocalDate(2013, 12, 31)),
+          AC12(periodOfAccountsTurnover),
+          AC401(None)
+        )
+
+        result.defaultValue shouldBe Some(435160)
+      }
+
+      "for after" in new ApportionedTurnoverCalculator {
+        val periodOfAccountsTurnover = 648300
+
+        val result = turnoverApportionedAfterAccountingPeriod(
+          AC3(new LocalDate(2013, 4, 1)),
+          AC4(new LocalDate(2014, 3, 31)),
+          CP1(new LocalDate(2013, 5, 1)),
+          CP2(new LocalDate(2013, 12, 31)),
+          AC12(periodOfAccountsTurnover),
+          AC401(None)
+        )
+
+        result.inputValue shouldBe Some(159855)
+      }
     }
   }
 }

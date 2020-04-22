@@ -1,27 +1,32 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import org.mockito.Mockito._
-import uk.gov.hmrc.ct.accounts.{MockFrs102AccountsRetriever, AccountsMoneyValidationFixture}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.accounts.frs102.stubs.StubbedFullAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts._
 
 class AC16Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever {
 
   testAccountsMoneyValidation("AC16", AC16.apply)
+
+  "AC16 calculates from boxes correctly" in {
+    val testAc12 = 123
+    val testAc14 = 456
+    val testAc401 = 678
+    val testAc403 = 910
+    val boxRetriever = new StubbedFullAccountsBoxRetriever {
+      override def ac12 = AC12(testAc12)
+      override def ac14 = AC14(Some(testAc14))
+      override def ac401 = AC401(testAc401)
+      override def ac403 = AC403(testAc403)
+    }
+
+    val ac16 = AC16.calculate(boxRetriever)
+
+    ac16.value shouldBe Some(testAc12 + testAc401 - testAc14 - testAc403)
+  }
 }
