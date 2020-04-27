@@ -11,12 +11,8 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP981(value: Option[Int]) extends CtBoxIdentifier(name = "Deductions from Off-payroll working (IR35)") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
   override def validate(boxRetriever: ComputationsBoxRetriever ): Set[CtValidation] = {
-
     validateZeroOrPositiveInteger(this)
-
   }
-
-
 }
 
 object CP981 extends Linked[AC403, CP981] {
