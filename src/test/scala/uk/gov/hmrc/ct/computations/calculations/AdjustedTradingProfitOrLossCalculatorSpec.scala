@@ -124,5 +124,23 @@ class AdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
 
         cp118 shouldBe CP118(34750)
       }
+
+    "return a trading loss if there is a trading profit > 0 calculated as CP44 + CP54 - CP59 - CP186 + CP91 + CP670 - CP668 - CP297 - CP986" in
+      new AdjustedTradingProfitOrLossCalculator {
+
+        val cp118 = calculateAdjustedTradingLoss(
+          cp44 = CP44(0),
+          cp54 = CP54(90000),
+          cp59 = CP59(100000),
+          cp186 = CP186(Some(0)),
+          cp91 = CP91(Some(0)),
+          cp670 = CP670(Some(0)),
+          cp668 = CP668(Some(0)),
+          cpq19 = CPQ19(Some(false)),
+          cp297 = CP297(Some(0)),
+          cp986 = CP986(0))
+        cp118 shouldBe CP118(10000)
+      }
   }
+
 }
