@@ -31,7 +31,10 @@ class ProfitAndLossCalculatorSpec extends WordSpec with Matchers {
                                                             cp40: CP40 = CP40(50),
                                                             cp43: CP43 = CP43(Some(0)),
                                                             cp509: CP509 = CP509(0),
-                                                            cp502: CP502 = CP502(Some(0))) = calculateGrossProfitOrLossBeforeTax(cp14, cp40, cp43, cp509, cp502)
+                                                            cp502: CP502 = CP502(Some(0)),
+                                                            cp980: CP980 = CP980(Some(0)),
+                                                            cp981: CP981 = CP981(Some(0)),
+                                                            cp982: CP982 = CP982(Some(0))) = calculateGrossProfitOrLossBeforeTax(cp14, cp40, cp43, cp509, cp502, cp980, cp981, cp982)
 
       calculateGrossProfitOrLossBeforeTaxWithBaseParams() shouldBe CP44(50)
       calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp43 = CP43(Some(10))) shouldBe CP44(60)
@@ -45,7 +48,11 @@ class ProfitAndLossCalculatorSpec extends WordSpec with Matchers {
                                                             cp40: CP40 = CP40(100),
                                                             cp43: CP43 = CP43(Some(0)),
                                                             cp509: CP509 = CP509(0),
-                                                            cp502: CP502 = CP502(Some(0))) = calculateGrossProfitOrLossBeforeTax(cp14, cp40, cp43, cp509, cp502)
+                                                            cp502: CP502 = CP502(Some(0)),
+                                                              cp980: CP980 = CP980(Some(0)),
+                                                            cp981: CP981 = CP981(Some(0)),
+                                                            cp982: CP982 = CP982(Some(0))) = calculateGrossProfitOrLossBeforeTax(cp14, cp40, cp43, cp509, cp502, cp980, cp981, cp982)
+
 
       calculateGrossProfitOrLossBeforeTaxWithBaseParams() shouldBe CP44(-50)
       calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp43 = CP43(Some(10))) shouldBe CP44(-40)
@@ -59,7 +66,11 @@ class ProfitAndLossCalculatorSpec extends WordSpec with Matchers {
                                                             cp40: CP40 = CP40(100),
                                                             cp43: CP43 = CP43(Some(0)),
                                                             cp509: CP509 = CP509(0),
-                                                            cp502: CP502 = CP502(Some(0))) = calculateGrossProfitOrLossBeforeTax(cp14, cp40, cp43, cp509, cp502)
+                                                            cp502: CP502 = CP502(Some(0)),
+                                                            cp980: CP980 = CP980(Some(0)),
+                                                            cp981: CP981 = CP981(Some(0)),
+                                                            cp982: CP982 = CP982(Some(0))) = calculateGrossProfitOrLossBeforeTax(cp14, cp40, cp43, cp509, cp502, cp980, cp981, cp982)
+
 
       calculateGrossProfitOrLossBeforeTaxWithBaseParams() shouldBe CP44(0)
       calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp40 = CP40(110), cp43 = CP43(Some(10))) shouldBe CP44(0)
