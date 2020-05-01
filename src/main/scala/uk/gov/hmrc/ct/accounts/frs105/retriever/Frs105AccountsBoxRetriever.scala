@@ -50,7 +50,7 @@ trait Frs105AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
 
   def ac411(): AC411
 
-  def ac415(): AC415
+  //def ac415(): AC415
 
   def ac416(): AC416
 
