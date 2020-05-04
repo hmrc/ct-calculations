@@ -6,6 +6,7 @@
 package uk.gov.hmrc.ct.accounts
 
 import play.api.libs.json.{Format, Json}
+import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
 import uk.gov.hmrc.ct.box.formats.{DateFormat, OptionalDateFormat, OptionalIntegerFormat, OptionalStringFormat}
 
 package object formats {
@@ -21,6 +22,7 @@ package object formats {
   implicit val ac402Format = new OptionalIntegerFormat[AC402](AC402.apply)
   implicit val ac403Format = new OptionalIntegerFormat[AC403](AC403.apply)
   implicit val ac404Format = new OptionalIntegerFormat[AC404](AC404.apply)
+  implicit val ac415Format = new OptionalIntegerFormat[AC415](AC415.apply)
 
   implicit val ac205Format: Format[AC205] = new OptionalDateFormat[AC205](AC205.apply)
   implicit val ac206Format: Format[AC206] = new OptionalDateFormat[AC206](AC206.apply)

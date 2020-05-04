@@ -8,6 +8,7 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs102.stubs.StubbedFullAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts._
+import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
 
 class AC16Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever {
 
@@ -23,7 +24,9 @@ class AC16Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever
       override def ac14 = AC14(Some(testAc14))
       override def ac401 = AC401(testAc401)
       override def ac403 = AC403(testAc403)
-    }
+
+      override def ac415(): AC415 = ???
+}
 
     val ac16 = AC16.calculate(boxRetriever)
 
