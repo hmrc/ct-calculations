@@ -5,6 +5,7 @@
 
 package uk.gov.hmrc.ct.accounts.retriever
 
+import uk.gov.hmrc.ct.CATO24
 import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
 import uk.gov.hmrc.ct.accounts.frsse2008.micro
@@ -33,6 +34,8 @@ trait AccountsBoxRetriever extends BoxRetriever {
   def ac403(): AC403
 
   def ac404(): AC404
+
+  def cato24: CATO24
 
   def ac415(): AC415
 
