@@ -1,4 +1,7 @@
-
+/*
+ * Copyright 2020 HM Revenue & Customs
+ *
+ */
 
 package uk.gov.hmrc.ct.accounts.frs105.calculations
 
