@@ -1,6 +1,17 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.ct600.calculations
@@ -111,7 +122,7 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
 
     TaxYear(2019) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal("0.125")),
 
-    TaxYear(2020) -> NorthernIrelandRate(unifiedTaxRate = "0.17", northernIrelandRate = BigDecimal("0.19"))
+    TaxYear(2020) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal("0.19"))
     // Everything after last year entry has the same rates. Last entry with the highest year number matters.
   )
 
