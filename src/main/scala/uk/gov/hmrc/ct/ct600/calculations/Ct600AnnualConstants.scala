@@ -111,7 +111,7 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
 
     TaxYear(2019) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal("0.125")),
 
-    TaxYear(2020) -> NorthernIrelandRate(unifiedTaxRate = "0.17", northernIrelandRate = BigDecimal("0.19"))
+    TaxYear(2020) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal("0.19"))
     // Everything after last year entry has the same rates. Last entry with the highest year number matters.
   )
 
