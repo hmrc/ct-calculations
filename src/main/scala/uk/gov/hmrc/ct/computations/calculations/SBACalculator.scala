@@ -18,28 +18,38 @@ package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.ct600.NumberRounding
-import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper
+import uk.gov.hmrc.ct.ct600.calculations.{AccountingPeriodHelper, TaxYear}
+
+
 
 trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
-  val rate: BigDecimal = 0.02
+
+  val ratePriorTy2020: BigDecimal = 0.02
+  val rateAfterTy2020: BigDecimal = 0.03
+  //maybe create case class from year to tax rate like in ct in case this happens again
+  //rate to year
+
 
   def getDaysIntheYear(apStartDate: LocalDate) = {
     val yearAfterApStart = apStartDate.plusYears(1)
     if(apStartDate.getDayOfMonth == yearAfterApStart.getDayOfMonth) daysBetween(apStartDate, yearAfterApStart) - 1 else 366
   }
 
-  def apportionedCostOfBuilding(cost: BigDecimal, daysInTheYear: Int): BigDecimal = (cost * rate) / daysInTheYear
+  def apportionedCostOfBuilding(cost: BigDecimal, daysInTheYear: Int,rateForTy:BigDecimal): BigDecimal = (cost * rateForTy) / daysInTheYear
 
   def isEarliestWrittenContractAfterAPStart(contractDate: LocalDate, apStartDate: LocalDate): Boolean = contractDate.isAfter(apStartDate)
 
   /* This is the 2% rounded up*/
-  def getAmountClaimableForSBA(apStartDate: LocalDate, apEndDate: LocalDate, firstUsage: Option[LocalDate], cost: Option[Int]): Option[Int] = {
-    val daysInTheYear = getDaysIntheYear(apStartDate)
+  def getAmountClaimableForSBA(apStartDate: LocalDate, apEndDate: LocalDate, maybeFirstUsageDate: Option[LocalDate], maybeCost: Option[Int]): Option[Int] = {
 
-    (firstUsage, cost) match {
-      case (Some(firstUsageDate), Some(maybeCost)) => {
-        val dailyRate = apportionedCostOfBuilding(maybeCost, daysInTheYear)
+     //put it new
+    (maybeFirstUsageDate, maybeCost) match {
+      case (Some(firstUsageDate), Some(cost)) => {
+        //need to split this information up
+        val daysInTheYear = getDaysIntheYear(apStartDate)
+        val isAfterTy2020 =
+        val dailyRate = apportionedCostOfBuilding(cost, daysInTheYear,ratePriorTy2020)
 
         val totalCost = if (isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) {
           daysBetween(firstUsageDate, apEndDate) * dailyRate
