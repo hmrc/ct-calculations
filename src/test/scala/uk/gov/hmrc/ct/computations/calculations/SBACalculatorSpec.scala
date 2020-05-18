@@ -71,7 +71,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       getDaysIntheYear(apStartDate) shouldBe 366
       val result = getAmountClaimableForSBA(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
-      result shouldBe Some(200)
+      result shouldBe Some(300)
     }
 
     "apportion and calculate the right amount of sba claimable for a building for 12 months during a leap year where accounting period starts on or after 1st April" in new SBACalculator {
@@ -122,7 +122,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
 
       val result = getAmountClaimableForSBA(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
-      result shouldBe Some(183)
+      result shouldBe Some(275)
     }
 
     "apportion and calculate the right amount of sba claimable for a building for 3 months during a regular year where the contract date starts after AP start date not including february" in new SBACalculator {
@@ -134,7 +134,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
 
       val result = getAmountClaimableForSBA(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
-      result shouldBe Some(168)
+      result shouldBe Some(252)
     }
 
     "getDaysIntheYear produces correct amount of days for dates surrounding leap year" in new SBACalculator {
@@ -166,9 +166,20 @@ class SBACalculatorSpec extends WordSpec with Matchers {
 
       val result = getAmountClaimableForSBA(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
-      result shouldBe Some(300)
+      result shouldBe Some(301)
     }
+    //deal with some in the 2% range and some in the 3% range return days in each as well do the calt as well split up
+    "calculate just using the 3% rate if the the start date is after 2020-04-01" in new SBACalculator {
 
+      val apStartDate: LocalDate = new LocalDate("2020-01-01")
+      val apEndDate: LocalDate = new LocalDate("2020-12-31")
+      val cost: Int = 10000
+      val firstUsageDate: LocalDate = new LocalDate("2020-04-01")
+
+      val result = getAmountClaimableForSBA(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
+
+      result shouldBe Some(301)
+    }
 
   }
 }

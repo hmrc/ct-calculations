@@ -48,8 +48,12 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
       case (Some(firstUsageDate), Some(cost)) => {
         //need to split this information up
         val daysInTheYear = getDaysIntheYear(apStartDate)
-        val isAfterTy2020 =
-        val dailyRate = apportionedCostOfBuilding(cost, daysInTheYear,ratePriorTy2020)
+        //todo what about maybeFirstUsageDate?
+        //get days for 2% tax rate
+        //get days for 3% tax rate
+        val isAfterTy2020 =   if(financialYearForDate(apStartDate) >= 2020 &&   financialYearForDate(apEndDate)  >= 2020)true else false
+
+        val dailyRate = apportionedCostOfBuilding(cost, daysInTheYear,if(isAfterTy2020)rateAfterTy2020 else ratePriorTy2020)
 
         val totalCost = if (isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) {
           daysBetween(firstUsageDate, apEndDate) * dailyRate
