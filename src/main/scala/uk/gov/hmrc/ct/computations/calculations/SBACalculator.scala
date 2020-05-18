@@ -42,7 +42,9 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
   /* This is the 2% rounded up*/
   def getAmountClaimableForSBA(apStartDate: LocalDate, apEndDate: LocalDate, maybeFirstUsageDate: Option[LocalDate], maybeCost: Option[Int]): Option[Int] = {
-
+    println("apStartDate " + apStartDate)
+    println("apEndDate " + apEndDate)
+    println("maybeFirstUsageDate " + maybeFirstUsageDate)
      //put it new
     (maybeFirstUsageDate, maybeCost) match {
       case (Some(firstUsageDate), Some(cost)) => {
@@ -54,30 +56,23 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
         //get days for 3% tax rate
         val isAfterTy2020 =   if(financialYearForDate(apStartDate) >= 2020 &&   financialYearForDate(apEndDate)  >= 2020)true else false
 
-        println(isAfterTy2020)
-        val dailyRate = apportionedCostOfBuilding(cost, daysInTheYear,if(isAfterTy2020)rateAfterTy2020 else ratePriorTy2020)
+        val dailyRateAfter2020 = apportionedCostOfBuilding(cost, daysInTheYear,rateAfterTy2020)
+        val dailyRateBefore2020 = apportionedCostOfBuilding(cost, daysInTheYear,ratePriorTy2020)
 
-        println(dailyRate)
 
         val totalCost = if (isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) {
-          daysBetween(firstUsageDate, apEndDate) * dailyRate
+          println("I have been called " + isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate))
+          daysBetween(firstUsageDate, apEndDate) * dailyRateAfter2020
         } else {
 
-          val daysBefore2020 = daysBetween(apStartDate , LocalDate.parse("2020-04-01"))
-
-          println(daysBefore2020)
-
-          val totalDaysInAccountingPeriod = daysBetween(apStartDate, apEndDate)
-
-          println(totalDaysInAccountingPeriod)
-          val daysAfter2020 = totalDaysInAccountingPeriod - daysBefore2020
-
-          println(daysAfter2020)
-          val totalValue = (daysBefore2020 * ratePriorTy2020) + (daysAfter2020 * rateAfterTy2020)
-
-//          daysBetween(apStartDate, apEndDate) * dailyRate
-          println(totalValue)
-          totalValue
+        //todo lets double check tests with louiss and then change the firstUsageDate date stuff refactor and change data structure for filling and frontend
+          //are we sure it's the first of APril
+          // put in boolean check if isAfterTy2020 do new logic else keep it the same way
+          println("apStartDate " + apStartDate)
+          println("apEndDate " + apEndDate)
+          println("firstUsageDate " + firstUsageDate)
+          if(isAfterTy2020) dealWith2020Logic(apStartDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
+         else (  daysBetween(apStartDate, apEndDate) * dailyRateBefore2020)
         }
 
         Some(roundedToIntHalfUp(totalCost))
@@ -86,6 +81,30 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
       case _ => None
     }
 
+  }
+
+  private def dealWith2020Logic(apStartDate: LocalDate, apEndDate: LocalDate, dailyRateAfter2020: BigDecimal, dailyRateBefore2020: BigDecimal) = {
+    val daysBeforeTy2020: Int =  daysBetween(apStartDate, LocalDate.parse("2020-04-01"))
+
+    println("daysBefore2020 " + daysBeforeTy2020)
+
+    val totalDaysInAccountingPeriod: Int = daysBetween(apStartDate, apEndDate)
+
+
+    val daysAfter2020 = totalDaysInAccountingPeriod - daysBeforeTy2020
+
+    println("daysAfter2020 " + daysAfter2020)
+    val costBefore2020 = daysBeforeTy2020 * dailyRateBefore2020
+
+    println("costBefore2020 " + costBefore2020)
+
+    val costAfter2020 = daysAfter2020 * dailyRateAfter2020
+    println("costAfter2020 " + costAfter2020)
+
+    val totalValue = costBefore2020 + costAfter2020
+
+    println("totalValue " + totalValue)
+    totalValue
   }
 
   //we can also use cats to make this look better.
