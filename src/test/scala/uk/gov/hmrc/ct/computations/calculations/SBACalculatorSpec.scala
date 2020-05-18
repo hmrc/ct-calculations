@@ -89,10 +89,10 @@ class SBACalculatorSpec extends WordSpec with Matchers {
 
     "apportion and calculate the right amount of sba claimable for a building for 3 months during a normal year where the contract date starts after AP start date." in new SBACalculator {
 
-      val apStartDate: LocalDate = new LocalDate("2020-01-01")
-      val apEndDate: LocalDate = new LocalDate("2020-12-31")
+      val apStartDate: LocalDate = new LocalDate("2019-01-01")
+      val apEndDate: LocalDate = new LocalDate("2019-12-31")
       val cost: Int = 10000
-      val firstUsageDate: LocalDate = new LocalDate("2020-10-01")
+      val firstUsageDate: LocalDate = new LocalDate("2019-10-01")
 
       val result = getAmountClaimableForSBA(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
@@ -137,7 +137,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       result shouldBe Some(252)
     }
 
-    "getDaysIntheYear produces correct amount of days for dates surrounding leap year" in new SBACalculator {
+    "getDaysInTheYear produces correct amount of days for dates surrounding leap year" in new SBACalculator {
       getDaysIntheYear(new LocalDate("2020-01-01")) shouldBe 366
       getDaysIntheYear(new LocalDate("2020-02-28")) shouldBe 366
       getDaysIntheYear(new LocalDate("2020-02-29")) shouldBe 366
@@ -172,9 +172,10 @@ class SBACalculatorSpec extends WordSpec with Matchers {
     "calculate using both of the rates if the accounting period spans either side 2020-04-01" in new SBACalculator {
 
       val apStartDate: LocalDate = new LocalDate("2020-01-01")
+      println(daysBetween())
       val apEndDate: LocalDate = new LocalDate("2020-12-31")
       val cost: Int = 10000
-      val firstUsageDate: LocalDate = new LocalDate("2020-04-01")
+      val firstUsageDate: LocalDate = new LocalDate("2020-01-01") //TODO appropriation for the usage date
 
       val result = getAmountClaimableForSBA(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 

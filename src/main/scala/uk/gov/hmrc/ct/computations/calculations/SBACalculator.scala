@@ -62,7 +62,9 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
         val totalCost = if (isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) {
           println("I have been called " + isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate))
-          daysBetween(firstUsageDate, apEndDate) * dailyRateAfter2020
+          if (isAfterTy2020) daysBetween(firstUsageDate, apEndDate) * dailyRateAfter2020
+          else daysBetween(firstUsageDate, apEndDate) * dailyRateBefore2020
+
         } else {
 
         //todo lets double check tests with louiss and then change the firstUsageDate date stuff refactor and change data structure for filling and frontend
