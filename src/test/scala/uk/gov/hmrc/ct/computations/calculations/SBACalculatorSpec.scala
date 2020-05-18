@@ -144,7 +144,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       getDaysIntheYear(new LocalDate("2020-03-01")) shouldBe 365
       getDaysIntheYear(new LocalDate("2100-01-01")) shouldBe 365
     }
-    //write test for just 0.2 rate
+
     "calculate using the 2% rate if the the end date is before 2020-04-01" in new SBACalculator {
 
       val apStartDate: LocalDate = new LocalDate("2019-03-31")
@@ -157,7 +157,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       result shouldBe Some(201)
     }
 
-    "calculate just using the 3% rate if the the start date is after 2020-04-01" in new SBACalculator {
+    "calculate just using the 3% rate if the start date is after 2020-04-01" in new SBACalculator {
 
       val apStartDate: LocalDate = new LocalDate("2020-04-01")
       val apEndDate: LocalDate = new LocalDate("2021-04-01")
@@ -169,7 +169,8 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       result shouldBe Some(301)
     }
     //deal with some in the 2% range and some in the 3% range return days in each as well do the calt as well split up
-    "calculate just using the 3% rate if the the start date is after 2020-04-01" in new SBACalculator {
+
+    "calculate using both of the rates if the accounting period spans either side 2020-04-01" in new SBACalculator {
 
       val apStartDate: LocalDate = new LocalDate("2020-01-01")
       val apEndDate: LocalDate = new LocalDate("2020-12-31")

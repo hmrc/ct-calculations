@@ -50,15 +50,34 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
         val daysInTheYear = getDaysIntheYear(apStartDate)
         //todo what about maybeFirstUsageDate?
         //get days for 2% tax rate
+
         //get days for 3% tax rate
         val isAfterTy2020 =   if(financialYearForDate(apStartDate) >= 2020 &&   financialYearForDate(apEndDate)  >= 2020)true else false
 
+        println(isAfterTy2020)
         val dailyRate = apportionedCostOfBuilding(cost, daysInTheYear,if(isAfterTy2020)rateAfterTy2020 else ratePriorTy2020)
+
+        println(dailyRate)
 
         val totalCost = if (isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) {
           daysBetween(firstUsageDate, apEndDate) * dailyRate
         } else {
-          daysBetween(apStartDate, apEndDate) * dailyRate
+
+          val daysBefore2020 = daysBetween(apStartDate , LocalDate.parse("2020-04-01"))
+
+          println(daysBefore2020)
+
+          val totalDaysInAccountingPeriod = daysBetween(apStartDate, apEndDate)
+
+          println(totalDaysInAccountingPeriod)
+          val daysAfter2020 = totalDaysInAccountingPeriod - daysBefore2020
+
+          println(daysAfter2020)
+          val totalValue = (daysBefore2020 * ratePriorTy2020) + (daysAfter2020 * rateAfterTy2020)
+
+//          daysBetween(apStartDate, apEndDate) * dailyRate
+          println(totalValue)
+          totalValue
         }
 
         Some(roundedToIntHalfUp(totalCost))
