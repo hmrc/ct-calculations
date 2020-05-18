@@ -21,6 +21,8 @@ import uk.gov.hmrc.ct.ct600.NumberRounding
 import uk.gov.hmrc.ct.ct600.calculations.{AccountingPeriodHelper, TaxYear}
 
 
+case class SbaRate(numberOfDaysRate:Int,rate:BigDecimal,costRate:BigDecimal)
+case class SbaResults(rateOne:SbaRate,rateTwo:Option[SbaRate]= None,totalCost:Option[Int])
 
 trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
@@ -41,7 +43,7 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
   def isEarliestWrittenContractAfterAPStart(contractDate: LocalDate, apStartDate: LocalDate): Boolean = contractDate.isAfter(apStartDate)
 
   /* This is the 2% rounded up*/
-  def getAmountClaimableForSBA(apStartDate: LocalDate, apEndDate: LocalDate, maybeFirstUsageDate: Option[LocalDate], maybeCost: Option[Int]): Option[Int] = {
+  def getSBADetails(apStartDate: LocalDate, apEndDate: LocalDate, maybeFirstUsageDate: Option[LocalDate], maybeCost: Option[Int]): Option[SbaResults] = {
     println("apStartDate " + apStartDate)
     println("apEndDate " + apEndDate)
     println("maybeFirstUsageDate " + maybeFirstUsageDate)
@@ -63,7 +65,7 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
         val totalCost = if (isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) {
           println("I have been called " + isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate))
           if (isAfterTy2020) daysBetween(firstUsageDate, apEndDate) * dailyRateAfter2020
-          else daysBetween(firstUsageDate, apEndDate) * dailyRateBefore2020
+          else  daysBetween(firstUsageDate, apEndDate) * dailyRateBefore2020
 
         } else {
 
@@ -77,8 +79,7 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
          else (  daysBetween(apStartDate, apEndDate) * dailyRateBefore2020)
         }
 
-        Some(roundedToIntHalfUp(totalCost))
-
+        Some(SbaResults(rateOne = SbaRate(365,ratePriorTy2020,roundedToIntHalfUp(totalCost)) , None,    Some(roundedToIntHalfUp(totalCost))))
       }
       case _ => None
     }

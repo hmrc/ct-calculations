@@ -27,7 +27,7 @@ object CP298 extends Calculated[CP298, ComputationsBoxRetriever] with SBACalcula
   def getTotalRelief(computationsBoxRetriever: ComputationsBoxRetriever): List[Option[Int]] = {
     computationsBoxRetriever.sba01().buildings.map(building =>
 
-      getAmountClaimableForSBA(computationsBoxRetriever.cp1().value, computationsBoxRetriever.cp2().value, building.earliestWrittenContract, building.cost)
+      getSBADetails(computationsBoxRetriever.cp1().value, computationsBoxRetriever.cp2().value, building.earliestWrittenContract, building.cost).flatMap(_.totalCost)
     )
   }
 
