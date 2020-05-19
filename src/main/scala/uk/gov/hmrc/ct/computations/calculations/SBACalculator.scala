@@ -18,17 +18,18 @@ package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.ct600.NumberRounding
-import uk.gov.hmrc.ct.ct600.calculations.{AccountingPeriodHelper, TaxYear}
+import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper
+
 
 //todo make make stronly typed so we dont mix up dailyRate and rateYearlyPercentage
-case class SbaRate(numberOfDaysRate: Int, dailyRate: BigDecimal,rateYearlyPercentage:BigDecimal) extends NumberRounding{
+case class SbaRate(numberOfDaysRate: Int, dailyRate: BigDecimal, rateYearlyPercentage: BigDecimal) extends NumberRounding {
 
-  val costRate  = roundedToIntHalfUp(numberOfDaysRate * dailyRate)
+  val costRate = roundedToIntHalfUp(numberOfDaysRate * dailyRate)
 }
 
-case class SbaResults(rateOne: SbaRate, rateTwo: Option[SbaRate] = None) extends NumberRounding{
+case class SbaResults(ratePrior2020: SbaRate, rate2020: Option[SbaRate] = None) extends NumberRounding {
 
-  val totalCost:Option[Int] = Some(rateOne.costRate + rateTwo.map(_.costRate).getOrElse(0))
+  val totalCost: Option[Int] = Some(ratePrior2020.costRate + rate2020.map(_.costRate).getOrElse(0))
 }
 
 trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
@@ -36,8 +37,6 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
   val ratePriorTy2020: BigDecimal = 0.02
   val rateAfterTy2020: BigDecimal = 0.03
-  //maybe create case class from year to tax rate like in ct in case this happens again
-  //rate to year
 
 
   def getDaysIntheYear(apStartDate: LocalDate) = {
@@ -62,36 +61,38 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
         val dailyRateBefore2020 = apportionedCostOfBuilding(cost, daysInTheYear, ratePriorTy2020)
 
 
+        //todo refactor this can be cut down in size
         val sbaResult: Option[SbaResults] = if (isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) {
-          val daysToApplyRate = daysBetween(firstUsageDate, apEndDate)
-          Some(SbaResults(rateOne = SbaRate(daysToApplyRate, dailyRateBefore2020, dailyRateBefore2020)))
-        }
-          else{
-            if (isAfterTy2020) dealWith2020Logic(apStartDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
-            else {
-              println("daysBetween(apStartDate, apEndDate " + daysBetween(apStartDate, apEndDate))
-              Some(SbaResults(rateOne = SbaRate(daysBetween(apStartDate, apEndDate), dailyRateBefore2020, dailyRateBefore2020)))
-            }
+
+          if (isAfterTy2020) {
+            dealWith2020Logic(firstUsageDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
           }
+          else {
+            val daysToApplyRate = daysBetween(firstUsageDate, apEndDate)
+            Some(SbaResults(ratePrior2020 = SbaRate(daysToApplyRate, dailyRateBefore2020, dailyRateBefore2020)))
+          }
+        }
+        else {
+          if (isAfterTy2020) dealWith2020Logic(apStartDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
+          else {
+            Some(SbaResults(ratePrior2020 = SbaRate(daysBetween(apStartDate, apEndDate), dailyRateBefore2020, dailyRateBefore2020)))
+          }
+        }
         sbaResult
       }
       case _ => None
     }
   }
 
-  private def dealWith2020Logic(apStartDate: LocalDate, apEndDate: LocalDate, dailyRateAfter2020: BigDecimal, dailyRateBefore2020: BigDecimal): Option[SbaResults] = {
-    val daysBeforeTy2020: Int = daysBetween(apStartDate, LocalDate.parse("2020-03-31"))
-
-    println("daysBefore2020 " + daysBeforeTy2020)
-
-    val totalDaysInAccountingPeriod: Int = daysBetween(apStartDate, apEndDate)
-
-    println("totalDaysInAccountingPeriod " + totalDaysInAccountingPeriod)
-
-    val daysAfter2020 = totalDaysInAccountingPeriod - daysBeforeTy2020
-
-    println("daysAfter2020 " + daysAfter2020)
-    Some(SbaResults(rateOne = SbaRate(daysBeforeTy2020, dailyRateBefore2020,dailyRateBefore2020), rateTwo = Some(SbaRate(daysAfter2020, dailyRateAfter2020,dailyRateAfter2020))))
+  private def dealWith2020Logic(chargeStartDate: LocalDate,
+                                apEndDate: LocalDate,
+                                dailyRateAfter2020: BigDecimal,
+                                dailyRateBefore2020: BigDecimal): Option[SbaResults] = {
+    val endOfTaxYear2019 = LocalDate.parse("2020-03-31")
+    val daysBeforeRateChange: Int = if(chargeStartDate.isBefore(endOfTaxYear2019))daysBetween(chargeStartDate, endOfTaxYear2019) else 0
+    val totalDaysCharged: Int = daysBetween(chargeStartDate, apEndDate)
+    val daysAfter2020 = totalDaysCharged - daysBeforeRateChange
+    Some(SbaResults(ratePrior2020 = SbaRate(daysBeforeRateChange, dailyRateBefore2020, ratePriorTy2020), rate2020 = Some(SbaRate(daysAfter2020, dailyRateAfter2020, rateAfterTy2020))))
   }
 
   //we can also use cats to make this look better.
