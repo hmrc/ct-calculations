@@ -48,29 +48,43 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
         val dailyRateAfter2020 = apportionedCostOfBuilding(cost, daysInTheYear, rateAfterTy2020)
         val dailyRateBefore2020 = apportionedCostOfBuilding(cost, daysInTheYear, ratePriorTy2020)
+        val isEarliestWrittenContractAfterStartDate = isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)
 
-
-        //todo refactor this can be cut down in size
-        val sbaResult: Option[SBAResults] = if (isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) {
-
-          if (isAfterTy2020) {
-            dealWith2020Logic(firstUsageDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
-          }
-          else {
+        val sbaResult: Option[SBAResults] = (isAfterTy2020, isEarliestWrittenContractAfterStartDate) match {
+          case (true, true) => dealWith2020Logic(firstUsageDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
+          case (false, true) => {
             val daysToApplyRate = daysBetween(firstUsageDate, apEndDate)
             Some(SBAResults(ratePriorTaxYear2020 = SBARate(daysToApplyRate, dailyRateBefore2020, dailyRateBefore2020)))
           }
-        }
-        else {
-          if (isAfterTy2020) dealWith2020Logic(apStartDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
-          else {
-            Some(SBAResults(ratePriorTaxYear2020 = SBARate(daysBetween(apStartDate, apEndDate), dailyRateBefore2020, dailyRateBefore2020)))
-          }
+
+          case (true, false) => dealWith2020Logic(apStartDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
+          case (false, false) => Some(SBAResults(ratePriorTaxYear2020 = SBARate(daysBetween(apStartDate, apEndDate), dailyRateBefore2020, dailyRateBefore2020)))
         }
         sbaResult
-      }
+        }
       case _ => None
-    }
+      }
+
+//        val sbaResult: Option[SBAResults] = if (isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) {
+//
+//          if (isAfterTy2020) {
+//            dealWith2020Logic(firstUsageDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
+//          }
+//          else {
+//            val daysToApplyRate = daysBetween(firstUsageDate, apEndDate)
+//            Some(SBAResults(ratePriorTaxYear2020 = SBARate(daysToApplyRate, dailyRateBefore2020, dailyRateBefore2020)))
+//          }
+//        }
+//        else {
+//          if (isAfterTy2020) dealWith2020Logic(apStartDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
+//          else {
+//            Some(SBAResults(ratePriorTaxYear2020 = SBARate(daysBetween(apStartDate, apEndDate), dailyRateBefore2020, dailyRateBefore2020)))
+//          }
+//        }
+//        sbaResult
+//      }
+//      case _ => None
+//    }
   }
 
   private def dealWith2020Logic(chargeStartDate: LocalDate,
