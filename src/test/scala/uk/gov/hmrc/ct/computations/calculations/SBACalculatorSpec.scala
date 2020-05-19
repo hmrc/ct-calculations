@@ -181,10 +181,10 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost)).get
 
       result.rateOne.numberOfDaysRate  shouldBe 91
-      result.rateOne.rate  shouldBe BigDecimal(0.2)
+      result.rateOne.getDailyRate  shouldBe BigDecimal(0.2)
 
       result.rateTwo.get.numberOfDaysRate  shouldBe 275
-      result.rateTwo.get.rate  shouldBe BigDecimal(0.3)
+      result.rateTwo.get.getDailyRate  shouldBe BigDecimal(0.3)
 
       result.totalCost  shouldBe Some(301)
     }

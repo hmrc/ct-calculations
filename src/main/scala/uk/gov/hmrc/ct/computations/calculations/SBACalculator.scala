@@ -21,8 +21,8 @@ import uk.gov.hmrc.ct.ct600.NumberRounding
 import uk.gov.hmrc.ct.ct600.calculations.{AccountingPeriodHelper, TaxYear}
 
 
-case class SbaRate(numberOfDaysRate: Int, rate: BigDecimal) extends NumberRounding{
-  val costRate  = roundedToIntHalfUp(numberOfDaysRate * rate)
+case class SbaRate(numberOfDaysRate: Int, dailyRate: BigDecimal) extends NumberRounding{
+  val costRate  = roundedToIntHalfUp(numberOfDaysRate * dailyRate)
 }
 
 case class SbaResults(rateOne: SbaRate, rateTwo: Option[SbaRate] = None) extends NumberRounding{
@@ -72,11 +72,14 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
           println("I have been called " + isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate))
           //todo frist
           val daysToApplyRate =  daysBetween(firstUsageDate, apEndDate)
-          Some(SbaResults(rateOne = SbaRate(daysToApplyRate, ratePriorTy2020)))
+          Some(SbaResults(rateOne = SbaRate(daysToApplyRate, dailyRateBefore2020)))
         } else
           {
             if (isAfterTy2020) dealWith2020Logic(apStartDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
-            Some(SbaResults(rateOne = SbaRate(daysBetween(apStartDate,apEndDate), ratePriorTy2020)))
+             else {
+              println("daysBetween(apStartDate, apEndDate " + daysBetween(apStartDate, apEndDate))
+               Some(SbaResults(rateOne = SbaRate(daysBetween(apStartDate, apEndDate), dailyRateBefore2020)))
+             }
           }
         sbaResult
       }
