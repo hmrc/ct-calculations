@@ -114,10 +114,10 @@ class SBACalculatorSpec extends WordSpec with Matchers {
 
     "apportion and calculate the right amount of sba claimable for a building for 3 months during a regular year where the contract date starts after AP start date including february" in new SBACalculator {
 
-      val apStartDate: LocalDate = new LocalDate("2021-01-01")
-      val apEndDate: LocalDate = new LocalDate("2021-12-31")
+      val apStartDate: LocalDate = new LocalDate("2019-01-01")
+      val apEndDate: LocalDate = new LocalDate("2019-12-31")
       val cost: Int = 10000
-      val firstUsageDate: LocalDate = new LocalDate("2021-02-01")
+      val firstUsageDate: LocalDate = new LocalDate("2019-02-01")
 
 
       val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))

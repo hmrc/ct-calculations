@@ -21,8 +21,15 @@ import uk.gov.hmrc.ct.ct600.NumberRounding
 import uk.gov.hmrc.ct.ct600.calculations.{AccountingPeriodHelper, TaxYear}
 
 
-case class SbaRate(numberOfDaysRate:Int,rate:BigDecimal,costRate:BigDecimal)
-case class SbaResults(rateOne:SbaRate,rateTwo:Option[SbaRate]= None,totalCost:Option[Int])
+case class SbaRate(numberOfDaysRate: Int, rate: BigDecimal) extends NumberRounding{
+  val costRate  = roundedToIntHalfUp(numberOfDaysRate * rate)
+}
+
+case class SbaResults(rateOne: SbaRate, rateTwo: Option[SbaRate] = None) extends NumberRounding{
+  println("rateOne.costRate  " + rateOne.costRate )
+  println("rateTwo.costRate  " + rateTwo.map(_.costRate))
+  val totalCost:Option[Int] = Some(roundedToIntHalfUp(rateOne.costRate + rateTwo.map(_.costRate).getOrElse(0)))
+}
 
 trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
@@ -35,10 +42,10 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
   def getDaysIntheYear(apStartDate: LocalDate) = {
     val yearAfterApStart = apStartDate.plusYears(1)
-    if(apStartDate.getDayOfMonth == yearAfterApStart.getDayOfMonth) daysBetween(apStartDate, yearAfterApStart) - 1 else 366
+    if (apStartDate.getDayOfMonth == yearAfterApStart.getDayOfMonth) daysBetween(apStartDate, yearAfterApStart) - 1 else 366
   }
 
-  def apportionedCostOfBuilding(cost: BigDecimal, daysInTheYear: Int,rateForTy:BigDecimal): BigDecimal = (cost * rateForTy) / daysInTheYear
+  def apportionedCostOfBuilding(cost: BigDecimal, daysInTheYear: Int, rateForTy: BigDecimal): BigDecimal = (cost * rateForTy) / daysInTheYear
 
   def isEarliestWrittenContractAfterAPStart(contractDate: LocalDate, apStartDate: LocalDate): Boolean = contractDate.isAfter(apStartDate)
 
@@ -47,47 +54,38 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
     println("apStartDate " + apStartDate)
     println("apEndDate " + apEndDate)
     println("maybeFirstUsageDate " + maybeFirstUsageDate)
-     //put it new
+    //put it new
     (maybeFirstUsageDate, maybeCost) match {
       case (Some(firstUsageDate), Some(cost)) => {
         //need to split this information up
         val daysInTheYear = getDaysIntheYear(apStartDate)
         //todo what about maybeFirstUsageDate?
         //get days for 2% tax rate
-
         //get days for 3% tax rate
-        val isAfterTy2020 =   if(financialYearForDate(apStartDate) >= 2020 &&   financialYearForDate(apEndDate)  >= 2020)true else false
+        val isAfterTy2020 = if (financialYearForDate(apStartDate) >= 2020 && financialYearForDate(apEndDate) >= 2020) true else false
 
-        val dailyRateAfter2020 = apportionedCostOfBuilding(cost, daysInTheYear,rateAfterTy2020)
-        val dailyRateBefore2020 = apportionedCostOfBuilding(cost, daysInTheYear,ratePriorTy2020)
+        val dailyRateAfter2020 = apportionedCostOfBuilding(cost, daysInTheYear, rateAfterTy2020)
+        val dailyRateBefore2020 = apportionedCostOfBuilding(cost, daysInTheYear, ratePriorTy2020)
 
 
-        val totalCost = if (isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) {
+        val sbaResult: Option[SbaResults] = if (isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) {
           println("I have been called " + isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate))
-          if (isAfterTy2020) daysBetween(firstUsageDate, apEndDate) * dailyRateAfter2020
-          else  daysBetween(firstUsageDate, apEndDate) * dailyRateBefore2020
-
-        } else {
-
-        //todo lets double check tests with louiss and then change the firstUsageDate date stuff refactor and change data structure for filling and frontend
-          //are we sure it's the first of APril
-          // put in boolean check if isAfterTy2020 do new logic else keep it the same way
-          println("apStartDate " + apStartDate)
-          println("apEndDate " + apEndDate)
-          println("firstUsageDate " + firstUsageDate)
-          if(isAfterTy2020) dealWith2020Logic(apStartDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
-         else (  daysBetween(apStartDate, apEndDate) * dailyRateBefore2020)
-        }
-
-        Some(SbaResults(rateOne = SbaRate(365,ratePriorTy2020,roundedToIntHalfUp(totalCost)) , None,    Some(roundedToIntHalfUp(totalCost))))
+          //todo frist
+          val daysToApplyRate =  daysBetween(firstUsageDate, apEndDate)
+          Some(SbaResults(rateOne = SbaRate(daysToApplyRate, ratePriorTy2020)))
+        } else
+          {
+            if (isAfterTy2020) dealWith2020Logic(apStartDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
+            Some(SbaResults(rateOne = SbaRate(daysBetween(apStartDate,apEndDate), ratePriorTy2020)))
+          }
+        sbaResult
       }
       case _ => None
     }
-
   }
 
-  private def dealWith2020Logic(apStartDate: LocalDate, apEndDate: LocalDate, dailyRateAfter2020: BigDecimal, dailyRateBefore2020: BigDecimal) = {
-    val daysBeforeTy2020: Int =  daysBetween(apStartDate, LocalDate.parse("2020-04-01"))
+  private def dealWith2020Logic(apStartDate: LocalDate, apEndDate: LocalDate, dailyRateAfter2020: BigDecimal, dailyRateBefore2020: BigDecimal): Option[SbaResults] = {
+    val daysBeforeTy2020: Int = daysBetween(apStartDate, LocalDate.parse("2020-04-01"))
 
     println("daysBefore2020 " + daysBeforeTy2020)
 
@@ -96,23 +94,13 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
     val daysAfter2020 = totalDaysInAccountingPeriod - daysBeforeTy2020
 
-    println("daysAfter2020 " + daysAfter2020)
-    val costBefore2020 = daysBeforeTy2020 * dailyRateBefore2020
 
-    println("costBefore2020 " + costBefore2020)
-
-    val costAfter2020 = daysAfter2020 * dailyRateAfter2020
-    println("costAfter2020 " + costAfter2020)
-
-    val totalValue = costBefore2020 + costAfter2020
-
-    println("totalValue " + totalValue)
-    totalValue
+    Some(SbaResults(rateOne = SbaRate(daysBeforeTy2020, ratePriorTy2020), rateTwo = Some(SbaRate(daysAfter2020, rateAfterTy2020))))
   }
 
   //we can also use cats to make this look better.
-  def sumAmount(xs:List[Option[Int]]) = {
-    xs.fold(Option(0)){
+  def sumAmount(xs: List[Option[Int]]) = {
+    xs.fold(Option(0)) {
       (accumulator, element) =>
         for {
           accum <- accumulator
