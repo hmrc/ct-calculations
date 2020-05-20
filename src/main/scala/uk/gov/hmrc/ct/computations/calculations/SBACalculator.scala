@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.computations.capitalAllowanceAndSBA.{SBARate, SBAResults}
 import uk.gov.hmrc.ct.ct600.NumberRounding
 import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper
 
@@ -26,73 +27,75 @@ case class SbaRate(numberOfDaysRate: Int, dailyRate: BigDecimal, rateYearlyPerce
   val rateYearlyPercentageAsInt = roundedToInt(rateYearlyPercentage * 100)
   val costRate = roundedToIntHalfUp(numberOfDaysRate * dailyRate)
 }
-
+//todo make this a list of different  rates and just put the year in it ?
 case class SbaResults(ratePrior2020: SbaRate, rate2020: Option[SbaRate] = None) extends NumberRounding {
 
   val totalCost: Option[Int] = Some(ratePrior2020.costRate + rate2020.map(_.costRate).getOrElse(0))
 }
 
+
 trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
+  private type SBARateForTaxYear = BigDecimal // might not get much value out of this
+  private val endOfTaxYear2019 = LocalDate.parse("2020-03-31")
 
-  val ratePriorTy2020: BigDecimal = 0.02
-  val rateAfterTy2020: BigDecimal = 0.03
+  val ratePriorTy2020: SBARateForTaxYear = 0.02
+  val rateAfterTy2020: SBARateForTaxYear = 0.03
 
-
-  def getDaysIntheYear(apStartDate: LocalDate) = {
+  def getDaysIntheYear(apStartDate: LocalDate): Int = {
     val yearAfterApStart = apStartDate.plusYears(1)
     if (apStartDate.getDayOfMonth == yearAfterApStart.getDayOfMonth) daysBetween(apStartDate, yearAfterApStart) - 1 else 366
   }
 
-  def apportionedCostOfBuilding(cost: BigDecimal, daysInTheYear: Int, rateForTy: BigDecimal): BigDecimal = (cost * rateForTy) / daysInTheYear
+  def apportionedCostOfBuilding(cost: BigDecimal, daysInTheYear: Int, rateForTy: SBARateForTaxYear): BigDecimal = (cost * rateForTy) / daysInTheYear
 
   def isEarliestWrittenContractAfterAPStart(contractDate: LocalDate, apStartDate: LocalDate): Boolean = contractDate.isAfter(apStartDate)
 
-  /* This is the 2% rounded up*/
-  def getSBADetails(apStartDate: LocalDate, apEndDate: LocalDate, maybeFirstUsageDate: Option[LocalDate], maybeCost: Option[Int]): Option[SbaResults] = {
+  def getSBADetails(apStartDate: LocalDate, apEndDate: LocalDate, maybeFirstUsageDate: Option[LocalDate], maybeCost: Option[Int]): Option[SBAResults] = {
 
     (maybeFirstUsageDate, maybeCost) match {
       case (Some(firstUsageDate), Some(cost)) => {
 
         val daysInTheYear = getDaysIntheYear(apStartDate)
-        val isAfterTy2020 = if (financialYearForDate(apEndDate) >= 2020) true else false
+
+        val isAfterTy2020 =
+          if (financialYearForDate(apEndDate) >= 2020) true
+        else false
 
         val dailyRateAfter2020 = apportionedCostOfBuilding(cost, daysInTheYear, rateAfterTy2020)
         val dailyRateBefore2020 = apportionedCostOfBuilding(cost, daysInTheYear, ratePriorTy2020)
+        val isEarliestWrittenContractAfterStartDate = isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)
 
-
-        //todo refactor this can be cut down in size
-        val sbaResult: Option[SbaResults] = if (isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) {
-
-          if (isAfterTy2020) {
-            dealWith2020Logic(firstUsageDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
-          }
-          else {
+        val sbaResult: Option[SBAResults] = (isAfterTy2020, isEarliestWrittenContractAfterStartDate) match {
+          case (true , true) => apportioningRateAfterTaxYear2020(firstUsageDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
+          case (false, true) => { // the tuples of true/false could be more readable...what would be the best solution?
             val daysToApplyRate = daysBetween(firstUsageDate, apEndDate)
-            Some(SbaResults(ratePrior2020 = SbaRate(daysToApplyRate, dailyRateBefore2020, dailyRateBefore2020)))
+            Some(SBAResults(ratePriorTaxYear2020 = SBARate(daysToApplyRate, dailyRateBefore2020, dailyRateBefore2020)))
           }
-        }
-        else {
-          if (isAfterTy2020) dealWith2020Logic(apStartDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
-          else {
-            Some(SbaResults(ratePrior2020 = SbaRate(daysBetween(apStartDate, apEndDate), dailyRateBefore2020, dailyRateBefore2020)))
-          }
+
+          case (true, false) => apportioningRateAfterTaxYear2020(apStartDate, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
+          case (false, false) => Some(SBAResults(ratePriorTaxYear2020 = SBARate(daysBetween(apStartDate, apEndDate), dailyRateBefore2020, dailyRateBefore2020)))
         }
         sbaResult
-      }
+        }
       case _ => None
-    }
+      }
   }
 
-  private def dealWith2020Logic(chargeStartDate: LocalDate,
+  private def apportioningRateAfterTaxYear2020(apStartDate: LocalDate,
                                 apEndDate: LocalDate,
                                 dailyRateAfter2020: BigDecimal,
-                                dailyRateBefore2020: BigDecimal): Option[SbaResults] = {
-    val endOfTaxYear2019 = LocalDate.parse("2020-03-31")
-    val daysBeforeRateChange: Int = if(chargeStartDate.isBefore(endOfTaxYear2019))daysBetween(chargeStartDate, endOfTaxYear2019) else 0
-    val totalDaysCharged: Int = daysBetween(chargeStartDate, apEndDate)
+                                dailyRateBefore2020: BigDecimal): Option[SBAResults] = {
+    val daysBeforeRateChange: Int =
+      if(apStartDate.isBefore(endOfTaxYear2019)) daysBetween(apStartDate, endOfTaxYear2019)
+      else 0
+
+    val totalDaysCharged: Int = daysBetween(apStartDate, apEndDate)
     val daysAfter2020 = totalDaysCharged - daysBeforeRateChange
-    Some(SbaResults(ratePrior2020 = SbaRate(daysBeforeRateChange, dailyRateBefore2020, ratePriorTy2020), rate2020 = Some(SbaRate(daysAfter2020, dailyRateAfter2020, rateAfterTy2020))))
+    val sbaRateAfter2020 = Some(SBARate(daysAfter2020, dailyRateAfter2020, rateAfterTy2020))
+    val sbaRatePrior2020 = SBARate(daysBeforeRateChange, dailyRateBefore2020, ratePriorTy2020)
+
+    Some(SBAResults(sbaRatePrior2020 , sbaRateAfter2020))
   }
 
   //we can also use cats to make this look better.
