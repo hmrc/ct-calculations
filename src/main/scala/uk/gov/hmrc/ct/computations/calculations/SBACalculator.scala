@@ -75,16 +75,16 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
       }
   }
 
-  private def apportioningRateAfterTaxYear2020(apStartDate: LocalDate,
+  private def apportioningRateAfterTaxYear2020(daysToApplyTax: LocalDate,
                                 apEndDate: LocalDate,
                                 dailyRateAfter2020: BigDecimal,
                                 dailyRateBefore2020: BigDecimal): Option[SBAResults] = {
-    val splitRate: Boolean = apStartDate.isBefore(endOfTaxYear2019)
-    val totalDaysCharged: Int = daysBetween(apStartDate, apEndDate)
+    val splitRate: Boolean = daysToApplyTax.isBefore(endOfTaxYear2019)
+    val totalDaysCharged: Int = daysBetween(daysToApplyTax, apEndDate)
 
     if(splitRate){
-      val daysBefore2020 =  daysBetween(apStartDate, endOfTaxYear2019)
-      val daysAfter2020 = totalDaysCharged - daysBetween(apStartDate, endOfTaxYear2019)
+      val daysBefore2020 =  daysBetween(daysToApplyTax, endOfTaxYear2019)
+      val daysAfter2020 = totalDaysCharged - daysBetween(daysToApplyTax, endOfTaxYear2019)
       val sbaRateAfter2020 = SBARate(daysAfter2020, dailyRateAfter2020, rateAfterTy2020)
       val sbaRatePrior2020 = SBARate(daysBefore2020, dailyRateBefore2020, ratePriorTy2020)
       Some(SBAResults(Some(sbaRatePrior2020),     Some(sbaRateAfter2020)))
