@@ -18,12 +18,14 @@ package uk.gov.hmrc.ct.computations.capitalAllowanceAndSBA
 
 import uk.gov.hmrc.ct.ct600.NumberRounding
 
-case class SBARate(numberOfDaysRate: Int, dailyRate: BigDecimal, rateYearlyPercentage: BigDecimal) extends NumberRounding {
 
+case class SbaRate(numberOfDaysRate: Int, dailyRate: BigDecimal, rateYearlyPercentage: BigDecimal) extends NumberRounding {
+  val rateYearlyPercentageAsInt = roundedToInt(rateYearlyPercentage * 100)
   val costRate = roundedToIntHalfUp(numberOfDaysRate * dailyRate)
 }
 
-case class SBAResults(ratePriorTaxYear2020: Option[SBARate]= None, ratePostTaxYear2020: Option[SBARate] = None) {
-
-  val totalCost: Option[Int] = Some(ratePriorTaxYear2020.map(_.costRate).getOrElse(0) + ratePostTaxYear2020.map(_.costRate).getOrElse(0))
+case class SbaResults(ratePrior2020: Option[SbaRate] = None, rate2020: Option[SbaRate] = None) extends NumberRounding {
+  val maybeTotalCodeBefore2020 =   ratePrior2020.map(_.costRate).getOrElse(0)
+  val maybeTotalCodeAfter2020 =   rate2020.map(_.costRate).getOrElse(0)
+  val totalCost: Option[Int] = Some(maybeTotalCodeBefore2020 + maybeTotalCodeAfter2020)
 }
