@@ -28,9 +28,10 @@ case class SbaRate(numberOfDaysRate: Int, dailyRate: BigDecimal, rateYearlyPerce
   val costRate = roundedToIntHalfUp(numberOfDaysRate * dailyRate)
 }
 //todo make this a list of different  rates and just put the year in it ?
-case class SbaResults(ratePrior2020: SbaRate, rate2020: Option[SbaRate] = None) extends NumberRounding {
-
-  val totalCost: Option[Int] = Some(ratePrior2020.costRate + rate2020.map(_.costRate).getOrElse(0))
+case class SbaResults(ratePrior2020: Option[SbaRate] = None, rate2020: Option[SbaRate] = None) extends NumberRounding {
+  val maybeTotalCodeBefore2020 =   ratePrior2020.map(_.costRate).getOrElse(0)
+  val maybeTotalCodeAfter2020 =   rate2020.map(_.costRate).getOrElse(0)
+  val totalCost: Option[Int] = Some(maybeTotalCodeBefore2020 + maybeTotalCodeAfter2020)
 }
 
 
@@ -79,7 +80,7 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
                                 apEndDate: LocalDate,
                                 dailyRateAfter2020: BigDecimal,
                                 dailyRateBefore2020: BigDecimal): Option[SBAResults] = {
-    val splitRate: Boolean = daysToApplyTax.isBefore(endOfTaxYear2019)
+    val splitRate: Boolean = daysToApplyTax.isBefore(endOfTaxYear2019) && apEndDate.isAfter(endOfTaxYear2019)
     val totalDaysCharged: Int = daysBetween(daysToApplyTax, apEndDate)
 
     if(splitRate){
@@ -89,7 +90,7 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
       val sbaRatePrior2020 = SBARate(daysBefore2020, dailyRateBefore2020, ratePriorTy2020)
       Some(SBAResults(Some(sbaRatePrior2020),     Some(sbaRateAfter2020)))
     }else {
-      Some(SBAResults(None,      Some(SBARate(totalDaysCharged, dailyRateAfter2020, rateAfterTy2020))))
+      Some(SBAResults(None, Some(SBARate(totalDaysCharged, dailyRateAfter2020, rateAfterTy2020))))
     }
 
   }
