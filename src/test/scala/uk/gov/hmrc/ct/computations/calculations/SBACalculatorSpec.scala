@@ -183,8 +183,8 @@ class SBACalculatorSpec extends WordSpec with Matchers {
 
       val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost)).get
 
-      result.ratePriorTaxYear2020.numberOfDaysRate  shouldBe 91
-      result.ratePriorTaxYear2020.rateYearlyPercentage  shouldBe BigDecimal(0.02)
+      result.ratePriorTaxYear2020.get.numberOfDaysRate  shouldBe 91
+      result.ratePriorTaxYear2020.get.rateYearlyPercentage  shouldBe BigDecimal(0.02)
 
 
       result.ratePostTaxYear2020.get.numberOfDaysRate  shouldBe 275
@@ -201,9 +201,9 @@ class SBACalculatorSpec extends WordSpec with Matchers {
 
       val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost)).get
 
-      result.ratePriorTaxYear2020.numberOfDaysRate  shouldBe 60
-      result.ratePriorTaxYear2020.rateYearlyPercentage  shouldBe BigDecimal(0.02)
-      result.ratePriorTaxYear2020.costRate  shouldBe 33
+      result.ratePriorTaxYear2020.get.numberOfDaysRate  shouldBe 60
+      result.ratePriorTaxYear2020.get.rateYearlyPercentage  shouldBe BigDecimal(0.02)
+      result.ratePriorTaxYear2020.get.costRate  shouldBe 33
 
       result.ratePostTaxYear2020.get.numberOfDaysRate  shouldBe 275
       result.ratePostTaxYear2020.get.rateYearlyPercentage  shouldBe BigDecimal(0.03)
@@ -220,9 +220,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val firstUsageDate: LocalDate = new LocalDate("2021-02-01")
       val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost)).get
 
-      result.ratePriorTaxYear2020.numberOfDaysRate  shouldBe 0
-      result.ratePriorTaxYear2020.rateYearlyPercentage  shouldBe BigDecimal(0.02)
-      result.ratePriorTaxYear2020.costRate  shouldBe 0
+      result.ratePriorTaxYear2020 shouldBe None
 
       result.ratePostTaxYear2020.get.numberOfDaysRate  shouldBe 334
       result.ratePostTaxYear2020.get.rateYearlyPercentage  shouldBe BigDecimal(0.03)
