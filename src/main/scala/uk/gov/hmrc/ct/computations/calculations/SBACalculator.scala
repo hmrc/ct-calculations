@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper
 
 //todo make make stronly typed so we dont mix up dailyRate and rateYearlyPercentage
 case class SbaRate(numberOfDaysRate: Int, dailyRate: BigDecimal, rateYearlyPercentage: BigDecimal) extends NumberRounding {
-
+  val rateYearlyPercentageAsInt = roundedToInt(rateYearlyPercentage * 100)
   val costRate = roundedToIntHalfUp(numberOfDaysRate * dailyRate)
 }
 
