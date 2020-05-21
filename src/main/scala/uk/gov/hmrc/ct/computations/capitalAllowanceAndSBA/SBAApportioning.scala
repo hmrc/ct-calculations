@@ -24,8 +24,8 @@ case class SbaRate(numberOfDaysRate: Int, dailyRate: BigDecimal, rateYearlyPerce
   val costRate = roundedToIntHalfUp(numberOfDaysRate * dailyRate)
 }
 
-case class SbaResults(ratePrior2020: Option[SbaRate] = None, rate2020: Option[SbaRate] = None) extends NumberRounding {
-  val maybeTotalCodeBefore2020 =   ratePrior2020.map(_.costRate).getOrElse(0)
-  val maybeTotalCodeAfter2020 =   rate2020.map(_.costRate).getOrElse(0)
+case class SbaResults(ratePriorTaxYear2020: Option[SbaRate] = None, ratePostTaxYear2020: Option[SbaRate] = None) extends NumberRounding {
+  val maybeTotalCodeBefore2020 =   ratePriorTaxYear2020.map(_.costRate).getOrElse(0)
+  val maybeTotalCodeAfter2020 =   ratePostTaxYear2020.map(_.costRate).getOrElse(0)
   val totalCost: Option[Int] = Some(maybeTotalCodeBefore2020 + maybeTotalCodeAfter2020)
 }

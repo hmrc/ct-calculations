@@ -40,7 +40,7 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
 
   def isEarliestWrittenContractAfterAPStart(contractDate: LocalDate, apStartDate: LocalDate): Boolean = contractDate.isAfter(apStartDate)
 
-  def getSBADetails(apStartDate: LocalDate, apEndDate: LocalDate, maybeFirstUsageDate: Option[LocalDate], maybeCost: Option[Int]): Option[SbaResults] = {
+  def getSbaDetails(apStartDate: LocalDate, apEndDate: LocalDate, maybeFirstUsageDate: Option[LocalDate], maybeCost: Option[Int]): Option[SbaResults] = {
 
     (maybeFirstUsageDate, maybeCost) match {
       case (Some(firstUsageDate), Some(cost)) => {
@@ -53,10 +53,10 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
         val dailyRateBefore2020 = apportionedCostOfBuilding(cost, daysInTheYear, ratePriorTy2020)
 
 
-        val daysToApplyTax = if(isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) firstUsageDate else apStartDate
+        val firstDayToApplySbaTax = if(isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) firstUsageDate else apStartDate
         val sbaResult: Option[SbaResults] = isAfterTy2020 match {
-          case true => apportioningRateAfterTaxYear2020(daysToApplyTax, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
-          case false => Some(SbaResults(ratePrior2020 = Some(SbaRate(daysBetween(daysToApplyTax, apEndDate), dailyRateBefore2020, dailyRateBefore2020))))
+          case true => apportioningRateAfterTaxYear2020(firstDayToApplySbaTax, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
+          case false => Some(SbaResults(ratePriorTaxYear2020 = Some(SbaRate(daysBetween(firstDayToApplySbaTax, apEndDate), dailyRateBefore2020, dailyRateBefore2020))))
         }
         sbaResult
         }

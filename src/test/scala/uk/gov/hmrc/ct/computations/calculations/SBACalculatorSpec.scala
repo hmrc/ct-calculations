@@ -32,7 +32,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
 
       val firstUsageDate: LocalDate = new LocalDate("2019-01-01")
 
-      val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
+      val result = getSbaDetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
       result.get.totalCost shouldBe Some(99)
     }
@@ -46,7 +46,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
 
       getDaysIntheYear(apStartDate) shouldBe 366
 
-      val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
+      val result = getSbaDetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
       result.get.totalCost  shouldBe Some(200)
     }
@@ -59,7 +59,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val firstUsageDate: LocalDate = new LocalDate("2016-02-29")
 
       getDaysIntheYear(apStartDate) shouldBe 366
-      val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
+      val result = getSbaDetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
       result.get.totalCost  shouldBe Some(200)
     }
@@ -72,7 +72,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val firstUsageDate: LocalDate = new LocalDate("2016-02-28")
 
       getDaysIntheYear(apStartDate) shouldBe 366
-      val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
+      val result = getSbaDetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
       result.get.totalCost  shouldBe Some(200)
     }
@@ -85,7 +85,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val firstUsageDate: LocalDate = new LocalDate("2016-02-28")
 
       getDaysIntheYear(apStartDate) shouldBe 365
-      val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
+      val result = getSbaDetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
       result.get.totalCost  shouldBe Some(200)
     }
@@ -97,7 +97,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
 
       val firstUsageDate: LocalDate = new LocalDate("2019-10-01")
 
-      val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
+      val result = getSbaDetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
       result.get.totalCost  shouldBe Some(50)
     }
@@ -109,7 +109,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
 
       val firstUsageDate: LocalDate = new LocalDate("2016-02-01")
 
-      val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
+      val result = getSbaDetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
       result.get.totalCost  shouldBe Some(183)
     }
@@ -123,7 +123,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val firstUsageDate: LocalDate = new LocalDate("2019-02-01")
 
 
-      val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
+      val result = getSbaDetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
       result.get.totalCost  shouldBe Some(183)
     }
@@ -135,7 +135,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
 
       val firstUsageDate: LocalDate = new LocalDate("2019-03-01")
 
-      val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
+      val result = getSbaDetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
       result.get.totalCost  shouldBe Some(168)
     }
@@ -156,7 +156,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
 
       val firstUsageDate: LocalDate = new LocalDate("2019-03-31")
 
-      val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
+      val result = getSbaDetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
       result.get.totalCost shouldBe Some(201)
     }
@@ -167,7 +167,7 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val apEndDate: LocalDate = new LocalDate("2021-04-01")
 
       val firstUsageDate: LocalDate = new LocalDate("2020-04-01")
-      val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
+      val result = getSbaDetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
       result.get.totalCost  shouldBe Some(301)
     }
@@ -181,14 +181,14 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val firstUsageDate: LocalDate = new LocalDate("2020-01-01")
 
 
-      val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost)).get
+      val result = getSbaDetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost)).get
 
-      result.ratePrior2020.get.numberOfDaysRate  shouldBe 91
-      result.ratePrior2020.get.rateYearlyPercentage  shouldBe BigDecimal(0.02)
+      result.ratePriorTaxYear2020.get.numberOfDaysRate  shouldBe 91
+      result.ratePriorTaxYear2020.get.rateYearlyPercentage  shouldBe BigDecimal(0.02)
 
 
-      result.rate2020.get.numberOfDaysRate  shouldBe 275
-      result.rate2020.get.rateYearlyPercentage  shouldBe BigDecimal(0.03)
+      result.ratePostTaxYear2020.get.numberOfDaysRate  shouldBe 275
+      result.ratePostTaxYear2020.get.rateYearlyPercentage  shouldBe BigDecimal(0.03)
 
       result.totalCost  shouldBe Some(275)
     }
@@ -199,15 +199,15 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val apEndDate: LocalDate = new LocalDate("2020-12-31")
       val firstUsageDate: LocalDate = new LocalDate("2020-02-01")
 
-      val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost)).get
+      val result = getSbaDetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost)).get
 
-      result.ratePrior2020.get.numberOfDaysRate  shouldBe 60
-      result.ratePrior2020.get.rateYearlyPercentage  shouldBe BigDecimal(0.02)
-      result.ratePrior2020.get.costRate  shouldBe 33
+      result.ratePriorTaxYear2020.get.numberOfDaysRate  shouldBe 60
+      result.ratePriorTaxYear2020.get.rateYearlyPercentage  shouldBe BigDecimal(0.02)
+      result.ratePriorTaxYear2020.get.costRate  shouldBe 33
 
-      result.rate2020.get.numberOfDaysRate  shouldBe 275
-      result.rate2020.get.rateYearlyPercentage  shouldBe BigDecimal(0.03)
-      result.rate2020.get.costRate  shouldBe 225
+      result.ratePostTaxYear2020.get.numberOfDaysRate  shouldBe 275
+      result.ratePostTaxYear2020.get.rateYearlyPercentage  shouldBe BigDecimal(0.03)
+      result.ratePostTaxYear2020.get.costRate  shouldBe 225
 
       result.totalCost  shouldBe Some(258)
     }
@@ -218,13 +218,13 @@ class SBACalculatorSpec extends WordSpec with Matchers {
       val apEndDate: LocalDate = new LocalDate("2021-12-31")
 
       val firstUsageDate: LocalDate = new LocalDate("2021-02-01")
-      val result = getSBADetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost)).get
+      val result = getSbaDetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost)).get
 
-      result.ratePrior2020 shouldBe None
+      result.ratePriorTaxYear2020 shouldBe None
 
-      result.rate2020.get.numberOfDaysRate  shouldBe 334
-      result.rate2020.get.rateYearlyPercentage  shouldBe BigDecimal(0.03)
-      result.rate2020.get.costRate  shouldBe 275
+      result.ratePostTaxYear2020.get.numberOfDaysRate  shouldBe 334
+      result.ratePostTaxYear2020.get.rateYearlyPercentage  shouldBe BigDecimal(0.03)
+      result.ratePostTaxYear2020.get.costRate  shouldBe 275
       result.totalCost  shouldBe Some(275)
     }
   }
