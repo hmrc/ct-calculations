@@ -5,7 +5,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3.stubs
 
-import uk.gov.hmrc.ct.CountryOfRegistration
+import uk.gov.hmrc.ct.{CATO24, CountryOfRegistration}
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AC2, AC205, AC206}
 import uk.gov.hmrc.ct.box.CtValue
@@ -377,4 +377,6 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def cp982(): CP982 = ???
 
   override def cp983(): CP983 = ???
+
+  override def cato24: CATO24 = ???
 }
