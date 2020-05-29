@@ -5,6 +5,7 @@
 
 package uk.gov.hmrc.ct.accounts.frsse2008.stubs
 
+import uk.gov.hmrc.ct.CATO24
 import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
 import uk.gov.hmrc.ct.accounts.frsse2008._
@@ -94,6 +95,8 @@ trait StubbedAccountsBoxRetriever extends Frsse2008AccountsBoxRetriever {
   override def ac403(): AC403 = ???
 
   override def ac404(): AC404 = ???
+
+  override def cato24(): CATO24 = ???
 
   override def generateValues: Map[String, CtValue[_]] = ???
 }
