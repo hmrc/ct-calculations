@@ -14,27 +14,43 @@ import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
 class CP981Spec extends WordSpec with Matchers with MockitoSugar {
   "CP981 validation" should {
     "show correct error if under zero" in {
-      val boxRetriever = new StubbedComputationsBoxRetriever
+      val boxRetriever = new StubbedComputationsBoxRetriever {
+        override def cp983 = CP983(Some(1))
+      }
 
       val result = CP981(Some(-1)).validate(boxRetriever)
 
       result shouldBe Set(CtValidation(Some("CP981"), "error.CP981.mustBeZeroOrPositive"))
     }
 
+    "CP981 can't be greater than CP983" in {
+      val boxRetriever = new StubbedComputationsBoxRetriever {
+        override def cp983 = CP983(Some(10))
+      }
+
+      val result = CP981(Some(11)).validate(boxRetriever)
+
+      result shouldBe Set(CtValidation(Some("CP981"), "error.CP981.exceeds.CP983"))
+    }
+
     "doesn't show error if zero" in {
-      val boxRetriever = new StubbedComputationsBoxRetriever
+      val boxRetriever = new StubbedComputationsBoxRetriever {
+        override def cp983 = CP983(Some(1))
+      }
 
       val result = CP981(Some(0)).validate(boxRetriever)
 
       result shouldBe Set.empty
     }
-  }
 
-  "CP981 can be created from AC403" in {
-    val testValue = Some(101)
-    val ac403 = AC403(testValue)
+    "doesn't show error if None" in {
+      val boxRetriever = new StubbedComputationsBoxRetriever {
+        override def cp983 = CP983(Some(1))
+      }
 
-    val cp981 = CP981(ac403)
-    cp981.value shouldBe testValue
+      val result = CP981(None).validate(boxRetriever)
+
+      result shouldBe Set.empty
+    }
   }
 }

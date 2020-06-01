@@ -13,16 +13,20 @@ class ProfitAndLossCalculatorSpec extends WordSpec with Matchers {
 
   "Calculating Profit Or Loss (CP14)" should {
     "return positive number when turnover is greater than costs" in new ProfitAndLossCalculator {
-      calculateProfitOrLoss(CP7(Some(100)), CP8(Some(60))) shouldBe CP14(40)
-      calculateProfitOrLoss(CP7(Some(100)), CP8(Some(0))) shouldBe CP14(100)
+      calculateProfitOrLoss(CP7(Some(100)), CP8(Some(60)), CP981(None), CP983(None)) shouldBe CP14(40)
+      calculateProfitOrLoss(CP7(Some(100)), CP8(Some(0)), CP981(None), CP983(None)) shouldBe CP14(100)
     }
     "return negative number when turnover is less than costs" in new ProfitAndLossCalculator {
-      calculateProfitOrLoss(CP7(Some(100)), CP8(Some(107))) shouldBe CP14(-7)
-      calculateProfitOrLoss(CP7(Some(0)), CP8(Some(107))) shouldBe CP14(-107)
+      calculateProfitOrLoss(CP7(Some(100)), CP8(Some(107)), CP981(None), CP983(None)) shouldBe CP14(-7)
+      calculateProfitOrLoss(CP7(Some(0)), CP8(Some(107)), CP981(None), CP983(None)) shouldBe CP14(-107)
     }
     "return zero if turnover is equal to costs" in new ProfitAndLossCalculator {
-      calculateProfitOrLoss(CP7(Some(100)), CP8(Some(100))) shouldBe CP14(0)
-      calculateProfitOrLoss(CP7(Some(0)), CP8(Some(0))) shouldBe CP14(0)
+      calculateProfitOrLoss(CP7(Some(100)), CP8(Some(100)), CP981(None), CP983(None)) shouldBe CP14(0)
+      calculateProfitOrLoss(CP7(Some(0)), CP8(Some(0)), CP981(None), CP983(None)) shouldBe CP14(0)
+    }
+    "include OPW boxes in calculation" in new ProfitAndLossCalculator {
+      calculateProfitOrLoss(CP7(Some(100)), CP8(Some(60)), CP981(Some(20)), CP983(Some(120))) shouldBe CP14(140)
+      calculateProfitOrLoss(CP7(Some(100)), CP8(Some(20)), CP981(Some(40)), CP983(Some(50))) shouldBe CP14(90)
     }
   }
 
