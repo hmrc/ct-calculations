@@ -21,7 +21,8 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP51(value: Option[Int]) extends CtBoxIdentifier(name = "Net loss on sale of fixed assets") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
 
-  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = validateZeroOrPositiveInteger(this)
+  //TODO Change to a negative
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = validateZeroOrNegativeInteger(this)
 
 }
 
