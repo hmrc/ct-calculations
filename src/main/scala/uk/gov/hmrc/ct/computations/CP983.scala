@@ -20,9 +20,9 @@ case class CP983(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover fr
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateIntegerAsMandatory("Cp983", this),
-      validateHmrcTurnover(boxRetriever, compsStartDate, compsEndDate, errorSuffix = "", secondaryIncome = boxRetriever.cp7().value.getOrElse(0)),
-      validateZeroOrPositiveInteger(this)
+      validateIntegerAsMandatory("CP983", this),
+      validateZeroOrPositiveInteger(this),
+      validateHmrcTurnover(boxRetriever, compsStartDate, compsEndDate, errorSuffix = "", secondaryIncome = boxRetriever.cp7().value.getOrElse(0))
     )
 
   }
