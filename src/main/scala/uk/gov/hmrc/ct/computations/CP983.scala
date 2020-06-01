@@ -5,12 +5,29 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.accounts.AC401
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtInteger, Linked}
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.validation.TurnoverValidation
 
-case class CP983(value: Int) extends CtBoxIdentifier(name = "Turnover from off-payroll working") with CtInteger
+case class CP983(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover from off-payroll working")
+  with CtOptionalInteger
+  with Input
+  with ValidatableBox[ComputationsBoxRetriever]
+  with TurnoverValidation {
 
-object CP983 extends Linked[AC401, CP983] {
+  val compsStartDate = { br: ComputationsBoxRetriever => br.cp1() }
+  val compsEndDate = { br: ComputationsBoxRetriever => br.cp2() }
 
-  override def apply(source: AC401): CP983 = CP983(source.orZero)
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateIntegerAsMandatory("Cp983", this),
+      validateHmrcTurnover(boxRetriever, compsStartDate, compsEndDate, errorSuffix = "", secondaryIncome = boxRetriever.cp7().value.getOrElse(0)),
+      validateZeroOrPositiveInteger(this)
+    )
+
+  }
+}
+
+object CP983 {
+  def apply(value: Int): CP983 = CP983(Some(value))
 }

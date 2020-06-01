@@ -14,7 +14,7 @@ object CP985 extends Calculated[CP985, ComputationsBoxRetriever] {
 
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP985 = {
     CP985(
-      boxRetriever.cp983.value - (boxRetriever.cp981.value.getOrElse(0) + boxRetriever.cp980.value.getOrElse(0) + boxRetriever.cp982.value.getOrElse(0))
+      boxRetriever.cp983.value.getOrElse(0) - (boxRetriever.cp981.value.getOrElse(0) + boxRetriever.cp980.value.getOrElse(0) + boxRetriever.cp982.value.getOrElse(0))
     )
   }
 }

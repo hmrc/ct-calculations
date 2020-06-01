@@ -14,5 +14,5 @@ case class CP14(value: Int) extends CtBoxIdentifier(name = "Gross profit or loss
 object CP14 extends Calculated[CP14, ComputationsBoxRetriever] with ProfitAndLossCalculator {
 
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP14 =
-    calculateProfitOrLoss(boxRetriever.cp7, boxRetriever.cp8)
+    calculateProfitOrLoss(boxRetriever.cp7, boxRetriever.cp8, boxRetriever.cp981(), boxRetriever.cp983())
 }
