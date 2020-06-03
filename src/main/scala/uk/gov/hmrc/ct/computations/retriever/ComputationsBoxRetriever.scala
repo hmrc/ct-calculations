@@ -10,7 +10,7 @@ import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
 import uk.gov.hmrc.ct.computations.formats._
-import uk.gov.hmrc.ct.{CATO01, CATO02, CATO03, CATO13, CATO14, CATO15, CATO16, CATO20, CATO21, CATO22, CATO23}
+import uk.gov.hmrc.ct.{CATO01, CATO02, CATO03, CATO13, CATO14, CATO15, CATO16, CATO20, CATO21, CATO22, CATO23, CATO24}
 
 trait ComputationsBoxRetriever extends BoxRetriever {
 
@@ -27,8 +27,6 @@ trait ComputationsBoxRetriever extends BoxRetriever {
   def ac403(): AC403
 
   def ac404(): AC404
-
-  def ac415(): AC415
 
   def cp1(): CP1
 
@@ -449,6 +447,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
   def cato22(): CATO22 = CATO22.calculate(this)
 
   def cato23(): CATO23 = CATO23.calculate(this)
+
+  def cato24(): CATO24
 
   def lec01(): LEC01
 

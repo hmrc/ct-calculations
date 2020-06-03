@@ -19,8 +19,9 @@ case class CP983(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover fr
   val compsEndDate = { br: ComputationsBoxRetriever => br.cp2() }
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    val cato24 = boxRetriever.cato24
     collectErrors(
-      validateIntegerAsMandatory("CP983", this),
+      requiredErrorIf(cato24.value.getOrElse(false) && this.value.isEmpty),
       validateZeroOrPositiveInteger(this),
       validateHmrcTurnover(boxRetriever, compsStartDate, compsEndDate, errorSuffix = "", secondaryIncome = boxRetriever.cp7().value.getOrElse(0))
     )

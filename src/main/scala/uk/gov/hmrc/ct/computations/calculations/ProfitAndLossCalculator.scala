@@ -13,10 +13,7 @@ trait ProfitAndLossCalculator extends CtTypeConverters {
 
   def calculateProfitOrLoss(cp7: CP7, cp8: CP8, cp981: CP981, cp983: CP983): CP14 = CP14(cp7 + cp983 - cp981 - cp8)
 
-  def calculateGrossProfitOrLossBeforeTax(cp14: CP14, cp40: CP40, cp43: CP43, cp509: CP509, cp502: CP502, cp981: CP981, cp982: CP982, ac415: AC415): CP44 = {
-    if(cp981.value.nonEmpty)
-      CP44(cp14 - cp40 + cp502 + cp509 + cp43 - (cp981 + cp982 + ac415))
-    else
+  def calculateGrossProfitOrLossBeforeTax(cp14: CP14, cp40: CP40, cp43: CP43, cp509: CP509, cp502: CP502): CP44 = {
       CP44(cp14 - cp40 + cp502 + cp509 + cp43)
   }
 
