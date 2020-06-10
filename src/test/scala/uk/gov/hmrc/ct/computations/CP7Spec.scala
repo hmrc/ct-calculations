@@ -14,17 +14,40 @@ import org.scalatest.prop.Tables.Table
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.{AbridgedFiling, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes
 import uk.gov.hmrc.ct.domain.CompanyTypes.CompanyType
+import uk.gov.hmrc.ct.{AbridgedFiling, CATO24, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
 
 class CP7Spec extends WordSpec with Matchers with MockitoSugar {
 
   implicit val format = {
     import uk.gov.hmrc.ct.computations.formats._
     Json.format[CP7Holder]
+  }
+
+  "Creating CP7 from Ap2" should {
+    val defaultValue = Some(202)
+    "default to AP2" in {
+      val cp7 = CP7(AP2(defaultValue))
+      cp7.defaultValue shouldBe defaultValue
+    }
+
+    "default to AP2 when CATO24 is false" in {
+      val cp7 = CP7(AP2(defaultValue), CATO24(Some(false)))
+      cp7.defaultValue shouldBe defaultValue
+    }
+
+    "default to AP2 when CATO24 is None" in {
+      val cp7 = CP7(AP2(defaultValue), CATO24(None))
+      cp7.defaultValue shouldBe defaultValue
+    }
+
+    "not default to AP2 when CATO24 is true" in {
+      val cp7 = CP7(AP2(defaultValue), CATO24(Some(true)))
+      cp7.defaultValue shouldBe None
+    }
   }
 
   "CP7 to json" should {
