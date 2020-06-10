@@ -15,6 +15,9 @@ object AC33 extends Calculated[AC33, Frs102AccountsBoxRetriever] with ProfitOrLo
 
   override def calculate(boxRetriever: Frs102AccountsBoxRetriever): AC33 = {
     import boxRetriever._
+    val isOPWEnabled = cato24.value.isDefined
+
+    if(isOPWEnabled) calculateAC33OPW(ac27(), ac29(), ac31(), ac402())
     calculateAC33(ac27(), ac29(), ac31())
   }
 }

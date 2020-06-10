@@ -5,14 +5,12 @@
 
 package uk.gov.hmrc.ct.accounts
 
-import org.joda.time.LocalDate
 import org.mockito.Mockito.when
-import org.scalatest.mock.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
+import uk.gov.hmrc.ct.utils.UnitSpec
 
-trait AccountsIntegerValidationFixture[T <: AccountsBoxRetriever] extends WordSpec with Matchers with MockitoSugar {
+trait AccountsIntegerValidationFixture[T <: AccountsBoxRetriever] extends UnitSpec {
 
   def boxRetriever: T
 
@@ -21,8 +19,6 @@ trait AccountsIntegerValidationFixture[T <: AccountsBoxRetriever] extends WordSp
     when(boxRetriever.ac3()) thenReturn AC3(mandatoryNotesStartDate)
   }
 
-  private val mandatoryNotesStartDate = LocalDate.parse("2017-01-01")
-  private val previousPeriodOfAccounts:  AC205 = AC205(Some(LocalDate.now()))
 
   def testIntegerFieldValidation[S](boxId: String, builder: Option[Int] => ValidatableBox[T], testLowerLimit: Option[Int] = None, testUpperLimit: Option[Int] = None, testMandatory: Option[Boolean] = Some(false)): Unit = {
     if (testMandatory.contains(true)) {

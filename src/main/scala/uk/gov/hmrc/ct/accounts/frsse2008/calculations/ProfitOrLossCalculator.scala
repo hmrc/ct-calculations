@@ -9,8 +9,9 @@ import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
 import uk.gov.hmrc.ct.accounts.frsse2008._
 import uk.gov.hmrc.ct.accounts.frsse2008.micro._
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtOptionalInteger
-import uk.gov.hmrc.ct.{MicroEntityFiling, StatutoryAccountsFiling}
+import uk.gov.hmrc.ct.{CATO24, MicroEntityFiling, StatutoryAccountsFiling}
 
 trait ProfitOrLossCalculator {
 
@@ -81,6 +82,10 @@ trait ProfitOrLossCalculator {
     AC27(calculateOperatingProfitOrLoss(ac17.value, ac19.value, ac21.value, ac23.value))
   }
 
+//  def calculateOperatingProfitOrLoss(grossProfit: CtOptionalInteger, ): CtOptionalInteger = {
+//
+//  }
+
   def calculateCurrentProfitOrLossBeforeTax(ac26: AC26, ac28: AC28, ac30: AC30): AC32 = {
     AC32(calculateProfitOrLossBeforeTax(operatingProfit = ac26.value, interestRecieved = ac28.value, interestedPayable = ac30.value))
   }
@@ -119,7 +124,7 @@ trait ProfitOrLossCalculator {
 
   private def calculateProfitOrLossBeforeTax(operatingProfit: Option[Int], interestRecieved: Option[Int], interestedPayable: Option[Int]) : Option[Int] = {
     operatingProfit.map { op =>
-      op + interestRecieved.getOrElse(0) - interestedPayable.getOrElse(0)
+      op + interestRecieved.getOrElse(0) - interestedPayable.getOrElse(0) + 1000000000
     }
   }
 
