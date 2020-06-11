@@ -14,8 +14,6 @@ import uk.gov.hmrc.ct.accounts.frsse2008.micro._
 
 class ProfitOrLossCalculatorSpec extends WordSpec with Matchers with ProfitOrLossCalculator {
 
-  def calculateCurrentOperatingProfitOrLossOPW(ac16: AC16, ac401: AC401, ac20: AC20) = ???
-
   "ProfitOrLossCalculatorSpec" should {
 
     "calculatePreviousGrossProfitOrLoss" when {
@@ -68,10 +66,6 @@ class ProfitOrLossCalculatorSpec extends WordSpec with Matchers with ProfitOrLos
       }
       "return value of AC16 plus ac22 minus the sum of all other parameters resulting in a loss" in {
         calculateCurrentOperatingProfitOrLoss(ac16 = grossTurnover, ac18 = AC18(Some(50)), ac20 = AC20(Some(100)), ac22 = AC22(Some(1))) shouldBe AC26(Some(-49))
-      }
-      "calculate the current gross turnover from off-payroll working (AC401) if OPW is enabled" in {
-        val grossTurnoverFromOPW = AC401(1000)
-//        calculateCurrentOperatingProfitOrLossOPW(ac16 = grossTurnover, ac401 = grossTurnoverFromOPW, ac20 = AC20(Some(100)))) shouldBe
       }
     }
 

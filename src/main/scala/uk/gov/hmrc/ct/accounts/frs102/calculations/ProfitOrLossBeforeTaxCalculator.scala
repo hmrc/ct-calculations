@@ -5,7 +5,6 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.calculations
 
-import uk.gov.hmrc.ct.accounts.{AC401, AC402}
 import uk.gov.hmrc.ct.accounts.calculations.DebitAwareCalculation
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
 
