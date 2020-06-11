@@ -11,11 +11,11 @@ import uk.gov.hmrc.ct.accounts.{AC12, AC401, AC402, AC403, AC404}
 
 trait GrossProfitAndLossCalculator  extends DebitAwareCalculation {
 
-  def calculateAC16Full(ac12: AC12, ac401: AC401, ac403: AC403, ac14: AC14): AC24 = {
+  def calculateAC24Full(ac12: AC12, ac401: AC401, ac403: AC403, ac14: AC14): AC24 = {
     sum(ac12, ac401, ac403, ac14)(AC24.apply)
   }
 
-  def calculateAC16Abridged(ac16: AC16, ac401: AC401, ac403: AC403): AC24 = {
+  def calculateAC24Abridged(ac16: AC16, ac401: AC401, ac403: AC403): AC24 = {
     sum(ac16, ac401, ac403)(AC24.apply)
   }
 

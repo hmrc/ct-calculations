@@ -195,7 +195,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
 
         when(boxRetriever.ac12()).thenReturn(AC12(None))
         when(boxRetriever.ac14()).thenReturn(AC14(None))
-        when(boxRetriever.ac16()).thenReturn(AC16(None))
+        when(boxRetriever.ac24()).thenReturn(AC16(None))
         when(boxRetriever.ac18()).thenReturn(AC18(None))
         when(boxRetriever.ac20()).thenReturn(AC20(None))
         when(boxRetriever.ac28()).thenReturn(AC28(None))
@@ -212,7 +212,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
 
         when(boxRetriever.ac12()).thenReturn(AC12(None))
         when(boxRetriever.ac14()).thenReturn(AC14(None))
-        when(boxRetriever.ac16()).thenReturn(AC16(None))
+        when(boxRetriever.ac24()).thenReturn(AC16(None))
         when(boxRetriever.ac18()).thenReturn(AC18(None))
         when(boxRetriever.ac20()).thenReturn(AC20(None))
         when(boxRetriever.ac28()).thenReturn(AC28(None))
@@ -229,7 +229,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
 
         when(boxRetriever.ac12()).thenReturn(AC12(None))
         when(boxRetriever.ac14()).thenReturn(AC14(None))
-        when(boxRetriever.ac16()).thenReturn(AC16(None))
+        when(boxRetriever.ac24()).thenReturn(AC16(None))
         when(boxRetriever.ac18()).thenReturn(AC18(None))
         when(boxRetriever.ac20()).thenReturn(AC20(None))
         when(boxRetriever.ac28()).thenReturn(AC28(None))
@@ -246,7 +246,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
 
         when(boxRetriever.ac12()).thenReturn(AC12(None))
         when(boxRetriever.ac14()).thenReturn(AC14(None))
-        when(boxRetriever.ac16()).thenReturn(AC16(None))
+        when(boxRetriever.ac24()).thenReturn(AC16(None))
         when(boxRetriever.ac18()).thenReturn(AC18(None))
         when(boxRetriever.ac20()).thenReturn(AC20(None))
         when(boxRetriever.ac28()).thenReturn(AC28(None))
@@ -264,7 +264,7 @@ class AC36Spec extends WordSpec with Matchers with MockitoSugar  {
 
         when(boxRetriever.ac12()).thenReturn(AC12(None))
         when(boxRetriever.ac14()).thenReturn(AC14(None))
-        when(boxRetriever.ac16()).thenReturn(AC16(None))
+        when(boxRetriever.ac24()).thenReturn(AC16(None))
         when(boxRetriever.ac18()).thenReturn(AC18(None))
         when(boxRetriever.ac20()).thenReturn(AC20(None))
         when(boxRetriever.ac28()).thenReturn(AC28(None))
