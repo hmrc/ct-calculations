@@ -12,6 +12,7 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 trait Frs10xAccountsBoxRetriever extends AccountsBoxRetriever {
   self: FilingAttributesBoxValueRetriever =>
 
+
   def ac8081(): AC8081
 
   def ac8082(): AC8082
