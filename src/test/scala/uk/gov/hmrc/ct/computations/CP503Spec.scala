@@ -9,7 +9,7 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.version.calculations.ComputationsBoxRetrieverForTest
 import org.mockito.Mockito._
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 
 class CP503Spec extends WordSpec with MockitoSugar with Matchers {
 

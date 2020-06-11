@@ -5,7 +5,7 @@
 
 package uk.gov.hmrc.ct.accounts.approval.accountsApproval.accountsApproval
 
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.approval.boxes.AC8091
 import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}

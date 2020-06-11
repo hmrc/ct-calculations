@@ -7,7 +7,7 @@ package uk.gov.hmrc.ct.computations.nir
 
 import org.mockito.Mockito.when
 import org.scalatest.{Matchers, WordSpec}
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.computations.{CP997NI, CP998}
 import uk.gov.hmrc.ct.{BoxValidationFixture, CATO01, CATO23}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever

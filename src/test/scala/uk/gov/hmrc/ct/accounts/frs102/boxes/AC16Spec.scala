@@ -27,9 +27,7 @@ class AC16Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever
 
       override def ac415(): AC415 = ???
 }
+      /// needs to verify the validate method works
 
-    val ac16 = AC16.calculate(boxRetriever)
-
-    ac16.value shouldBe Some(testAc12 + testAc401 - testAc14 - testAc403)
   }
 }

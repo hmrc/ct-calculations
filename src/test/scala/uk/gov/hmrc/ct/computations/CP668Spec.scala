@@ -5,7 +5,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import org.mockito.Mockito._

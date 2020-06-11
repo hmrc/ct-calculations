@@ -7,7 +7,7 @@ package uk.gov.hmrc.ct.ct600j.v3
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever

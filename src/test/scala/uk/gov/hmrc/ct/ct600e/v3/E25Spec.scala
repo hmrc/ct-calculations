@@ -6,7 +6,7 @@
 package uk.gov.hmrc.ct.ct600e.v3
 
 import org.scalatest.{Matchers, WordSpec}
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 

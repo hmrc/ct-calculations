@@ -6,8 +6,8 @@
 package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import org.mockito.Mockito._
-import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.accounts.frs102.boxes.{AC13 => FullAC13, _}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.accounts.{AC12, frs102, frs105}
@@ -15,6 +15,7 @@ import uk.gov.hmrc.ct.accounts.frs105.boxes._
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.utils.UnitSpec
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
 
 
@@ -77,7 +78,7 @@ class ACQ8161Spec extends WordSpec with MockitoSugar with Matchers with BeforeAn
     when(mockFrs102FullBoxRetriever.ac13()).thenReturn(FullAC13(Some(10)))
     when(mockFrs102FullBoxRetriever.ac14()).thenReturn(AC14(Some(10)))
     when(mockFrs102FullBoxRetriever.ac15()).thenReturn(AC15(Some(10)))
-    when(mockFrs102FullBoxRetriever.ac24()).thenReturn(AC16(Some(10)))
+    when(mockFrs102FullBoxRetriever.ac16()).thenReturn(AC16(Some(10)))
     when(mockFrs102FullBoxRetriever.ac17()).thenReturn(AC17(Some(10)))
     when(mockFrs102FullBoxRetriever.ac18()).thenReturn(AC18(Some(10)))
     when(mockFrs102FullBoxRetriever.ac19()).thenReturn(AC19(Some(10)))
@@ -209,7 +210,7 @@ class ACQ8161Spec extends WordSpec with MockitoSugar with Matchers with BeforeAn
     "return 'cannot exist' error when filing is for FRS102 full for CoHo Only and ACQ8161 is false with only non abridged fields populated" in {
       when(mockFrs102FullBoxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
       when(mockFrs102FullBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
-      when(mockFrs102FullBoxRetriever.ac24()).thenReturn(AC16(None))
+      when(mockFrs102FullBoxRetriever.ac16()).thenReturn(AC16(None))
       when(mockFrs102FullBoxRetriever.ac17()).thenReturn(AC17(None))
       when(mockFrs102FullBoxRetriever.ac18()).thenReturn(AC18(None))
       when(mockFrs102FullBoxRetriever.ac19()).thenReturn(AC19(None))
