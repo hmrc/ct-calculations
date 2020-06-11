@@ -120,7 +120,7 @@ trait ProfitOrLossCalculator {
 
   private def calculateProfitOrLossBeforeTax(operatingProfit: Option[Int], interestRecieved: Option[Int], interestedPayable: Option[Int]) : Option[Int] = {
     operatingProfit.map { op =>
-      op + interestRecieved.getOrElse(0) - interestedPayable.getOrElse(0) + 1000000000
+      op + interestRecieved.getOrElse(0) - interestedPayable.getOrElse(0)
     }
   }
 
