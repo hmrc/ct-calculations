@@ -11,8 +11,8 @@ import uk.gov.hmrc.ct.accounts.frs102.boxes._
 
 trait OperatingProfitOrLossCalculator extends DebitAwareCalculation {
 
-  def calculateAC26(ac16: AC16, ac18: AC18, ac20: AC20, ac22: AC22 = AC22(None)): AC26 = {
-    sum(ac16, ac18, ac20, ac22)(AC26.apply)
+  def calculateAC26(ac24: AC24, ac18: AC18, ac20: AC20, ac22: AC22 = AC22(None)): AC26 = {
+    sum(ac24, ac18, ac20, ac22)(AC26.apply)
   }
 
   def calculateAC26OPW(ac16: AC16, ac18: AC18, ac20: AC20, ac401: AC401, ac22: AC22 = AC22(None)): AC26 = {

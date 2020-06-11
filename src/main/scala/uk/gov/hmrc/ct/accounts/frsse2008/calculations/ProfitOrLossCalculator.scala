@@ -82,10 +82,6 @@ trait ProfitOrLossCalculator {
     AC27(calculateOperatingProfitOrLoss(ac17.value, ac19.value, ac21.value, ac23.value))
   }
 
-//  def calculateOperatingProfitOrLoss(grossProfit: CtOptionalInteger, ): CtOptionalInteger = {
-//
-//  }
-
   def calculateCurrentProfitOrLossBeforeTax(ac26: AC26, ac28: AC28, ac30: AC30): AC32 = {
     AC32(calculateProfitOrLossBeforeTax(operatingProfit = ac26.value, interestRecieved = ac28.value, interestedPayable = ac30.value))
   }
