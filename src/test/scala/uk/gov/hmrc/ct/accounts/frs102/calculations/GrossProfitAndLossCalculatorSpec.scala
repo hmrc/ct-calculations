@@ -12,7 +12,7 @@ import uk.gov.hmrc.ct.accounts.frs102.boxes._
 class GrossProfitAndLossCalculatorSpec extends WordSpec with Matchers {
 
   "GrossProfitAndLossCalculator" should {
-    "calculate AC16 and" when {
+    "calculate AC23 and" when {
       "return empty AC16 if all are empty" in new GrossProfitAndLossCalculator {
         calculateAC16(AC12(None), AC401(None), AC403(None),  AC14(None)) shouldBe AC16(None)
       }
@@ -42,4 +42,6 @@ class GrossProfitAndLossCalculatorSpec extends WordSpec with Matchers {
       }
     }
   }
+
+  ""
 }
