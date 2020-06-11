@@ -9,10 +9,8 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
   import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
   import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger, Input}
 
-  case class AC24(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit or loss (current PoA)")
+  case class AC24(value: Option[Int]) extends CtBoxIdentifier(name = "Gross surplus or (deficit) (current PoA)")
     with CtOptionalInteger
-    with Input
-
 
   object AC24 extends Calculated[AC24, Frs102AccountsBoxRetriever] with GrossProfitAndLossCalculator {
     override def calculate(boxRetriever: Frs102AccountsBoxRetriever): AC24 = {

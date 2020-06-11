@@ -19,10 +19,10 @@ trait GrossProfitAndLossCalculator  extends DebitAwareCalculation {
     sum(ac16, ac401, ac403)(AC24.apply)
   }
 
-  def calculateAC17Full(ac13: AC13, ac402: AC402, ac404: AC404, ac15: AC15): AC17= {
-    sum(ac13, ac402, ac404, ac15)(AC17.apply)
+  def calculateAC25Full(ac13: AC13, ac402: AC402, ac404: AC404, ac15: AC15): AC25 = {
+    sum(ac13, ac402, ac404, ac15)(AC25.apply)
   }
-  def calculateAC17Abridged(ac17: AC17, ac402: AC402, ac404: AC404, ac15: AC15): AC17= {
-    sum(ac17, ac402, ac404, ac15)(AC17.apply)
+  def calculateAC25Abridged(ac17: AC17, ac402: AC402, ac404: AC404): AC25 = {
+    sum(ac17, ac402, ac404)(AC25.apply)
   }
 }
