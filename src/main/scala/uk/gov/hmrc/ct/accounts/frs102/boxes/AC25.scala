@@ -17,8 +17,8 @@ object AC25 extends Calculated[AC25, Frs102AccountsBoxRetriever] with GrossProfi
     import boxRetriever._
 
     boxRetriever match {
-      case br: FullAccountsBoxRetriever => calculateAC25Full(br.ac13(), br.ac402(), br.ac404(), br.ac15())
-      case _: AbridgedAccountsBoxRetriever => calculateAC25Abridged(ac17(), ac402(), ac404())
+      case br: FullAccountsBoxRetriever => calculateAC25Full(br.ac13(), br.ac402(), br.ac15())
+      case _: AbridgedAccountsBoxRetriever => calculateAC25Abridged(ac17(), ac402())
     }
   }
 }
