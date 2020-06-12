@@ -7,7 +7,7 @@ package uk.gov.hmrc.ct.computations.Validators
 
 import org.mockito.Mockito._
 import org.scalatest.{Matchers, WordSpec}
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 import uk.gov.hmrc.ct.computations.{CP117, CP283a, CP283b}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever

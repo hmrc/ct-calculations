@@ -7,7 +7,7 @@ package uk.gov.hmrc.ct.computations
 
 import org.mockito.Mockito.{reset, when}
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 class CP263Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter {

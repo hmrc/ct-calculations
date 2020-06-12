@@ -6,7 +6,7 @@
 package uk.gov.hmrc.ct.computations
 
 import org.mockito.Mockito.when
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.BoxValidationFixture
 import uk.gov.hmrc.ct.box.CtValidation

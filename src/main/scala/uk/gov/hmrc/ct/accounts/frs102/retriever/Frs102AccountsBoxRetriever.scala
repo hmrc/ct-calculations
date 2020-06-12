@@ -27,6 +27,10 @@ trait Frs102AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
 
   def ac21(): AC21
 
+  def ac24(): AC24 = AC24.calculate(this)
+
+  def ac25(): AC25 = AC25.calculate(this)
+
   def ac26(): AC26 = AC26.calculate(this)
 
   def ac27(): AC27 = AC27.calculate(this)

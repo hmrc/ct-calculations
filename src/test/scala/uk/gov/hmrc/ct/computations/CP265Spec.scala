@@ -6,7 +6,7 @@
 package uk.gov.hmrc.ct.computations
 
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 

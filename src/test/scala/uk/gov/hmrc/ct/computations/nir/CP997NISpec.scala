@@ -6,7 +6,7 @@
 package uk.gov.hmrc.ct.computations.nir
 
 import org.scalatest.{Matchers, WordSpec}
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.CATO01
 import uk.gov.hmrc.ct.computations.stubs.NorthernIrelandStubbedComputationsBoxRetriever

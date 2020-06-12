@@ -31,7 +31,6 @@ class ProfitOrLossBeforeTaxCalculatorSpec extends WordSpec with Matchers {
       "return sum if all values negative" in new ProfitOrLossBeforeTaxCalculator {
         calculateAC32(AC26(Some(-16)), AC28(Some(-18)), AC30(Some(-20))) shouldBe AC32(Some(-14))
       }
-    }
   }
 
   "ProfitOrLossBeforeTaxCalculator" should {

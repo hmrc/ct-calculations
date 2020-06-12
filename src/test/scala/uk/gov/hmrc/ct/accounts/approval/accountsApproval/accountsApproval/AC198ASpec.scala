@@ -6,7 +6,7 @@
 package uk.gov.hmrc.ct.accounts.approval.accountsApproval.accountsApproval
 
 import org.mockito.Mockito._
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 import uk.gov.hmrc.cato.time.DateHelper
 import uk.gov.hmrc.ct.accounts.approval.boxes.AC198A

@@ -53,17 +53,19 @@ class ProfitOrLossCalculatorSpec extends WordSpec with Matchers with ProfitOrLos
     }
 
     "calculateCurrentOperatingProfitOrLoss" when {
+     val grossTurnover = AC16(Some(100))
+
       "return None if ac16 is None" in {
         calculateCurrentOperatingProfitOrLoss(ac16 = AC16(None), ac18 = AC18(Some(12)), ac20 = AC20(None), ac22 = AC22(None)) shouldBe AC26(None)
       }
       "return AC16 if all other parameters are empty" in {
-        calculateCurrentOperatingProfitOrLoss(ac16 = AC16(Some(100)), ac18 = AC18(None), ac20 = AC20(None), ac22 = AC22(None)) shouldBe AC26(Some(100))
+        calculateCurrentOperatingProfitOrLoss(ac16 = grossTurnover, ac18 = AC18(None), ac20 = AC20(None), ac22 = AC22(None)) shouldBe AC26(Some(100))
       }
       "return value of AC16 plus ac22 minus the sum of all other parameters resulting in a profit" in {
-        calculateCurrentOperatingProfitOrLoss(ac16 = AC16(Some(100)), ac18 = AC18(Some(50)), ac20 = AC20(Some(40)), ac22 = AC22(Some(1))) shouldBe AC26(Some(11))
+        calculateCurrentOperatingProfitOrLoss(ac16 = grossTurnover, ac18 = AC18(Some(50)), ac20 = AC20(Some(40)), ac22 = AC22(Some(1))) shouldBe AC26(Some(11))
       }
       "return value of AC16 plus ac22 minus the sum of all other parameters resulting in a loss" in {
-        calculateCurrentOperatingProfitOrLoss(ac16 = AC16(Some(100)), ac18 = AC18(Some(50)), ac20 = AC20(Some(100)), ac22 = AC22(Some(1))) shouldBe AC26(Some(-49))
+        calculateCurrentOperatingProfitOrLoss(ac16 = grossTurnover, ac18 = AC18(Some(50)), ac20 = AC20(Some(100)), ac22 = AC22(Some(1))) shouldBe AC26(Some(-49))
       }
     }
 

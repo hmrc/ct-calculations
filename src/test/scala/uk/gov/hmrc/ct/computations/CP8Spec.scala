@@ -5,7 +5,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import uk.gov.hmrc.ct.box.CtValidation
