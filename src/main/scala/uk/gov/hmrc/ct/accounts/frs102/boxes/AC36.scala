@@ -27,12 +27,12 @@ case class AC36(value: Option[Int]) extends CtBoxIdentifier(name = "Profit or lo
 
   private def validateFull(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
-    atLeastOneBoxHasValue("profit.loss", ac12(), ac14(), ac18(), ac20(), ac28(), ac30(), ac34())
+    atLeastOneBoxHasValue("profit.loss", ac12(), ac401(), ac403(), ac14(), ac18(), ac20(), ac28(), ac30(), ac34())
   }
 
   private def validateAbridged(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
-    atLeastOneBoxHasValue("profit.loss", ac16(), ac18(), ac20(), ac28(), ac30(), ac34())
+    atLeastOneBoxHasValue("profit.loss", ac16(), ac401(), ac403(), ac18(), ac20(), ac28(), ac30(), ac34())
   }
 
 }
