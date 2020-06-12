@@ -17,8 +17,8 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
       import boxRetriever._
 
       boxRetriever match {
-        case br: FullAccountsBoxRetriever => calculateAC24Full(br.ac12(), br.ac401(), br.ac14())
-        case _: AbridgedAccountsBoxRetriever => calculateAC24Abridged(ac16(), ac401())
+        case br: FullAccountsBoxRetriever => calculateAC24Full(br.ac12(), br.ac401(), br.ac14(), br.ac403())
+        case _: AbridgedAccountsBoxRetriever => calculateAC24Abridged(ac16(), ac401(), ac403())
       }
     }
   }
