@@ -9,7 +9,7 @@ import uk.gov.hmrc.ct.accounts.AccountsPreviousPeriodValidation
 import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC15(value: Option[Int]) extends CtBoxIdentifier(name = "Cost of sales (current PoA)")
+case class AC15(value: Option[Int]) extends CtBoxIdentifier(name = "Cost of sales (previous PoA)")
   with CtOptionalInteger
   with Input
   with ValidatableBox[FullAccountsBoxRetriever]
