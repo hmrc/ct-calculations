@@ -35,7 +35,7 @@ trait AccountsBoxRetriever extends BoxRetriever {
 
   def ac404(): AC404
 
-  def cato24: CATO24
+  def cato24(): CATO24
 
   def ac415(): AC415
 

@@ -6,16 +6,14 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import org.mockito.Mockito._
-import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.AC12
+import uk.gov.hmrc.ct.accounts.{AC12, AC401, AC403}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.{ACQ8161, ACQ8999}
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.{Frs10xDirectorsBoxRetriever, Frs10xDormancyBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.utils.UnitSpec
-import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
+import uk.gov.hmrc.ct.{CATO24, CompaniesHouseFiling, HMRCFiling}
 
 sealed trait AbridgedBoxRetrieverForTest extends AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xDormancyBoxRetriever
 sealed trait FullBoxRetrieverForTest extends FullAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever with Frs10xDirectorsBoxRetriever with Frs10xDormancyBoxRetriever
@@ -52,6 +50,9 @@ class AC36Spec extends UnitSpec  {
         AC36(Some(16)).validate(boxRetriever) shouldBe empty
       }
       "pass validation if AC18 field has a valid value" in {
+        when(boxRetriever.ac401()).thenReturn(AC401(None))
+        when(boxRetriever.ac403()).thenReturn(AC403(None))
+
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
         when(boxRetriever.acq8999()).thenReturn(ACQ8999(None))
@@ -158,6 +159,9 @@ class AC36Spec extends UnitSpec  {
         AC36(Some(12)).validate(boxRetriever) shouldBe empty
       }
       "pass validation if 1 (shared) field has a valid value" in {
+        when(boxRetriever.ac401()).thenReturn(AC401(None))
+        when(boxRetriever.ac403()).thenReturn(AC403(None))
+
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
         when(boxRetriever.acq8999()).thenReturn(ACQ8999(None))
@@ -173,6 +177,9 @@ class AC36Spec extends UnitSpec  {
         AC36(Some(18)).validate(boxRetriever) shouldBe empty
       }
       "fail validation if all current inputs are empty" in {
+        when(boxRetriever.ac401()).thenReturn(AC401(None))
+        when(boxRetriever.ac403()).thenReturn(AC403(None))
+
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
         when(boxRetriever.acq8999()).thenReturn(ACQ8999(None))
@@ -188,6 +195,8 @@ class AC36Spec extends UnitSpec  {
         AC36(None).validate(boxRetriever) shouldBe Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
       }
       "pass validation if all current inputs are empty, CoHo Only filing, and ACQ8161 is false" in {
+        when(boxRetriever.ac401()).thenReturn(AC401(None))
+        when(boxRetriever.ac403()).thenReturn(AC403(None))
 
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(false))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
