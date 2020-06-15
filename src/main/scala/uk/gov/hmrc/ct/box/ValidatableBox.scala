@@ -180,6 +180,13 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators with ExtraValidation 
     }
   }
 
+  protected def validateZeroOrNegativeInteger(box: OptionalIntIdBox)(): Set[CtValidation] = {
+    box.value match {
+      case Some(x) if x > 0 => Set(CtValidation(Some(box.id), s"error.${box.id}.mustBeNegativeOrZero"))
+      case _ => Set()
+    }
+  }
+
   protected def validatePositiveBigDecimal(box: OptionalBigDecimalIdBox)(): Set[CtValidation] = {
     box.value match {
       case Some(x) if x <= 0 => Set(CtValidation(Some(box.id), s"error.${box.id}.mustBePositive"))
