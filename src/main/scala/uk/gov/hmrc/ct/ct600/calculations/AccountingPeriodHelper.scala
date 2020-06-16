@@ -44,7 +44,7 @@ trait AccountingPeriodHelper {
 
   def endingFinancialYear(date: EndDate): Int = financialYearForDate(date.value)
 
-  private def financialYearForDate(date: LocalDate): Int = if (date.getMonthOfYear < 4) date.getYear - 1 else date.getYear
+   def financialYearForDate(date: LocalDate): Int = if (date.getMonthOfYear < 4) date.getYear - 1 else date.getYear
 
   def daysBetween(start: LocalDate, end: LocalDate): Int = Days.daysBetween(start, end).getDays + 1
 
