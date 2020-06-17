@@ -38,7 +38,7 @@ import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
       crossScalaVersions := Seq("2.11.12"),
       libraryDependencies ++= Seq(
         "com.typesafe.play" % "play-json-joda_2.11" % "2.7.4",
-        "uk.gov.hmrc" %% "play-time" % "0.10.0" % "provided",
+        "uk.gov.hmrc" %% "play-time" % "0.11.0" % "provided",
         "org.scalatest" %% "scalatest" % "3.0.8" % "test",
         "org.mockito" % "mockito-all" % "1.10.19" % "test",
         "org.pegdown" % "pegdown" % "1.6.0" % "test"
