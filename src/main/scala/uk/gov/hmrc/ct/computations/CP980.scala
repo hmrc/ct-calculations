@@ -24,7 +24,7 @@ case class CP980(value: Option[Int]) extends CtBoxIdentifier(name = "Remuneratio
   }
 
   def cp980Breakdown(value: CtOptionalInteger, boxRetriever: ComputationsBoxRetriever with AccountsBoxRetriever): Set[CtValidation] = {
-    failIf(value.orZero > (boxRetriever.ac401().orZero - boxRetriever.ac403().orZero)) {
+    failIf(value.orZero > (boxRetriever.cp983().orZero - boxRetriever.cp981().orZero)) {
       Set(CtValidation(Some("CP980"), "error.cp980.breakdown"))
     }
   }

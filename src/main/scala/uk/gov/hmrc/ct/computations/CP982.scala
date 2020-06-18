@@ -20,7 +20,7 @@ case class CP982(value: Option[Int]) extends CtBoxIdentifier(name = "Expenses fr
 
 
   def cp981Breakdown(value: CtOptionalInteger, boxRetriever: ComputationsBoxRetriever with AccountsBoxRetriever): Set[CtValidation]= {
-    failIf(value.isPositive && value.orZero > (boxRetriever.ac401().orZero - boxRetriever.ac403().orZero) - boxRetriever.cp980().orZero){
+    failIf(value.isPositive && value.orZero > (boxRetriever.cp983().orZero - boxRetriever.cp981().orZero) - boxRetriever.cp980().orZero){
       Set(CtValidation(Some("CP982"), "error.cp982.breakdown"))
     }
   }
