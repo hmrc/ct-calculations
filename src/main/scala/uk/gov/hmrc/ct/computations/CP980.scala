@@ -12,8 +12,8 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 case class CP980(value: Option[Int]) extends CtBoxIdentifier(name = "Remuneration from Off-payroll working (IR35)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[ComputationsBoxRetriever with AccountsBoxRetriever] {
-  override def validate(boxRetriever: ComputationsBoxRetriever with AccountsBoxRetriever): Set[CtValidation] = {
+  with ValidatableBox[ComputationsBoxRetriever] {
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       validateZeroOrPositiveInteger(this),
       exceedsMax(this.value, 999999),
@@ -23,7 +23,7 @@ case class CP980(value: Option[Int]) extends CtBoxIdentifier(name = "Remuneratio
 
   }
 
-  def cp980Breakdown(value: CtOptionalInteger, boxRetriever: ComputationsBoxRetriever with AccountsBoxRetriever): Set[CtValidation] = {
+  def cp980Breakdown(value: CtOptionalInteger, boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     failIf(value.orZero > (boxRetriever.cp983().orZero - boxRetriever.cp981().orZero)) {
       Set(CtValidation(Some("CP980"), "error.cp980.breakdown"))
     }
