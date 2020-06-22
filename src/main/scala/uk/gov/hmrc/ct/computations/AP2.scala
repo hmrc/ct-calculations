@@ -20,7 +20,8 @@ case class AP2(inputValue: Option[Int], defaultValue: Option[Int]) extends CtBox
   }
 
   private def totalErrors(boxRetriever: AccountsBoxRetriever with ComputationsBoxRetriever) = {
-    failIf(boxRetriever.ap1() + inputValue.getOrElse(0) + boxRetriever.ap3() != (boxRetriever.ac12().value.getOrElse(0) + boxRetriever.ac401().value.getOrElse(0))) {
+
+    failIf(boxRetriever.ap1() + value.getOrElse(0) + boxRetriever.ap3() != (boxRetriever.ac12().value.getOrElse(0) + boxRetriever.ac401().value.getOrElse(0))) {
       Set(CtValidation(None, "error.apportionmentTurnover.total"))
     }
   }
