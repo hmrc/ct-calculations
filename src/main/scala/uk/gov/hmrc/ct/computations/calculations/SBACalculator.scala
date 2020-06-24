@@ -56,7 +56,7 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
         val firstDayToApplySbaTax = if(isEarliestWrittenContractAfterAPStart(firstUsageDate, apStartDate)) firstUsageDate else apStartDate
         val sbaResult: Option[SbaResults] = isAfterTy2020 match {
           case true => apportioningRateAfterTaxYear2020(firstDayToApplySbaTax, apEndDate, dailyRateAfter2020, dailyRateBefore2020)
-          case false => Some(SbaResults(ratePriorTaxYear2020 = Some(SbaRate(daysBetween(firstDayToApplySbaTax, apEndDate), dailyRateBefore2020, dailyRateBefore2020))))
+          case false => Some(SbaResults(ratePriorTaxYear2020 = Some(SbaRate(daysBetween(firstDayToApplySbaTax, apEndDate), dailyRateBefore2020, ratePriorTy2020))))
         }
         sbaResult
         }
