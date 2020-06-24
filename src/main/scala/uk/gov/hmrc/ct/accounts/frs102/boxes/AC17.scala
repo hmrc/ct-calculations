@@ -24,3 +24,9 @@ case class AC17(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
     )
   }
 }
+
+object AC17 extends Calculated[AC17, FullAccountsBoxRetriever] with GrossProfitAndLossCalculator {
+  override def calculate(boxRetriever: FullAccountsBoxRetriever): AC17 = {
+    calculateAC17(boxRetriever.ac13(), boxRetriever.ac402, boxRetriever.ac404, boxRetriever.ac15())
+  }
+}
