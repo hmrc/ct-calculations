@@ -15,6 +15,8 @@ trait Frs102AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
 
   self: FilingAttributesBoxValueRetriever =>
 
+  def ac13(): AC13
+
   def ac14(): AC14
 
   def ac15(): AC15
