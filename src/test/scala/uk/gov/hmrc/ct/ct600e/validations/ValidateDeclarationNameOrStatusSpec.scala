@@ -52,7 +52,7 @@ class ValidateDeclarationNameOrStatusSpec extends WordSpec with MockitoSugar wit
 
           when(mockBoxRetriever.e30()).thenReturn(box)
 
-          validateDeclarationNameOrStatus("E30", box) shouldBe Set(CtValidation(Some("E30"), "error.E30.text.sizeRange", Some(Seq("2", "56"))))
+          validateDeclarationNameOrStatus("E30", box) shouldBe Set(CtValidation(Some("E30"), "error.E30.text.sizeRange.min", Some(Seq("2"))))
         }
     
         "return error when is too long" in {
@@ -62,7 +62,7 @@ class ValidateDeclarationNameOrStatusSpec extends WordSpec with MockitoSugar wit
 
           when(mockBoxRetriever.e30()).thenReturn(box)
 
-          validateDeclarationNameOrStatus("E30", box) shouldBe Set(CtValidation(Some("E30"), "error.E30.text.sizeRange", Some(Seq("2", "56"))))
+          validateDeclarationNameOrStatus("E30", box) shouldBe Set(CtValidation(Some("E30"), "error.E30.text.sizeRange", Some(Seq("1", "56"))))
         }
     
         "return error when has invalid value" in {
