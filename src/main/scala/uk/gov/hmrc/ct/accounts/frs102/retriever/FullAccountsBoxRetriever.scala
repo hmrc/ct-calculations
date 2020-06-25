@@ -14,10 +14,6 @@ trait FullAccountsBoxRetriever extends Frs102AccountsBoxRetriever {
 
   def ac13(): AC13
 
-  def ac14(): AC14
-
-  def ac15(): AC15
-
   def ac22(): AC22
 
   def ac23(): AC23
