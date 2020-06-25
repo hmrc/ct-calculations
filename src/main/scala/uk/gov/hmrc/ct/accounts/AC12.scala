@@ -28,27 +28,31 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
   }
 
   override def validate(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-      val errors = collectErrors(
-        failIf(isFrs10xHmrcAbridgedReturnWithLongPoA(accountsStart, accountEnd)(boxRetriever)) {
-          validateAsMandatory(this)
-        },
-        failIf(boxRetriever.hmrcFiling().value)(
-          collectErrors(
-            validateHmrcTurnover(boxRetriever, accountsStart, accountEnd)
-          )
-        ),
-        failIf(!boxRetriever.hmrcFiling().value && boxRetriever.companiesHouseFiling().value)(
-          collectErrors(
-            validateCoHoTurnover(boxRetriever, accountsStart, accountEnd)
-          )
-        ),
-        validateZeroOrPositiveInteger(this)
-      )
-
-    if(errors.isEmpty) {
-      validateMoney(value)
+    if(!boxRetriever.cato24().value.getOrElse(false) && boxRetriever.abridgedFiling().value) {
+      Set.empty
     } else {
-      errors
+        val errors = collectErrors(
+          failIf(isFrs10xHmrcAbridgedReturnWithLongPoA(accountsStart, accountEnd)(boxRetriever)) {
+            validateAsMandatory(this)
+          },
+          failIf(boxRetriever.hmrcFiling().value)(
+            collectErrors(
+              validateHmrcTurnover(boxRetriever, accountsStart, accountEnd)
+            )
+          ),
+          failIf(!boxRetriever.hmrcFiling().value && boxRetriever.companiesHouseFiling().value)(
+            collectErrors(
+              validateCoHoTurnover(boxRetriever, accountsStart, accountEnd)
+            )
+          ),
+          validateZeroOrPositiveInteger(this)
+        )
+
+      if(errors.isEmpty) {
+        validateMoney(value)
+      } else {
+        errors
+      }
     }
   }
 }
