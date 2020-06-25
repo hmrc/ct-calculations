@@ -50,7 +50,7 @@ case class Building(
                      cost: Option[Int],
                      claim: Option[Int],
                      broughtForward: Option[Int] = None,
-                     carriedForward: Option[Int] = Some(500),
+                     carriedForward: Option[Int] = None,
                      claimNote: Option[String] = None
                    ) extends ValidatableBox[ComputationsBoxRetriever] with ExtraValidation with SBAHelper with SBACalculator {
   def getApportionedRates(apStartDate: LocalDate, apEndDate: LocalDate): Int = getSbaDetails(apStartDate, apEndDate, nonResidentialActivityStart, cost).flatMap(_.totalCost).getOrElse(0)
