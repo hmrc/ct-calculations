@@ -28,7 +28,9 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
   }
 
   override def validate(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-    if(!boxRetriever.cato24().value.getOrElse(false) && boxRetriever.abridgedFiling().value) {
+    val isOpwEnabled = boxRetriever.cato24().value.getOrElse(false)
+    
+    if(!isOpwEnabled && boxRetriever.abridgedFiling().value) {
       Set.empty
     } else {
         val errors = collectErrors(
