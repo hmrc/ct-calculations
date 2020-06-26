@@ -9,12 +9,12 @@ import org.joda.time.LocalDate
 import org.mockito.Mockito.when
 import uk.gov.hmrc.ct.{AbridgedFiling, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
 import uk.gov.hmrc.ct.accounts._
-import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.domain.CompanyTypes
 
-class AC13Spec extends AccountsMoneyValidationFixture[FullAccountsBoxRetriever]
-               with AccountsPreviousPeriodValidationFixture[FullAccountsBoxRetriever]
+class AC13Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever]
+               with AccountsPreviousPeriodValidationFixture[Frs102AccountsBoxRetriever]
                with MockFullAccountsRetriever {
 
   testAccountsMoneyValidationWithMin("AC13", 0, AC13.apply, true, false)

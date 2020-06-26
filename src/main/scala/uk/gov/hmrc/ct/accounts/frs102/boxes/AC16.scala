@@ -13,7 +13,7 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit or loss (current PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever ]
+  with ValidatableBox[Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever]
   with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever ): Set[CtValidation] = {
