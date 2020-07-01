@@ -125,7 +125,7 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
         AC401(None)
       )
 
-      result shouldBe ApportionedTurnover(None, None, None)
+      result shouldBe ApportionedTurnover(Some(0), Some(0), Some(0))
       result.total shouldBe 0
     }
 
@@ -272,7 +272,7 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
           AC401(None)
         )
 
-        result.inputValue shouldBe Some(159855)
+        result.value shouldBe Some(159855)
       }
     }
   }
