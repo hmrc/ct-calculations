@@ -17,7 +17,7 @@ import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes
 import uk.gov.hmrc.ct.domain.CompanyTypes.{CompanyType, UkTradingCompany}
-import uk.gov.hmrc.ct.{AbridgedFiling, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
+import uk.gov.hmrc.ct.{AbridgedFiling, CATO24, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
 
 class AC12Spec extends WordSpec with Matchers with MockitoSugar {
 
@@ -56,6 +56,7 @@ class AC12Spec extends WordSpec with Matchers with MockitoSugar {
             when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(false))
             when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(abridgedFiling))
             when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
+            when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
 
             val validationResult = AC12(ac12Value).validate(boxRetriever)
             if (required)
@@ -83,6 +84,7 @@ class AC12Spec extends WordSpec with Matchers with MockitoSugar {
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
         when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(false))
         when(boxRetriever.companyType()).thenReturn(FilingCompanyType(CompanyTypes.UkTradingCompany))
+        when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
 
         s"$message" in {
           val validationResult = AC12(ac12Value).validate(boxRetriever)
@@ -602,6 +604,7 @@ class AC12Spec extends WordSpec with Matchers with MockitoSugar {
           when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(isCoHoFiling))
           when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(abridgedFiling))
           when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
+          when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
 
           s"$message : $ac12Value" in {
             val validationResult = AC12(Some(ac12Value)).validate(boxRetriever)
