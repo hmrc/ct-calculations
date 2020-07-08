@@ -12,6 +12,6 @@ import uk.gov.hmrc.ct.box.ValidatableBox._
 trait ValidateDeclarationNameOrStatus[T <: BoxRetriever] extends ValidatableBox[T] {
 
   def validateDeclarationNameOrStatus(boxId: String, box: CtOptionalString with CtBoxIdentifier): Set[CtValidation] = {
-    validateStringAsMandatory(boxId, box) ++ validateOptionalStringByLength(boxId, box, 2, 56) ++ validateOptionalStringByRegex(boxId, box, ValidNonForeignLessRestrictiveCharacters)
+    validateStringAsMandatory(boxId, box) ++ validateOptionalStringByLengthMin(boxId, box, 2)  ++ validateOptionalStringByLengthMax(boxId, box, 56) ++ validateOptionalStringByRegex(boxId, box, ValidNonForeignLessRestrictiveCharacters)
   }
 }

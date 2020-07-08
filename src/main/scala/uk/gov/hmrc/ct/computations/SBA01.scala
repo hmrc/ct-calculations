@@ -42,7 +42,7 @@ case class Building(
                      carriedForward: Option[Int] = None,
                      claimNote: Option[String] = None
                    ) extends ValidatableBox[ComputationsBoxRetriever] with ExtraValidation with SBAHelper with SBACalculator {
-  def apportionedTwoPercent(apStartDate: LocalDate, apEndDate: LocalDate) = getAmountClaimableForSBA(apStartDate, apEndDate, nonResidentialActivityStart, cost).getOrElse(0)
+  def getApportionedRates(apStartDate: LocalDate, apEndDate: LocalDate): Int = getSbaDetails(apStartDate, apEndDate, nonResidentialActivityStart, cost).flatMap(_.totalCost).getOrElse(0)
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
 
@@ -110,7 +110,7 @@ case class Building(
       case Some(claimAmount) => {
         if (claimAmount < 1) {
           Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.lessThanOne", None))
-        } else if (claimAmount > apportionedTwoPercent(apStart, epEnd)) {
+        } else if (claimAmount > getApportionedRates(apStart, epEnd)) {
           Set(CtValidation(Some(s"building$buildingIndex.$boxId"), s"error.$boxId.greaterThanMax", None))
 
         } else {

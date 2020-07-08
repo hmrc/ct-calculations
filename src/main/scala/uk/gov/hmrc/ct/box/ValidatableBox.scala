@@ -264,6 +264,19 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators with ExtraValidation 
     }
   }
 
+  protected def validateOptionalStringByLengthMin(boxId: String, box: OptionalStringIdBox, min: Int)(): Set[CtValidation] = {
+    box.value match {
+      case Some(x) => validateNotEmptyStringByLengthMin(boxId, x, min)
+      case _ => Set()
+    }
+  }
+
+  protected def validateOptionalStringByLengthMax(boxId: String, box: OptionalStringIdBox, max: Int)(): Set[CtValidation] = {
+    box.value match {
+      case Some(x) => validateNotEmptyStringByLength(boxId, x, 1, max)
+      case _ => Set()
+    }
+  }
   protected def validateOptionalStringByLength(boxId: String, box: OptionalStringIdBox, min: Int, max: Int)(): Set[CtValidation] = {
     box.value match {
       case Some(x) => validateNotEmptyStringByLength(boxId, x, min, max)
@@ -273,6 +286,12 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators with ExtraValidation 
 
   protected def validateStringByLength(boxId: String, box: StringIdBox, min:Int, max:Int)(): Set[CtValidation] = {
      validateNotEmptyStringByLength(boxId, box.value, min, max)
+  }
+
+  def validateNotEmptyStringByLengthMin(boxId: String, value: String, min: Int)(): Set[CtValidation] = {
+    failIf (value.nonEmpty && value.size < min ) {
+      Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange.min", Some(Seq(min.toString))))
+    }
   }
 
   def validateNotEmptyStringByLength(boxId: String, value: String, min: Int, max: Int)(): Set[CtValidation] = {
