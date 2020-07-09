@@ -1,25 +1,13 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.LocalDate
-
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.{AC12, AC4, AC3}
+import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4, AC401, AC403}
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
 
 class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
@@ -38,7 +26,8 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
         ac4,
         CP1(new LocalDate(2012, 4, 1)),
         CP2(new LocalDate(2013, 3, 31)),
-        AC12(periodOfAccountsTurnover)
+        AC12(periodOfAccountsTurnover),
+        AC401(None)
       )
 
       result shouldBe ApportionedTurnover(Some(1703), Some(6828), Some(1703))
@@ -53,7 +42,8 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
         ac4,
         CP1(new LocalDate(2012, 4, 1)),
         CP2(new LocalDate(2013, 3, 31)),
-        AC12(periodOfAccountsTurnover)
+        AC12(periodOfAccountsTurnover),
+        AC401(None)
       )
 
       result shouldBe ApportionedTurnover(Some(1703), Some(6828), Some(1702))
@@ -68,7 +58,8 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
         ac4,
         CP1(new LocalDate(2012, 4, 1)),
         CP2(new LocalDate(2012, 4, 2)),
-        AC12(periodOfAccountsTurnover)
+        AC12(periodOfAccountsTurnover),
+        AC401(None)
       )
 
       result shouldBe ApportionedTurnover(Some(1703), Some(37), Some(8494))
@@ -83,7 +74,8 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
         AC4(new LocalDate(2014, 3, 31)),
         CP1(new LocalDate(2013, 5, 1)),
         CP2(new LocalDate(2013, 12, 31)),
-        AC12(periodOfAccountsTurnover)
+        AC12(periodOfAccountsTurnover),
+        AC401(None)
       )
 
       result shouldBe ApportionedTurnover(Some(53285), Some(435160), Some(159855))
@@ -98,7 +90,8 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
         AC4(new LocalDate(2014, 3, 31)),
         CP1(new LocalDate(2013, 5, 1)),
         CP2(new LocalDate(2013, 12, 31)),
-        AC12(periodOfAccountsTurnover)
+        AC12(periodOfAccountsTurnover),
+        AC401(None)
       )
 
       result shouldBe ApportionedTurnover(Some(-53285), Some(-435160), Some(-159855))
@@ -113,7 +106,8 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
         AC4(new LocalDate(2014, 3, 31)),
         CP1(new LocalDate(2013, 5, 1)),
         CP2(new LocalDate(2013, 12, 31)),
-        AC12(periodOfAccountsTurnover)
+        AC12(periodOfAccountsTurnover),
+        AC401(None)
       )
 
       result shouldBe ApportionedTurnover(Some(0), Some(0), Some(0))
@@ -127,10 +121,11 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
         AC4(new LocalDate(2014, 3, 31)),
         CP1(new LocalDate(2013, 5, 1)),
         CP2(new LocalDate(2013, 12, 31)),
-        AC12(None)
+        AC12(None),
+        AC401(None)
       )
 
-      result shouldBe ApportionedTurnover(None, None, None)
+      result shouldBe ApportionedTurnover(Some(0), Some(0), Some(0))
       result.total shouldBe 0
     }
 
@@ -142,7 +137,8 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
         AC4(new LocalDate(2014, 3, 31)),
         CP1(new LocalDate(2013, 4, 1)),
         CP2(new LocalDate(2014, 3, 31)),
-        AC12(periodOfAccountsTurnover)
+        AC12(periodOfAccountsTurnover),
+        AC401(None)
       )
 
       result shouldBe ApportionedTurnover(None, Some(-100), None)
@@ -157,7 +153,8 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
         AC4(new LocalDate(2012, 1, 1)),
         CP1(new LocalDate(2012, 1, 1)),
         CP2(new LocalDate(2012, 1, 1)),
-        AC12(periodOfAccountsTurnover)
+        AC12(periodOfAccountsTurnover),
+        AC401(None)
       )
 
       result shouldBe ApportionedTurnover(None, Some(7), None)
@@ -176,7 +173,8 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
           ac4,
           CP1(new LocalDate(2011, 12, 31)),
           CP2(new LocalDate(2012, 1, 2)),
-          AC12(periodOfAccountsTurnover)
+          AC12(periodOfAccountsTurnover),
+          AC401(None)
         )
       }
 
@@ -186,7 +184,8 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
           ac4,
           CP1(new LocalDate(2011, 12, 31)),
           CP2(new LocalDate(2012, 1, 2)),
-          AC12(periodOfAccountsTurnover)
+          AC12(periodOfAccountsTurnover),
+          AC401(None)
         )
       }
 
@@ -196,7 +195,8 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
           ac4,
           CP1(new LocalDate(2012, 1, 1)),
           CP2(new LocalDate(2012, 1, 3)),
-          AC12(periodOfAccountsTurnover)
+          AC12(periodOfAccountsTurnover),
+          AC401(None)
         )
       }
 
@@ -206,8 +206,73 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
           ac4,
           CP1(new LocalDate(2011, 12, 31)),
           CP2(new LocalDate(2012, 1, 3)),
-          AC12(periodOfAccountsTurnover)
+          AC12(periodOfAccountsTurnover),
+          AC401(None)
         )
+      }
+    }
+
+    "apportion turnover includes non-OPW turnover and OPW turnover" in new ApportionedTurnoverCalculator {
+      val periodOfAccountsTurnover = 7
+      val opwTurnover = 10
+
+      val result = apportionPeriodOfAccountsTurnover(
+        AC3(new LocalDate(2012, 1, 1)),
+        AC4(new LocalDate(2012, 1, 1)),
+        CP1(new LocalDate(2012, 1, 1)),
+        CP2(new LocalDate(2012, 1, 1)),
+        AC12(periodOfAccountsTurnover),
+        AC401(opwTurnover)
+      )
+
+      result shouldBe ApportionedTurnover(None, Some(periodOfAccountsTurnover + opwTurnover), None)
+      result.total shouldBe periodOfAccountsTurnover + opwTurnover
+    }
+
+    "methods returning correct apportion" should {
+      "for before" in new ApportionedTurnoverCalculator {
+        val periodOfAccountsTurnover = 648300
+
+        val result = turnoverApportionedBeforeAccountingPeriod(
+          AC3(new LocalDate(2013, 4, 1)),
+          AC4(new LocalDate(2014, 3, 31)),
+          CP1(new LocalDate(2013, 5, 1)),
+          CP2(new LocalDate(2013, 12, 31)),
+          AC12(periodOfAccountsTurnover),
+          AC401(None)
+        )
+
+        result.inputValue shouldBe Some(53285)
+      }
+
+      "for during" in new ApportionedTurnoverCalculator {
+        val periodOfAccountsTurnover = 648300
+
+        val result = turnoverApportionedDuringAccountingPeriod(
+          AC3(new LocalDate(2013, 4, 1)),
+          AC4(new LocalDate(2014, 3, 31)),
+          CP1(new LocalDate(2013, 5, 1)),
+          CP2(new LocalDate(2013, 12, 31)),
+          AC12(periodOfAccountsTurnover),
+          AC401(None)
+        )
+
+        result.defaultValue shouldBe Some(435160)
+      }
+
+      "for after" in new ApportionedTurnoverCalculator {
+        val periodOfAccountsTurnover = 648300
+
+        val result = turnoverApportionedAfterAccountingPeriod(
+          AC3(new LocalDate(2013, 4, 1)),
+          AC4(new LocalDate(2014, 3, 31)),
+          CP1(new LocalDate(2013, 5, 1)),
+          CP2(new LocalDate(2013, 12, 31)),
+          AC12(periodOfAccountsTurnover),
+          AC401(None)
+        )
+
+        result.value shouldBe Some(159855)
       }
     }
   }

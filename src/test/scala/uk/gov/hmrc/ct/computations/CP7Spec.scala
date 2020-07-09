@@ -1,41 +1,53 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.computations
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks.forAll
 import org.scalatest.prop.TableFor6
 import org.scalatest.prop.Tables.Table
 import org.scalatest.{Matchers, WordSpec}
 import play.api.libs.json.Json
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.{AbridgedFiling, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes
 import uk.gov.hmrc.ct.domain.CompanyTypes.CompanyType
+import uk.gov.hmrc.ct.{AbridgedFiling, CATO24, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
 
 class CP7Spec extends WordSpec with Matchers with MockitoSugar {
 
   implicit val format = {
     import uk.gov.hmrc.ct.computations.formats._
     Json.format[CP7Holder]
+  }
+
+  "Creating CP7 from Ap2" should {
+    val defaultValue = Some(202)
+    "default to AP2" in {
+      val cp7 = CP7(AP2(defaultValue))
+      cp7.defaultValue shouldBe defaultValue
+    }
+
+    "default to AP2 when CATO24 is false" in {
+      val cp7 = CP7(AP2(defaultValue), CATO24(Some(false)))
+      cp7.defaultValue shouldBe defaultValue
+    }
+
+    "default to AP2 when CATO24 is None" in {
+      val cp7 = CP7(AP2(defaultValue), CATO24(None))
+      cp7.defaultValue shouldBe defaultValue
+    }
+
+    "not default to AP2 when CATO24 is true" in {
+      val cp7 = CP7(AP2(defaultValue), CATO24(Some(true)))
+      cp7.defaultValue shouldBe None
+    }
   }
 
   "CP7 to json" should {

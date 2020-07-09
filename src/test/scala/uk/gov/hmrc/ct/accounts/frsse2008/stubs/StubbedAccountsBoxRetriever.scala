@@ -1,22 +1,13 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.accounts.frsse2008.stubs
 
+import uk.gov.hmrc.ct.CATO24
 import uk.gov.hmrc.ct.accounts._
+import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
 import uk.gov.hmrc.ct.accounts.frsse2008._
 import uk.gov.hmrc.ct.accounts.frsse2008.micro._
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
@@ -96,6 +87,16 @@ trait StubbedAccountsBoxRetriever extends Frsse2008AccountsBoxRetriever {
   override def ac206(): AC206 = ???
 
   override def ac205(): AC205 = ???
+
+  override def ac401(): AC401 = ???
+
+  override def ac402(): AC402 = ???
+
+  override def ac403(): AC403 = ???
+
+  override def ac404(): AC404 = ???
+
+  override def cato24(): CATO24 = ???
 
   override def generateValues: Map[String, CtValue[_]] = ???
 }

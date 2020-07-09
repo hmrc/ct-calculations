@@ -28,6 +28,7 @@ object AC435 extends Calculated[AC435, Frsse2008AccountsBoxRetriever with Filing
     calculateCurrentProfitOrLoss(ac12 = boxRetriever.ac12(), ac405 = boxRetriever.ac405(),
                                  ac410 = boxRetriever.ac410(), ac415 = boxRetriever.ac415(),
                                  ac420 = boxRetriever.ac420(), ac425 = boxRetriever.ac425(),
-                                 ac34 = boxRetriever.ac34(), boxRetriever.microEntityFiling())
+                                 ac34 = boxRetriever.ac34(), ac401 = boxRetriever.ac401(),
+                                 ac403 = boxRetriever.ac403(), boxRetriever.microEntityFiling())
   }
 }

@@ -28,6 +28,7 @@ trait AdjustedTradingProfitOrLossCalculator extends CtTypeConverters {
                                      cp670: CP670,
                                      cp668: CP668,
                                      cp297: CP297,
+
                                      cpq19: CPQ19): CP117 = {
     CP117(profit(cp44, cp54, cp59, cp186, cp91, cp670, cp668, cp297, cpq19) max 0)
   }
@@ -40,6 +41,7 @@ trait AdjustedTradingProfitOrLossCalculator extends CtTypeConverters {
                                    cp670: CP670,
                                    cp668: CP668,
                                    cp297: CP297,
+
                                    cpq19: CPQ19): CP118 = {
     CP118((profit(cp44, cp54, cp59, cp186, cp91, cp670, cp668, cp297, cpq19) min 0).abs)
   }

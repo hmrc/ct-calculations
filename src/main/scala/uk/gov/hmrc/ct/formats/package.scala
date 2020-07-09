@@ -69,5 +69,7 @@ package object formats {
 
   implicit val cato22Format: Format[CATO22] = new BigDecimalFormat[CATO22](CATO22.apply)
 
+  implicit val cato24Format: Format[CATO24] = new OptionalBooleanFormat[CATO24](CATO24.apply)
+
   implicit val CountryOfRegistrationFormat: Format[CountryOfRegistration] = new OptionalStringFormat[CountryOfRegistration](CountryOfRegistration.apply)
 }

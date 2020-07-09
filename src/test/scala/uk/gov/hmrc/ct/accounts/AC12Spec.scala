@@ -1,24 +1,13 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.accounts
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
-import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks.forAll
 import org.scalatest.prop.TableFor6
 import org.scalatest.prop.Tables.Table
@@ -28,7 +17,7 @@ import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes
 import uk.gov.hmrc.ct.domain.CompanyTypes.{CompanyType, UkTradingCompany}
-import uk.gov.hmrc.ct.{AbridgedFiling, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
+import uk.gov.hmrc.ct.{AbridgedFiling, CATO24, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
 
 class AC12Spec extends WordSpec with Matchers with MockitoSugar {
 
@@ -67,6 +56,7 @@ class AC12Spec extends WordSpec with Matchers with MockitoSugar {
             when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(false))
             when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(abridgedFiling))
             when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
+            when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
 
             val validationResult = AC12(ac12Value).validate(boxRetriever)
             if (required)
@@ -94,6 +84,7 @@ class AC12Spec extends WordSpec with Matchers with MockitoSugar {
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
         when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(false))
         when(boxRetriever.companyType()).thenReturn(FilingCompanyType(CompanyTypes.UkTradingCompany))
+        when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
 
         s"$message" in {
           val validationResult = AC12(ac12Value).validate(boxRetriever)
@@ -613,6 +604,7 @@ class AC12Spec extends WordSpec with Matchers with MockitoSugar {
           when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(isCoHoFiling))
           when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(abridgedFiling))
           when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
+          when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
 
           s"$message : $ac12Value" in {
             val validationResult = AC12(Some(ac12Value)).validate(boxRetriever)
