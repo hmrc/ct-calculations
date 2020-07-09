@@ -45,5 +45,5 @@ object CP7 extends Linked[AP2, CP7] {
 
   override def apply(source: AP2): CP7 = CP7(None, source.value)
 
-  def apply(source: AP2, opw: CATO24): CP7 = CP7(None, if(opw.value.getOrElse(false)) None else source.value)
+  def apply(source: AP2, opw: CATO24): CP7 = CP7(None, if(opw.isTrue) None else source.value)
 }

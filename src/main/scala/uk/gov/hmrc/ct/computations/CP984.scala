@@ -25,6 +25,6 @@ case class CP984(value : Int) extends CtBoxIdentifier("Net turnover off payroll 
 
 object CP984 extends Calculated[CP984, ComputationsBoxRetriever]{
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP984 = {
-    CP984(boxRetriever.cp983().value.getOrElse(0) - boxRetriever.cp981().value.getOrElse(0))
+    CP984(boxRetriever.cp983().orZero - boxRetriever.cp981().orZero)
   }
 }

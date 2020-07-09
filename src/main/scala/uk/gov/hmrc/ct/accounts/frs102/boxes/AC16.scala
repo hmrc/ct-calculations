@@ -36,7 +36,7 @@ case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
 
 object AC16 extends Calculated[AC16, Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever] with GrossProfitAndLossCalculator {
   override def calculate(boxRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever ): AC16 = {
-    if(!boxRetriever.cato24().value.getOrElse(false) && boxRetriever.abridgedFiling().value) {
+    if(!boxRetriever.cato24().isTrue && boxRetriever.abridgedFiling().value) {
       AC16(None)
     } else {
       calculateAC16(boxRetriever.ac12, boxRetriever.ac401, boxRetriever.ac403, boxRetriever.ac14())
