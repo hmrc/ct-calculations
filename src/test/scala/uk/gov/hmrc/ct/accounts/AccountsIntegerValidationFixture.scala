@@ -1,39 +1,30 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.accounts
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito.when
-import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
+import uk.gov.hmrc.ct.utils.UnitSpec
 
-trait AccountsIntegerValidationFixture[T <: AccountsBoxRetriever] extends WordSpec with Matchers with MockitoSugar {
+trait AccountsIntegerValidationFixture[T <: AccountsBoxRetriever] extends WordSpec with MockitoSugar with Matchers {
 
   def boxRetriever: T
+
+  private val mandatoryNotesStartDate: LocalDate = LocalDate.parse("2017-01-01")
+  private val previousPeriodOfAccounts:  AC205 = AC205(Some(LocalDate.now()))
 
   def setUpMocks(): Unit = {
     when(boxRetriever.ac205()) thenReturn previousPeriodOfAccounts
     when(boxRetriever.ac3()) thenReturn AC3(mandatoryNotesStartDate)
   }
 
-  private val mandatoryNotesStartDate = LocalDate.parse("2017-01-01")
-  private val previousPeriodOfAccounts:  AC205 = AC205(Some(LocalDate.now()))
 
   def testIntegerFieldValidation[S](boxId: String, builder: Option[Int] => ValidatableBox[T], testLowerLimit: Option[Int] = None, testUpperLimit: Option[Int] = None, testMandatory: Option[Boolean] = Some(false)): Unit = {
     if (testMandatory.contains(true)) {

@@ -28,7 +28,10 @@ trait TotalAdditionsCalculator extends CtTypeConverters {
                                 cp49: CP49,
                                 cp51: CP51,
                                 cp52: CP52,
-                                cp53: CP53): CP54 = {
-    CP54(cp46 + cp47 + cp48 + cp49 + cp51 + cp52 + cp53)
+                                cp53: CP53,
+                                cp980: CP980,
+                                cp981: CP981,
+                                cp982: CP982): CP54 = {
+    CP54(cp46 + cp47 + cp48 + cp49 + cp51 + cp52 + cp53 + cp980 + cp981 + cp982)
   }
 }

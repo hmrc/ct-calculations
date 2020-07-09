@@ -27,6 +27,8 @@ object AC17 extends Calculated[AC17, Frsse2008AccountsBoxRetriever with FilingAt
   override def calculate(boxRetriever: Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever): AC17 = {
     calculatePreviousGrossProfitOrLoss(ac13 = boxRetriever.ac13(),
                                        ac15 = boxRetriever.ac15(),
-                                       statutoryAccountsFiling = boxRetriever.statutoryAccountsFiling())
+                                       statutoryAccountsFiling = boxRetriever.statutoryAccountsFiling(),
+                                       ac402 = boxRetriever.ac402(),
+                                       ac404 = boxRetriever.ac404())
   }
 }

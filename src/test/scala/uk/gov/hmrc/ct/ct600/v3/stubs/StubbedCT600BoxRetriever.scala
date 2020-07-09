@@ -1,22 +1,11 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.ct600.v3.stubs
 
-import uk.gov.hmrc.ct.CountryOfRegistration
+import uk.gov.hmrc.ct.{CATO24, CountryOfRegistration}
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AC2, AC205, AC206}
 import uk.gov.hmrc.ct.box.CtValue
@@ -380,4 +369,14 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def sba01: SBA01 = ???
 
   override def sba02: List[Option[Int]] = ???
+
+  override def cp980(): CP980 = ???
+
+  override def cp981(): CP981 = ???
+
+  override def cp982(): CP982 = ???
+
+  override def cp983(): CP983 = ???
+
+  override def cato24: CATO24 = ???
 }

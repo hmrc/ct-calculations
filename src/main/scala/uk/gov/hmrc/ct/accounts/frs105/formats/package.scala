@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs105
 
-import play.api.libs.json.{JsResult, JsValue, Reads, _}
+import play.api.libs.json.{Reads, _}
 import uk.gov.hmrc.ct.accounts.frs105.boxes._
 import uk.gov.hmrc.ct.box.formats._
 

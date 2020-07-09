@@ -29,6 +29,7 @@ object CP59 extends Calculated[CP59, ComputationsBoxRetriever] with TotalDeducti
                                cp505 = fieldValueRetriever.cp505(),
                                cp509 = fieldValueRetriever.cp509(),
                                cp55 = fieldValueRetriever.cp55(),
-                               cp57 = fieldValueRetriever.cp57())
+                               cp57 = fieldValueRetriever.cp57(),
+                               cp983 = fieldValueRetriever.cp983())
   }
 }

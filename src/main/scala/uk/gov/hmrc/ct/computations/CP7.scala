@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
+import uk.gov.hmrc.ct.CATO24
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.validation.TurnoverValidation
@@ -43,4 +44,6 @@ object CP7 extends Linked[AP2, CP7] {
   def apply(inputValue: Option[Int]): CP7 = CP7(inputValue = inputValue, defaultValue = None)
 
   override def apply(source: AP2): CP7 = CP7(None, source.value)
+
+  def apply(source: AP2, opw: CATO24): CP7 = CP7(None, if(opw.isTrue) None else source.value)
 }
