@@ -27,12 +27,6 @@ import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
     .settings(scoverageSettings: _*)
     .settings(makePublicallyAvailableOnBintray := true)
     .settings(
-      //TODO: Remove before master merge
-      headerLicense := Some(HeaderLicense.Custom(
-        """Copyright 2020 HM Revenue & Customs
-          |
-          |""".stripMargin
-      )),
       name := appName,
       scalaVersion := "2.11.12",
       crossScalaVersions := Seq("2.11.12"),
