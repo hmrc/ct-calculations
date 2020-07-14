@@ -242,7 +242,7 @@ class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
           AC401(None)
         )
 
-        result.inputValue shouldBe Some(53285)
+        result.value shouldBe Some(53285)
       }
 
       "for during" in new ApportionedTurnoverCalculator {
