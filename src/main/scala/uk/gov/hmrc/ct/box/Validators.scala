@@ -54,6 +54,15 @@ trait Validators {
     }
   }
 
+  protected def belowMinWithMax(value: Option[Int], min: Int = MIN_MONEY_AMOUNT_ALLOWED)(): Set[CtValidation] = {
+    println(min + "boohaa")
+
+    value match {
+      case Some(v) if v < min => Set(CtValidation(Some(boxId), s"error.$boxId.below.min", Some(Seq(v.toString))))
+      case _ => Set.empty
+    }
+  }
+
   protected def validateMoney(value: Option[Int], min: Int = -99999999, max: Int = 99999999)(): Set[CtValidation] = {
     value match {
       case Some(x) if x < min => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(min.toString, max.toString))))
@@ -90,5 +99,12 @@ trait Validators {
     predicates.flatMap { predicate =>
       predicate()
     }.toSet
+  }
+
+  private def errorMessage[A](messageKey: String, errorArguments: A*): Set[CtValidation] = {
+    val argumentsAsStrings: Seq[String] = errorArguments.map(a => a.toString)
+
+    println(argumentsAsStrings + " heehee")
+    Set(CtValidation(Some(boxId), s"error.$boxId.$messageKey", Some(argumentsAsStrings)))
   }
 }

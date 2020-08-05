@@ -35,7 +35,7 @@ case class CP287(value: Option[Int]) extends CtBoxIdentifier(name = "Amount of l
       requiredErrorIf(value.isEmpty && boxRetriever.cpQ20.isTrue),
       cannotExistErrorIf({ value.nonEmpty && !boxRetriever.cpQ20().orFalse }),
       exceedsMax(value, max),
-      belowMin(value, 1)
+      belowMinWithMax(value, 1)
     )
   }
 }
