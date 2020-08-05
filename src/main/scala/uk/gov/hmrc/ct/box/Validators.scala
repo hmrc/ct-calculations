@@ -35,30 +35,29 @@ trait Validators {
 
   protected def requiredErrorIf(predicate: => Boolean)(): Set[CtValidation] = {
       if (predicate)
-        Set(CtValidation(Some(boxId), s"error.$boxId.required"))
+        errorMessage("required")
       else
         Set.empty
   }
 
   protected def exceedsMax(value: Option[Int], max: Int = MAX_MONEY_AMOUNT_ALLOWED)(): Set[CtValidation] = {
     value match {
-      case (Some(v)) if v > max => Set(CtValidation(Some(boxId), s"error.$boxId.exceeds.max", Some(Seq(max.toString))))
+      case Some(v) if v > max => errorMessage("exceeds.max", Seq(max))
       case _ => Set.empty
     }
   }
 
   protected def belowMin(value: Option[Int], min: Int = MIN_MONEY_AMOUNT_ALLOWED)(): Set[CtValidation] = {
     value match {
-      case (Some(v)) if v < min => Set(CtValidation(Some(boxId), s"error.$boxId.below.min", Some(Seq(min.toString))))
+      case Some(v) if v < min => errorMessage("below.min", Seq(min))
       case _ => Set.empty
     }
   }
 
-  protected def belowMinWithMax(value: Option[Int], min: Int = MIN_MONEY_AMOUNT_ALLOWED)(): Set[CtValidation] = {
-    println(min + "boohaa")
+  protected def belowMinWithMax(value: Option[Int], max: Int, min: Int = MIN_MONEY_AMOUNT_ALLOWED)(): Set[CtValidation] = {
 
     value match {
-      case Some(v) if v < min => Set(CtValidation(Some(boxId), s"error.$boxId.below.min", Some(Seq(v.toString))))
+      case Some(v) if v < min => errorMessage("below.min", Seq(max))
       case _ => Set.empty
     }
   }
@@ -73,7 +72,7 @@ trait Validators {
 
   protected def cannotExistErrorIf(predicate: => Boolean)(): Set[CtValidation] = {
     if (predicate)
-      Set(CtValidation(Some(boxId), s"error.$boxId.cannot.exist"))
+      errorMessage("cannot.exist")
     else
       Set.empty
   }
@@ -101,10 +100,13 @@ trait Validators {
     }.toSet
   }
 
-  private def errorMessage[A](messageKey: String, errorArguments: A*): Set[CtValidation] = {
+  private def errorMessage[A](messageKey: String, errorArguments: Seq[A] = Seq.empty): Set[CtValidation] = {
     val argumentsAsStrings: Seq[String] = errorArguments.map(a => a.toString)
 
-    println(argumentsAsStrings + " heehee")
-    Set(CtValidation(Some(boxId), s"error.$boxId.$messageKey", Some(argumentsAsStrings)))
+    if (errorArguments.isEmpty) {
+      Set(CtValidation(Some(boxId), s"error.$boxId.$messageKey"))
+    } else {
+        Set(CtValidation(Some(boxId), s"error.$boxId.$messageKey", Some(argumentsAsStrings)))
+    }
   }
 }
