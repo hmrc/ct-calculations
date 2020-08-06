@@ -100,7 +100,7 @@ trait Validators {
     }.toSet
   }
 
-  private def errorMessage[A](messageKey: String, errorArguments: Seq[A] = Seq.empty): Set[CtValidation] = {
+  protected def errorMessage[A](messageKey: String, errorArguments: Seq[A] = Seq.empty): Set[CtValidation] = {
     val argumentsAsStrings: Seq[String] = errorArguments.map(a => a.toString)
 
     if (errorArguments.isEmpty) {
