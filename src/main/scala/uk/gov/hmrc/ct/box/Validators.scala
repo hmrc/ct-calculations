@@ -57,7 +57,7 @@ trait Validators {
   protected def belowMinWithMax(value: Option[Int], max: Int, min: Int = MIN_MONEY_AMOUNT_ALLOWED)(): Set[CtValidation] = {
 
     value match {
-      case Some(v) if v < min => errorMessage("below.min", Seq(max))
+      case Some(v) if v < min => errorMessage("below.min", Seq(min, max) )
       case _ => Set.empty
     }
   }
