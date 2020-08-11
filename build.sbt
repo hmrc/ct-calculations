@@ -24,6 +24,11 @@ import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
     .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
     .disablePlugins(JUnitXmlReportPlugin)
     .settings(majorVersion := 2)
+      .settings(headerLicense := Some(HeaderLicense.Custom(
+      """Copyright 2020 HM Revenue & Customs
+      |
+      |""".stripMargin
+      )))
     .settings(scoverageSettings: _*)
     .settings(makePublicallyAvailableOnBintray := true)
     .settings(
