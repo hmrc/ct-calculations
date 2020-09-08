@@ -3,13 +3,14 @@
  *
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.computations.lowEmissionCars
 
 import org.mockito.Mockito._
-import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.computations.{CPQ1000, CPQ7}
 
 class CPQ1000Spec extends WordSpec with Matchers with MockitoSugar {
 

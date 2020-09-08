@@ -3,7 +3,7 @@
  *
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.computations.lowEmissionCars
 
 import org.joda.time.LocalDate
 import org.scalatest.prop.TableDrivenPropertyChecks._
@@ -13,6 +13,7 @@ import uk.gov.hmrc.ct.CountryOfRegistration
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
+import uk.gov.hmrc.ct.computations._
 
 class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
 
