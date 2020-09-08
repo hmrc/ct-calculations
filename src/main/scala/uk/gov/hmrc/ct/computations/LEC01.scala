@@ -11,21 +11,7 @@ import uk.gov.hmrc.ct.computations.calculations.SBACalculator
 import uk.gov.hmrc.ct.computations.formats.Cars
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-
-case class Car(regNumber: String,
-               price: Int,
-               emissions: Int,
-               dateOfPurchase: LocalDate,
-               isNew: Boolean = false,
-               index: Option[Int]) extends ValidatableBox[ComputationsBoxRetriever]
-  with ExtraValidation  {
-
-  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    ???
-  }
-}
-
-case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "Low emission car.")
+case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "Low emission car")
   with CtValue[List[Car]]
   with Input
   with ValidatableBox[ComputationsBoxRetriever] {
@@ -40,5 +26,29 @@ case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "L
       case (CPQ1000(Some(true)), list) if list.isEmpty => Set(CtValidation(Some("LEC01"), "error.LEC01.required"))
       case _ => Set.empty
     }
+  }
+}
+
+case class Car(regNumber: Option[String],
+               price: Option[Int],
+               emissions: Option[Int],
+               dateOfPurchase: Option[LocalDate],
+               isNew: Option[Boolean]) extends ValidatableBox[ComputationsBoxRetriever]
+  with ExtraValidation  {
+
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateRegNumber,
+      validatePriceOfCar,
+
+    )
+  }
+
+  private val validateRegNumber: Set[CtValidation] = {
+      validateAsMandatory("LEC01A", regNumber) // this probably needs a max length
+  }
+
+  private val validatePriceOfCar: Set[CtValidation] = {
+    validateIntegerInRange("LEC01B", price, 1, )
   }
 }

@@ -50,10 +50,17 @@ trait ExtraValidation extends Validators {
      Set(CtValidation(Some(boxId), s"error.$boxId.invalidPostcode"))
    }
 
+  def validateIntegerInRange(boxId: String, intInQuestion: Option[Int], min: Int = 0, max: Int): Set[CtValidation] = {
+    intInQuestion match {
+     case Some(int) if int < min || int > max=>Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange"), Seq(min, max))
+     case _ => validationSuccess
+   }
+  }
+
   def validateOptionalStringByLength(value: Option[String], min: Int, max: Int, boxId: String, boxIdPrefix: Option[String])(): Set[CtValidation] = {
     value match {
       case Some(x) if(x.nonEmpty && x.size < min || x.size > max) => Set(CtValidation(Some(boxIdPrefix.getOrElse("")+boxId), s"error.$boxId.text.sizeRange", Some(Seq(min.toString, max.toString))))
-      case _ => Set()
+      case _ => validationSuccess
     }
   }
 }
