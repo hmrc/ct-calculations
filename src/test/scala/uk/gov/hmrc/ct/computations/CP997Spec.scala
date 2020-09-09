@@ -16,6 +16,9 @@ class CP997Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
 
   override val boxRetriever = makeBoxRetriever()
 
+  private val boxId = Some("CP997")
+  private val exceedsNonTradingProfit = "error.CP997.exceeds.nonTradingProfit"
+
   testMandatoryWhen("CP997", CP997.apply) {
     makeBoxRetriever(cp281bValue = Some(1))
   }
@@ -24,25 +27,31 @@ class CP997Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
 
   "CP997" should {
     "fail validation if it exceeds non trading profit" in {
-      CP997(2).validate(makeBoxRetriever()).contains(CtValidation(Some("CP997"), "error.CP997.exceeds.nonTradingProfit")) shouldBe true
+      CP997(2).validate(makeBoxRetriever()).contains(CtValidation(boxId, exceedsNonTradingProfit)) shouldBe true
     }
-    "fail validation if cp281b and cp283b don't sum up" in {
-      CP997(2).validate(makeBoxRetriever()).contains(CtValidation(Some("CP997"), "error.CP997.exceeds.leftLosses")) shouldBe true
-    }
+
     "pass validation if it equals non trading profit" in {
-      CP997(2).validate(makeBoxRetriever(cato01Value = 2, cp44Value = 2)).contains(CtValidation(Some("CP997"), "error.CP997.exceeds.nonTradingProfit")) shouldBe false
+      CP997(2).validate(makeBoxRetriever(cato01Value = 2, cp44Value = 2)).contains(CtValidation(boxId, exceedsNonTradingProfit)) shouldBe false
     }
     "pass validation if it is less than non trading profit" in {
-      CP997(1).validate(makeBoxRetriever(cato01Value = 2, cp44Value = 2)).contains(CtValidation(Some("CP997"), "error.CP997.exceeds.nonTradingProfit")) shouldBe false
+      CP997(1).validate(makeBoxRetriever(cato01Value = 2, cp44Value = 2)).contains(CtValidation(boxId, exceedsNonTradingProfit)) shouldBe false
+    }
+    "fail validation if the company has trading profit and CP281b - CP283b < CP997" in {
+      CP997(2).validate(makeBoxRetriever(tradingProfitOrLoss = 1)).contains(CtValidation(boxId, "error.CP997.exceeds.leftLosses.with.trading.profit")) shouldBe true
+    }
+
+    "fail validation if the company has NOT got a trading profit and CP281b < CP997" in {
+      CP997(2).validate(makeBoxRetriever()).contains(CtValidation(boxId, "error.CP997.exceeds.leftLosses.without.trading.profit")) shouldBe true
     }
   }
 
-  private def makeBoxRetriever(cp281bValue: Option[Int] = Some(1), cato01Value: Int = 1, cp44Value: Int = 1, cp283bValue: Option[Int] = Some(1)) = {
+  private def makeBoxRetriever(cp281bValue: Option[Int] = Some(1), cato01Value: Int = 1, cp44Value: Int = 1, cp283bValue: Option[Int] = Some(1), tradingProfitOrLoss: Int = 0) = {
     val retriever = mock[ComputationsBoxRetriever]
     when(retriever.cp281b()).thenReturn(CP281b(cp281bValue))
     when(retriever.cp283b()).thenReturn(CP283b(cp283bValue))
     when(retriever.cato01()).thenReturn(CATO01(cato01Value))
     when(retriever.cp44()).thenReturn(CP44(cp44Value))
+    when(retriever.cp117()) thenReturn CP117(tradingProfitOrLoss)
     retriever
   }
 }
