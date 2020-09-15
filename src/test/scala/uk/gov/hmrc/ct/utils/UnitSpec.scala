@@ -9,7 +9,7 @@ import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.box.CtValidation
 
-trait UnitSpec extends WordSpec with MockitoSugar with Matchers with Mocks {
+trait UnitSpec extends WordSpec with Matchers with Mocks {
 
  val validationSuccess: Set[CtValidation] = Set()
 

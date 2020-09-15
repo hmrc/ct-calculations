@@ -19,7 +19,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   val specialRate = "SpecialRate"
 
   def taxPoolForCar(car: Car): String = {
-    car.dateOfPurchase match {
+    car.dateOfPurchase.get match {
       case (d) if d < new LocalDate("2009-04-01") => range1(car)
       case (d) if d < new LocalDate("2013-04-01") => range2(car)
       case (d) if d < new LocalDate("2015-04-01") => range3(car)
@@ -32,7 +32,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   private def range1(car: Car): String = mainRate
 
   private def range2(car: Car): String = {
-    (car.isNew, car.emissions) match {
+    (car.isNew.get, car.emissions.get) match {
       case (true, em) if em <= 110 => firstYearAllowance
       case (true, em) if em > 110 && em <= 160 => mainRate
       case (false, em) if em <= 160 => mainRate
@@ -41,7 +41,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   }
 
   private def range3(car: Car): String = {
-    (car.isNew, car.emissions) match {
+    (car.isNew.get, car.emissions.get) match {
       case (true, em) if em <= 95 => firstYearAllowance
       case (true, em) if em > 95 && em <= 130 => mainRate
       case (false, em) if em <= 130 => mainRate
@@ -50,7 +50,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   }
 
   private def range4(car: Car): String = {
-    (car.isNew, car.emissions) match {
+    (car.isNew.get, car.emissions.get) match {
       case (true, em) if em <= 75 => firstYearAllowance
       case (true, em) if em > 75 && em <= 130 => mainRate
       case (false, em) if em <= 130 => mainRate
@@ -60,7 +60,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   }
 
   private def range5(car: Car): String = {
-    (car.isNew, car.emissions) match {
+    (car.isNew.get, car.emissions.get) match {
       case (true, em) if em <= 50 => firstYearAllowance
       case (true, em) if em > 50 && em <= 110 => mainRate
       case (false, em) if em <= 110 => mainRate
@@ -74,7 +74,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   def getSpecialRatePoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, specialRate) //CPaux3
 
   private def getSomePoolSum(lec01: LEC01, poolString: String): Int = {
-    lec01.cars.filter(x => taxPoolForCar(x) == poolString).map(_.price).sum
+    lec01.cars.filter(x => taxPoolForCar(x) == poolString).map(_.price.get).sum
   }
 
   //RANGE1

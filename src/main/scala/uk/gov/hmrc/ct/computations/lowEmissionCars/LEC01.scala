@@ -10,6 +10,7 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.formats.Cars
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.{CP1, CP2, CPQ1000}
+import CarsHelper._
 
 case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "Low emission car")
   with CtValue[List[Car]]
@@ -22,8 +23,8 @@ case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "L
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     val oldErrors = (boxRetriever.cpQ1000(), value) match {
-      case (CPQ1000(Some(false)) | CPQ1000(None), list) if list.nonEmpty => Set(CtValidation(Some("LEC01"), "error.LEC01.cannot.exist"))
-      case (CPQ1000(Some(true)), list) if list.isEmpty => Set(CtValidation(Some("LEC01"), "error.LEC01.required"))
+      case (CPQ1000(Some(false)) | CPQ1000(None), list) if list.nonEmpty => Set(CtValidation(Some(lec01BoxId), s"error.$lec01BoxId.cannot.exist"))
+      case (CPQ1000(Some(true)), list) if list.isEmpty => Set(CtValidation(Some(lec01BoxId), s"error.$lec01BoxId.required"))
       case _ => validationSuccess
     }
     val newErrors = cars.foldLeft(Set[CtValidation]())( (errors, car) => car.validate(boxRetriever) ++ errors)
@@ -32,59 +33,42 @@ case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "L
   }
 }
 
-case class Car(regNumber: String,
-               isNew: Boolean,
-               price: Int,
-               emissions: Int,
-               dateOfPurchase: LocalDate
+case class Car(regNumber: Option[String],
+               isNew: Option[Boolean],
+               price: Option[Int],
+               emissions: Option[Int],
+               dateOfPurchase: Option[LocalDate]
                ) extends ValidatableBox[ComputationsBoxRetriever]
-  with ExtraValidation  {
+  with ExtraValidation {
+
+
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    val startOfAccountingPeriod = boxRetriever.cp1()
-    val endOfAccountingPeriod = boxRetriever.cp2()
+    val startOfAccountingPeriod = boxRetriever.cp1().value
+    val endOfAccountingPeriod = boxRetriever.cp2().value
 
     collectErrors(
-//      validateRegNumber,
-//      validatePriceOfCar,
-      validateDateOfPurchase(startOfAccountingPeriod, endOfAccountingPeriod)
+    validateRegNumber,
+    validateIsCarNew,
+    validatePriceOfCar,
+    validateEmissionsOfCar,
+    validateDateOfPurchase(startOfAccountingPeriod, endOfAccountingPeriod)
     )
   }
 
 
+    private val validateRegNumber: Set[CtValidation] = validateAsMandatory(registrationNumberId, regNumber)
 
-  private def validateDateOfPurchase(startOfAccountingPeriod: CP1, endOfAccountingPeriod: CP2): Set[CtValidation] = {
-    if (dateOfPurchase.isBefore(startOfAccountingPeriod.value) || dateOfPurchase.isAfter(endOfAccountingPeriod.value)) {
-      Set(CtValidation(Some("LEC01E"), "block.lowEmissionCar.dateOfPurchase.outOfRange"))
-    } else
-      validationSuccess
+    private val validateIsCarNew = validateAsMandatory(isCarNewId, isNew)
+
+    private val validatePriceOfCar: Set[CtValidation] = validateAsMandatory(priceId, price)
+
+    private val validateEmissionsOfCar = validateAsMandatory(emissionsId, emissions)
+
+    private def validateDateOfPurchase(startOfAccountingPeriod: LocalDate, endOfAccountingPeriod: LocalDate): Set[CtValidation] = {
+    collectErrors(
+      validateAsMandatory(dateOfPurchaseId, dateOfPurchase)(),
+      validateDateIsInclusive(dateOfPurchaseId, startOfAccountingPeriod, dateOfPurchase, endOfAccountingPeriod)
+    )
   }
-
-
-//  private val validateRegNumber: Set[CtValidation] = {
-//      validateAsMandatory("LEC01A", regNumber) // this probably needs a max length
-//  }
-//
-//  private val validatePriceOfCar: Set[CtValidation] = {
-//    validateIntegerInRange("LEC01B", price, 1, )
-//  }
-
-
-//  var result = !isNaN(date.getTime()) && date.getTime() >= sd.getTime() && date.getTime() <= ed.getTime();
-
-
-
-  //@apStartDate = @{
-  //    filingState.filing.hmrc.map( hmrcData =>
-  //        DateTimeFormat.forPattern("yyyy-MM-dd")
-  //        .print(hmrcData.accountPeriodDetails.accountingPeriod.startDate) + "T00:00:00.000Z"
-  //    )
-  //}
-  //
-  //@apEndDate = @{
-  //    filingState.filing.hmrc.map(hmrcData =>
-  //        DateTimeFormat.forPattern("yyyy-MM-dd")
-  //        .print(hmrcData.accountPeriodDetails.accountingPeriod.endDate) + "T00:00:00.000Z"
-  //    )
-  //}
 }
