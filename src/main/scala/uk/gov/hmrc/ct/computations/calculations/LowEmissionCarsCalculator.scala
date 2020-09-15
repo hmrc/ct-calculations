@@ -9,6 +9,7 @@ import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.RoundingFunctions._
 import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.computations.lowEmissionCars.{Car, LEC01}
 import uk.gov.hmrc.ct.utils.DateImplicits._
 
 trait LowEmissionCarsCalculator extends CtTypeConverters {

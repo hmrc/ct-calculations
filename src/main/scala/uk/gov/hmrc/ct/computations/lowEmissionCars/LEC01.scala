@@ -3,13 +3,13 @@
  *
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.computations.lowEmissionCars
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.calculations.SBACalculator
 import uk.gov.hmrc.ct.computations.formats.Cars
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.computations.{CP1, CP2, CPQ1000}
 
 case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "Low emission car")
   with CtValue[List[Car]]
@@ -21,11 +21,14 @@ case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "L
   override def asBoxString = Cars.asBoxString(this)
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    (boxRetriever.cpQ1000(), value) match {
+    val oldErrors = (boxRetriever.cpQ1000(), value) match {
       case (CPQ1000(Some(false)) | CPQ1000(None), list) if list.nonEmpty => Set(CtValidation(Some("LEC01"), "error.LEC01.cannot.exist"))
       case (CPQ1000(Some(true)), list) if list.isEmpty => Set(CtValidation(Some("LEC01"), "error.LEC01.required"))
-      case _ => Set.empty
+      case _ => validationSuccess
     }
+    val newErrors = cars.foldLeft(Set[CtValidation]())( (errors, car) => car.validate(boxRetriever) ++ errors)
+
+    oldErrors ++ newErrors
   }
 }
 
@@ -51,10 +54,10 @@ case class Car(regNumber: String,
 
 
   private def validateDateOfPurchase(startOfAccountingPeriod: CP1, endOfAccountingPeriod: CP2): Set[CtValidation] = {
-    if (startOfAccountingPeriod.value.isBefore(dateOfPurchase) || endOfAccountingPeriod.value.isAfter(dateOfPurchase)) {
-      Set(CtValidation(Some("LEC01B"), "block.lowEmissionCar.dateOfPurchase.outOfRange"))
+    if (dateOfPurchase.isBefore(startOfAccountingPeriod.value) || dateOfPurchase.isAfter(endOfAccountingPeriod.value)) {
+      Set(CtValidation(Some("LEC01E"), "block.lowEmissionCar.dateOfPurchase.outOfRange"))
     } else
-      Set.empty
+      validationSuccess
   }
 
 

@@ -10,6 +10,7 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
 import uk.gov.hmrc.ct._
+import uk.gov.hmrc.ct.computations.lowEmissionCars.{Car, LEC01}
 
 class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
                                      cpq8: Option[Boolean] = None,
@@ -38,7 +39,7 @@ class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
                                      cpAux3: Int = 0
                                       ) extends StubbedComputationsBoxRetriever {
 
-  override def lec01: LEC01 = LEC01(lec01)
+  override def lec01: LEC01 = lowEmissionCars.LEC01(lec01)
 
   override def cpQ8: CPQ8 = CPQ8(cpq8)
 

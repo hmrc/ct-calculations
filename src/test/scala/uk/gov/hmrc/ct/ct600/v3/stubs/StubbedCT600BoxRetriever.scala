@@ -11,6 +11,7 @@ import uk.gov.hmrc.ct.accounts.{AC2, AC205, AC206}
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.box.stubs.StubbedFilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.computations.lowEmissionCars.LEC01
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
 import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600BoxRetriever, CT600DeclarationBoxRetriever}
