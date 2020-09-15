@@ -29,26 +29,59 @@ case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "L
   }
 }
 
-case class Car(regNumber: Option[String],
-               price: Option[Int],
-               emissions: Option[Int],
-               dateOfPurchase: Option[LocalDate],
-               isNew: Option[Boolean]) extends ValidatableBox[ComputationsBoxRetriever]
+case class Car(regNumber: String,
+               isNew: Boolean,
+               price: Int,
+               emissions: Int,
+               dateOfPurchase: LocalDate
+               ) extends ValidatableBox[ComputationsBoxRetriever]
   with ExtraValidation  {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      validateRegNumber,
-      validatePriceOfCar,
+    val startOfAccountingPeriod = boxRetriever.cp1()
+    val endOfAccountingPeriod = boxRetriever.cp2()
 
+    collectErrors(
+//      validateRegNumber,
+//      validatePriceOfCar,
+      validateDateOfPurchase(startOfAccountingPeriod, endOfAccountingPeriod)
     )
   }
 
-  private val validateRegNumber: Set[CtValidation] = {
-      validateAsMandatory("LEC01A", regNumber) // this probably needs a max length
+
+
+  private def validateDateOfPurchase(startOfAccountingPeriod: CP1, endOfAccountingPeriod: CP2): Set[CtValidation] = {
+    if (startOfAccountingPeriod.value.isBefore(dateOfPurchase) || endOfAccountingPeriod.value.isAfter(dateOfPurchase)) {
+      Set(CtValidation(Some("LEC01B"), "block.lowEmissionCar.dateOfPurchase.outOfRange"))
+    } else
+      Set.empty
   }
 
-  private val validatePriceOfCar: Set[CtValidation] = {
-    validateIntegerInRange("LEC01B", price, 1, )
-  }
+
+//  private val validateRegNumber: Set[CtValidation] = {
+//      validateAsMandatory("LEC01A", regNumber) // this probably needs a max length
+//  }
+//
+//  private val validatePriceOfCar: Set[CtValidation] = {
+//    validateIntegerInRange("LEC01B", price, 1, )
+//  }
+
+
+//  var result = !isNaN(date.getTime()) && date.getTime() >= sd.getTime() && date.getTime() <= ed.getTime();
+
+
+
+  //@apStartDate = @{
+  //    filingState.filing.hmrc.map( hmrcData =>
+  //        DateTimeFormat.forPattern("yyyy-MM-dd")
+  //        .print(hmrcData.accountPeriodDetails.accountingPeriod.startDate) + "T00:00:00.000Z"
+  //    )
+  //}
+  //
+  //@apEndDate = @{
+  //    filingState.filing.hmrc.map(hmrcData =>
+  //        DateTimeFormat.forPattern("yyyy-MM-dd")
+  //        .print(hmrcData.accountPeriodDetails.accountingPeriod.endDate) + "T00:00:00.000Z"
+  //    )
+  //}
 }
