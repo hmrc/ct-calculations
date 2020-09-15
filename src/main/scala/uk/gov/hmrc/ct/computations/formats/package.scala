@@ -10,6 +10,7 @@ import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.formats._
 import play.api.libs.json.JodaWrites._
 import play.api.libs.json.JodaReads._
+import uk.gov.hmrc.ct.computations.lowEmissionCars.{Car, LEC01}
 
 package object formats {
 

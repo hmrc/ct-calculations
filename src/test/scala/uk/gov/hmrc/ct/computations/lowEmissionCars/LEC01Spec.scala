@@ -8,7 +8,7 @@ package uk.gov.hmrc.ct.computations.lowEmissionCars
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.computations.{CP1, CP2, CPQ1000, Car, LEC01}
+import uk.gov.hmrc.ct.computations.{CP1, CP2, CPQ1000}
 import uk.gov.hmrc.ct.utils.UnitSpec
 
 class LEC01Spec extends UnitSpec {
@@ -54,7 +54,7 @@ class LEC01Spec extends UnitSpec {
       val dateOutOfRangeErrorMsg = "block.lowEmissionCar.dateOfPurchase.outOfRange"
 
       def shouldBeOutOfRangeError(car: Car) =
-        LEC01(List(car)).validate(mockComputationsBoxRetriever) shouldBe
+         car.validate(mockComputationsBoxRetriever) shouldBe
           Set(CtValidation(Some("LEC01E"), dateOutOfRangeErrorMsg)) // Would this be better stating the two dates it needs to fall between?
 
       when(mockComputationsBoxRetriever.cp1()) thenReturn CP1(today)

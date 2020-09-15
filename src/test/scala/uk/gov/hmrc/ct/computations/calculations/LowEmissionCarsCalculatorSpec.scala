@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.computations.calculations
 import org.joda.time.LocalDate
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.computations.lowEmissionCars.{Car, LEC01}
 
 case class TestCalculator() extends LowEmissionCarsCalculator
 
