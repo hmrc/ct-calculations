@@ -95,7 +95,9 @@ class LEC01Spec extends UnitSpec {
 
     "fail date of purchase validation" when {
       val dateOutOfRangeErrorMsg = s"error.$dateOfPurchaseId.not.betweenInclusive"
-      val outOfRangeError = Set(CtValidation(Some(dateOfPurchaseId), dateOutOfRangeErrorMsg, Some(List("15 September 2020", "15 September 2021")))) // Would this be better stating the two dates it needs to fall between?
+      val dateFormat = "d MMMM yyyy"
+      val outOfRangeError = Set(CtValidation(Some(dateOfPurchaseId), dateOutOfRangeErrorMsg,
+        Some(List(today.toString(dateFormat), oneYearFromToday.toString(dateFormat)))))
 
       when(mockComputationsBoxRetriever.cp1()) thenReturn CP1(today)
       when(mockComputationsBoxRetriever.cp2()) thenReturn CP2(oneYearFromToday)

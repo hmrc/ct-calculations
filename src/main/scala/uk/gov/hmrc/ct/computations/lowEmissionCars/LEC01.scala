@@ -41,8 +41,6 @@ case class Car(regNumber: Option[String],
                ) extends ValidatableBox[ComputationsBoxRetriever]
   with ExtraValidation {
 
-
-
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     val startOfAccountingPeriod = boxRetriever.cp1().value
     val endOfAccountingPeriod = boxRetriever.cp2().value
@@ -55,7 +53,6 @@ case class Car(regNumber: Option[String],
     validateDateOfPurchase(startOfAccountingPeriod, endOfAccountingPeriod)
     )
   }
-
 
     private val validateRegNumber: Set[CtValidation] = validateAsMandatory(registrationNumberId, regNumber)
 
