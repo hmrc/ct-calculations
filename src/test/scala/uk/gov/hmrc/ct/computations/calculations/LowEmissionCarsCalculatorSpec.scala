@@ -29,8 +29,8 @@ class LowEmissionCarsCalculatorSpec extends WordSpec with Matchers {
  
 
   /**
-   * the methods below might seem superfluous. But turning the parameters of Car into Options caused
-   * such a mess that I tried
+   * The methods below might seem superfluous. But turning the parameters of Car into Options caused
+   * such a mess that I've tried to reduce the amount of effort that would go into making future changes.
    */
 
   private def carReg(registrationNumber: String) = Some(registrationNumber)
@@ -39,7 +39,6 @@ class LowEmissionCarsCalculatorSpec extends WordSpec with Matchers {
   private val registrationNumber = "B0SH 300"
   private def costOfCar(value: Int) = Some(value)
   private def emissionsOfCar(value: Int) = Some(value)
-  private def dateCarWasPurchased(date: LocalDate) = Some(date)
 
   //This car list will give a Special Rates Pool value of 50.50
   val specialRatesCarList = LEC01(List(
