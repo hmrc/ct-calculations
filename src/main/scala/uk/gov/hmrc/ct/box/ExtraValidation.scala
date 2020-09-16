@@ -17,7 +17,6 @@
 package uk.gov.hmrc.ct.box
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.box.ValidatableBox.OptionalStringIdBox
 import uk.gov.hmrc.ct.domain.ValidationConstants.toErrorArgsFormat
 import uk.gov.hmrc.ct.utils.DateImplicits._
 
@@ -60,13 +59,6 @@ trait ExtraValidation extends Validators {
    passIf(str.matches(regex)) {
      Set(CtValidation(Some(boxId), s"error.$boxId.invalidPostcode"))
    }
-
-//  def validateIntegerInRange(boxId: String, intInQuestion: Option[Int], min: Int = 0, max: Int): Set[CtValidation] = {
-//    intInQuestion match {
-//     case Some(int) if int < min || int > max=>Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange"), Seq(min, max))
-//     case _ => validationSuccess
-//   }
-//  }
 
   def validateOptionalStringByLength(value: Option[String], min: Int, max: Int, boxId: String, boxIdPrefix: Option[String])(): Set[CtValidation] = {
     value match {
