@@ -1,17 +1,6 @@
 /*
  * Copyright 2020 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.computations.calculations
@@ -48,6 +37,8 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
       case (Some(true), Some(em)) if em > 110 && em <= 160 => mainRate
       case (Some(false), Some(em)) if em <= 160 => mainRate
       case (_, Some(em)) if em > 160 => specialRate
+      case _ => ""
+
     }
   }
 
@@ -57,6 +48,8 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
       case (Some(true), Some(em)) if em > 95 && em <= 130 => mainRate
       case (Some(false), Some(em)) if em <= 130 => mainRate
       case (_, Some(em)) if em > 130 => specialRate
+      case _ => ""
+
     }
   }
 
@@ -66,6 +59,8 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
         case (Some(true), Some(em)) if em > 75 && em <= 130 => mainRate
         case (Some(false), Some(em)) if em <= 130 => mainRate
         case (_, Some(em)) if em > 130 => specialRate
+        case _ => ""
+
       }
   }
 
@@ -75,7 +70,9 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
         case (Some(true), Some(em)) if em > 50 && em <= 110 => mainRate
         case (Some(false), Some(em)) if em <= 110 => mainRate
         case (_, Some(em)) if em > 110 => specialRate
-      }
+        case _ => ""
+
+    }
   }
 
   def getFYAPoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, firstYearAllowance)  //CPaux1
