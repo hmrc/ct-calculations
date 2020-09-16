@@ -52,36 +52,30 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   }
 
   private def range3(car: Car): String = {
-    if (car.isNew.isDefined && car.emissions.isDefined) {
-      (car.isNew.get, car.emissions.get) match {
-        case (true, em) if em <= 95 => firstYearAllowance
-        case (true, em) if em > 95 && em <= 130 => mainRate
-        case (false, em) if em <= 130 => mainRate
-        case (_, em) if em > 130 => specialRate
-      }
-    } else "_"
+    (car.isNew, car.emissions) match {
+      case (Some(true), Some(em)) if em <= 95 => firstYearAllowance
+      case (Some(true), Some(em)) if em > 95 && em <= 130 => mainRate
+      case (Some(false), Some(em)) if em <= 130 => mainRate
+      case (_, Some(em)) if em > 130 => specialRate
+    }
   }
 
   private def range4(car: Car): String = {
-    if (car.isNew.isDefined && car.emissions.isDefined) {
-      (car.isNew.get, car.emissions.get) match {
-        case (true, em) if em <= 75 => firstYearAllowance
-        case (true, em) if em > 75 && em <= 130 => mainRate
-        case (false, em) if em <= 130 => mainRate
-        case (_, em) if em > 130 => specialRate
+      (car.isNew, car.emissions) match {
+        case (Some(true), Some(em)) if em <= 75 => firstYearAllowance
+        case (Some(true), Some(em)) if em > 75 && em <= 130 => mainRate
+        case (Some(false), Some(em)) if em <= 130 => mainRate
+        case (_, Some(em)) if em > 130 => specialRate
       }
-    } else ""
   }
 
   private def range5(car: Car): String = {
-    if (car.isNew.isDefined && car.emissions.isDefined) {
-      (car.isNew.get, car.emissions.get) match {
-        case (true, em) if em <= 50 => firstYearAllowance
-        case (true, em) if em > 50 && em <= 110 => mainRate
-        case (false, em) if em <= 110 => mainRate
-        case (_, em) if em > 110 => specialRate
+    (car.isNew, car.emissions) match {
+      case (Some(true), Some(em)) if em <= 50 => firstYearAllowance
+        case (Some(true), Some(em)) if em > 50 && em <= 110 => mainRate
+        case (Some(false), Some(em)) if em <= 110 => mainRate
+        case (_, Some(em)) if em > 110 => specialRate
       }
-    } else ""
   }
 
   def getFYAPoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, firstYearAllowance)  //CPaux1

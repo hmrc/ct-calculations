@@ -33,14 +33,14 @@ case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "L
   override def asBoxString = Cars.asBoxString(this)
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    val oldErrors = (boxRetriever.cpQ1000(), value) match {
+    val errorsRegardingCPQ1000 = (boxRetriever.cpQ1000(), value) match {
       case (CPQ1000(Some(false)) | CPQ1000(None), list) if list.nonEmpty => Set(CtValidation(Some(lec01BoxId), s"error.$lec01BoxId.cannot.exist"))
       case (CPQ1000(Some(true)), list) if list.isEmpty => Set(CtValidation(Some(lec01BoxId), s"error.$lec01BoxId.required"))
       case _ => validationSuccess
     }
-    val newErrors = cars.foldLeft(Set[CtValidation]())( (errors, car) => car.validate(boxRetriever) ++ errors)
+    val carErrors = cars.foldLeft(Set[CtValidation]())( (errors, car) => car.validate(boxRetriever) ++ errors)
 
-    oldErrors ++ newErrors
+    errorsRegardingCPQ1000 ++ carErrors
   }
 }
 
