@@ -16,14 +16,24 @@ case class CPQ8(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did the 
   with AllowancesQuestionsValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    val boxId = "CPQ8"
+    val companyCars = boxRetriever.cpQ7()
+    val machineryOrPlant = boxRetriever.cpQ10()
+    val structuresAndBuildings = boxRetriever.cpQ11()
 
+    val validateMandatory = {
+      if (companyCars.isTrue || machineryOrPlant.isTrue || structuresAndBuildings.isTrue) {
+        validateBooleanAsMandatory(boxId ,this)
+      } else validationSuccess
+    }
 
     if(isSBALive(boxRetriever.cp2())) {
-      Set.empty[CtValidation]
+      validateMandatory
     }
     else
       {
-        validateAgainstCPQ7(boxRetriever, "CPQ8", value)
+        validateAgainstCPQ7(boxRetriever, boxId, value)
+        validateMandatory
       }
   }
 

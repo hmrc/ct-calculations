@@ -24,11 +24,14 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.ct.computations.formats._
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.utils.UnitSpec
 
-class CPQ8Spec extends WordSpec with Matchers with MockitoSugar {
+class CPQ8Spec extends UnitSpec {
 
   implicit val format = Json.format[CPQ8Holder]
 
+  private val boxId = "CPQ8"
+  
   "CPQ8 to json" should {
     "create valid json for true value" in {
       val json = Json.toJson(CPQ8Holder(CPQ8(Some(true))))
@@ -70,7 +73,7 @@ class CPQ8Spec extends WordSpec with Matchers with MockitoSugar {
       "fail validation when CPQ7 is true" in {
         when(boxRetriever.cp2()).thenReturn(CP2(beforeSBA))
         when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(true)))
-        CPQ8(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ8"), "error.CPQ8.required"))
+        CPQ8(None).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), "error.CPQ8.required"))
       }
     }
     "when false" when {
@@ -94,7 +97,7 @@ class CPQ8Spec extends WordSpec with Matchers with MockitoSugar {
       "fail validation when CPQ7 is false" in {
         when(boxRetriever.cp2()).thenReturn(CP2(beforeSBA))
         when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(false)))
-        CPQ8(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CPQ8"), "error.CPQ8.notClaiming.required"))
+        CPQ8(Some(true)).validate(boxRetriever) shouldBe Set(CtValidation(Some(boxId), "error.CPQ8.notClaiming.required"))
       }
       "pass validation when CPQ7 is empty" in {
         when(boxRetriever.cp2()).thenReturn(CP2(beforeSBA))
@@ -105,6 +108,18 @@ class CPQ8Spec extends WordSpec with Matchers with MockitoSugar {
         when(boxRetriever.cp2()).thenReturn(CP2(beforeSBA))
         when(boxRetriever.cpQ7()).thenReturn(CPQ7(Some(true)))
         CPQ8(Some(true)).validate(boxRetriever) shouldBe empty
+      }
+    }
+    
+    "when left empty" should {
+      val afterSBA = beforeSBA.plusDays(1)
+      "fail validation when SBA is live" in {
+        when(boxRetriever.cp2()) thenReturn CP2(afterSBA)
+        CPQ8(None).validate(boxRetriever) shouldBe fieldRequiredError(boxId)
+      }
+      "fail validation when SBA is not live" in {
+        when(boxRetriever.cp2()) thenReturn CP2(beforeSBA)
+        CPQ8(None).validate(boxRetriever) shouldBe fieldRequiredError(boxId)
       }
     }
 
