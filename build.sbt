@@ -7,7 +7,6 @@ import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
 
   val appName = "ct-calculations"
 
-
   lazy val scoverageSettings = {
     import scoverage._
     Seq(
@@ -42,14 +41,12 @@ import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
     .settings(makePublicallyAvailableOnBintray := true)
     .settings(
       name := appName,
-      scalaVersion := "2.11.12",
-      crossScalaVersions := Seq("2.11.12"),
+      scalaVersion := "2.12.11",
       libraryDependencies ++= Seq(
-        "com.typesafe.play" % "play-json-joda_2.11" % "2.7.4",
-        "uk.gov.hmrc" %% "play-time" % "0.11.0" % "provided",
+        "com.typesafe.play" % "play-json-joda_2.12" % "2.7.4",
+        "uk.gov.hmrc" %% "play-time" % "0.12.0",
         "org.scalatest" %% "scalatest" % "3.0.8" % "test",
         "org.mockito" % "mockito-all" % "1.10.19" % "test",
         "org.pegdown" % "pegdown" % "1.6.0" % "test"
-      ),
-      developers := List[Developer]()
+      )
     )
