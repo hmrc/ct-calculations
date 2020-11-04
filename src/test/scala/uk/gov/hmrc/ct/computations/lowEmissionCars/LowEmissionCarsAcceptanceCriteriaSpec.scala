@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.computations.lowEmissionCars
 
 import org.joda.time.LocalDate
 import org.scalatest.prop.TableDrivenPropertyChecks._
@@ -24,6 +24,7 @@ import uk.gov.hmrc.ct.CountryOfRegistration
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
+import uk.gov.hmrc.ct.computations._
 
 class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
 
@@ -215,11 +216,11 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
 
   private def clue(boxId: String, calcValue: Option[Int], expectedValue: Option[Int]) = s"Calculated value $boxId of $calcValue was not equal to expected $expectedValue"
 
-  private def fyaRatePoolCar(value: Int) = Car(regNumber = "ABC123Z", isNew = true, price = value, emissions = 110, dateOfPurchase = new LocalDate("2013-03-31"))
+  private def fyaRatePoolCar(value: Int) = Car(regNumber = Some("ABC123Z"), isNew = Some(true), price = Some(value), emissions = Some(110), dateOfPurchase = Some(new LocalDate("2013-03-31")))
 
-  private def mainRatePoolCar(value: Int) = Car(regNumber = "XYZ123A", isNew = true, price = value, emissions = 160, dateOfPurchase = new LocalDate("2009-04-01"))
+  private def mainRatePoolCar(value: Int) = Car(regNumber = Some("XYZ123A"), isNew = Some(true), price = Some(value), emissions = Some(160), dateOfPurchase = Some(new LocalDate("2009-04-01")))
 
-  private def specialRatePoolCar(value: Int) = Car(regNumber = "XYZ789C", isNew = true, price = value, emissions = 161, dateOfPurchase = new LocalDate("2013-03-31"))
+  private def specialRatePoolCar(value: Int) = Car(regNumber = Some("XYZ789C"), isNew = Some(true), price = Some(value), emissions = Some(161), dateOfPurchase = Some(new LocalDate("2013-03-31")))
 
   class TestComputationsRetriever(lec01: List[Car],
                                   cpq8: Option[Boolean],

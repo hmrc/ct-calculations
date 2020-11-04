@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations.formats
+package uk.gov.hmrc.ct.computations.lowEmissionCars
 
-import play.api.libs.json.Json
-import uk.gov.hmrc.ct.computations.lowEmissionCars.LEC01
+object CarsHelper {
 
-object Cars {
+  val lec01BoxId = "LEC01"
+  val registrationNumberId = "LEC01A"
+  val isCarNewId = "LEC01B"
+  val priceId = "LEC01C"
+  val emissionsId = "LEC01D"
+  val dateOfPurchaseId = "LEC01E"
 
-  def lec01FromJsonString(json: String): LEC01 = Json.fromJson[LEC01](Json.parse(json)).get
 
-  def toJsonString(lec01: LEC01): String =  Json.toJson(lec01).toString()
-
-  def asBoxString(lec01: LEC01): Option[String] = Some(toJsonString(lec01))
 }
