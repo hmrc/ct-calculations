@@ -36,3 +36,11 @@ import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
         "org.pegdown" % "pegdown" % "1.6.0" % "test"
       )
     )
+//    .settings(
+//      //TODO: Remove before master merge
+//      headerLicense := Some(HeaderLicense.Custom(
+//        """Copyright 2020 HM Revenue & Customs
+//          |
+//          |""".stripMargin
+//      ))
+//    )

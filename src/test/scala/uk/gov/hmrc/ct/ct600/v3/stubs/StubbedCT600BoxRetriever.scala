@@ -391,4 +391,6 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def cp983(): CP983 = ???
 
   override def cato24: CATO24 = ???
+
+  override def cp120: CP120 = ???
 }
