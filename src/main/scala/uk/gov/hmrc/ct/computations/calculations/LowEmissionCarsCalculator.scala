@@ -20,11 +20,12 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
 
   def taxPoolForCar(car: Car): String = {
     car.dateOfPurchase match {
-      case Some(d) if d < new LocalDate("2009-04-01") => range1(car)
-      case Some(d) if d < new LocalDate("2013-04-01") => range2(car)
-      case Some(d) if d < new LocalDate("2015-04-01") => range3(car)
-      case Some(d) if d < new LocalDate("2018-04-01") => range4(car)
-      case Some(_) => range5(car)
+      case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2009-04-01") => range1(car)
+      case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2013-04-01") => range2(car)
+      case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2015-04-01") => range3(car)
+      case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2018-04-01") => range4(car)
+      case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2021-04-01") => range5(car)
+      case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2025-04-01") => range6(car)
       case _ => ""
     }
   }
@@ -75,6 +76,15 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
     }
   }
 
+  private def range6(car: Car): String = {
+    (car.isNew, car.emissions) match {
+      case (Some(true), Some(0)) => firstYearAllowance
+      case (Some(_), Some(em)) if em <= 50 => mainRate
+      case (Some(_), Some(em)) if em > 50 => specialRate
+      case _ => ""
+    }
+  }
+
   def getFYAPoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, firstYearAllowance)  //CPaux1
 
   def getMainRatePoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, mainRate) //CPaux2
@@ -114,6 +124,11 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   //1st April 2018 and thereafter	    New	          50-110 g/km	  Main rate
   //1st April 2018 and thereafter	    Second hand	  <=110 g/km    Main rate
   //1st April 2018 and thereafter	    -	            >110 g/km	    Special rate
+
+  //RANGE6
+  //1st April 2021 and thereafter	    New	                0    g/km   FYA
+  //1st April 2021 and thereafter	    New/Second hand	    <=50 g/km	  Main rate
+  //1st April 2021 and thereafter	    New/Second hand	    > 50 g/km   Special rate
 
   def calculateSpecialRatePoolBalancingCharge(cpq8: CPQ8,
                                               cp666: CP666,
