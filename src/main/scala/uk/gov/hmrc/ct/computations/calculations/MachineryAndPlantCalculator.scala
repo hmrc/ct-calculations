@@ -17,8 +17,10 @@
 package uk.gov.hmrc.ct.computations.calculations
 
 import uk.gov.hmrc.ct.CATO20
-import uk.gov.hmrc.ct.box.CtTypeConverters
+import uk.gov.hmrc.ct.box.{CtTypeConverters, CtValidation}
 import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.box._
+
 
 trait MachineryAndPlantCalculator extends CtTypeConverters {
 
@@ -106,6 +108,13 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
 
   def unclaimedAIAFirstYearAllowance(cp81: CP81, cp83: CP83, cp87: CP87, cp88: CP88, cpAux1: CPAux1): CATO20 = {
     CATO20(cp81 + cpAux1 - cp87 + cp83 - cp88 )
+  }
+  def sumOfCP78AndCP666(cp78: CP78, cp666: CP666): Set[CtValidation] = {
+    val totalValue=cp78 + cp666
+    if (totalValue > 312000)
+      Set(CtValidation(None, "error.sum.of.cp78cp666.exceeds.total"))
+    else
+      Set.empty
   }
 
   private def total(cpq8: CPQ8,
