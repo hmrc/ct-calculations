@@ -31,6 +31,8 @@ class CP666Spec extends WordSpec with MockitoSugar with Matchers with BoxValidat
 
   override def setUpMocks = {
     when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+    when(boxRetriever.cp78()).thenReturn(CP78(Some(31000)))
+
   }
 
 
