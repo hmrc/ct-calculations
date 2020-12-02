@@ -26,6 +26,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
       case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2018-04-01") => range4(car)
       case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2021-04-01") => range5(car)
       case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2025-04-01") => range6(car)
+      case Some(dateOfPurchase) if dateOfPurchase >= new LocalDate("2025-04-01") => mainRate
       case _ => ""
     }
   }

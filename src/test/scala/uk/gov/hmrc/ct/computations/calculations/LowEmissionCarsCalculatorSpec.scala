@@ -208,6 +208,19 @@ class LowEmissionCarsCalculatorSpec extends WordSpec with Matchers with LowEmiss
       }
     }
 
+    "return Main Rate if date of purchase of the car is on or after 2025/04/01" in {
+      val dateAfterRange6 = new LocalDate("2025-04-01")
+      val car = Car(
+        carReg(registrationNumber),
+        carIsNew,
+        costOfCar(1),
+        emissionsOfCar(0),
+        Some(dateAfterRange6)
+      )
+
+      carBelongsToThisTaxPool(car, mainRate)
+    }
+
     "return x for fya eligible cars" in {
       val lec01 = LEC01(List(
         Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(1), dateOfPurchase = Some( new LocalDate("2014-01-31"))),
