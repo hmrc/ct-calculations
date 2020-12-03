@@ -169,7 +169,7 @@ class LowEmissionCarsCalculatorSpec extends WordSpec with Matchers with LowEmiss
       }
     }
 
-    "return correct pool for a range 6 car (when the car is purchased after 2021-03-31 but before 2025-04-01)" when {
+    "return correct pool for a range 6 car, if the car is purchased after 2021-03-31 but before 2025-04-01" when {
       val firstHandCar = Car(
         carReg(registrationNumber),
         carIsNew,
@@ -183,16 +183,16 @@ class LowEmissionCarsCalculatorSpec extends WordSpec with Matchers with LowEmiss
         carBelongsToThisTaxPool(firstHandCar, firstYearAllowance)
       }
 
-      "the car is new, has emissions <= 50 then the car should be in Main Pool" in {
+      "the car is new, has emissions <= 50 then the car should be in Main Rate" in {
         val car = firstHandCar.copy(emissions = emissionsOfCar(45))
         carBelongsToThisTaxPool(car, mainRate)
       }
 
-      "the car is 2nd hand, has 0 emissions then the car should be in Main pool" in {
+      "the car is 2nd hand, has 0 emissions then the car should be in Main Rate" in {
         carBelongsToThisTaxPool(secondHandCar, mainRate)
       }
 
-      "the car is second hand, has emissions <= 50  then the car should be in Main Pool" in {
+      "the car is second hand, has emissions <= 50  then the car should be in Main Rate" in {
         val car = secondHandCar.copy(emissions = emissionsOfCar(45))
         carBelongsToThisTaxPool(car, mainRate)
       }
@@ -208,17 +208,36 @@ class LowEmissionCarsCalculatorSpec extends WordSpec with Matchers with LowEmiss
       }
     }
 
-    "return Main Rate if date of purchase of the car is on or after 2025/04/01" in {
+    "return correct pool for a range 7 car, if the car is purchased on or after 2025-04-01" when {
       val dateAfterRange6 = new LocalDate("2025-04-01")
-      val car = Car(
+      val zeroEmissions = 0
+      val specialRateEmissions = 51
+
+      def car(isNew: Boolean, emissions: Int) = Car(
         carReg(registrationNumber),
-        carIsNew,
+        Some(isNew),
         costOfCar(1),
-        emissionsOfCar(0),
+        emissionsOfCar(emissions),
         Some(dateAfterRange6)
       )
 
-      carBelongsToThisTaxPool(car, mainRate)
+      "the car is new, has emissions <= 50 then the car should be in Main Rate" in {
+        val newCar = car(true, zeroEmissions)
+        carBelongsToThisTaxPool(newCar, mainRate)
+      }
+      "the car is second hand, has emissions <= 50 then the car should be Main Rate" in {
+        val secondHandCar = car(false, zeroEmissions)
+        carBelongsToThisTaxPool(secondHandCar, mainRate)
+      }
+
+      "the car is new, has emissions <= 50 then the car should be in Special Rate" in {
+        val newCar = car(true, specialRateEmissions)
+        carBelongsToThisTaxPool(newCar, specialRate)
+      }
+      "the car is second hand, has emissions <= 50 then the car should be in Special Rate" in {
+        val secondHandCar = car(false, specialRateEmissions)
+        carBelongsToThisTaxPool(secondHandCar, specialRate)
+      }
     }
 
     "return x for fya eligible cars" in {

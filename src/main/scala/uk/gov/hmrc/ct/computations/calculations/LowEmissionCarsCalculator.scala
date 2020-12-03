@@ -26,7 +26,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
       case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2018-04-01") => range4(car)
       case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2021-04-01") => range5(car)
       case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2025-04-01") => range6(car)
-      case Some(dateOfPurchase) if dateOfPurchase >= new LocalDate("2025-04-01") => mainRate
+      case Some(dateOfPurchase) if dateOfPurchase >= new LocalDate("2025-04-01") => range7(car)
       case _ => ""
     }
   }
@@ -86,6 +86,14 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
     }
   }
 
+  private def range7(car: Car): String = {
+    (car.isNew, car.emissions) match {
+      case (Some(_), Some(em)) if em <= 50 => mainRate
+      case (Some(_), Some(em)) if em > 50 => specialRate
+      case _ => ""
+    }
+  }
+
   def getFYAPoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, firstYearAllowance)  //CPaux1
 
   def getMainRatePoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, mainRate) //CPaux2
@@ -130,6 +138,10 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   //1st April 2021 and thereafter	    New	                0    g/km   FYA
   //1st April 2021 and thereafter	    New/Second hand	    <=50 g/km	  Main rate
   //1st April 2021 and thereafter	    New/Second hand	    > 50 g/km   Special rate
+
+  //RANGE7
+  //1st April 2025 and thereafter	    New/Second hand	    <=50 g/km	  Main rate
+  //1st April 2025 and thereafter	    New/Second hand	    > 50 g/km   Special rate
 
   def calculateSpecialRatePoolBalancingCharge(cpq8: CPQ8,
                                               cp666: CP666,
