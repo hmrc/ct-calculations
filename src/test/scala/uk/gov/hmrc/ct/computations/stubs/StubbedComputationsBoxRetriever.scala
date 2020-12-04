@@ -246,4 +246,12 @@ import uk.gov.hmrc.ct.{CATO11, CATO12, CATO24, CountryOfRegistration}
   override def cp120: CP120 = ???
 
   override def cp121: CP121 = ???
+
+  override def cp122: CP122 = ???
+
+  override def cp123: CP123 = ???
+
+  override def cp124: CP124 = ???
+
+  override def cp125: CP125 = ???
   }

@@ -205,6 +205,14 @@ package object formats {
 
   implicit val cp121Format: Format[CP121] = new OptionalIntegerFormat[CP121](CP121.apply)
 
+  implicit val CP122Format: Format[CP122] = new OptionalIntegerFormat[CP122](CP122.apply)
+
+  implicit val cp123Format: Format[CP123] = new OptionalIntegerFormat[CP123](CP123.apply)
+
+  implicit val CP124Format: Format[CP124] = new OptionalIntegerFormat[CP124](CP124.apply)
+
+  implicit val CP125Format: Format[CP125] = new OptionalIntegerFormat[CP125](CP125.apply)
+
   implicit val cp186Format: Format[CP186] = new OptionalIntegerFormat[CP186](CP186.apply)
 
   implicit val cp234Format: Format[CP234] = new OptionalIntegerFormat[CP234](CP234.apply)
