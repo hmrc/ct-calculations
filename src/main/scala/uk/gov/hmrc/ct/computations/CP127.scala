@@ -16,9 +16,8 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input, ValidatableBox}
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Input}
 
-case class CP125(value: Option[Int]) extends CtBoxIdentifier(name = "JRB (Job Retention Bonus overpayment") with CtOptionalInteger with Input {
+case class CP127(value: Option[Int]) extends CtBoxIdentifier(name = "Other covid support grants") with CtOptionalInteger with Input {
 
 }
