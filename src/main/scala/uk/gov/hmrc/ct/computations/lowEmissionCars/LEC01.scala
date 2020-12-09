@@ -33,12 +33,12 @@ case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "L
   }
 }
 
-case class Car(regNumber: Option[String],
-               isNew: Option[Boolean],
-               price: Option[Int],
-               emissions: Option[Int],
-               dateOfPurchase: Option[LocalDate]
-               ) extends ValidatableBox[ComputationsBoxRetriever]
+case class Car(override val regNumber: Option[String],
+               override val isNew: Option[Boolean],
+               override val price: Option[Int],
+               override val emissions: Option[Int],
+               override val dateOfPurchase: Option[LocalDate]
+               ) extends LowEmissionCarHelper(regNumber,isNew,price,emissions,dateOfPurchase) with ValidatableBox[ComputationsBoxRetriever]
   with ExtraValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
