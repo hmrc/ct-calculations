@@ -38,7 +38,7 @@ case class Car(override val regNumber: Option[String],
                override val price: Option[Int],
                override val emissions: Option[Int],
                override val dateOfPurchase: Option[LocalDate]
-               ) extends LowEmissionCarHelper(regNumber,isNew,price,emissions,dateOfPurchase) with ValidatableBox[ComputationsBoxRetriever]
+               ) extends AbstractLowEmissionCar(regNumber,isNew,price,emissions,dateOfPurchase) with ValidatableBox[ComputationsBoxRetriever]
   with ExtraValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
