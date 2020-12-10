@@ -9,7 +9,7 @@ import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.RoundingFunctions._
 import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations._
-import uk.gov.hmrc.ct.computations.lowEmissionCars.{Car, LEC01, LowEmissionCarHelper}
+import uk.gov.hmrc.ct.computations.lowEmissionCars.{Car, LEC01, AbstractLowEmissionCar}
 import uk.gov.hmrc.ct.utils.DateImplicits._
 
 trait LowEmissionCarsCalculator extends CtTypeConverters {
@@ -18,7 +18,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   val mainRate = "MainRate"
   val specialRate = "SpecialRate"
 
-  def taxPoolForCar(car: LowEmissionCarHelper): String = {
+  def taxPoolForCar(car: AbstractLowEmissionCar): String = {
     car.dateOfPurchase match {
       case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2009-04-01") => range1(car)
       case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2013-04-01") => range2(car)
@@ -31,9 +31,9 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
     }
   }
 
-  private def range1(car: LowEmissionCarHelper): String = mainRate
+  private def range1(car: AbstractLowEmissionCar): String = mainRate
 
-  private def range2(car: LowEmissionCarHelper): String = {
+  private def range2(car: AbstractLowEmissionCar): String = {
     (car.isNew, car.emissions) match {
       case (Some(true), Some(em)) if em <= 110 => firstYearAllowance
       case (Some(true), Some(em)) if em > 110 && em <= 160 => mainRate
@@ -44,7 +44,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
     }
   }
 
-  private def range3(car: LowEmissionCarHelper): String = {
+  private def range3(car: AbstractLowEmissionCar): String = {
     (car.isNew, car.emissions) match {
       case (Some(true), Some(em)) if em <= 95 => firstYearAllowance
       case (Some(true), Some(em)) if em > 95 && em <= 130 => mainRate
@@ -55,7 +55,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
     }
   }
 
-  private def range4(car: LowEmissionCarHelper): String = {
+  private def range4(car: AbstractLowEmissionCar): String = {
       (car.isNew, car.emissions) match {
         case (Some(true), Some(em)) if em <= 75 => firstYearAllowance
         case (Some(true), Some(em)) if em > 75 && em <= 130 => mainRate
@@ -66,7 +66,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
       }
   }
 
-  private def range5(car: LowEmissionCarHelper): String = {
+  private def range5(car: AbstractLowEmissionCar): String = {
     (car.isNew, car.emissions) match {
       case (Some(true), Some(em)) if em <= 50 => firstYearAllowance
         case (Some(true), Some(em)) if em > 50 && em <= 110 => mainRate
@@ -77,7 +77,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
     }
   }
 
-  private def range6(car: LowEmissionCarHelper): String = {
+  private def range6(car: AbstractLowEmissionCar): String = {
     (car.isNew, car.emissions) match {
       case (Some(true), Some(0)) => firstYearAllowance
       case (Some(_), Some(em)) if em <= 50 => mainRate
@@ -86,7 +86,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
     }
   }
 
-  private def range7(car: LowEmissionCarHelper): String = {
+  private def range7(car: AbstractLowEmissionCar): String = {
     (car.isNew, car.emissions) match {
       case (Some(_), Some(em)) if em <= 50 => mainRate
       case (Some(_), Some(em)) if em > 50 => specialRate
