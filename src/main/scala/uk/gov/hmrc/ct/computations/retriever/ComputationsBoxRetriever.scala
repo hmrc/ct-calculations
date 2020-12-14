@@ -365,6 +365,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp672(): CP672
 
+  def cp672a(): CP672a
+
   def cp673(): CP673
 
   def cp674(): CP674
