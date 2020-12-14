@@ -22,7 +22,8 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 case class CP123(value: Option[Int]) extends CtBoxIdentifier(name = "CJRS (Coronavirus Job Retention Scheme) and JSS entitlement") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateAsMandatory(this)
+      validateAsMandatory(this),
+      validateZeroOrPositiveInteger(this)
     )
   }
 }
