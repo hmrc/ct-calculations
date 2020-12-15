@@ -25,7 +25,7 @@ class CP672aSpec extends WordSpec with MockitoSugar with Matchers with BoxValida
 
   "when non empty" when {
     "fail validation when greater than CP672" in {
-      CP672a(Some(60)).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.cp672a.exceeds.cp672"))
+      CP672a(Some(100)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP672a"), "error.CP672a.exceeds.max",Some(List("50"))))
     }
     "pass validation when lesser than CP672" in {
       CP672a(Some(40)).validate(boxRetriever) shouldBe Set()

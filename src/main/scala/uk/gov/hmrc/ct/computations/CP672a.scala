@@ -11,18 +11,12 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP672a(value: Option[Int]) extends CtBoxIdentifier(name = "Out Of Proceeds from disposals from main pool")  with CtOptionalInteger with Input with SelfValidatableBox[ComputationsBoxRetriever, Option[Int]] {
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
+    val max = boxRetriever.cp672().orZero
     collectErrors(
       validateZeroOrPositiveInteger(),
-      validateNotMoreThan672Error(boxRetriever)
+      exceedsMax(value, max)
     )
   }
-
-  private def validateNotMoreThan672Error(retriever: ComputationsBoxRetriever) = {
-    failIf(this.orZero > retriever.cp672().orZero) {
-      Set(CtValidation(None,"error.cp672a.exceeds.cp672"))
-    }
-  }
-
 }
 object CP672a {
 
