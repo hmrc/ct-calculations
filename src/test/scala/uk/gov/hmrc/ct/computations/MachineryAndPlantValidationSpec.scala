@@ -28,6 +28,7 @@ class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
                                      cp667: Option[Int] = None,
                                      cp668: Option[Int] = None,
                                      cp672: Option[Int] = None,
+                                     cp672a: Option[Int] = None,
                                      cp673: Option[Int] = None,
                                      cp674: Option[Int] = None,
                                      cato02: Int = 0,
@@ -62,6 +63,8 @@ class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
   override def cp667: CP667 = CP667(cp667)
 
   override def cp672: CP672 = CP672(cp672)
+
+  override def cp672a: CP672a = CP672a(cp672a)
 
   override def cp673: CP673 = CP673(cp673)
 
@@ -189,6 +192,14 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       CP672(Some(0)).validate(stubBoxRetriever) shouldBe Set()
       CP672(None).validate(stubBoxRetriever) shouldBe Set()
       CP672(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP672"), errorMessageKey = "error.CP672.mustBeZeroOrPositive"))
+    }
+  }
+
+  "CP672a " should {
+    "validate if present and non-negative or if not present, otherwise fail" in {
+      CP672a(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP672a(None).validate(stubBoxRetriever) shouldBe Set()
+      CP672a(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP672a"), errorMessageKey = "error.CP672a.mustBeZeroOrPositive"))
     }
   }
 
@@ -417,5 +428,6 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
 
       CP668(None).validate(stubTestComputationsRetriever) shouldBe Set()
     }
+
   }
 }
