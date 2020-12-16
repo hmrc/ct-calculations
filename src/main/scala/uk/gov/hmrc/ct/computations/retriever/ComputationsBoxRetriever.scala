@@ -209,6 +209,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp93(): CP93 = CP93(cp186())
 
+  def cp94(): CP294 = CP294.calculate(this)
+
   def cp95(): CP95 = CP95(cp93())
 
   def cp96(): CP96 = CP96(cp91())
