@@ -22,6 +22,7 @@ class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
                                      cp83: Option[Int] = None,
                                      cp84: Option[Int] = None,
                                      cp87Input: Option[Int] = None,
+                                     cp87a: Option[Int] = None,
                                      cp88: Option[Int] = None,
                                      cp89: Option[Int] = None,
                                      cp666: Option[Int] = None,
@@ -71,6 +72,8 @@ class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
   override def cp674: CP674 = CP674(cp674)
 
   override def cp87Input: CP87Input = CP87Input(cp87Input)
+
+  override def cp87a: CP87a = CP87a(cp87a)
 
   override def cp88: CP88 = CP88(cp88)
 
@@ -264,6 +267,29 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       CP87Input(-1).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.mustBeZeroOrPositive"))
     }
   }
+
+  "CP87a " should {
+    "validate if present and non-negative or if not present, otherwise fail" in {
+      CP87a(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP87a(None).validate(stubBoxRetriever) shouldBe Set()
+      CP87a(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP87a"), errorMessageKey = "error.CP87a.mustBeZeroOrPositive"))
+    }
+  }
+
+  "fail validation when greater than CP87Input" in {
+    val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
+      cp87Input = Some(60))
+
+    CP87a(Some(101)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP87a"), errorMessageKey = "error.CP87a.exceeds.max", args = Some(Seq("60"))))
+  }
+
+  "pass validation when less than are equal CP87Input" in {
+  val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
+    cp87Input = Some(60))
+
+  CP87a(Some(60)).validate(stubTestComputationsRetriever) shouldBe Set()
+  CP87a(Some(50)).validate(stubTestComputationsRetriever) shouldBe Set()
+}
 
   "CP88(annual investment allowance claimed)" should {
 
