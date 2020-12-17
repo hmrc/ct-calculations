@@ -132,6 +132,8 @@ import uk.gov.hmrc.ct.{CATO11, CATO12, CATO24, CountryOfRegistration}
 
   override def cp87Input(): CP87Input = ???
 
+  override def cp87a(): CP87a = ???
+
   override def cpQ7(): CPQ7 = ???
 
   override def cp301(): CP301 = ???
