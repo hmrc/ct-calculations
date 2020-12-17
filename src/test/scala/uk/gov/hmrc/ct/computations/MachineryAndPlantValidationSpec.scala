@@ -276,6 +276,14 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
     }
   }
 
+  "CP665 " should {
+    "validate if present and non-negative or if not present, otherwise fail" in {
+      CP665(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP665(None).validate(stubBoxRetriever) shouldBe Set()
+      CP665(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP665"), errorMessageKey = "error.CP665.mustBeZeroOrPositive"))
+    }
+  }
+
   "fail validation when greater than CP87Input" in {
     val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
       cp87Input = Some(60))
