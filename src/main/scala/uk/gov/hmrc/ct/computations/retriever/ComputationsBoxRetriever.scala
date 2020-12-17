@@ -11,6 +11,7 @@ import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
 import uk.gov.hmrc.ct.computations.formats._
 import uk.gov.hmrc.ct.computations.lowEmissionCars.{LEC01, LEC10, LEC11, LEC12, LEC13}
+import uk.gov.hmrc.ct.computations.machineryAndPlant.CP94
 import uk.gov.hmrc.ct.{CATO01, CATO02, CATO03, CATO13, CATO14, CATO15, CATO16, CATO20, CATO21, CATO22, CATO23, CATO24}
 
 trait ComputationsBoxRetriever extends BoxRetriever {
@@ -209,7 +210,7 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp93(): CP93 = CP93(cp186())
 
-  def cp94(): CP294 = CP294.calculate(this)
+  def cp94(): CP94 = CP94.calculate(this)
 
   def cp95(): CP95 = CP95(cp93())
 
