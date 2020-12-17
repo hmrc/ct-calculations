@@ -11,7 +11,7 @@ import uk.gov.hmrc.ct.box.formats._
 import play.api.libs.json.JodaWrites._
 import play.api.libs.json.JodaReads._
 import uk.gov.hmrc.ct.computations.lowEmissionCars.{Car, LEC01}
-import uk.gov.hmrc.ct.computations.machineryAndPlant.CP94
+import uk.gov.hmrc.ct.computations.machineryAndPlant.{CP94, CP97}
 
 package object formats {
 
@@ -160,6 +160,8 @@ package object formats {
   implicit val cp95Format: Format[CP95] = new OptionalIntegerFormat[CP95](CP95.apply)
 
   implicit val cp96Format: Format[CP96] = new OptionalIntegerFormat[CP96](CP96.apply)
+
+  implicit val cp97Format: Format[CP97] = new IntegerFormat[CP97](CP97.apply)
 
   implicit val cp98Format: Format[CP98] = new OptionalIntegerFormat[CP98](CP98.apply)
 
