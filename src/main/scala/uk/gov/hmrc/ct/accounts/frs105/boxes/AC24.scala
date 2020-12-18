@@ -17,16 +17,34 @@
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, CtValidation, Input, ValidatableBox}
+import uk.gov.hmrc.ct.validation.TurnoverValidation
 
 case class AC24(value: Option[Int]) extends CtBoxIdentifier(name = "Income from covid-19 business support grants")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[AccountsBoxRetriever] {
+  with ValidatableBox[AccountsBoxRetriever with FilingAttributesBoxValueRetriever]
+  with TurnoverValidation {
 
-  override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
+  val accountsStart = {
+    boxRetriever: AccountsBoxRetriever =>
+      boxRetriever.ac3()
+  }
+
+  val accountEnd = {
+    boxRetriever: AccountsBoxRetriever =>
+      boxRetriever.ac4()
+  }
+
+  override def validate(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     collectErrors(
-      validateZeroOrPositiveInteger(this)
+      validateZeroOrPositiveInteger(this),
+      failIf(boxRetriever.hmrcFiling().value && !boxRetriever.abridgedFiling().value)(
+        collectErrors(
+          validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, secondaryIncome = boxRetriever.ac12.orZero)
+        )
+      ),
     )
   }
 }
