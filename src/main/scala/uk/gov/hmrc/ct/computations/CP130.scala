@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations.calculations
+package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
-import uk.gov.hmrc.ct.box.CtTypeConverters
-import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-trait ProfitAndLossCalculator extends CtTypeConverters {
+case class CP130(value: Int) extends CtBoxIdentifier(name = "Total income from coronavirus (COVID-19) business support grants") with CtInteger
 
-  def calculateProfitOrLoss(cp7: CP7, cp8: CP8, cp981: CP981, cp983: CP983): CP14 = CP14(cp7 + cp983 - cp981 - cp8)
+object CP130 extends Calculated[CP130, ComputationsBoxRetriever] {
+  override def calculate(boxRetriever: ComputationsBoxRetriever): CP130 = {
+    val cp122 = boxRetriever.cp122()
+    val cp127 = boxRetriever.cp127()
 
-  def calculateGrossProfitOrLossBeforeTax(cp14: CP14, cp40: CP40, cp43: CP43, cp509: CP509, cp502: CP502, cp130: CP130): CP44 = {
-      CP44(cp14 - cp40 + cp502 + cp509 + cp43 + cp130)
+    CP130(cp122.value.getOrElse(0) + cp127.value.getOrElse(0))
   }
-
 }
