@@ -29,6 +29,7 @@ object CP44 extends Calculated[CP44, ComputationsBoxRetriever] with ProfitAndLos
                                         cp40 = fieldValueRetriever.cp40(),
                                         cp43 = fieldValueRetriever.cp43(),
                                         cp509 = fieldValueRetriever.cp509(),
-                                        cp502 = fieldValueRetriever.cp502())
+                                        cp502 = fieldValueRetriever.cp502(),
+                                        cp130 = fieldValueRetriever.cp130())
   }
 }

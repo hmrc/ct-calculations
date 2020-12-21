@@ -44,7 +44,7 @@ case class AC24(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
         collectErrors(
           validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, secondaryIncome = boxRetriever.ac12.orZero)
         )
-      ),
+      )
     )
   }
 }
