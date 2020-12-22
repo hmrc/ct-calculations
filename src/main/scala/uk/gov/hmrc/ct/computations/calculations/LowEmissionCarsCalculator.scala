@@ -22,7 +22,6 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
       case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2021-04-01") => range5(car)
       case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2025-04-01") => range6(car)
       case Some(dateOfPurchase) if dateOfPurchase >= new LocalDate("2025-04-01") => range7(car)
-//      case _ => ""
     }
   }
 
@@ -34,8 +33,6 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
       case (Some(true), Some(em)) if em > 110 && em <= 160 => MainRate
       case (Some(false), Some(em)) if em <= 160 => MainRate
       case (_, Some(em)) if em > 160 => SpecialRate
-//      case _ => ""
-
     }
   }
 
@@ -45,8 +42,6 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
       case (Some(true), Some(em)) if em > 95 && em <= 130 => MainRate
       case (Some(false), Some(em)) if em <= 130 => MainRate
       case (_, Some(em)) if em > 130 => SpecialRate
-//      case _ => ""
-
     }
   }
 
@@ -56,7 +51,6 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
         case (Some(true), Some(em)) if em > 75 && em <= 130 => MainRate
         case (Some(false), Some(em)) if em <= 130 => MainRate
         case (_, Some(em)) if em > 130 => SpecialRate
-//        case _ => ""
       }
   }
 
@@ -66,7 +60,6 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
         case (Some(true), Some(em)) if em > 50 && em <= 110 => MainRate
         case (Some(false), Some(em)) if em <= 110 => MainRate
         case (_, Some(em)) if em > 110 => SpecialRate
-//        case _ => ""
     }
   }
 
@@ -75,7 +68,6 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
       case (Some(true), Some(0)) => FYA
       case (Some(_), Some(em)) if em <= 50 => MainRate
       case (Some(_), Some(em)) if em > 50 => SpecialRate
-//      case _ => ""
     }
   }
 
@@ -83,7 +75,6 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
     (car.isNew, car.emissions) match {
       case (Some(_), Some(em)) if em <= 50 => MainRate
       case (Some(_), Some(em)) if em > 50 => SpecialRate
-//      case _ => ""
     }
   }
 
