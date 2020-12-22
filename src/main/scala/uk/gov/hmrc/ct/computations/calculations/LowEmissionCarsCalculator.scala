@@ -9,16 +9,11 @@ import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.RoundingFunctions._
 import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations._
-import uk.gov.hmrc.ct.computations.lowEmissionCars.{Car, LEC01, AbstractLowEmissionCar}
+import uk.gov.hmrc.ct.computations.lowEmissionCars.{LEC01, AbstractLowEmissionCar}
 import uk.gov.hmrc.ct.utils.DateImplicits._
 
 trait LowEmissionCarsCalculator extends CtTypeConverters {
-
-  val firstYearAllowance = "FYA"
-  val mainRate = "MainRate"
-  val specialRate = "SpecialRate"
-
-  def taxPoolForCar(car: AbstractLowEmissionCar): String = {
+  def taxPoolForCar(car: AbstractLowEmissionCar): LowEmissionCarRate = {
     car.dateOfPurchase match {
       case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2009-04-01") => range1(car)
       case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2013-04-01") => range2(car)
@@ -27,81 +22,79 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
       case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2021-04-01") => range5(car)
       case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2025-04-01") => range6(car)
       case Some(dateOfPurchase) if dateOfPurchase >= new LocalDate("2025-04-01") => range7(car)
-      case _ => ""
+//      case _ => ""
     }
   }
 
-  private def range1(car: AbstractLowEmissionCar): String = mainRate
+  private def range1(car: AbstractLowEmissionCar): LowEmissionCarRate = MainRate
 
-  private def range2(car: AbstractLowEmissionCar): String = {
+  private def range2(car: AbstractLowEmissionCar): LowEmissionCarRate = {
     (car.isNew, car.emissions) match {
-      case (Some(true), Some(em)) if em <= 110 => firstYearAllowance
-      case (Some(true), Some(em)) if em > 110 && em <= 160 => mainRate
-      case (Some(false), Some(em)) if em <= 160 => mainRate
-      case (_, Some(em)) if em > 160 => specialRate
-      case _ => ""
+      case (Some(true), Some(em)) if em <= 110 => FYA
+      case (Some(true), Some(em)) if em > 110 && em <= 160 => MainRate
+      case (Some(false), Some(em)) if em <= 160 => MainRate
+      case (_, Some(em)) if em > 160 => SpecialRate
+//      case _ => ""
 
     }
   }
 
-  private def range3(car: AbstractLowEmissionCar): String = {
+  private def range3(car: AbstractLowEmissionCar): LowEmissionCarRate = {
     (car.isNew, car.emissions) match {
-      case (Some(true), Some(em)) if em <= 95 => firstYearAllowance
-      case (Some(true), Some(em)) if em > 95 && em <= 130 => mainRate
-      case (Some(false), Some(em)) if em <= 130 => mainRate
-      case (_, Some(em)) if em > 130 => specialRate
-      case _ => ""
+      case (Some(true), Some(em)) if em <= 95 => FYA
+      case (Some(true), Some(em)) if em > 95 && em <= 130 => MainRate
+      case (Some(false), Some(em)) if em <= 130 => MainRate
+      case (_, Some(em)) if em > 130 => SpecialRate
+//      case _ => ""
 
     }
   }
 
-  private def range4(car: AbstractLowEmissionCar): String = {
+  private def range4(car: AbstractLowEmissionCar): LowEmissionCarRate = {
       (car.isNew, car.emissions) match {
-        case (Some(true), Some(em)) if em <= 75 => firstYearAllowance
-        case (Some(true), Some(em)) if em > 75 && em <= 130 => mainRate
-        case (Some(false), Some(em)) if em <= 130 => mainRate
-        case (_, Some(em)) if em > 130 => specialRate
-        case _ => ""
-
+        case (Some(true), Some(em)) if em <= 75 => FYA
+        case (Some(true), Some(em)) if em > 75 && em <= 130 => MainRate
+        case (Some(false), Some(em)) if em <= 130 => MainRate
+        case (_, Some(em)) if em > 130 => SpecialRate
+//        case _ => ""
       }
   }
 
-  private def range5(car: AbstractLowEmissionCar): String = {
+  private def range5(car: AbstractLowEmissionCar): LowEmissionCarRate = {
     (car.isNew, car.emissions) match {
-      case (Some(true), Some(em)) if em <= 50 => firstYearAllowance
-        case (Some(true), Some(em)) if em > 50 && em <= 110 => mainRate
-        case (Some(false), Some(em)) if em <= 110 => mainRate
-        case (_, Some(em)) if em > 110 => specialRate
-        case _ => ""
-
+      case (Some(true), Some(em)) if em <= 50 => FYA
+        case (Some(true), Some(em)) if em > 50 && em <= 110 => MainRate
+        case (Some(false), Some(em)) if em <= 110 => MainRate
+        case (_, Some(em)) if em > 110 => SpecialRate
+//        case _ => ""
     }
   }
 
-  private def range6(car: AbstractLowEmissionCar): String = {
+  private def range6(car: AbstractLowEmissionCar): LowEmissionCarRate = {
     (car.isNew, car.emissions) match {
-      case (Some(true), Some(0)) => firstYearAllowance
-      case (Some(_), Some(em)) if em <= 50 => mainRate
-      case (Some(_), Some(em)) if em > 50 => specialRate
-      case _ => ""
+      case (Some(true), Some(0)) => FYA
+      case (Some(_), Some(em)) if em <= 50 => MainRate
+      case (Some(_), Some(em)) if em > 50 => SpecialRate
+//      case _ => ""
     }
   }
 
-  private def range7(car: AbstractLowEmissionCar): String = {
+  private def range7(car: AbstractLowEmissionCar): LowEmissionCarRate = {
     (car.isNew, car.emissions) match {
-      case (Some(_), Some(em)) if em <= 50 => mainRate
-      case (Some(_), Some(em)) if em > 50 => specialRate
-      case _ => ""
+      case (Some(_), Some(em)) if em <= 50 => MainRate
+      case (Some(_), Some(em)) if em > 50 => SpecialRate
+//      case _ => ""
     }
   }
 
-  def getFYAPoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, firstYearAllowance)  //CPaux1
+  def getFYAPoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, FYA)  //CPaux1
 
-  def getMainRatePoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, mainRate) //CPaux2
+  def getMainRatePoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, MainRate) //CPaux2
 
-  def getSpecialRatePoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, specialRate) //CPaux3
+  def getSpecialRatePoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, SpecialRate) //CPaux3
 
-  private def getSomePoolSum(lec01: LEC01, poolString: String): Int = {
-    lec01.cars.filter(x => taxPoolForCar(x) == poolString).map(car =>
+  private def getSomePoolSum(lec01: LEC01, poolGroup: LowEmissionCarRate): Int = {
+    lec01.cars.filter(x => taxPoolForCar(x) == poolGroup).map(car =>
     if (car.price.isDefined) car.price.get
     else 0
     ).sum
@@ -198,3 +191,8 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
     cp672Value < cp78 + cp82 + roundDownToInt(getMainRatePoolSum(lec01))
   }
 }
+
+sealed trait LowEmissionCarRate
+  case object FYA extends LowEmissionCarRate
+  case object MainRate extends LowEmissionCarRate
+  case object SpecialRate extends LowEmissionCarRate
