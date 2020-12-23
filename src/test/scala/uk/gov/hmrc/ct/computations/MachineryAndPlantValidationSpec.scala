@@ -291,6 +291,13 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
     CP87a(Some(101)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP87a"), errorMessageKey = "error.CP87a.exceeds.max", args = Some(Seq("60"))))
   }
 
+  "fail validation when greater than CP672" in {
+    val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
+      cp672 = Some(60))
+
+    CP672a(Some(101)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP672a"), errorMessageKey = "error.CP672a.exceeds.max", args = Some(Seq("60"))))
+  }
+
   "pass validation when less than are equal CP87Input" in {
   val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
     cp87Input = Some(60))
