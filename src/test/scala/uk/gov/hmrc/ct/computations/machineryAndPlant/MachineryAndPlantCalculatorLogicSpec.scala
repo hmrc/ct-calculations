@@ -1,3 +1,8 @@
+/*
+ * Copyright 2020 HM Revenue & Customs
+ *
+ */
+
 package uk.gov.hmrc.ct.computations.machineryAndPlant
 
 import uk.gov.hmrc.ct.utils.UnitSpec
@@ -30,7 +35,7 @@ class MachineryAndPlantCalculatorLogicSpec extends UnitSpec {
       when(mockComputationsBoxRetriever.cp82()) thenReturn CP82(number2)
       when(mockComputationsBoxRetriever.cp78()) thenReturn CP78(number3)
 
-      CP105.calculate(mockComputationsBoxRetriever) shouldBe CP105(8000)
+      CP105.calculate(mockComputationsBoxRetriever) shouldBe CP105(10000)
     }
 
     "calculate the value for CP109 successfully" in {
