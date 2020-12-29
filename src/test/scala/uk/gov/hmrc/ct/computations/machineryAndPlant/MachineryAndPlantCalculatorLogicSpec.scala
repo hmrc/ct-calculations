@@ -2,7 +2,7 @@ package uk.gov.hmrc.ct.computations.machineryAndPlant
 
 import uk.gov.hmrc.ct.utils.UnitSpec
 import org.mockito.Mockito._
-import uk.gov.hmrc.ct.computations.{CP79, CP82, CP87, CPAux1, CPAux2}
+import uk.gov.hmrc.ct.computations.{CP79, CP82, CP87,CP78,CP666, CPAux1, CPAux2,CPAux3}
 
 class MachineryAndPlantCalculatorLogicSpec extends UnitSpec {
 
@@ -10,6 +10,7 @@ class MachineryAndPlantCalculatorLogicSpec extends UnitSpec {
   "MachineryAndPlantCalculatorLogic" should {
     val number1 = 5000
     val number2 = 3000
+    val number3 = 2000
 
     "calculate the value for CP94 successfully" in {
       when(mockComputationsBoxRetriever.cpAux1()) thenReturn CPAux1(number1)
@@ -27,8 +28,16 @@ class MachineryAndPlantCalculatorLogicSpec extends UnitSpec {
     "calculate the value for CP105 successfully" in {
       when(mockComputationsBoxRetriever.cpAux2()) thenReturn CPAux2(number1)
       when(mockComputationsBoxRetriever.cp82()) thenReturn CP82(number2)
+      when(mockComputationsBoxRetriever.cp78()) thenReturn CP78(number3)
 
       CP105.calculate(mockComputationsBoxRetriever) shouldBe CP105(8000)
+    }
+
+    "calculate the value for CP109 successfully" in {
+      when(mockComputationsBoxRetriever.cpAux3()) thenReturn CPAux3(number1)
+      when(mockComputationsBoxRetriever.cp666()) thenReturn CP666(number2)
+
+      CP109.calculate(mockComputationsBoxRetriever) shouldBe CP109(8000)
     }
   }
 
