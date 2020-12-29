@@ -21,13 +21,13 @@ class MachineryAndPlantCalculatorLogicSpec extends UnitSpec {
       when(mockComputationsBoxRetriever.cpAux1()) thenReturn CPAux1(number1)
       when(mockComputationsBoxRetriever.cp79()) thenReturn CP79(Some(number2))
 
-      CP94.calculate(mockComputationsBoxRetriever) shouldBe CP94(8000)
+      CP94.calculate(mockComputationsBoxRetriever) shouldBe CP94(number1+number2)
     }
     "calculate the value for CP97 successfully" in {
       when(mockComputationsBoxRetriever.cp87()) thenReturn CP87(number2)
       when(mockComputationsBoxRetriever.cp94()) thenReturn CP94(number1)
 
-      CP97.calculate(mockComputationsBoxRetriever) shouldBe CP97(2000)
+      CP97.calculate(mockComputationsBoxRetriever) shouldBe CP97(number1-number2)
     }
 
     "calculate the value for CP105 successfully" in {
@@ -35,14 +35,14 @@ class MachineryAndPlantCalculatorLogicSpec extends UnitSpec {
       when(mockComputationsBoxRetriever.cp82()) thenReturn CP82(number2)
       when(mockComputationsBoxRetriever.cp78()) thenReturn CP78(number3)
 
-      CP105.calculate(mockComputationsBoxRetriever) shouldBe CP105(10000)
+      CP105.calculate(mockComputationsBoxRetriever) shouldBe CP105(number1+number2+number3)
     }
 
     "calculate the value for CP109 successfully" in {
       when(mockComputationsBoxRetriever.cpAux3()) thenReturn CPAux3(number1)
       when(mockComputationsBoxRetriever.cp666()) thenReturn CP666(number2)
 
-      CP109.calculate(mockComputationsBoxRetriever) shouldBe CP109(8000)
+      CP109.calculate(mockComputationsBoxRetriever) shouldBe CP109(number1+number2)
     }
   }
 
