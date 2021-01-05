@@ -21,6 +21,13 @@ import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
 
   lazy val CtCalculations = (project in file("."))
     .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
+    .settings(
+      //TODO: Remove before master merge
+      headerLicense := Some(HeaderLicense.Custom(
+        """Copyright 2021 HM Revenue & Customs
+          |
+          |""".stripMargin
+      )))
     .disablePlugins(JUnitXmlReportPlugin)
     .settings(majorVersion := 2)
     .settings(scoverageSettings: _*)

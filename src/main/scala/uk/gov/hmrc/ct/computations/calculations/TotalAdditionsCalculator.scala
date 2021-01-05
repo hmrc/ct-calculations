@@ -1,17 +1,6 @@
 /*
  * Copyright 2021 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.computations.calculations
@@ -29,9 +18,10 @@ trait TotalAdditionsCalculator extends CtTypeConverters {
                                 cp51: CP51,
                                 cp52: CP52,
                                 cp53: CP53,
+                                cp503: CP503,
                                 cp980: CP980,
                                 cp981: CP981,
                                 cp982: CP982): CP54 = {
-    CP54(cp46 + cp47 + cp48 + cp49 + cp51 + cp52 + cp53 + cp980 + cp981 + cp982)
+    CP54(cp46 + cp47 + cp48 + cp49 + cp51 + cp52 + cp53 + cp503 + cp980 + cp981 + cp982)
   }
 }
