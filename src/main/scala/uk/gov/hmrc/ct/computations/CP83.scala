@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  */
 
@@ -12,7 +12,8 @@ case class CP83(value: Option[Int]) extends CtBoxIdentifier(name = "Expenditure 
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
     collectErrors(
       cannotExistErrorIf(hasValue && boxRetriever.cpQ8().isTrue),
-      validateZeroOrPositiveInteger()
+      validateZeroOrPositiveInteger(),
+      exceedsMax(value,200000)
     )
   }
 }
