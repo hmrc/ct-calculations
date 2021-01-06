@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,9 +52,9 @@ class ProfitAndLossCalculatorSpec extends WordSpec with Matchers {
 
       calculateGrossProfitOrLossBeforeTaxWithBaseParams() shouldBe CP44(50)
       calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp43 = CP43(Some(10))) shouldBe CP44(60)
-      calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp509 = CP509(20)) shouldBe CP44(70)
+      calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp501 = CP501(20)) shouldBe CP44(70)
       calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp502 = CP502(Some(30))) shouldBe CP44(80)
-      calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp502 = CP502(Some(10)), cp509 = CP509(20)) shouldBe CP44(80)
+      calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp502 = CP502(Some(10)), cp501 = CP501(20)) shouldBe CP44(80)
     }
 
     "return a negative number when profit is less than costs" in new ProfitAndLossCalculator {
@@ -68,9 +68,9 @@ class ProfitAndLossCalculatorSpec extends WordSpec with Matchers {
 
       calculateGrossProfitOrLossBeforeTaxWithBaseParams() shouldBe CP44(-50)
       calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp43 = CP43(Some(10))) shouldBe CP44(-40)
-      calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp509 = CP509(20)) shouldBe CP44(-30)
+      calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp501 = CP501(20)) shouldBe CP44(-30)
       calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp502 = CP502(Some(30))) shouldBe CP44(-20)
-      calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp502 = CP502(Some(10)), cp509 = CP509(20)) shouldBe CP44(-20)
+      calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp502 = CP502(Some(10)), cp501 = CP501(20)) shouldBe CP44(-20)
     }
 
     "return zero when profit and costs are equal" in new ProfitAndLossCalculator {
@@ -84,9 +84,9 @@ class ProfitAndLossCalculatorSpec extends WordSpec with Matchers {
 
       calculateGrossProfitOrLossBeforeTaxWithBaseParams() shouldBe CP44(0)
       calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp40 = CP40(110), cp43 = CP43(Some(10))) shouldBe CP44(0)
-      calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp40 = CP40(120), cp509 = CP509(20)) shouldBe CP44(0)
+      calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp40 = CP40(120), cp501 = CP501(20)) shouldBe CP44(0)
       calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp40 = CP40(130), cp502 = CP502(Some(30))) shouldBe CP44(0)
-      calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp40 = CP40(130), cp43 = CP43(Some(10)), cp509 = CP509(20)) shouldBe CP44(0)
+      calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp40 = CP40(130), cp43 = CP43(Some(10)), cp501 = CP501(20)) shouldBe CP44(0)
     }
 
     "Include cover support grants (Cp130) in CP44)" in new ProfitAndLossCalculator {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ object CP59 extends Calculated[CP59, ComputationsBoxRetriever] with TotalDeducti
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP59 = {
     totalDeductionsCalculation(cp58 = fieldValueRetriever.cp58(),
                                cp505 = fieldValueRetriever.cp505(),
-                               cp509 = fieldValueRetriever.cp509(),
+                               cp507 = fieldValueRetriever.cp507(),
                                cp55 = fieldValueRetriever.cp55(),
                                cp57 = fieldValueRetriever.cp57(),
                                cp983 = fieldValueRetriever.cp983())
