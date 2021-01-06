@@ -33,6 +33,7 @@ object CP54 extends Calculated[CP54, ComputationsBoxRetriever] with TotalAdditio
       cp51 = fieldValueRetriever.cp51(),
       cp52 = fieldValueRetriever.cp52(),
       cp53 = fieldValueRetriever.cp53(),
+      cp503 = fieldValueRetriever.cp503(),
       cp980 = fieldValueRetriever.cp980(),
       cp981 = fieldValueRetriever.cp981(),
       cp982 = fieldValueRetriever.cp982())
