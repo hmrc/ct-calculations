@@ -18,9 +18,10 @@ class TotalAdditionsCalculatorSpec extends WordSpec with Matchers {
                                 cp51 = CP51(Some(6)),
                                 cp52 = CP52(Some(7)),
                                 cp53 = CP53(Some(8)),
+                                cp503 = CP503(Some(8)),
                                 cp980 = CP980(Some(9)),
                                 cp981 = CP981(Some(10)),
-                                cp982 = CP982(Some(11))) shouldBe CP54(65)
+                                cp982 = CP982(Some(11))) shouldBe CP54(73)
     }
   }
 }
