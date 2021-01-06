@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations.calculations
+package uk.gov.hmrc.ct.accounts.frs105.boxes
 
-import uk.gov.hmrc.ct.box.CtTypeConverters
-import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.box._
 
-trait ProfitAndLossCalculator extends CtTypeConverters {
+case class AC25(value: Option[Int]) extends CtBoxIdentifier(name = "Income from covid-19 business support grants")
+  with CtOptionalInteger
+  with Input
+  with ValidatableBox[AccountsBoxRetriever] {
 
-  def calculateProfitOrLoss(cp7: CP7, cp8: CP8, cp981: CP981, cp983: CP983): CP14 = CP14(cp7 + cp983 - cp981 - cp8)
-
-  def calculateGrossProfitOrLossBeforeTax(cp14: CP14, cp40: CP40, cp43: CP43, cp509: CP509, cp502: CP502, cp130: CP130): CP44 = {
-      CP44(cp14 - cp40 + cp502 + cp509 + cp43 + cp130)
+  override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateZeroOrPositiveInteger(this)
+    )
   }
-
 }

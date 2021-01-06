@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations.calculations
+package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.CtTypeConverters
-import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-trait ProfitAndLossCalculator extends CtTypeConverters {
-
-  def calculateProfitOrLoss(cp7: CP7, cp8: CP8, cp981: CP981, cp983: CP983): CP14 = CP14(cp7 + cp983 - cp981 - cp8)
-
-  def calculateGrossProfitOrLossBeforeTax(cp14: CP14, cp40: CP40, cp43: CP43, cp509: CP509, cp502: CP502, cp130: CP130): CP44 = {
-      CP44(cp14 - cp40 + cp502 + cp509 + cp43 + cp130)
+case class CP129(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did you claim any other coronavirus grants") with CtOptionalBoolean with Input with ValidatableBox[ComputationsBoxRetriever] {
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    collectErrors(validateAsMandatory(this))
   }
-
 }

@@ -39,7 +39,7 @@ object AC16 extends Calculated[AC16, Frs102AccountsBoxRetriever with FilingAttri
     if(!boxRetriever.cato24().isTrue && boxRetriever.abridgedFiling().value) {
       AC16(None)
     } else {
-      calculateAC16(boxRetriever.ac12, boxRetriever.ac401, boxRetriever.ac403, boxRetriever.ac14())
+      calculateAC16(boxRetriever.ac12, boxRetriever.ac24, boxRetriever.ac401, boxRetriever.ac403, boxRetriever.ac14())
     }
   }
 }

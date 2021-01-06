@@ -27,6 +27,6 @@ object AC436 extends Calculated[AC436, Frs105AccountsBoxRetriever with FilingAtt
 
   override def calculate(boxRetriever: Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever): AC436 = {
     import boxRetriever._
-    calculateAC436(ac13, ac406, ac411, ac416, ac421, ac426, ac35, ac402, ac404)
+    calculateAC436(ac13, ac25, ac406, ac411, ac416, ac421, ac426, ac35, ac402, ac404)
   }
 }

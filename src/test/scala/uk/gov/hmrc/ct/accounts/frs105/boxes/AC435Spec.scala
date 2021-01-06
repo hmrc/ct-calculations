@@ -24,6 +24,7 @@ class AC435Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
 
   "AC435 calculates from boxes correctly" in {
     val testAc12 = 123
+    val testAc24 = 124
     val testAc405 = 234
     val testAc410 = 345
     val testAc415 = 456
@@ -34,6 +35,7 @@ class AC435Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
     val testAc403 = 901
     val boxRetriever = new StubbedFrs105AccountsBoxRetriever {
       override def ac12 = AC12(testAc12)
+      override def ac24 = AC24(Some(testAc24))
       override def ac405 = AC405(Some(testAc405))
       override def ac410 = AC410(Some(testAc410))
       override def ac415 = AC415(Some(testAc415))
@@ -48,6 +50,7 @@ class AC435Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
 
     ac435.value shouldBe Some(
         testAc12 +
+        testAc24 +
         testAc405 +
         testAc401 -
         testAc410 -
