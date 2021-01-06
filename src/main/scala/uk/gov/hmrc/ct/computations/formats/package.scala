@@ -1,17 +1,6 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.computations
@@ -22,6 +11,7 @@ import uk.gov.hmrc.ct.box.formats._
 import play.api.libs.json.JodaWrites._
 import play.api.libs.json.JodaReads._
 import uk.gov.hmrc.ct.computations.lowEmissionCars.{Car, LEC01}
+import uk.gov.hmrc.ct.computations.machineryAndPlant.{CP105, CP94, CP97,CP109}
 
 package object formats {
 
@@ -149,6 +139,8 @@ package object formats {
 
   implicit val cp87InputFormat: Format[CP87Input] = new OptionalIntegerFormat[CP87Input](CP87Input.apply)
 
+  implicit val cp87aFormat: Format[CP87a] = new OptionalIntegerFormat[CP87a](CP87a.apply)
+
   implicit val cp88Format: Format[CP88] = new OptionalIntegerFormat[CP88](CP88.apply)
 
   implicit val cp89Format: Format[CP89] = new OptionalIntegerFormat[CP89](CP89.apply)
@@ -163,9 +155,13 @@ package object formats {
 
   implicit val cp93Format: Format[CP93] = new OptionalIntegerFormat[CP93](CP93.apply)
 
+  implicit val cp94Format: Format[CP94] = new IntegerFormat[CP94](CP94.apply)
+
   implicit val cp95Format: Format[CP95] = new OptionalIntegerFormat[CP95](CP95.apply)
 
   implicit val cp96Format: Format[CP96] = new OptionalIntegerFormat[CP96](CP96.apply)
+
+  implicit val cp97Format: Format[CP97] = new IntegerFormat[CP97](CP97.apply)
 
   implicit val cp98Format: Format[CP98] = new OptionalIntegerFormat[CP98](CP98.apply)
 
@@ -181,11 +177,15 @@ package object formats {
 
   implicit val cp104Format: Format[CP104] = new OptionalIntegerFormat[CP104](CP104.apply)
 
+  implicit val cp105Format: Format[CP105] = new IntegerFormat[CP105](CP105.apply)
+
   implicit val cp106Format: Format[CP106] = new OptionalIntegerFormat[CP106](CP106.apply)
 
   implicit val cp107Format: Format[CP107] = new OptionalIntegerFormat[CP107](CP107.apply)
 
   implicit val cp108Format: Format[CP108] = new OptionalIntegerFormat[CP108](CP108.apply)
+
+  implicit val cp109Format: Format[CP109] = new IntegerFormat[CP109](CP109.apply)
 
   implicit val cp111Format: Format[CP111] = new IntegerFormat[CP111](CP111.apply)
 
@@ -375,6 +375,8 @@ package object formats {
 
   implicit val cp515Format: Format[CP515] = new OptionalIntegerFormat[CP515](CP515.apply)
 
+  implicit val cp665Format: Format[CP665] = new OptionalIntegerFormat[CP665](CP665.apply)
+
   implicit val cp666Format: Format[CP666] = new OptionalIntegerFormat[CP666](CP666.apply)
 
   implicit val cp667Format: Format[CP667] = new OptionalIntegerFormat[CP667](CP667.apply)
@@ -388,6 +390,8 @@ package object formats {
   implicit val cp671Format: Format[CP671] = new OptionalIntegerFormat[CP671](CP671.apply)
 
   implicit val cp672Format: Format[CP672] = new OptionalIntegerFormat[CP672](CP672.apply)
+
+  implicit val cp672aFormat: Format[CP672a] = new OptionalIntegerFormat[CP672a](CP672a.apply)
 
   implicit val cp673Format: Format[CP673] = new OptionalIntegerFormat[CP673](CP673.apply)
 

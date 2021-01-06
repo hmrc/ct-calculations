@@ -1,17 +1,6 @@
 /*
  * Copyright 2021 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.computations
@@ -33,12 +22,14 @@ class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
                                      cp83: Option[Int] = None,
                                      cp84: Option[Int] = None,
                                      cp87Input: Option[Int] = None,
+                                     cp87a: Option[Int] = None,
                                      cp88: Option[Int] = None,
                                      cp89: Option[Int] = None,
                                      cp666: Option[Int] = None,
                                      cp667: Option[Int] = None,
                                      cp668: Option[Int] = None,
                                      cp672: Option[Int] = None,
+                                     cp672a: Option[Int] = None,
                                      cp673: Option[Int] = None,
                                      cp674: Option[Int] = None,
                                      cato02: Int = 0,
@@ -74,11 +65,15 @@ class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
 
   override def cp672: CP672 = CP672(cp672)
 
+  override def cp672a: CP672a = CP672a(cp672a)
+
   override def cp673: CP673 = CP673(cp673)
 
   override def cp674: CP674 = CP674(cp674)
 
   override def cp87Input: CP87Input = CP87Input(cp87Input)
+
+  override def cp87a: CP87a = CP87a(cp87a)
 
   override def cp88: CP88 = CP88(cp88)
 
@@ -203,6 +198,14 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
     }
   }
 
+  "CP672a " should {
+    "validate if present and non-negative or if not present, otherwise fail" in {
+      CP672a(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP672a(None).validate(stubBoxRetriever) shouldBe Set()
+      CP672a(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP672a"), errorMessageKey = "error.CP672a.mustBeZeroOrPositive"))
+    }
+  }
+
   "CP87Input, given is trading and first Year Allowance Not Greater Than Max FYA" should {
     "validate if present and non-negative, otherwise fail" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(cpq8 = Some(false))
@@ -264,6 +267,44 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       CP87Input(-1).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.mustBeZeroOrPositive"))
     }
   }
+
+  "CP87a " should {
+    "validate if present and non-negative or if not present, otherwise fail" in {
+      CP87a(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP87a(None).validate(stubBoxRetriever) shouldBe Set()
+      CP87a(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP87a"), errorMessageKey = "error.CP87a.mustBeZeroOrPositive"))
+    }
+  }
+
+  "CP665 " should {
+    "validate if present and non-negative or if not present, otherwise fail" in {
+      CP665(Some(0)).validate(stubBoxRetriever) shouldBe Set()
+      CP665(None).validate(stubBoxRetriever) shouldBe Set()
+      CP665(Some(-1)).validate(stubBoxRetriever) shouldBe Set(CtValidation(boxId = Some("CP665"), errorMessageKey = "error.CP665.mustBeZeroOrPositive"))
+    }
+  }
+
+  "fail validation when greater than CP87Input" in {
+    val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
+      cp87Input = Some(60))
+
+    CP87a(Some(101)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP87a"), errorMessageKey = "error.CP87a.exceeds.max", args = Some(Seq("60"))))
+  }
+
+  "fail validation when greater than CP672" in {
+    val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
+      cp672 = Some(60))
+
+    CP672a(Some(101)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP672a"), errorMessageKey = "error.CP672a.exceeds.max", args = Some(Seq("60"))))
+  }
+
+  "pass validation when less than are equal CP87Input" in {
+  val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
+    cp87Input = Some(60))
+
+  CP87a(Some(60)).validate(stubTestComputationsRetriever) shouldBe Set()
+  CP87a(Some(50)).validate(stubTestComputationsRetriever) shouldBe Set()
+}
 
   "CP88(annual investment allowance claimed)" should {
 
@@ -428,5 +469,6 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
 
       CP668(None).validate(stubTestComputationsRetriever) shouldBe Set()
     }
+
   }
 }

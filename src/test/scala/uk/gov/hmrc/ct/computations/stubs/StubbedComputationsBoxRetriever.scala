@@ -1,17 +1,6 @@
 /*
  * Copyright 2021 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.computations.stubs
@@ -125,6 +114,8 @@ import uk.gov.hmrc.ct.{CATO11, CATO12, CATO24, CountryOfRegistration}
 
   override def cp79(): CP79 = ???
 
+  override def cp665(): CP665 = ???
+
   override def cp46(): CP46 = ???
 
   override def cp2(): CP2 = ???
@@ -142,6 +133,8 @@ import uk.gov.hmrc.ct.{CATO11, CATO12, CATO24, CountryOfRegistration}
   override def cp55(): CP55 = ???
 
   override def cp87Input(): CP87Input = ???
+
+  override def cp87a(): CP87a = ???
 
   override def cpQ7(): CPQ7 = ???
 
@@ -178,6 +171,8 @@ import uk.gov.hmrc.ct.{CATO11, CATO12, CATO24, CountryOfRegistration}
   override def cp1(): CP1 = ???
 
   override def cp672(): CP672 = ???
+
+  override def cp672a(): CP672a = ???
 
   override def cp666(): CP666 = ???
 
