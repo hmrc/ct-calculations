@@ -7,7 +7,7 @@ package uk.gov.hmrc.ct.computations.machineryAndPlant
 
 import uk.gov.hmrc.ct.utils.UnitSpec
 import org.mockito.Mockito._
-import uk.gov.hmrc.ct.computations.{CP79, CP82, CP87,CP78,CP666, CPAux1, CPAux2,CPAux3}
+import uk.gov.hmrc.ct.computations.{CP666, CP78, CP79, CP82, CP83, CP87, CP88, CPAux1, CPAux2, CPAux3}
 
 class MachineryAndPlantCalculatorLogicSpec extends UnitSpec {
 
@@ -43,6 +43,13 @@ class MachineryAndPlantCalculatorLogicSpec extends UnitSpec {
       when(mockComputationsBoxRetriever.cp666()) thenReturn CP666(number2)
 
       CP109.calculate(mockComputationsBoxRetriever) shouldBe CP109(number1+number2)
+    }
+
+    "calculate the value for CP110 successfully" in {
+      when(mockComputationsBoxRetriever.cp83()) thenReturn CP83(number1)
+      when(mockComputationsBoxRetriever.cp88()) thenReturn CP88(number2)
+
+      CP110.calculate(mockComputationsBoxRetriever) shouldBe CP110(number1-number2)
     }
   }
 
