@@ -17,7 +17,7 @@ object CATO20 extends Calculated[CATO20, ComputationsBoxRetriever] with Machiner
     unclaimedAIAFirstYearAllowance(cp81 = fieldValueRetriever.cp81(),
                                             cp83 = fieldValueRetriever.cp83(),
                                             cp87 = fieldValueRetriever.cp87(),
-                                            cp88 = fieldValueRetriever.cp88(),
-                                            cpAux1 = fieldValueRetriever.cpAux1())
+                                            cp88 = fieldValueRetriever.cp88()
+                                            )
   }
 }

@@ -14,8 +14,14 @@ object CP105 extends Calculated[CP105, ComputationsBoxRetriever] with MachineryA
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP105 = {
     val carsQualifyingForMainRate = boxRetriever.cpAux2().value
     val mainRateExpenditureOtherThanCars = boxRetriever.cp82().value.getOrElse(0)
-    val writtenDownValueBroughtForward=boxRetriever.cp78().value.getOrElse(0) // add 97
-    val total = sumOf(carsQualifyingForMainRate, mainRateExpenditureOtherThanCars, writtenDownValueBroughtForward)
+    val writtenDownValueBroughtForward=boxRetriever.cp78().value.getOrElse(0)
+    val fyaNotClaimed= boxRetriever.cp97().value
+    val total = sumOf(
+      carsQualifyingForMainRate,
+      mainRateExpenditureOtherThanCars,
+      writtenDownValueBroughtForward,
+      fyaNotClaimed
+    )
 
     CP105(total)
   }
