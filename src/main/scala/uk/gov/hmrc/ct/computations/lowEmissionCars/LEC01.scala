@@ -1,17 +1,6 @@
 /*
  * Copyright 2021 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.computations.lowEmissionCars
@@ -44,12 +33,12 @@ case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "L
   }
 }
 
-case class Car(regNumber: Option[String],
-               isNew: Option[Boolean],
-               price: Option[Int],
-               emissions: Option[Int],
-               dateOfPurchase: Option[LocalDate]
-               ) extends ValidatableBox[ComputationsBoxRetriever]
+case class Car(override val regNumber: Option[String],
+               override val isNew: Option[Boolean],
+               override val price: Option[Int],
+               override val emissions: Option[Int],
+               override val dateOfPurchase: Option[LocalDate]
+               ) extends AbstractLowEmissionCar(regNumber,isNew,price,emissions,dateOfPurchase) with ValidatableBox[ComputationsBoxRetriever]
   with ExtraValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {

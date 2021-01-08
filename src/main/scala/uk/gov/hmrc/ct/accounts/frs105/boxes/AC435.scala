@@ -1,17 +1,6 @@
 /*
  * Copyright 2021 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
@@ -27,6 +16,6 @@ object AC435 extends Calculated[AC435, Frs105AccountsBoxRetriever with FilingAtt
 
   override def calculate(boxRetriever: Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever): AC435 = {
     import boxRetriever._
-    calculateAC435(ac12, ac405, ac410, ac415, ac420, ac425, ac34, ac401, ac403)
+    calculateAC435(ac12, ac24, ac405, ac410, ac415, ac420, ac425, ac34, ac401, ac403)
   }
 }

@@ -1,23 +1,12 @@
 /*
  * Copyright 2021 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.accounts
 
 import play.api.libs.json.{Format, Json}
-import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
+import uk.gov.hmrc.ct.accounts.frs105.boxes.{AC24, AC25, AC415}
 import uk.gov.hmrc.ct.box.formats.{DateFormat, OptionalDateFormat, OptionalIntegerFormat, OptionalStringFormat}
 
 package object formats {
@@ -29,6 +18,8 @@ package object formats {
   implicit val ac3Format: Format[AC3] = new DateFormat[AC3](AC3.apply)
   implicit val ac4Format: Format[AC4] = new DateFormat[AC4](AC4.apply)
   implicit val ac12Format: Format[AC12] = new OptionalIntegerFormat[AC12](AC12.apply)
+  implicit val ac24Format: Format[AC24] = new OptionalIntegerFormat[AC24](AC24.apply)
+  implicit val ac25Format: Format[AC25] = new OptionalIntegerFormat[AC25](AC25.apply)
   implicit val ac401Format = new OptionalIntegerFormat[AC401](AC401.apply)
   implicit val ac402Format = new OptionalIntegerFormat[AC402](AC402.apply)
   implicit val ac403Format = new OptionalIntegerFormat[AC403](AC403.apply)

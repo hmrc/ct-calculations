@@ -1,17 +1,6 @@
 /*
  * Copyright 2021 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
@@ -24,6 +13,7 @@ class AC435Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
 
   "AC435 calculates from boxes correctly" in {
     val testAc12 = 123
+    val testAc24 = 124
     val testAc405 = 234
     val testAc410 = 345
     val testAc415 = 456
@@ -34,6 +24,7 @@ class AC435Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
     val testAc403 = 901
     val boxRetriever = new StubbedFrs105AccountsBoxRetriever {
       override def ac12 = AC12(testAc12)
+      override def ac24 = AC24(Some(testAc24))
       override def ac405 = AC405(Some(testAc405))
       override def ac410 = AC410(Some(testAc410))
       override def ac415 = AC415(Some(testAc415))
@@ -48,6 +39,7 @@ class AC435Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
 
     ac435.value shouldBe Some(
         testAc12 +
+        testAc24 +
         testAc405 +
         testAc401 -
         testAc410 -

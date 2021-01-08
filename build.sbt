@@ -1,9 +1,3 @@
-import sbt.Keys._
-import sbt._
-import uk.gov.hmrc.SbtArtifactory.autoImport.makePublicallyAvailableOnBintray
-import uk.gov.hmrc.versioning.SbtGitVersioning
-import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
-import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
 
   val appName = "ct-calculations"
 
@@ -25,6 +19,13 @@ import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
     .settings(majorVersion := 2)
     .settings(scoverageSettings: _*)
     .settings(makePublicallyAvailableOnBintray := true)
+    .settings(
+      //TODO: Remove before master merge
+      headerLicense := Some(HeaderLicense.Custom(
+        """Copyright 2021 HM Revenue & Customs
+          |
+          |""".stripMargin
+      )))
     .settings(
       name := appName,
       scalaVersion := "2.12.11",
