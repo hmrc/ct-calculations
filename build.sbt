@@ -1,9 +1,3 @@
-import sbt.Keys._
-import sbt._
-import uk.gov.hmrc.SbtArtifactory.autoImport.makePublicallyAvailableOnBintray
-import uk.gov.hmrc.versioning.SbtGitVersioning
-import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
-import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
 
   val appName = "ct-calculations"
 
@@ -28,7 +22,7 @@ import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
     .settings(
       //TODO: Remove before master merge
       headerLicense := Some(HeaderLicense.Custom(
-        """Copyright 2020 HM Revenue & Customs
+        """Copyright 2021 HM Revenue & Customs
           |
           |""".stripMargin
       )))
@@ -43,11 +37,3 @@ import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
         "org.pegdown" % "pegdown" % "1.6.0" % "test"
       )
     )
-//    .settings(
-//      //TODO: Remove before master merge
-//      headerLicense := Some(HeaderLicense.Custom(
-//        """Copyright 2020 HM Revenue & Customs
-//          |
-//          |""".stripMargin
-//      ))
-//    )
