@@ -8,7 +8,6 @@ package uk.gov.hmrc.ct.computations.calculations
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.CATO20
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.computations.CP92._
 import uk.gov.hmrc.ct.computations._
 
 class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
@@ -224,8 +223,7 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
         cp81 = CP81(1),
         cp83 = CP83(Some(2)),
         cp87 = CP87(3),
-        cp88 = CP88(Some(4)),
-        cpAux1 = CPAux1(5)
+        cp88 = CP88(Some(4))
       ) should be (CATO20(1))
     }
 

@@ -34,9 +34,11 @@ class MachineryAndPlantCalculatorLogicSpec extends UnitSpec {
       when(mockComputationsBoxRetriever.cpAux2()) thenReturn CPAux2(number1)
       when(mockComputationsBoxRetriever.cp82()) thenReturn CP82(number2)
       when(mockComputationsBoxRetriever.cp78()) thenReturn CP78(number3)
+      when(mockComputationsBoxRetriever.cp97()) thenReturn CP97(number3)
+      val total = number1 + number2 + (2 * number3)
 
-      CP105.calculate(mockComputationsBoxRetriever) shouldBe CP105(number1+number2+number3)
-    }
+      CP105.calculate(mockComputationsBoxRetriever) shouldBe CP105(total)
+         }
 
     "calculate the value for CP109 successfully" in {
       when(mockComputationsBoxRetriever.cpAux3()) thenReturn CPAux3(number1)
