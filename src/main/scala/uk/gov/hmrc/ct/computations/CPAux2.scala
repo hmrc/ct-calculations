@@ -10,7 +10,7 @@ import uk.gov.hmrc.ct.computations.calculations.LowEmissionCarsCalculator
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 
-case class CPAux2(value: Int) extends CtBoxIdentifier("MainRatePoolSum/ cars qualifying for main rate") with CtInteger // cars qualifying
+case class CPAux2(value: Int) extends CtBoxIdentifier("MainRatePoolSum/ cars qualifying for main rate") with CtInteger
 
 object CPAux2 extends Calculated[CPAux2, ComputationsBoxRetriever] with LowEmissionCarsCalculator  {
 
