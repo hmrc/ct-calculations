@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,14 @@
 package uk.gov.hmrc.ct.computations
 
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.calculations.MachineryAndPlantCalculator
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP78(value: Option[Int]) extends CtBoxIdentifier(name = "Written down value brought forward") with CtOptionalInteger with Input with SelfValidatableBox[ComputationsBoxRetriever,  Option[Int]] {
+case class CP78(value: Option[Int]) extends CtBoxIdentifier(name = "Written down value brought forward") with CtOptionalInteger with MachineryAndPlantCalculator with Input with SelfValidatableBox[ComputationsBoxRetriever,  Option[Int]] {
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
     collectErrors(
-      validateZeroOrPositiveInteger()
+      validateZeroOrPositiveInteger(),
+      sumOfCP78AndCP666(this,boxRetriever.cp666())
     )
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,8 @@ case class CP83(value: Option[Int]) extends CtBoxIdentifier(name = "Expenditure 
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
     collectErrors(
       cannotExistErrorIf(hasValue && boxRetriever.cpQ8().isTrue),
-      validateZeroOrPositiveInteger()
+      validateZeroOrPositiveInteger(),
+      exceedsMax(value,200000)
     )
   }
 }

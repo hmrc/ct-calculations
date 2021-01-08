@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,8 @@ class CP666Spec extends WordSpec with MockitoSugar with Matchers with BoxValidat
 
   override def setUpMocks = {
     when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+    when(boxRetriever.cp78()).thenReturn(CP78(Some(31000)))
+
   }
 
 
