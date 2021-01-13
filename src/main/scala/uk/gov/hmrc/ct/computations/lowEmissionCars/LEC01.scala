@@ -23,12 +23,12 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.{CP1, CP2, CPQ1000}
 import CarsHelper._
 
-case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "Low emission car")
+case class LEC01(values: List[Car] = List.empty) extends CtBoxIdentifier(name = "Low emission car")
   with CtValue[List[Car]]
   with Input
   with ValidatableBox[ComputationsBoxRetriever] {
 
-  override def value = cars
+  override def value = values
 
   override def asBoxString = Cars.asBoxString(this)
 
@@ -38,7 +38,7 @@ case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "L
       case (CPQ1000(Some(true)), list) if list.isEmpty => Set(CtValidation(Some(lec01BoxId), s"error.$lec01BoxId.required"))
       case _ => validationSuccess
     }
-    val carErrors = cars.foldLeft(Set[CtValidation]())( (errors, car) => car.validate(boxRetriever) ++ errors)
+    val carErrors = values.foldLeft(Set[CtValidation]())((errors, car) => car.validate(boxRetriever) ++ errors)
 
     errorsRegardingCPQ1000 ++ carErrors
   }

@@ -25,7 +25,7 @@ case class CP298(value: Option[Int]) extends CtBoxIdentifier("Total Relief Claim
 object CP298 extends Calculated[CP298, ComputationsBoxRetriever] with SBACalculator {
 
   def getTotalRelief(computationsBoxRetriever: ComputationsBoxRetriever): List[Option[Int]] = {
-    computationsBoxRetriever.sba01().buildings.map(building =>
+    computationsBoxRetriever.sba01().values.map(building =>
 
       getSbaDetails(computationsBoxRetriever.cp1().value, computationsBoxRetriever.cp2().value, building.earliestWrittenContract, building.cost).flatMap(_.totalCost)
     )

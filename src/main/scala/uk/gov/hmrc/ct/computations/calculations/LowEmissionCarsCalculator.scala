@@ -93,7 +93,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   def getSpecialRatePoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, specialRate) //CPaux3
 
   private def getSomePoolSum(lec01: LEC01, poolString: String): Int = {
-    lec01.cars.filter(x => taxPoolForCar(x) == poolString).map(car =>
+    lec01.values.filter(x => taxPoolForCar(x) == poolString).map(car =>
     if (car.price.isDefined) car.price.get
     else 0
     ).sum
