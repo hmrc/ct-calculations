@@ -17,7 +17,6 @@ object B525 extends CorporationTaxCalculator with Calculated[B525, CT600BoxRetri
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B525 =
       calculateSATaxPayable(
         fieldValueRetriever.b510(),
-        fieldValueRetriever.b515(),
-        fieldValueRetriever.b474()
+        fieldValueRetriever.b515()
       )
 }
