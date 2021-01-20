@@ -18,8 +18,8 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B510(b475.plus(b480.value.getOrElse(BigDecimal("0.0"))))
   }
 
-  def calculateSATaxPayable(b510: B510, b515: B515): B525 = {
-    B525(b510.minus(b515).max(0))
+  def calculateSATaxPayable(b510: B510, b515: B515, b474: B474): B525 = {
+    B525(b510.plus(b474.minus(b515)).max(0))
   }
 
   def calculateCorporationTax(b345: B345, b395: B395): B430 = {

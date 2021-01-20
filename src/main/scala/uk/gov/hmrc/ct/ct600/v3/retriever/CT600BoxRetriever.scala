@@ -8,8 +8,9 @@ package uk.gov.hmrc.ct.ct600.v3.retriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.ct600.v3._
+import uk.gov.hmrc.ct.ct600.v3.{B471, _}
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
+
 
 trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBoxRetriever with AboutThisReturnBoxRetriever {
 
@@ -89,6 +90,14 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b440(): B440 = B440(b430())
 
+  def b471(): B471 = B471(cp122())
+
+  def b472(): B472 = B472(cp123())
+
+  def b473(): B473 = B473(cp124())
+
+  def b474(): B474 = B474(cp125())
+
   def b475(): B475 = B475(b440())
 
   def b480(): B480 = {
@@ -114,6 +123,8 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b525(): B525 = B525.calculate(this)
 
+  def b526(): B526 = B526(cp126())
+
   def b527(): B527
 
   def b528(): B528 = B528.calculate(this)
@@ -127,6 +138,8 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
   def b605(): B605 = B605.calculate(this)
 
   def b620(): B620
+
+  def b647(): B647 = B647(cp121())
 
   def b690(): B690 = B690(cp88())
 
