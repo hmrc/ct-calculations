@@ -91,8 +91,8 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B600(noneIfNegative(calc))
   }
 
-  def calculateSelfAssessmentOfTaxPayable(b525: B525, b527: B527): B528 = {
-    val result = b525.plus(b527)
+  def calculateSelfAssessmentOfTaxPayable(b525: B525, b526: B526, b527: B527): B528 = {
+    val result = b525.plus(b527.plus(b526))
     B528(noneIfNegative(result))
   }
 
