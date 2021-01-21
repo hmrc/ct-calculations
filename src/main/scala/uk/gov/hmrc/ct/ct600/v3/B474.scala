@@ -5,6 +5,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
+
 import uk.gov.hmrc.ct.box.{CtBigDecimal, CtBoxIdentifier, CtInteger, CtOptionalBigDecimal, CtOptionalInteger, Linked}
 import uk.gov.hmrc.ct.computations.CP125
 

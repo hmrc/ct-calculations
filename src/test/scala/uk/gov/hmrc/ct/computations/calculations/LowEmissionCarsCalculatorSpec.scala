@@ -6,7 +6,7 @@
 package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.{Assertion, Matchers, WordSpec}
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.lowEmissionCars.{Car, LEC01}
 
@@ -15,7 +15,6 @@ case class TestCalculator() extends LowEmissionCarsCalculator
 class LowEmissionCarsCalculatorSpec extends WordSpec with Matchers with LowEmissionCarsCalculator {
 
   private val calculator = TestCalculator()
-
 
   /**
    * The methods below might seem superfluous. But turning the parameters of Car into Options caused
@@ -29,9 +28,10 @@ class LowEmissionCarsCalculatorSpec extends WordSpec with Matchers with LowEmiss
   private def costOfCar(value: Int) = Some(value)
   private def emissionsOfCar(value: Int) = Some(value)
   private def carBelongsToThisTaxPool(car: Car, taxPool: LowEmissionCarRate) = calculator.taxPoolForCar(car) shouldBe taxPool
+  private val exampleCar = Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(123), dateOfPurchase = Some(new LocalDate("2009-03-31")))
 
   //This car list will give a Special Rates Pool value of 50.50
-  val specialRatesCarList = LEC01(List(
+  val specialRatesCarList: LEC01 = LEC01(List(
     Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(666), dateOfPurchase = Some(new LocalDate("2014-01-31"))),
     Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(20), emissionsOfCar(1), dateOfPurchase = Some(new LocalDate("2014-01-31"))),
     Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(40), emissionsOfCar(777), dateOfPurchase = Some(new LocalDate("2014-01-31")))
@@ -418,6 +418,45 @@ class LowEmissionCarsCalculatorSpec extends WordSpec with Matchers with LowEmiss
     }
   }
 
+  "ErrorState" should {
+    "be returned from the taxPoolForCar method" when {
+      "dateOfPurchase hasn't been entered by the user" in {
+        val carWithNoDOP = exampleCar.copy(dateOfPurchase = None)
+        val result = calculator.taxPoolForCar(carWithNoDOP)
 
+        result shouldBe ErrorState
+      }
+    }
+    "be returned from the taxPoolForCar method when the supplied car is missing its emissions or whether the car is new" when {
+      "dateOfPurchase is between 1 April 2009 and the 31 April 2013" in {
+        errorStateTest("2010-01-31")
+      }
+      "dateOfPurchase is between 1 April 2013 and the 31 April 2015" in {
+        errorStateTest("2014-01-31")
+      }
+      "dateOfPurchase is between 1 April 2015 and the 31 March 2018" in {
+        errorStateTest("2017-01-31")
+      }
+      "dateOfPurchase is between 1 April 2018 and the 31 March 2021" in {
+        errorStateTest("2020-01-31")
+      }
+      "dateOfPurchase is between 1 April 2021 and the 31 March 2025" in {
+        errorStateTest("2022-01-31")
+      }
+      "dateOfPurchase is after 1 March 2025" in {
+        errorStateTest("2026-01-31")
+      }
+    }
+  }
 
+  private def errorStateTest(localDateString: String): Assertion = {
+    val notNewCar = exampleCar.copy(dateOfPurchase = Some(new LocalDate(localDateString)), isNew = None)
+    val noEmissionsCar = exampleCar.copy(dateOfPurchase = Some(new LocalDate(localDateString)), emissions = None)
+
+    val result1 = calculator.taxPoolForCar(notNewCar)
+    val result2 = calculator.taxPoolForCar(noEmissionsCar)
+
+    result1 shouldBe ErrorState
+    result2 shouldBe ErrorState
+  }
 }
