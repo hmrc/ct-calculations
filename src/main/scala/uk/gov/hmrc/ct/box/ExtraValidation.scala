@@ -6,6 +6,7 @@
 package uk.gov.hmrc.ct.box
 
 import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.box.ValidatableBox.OptionalIntIdBox
 import uk.gov.hmrc.ct.domain.ValidationConstants.toErrorArgsFormat
 import uk.gov.hmrc.ct.utils.DateImplicits._
 
@@ -18,6 +19,13 @@ trait ExtraValidation extends Validators {
     value match {
       case None => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
       case Some(x: String) if x.isEmpty => Set(CtValidation(Some(boxId), s"error.$boxId.required"))
+      case _ => validationSuccess
+    }
+  }
+
+  def validateZeroOrPositiveInteger(boxId: String, value: Option[Int]): Set[CtValidation] = {
+    value match {
+      case Some(x) if x < 0 => Set(CtValidation(Some(boxId), s"error.$boxId.mustBeZeroOrPositive"))
       case _ => validationSuccess
     }
   }

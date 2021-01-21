@@ -16,6 +16,9 @@ trait UnitSpec extends WordSpec with Matchers with Mocks {
  val fieldRequiredError: String => Set[CtValidation] =
   boxId => Set(CtValidation(Some(boxId), s"error.$boxId.required", None))
 
+ val mustBeZeroOrPositiveError: String => Set[CtValidation] =
+  boxId => Set(CtValidation(Some(boxId), s"error.$boxId.mustBeZeroOrPositive", None))
+
  val postcodeError: String => Set[CtValidation] = boxId => Set(CtValidation(Some(boxId), s"error.$boxId.invalidPostcode"))
 
  val regexError: String => Set[CtValidation] = boxId => Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
