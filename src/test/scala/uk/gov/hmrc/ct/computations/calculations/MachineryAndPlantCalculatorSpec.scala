@@ -224,7 +224,7 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
         cp83 = CP83(Some(2)),
         cp87 = CP87(3),
         cp88 = CP88(Some(4))
-      ) should be (CATO20(1))
+      ) should be (CATO20(-4))
     }
 
     "sumOfCP78AndCP666 -calculation" should {
