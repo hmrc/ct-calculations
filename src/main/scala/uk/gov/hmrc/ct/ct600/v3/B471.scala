@@ -5,7 +5,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtBigDecimal, CtBoxIdentifier, CtInteger, CtOptionalInteger, Linked}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
 import uk.gov.hmrc.ct.computations.CP122
 
 case class B471(value: Option[Int]) extends CtBoxIdentifier("CJRS and JSS received") with CtOptionalInteger
