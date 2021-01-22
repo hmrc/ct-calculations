@@ -29,15 +29,13 @@ class CP87InputSpec extends WordSpec with MockitoSugar with Matchers with BoxVal
 
   testCannotExistWhen("CP87Input", CP87Input.apply) {
     when(boxRetriever.cp81()).thenReturn(CP81(5555))
-    when(boxRetriever.cpAux1()).thenReturn(CPAux1(5555))
     when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(true))).getMock[ComputationsBoxRetriever]
   }
 
   "fail validation if is bigger than max FYA" in {
     when(boxRetriever.cp81()).thenReturn(CP81(10))
-    when(boxRetriever.cpAux1()).thenReturn(CPAux1(10))
 
-    CP87Input(Some(21)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP87Input"), "error.CP87Input.firstYearAllowanceClaimExceedsAllowance", Some(List("20"))))
+    CP87Input(Some(21)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP87Input"), "error.CP87Input.firstYearAllowanceClaimExceedsAllowance", Some(List("10"))))
   }
 
   "fail validation if cpQ8 is false and box is empty" in {

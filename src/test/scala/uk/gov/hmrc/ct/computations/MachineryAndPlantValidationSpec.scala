@@ -220,20 +220,18 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
         cpq8 = Some(false),
         cp79 = Some(20),
-        cp80 = Some(29),
         cpAux1 = 51)
 
-      CP87Input(Some(100)).validate(stubTestComputationsRetriever) shouldBe Set()
+      CP87Input(Some(71)).validate(stubTestComputationsRetriever) shouldBe Set()
     }
 
     "fail validation when greater than CP81  CPaux1" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
         cpq8 = Some(false),
         cp79 = Some(20),
-        cp80 = Some(29),
-        cpAux1 = 51)
+        cpAux1 = 52)
 
-      CP87Input(Some(101)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.firstYearAllowanceClaimExceedsAllowance", args = Some(Seq("100"))))
+      CP87Input(Some(73)).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.firstYearAllowanceClaimExceedsAllowance", args = Some(Seq("72"))))
     }
 
     "validate because FYA defaults to 0 when not entered" in {
@@ -372,7 +370,7 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
         cp78 = Some(2000),    // writtenDownValueBroughtForward
         cp79 = Some(20),
         cp80 = Some(30),
-        // CP81 - calculated  // (sum of cp79 and cp80) expenditureQualifyingForFirstYearAllowanceInput
+        // CP81 - calculated  // (sum of cp79 and cpAux1) expenditureQualifyingForFirstYearAllowanceInput
         cp82 = Some(2000),    // additionsQualifyingWritingDownAllowanceMainPool
         cp83 = Some(50),      // expenditureQualifyingAnnualInvestmentAllowance
         cp87Input = Some(50), // firstYearAllowanceClaimedInput
@@ -382,8 +380,8 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
         cato21 = 18
       )
 
-      CP89(549).validate(stubTestComputationsRetriever) shouldBe Set()
-      CP89(550).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded", Some(Seq("549"))))
+      CP89(544).validate(stubTestComputationsRetriever) shouldBe Set()
+      CP89(550).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded", Some(Seq("544"))))
     }
 
     "validates when greater than MAX(0, MainPool% * ( CP78 (Main Pool brought forward) " +
