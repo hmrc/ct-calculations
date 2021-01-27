@@ -12,6 +12,7 @@ import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.lowEmissionCars.{AbstractLowEmissionCar, LEC01}
 import uk.gov.hmrc.ct.utils.DateImplicits._
 
+object LowEmissionCarsCalculator extends LowEmissionCarsCalculator
 trait LowEmissionCarsCalculator extends CtTypeConverters {
   def taxPoolForCar(car: AbstractLowEmissionCar): LowEmissionCarRate = {
     car.dateOfPurchase match {
