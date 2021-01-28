@@ -12,7 +12,9 @@ import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.lowEmissionCars.{AbstractLowEmissionCar, LEC01}
 import uk.gov.hmrc.ct.utils.DateImplicits._
 
-trait LowEmissionCarsCalculator extends CtTypeConverters {
+object LowEmissionCarsCalculator extends LowEmissionCarsCalculator
+  trait LowEmissionCarsCalculator extends CtTypeConverters {
+
   def taxPoolForCar(car: AbstractLowEmissionCar): LowEmissionCarRate = {
     car.dateOfPurchase match {
       case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2009-04-01") => range1(car)
@@ -50,22 +52,22 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   }
 
   private def range4(car: AbstractLowEmissionCar): LowEmissionCarRate = {
-      (car.isNew, car.emissions) match {
-        case (Some(true), Some(em)) if em <= 75 => FYA
-        case (Some(true), Some(em)) if em > 75 && em <= 130 => MainRate
-        case (Some(false), Some(em)) if em <= 130 => MainRate
-        case (Some(_), Some(em)) if em > 130 => SpecialRate
-        case _ => ErrorState
-      }
+    (car.isNew, car.emissions) match {
+      case (Some(true), Some(em)) if em <= 75 => FYA
+      case (Some(true), Some(em)) if em > 75 && em <= 130 => MainRate
+      case (Some(false), Some(em)) if em <= 130 => MainRate
+      case (Some(_), Some(em)) if em > 130 => SpecialRate
+      case _ => ErrorState
+    }
   }
 
   private def range5(car: AbstractLowEmissionCar): LowEmissionCarRate = {
     (car.isNew, car.emissions) match {
       case (Some(true), Some(em)) if em <= 50 => FYA
-        case (Some(true), Some(em)) if em > 50 && em <= 110 => MainRate
-        case (Some(false), Some(em)) if em <= 110 => MainRate
-        case (Some(_), Some(em)) if em > 110 => SpecialRate
-        case _ => ErrorState
+      case (Some(true), Some(em)) if em > 50 && em <= 110 => MainRate
+      case (Some(false), Some(em)) if em <= 110 => MainRate
+      case (Some(_), Some(em)) if em > 110 => SpecialRate
+      case _ => ErrorState
     }
   }
 
@@ -86,7 +88,7 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
     }
   }
 
-  def getFYAPoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, FYA)  //CPaux1
+  def getFYAPoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, FYA) //CPaux1
 
   def getMainRatePoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, MainRate) //CPaux2
 
@@ -94,8 +96,8 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
 
   private def getSomePoolSum(lec01: LEC01, poolGroup: LowEmissionCarRate): Int = {
     lec01.cars.filter(x => taxPoolForCar(x) == poolGroup).map(car =>
-    if (car.price.isDefined) car.price.get
-    else 0
+      if (car.price.isDefined) car.price.get
+      else 0
     ).sum
   }
 
@@ -165,19 +167,19 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   }
 
   def disposalsExceedsSpecialRatePool(lec01: LEC01,
-            cp666: CP666,
-            cp667: CP667):Boolean =
+                                      cp666: CP666,
+                                      cp667: CP667): Boolean =
     cp667 > (cp666 + roundDownToInt(getSpecialRatePoolSum(lec01)))
 
   def disposalsLessThanSpecialRatePool(lec01: LEC01,
-                                      cp666: CP666,
-                                      cp667: CP667):Boolean =
+                                       cp666: CP666,
+                                       cp667: CP667): Boolean =
     cp667 < (cp666 + roundDownToInt(getSpecialRatePoolSum(lec01)))
 
   def disposalsExceedsMainRatePool(lec01: LEC01,
                                    cp78: CP78,
                                    cp82: CP82,
-                                   cp672: CP672):Boolean = {
+                                   cp672: CP672): Boolean = {
     val cp672Value = cp672.orZero
     cp672Value > cp78 + cp82 + roundDownToInt(getMainRatePoolSum(lec01))
   }
@@ -185,12 +187,12 @@ trait LowEmissionCarsCalculator extends CtTypeConverters {
   def disposalsLessThanMainRatePool(lec01: LEC01,
                                     cp78: CP78,
                                     cp82: CP82,
-                                    cp672: CP672):Boolean = {
+                                    cp672: CP672): Boolean = {
     val cp672Value = cp672.orZero
     cp672Value < cp78 + cp82 + roundDownToInt(getMainRatePoolSum(lec01))
   }
-}
 
+}
 /**
  * Needed to include an ErrorState here because not having a case in the LowEmissionCarsCalculator for unmatched cases
  * was leading to exceptions if the user didn't input any values for emissions or the cars emissions in the edit or add
