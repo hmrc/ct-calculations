@@ -23,7 +23,7 @@ case class CP983(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover fr
     collectErrors(
       requiredErrorIf(cato24.isTrue && this.value.isEmpty),
       validateZeroOrPositiveInteger(this),
-      validateHmrcTurnover(boxRetriever, compsStartDate, compsEndDate, errorSuffix = "", secondaryIncome = boxRetriever.cp7().orZero,minimumAmount = false)
+      validateHmrcTurnover(boxRetriever, compsStartDate, compsEndDate, errorSuffix = "", secondaryIncome = boxRetriever.cp7().orZero)
     )
 
   }
