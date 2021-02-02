@@ -12,7 +12,6 @@ import uk.gov.hmrc.ct.box.formats.OptionalIntegerFormat
 
 package object formats {
 
-  implicit val ac13Format: Format[AC13] = new OptionalIntegerFormat[AC13](AC13.apply)
   implicit val ac14Format: Format[AC14] = new OptionalIntegerFormat[AC14](AC14.apply)
   implicit val ac15Format: Format[AC15] = new OptionalIntegerFormat[AC15](AC15.apply)
   implicit val ac16Format: Format[AC16] = new OptionalIntegerFormat[AC16](AC16.apply)
