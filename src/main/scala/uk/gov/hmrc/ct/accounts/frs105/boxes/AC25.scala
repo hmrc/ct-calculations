@@ -30,8 +30,7 @@ case class AC25(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
 
   override def validate(boxRetriever: AccountsBoxRetriever with Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     collectErrors(
-      validateZeroOrPositiveInteger(this),
-          validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, secondaryIncome = boxRetriever.ac13.orZero)
+      validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, secondaryIncome = boxRetriever.ac13.orZero,minimumAmount = true)
     )
   }
 }

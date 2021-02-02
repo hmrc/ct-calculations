@@ -39,7 +39,7 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
           },
           failIf(boxRetriever.hmrcFiling().value)(
             collectErrors(
-              validateHmrcTurnover(boxRetriever, accountsStart, accountEnd)
+              validateHmrcTurnover(boxRetriever, accountsStart, accountEnd,minimumAmount = false)
             )
           ),
           failIf(!boxRetriever.hmrcFiling().value && boxRetriever.companiesHouseFiling().value)(
