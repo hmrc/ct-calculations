@@ -54,7 +54,7 @@ trait TurnoverValidation extends Validators {
                                                          start: (BR) => StartDate,
                                                          end: (BR) => EndDate,
                                                          errorSuffix: String = ".hmrc.turnover",
-                                                         secondaryIncome: Int = 0)(): Set[CtValidation] = {
+                                                         secondaryIncome: Int = 0,minimumAmount:Option[Int]=None)(): Set[CtValidation] = {
     val daysInPoa = daysBetweenDates(start(boxRetriever).value, end(boxRetriever).value)
     val daysInYear = getDaysInYear(boxRetriever, start, end)
 
@@ -65,7 +65,8 @@ trait TurnoverValidation extends Validators {
 
     val maxHmrcTurnover = if (isCharity) 6500000.0 else 632000.0
     val maximumTurnoverInYear = Math.floor(maxHmrcTurnover * daysInPoa / daysInYear).toInt
-    validateTurnoverRangeWithMinAndMaxMessages(this,  s"error.${this.id}$errorSuffix", -maximumTurnoverInYear, maximumTurnoverInYear, secondaryIncome)
+    val minimumValue =minimumAmount.getOrElse(-maximumTurnoverInYear)
+    validateTurnoverRangeWithMinAndMaxMessages(this,  s"error.${this.id}$errorSuffix", minimumValue, maximumTurnoverInYear, secondaryIncome)
   }
 
   protected def validateCoHoTurnover(boxRetriever: AccountsBoxRetriever, start: (AccountsBoxRetriever) => StartDate, end: (AccountsBoxRetriever) => EndDate)(): Set[CtValidation] = {

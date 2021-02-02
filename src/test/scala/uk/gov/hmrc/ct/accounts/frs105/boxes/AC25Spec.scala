@@ -32,7 +32,7 @@ class AC25Spec extends WordSpec with Matchers with MockitoSugar with MockFullAcc
       when(boxRetriever.companyType()).thenReturn(FilingCompanyType(UkTradingCompany))
       val ac25 = AC25(Some(-1))
 
-      ac25.validate(boxRetriever) shouldBe Set(CtValidation(Some("AC25"), "error.AC25.mustBeZeroOrPositive"))
+      ac25.validate(boxRetriever) shouldBe Set(CtValidation(Some("AC25"), "error.AC25.hmrc.turnover.below.min",Some(List("0", "632,000"))))
     }
 
     "Can't be more than 632000" in {
@@ -42,7 +42,7 @@ class AC25Spec extends WordSpec with Matchers with MockitoSugar with MockFullAcc
       when(boxRetriever.companyType()).thenReturn(FilingCompanyType(UkTradingCompany))
       val ac25 = AC25(Some(6320001))
 
-      ac25.validate(boxRetriever) shouldBe Set(CtValidation(Some("AC25"), "error.AC25.hmrc.turnover.above.max",Some(List("-632,000", "632,000"))))
+      ac25.validate(boxRetriever) shouldBe Set(CtValidation(Some("AC25"), "error.AC25.hmrc.turnover.above.max",Some(List("0", "632,000"))))
     }
 
 
@@ -53,7 +53,7 @@ class AC25Spec extends WordSpec with Matchers with MockitoSugar with MockFullAcc
       when(boxRetriever.companyType()).thenReturn(FilingCompanyType(UkTradingCompany))
       val ac25 = AC25(Some(631999))
 
-      ac25.validate(boxRetriever) shouldBe Set(CtValidation(Some("AC25"), "error.AC25.hmrc.turnover.above.max",Some(List("-632,000", "632,000"))))
+      ac25.validate(boxRetriever) shouldBe Set(CtValidation(Some("AC25"), "error.AC25.hmrc.turnover.above.max",Some(List("0", "632,000"))))
     }
 
 
