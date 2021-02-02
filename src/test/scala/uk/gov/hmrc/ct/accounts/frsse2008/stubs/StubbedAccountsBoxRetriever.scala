@@ -8,6 +8,7 @@ package uk.gov.hmrc.ct.accounts.frsse2008.stubs
 import uk.gov.hmrc.ct.CATO24
 import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frs105.boxes.{AC24, AC25, AC415}
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC13
 import uk.gov.hmrc.ct.accounts.frsse2008._
 import uk.gov.hmrc.ct.accounts.frsse2008.micro._
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever

@@ -13,7 +13,6 @@ package object formats {
 
   private def withDefault[A](key:String, default:A)(implicit writes:Writes[A]) = __.json.update((__ \ key).json.copyFrom((__ \ key).json.pick orElse Reads.pure(Json.toJson(default))))
 
-  implicit val ac13Frs105Format = new OptionalIntegerFormat[AC13](AC13.apply)
   implicit val ac34Frs105Format = new OptionalIntegerFormat[AC34](AC34.apply)
   implicit val ac35Frs105Format = new OptionalIntegerFormat[AC35](AC35.apply)
   implicit val ac59Frs105Format = new OptionalIntegerFormat[AC59](AC59.apply)
