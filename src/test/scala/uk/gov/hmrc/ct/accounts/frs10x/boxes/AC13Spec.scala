@@ -8,12 +8,12 @@ package uk.gov.hmrc.ct.accounts.frs10x.boxes
 import org.joda.time.LocalDate
 import org.mockito.Mockito.when
 import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AC205, AccountsMoneyValidationFixture, AccountsPreviousPeriodValidationFixture, MockFullAccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC13Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever]
-               with AccountsPreviousPeriodValidationFixture[Frs10xAccountsBoxRetriever]
+class AC13Spec extends AccountsMoneyValidationFixture[AccountsBoxRetriever]
+               with AccountsPreviousPeriodValidationFixture[AccountsBoxRetriever]
                with MockFullAccountsRetriever {
 
   testAccountsMoneyValidationWithMin("AC13", 0, AC13.apply, true, false)
