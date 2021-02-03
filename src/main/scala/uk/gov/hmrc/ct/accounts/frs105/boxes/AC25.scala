@@ -27,7 +27,31 @@ case class AC25(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
 
   override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, secondaryIncome = boxRetriever.ac13.orZero,minimumAmount = Some(0))
+      validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, secondaryIncome = boxRetriever.ac13.orZero)
     )
   }
 }
+
+//  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
+//    val ac13 = boxRetriever.ac13()
+//    val ac17 = boxRetriever.ac17()
+//
+//    val doCorrectValidation: Set[CtValidation] =
+//      if (value.getOrElse(0) == 0) {
+//        validationSuccess
+//      } else {
+//        (ac13.value, ac17.value) match {
+//          case (Some(_), None) =>
+//            validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, errorSuffix = ".hmrc.turnover.AC13", secondaryIncome = ac13.orZero)
+//          case (None, Some(_)) =>
+//            validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, errorSuffix = ".hmrc.turnover.AC17", secondaryIncome = ac17.orZero)
+//          case _ => validationSuccess
+//        }
+//      }
+//
+//    collectErrors(
+//      doCorrectValidation,
+//      validateZeroOrPositiveInteger(this),
+//        validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, secondaryIncome = boxRetriever.ac13.orZero)
+//    )
+//  }

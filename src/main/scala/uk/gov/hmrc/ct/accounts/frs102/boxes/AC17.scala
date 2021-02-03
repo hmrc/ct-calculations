@@ -20,7 +20,7 @@ case class AC17(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
       validateInputAllowed("AC17", boxRetriever.ac205()),
-      validateMoney(value)
+      validateMoney(value, 0, 632000)
     )
   }
 }
