@@ -8,6 +8,7 @@ package uk.gov.hmrc.ct.accounts.frs105.boxes
 import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs105.stubs.StubbedFrs105AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC24
 
 class AC435Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
 

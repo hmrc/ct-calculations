@@ -6,10 +6,9 @@
 package uk.gov.hmrc.ct.accounts.frs102.calculations
 
 import uk.gov.hmrc.ct.accounts.calculations.DebitAwareCalculation
-import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC13
-
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC13, AC24}
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
-import uk.gov.hmrc.ct.accounts.frs105.boxes.{AC24, AC25}
+import uk.gov.hmrc.ct.accounts.frs105.boxes.AC25
 import uk.gov.hmrc.ct.accounts.{AC12, AC401, AC402, AC403, AC404}
 
 trait GrossProfitAndLossCalculator  extends DebitAwareCalculation {

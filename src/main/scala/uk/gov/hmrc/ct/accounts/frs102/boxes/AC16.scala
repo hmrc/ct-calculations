@@ -6,7 +6,7 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.calculations.GrossProfitAndLossCalculator
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.validation.TurnoverValidation
@@ -14,18 +14,18 @@ import uk.gov.hmrc.ct.validation.TurnoverValidation
 case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit or loss (current PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever]
+  with ValidatableBox[Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever]
   with Validators with TurnoverValidation {
 
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever ): Set[CtValidation] = {
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever ): Set[CtValidation] = {
     collectErrors {
       validateMoney(value, 0, 632000)
     }
   }
 }
 
-object AC16 extends Calculated[AC16, Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever] with GrossProfitAndLossCalculator {
-  override def calculate(boxRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever ): AC16 = {
+object AC16 extends Calculated[AC16, Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever] with GrossProfitAndLossCalculator {
+  override def calculate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever ): AC16 = {
     if(!boxRetriever.cato24().isTrue && boxRetriever.abridgedFiling().value) {
       AC16(None)
     } else {

@@ -6,7 +6,8 @@
 package uk.gov.hmrc.ct.accounts
 
 import play.api.libs.json.{Format, Json}
-import uk.gov.hmrc.ct.accounts.frs105.boxes.{AC24, AC25, AC415}
+import uk.gov.hmrc.ct.accounts.frs105.boxes.{AC25, AC415}
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC24
 import uk.gov.hmrc.ct.box.formats.{DateFormat, OptionalDateFormat, OptionalIntegerFormat, OptionalStringFormat}
 
 package object formats {

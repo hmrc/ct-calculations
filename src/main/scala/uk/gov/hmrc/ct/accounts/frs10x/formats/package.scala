@@ -5,8 +5,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x
 
-import play.api.libs.json.{Reads, _}
-import uk.gov.hmrc.ct.accounts.approval.boxes._
+import play.api.libs.json._
 import uk.gov.hmrc.ct.accounts.frs10x.boxes._
 import uk.gov.hmrc.ct.box.formats._
 import play.api.libs.json.JodaWrites._
@@ -21,7 +20,7 @@ package object formats {
   implicit val ac8088Format = new OptionalBooleanFormat(AC8088.apply)
   implicit val ac8089Format = new OptionalBooleanFormat(AC8089.apply)
 
-  implicit val ac13Format  = new OptionalIntegerFormat[AC13](AC13.apply)
+  implicit val ac24Format: Format[AC24] = new OptionalIntegerFormat[AC24](AC24.apply)
   implicit val ac401Format = new OptionalIntegerFormat[AC401](AC401.apply)
   implicit val ac402Format = new OptionalIntegerFormat[AC402](AC402.apply)
   implicit val ac403Format = new OptionalIntegerFormat[AC403](AC403.apply)
