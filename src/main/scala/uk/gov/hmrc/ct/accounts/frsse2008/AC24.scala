@@ -39,9 +39,6 @@ case class AC24(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
           case Some(_) =>
             validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, errorSuffix = ".hmrc.turnover.AC16", secondaryIncome = ac16.orZero)
           case None => validationSuccess
-
-
-          case _ => validationSuccess
         }
       }
     }

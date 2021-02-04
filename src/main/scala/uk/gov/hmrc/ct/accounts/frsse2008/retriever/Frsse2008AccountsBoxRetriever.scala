@@ -21,8 +21,6 @@ trait Frsse2008AccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac13(): AC13
 
-  def ac14(): AC14
-
   def ac15(): AC15
 
   def ac16(): AC16 = AC16.calculate(this)
