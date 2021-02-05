@@ -7,10 +7,11 @@ package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.utils.CatoLimits._
 
 class AC17Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever] with AccountsPreviousPeriodValidationFixture[Frs10xAccountsBoxRetriever] with MockFrs102AccountsRetriever {
 
-  testAccountsMoneyValidation("AC17", AC17.apply)
+  testAccountsMoneyValidationWithMinMax("AC17", minimumValue, turnoverHMRCMaximumValue, AC17.apply)
 
   testAccountsPreviousPoAValidation("AC17", AC17.apply)
  }

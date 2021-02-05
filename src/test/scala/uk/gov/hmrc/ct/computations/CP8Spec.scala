@@ -11,6 +11,7 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.formats._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import  uk.gov.hmrc.ct.utils.CatoLimits._
 
 class CP8Spec extends WordSpec with Matchers with MockitoSugar {
 
@@ -59,10 +60,10 @@ class CP8Spec extends WordSpec with Matchers with MockitoSugar {
       CP8(Some(-99999999)).validate(boxRetriever) shouldBe empty
     }
     "fail when below min" in {
-      CP8(Some(-100000000)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP8"), "error.CP8.below.min", Some(Seq("-99999999", "99999999"))))
+      CP8(Some(-100000000)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP8"), "error.CP8.below.min", Some(Seq(oldMinWithCommas, oldMaxWithCommas))))
     }
     "fail when above max" in {
-      CP8(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP8"), "error.CP8.above.max", Some(Seq("-99999999", "99999999"))))
+      CP8(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP8"), "error.CP8.above.max", Some(Seq(oldMinWithCommas, oldMaxWithCommas))))
     }
     "fail when empty" in {
       CP8(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP8"), "error.CP8.required"))
