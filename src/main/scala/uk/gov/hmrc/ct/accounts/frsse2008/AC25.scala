@@ -14,6 +14,7 @@ case class AC25(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
   with Input
   with CovidProfitAndLossValidationHelper[Frsse2008AccountsBoxRetriever] {
 
+  val ac17Id: String = "AC17"
 
   override val turnover: Frsse2008AccountsBoxRetriever => AC17 =
     boxRetriever => boxRetriever.ac17()
@@ -31,7 +32,7 @@ case class AC25(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
 
   override def processValidation(boxRetriever: Frsse2008BoxRetriever): PartialFunction[Box, Set[CtValidation]] = {
     case ac17: AC17 if ac17.hasValue => {
-      validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, errorSuffix = ".hmrc.turnover.AC17", secondaryIncome = ac17.orZero)
+      validateTurnover(boxRetriever, ac17, boxId)
     }
     case ac17: AC17 if !ac17.hasValue => validationSuccess
   }
