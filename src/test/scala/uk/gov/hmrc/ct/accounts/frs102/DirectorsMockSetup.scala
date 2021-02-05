@@ -8,7 +8,7 @@ package uk.gov.hmrc.ct.accounts.frs102
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.ct.accounts.frs10x.{AC8021, AC8023, ACQ8003, ACQ8009}
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC8021, AC8023, ACQ8003, ACQ8009}
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AC3, AC4}
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever

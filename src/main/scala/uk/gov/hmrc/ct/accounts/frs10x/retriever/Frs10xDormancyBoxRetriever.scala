@@ -5,7 +5,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.retriever
 
-import uk.gov.hmrc.ct.accounts.frs10x.{AC8089, ACQ8989, ACQ8990, ACQ8991, ACQ8999, NotTradedStatementRequired, ProfitAndLossStatementRequired}
+import uk.gov.hmrc.ct.accounts.frs10x.boxes._
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 

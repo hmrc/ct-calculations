@@ -5,7 +5,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
-import uk.gov.hmrc.ct.accounts.frs10x.AC15
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC15
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, AccountsPreviousPeriodValidationFixture, MockFullAccountsRetriever}
 

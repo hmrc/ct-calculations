@@ -8,7 +8,7 @@ package uk.gov.hmrc.ct.ct600.accounts
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs10x.AC8023
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC8023
 import uk.gov.hmrc.ct.accounts.frs10x.boxes._
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation

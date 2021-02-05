@@ -10,7 +10,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs10x.ACQ8999
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.ACQ8999
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDormancyBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 

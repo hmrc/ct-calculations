@@ -8,7 +8,7 @@ package uk.gov.hmrc.ct.accounts.retriever
 import uk.gov.hmrc.ct.CATO24
 import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
-import uk.gov.hmrc.ct.accounts.frs10x.AC13
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC13
 import uk.gov.hmrc.ct.accounts.frsAny.boxes.AC14
 import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
 

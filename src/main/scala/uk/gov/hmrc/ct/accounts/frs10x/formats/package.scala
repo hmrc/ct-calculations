@@ -9,6 +9,7 @@ import play.api.libs.json._
 import uk.gov.hmrc.ct.box.formats._
 import play.api.libs.json.JodaWrites._
 import play.api.libs.json.JodaReads._
+import uk.gov.hmrc.ct.accounts.frs10x.boxes._
 import uk.gov.hmrc.ct.accounts.{AC401, AC402, AC403, AC404}
 
 package object formats {
@@ -17,7 +18,8 @@ package object formats {
   implicit val ac15Format: OptionalIntegerFormat[AC15] = new OptionalIntegerFormat[AC15](AC15.apply)
   implicit val ac16Format: OptionalIntegerFormat[AC16] = new OptionalIntegerFormat[AC16](AC16.apply)
   implicit val ac17Format: OptionalIntegerFormat[AC17] = new OptionalIntegerFormat[AC17](AC17.apply)
-  implicit val ac25Format: Format[AC25] = new OptionalIntegerFormat[AC25](AC25.apply)
+  implicit val ac24Format: OptionalIntegerFormat[AC24] = new OptionalIntegerFormat[AC24](AC24.apply)
+  implicit val ac25Format: OptionalIntegerFormat[AC25] = new OptionalIntegerFormat[AC25](AC25.apply)
 
   implicit val ac8081Format = new OptionalBooleanFormat(AC8081.apply)
   implicit val ac8082Format = new OptionalBooleanFormat(AC8082.apply)
@@ -25,7 +27,6 @@ package object formats {
   implicit val ac8088Format = new OptionalBooleanFormat(AC8088.apply)
   implicit val ac8089Format = new OptionalBooleanFormat(AC8089.apply)
 
-  implicit val ac24Format: OptionalIntegerFormat[AC24] = new OptionalIntegerFormat[AC24](AC24.apply)
   implicit val ac401Format = new OptionalIntegerFormat[AC401](AC401.apply)
   implicit val ac402Format = new OptionalIntegerFormat[AC402](AC402.apply)
   implicit val ac403Format = new OptionalIntegerFormat[AC403](AC403.apply)

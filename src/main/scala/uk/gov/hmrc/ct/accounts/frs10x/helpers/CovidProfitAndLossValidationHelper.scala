@@ -11,7 +11,7 @@ import uk.gov.hmrc.ct.accounts.{AC3, AC4}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.ValidatableBox.OptionalIntIdBox
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, CtValidation, Input, ValidatableBox}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, CtValidation, ValidatableBox}
 import uk.gov.hmrc.ct.validation.TurnoverValidation
 
 trait CovidProfitAndLossValidationHelper[T <: AccountsBoxRetriever] extends ValidatableBox[T with FilingAttributesBoxValueRetriever] with TurnoverValidation {
