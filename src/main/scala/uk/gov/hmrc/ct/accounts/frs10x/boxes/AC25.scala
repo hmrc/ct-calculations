@@ -10,8 +10,8 @@ import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 case class AC25(value: Option[Int]) extends CtBoxIdentifier(name = "Income from covid-19 business support grants")
-  with Input
   with CtOptionalInteger
+  with Input
   with CovidProfitAndLossValidationHelper[Frs10xAccountsBoxRetriever] {
 
   override val turnover: Frs10xAccountsBoxRetriever => AC13 = {
