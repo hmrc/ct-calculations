@@ -3,7 +3,7 @@
  *
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x
+package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.{Frs10xDirectorsBoxRetriever, Frs10xDormancyBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever

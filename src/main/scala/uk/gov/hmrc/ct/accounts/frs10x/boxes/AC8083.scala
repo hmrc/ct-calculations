@@ -3,12 +3,12 @@
  *
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x
+package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC8088(value: Option[Boolean]) extends CtBoxIdentifier(name = "I agree to the legal statements - include them with my balance sheet\t")
+case class AC8083(value: Option[Boolean]) extends CtBoxIdentifier(name = "The directors acknowledge their responsibilities for complying with the requirements of the Act with respect to accounting records and the preparation of accounts.")
   with CtOptionalBoolean
   with Input
   with ValidatableBox[Frs10xAccountsBoxRetriever]
@@ -16,7 +16,7 @@ case class AC8088(value: Option[Boolean]) extends CtBoxIdentifier(name = "I agre
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateBooleanAsTrue("AC8088", this)
+      validateBooleanAsTrue("AC8083", this)
     )
   }
   

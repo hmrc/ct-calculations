@@ -5,52 +5,37 @@
 
 package uk.gov.hmrc.ct.accounts.frsse2008
 
+import uk.gov.hmrc.ct.accounts.AC12
+import uk.gov.hmrc.ct.accounts.frs10x.helpers.CovidProfitAndLossValidationHelper
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AC3, AC4}
-import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, CtValidation, Input, ValidatableBox}
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-import uk.gov.hmrc.ct.validation.TurnoverValidation
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, CtValidation, Input}
 
 case class AC24(value: Option[Int]) extends CtBoxIdentifier(name = "Income from covid-19 business support grants")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever]
-  with TurnoverValidation {
+  with CovidProfitAndLossValidationHelper[Frsse2008AccountsBoxRetriever] {
 
-  val accountsStart: AccountsBoxRetriever => AC3 = {
-    boxRetriever: AccountsBoxRetriever =>
-      boxRetriever.ac3()
-  }
+  override val turnover: Frsse2008AccountsBoxRetriever => AC12 =
+    boxRetriever => boxRetriever.ac12()
 
-  val accountEnd: AccountsBoxRetriever => AC4 = {
-    boxRetriever: AccountsBoxRetriever =>
-      boxRetriever.ac4()
-  }
+  override val grossProfitOrLoss: Frsse2008AccountsBoxRetriever => AC16 =
+    boxRetriever => boxRetriever.ac16()
 
-  override def validate(boxRetriever: Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
-    val ac16 = boxRetriever.ac16()
-
-    val doCorrectValidation: Set[CtValidation] = {
-      if (value.getOrElse(0) == 0) {
-        validationSuccess
-      } else {
-        ac16.value match {
-          case Some(_) =>
-            validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, errorSuffix = ".hmrc.turnover.AC16", secondaryIncome = ac16.orZero)
-          case None => validationSuccess
-        }
-      }
-    }
-
+  override def validate(boxRetriever: Frsse2008BoxRetriever): Set[CtValidation] = {
     collectErrors(
-      doCorrectValidation,
+      doCorrectValidation(boxRetriever),
       validateZeroOrPositiveInteger(this),
-      failIf(boxRetriever.hmrcFiling().value && !boxRetriever.abridgedFiling().value)(
-        collectErrors(
-          validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, secondaryIncome = boxRetriever.ac12.orZero)
-        )
+//      failIf(boxRetriever.hmrcFiling().value && !boxRetriever.abridgedFiling().value)(
+//        collectErrors(
+//          validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, secondaryIncome = boxRetriever.ac12.orZero)
+//        )
       )
-    )
   }
+
+override def processValidation(boxRetriever: BoxRetriever): PartialFunction[Box, Set[CtValidation]] = {
+  case ac16: AC16 if ac16.hasValue => validateTurnover(boxRetriever, ac16, boxId)
+  case ac16: AC16 if !ac16.hasValue => validationSuccess
+  case _ => throw new Exception("Unexpected error")
+
+}
 }

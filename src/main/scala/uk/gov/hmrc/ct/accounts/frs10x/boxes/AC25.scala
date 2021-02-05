@@ -3,7 +3,7 @@
  *
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x
+package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import uk.gov.hmrc.ct.accounts.frs10x.helpers.CovidProfitAndLossValidationHelper
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
@@ -13,9 +13,6 @@ case class AC25(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
   with CtOptionalInteger
   with Input
   with CovidProfitAndLossValidationHelper[Frs10xAccountsBoxRetriever] {
-
-  val ac13Id = "AC13"
-  val ac17Id = "AC17"
 
   override val turnover: Frs10xAccountsBoxRetriever => AC13 = {
     boxRetriever =>
@@ -35,7 +32,7 @@ case class AC25(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
   }
 
   override def processValidation(boxRetriever: Frs10xBoxRetriever): PartialFunction[Box, Set[CtValidation]] = {
-      case box: AC13 => validateTurnover(boxRetriever, box, ac13Id)
-      case box: AC17 => validateTurnover(boxRetriever, box, ac17Id)
+      case box: AC13 => validateTurnover(boxRetriever, box, "AC13")
+      case box: AC17 => validateTurnover(boxRetriever, box, "AC17")
     }
 }

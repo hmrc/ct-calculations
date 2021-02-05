@@ -3,12 +3,12 @@
  *
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x
+package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC8083(value: Option[Boolean]) extends CtBoxIdentifier(name = "The directors acknowledge their responsibilities for complying with the requirements of the Act with respect to accounting records and the preparation of accounts.")
+case class AC8082(value: Option[Boolean]) extends CtBoxIdentifier(name = "The members have not required the company to obtain an audit in accordance with section 476 of the Companies Act 2006.")
   with CtOptionalBoolean
   with Input
   with ValidatableBox[Frs10xAccountsBoxRetriever]
@@ -16,7 +16,7 @@ case class AC8083(value: Option[Boolean]) extends CtBoxIdentifier(name = "The di
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateBooleanAsTrue("AC8083", this)
+      validateBooleanAsTrue("AC8082", this)
     )
   }
   

@@ -64,7 +64,5 @@ trait CovidProfitAndLossValidationHelper[T <: AccountsBoxRetriever] extends Vali
 
   type Frsse2008BoxRetriever = Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever
 
-  type Box = CtBoxIdentifier with CtOptionalInteger with Input
-//    with ValidatableBox[_ <: AccountsBoxRetriever]
-//    with Input with ValidatableBox[_ <: AccountsBoxRetriever]
+  type Box = CtBoxIdentifier with CtOptionalInteger
 }

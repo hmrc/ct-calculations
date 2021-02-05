@@ -3,7 +3,7 @@
  *
  */
 
-package uk.gov.hmrc.ct.accounts.frs10x
+package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.accounts.frs102.validation.DirectorsReportEnabledCalculator
