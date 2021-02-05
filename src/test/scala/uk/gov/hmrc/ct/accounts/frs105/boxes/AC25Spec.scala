@@ -11,7 +11,7 @@ import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.FilingCompanyType
 import uk.gov.hmrc.ct.accounts.{AC3, AC4, MockFullAccountsRetriever}
-import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC13
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC13, AC25}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.domain.CompanyTypes.UkTradingCompany
 

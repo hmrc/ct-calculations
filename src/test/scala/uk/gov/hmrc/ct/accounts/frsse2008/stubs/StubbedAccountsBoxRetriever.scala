@@ -7,8 +7,7 @@ package uk.gov.hmrc.ct.accounts.frsse2008.stubs
 
 import uk.gov.hmrc.ct.CATO24
 import uk.gov.hmrc.ct.accounts._
-import uk.gov.hmrc.ct.accounts.frs105.boxes.{AC25, AC415}
-import uk.gov.hmrc.ct.accounts.frs10x.boxes
+import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC13
 import uk.gov.hmrc.ct.accounts.frsAny.boxes.AC14
 import uk.gov.hmrc.ct.accounts.frsse2008._
@@ -43,7 +42,7 @@ trait StubbedAccountsBoxRetriever extends Frsse2008AccountsBoxRetriever {
 
   override def ac22(): AC22 = ???
 
-  override def ac24(): boxes.AC24 = ???
+  override def ac24(): AC24 = ???
 
   override def ac25(): AC25 = ???
 

@@ -52,8 +52,8 @@ import ValidatableBox._
   }
 
   protected def validateMoney(value: Option[Int], min: Int = -99999999, max: Int = 99999999)(): Set[CtValidation] = {
-    val formattedMin = "£" + commaForThousands(min)
-    val formattedMax = "£" + commaForThousands(max)
+    val formattedMin = commaForThousands(min)
+    val formattedMax = commaForThousands(max)
 
     value match {
       case Some(x) if x < min => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(formattedMin, formattedMax))))

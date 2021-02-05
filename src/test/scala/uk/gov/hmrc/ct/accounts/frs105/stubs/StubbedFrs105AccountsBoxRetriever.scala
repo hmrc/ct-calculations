@@ -7,9 +7,9 @@ package uk.gov.hmrc.ct.accounts.frs105.stubs
 
 import uk.gov.hmrc.ct.accounts.{AC1, AC12, AC2, AC205, AC206, AC3, AC4, AC401, AC402, AC403, AC404, CompanyAddress}
 import uk.gov.hmrc.ct.{AbbreviatedAccountsFiling, AbridgedFiling, CATO24, CompaniesHouseFiling, CompaniesHouseSubmitted, CountryOfRegistration, FilingCompanyType, HMRCAmendment, HMRCFiling, HMRCSubmitted, MicroEntityFiling, StatutoryAccountsFiling, UTR}
-import uk.gov.hmrc.ct.accounts.frs105.boxes.{AC25, AC34, AC35, AC405, AC406, AC410, AC411, AC415, AC416, AC420, AC421, AC425, AC426, AC450, AC451, AC455, AC456, AC460, AC461, AC465, AC466, AC470, AC471, AC490, AC491, AC58, AC59, AC64, AC65, AC66, AC67, AC7991, AC7992, AC7995, AC7997, AC7998, AC7999, AC7999a, AC8087}
+import uk.gov.hmrc.ct.accounts.frs105.boxes.{AC34, AC35, AC405, AC406, AC410, AC411, AC415, AC416, AC420, AC421, AC425, AC426, AC450, AC451, AC455, AC456, AC460, AC461, AC465, AC466, AC470, AC471, AC490, AC491, AC58, AC59, AC64, AC65, AC66, AC67, AC7991, AC7992, AC7995, AC7997, AC7998, AC7999, AC7999a, AC8087}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC13, AC24, AC8081, AC8082, AC8083, AC8088}
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC13, AC24, AC25, AC8081, AC8082, AC8083, AC8088}
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
