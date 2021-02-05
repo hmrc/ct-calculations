@@ -12,5 +12,5 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.utils.CatoLimits._
 
 class AC16Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever] with MockFrs102AccountsRetriever {
-  testAccountsMoneyValidationWithMinMax("AC16", minimumValue, oldMaxValue, AC16.apply)
+  testAccountsMoneyValidationWithMinMax("AC16", minimumValue, turnoverHMRCMaximumValue, AC16.apply)
   }
