@@ -9,7 +9,7 @@ import org.mockito.Mockito._
 import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDormancyBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs10x.{ACQ8991, ACQ8999}
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.{ACQ8991, ACQ8999}
 import uk.gov.hmrc.ct.box.CtValidation
 
 class ACQ8991Spec extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach {

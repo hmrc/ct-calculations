@@ -12,6 +12,7 @@ object CatoLimits {
   val minimumValue: Int = 0
   val oldMaxValue: Int = 99999999
   val minimumValueAsString: String = 0.toString
+  val turnoverHMRCMaximumWithCommas: String = commaForThousands(632000)
   val oldMaxWithCommas: String = commaForThousands(99999999)
   val oldMinWithCommas: String = commaForThousands(-99999999)
 }

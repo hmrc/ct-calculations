@@ -7,8 +7,8 @@ package uk.gov.hmrc.ct.accounts.frs10x.helpers
 
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AC3, AC4}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.{AC3, AC4}
 import uk.gov.hmrc.ct.box.ValidatableBox.OptionalIntIdBox
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, CtValidation, ValidatableBox}
@@ -44,7 +44,7 @@ trait CovidProfitAndLossValidationHelper[T <: AccountsBoxRetriever] extends Vali
   }
 
   def getCorrectBox(boxRetriever: BoxRetriever): Box = {
-    val isAbridgedJourney = boxRetriever.abridgedFiling().value
+     val isAbridgedJourney = boxRetriever.abridgedFiling().value
 // do we need full accounts in here?
     val correctBoxWithBoxId =
       if (isAbridgedJourney) grossProfitOrLoss(boxRetriever)

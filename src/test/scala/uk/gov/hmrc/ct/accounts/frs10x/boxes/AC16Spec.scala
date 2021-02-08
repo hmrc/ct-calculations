@@ -6,7 +6,7 @@
 package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import uk.gov.hmrc.ct.accounts._
-import uk.gov.hmrc.ct.accounts.frs10x.AC16
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC16
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.utils.CatoLimits._
