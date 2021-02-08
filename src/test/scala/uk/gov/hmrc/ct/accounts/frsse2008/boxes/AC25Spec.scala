@@ -10,18 +10,20 @@ import org.mockito.Mockito.when
 import org.scalatest.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.FilingCompanyType
-import uk.gov.hmrc.ct.accounts.frsse2008.{AC17, AC25}
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC16, AC24}
+import uk.gov.hmrc.ct.accounts.frsse2008.{AC16, AC17, AC25}
+import uk.gov.hmrc.ct.accounts.utils.CovidProfitAndLossSpecHelper
 import uk.gov.hmrc.ct.accounts.{AC3, AC4, MockFrsse2008AccountsBoxRetriever}
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, CtValidation}
 import uk.gov.hmrc.ct.domain.CompanyTypes.UkTradingCompany
 import uk.gov.hmrc.ct.utils.CatoLimits._
 import uk.gov.hmrc.ct.utils.{Mocks, UnitSpec}
 
-class AC25Spec extends UnitSpec with Mocks with Matchers with MockitoSugar with MockFrsse2008AccountsBoxRetriever {
+class AC25Spec extends CovidProfitAndLossSpecHelper with MockFrsse2008AccountsBoxRetriever {
 
-  private val emptyTurnover = AC17(Some(0))
+  val emptyProfitAndLossPrevPeriod = AC17(Some(0))
 
-  private def makeAC25(value: Int, box: CtBoxIdentifier with CtOptionalInteger = emptyTurnover): AC25 = new AC25(Some(value)) {
+  private def makeAC25(value: Int, box: CtBoxIdentifier with CtOptionalInteger = emptyProfitAndLossPrevPeriod): AC25 = new AC25(Some(value)) {
     override def getCorrectBox(boxRetriever: BoxRetriever): Box = box
   }
 
@@ -29,46 +31,47 @@ class AC25Spec extends UnitSpec with Mocks with Matchers with MockitoSugar with 
     "validate successfully" when {
       "empty" in {
         doMocks()
-        AC25(None).validate(boxRetriever) shouldBe validationSuccess
+        boxValidationIsSuccessful(AC25(None).validate(boxRetriever))
       }
-
       "zero" in {
         doMocks()
-        AC25(Some(0)).validate(boxRetriever) shouldBe validationSuccess
+        boxValidationIsSuccessful(AC25(Some(0)).validate(boxRetriever))
       }
       "greater than 0 but less than 632000, when combined with AC13" in {
         doMocks()
-        val validatedAC25 = makeAC25(5).validate(boxRetriever)
+        boxValidationIsSuccessful(makeAC25(5).validate(boxRetriever))
+      }
 
-        validatedAC25 shouldBe validationSuccess
+      "greater than 0 but less than 632000, when combined with AC17" in {
+        doMocks()
+        boxValidationIsSuccessful(makeAC25(5, AC17(Some(12))).validate(boxRetriever))
       }
     }
     "fail" when {
       "negative" in {
         doMocks()
-        val validatedAC25 = makeAC25(-1).validate(boxRetriever).head.errorMessageKey
+        val validatedAC25 = makeAC25(-1).validate(boxRetriever)
 
-        validatedAC25.contains("mustBeZeroOrPositive") shouldBe true
+        doesErrorMessageContain(validatedAC25, zeroOrPositiveErrorMsg)
       }
 
-      "more than 632000" in {
-        doMocks()
-        val validatedAC25: CtValidation = makeAC25(turnoverHMRCMaximumValue + 1).validate(boxRetriever).head
+        "more than 632000" in {
+          doMocks()
+          val validatedAC25 = makeAC25(justOverLimit).validate(boxRetriever)
 
-        validatedAC25.errorMessageKey.contains(".hmrc.turnover.AC17.above.max") shouldBe true
-        validatedAC25.args shouldBe Some(List("0", turnoverHMRCMaximumWithCommas))
+          doesErrorMessageContain(validatedAC25, turnoverBiggerThanMax("AC17"))
+          turnoverTooLargeErrorArguments(validatedAC25)
+        }
+
+        "more than 632000 when combined with AC17" in {
+          doMocks()
+          val grossProfitOrLoss = AC17(Some(2))
+          val validatedAC25 = makeAC25(justUnderLimit, grossProfitOrLoss).validate(boxRetriever)
+
+          doesErrorMessageContain(validatedAC25, turnoverBiggerThanMax("AC17"))
+          turnoverTooLargeErrorArguments(validatedAC25)
+        }
       }
-
-
-      "more than 632000 when combined with AC17" in {
-        doMocks()
-        val turnover = AC17(Some(2))
-        val validatedAC25 = makeAC25(turnoverHMRCMaximumValue - 1, turnover).validate(boxRetriever).head
-
-        validatedAC25.errorMessageKey.contains(".hmrc.turnover.AC17.above.max") shouldBe true
-        validatedAC25.args shouldBe Some(List("0", turnoverHMRCMaximumWithCommas))
-      }
-    }
   }
 
   private def doMocks(): Unit = {

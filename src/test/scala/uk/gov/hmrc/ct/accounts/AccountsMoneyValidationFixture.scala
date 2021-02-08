@@ -40,9 +40,7 @@ trait AccountsMoneyValidationFixture[T <: AccountsBoxRetriever] extends WordSpec
     setUpMocks()
     s"$boxId" should {
       "be valid when minimum" in {
-        val ad = builder(Some(minValue)).validate(boxRetriever)
-
-        ad shouldBe empty
+       builder(Some(minValue)).validate(boxRetriever) shouldBe empty
       }
       "be valid when empty" in {
         if (testEmpty) {

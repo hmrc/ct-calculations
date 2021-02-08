@@ -5,22 +5,18 @@
 
 package uk.gov.hmrc.ct.accounts.frsse2008.boxes
 
-import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4, MockFrsse2008AccountsBoxRetriever}
 import org.joda.time.LocalDate
 import org.mockito.Mockito.when
-import org.scalatest.Matchers
-import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.FilingCompanyType
 import uk.gov.hmrc.ct.accounts.frsse2008.{AC16, AC24}
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, CtValidation}
+import uk.gov.hmrc.ct.accounts.utils.CovidProfitAndLossSpecHelper
+import uk.gov.hmrc.ct.accounts.{AC3, AC4, MockFrsse2008AccountsBoxRetriever}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger}
 import uk.gov.hmrc.ct.domain.CompanyTypes.UkTradingCompany
-import uk.gov.hmrc.ct.utils.{Mocks, UnitSpec}
-import uk.gov.hmrc.ct.utils.CatoLimits._
 
-class AC24Spec extends UnitSpec with Mocks with Matchers with MockitoSugar with MockFrsse2008AccountsBoxRetriever {
+class AC24Spec extends CovidProfitAndLossSpecHelper with MockFrsse2008AccountsBoxRetriever {
 
-  private val emptyGrossProfitOrLoss = AC16(Some(0))
-
+  private val emptyGrossProfitOrLoss: AC16 = AC16(Some(0))
   private def makeAC24(value: Int, box: CtBoxIdentifier with CtOptionalInteger = emptyGrossProfitOrLoss): AC24 = new AC24(Some(value)) {
     override def getCorrectBox(boxRetriever: BoxRetriever): Box = box
   }
@@ -29,50 +25,48 @@ class AC24Spec extends UnitSpec with Mocks with Matchers with MockitoSugar with 
     "validate successfully" when {
       "empty" in {
         doMocks()
-        AC24(None).validate(boxRetriever) shouldBe validationSuccess
+        boxValidationIsSuccessful(AC24(None).validate(boxRetriever))
       }
 
       "zero" in {
         doMocks()
-        AC24(Some(0)).validate(boxRetriever) shouldBe validationSuccess
+        boxValidationIsSuccessful(AC24(Some(0)).validate(boxRetriever))
       }
 
       "greater than 0 but less than 632000, when combined with AC16" in {
         doMocks()
         val validatedAC24 = makeAC24(5, AC16(Some(500))).validate(boxRetriever)
-
-        validatedAC24 shouldBe validationSuccess
+        boxValidationIsSuccessful(validatedAC24)
       }
     }
 
     "fail" when {
       "negative" in {
         doMocks()
-        val validatedAC24 = makeAC24(-1).validate(boxRetriever).head.errorMessageKey
-
-        validatedAC24.contains("mustBeZeroOrPositive") shouldBe true
+        val validatedAC24 = makeAC24(-1).validate(boxRetriever)
+        doesErrorMessageContain(validatedAC24, zeroOrPositiveErrorMsg)
       }
 
       "more than 632000" in {
         doMocks()
-        val validatedAC24: CtValidation = makeAC24(turnoverHMRCMaximumValue + 1).validate(boxRetriever).head
+        val validatedAC24 = makeAC24(justOverLimit).validate(boxRetriever)
 
-        validatedAC24.errorMessageKey.contains(".hmrc.turnover.AC16.above.max") shouldBe true
-        validatedAC24.args shouldBe Some(List("0", turnoverHMRCMaximumWithCommas))
+        doesErrorMessageContain(validatedAC24, turnoverBiggerThanMax("AC16"))
+        turnoverTooLargeErrorArguments(validatedAC24)
       }
 
       "more than 632000 when combined with AC16" in {
         doMocks()
         val grossProfitOrLoss = AC16(Some(2))
-        val validatedAC24 = makeAC24(turnoverHMRCMaximumValue - 1, grossProfitOrLoss).validate(boxRetriever).head
+        val validatedAC24 = makeAC24(justUnderLimit, grossProfitOrLoss).validate(boxRetriever)
 
-        validatedAC24.errorMessageKey.contains(".hmrc.turnover.AC16.above.max") shouldBe true
-        validatedAC24.args shouldBe Some(List("0", turnoverHMRCMaximumWithCommas))
+        doesErrorMessageContain(validatedAC24, turnoverBiggerThanMax("AC16"))
+        turnoverTooLargeErrorArguments(validatedAC24)
       }
     }
   }
 
-  private def doMocks(): Unit = {
+  def doMocks(): Unit = {
     when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate("2019-09-01")))
     when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate("2020-08-31")))
     when(boxRetriever.companyType()).thenReturn(FilingCompanyType(UkTradingCompany))
