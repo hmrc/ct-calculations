@@ -1,3 +1,8 @@
+/*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ */
+
 package uk.gov.hmrc.ct.accounts.frsse2008.boxes
 
 import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4, MockFrsse2008AccountsBoxRetriever}

@@ -1,3 +1,8 @@
+/*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ */
+
 package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import org.joda.time.LocalDate
