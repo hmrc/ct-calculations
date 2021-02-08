@@ -54,7 +54,8 @@ trait TurnoverValidation extends Validators {
                                                          start: (BR) => StartDate,
                                                          end: (BR) => EndDate,
                                                          errorSuffix: String = ".hmrc.turnover",
-                                                         secondaryIncome: Int = 0,minimumAmount:Option[Int]=None)(): Set[CtValidation] = {
+                                                         secondaryIncome: Int = 0,
+                                                         minimumAmount:Option[Int]=None)(): Set[CtValidation] = {
     val daysInPoa = daysBetweenDates(start(boxRetriever).value, end(boxRetriever).value)
     val daysInYear = getDaysInYear(boxRetriever, start, end)
 

@@ -34,8 +34,8 @@ case class AC24(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
   }
 
 override def processValidation(boxRetriever: BoxRetriever): PartialFunction[Box, Set[CtValidation]] = {
-  case ac16: AC16 if ac16.hasValue => validateTurnover(boxRetriever, ac16, ac16Id)
   case ac16: AC16 if !ac16.hasValue => validationSuccess
+  case ac16: AC16 if ac16.hasValue => validateTurnover(boxRetriever, ac16, ac16Id)
   case _ => throw new Exception("Unexpected error")
 
 }

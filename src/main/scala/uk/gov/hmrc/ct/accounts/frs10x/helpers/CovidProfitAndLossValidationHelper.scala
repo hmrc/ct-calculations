@@ -41,11 +41,11 @@ trait CovidProfitAndLossValidationHelper[T <: AccountsBoxRetriever] extends Vali
   def processValidation(boxRetriever: BoxRetriever): PartialFunction[Box, Set[CtValidation]]
 
   def doCorrectValidation(boxRetriever: BoxRetriever): Set[CtValidation]  = {
-    if (value.getOrElse(0) == 0) {
+    if (value.getOrElse(0) <= 0) {
       validationSuccess
     } else {
       processValidation(boxRetriever)(getCorrectBox(boxRetriever))
-    }
+  }
   }
 
   def getCorrectBox(boxRetriever: BoxRetriever): Box = {
