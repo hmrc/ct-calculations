@@ -14,24 +14,23 @@ case class AC25(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
   with Input
   with CovidProfitAndLossValidationHelper[Frsse2008AccountsBoxRetriever] {
 
-  val ac17Id: String = "AC17"
 
   override val turnover: Frsse2008AccountsBoxRetriever => AC17 =
     boxRetriever => boxRetriever.ac17()
 
   override val grossProfitOrLoss: Frsse2008AccountsBoxRetriever => Box =
-    boxRetriever => boxRetriever.ac13()
+    boxRetriever => boxRetriever.ac13() // dont think this box is needed here
 
 
   override def validate(boxRetriever: Frsse2008BoxRetriever): Set[CtValidation] = {
     collectErrors(
-      doCorrectValidation(boxRetriever),
-      validateZeroOrPositiveInteger(this)
+        validateZeroOrPositiveInteger(this),
+        doCorrectValidation(boxRetriever)
     )
   }
 
   override def processValidation(boxRetriever: Frsse2008BoxRetriever): PartialFunction[Box, Set[CtValidation]] = {
-    case ac17: AC17 if ac17.hasValue => validateTurnover(boxRetriever, ac17, boxId)
+    case ac17: AC17 if ac17.hasValue => validateTurnover(boxRetriever, ac17, ac17Id)
     case ac17: AC17 if !ac17.hasValue => validationSuccess
     case _ => throw new Exception("Unexpected error")
   }

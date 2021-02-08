@@ -10,6 +10,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.accounts.frs102.retriever._
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.{Frs10xAccountsBoxRetriever, Frs10xDirectorsBoxRetriever, Frs10xDormancyBoxRetriever, Frs10xFilingQuestionsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
@@ -26,8 +27,14 @@ sealed trait TestAbridgedAccountsRetriever extends AbridgedAccountsBoxRetriever 
 
 sealed trait TestFullAccountsRetriever extends FullAccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xDirectorsBoxRetriever with Frs10xFilingQuestionsBoxRetriever
 
+sealed trait TestFrsse2008AccountsBoxRetriever extends Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever
+
 trait MockAccountsRetriever extends MockitoSugar {
   val boxRetriever = mock[TestAccountsRetriever]
+}
+
+trait MockFrsse2008AccountsBoxRetriever extends MockitoSugar {
+  val boxRetriever: TestFrsse2008AccountsBoxRetriever = mock[TestFrsse2008AccountsBoxRetriever]
 }
 
 trait MockFrs10xAccountsRetriever extends MockitoSugar {

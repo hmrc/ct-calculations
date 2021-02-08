@@ -19,6 +19,11 @@ trait CovidProfitAndLossValidationHelper[T <: AccountsBoxRetriever] extends Vali
 
   val value: Option[Int]
 
+  val ac12Id: String = "AC12"
+  val ac13Id: String = "AC13"
+  val ac16Id: String = "AC16"
+  val ac17Id: String = "AC17"
+
   val accountsStart: AccountsBoxRetriever => AC3 = {
     boxRetriever: AccountsBoxRetriever =>
       boxRetriever.ac3()

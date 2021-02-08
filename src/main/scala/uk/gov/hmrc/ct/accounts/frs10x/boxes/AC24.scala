@@ -15,9 +15,6 @@ case class AC24(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
   with Input
   with CovidProfitAndLossValidationHelper[Frs10xAccountsBoxRetriever] {
 
-  val ac12Id = "AC12"
-  val ac16Id = "AC16"
-
   val turnover: Frs10xAccountsBoxRetriever => AC12 = {
     boxRetriever =>
       boxRetriever.ac12()

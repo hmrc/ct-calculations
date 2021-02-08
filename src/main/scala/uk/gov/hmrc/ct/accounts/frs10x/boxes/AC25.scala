@@ -32,8 +32,8 @@ case class AC25(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
   }
 
   override def processValidation(boxRetriever: Frs10xBoxRetriever): PartialFunction[Box, Set[CtValidation]] = {
-      case box: AC13 => validateTurnover(boxRetriever, box, "AC13")
-      case box: AC17 => validateTurnover(boxRetriever, box, "AC17")
+      case box: AC13 => validateTurnover(boxRetriever, box, ac13Id)
+      case box: AC17 => validateTurnover(boxRetriever, box, ac17Id)
       case _ => throw new MatchError("you need to provide more cases to match on")
     }
 }
