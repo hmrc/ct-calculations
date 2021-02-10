@@ -8,8 +8,7 @@ package uk.gov.hmrc.ct.accounts.frs102.calculations
 import uk.gov.hmrc.ct.accounts.calculations.DebitAwareCalculation
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC24
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC13, AC15, AC16, AC17, AC25}
-import uk.gov.hmrc.ct.accounts.frsAny.boxes.AC14
-import uk.gov.hmrc.ct.accounts.{AC12, AC401, AC402, AC403, AC404}
+import uk.gov.hmrc.ct.accounts.{AC12, AC14, AC401, AC402, AC403, AC404}
 
 trait GrossProfitAndLossCalculator  extends DebitAwareCalculation {
   def calculateAC16(ac12: AC12, ac24: AC24, ac401: AC401, ac403: AC403, ac14: AC14): AC16 = {

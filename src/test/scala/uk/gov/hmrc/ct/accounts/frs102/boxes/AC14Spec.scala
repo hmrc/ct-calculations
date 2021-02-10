@@ -5,8 +5,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, MockFullAccountsRetriever}
-import uk.gov.hmrc.ct.accounts.frsAny.boxes.AC14
+import uk.gov.hmrc.ct.accounts.{AC14, AccountsMoneyValidationFixture, MockFullAccountsRetriever}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 
 class AC14Spec extends AccountsMoneyValidationFixture[AccountsBoxRetriever] with MockFullAccountsRetriever {

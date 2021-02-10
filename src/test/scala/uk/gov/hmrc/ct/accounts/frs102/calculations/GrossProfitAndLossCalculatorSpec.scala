@@ -7,8 +7,7 @@ package uk.gov.hmrc.ct.accounts.frs102.calculations
 
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC13, AC15, AC16, AC17, AC24, AC25}
-import uk.gov.hmrc.ct.accounts.{AC12, AC401, AC402, AC403, AC404}
-import uk.gov.hmrc.ct.accounts.frsAny.boxes.AC14
+import uk.gov.hmrc.ct.accounts.{AC12, AC14, AC401, AC402, AC403, AC404}
 
 class GrossProfitAndLossCalculatorSpec extends WordSpec with Matchers {
 

@@ -11,8 +11,7 @@ import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-import uk.gov.hmrc.ct.utils.CatoLimits
-import uk.gov.hmrc.ct.utils.CatoLimits.turnoverHMRCMaximumValue
+
 import uk.gov.hmrc.ct.validation.TurnoverValidation
 
 case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit or loss (current PoA)")
@@ -37,7 +36,6 @@ case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
     }
   }
 }
-
 object AC16 extends Calculated[AC16, Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever] with GrossProfitAndLossCalculator {
   override def calculate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever ): AC16 = {
     if(!boxRetriever.cato24().isTrue && boxRetriever.abridgedFiling().value) {

@@ -33,7 +33,7 @@ case class AC24(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
   override def validate(boxRetriever: Frs10xBoxRetriever): Set[CtValidation] = {
     collectErrors(
           validateZeroOrPositiveInteger(this),
-          doCorrectValidation(boxRetriever)
+          validateTurnoverOrGrossProfitOrLoss(boxRetriever)
       )
   }
 }

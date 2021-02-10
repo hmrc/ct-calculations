@@ -40,7 +40,7 @@ trait CovidProfitAndLossValidationHelper[T <: AccountsBoxRetriever] extends Vali
 
   def processValidation(boxRetriever: BoxRetriever): PartialFunction[Box, Set[CtValidation]]
 
-  def doCorrectValidation(boxRetriever: BoxRetriever): Set[CtValidation]  = {
+  def validateTurnoverOrGrossProfitOrLoss(boxRetriever: BoxRetriever): Set[CtValidation]  = {
     if (value.getOrElse(0) <= 0) {
       validationSuccess
     } else {
@@ -50,7 +50,6 @@ trait CovidProfitAndLossValidationHelper[T <: AccountsBoxRetriever] extends Vali
 
   def getCorrectBox(boxRetriever: BoxRetriever): Box = {
      val isAbridgedJourney = boxRetriever.abridgedFiling().value
-// do we need full accounts in here?
     val correctBoxWithBoxId =
       if (isAbridgedJourney) grossProfitOrLoss(boxRetriever)
       else turnover(boxRetriever)
@@ -67,20 +66,5 @@ trait CovidProfitAndLossValidationHelper[T <: AccountsBoxRetriever] extends Vali
 
   type Frs10xBoxRetriever = Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever
 
-  type Frsse2008BoxRetriever = Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever
-
   type Box = CtBoxIdentifier with CtOptionalInteger
-
-
-//  def getCorrectBox(boxRetriever: BoxRetriever): Box = {
-//    val isAbridgedJourney = boxRetriever.abridgedFiling().value
-//    val isFullAccountsJourney = boxRetriever..value
-//
-//    boxRetriever match {
-//      case br: Frsse2008BoxRetriever => grossProfitOrLoss(br)
-//      case br: Frs10xBoxRetriever => if(isAbridgedJourney ||)
-//
-//        turnover(br)
-//    }
-
-  }
+}

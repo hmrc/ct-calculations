@@ -39,10 +39,6 @@ trait Frsse2008AccountsBoxRetriever extends AccountsBoxRetriever {
 
   def ac23(): AC23
 
-  def ac24(): AC24
-
-  def ac25(): AC25
-
   def ac26(): AC26 = AC26.calculate(this)
 
   def ac27(): AC27 = AC27.calculate(this)

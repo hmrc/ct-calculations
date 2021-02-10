@@ -19,36 +19,32 @@ class AC24Spec extends CovidProfitAndLossSpecHelper with MockFrs10xAccountsRetri
     override def getCorrectBox(boxRetriever: BoxRetriever): Box = box
   }
 
+  doMocks()
+
   "AC24 validation" should {
     "validate successfully" when {
       "empty" in {
-        doMocks()
         boxValidationIsSuccessful(AC24(None).validate(boxRetriever))
       }
       "zero" in {
-        doMocks()
         boxValidationIsSuccessful(AC24(Some(0)).validate(boxRetriever))
       }
       "greater than 0 but less than 632000, when combined with AC12" in {
-        doMocks()
         boxValidationIsSuccessful(makeAC24(5).validate(boxRetriever))
       }
 
       "greater than 0 but less than 632000, when combined with AC16" in {
-        doMocks()
         boxValidationIsSuccessful(makeAC24(5, AC16(Some(12))).validate(boxRetriever))
       }
     }
 
     "fail" when {
       "when negative" in {
-        doMocks()
         val validatedAC24 = makeAC24(-1).validate(boxRetriever)
         doesErrorMessageContain(validatedAC24, zeroOrPositiveErrorMsg)
       }
 
       "more than 632000" in {
-        doMocks()
         val validatedAC24 = makeAC24(justOverLimit).validate(boxRetriever)
 
         doesErrorMessageContain(validatedAC24, turnoverBiggerThanMax("AC12"))
@@ -57,7 +53,6 @@ class AC24Spec extends CovidProfitAndLossSpecHelper with MockFrs10xAccountsRetri
 
 
       "more than 632000 when combined with AC12" in {
-        doMocks()
         val turnover = AC12(Some(2))
         val validatedAC24 = makeAC24(justUnderLimit, turnover).validate(boxRetriever)
 
@@ -66,7 +61,6 @@ class AC24Spec extends CovidProfitAndLossSpecHelper with MockFrs10xAccountsRetri
       }
 
       "more than 632000 when combined with AC16" in {
-        doMocks()
         val grossProfitOrLoss = AC16(Some(2))
         val validatedAC24 = makeAC24(justUnderLimit, grossProfitOrLoss).validate(boxRetriever)
 
@@ -76,7 +70,7 @@ class AC24Spec extends CovidProfitAndLossSpecHelper with MockFrs10xAccountsRetri
     }
   }
 
-  def doMocks(): Unit = {
+  private def doMocks(): Unit = {
     when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate("2019-09-01")))
     when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate("2020-08-31")))
     when(boxRetriever.companyType()).thenReturn(FilingCompanyType(UkTradingCompany))
