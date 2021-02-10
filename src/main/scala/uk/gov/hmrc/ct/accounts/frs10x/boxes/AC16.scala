@@ -5,10 +5,14 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
+import uk.gov.hmrc.ct.accounts.{AC3, AC4}
 import uk.gov.hmrc.ct.accounts.frs102.calculations.GrossProfitAndLossCalculator
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.utils.CatoLimits
+import uk.gov.hmrc.ct.utils.CatoLimits.turnoverHMRCMaximumValue
 import uk.gov.hmrc.ct.validation.TurnoverValidation
 
 case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit or loss (current PoA)")
@@ -17,9 +21,19 @@ case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
   with ValidatableBox[Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever]
   with Validators with TurnoverValidation {
 
+  val accountsStart: Frs10xAccountsBoxRetriever => AC3 = {
+    boxRetriever: AccountsBoxRetriever =>
+      boxRetriever.ac3()
+  }
+
+  val accountEnd: Frs10xAccountsBoxRetriever => AC4 = {
+    boxRetriever: AccountsBoxRetriever =>
+      boxRetriever.ac4()
+  }
+
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever ): Set[CtValidation] = {
     collectErrors {
-      validateMoney(value, 0, 632000)
+      validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, minimumAmount = Some(0))
     }
   }
 }

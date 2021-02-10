@@ -70,4 +70,17 @@ trait CovidProfitAndLossValidationHelper[T <: AccountsBoxRetriever] extends Vali
   type Frsse2008BoxRetriever = Frsse2008AccountsBoxRetriever with FilingAttributesBoxValueRetriever
 
   type Box = CtBoxIdentifier with CtOptionalInteger
-}
+
+
+//  def getCorrectBox(boxRetriever: BoxRetriever): Box = {
+//    val isAbridgedJourney = boxRetriever.abridgedFiling().value
+//    val isFullAccountsJourney = boxRetriever..value
+//
+//    boxRetriever match {
+//      case br: Frsse2008BoxRetriever => grossProfitOrLoss(br)
+//      case br: Frs10xBoxRetriever => if(isAbridgedJourney ||)
+//
+//        turnover(br)
+//    }
+
+  }
