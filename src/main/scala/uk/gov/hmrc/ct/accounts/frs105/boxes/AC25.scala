@@ -5,8 +5,8 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
-import uk.gov.hmrc.ct.accounts.{AC3, AC4}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.{AC3, AC4}
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.validation.TurnoverValidation
 

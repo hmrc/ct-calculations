@@ -5,9 +5,9 @@
 
 package uk.gov.hmrc.ct.box.retriever
 
-import java.lang.reflect.{Method, Modifier}
-
 import uk.gov.hmrc.ct.box.CtValue
+
+import java.lang.reflect.{Method, Modifier}
 
 object BoxValues {
 

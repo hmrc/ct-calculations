@@ -6,7 +6,7 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
-import uk.gov.hmrc.ct.computations.{CP297, CP298}
+import uk.gov.hmrc.ct.computations.CP297
 
 case class B711(value: Option[Int]) extends CtBoxIdentifier with CtOptionalInteger
 

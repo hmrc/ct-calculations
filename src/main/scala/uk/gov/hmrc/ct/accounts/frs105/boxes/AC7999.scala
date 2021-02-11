@@ -7,7 +7,7 @@ package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs105.validation.OffBalanceSheetArrangementsValidator
-import uk.gov.hmrc.ct.box.ValidatableBox.{StandardCohoTextFieldLimit, ValidNonForeignMoreRestrictiveCharacters}
+import uk.gov.hmrc.ct.box.ValidatableBox.StandardCohoTextFieldLimit
 import uk.gov.hmrc.ct.box._
 
 case class AC7999(value: Option[String])

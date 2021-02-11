@@ -5,11 +5,11 @@
 
 package uk.gov.hmrc.ct.computations.retriever
 
+import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.computations._
-import uk.gov.hmrc.ct.accounts._
-import uk.gov.hmrc.ct.computations.lowEmissionCars.{LEC01, LEC10, LEC11, LEC12, LEC13}
-import uk.gov.hmrc.ct.computations.machineryAndPlant.{CP105, CP109, CP110, CP94, CP97}
+import uk.gov.hmrc.ct.computations.lowEmissionCars._
+import uk.gov.hmrc.ct.computations.machineryAndPlant._
 import uk.gov.hmrc.ct.{CATO01, CATO02, CATO03, CATO13, CATO14, CATO15, CATO16, CATO20, CATO21, CATO22, CATO23, CATO24}
 
 trait ComputationsBoxRetriever extends BoxRetriever {

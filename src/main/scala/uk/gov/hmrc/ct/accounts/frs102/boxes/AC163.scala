@@ -6,7 +6,7 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import uk.gov.hmrc.ct.accounts.frs102.calculations.BalanceSheetCreditorsCalculator
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
 

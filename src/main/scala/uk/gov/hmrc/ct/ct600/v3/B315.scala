@@ -5,9 +5,8 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger, Linked}
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
-import uk.gov.hmrc.ct.computations.losses._
 
 // was B37
 case class B315(value: Int) extends CtBoxIdentifier(name = "Profits chargeable to corporation tax") with CtInteger

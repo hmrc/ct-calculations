@@ -7,7 +7,7 @@ package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, CtValidation, Input, ValidatableBox}
+import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.validation.TurnoverValidation
 
 case class AC24(value: Option[Int]) extends CtBoxIdentifier(name = "Income from covid-19 business support grants")

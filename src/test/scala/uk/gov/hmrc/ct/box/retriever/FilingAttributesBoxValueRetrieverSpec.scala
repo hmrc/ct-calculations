@@ -6,9 +6,8 @@
 package uk.gov.hmrc.ct.box.retriever
 
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.box.CtValue
-import uk.gov.hmrc.ct.ct600a.v2.retriever.CT600ABoxRetriever
 import uk.gov.hmrc.ct._
+import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.domain.CompanyTypes
 
 class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
