@@ -5,13 +5,12 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x
 
-import play.api.libs.json.{Reads, _}
-import uk.gov.hmrc.ct.accounts.approval.boxes._
+import play.api.libs.json._
 import uk.gov.hmrc.ct.accounts.frs10x.boxes._
-import uk.gov.hmrc.ct.box.formats._
 import play.api.libs.json.JodaWrites._
 import play.api.libs.json.JodaReads._
 import uk.gov.hmrc.ct.accounts.{AC401, AC402, AC403, AC404}
+import uk.gov.hmrc.ct.box.formats._
 
 package object formats {
 

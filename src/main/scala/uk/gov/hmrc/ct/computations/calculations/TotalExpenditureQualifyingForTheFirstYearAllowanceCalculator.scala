@@ -6,7 +6,7 @@
 package uk.gov.hmrc.ct.computations.calculations
 
 import uk.gov.hmrc.ct.box.CtTypeConverters
-import uk.gov.hmrc.ct.computations.{CP79, CP80, CP81, CPAux1}
+import uk.gov.hmrc.ct.computations.{CP79, CP81, CPAux1}
 
 trait TotalExpenditureQualifyingForTheFirstYearAllowanceCalculator extends CtTypeConverters {
 

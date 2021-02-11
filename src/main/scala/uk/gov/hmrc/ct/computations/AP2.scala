@@ -5,8 +5,6 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
