@@ -15,6 +15,7 @@ import uk.gov.hmrc.ct.accounts.validation.{Frs105TestBoxRetriever, ValidateAsset
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes
+import uk.gov.hmrc.ct.utils.CatoLimits._
 
 class AC491Spec extends ValidateAssetsEqualSharesSpec[Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever] with MockitoSugar {
 
@@ -87,7 +88,7 @@ class AC491Spec extends ValidateAssetsEqualSharesSpec[Frs105AccountsBoxRetriever
       when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
       when(boxRetriever.ac69()).thenReturn(AC69(value))
 
-      AC491(Some(STANDARD_MIN - 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC491"), s"error.AC491.below.min", Some(Seq(STANDARD_MIN.toString, STANDARD_MAX.toString))))
+      AC491(Some(STANDARD_MIN - 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC491"), s"error.AC491.below.min", Some(Seq(oldMinWithCommas, oldMaxWithCommas))))
     }
     s"fail validation when positive but above upper limit for companyType: $companyType" in {
       val value = Some(STANDARD_MAX + 1)
@@ -95,7 +96,7 @@ class AC491Spec extends ValidateAssetsEqualSharesSpec[Frs105AccountsBoxRetriever
       when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
       when(boxRetriever.ac69()).thenReturn(AC69(value))
 
-      AC491(Some(STANDARD_MAX + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC491"), s"error.AC491.above.max", Some(Seq(STANDARD_MIN.toString, STANDARD_MAX.toString))))
+      AC491(Some(STANDARD_MAX + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC491"), s"error.AC491.above.max", Some(Seq(oldMinWithCommas, oldMaxWithCommas))))
     }
 
     s"pass validation when previous year has no value and box is empty for companyType: $companyType" in {

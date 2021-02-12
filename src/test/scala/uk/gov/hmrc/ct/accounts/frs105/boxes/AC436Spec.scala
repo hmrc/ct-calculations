@@ -5,15 +5,19 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
-import uk.gov.hmrc.ct.accounts._
+import uk.gov.hmrc.ct.accounts.{AC14, _}
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs105.stubs.StubbedFrs105AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC13
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC13, AC15, AC16, AC17, AC25}
 
 class AC436Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
 
   "AC436 calculates from boxes correctly" in {
     val testAc13 = 123
+    val testAc14 = 124
+    val testAc15 = 126
+    val testAc16 = 127
+    val testAc17 = 128
     val testAc25 = 125
     val testAc406 = 234
     val testAc411 = 345
@@ -23,8 +27,13 @@ class AC436Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
     val testAc35 = 789
     val testAc402 = 890
     val testAc404 = 901
+
     val boxRetriever = new StubbedFrs105AccountsBoxRetriever {
       override def ac13 = AC13(Some(testAc13))
+      override def ac14(): AC14 = AC14(Some(testAc14))
+      override def ac15(): AC15 = AC15(Some(testAc15))
+      override def ac16(): AC16 = AC16(Some(testAc16))
+      override def ac17(): AC17 = AC17(Some(testAc17))
       override def ac25 = AC25(Some(testAc25))
       override def ac406 = AC406(Some(testAc406))
       override def ac411 = AC411(Some(testAc411))
@@ -34,7 +43,7 @@ class AC436Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
       override def ac35 = AC35(Some(testAc35))
       override def ac402 = AC402(testAc402)
       override def ac404 = AC404(Some(testAc404))
-    }
+}
 
     val ac436 = AC436.calculate(boxRetriever)
 

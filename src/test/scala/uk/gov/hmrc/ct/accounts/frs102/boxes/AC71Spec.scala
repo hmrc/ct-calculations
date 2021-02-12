@@ -12,7 +12,7 @@ import uk.gov.hmrc.ct.FilingCompanyType
 import uk.gov.hmrc.ct.accounts.{AC205, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.domain.CompanyTypes
-
+import uk.gov.hmrc.ct.utils.CatoLimits._
 class AC71Spec extends WordSpec with Matchers {
 
   "AC71 validation if PY is not set" should {
@@ -67,13 +67,13 @@ class AC71Spec extends WordSpec with Matchers {
       s"fail validation when less then 1 for companyType: $companyType" in new MockFrs102AccountsRetriever {
         when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
         when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate())))
-        AC71(Some(0)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC71"), "error.AC71.below.min", Some(Seq("1", "99999999"))))
+        AC71(Some(0)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC71"), "error.AC71.below.min", Some(Seq("1", oldMaxWithCommas))))
       }
 
       s"fail validation when positive but above upper limit for companyType: $companyType" in new MockFrs102AccountsRetriever {
         when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
         when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate())))
-        AC71(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC71"), "error.AC71.above.max", Some(Seq("1", "99999999"))))
+        AC71(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC71"), "error.AC71.above.max", Some(Seq("1", oldMaxWithCommas))))
       }
     }
   }

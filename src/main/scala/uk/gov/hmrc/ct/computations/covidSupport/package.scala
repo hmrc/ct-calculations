@@ -18,6 +18,6 @@ package object covidSupport {
   def doesPeriodCoverEotho(startDate: LocalDate, endDate: LocalDate): Boolean = checkPeriodWithinConstraints(startDate, endDate, Some(eothoStart), Some(eothoEnd))
 
   private def checkPeriodWithinConstraints(startDate: LocalDate, endDate: LocalDate, constraintStart: Option[LocalDate], constraintEnd: Option[LocalDate]) = {
-    constraintStart.map(cs => endDate.isAfter(cs)).getOrElse(true) && constraintEnd.map(ce => startDate.isBefore(ce)).getOrElse(true)
+    constraintStart.forall(cs => endDate.isAfter(cs)) && constraintEnd.forall(ce => startDate.isBefore(ce))
   }
 }

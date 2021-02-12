@@ -9,11 +9,9 @@ import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102.boxes._
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
-
+import ValidatableBox._
 trait AccountsMoneyValidationFixture[T <: AccountsBoxRetriever] extends WordSpec with Matchers with MockitoSugar {
 
   def boxRetriever: T
@@ -42,7 +40,7 @@ trait AccountsMoneyValidationFixture[T <: AccountsBoxRetriever] extends WordSpec
     setUpMocks()
     s"$boxId" should {
       "be valid when minimum" in {
-        builder(Some(minValue)).validate(boxRetriever) shouldBe empty
+       builder(Some(minValue)).validate(boxRetriever) shouldBe empty
       }
       "be valid when empty" in {
         if (testEmpty) {
@@ -58,14 +56,16 @@ trait AccountsMoneyValidationFixture[T <: AccountsBoxRetriever] extends WordSpec
         builder(Some(maxValue)).validate(boxRetriever) shouldBe empty
       }
 
+       val errorArguments = Some(Seq(commaForThousands(minValue), commaForThousands(maxValue)))
+
       if (testMin) {
         "fail validation when less then min lower limit" in {
-          builder(Some(minValue - 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(minValue.toString, maxValue.toString))))
+          builder(Some(minValue - 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", errorArguments))
         }
       }
 
       "fail validation when positive but above upper limit" in {
-        builder(Some(maxValue + 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", Some(Seq(minValue.toString, maxValue.toString))))
+        builder(Some(maxValue + 1)).validate(boxRetriever) shouldBe Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", errorArguments))
       }
     }
   }

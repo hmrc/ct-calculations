@@ -11,7 +11,7 @@ import uk.gov.hmrc.ct.box.CtValidation
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.FilingCompanyType
 import uk.gov.hmrc.ct.domain.CompanyTypes
-
+import uk.gov.hmrc.ct.utils.CatoLimits._
 class AC70Spec extends WordSpec with Matchers {
 
   "AC70 validation for NON limited by guarantee" should {
@@ -44,12 +44,12 @@ class AC70Spec extends WordSpec with Matchers {
 
         s"fail validation when less then 1 for companyType: $companyType" in new MockFrs102AccountsRetriever {
           when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
-          AC70(Some(0)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC70"), "error.AC70.below.min", Some(Seq("1", "99999999"))))
+          AC70(Some(0)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC70"), "error.AC70.below.min", Some(Seq("1", oldMaxWithCommas))))
         }
 
         s"fail validation when positive but above upper limit for companyType: $companyType" in new MockFrs102AccountsRetriever {
           when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
-          AC70(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC70"), "error.AC70.above.max", Some(Seq("1", "99999999"))))
+          AC70(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC70"), "error.AC70.above.max", Some(Seq("1", oldMaxWithCommas))))
         }
       }
     }

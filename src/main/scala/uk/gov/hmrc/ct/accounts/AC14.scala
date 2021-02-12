@@ -3,15 +3,16 @@
  *
  */
 
-package uk.gov.hmrc.ct.accounts.frsse2008
+package uk.gov.hmrc.ct.accounts
 
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
 case class AC14(value: Option[Int]) extends CtBoxIdentifier(name = "Current Cost of sales")
                                     with CtOptionalInteger with Input
-                                    with SelfValidatableBox[AccountsBoxRetriever, Option[Int]] {
+                                    with SelfValidatableBox[AccountsBoxRetriever, Option[Int]]
+                                    with Debit {
   override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
-    validateMoney(value)
+    validateMoney(value, min = 0)
   }
 }

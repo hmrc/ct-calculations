@@ -17,12 +17,12 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
   with ValidatableBox[AccountsBoxRetriever with FilingAttributesBoxValueRetriever]
   with TurnoverValidation {
 
-  val accountsStart = {
+  val accountsStart: AccountsBoxRetriever => AC3 = {
     boxRetriever: AccountsBoxRetriever =>
       boxRetriever.ac3()
   }
 
-  val accountEnd = {
+  val accountEnd: AccountsBoxRetriever => AC4 = {
     boxRetriever: AccountsBoxRetriever =>
       boxRetriever.ac4()
   }
