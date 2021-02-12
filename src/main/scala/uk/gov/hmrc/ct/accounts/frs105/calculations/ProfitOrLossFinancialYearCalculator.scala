@@ -9,6 +9,7 @@ import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC13
 import uk.gov.hmrc.ct.accounts.frs105.boxes._
 import uk.gov.hmrc.ct.accounts.calculations.DebitAwareCalculation
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC13, AC24, AC25}
 
 trait ProfitOrLossFinancialYearCalculator extends DebitAwareCalculation{
 

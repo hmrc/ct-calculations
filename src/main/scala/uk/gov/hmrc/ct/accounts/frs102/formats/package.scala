@@ -15,10 +15,6 @@ package object formats {
 
   private def withDefault[A](key:String, default:A)(implicit writes:Writes[A]) = __.json.update((__ \ key).json.copyFrom((__ \ key).json.pick orElse Reads.pure(Json.toJson(default))))
 
-  implicit val ac14Format = new OptionalIntegerFormat[AC14](AC14.apply)
-  implicit val ac15Format = new OptionalIntegerFormat[AC15](AC15.apply)
-  implicit val ac16Format = new OptionalIntegerFormat[AC16](AC16.apply)
-  implicit val ac17Format = new OptionalIntegerFormat[AC17](AC17.apply)
   implicit val ac18Format = new OptionalIntegerFormat[AC18](AC18.apply)
   implicit val ac19Format = new OptionalIntegerFormat[AC19](AC19.apply)
   implicit val ac20Format = new OptionalIntegerFormat[AC20](AC20.apply)

@@ -8,6 +8,7 @@ package uk.gov.hmrc.ct.accounts.frs10x.boxes
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.accounts.AccountStatementValidationFixture
 import uk.gov.hmrc.ct.accounts.frs102.helper.DirectorsReportEnabled
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC8899
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 

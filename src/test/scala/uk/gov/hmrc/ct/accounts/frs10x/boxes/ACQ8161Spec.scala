@@ -9,11 +9,10 @@ import org.mockito.Mockito._
 import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
-import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC13 => FullAC13}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, FullAccountsBoxRetriever}
-import uk.gov.hmrc.ct.accounts.{AC12, frs102, frs105}
 import uk.gov.hmrc.ct.accounts.frs105.boxes._
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
+import uk.gov.hmrc.ct.accounts.{AC12, AC14, frs102, frs105}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
@@ -75,7 +74,7 @@ class ACQ8161Spec extends WordSpec with MockitoSugar with Matchers with BeforeAn
 
     when(mockFrs102FullBoxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
     when(mockFrs102FullBoxRetriever.ac12()).thenReturn(AC12(Some(10)))
-    when(mockFrs102FullBoxRetriever.ac13()).thenReturn(FullAC13(Some(10)))
+    when(mockFrs102FullBoxRetriever.ac13()).thenReturn(AC13(Some(10)))
     when(mockFrs102FullBoxRetriever.ac14()).thenReturn(AC14(Some(10)))
     when(mockFrs102FullBoxRetriever.ac15()).thenReturn(AC15(Some(10)))
     when(mockFrs102FullBoxRetriever.ac16()).thenReturn(AC16(Some(10)))

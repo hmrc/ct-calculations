@@ -12,12 +12,13 @@ import uk.gov.hmrc.ct.accounts.validation.{Frs105TestBoxRetriever, ValidateAsset
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes
+import uk.gov.hmrc.ct.utils.CatoLimits._
 
 class AC490Spec extends ValidateAssetsEqualSharesSpec[Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
 
   val STANDARD_MIN = -99999999
   val STANDARD_MAX = 99999999
-  
+
   override def addOtherBoxValue100Mock(mockRetriever: Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever) =
     when(mockRetriever.ac68()).thenReturn(AC68(Some(100)))
 
@@ -68,7 +69,7 @@ class AC490Spec extends ValidateAssetsEqualSharesSpec[Frs105AccountsBoxRetriever
       when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
       when(boxRetriever.ac68()).thenReturn(AC68(value))
 
-      AC490(Some(STANDARD_MIN - 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC490"), s"error.AC490.below.min", Some(Seq(STANDARD_MIN.toString, STANDARD_MAX.toString))))
+      AC490(Some(STANDARD_MIN - 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC490"), s"error.AC490.below.min", Some(Seq(oldMinWithCommas , oldMaxWithCommas))))
     }
     s"fail validation when positive but above upper limit for companyType: $companyType" in {
       val value = Some(STANDARD_MAX + 1)
@@ -76,7 +77,7 @@ class AC490Spec extends ValidateAssetsEqualSharesSpec[Frs105AccountsBoxRetriever
       when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
       when(boxRetriever.ac68()).thenReturn(AC68(value))
 
-      AC490(Some(STANDARD_MAX + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC490"), s"error.AC490.above.max", Some(Seq(STANDARD_MIN.toString, STANDARD_MAX.toString))))
+      AC490(Some(STANDARD_MAX + 1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC490"), s"error.AC490.above.max", Some(Seq(oldMinWithCommas, oldMaxWithCommas))))
     }
   }
 

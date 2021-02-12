@@ -14,6 +14,7 @@ import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AC205, AC206}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.utils.CatoLimits._
 
 class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
   import RelatedPartyTransactionsMockSetup._
@@ -95,8 +96,8 @@ class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Match
       val transactions = RelatedPartyTransactions(transactions = List(validTransaction , transaction2), ac7806 = AC7806(None))
 
       transactions.validate(mockBoxRetriever) shouldBe Set(
-        CtValidation(Some("RelatedPartyTransactions"),"error.compoundList.transactions.1.AC302A.below.min", Some(List("0", "99999999"))),
-        CtValidation(Some("RelatedPartyTransactions"),"error.compoundList.transactions.1.AC303A.below.min", Some(List("0", "99999999")))
+        CtValidation(Some("RelatedPartyTransactions"),"error.compoundList.transactions.1.AC302A.below.min", Some(List(minimumValueAsString, oldMaxWithCommas))),
+        CtValidation(Some("RelatedPartyTransactions"),"error.compoundList.transactions.1.AC303A.below.min", Some(List(minimumValueAsString, oldMaxWithCommas)))
       )
     }
 
