@@ -5,7 +5,6 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
-import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 

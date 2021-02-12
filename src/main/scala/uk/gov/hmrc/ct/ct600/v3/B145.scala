@@ -5,7 +5,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger}
 import uk.gov.hmrc.ct.computations.{CP7, CP983}
 
 case class B145(value: Option[Int]) extends CtBoxIdentifier(name = "Total turnover from trade") with CtOptionalInteger

@@ -5,10 +5,8 @@
 
 package uk.gov.hmrc.ct.accounts
 
-import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations.offPayRollWorking.DeductionCannotBeGreaterThanProfit
 
 case class AC404(value: Option[Int]) extends CtBoxIdentifier(name = "Previous Deductions from OPW")

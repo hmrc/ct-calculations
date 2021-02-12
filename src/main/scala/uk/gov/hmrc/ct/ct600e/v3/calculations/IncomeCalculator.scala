@@ -5,8 +5,8 @@
 
 package uk.gov.hmrc.ct.ct600e.v3.calculations
 
-import uk.gov.hmrc.ct.ct600e.v3._
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever._
+import uk.gov.hmrc.ct.ct600e.v3._
 
 trait IncomeCalculator {
 

@@ -8,7 +8,6 @@ package uk.gov.hmrc.ct.computations
 import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
 import uk.gov.hmrc.ct.computations.calculations.NetProfitsChargeableToCtCalculator
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 case class CP295(value: Int)
   extends CtBoxIdentifier(name = "Profits chargeable to CT")

@@ -6,12 +6,7 @@
 package uk.gov.hmrc.ct.computations
 
 import org.joda.time.LocalDate
-import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, EndDate}
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation, EndDate}
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation}
 
 package object offPayRollWorking {
   val opwApplies2020 = new LocalDate("2017-04-05")

@@ -11,7 +11,7 @@ import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
 import uk.gov.hmrc.ct.ct600.NumberRounding
 import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper._
 import uk.gov.hmrc.ct.ct600.calculations.Ct600AnnualConstants._
-import uk.gov.hmrc.ct.ct600.calculations.{AccountingPeriodHelper, Ct600AnnualConstants, CtConstants, TaxYear}
+import uk.gov.hmrc.ct.ct600.calculations.{CtConstants, TaxYear}
 import uk.gov.hmrc.ct.ct600.v2._
 
 

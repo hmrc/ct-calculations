@@ -15,7 +15,6 @@ case class AC142(value: Option[Int]) extends CtBoxIdentifier(name = "Creditors: 
   with Validators {
 
   override def validate(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {
-    import boxRetriever._
     collectErrors(
       validateMoney(value, min = 0)
     )

@@ -7,10 +7,10 @@ package uk.gov.hmrc.ct.computations.lowEmissionCars
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.CPQ1000
 import uk.gov.hmrc.ct.computations.formats.Cars
+import uk.gov.hmrc.ct.computations.lowEmissionCars.CarsHelper._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.computations.{CP1, CP2, CPQ1000}
-import CarsHelper._
 
 case class LEC01(cars: List[Car] = List.empty) extends CtBoxIdentifier(name = "Low emission car")
   with CtValue[List[Car]]
