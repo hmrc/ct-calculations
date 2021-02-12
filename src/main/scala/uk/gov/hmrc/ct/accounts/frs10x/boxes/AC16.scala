@@ -31,9 +31,19 @@ case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
   }
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever ): Set[CtValidation] = {
-    collectErrors {
-      validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, minimumAmount = Some(0))
-    }
+    collectErrors(
+      validateAsMandatory(this),
+      failIf(boxRetriever.hmrcFiling().value)(
+      collectErrors(
+        validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, minimumAmount = Some(0))
+      )
+    ),
+    failIf(!boxRetriever.hmrcFiling().value && boxRetriever.companiesHouseFiling().value)(
+      collectErrors(
+        validateCoHoTurnover(boxRetriever, accountsStart, accountEnd)
+      )
+    )
+    )
   }
 }
 object AC16 extends Calculated[AC16, Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever] with GrossProfitAndLossCalculator {

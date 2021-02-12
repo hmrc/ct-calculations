@@ -25,9 +25,15 @@ case class AC24(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
       boxRetriever.ac16()
   }
 
+  private val isItCohoJourney: Frs10xBoxRetriever => Boolean = {
+     retriever => retriever.companiesHouseFiling().value
+  }
+
   override def processValidation(boxRetriever: Frs10xBoxRetriever): PartialFunction[Box, Set[CtValidation]] = {
-    case box: AC12 => validateTurnover(boxRetriever, box, ac12Id)
-    case box: AC16 => validateTurnover(boxRetriever, box, ac16Id)
+    case box: AC12 if !isItCohoJourney(boxRetriever) => shortenedValidateHmrcTurnover(boxRetriever, box, ac12Id)
+    case box: AC16 if !isItCohoJourney(boxRetriever) => shortenedValidateHmrcTurnover(boxRetriever, box, ac16Id)
+    case box: AC12 if isItCohoJourney(boxRetriever) => shortenedValidateCohoTurnover(boxRetriever, box, ac12Id)
+    case box: AC16 if isItCohoJourney(boxRetriever) => shortenedValidateCohoTurnover(boxRetriever, box, ac16Id)
   }
 
   override def validate(boxRetriever: Frs10xBoxRetriever): Set[CtValidation] = {

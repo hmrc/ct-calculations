@@ -8,11 +8,13 @@ package uk.gov.hmrc.ct.utils
 import uk.gov.hmrc.ct.box.ValidatableBox._
 object CatoLimits {
 
-  val turnoverHMRCMaximumValue: Int = 632000
+  val turnoverHMRCMaxValue: Int = 632000
+  val turnoverCOHOMaxValue: Int = 10200000
   val minimumValue: Int = 0
   val oldMaxValue: Int = 99999999
-  val minimumValueAsString: String = 0.toString
-  val turnoverHMRCMaximumWithCommas: String = commaForThousands(632000)
-  val oldMaxWithCommas: String = commaForThousands(99999999)
-  val oldMinWithCommas: String = commaForThousands(-99999999)
+  val minimumValueAsString: String = minimumValue.toString
+  val turnoverHMRCMaxWithCommas: String = commaForThousands(turnoverHMRCMaxValue)
+  val turnoverCOHOMaxWithCommas: String = commaForThousands(turnoverCOHOMaxValue)
+  val oldMaxWithCommas: String = commaForThousands(oldMaxValue)
+  val oldMinWithCommas: String = commaForThousands(-oldMaxValue)
 }

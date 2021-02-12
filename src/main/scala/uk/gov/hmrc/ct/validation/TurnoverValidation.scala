@@ -70,12 +70,17 @@ trait TurnoverValidation extends Validators {
     validateTurnoverRangeWithMinAndMaxMessages(this,  s"error.${this.id}$errorSuffix", minimumValue, maximumTurnoverInYear, secondaryIncome)
   }
 
-  protected def validateCoHoTurnover(boxRetriever: AccountsBoxRetriever, start: (AccountsBoxRetriever) => StartDate, end: (AccountsBoxRetriever) => EndDate)(): Set[CtValidation] = {
-    val daysInPoa = daysBetweenDates(boxRetriever.ac3().value, boxRetriever.ac4().value)
+  protected def validateCoHoTurnover[BR <: AccountsBoxRetriever](
+                                                                  boxRetriever: BR,
+                                                                  start: BR => StartDate,
+                                                                  end: BR => EndDate,
+                                                                  secondaryIncome: Int = 0,
+                                                                  errorSuffix: String = s".coho.turnover"): Set[CtValidation] = {
+    val daysInPoa = daysBetweenDates(start(boxRetriever).value, end(boxRetriever).value)
     val daysInYear = getDaysInYear(boxRetriever, start, end)
     val maxTurnover = if (isFRS10x(boxRetriever)) 10200000.0 else 6500000.0
     val maximumTurnoverInYear = Math.floor(maxTurnover * daysInPoa / daysInYear).toInt
-    validateTurnoverRangeWithMinAndMaxMessages(this, s"error.${this.id}.coho.turnover", -maximumTurnoverInYear, maximumTurnoverInYear, 0)
+    validateTurnoverRangeWithMinAndMaxMessages(this, s"error.${this.id}$errorSuffix", -maximumTurnoverInYear, maximumTurnoverInYear, secondaryIncome)
   }
 
   protected def validateTurnoverRangeWithMinAndMaxMessages(box: OptionalIntIdBox, message: String, min: Int, max: Int, secondaryIncome: Int)(): Set[CtValidation] = {

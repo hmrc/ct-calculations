@@ -20,9 +20,7 @@ trait CovidProfitAndLossValidationHelper[T <: AccountsBoxRetriever] extends Vali
   val value: Option[Int]
 
   val ac12Id: String = "AC12"
-  val ac13Id: String = "AC13"
   val ac16Id: String = "AC16"
-  val ac17Id: String = "AC17"
 
   val accountsStart: AccountsBoxRetriever => AC3 = {
     boxRetriever: AccountsBoxRetriever =>
@@ -58,9 +56,16 @@ trait CovidProfitAndLossValidationHelper[T <: AccountsBoxRetriever] extends Vali
   }
 
 
-   def validateTurnover(boxRetriever: BoxRetriever, box: Box, boxId: String): Set[CtValidation] = {
-    validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, errorSuffix = s".hmrc.turnover.$boxId", secondaryIncome = box.orZero, minimumAmount = Some(0))
-  }
+   def shortenedValidateHmrcTurnover(boxRetriever: BoxRetriever, box: Box, boxId: String): Set[CtValidation] = {
+     println("bye ***********")
+
+     validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, errorSuffix = s".hmrc.turnover.$boxId", secondaryIncome = box.orZero, minimumAmount = Some(0))
+   }
+
+  def shortenedValidateCohoTurnover(boxRetriever: BoxRetriever, box: Box, boxId: String): Set[CtValidation] = {
+      println("hi ***********")
+      validateCoHoTurnover(boxRetriever, accountsStart, accountEnd, secondaryIncome = box.orZero, errorSuffix = s".coho.turnover.$boxId")
+    }
 
   type BoxRetriever = T with FilingAttributesBoxValueRetriever
 
