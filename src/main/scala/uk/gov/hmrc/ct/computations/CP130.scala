@@ -12,9 +12,9 @@ case class CP130(value: Int) extends CtBoxIdentifier(name = "Total income from c
 
 object CP130 extends Calculated[CP130, ComputationsBoxRetriever] {
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP130 = {
-    val cp122 = boxRetriever.cp122()
+    val cp123 = boxRetriever.cp123()
     val cp127 = boxRetriever.cp127()
 
-    CP130(cp122.value.getOrElse(0) + cp127.value.getOrElse(0))
+    CP130(cp123.value.getOrElse(0) + cp127.value.getOrElse(0))
   }
 }
