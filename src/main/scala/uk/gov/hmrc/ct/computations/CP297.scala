@@ -13,7 +13,7 @@ case class CP297(value: Option[Int]) extends CtBoxIdentifier("Total Structure an
 
 object CP297 extends Calculated[CP297, ComputationsBoxRetriever] with SBACalculator {
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP297 = {
-    val result  = boxRetriever.sba01().buildings.map {
+    val result  = boxRetriever.sba01().values.map {
       building => building.claim
     }
 

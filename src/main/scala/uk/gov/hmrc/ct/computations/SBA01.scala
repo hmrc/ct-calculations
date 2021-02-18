@@ -13,17 +13,17 @@ import uk.gov.hmrc.ct.computations.formats.Buildings
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants.toErrorArgsFormat
 
-case class SBA01(buildings: List[Building] = List.empty) extends CtBoxIdentifier(name = "Structures and buildings allowance buildings")
+case class SBA01(values: List[Building] = List.empty) extends CtBoxIdentifier(name = "Structures and buildings allowance buildings")
   with CtValue[List[Building]]
   with Input
   with ValidatableBox[ComputationsBoxRetriever] {
 
-  override def value = buildings
+  override def value = values
 
   override def asBoxString = Buildings.asBoxString(this)
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    buildings.foldRight(Set[CtValidation]())( (building, errors) =>
+    values.foldRight(Set[CtValidation]())((building, errors) =>
       building.validate(boxRetriever) ++ errors
     )
   }
@@ -48,7 +48,7 @@ case class Building(
 
     val endOfAccountingPeriod: LocalDate = boxRetriever.cp2().value
     val startOfAccountingPeriod: LocalDate = boxRetriever.cp1().value
-    val buildingIndex: Int = boxRetriever.sba01().buildings.indexOf(this)
+    val buildingIndex: Int = boxRetriever.sba01().values.indexOf(this)
 
     collectErrors(
       mandatoryTextValidation(firstLineOfAddressId, firstLineOfAddress),
