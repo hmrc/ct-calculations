@@ -36,13 +36,13 @@ trait CovidProfitAndLossValidationHelper[T <: AccountsBoxRetriever] extends Vali
 
   val grossProfitOrLoss: T => Box
 
-  def processValidation(boxRetriever: BoxRetriever): PartialFunction[Box, Set[CtValidation]]
+  def validateBox(boxRetriever: BoxRetriever): PartialFunction[Box, Set[CtValidation]]
 
   def validateTurnoverOrGrossProfitOrLoss(boxRetriever: BoxRetriever): Set[CtValidation]  = {
     if (value.getOrElse(0) <= 0) {
       validationSuccess
     } else {
-      processValidation(boxRetriever)(getCorrectBox(boxRetriever))
+      validateBox(boxRetriever)(getCorrectBox(boxRetriever))
   }
   }
 
@@ -57,13 +57,10 @@ trait CovidProfitAndLossValidationHelper[T <: AccountsBoxRetriever] extends Vali
 
 
    def shortenedValidateHmrcTurnover(boxRetriever: BoxRetriever, box: Box, boxId: String): Set[CtValidation] = {
-     println("bye ***********")
-
      validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, errorSuffix = s".hmrc.turnover.$boxId", secondaryIncome = box.orZero, minimumAmount = Some(0))
    }
 
   def shortenedValidateCohoTurnover(boxRetriever: BoxRetriever, box: Box, boxId: String): Set[CtValidation] = {
-      println("hi ***********")
       validateCoHoTurnover(boxRetriever, accountsStart, accountEnd, secondaryIncome = box.orZero, errorSuffix = s".coho.turnover.$boxId")
     }
 
