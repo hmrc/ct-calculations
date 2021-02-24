@@ -10,8 +10,6 @@ import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.utils.CatoLimits._
 import uk.gov.hmrc.ct.utils.UnitSpec
 
-import scala.util.{Failure, Success, Try}
-
 trait CovidProfitAndLossSpecHelper extends UnitSpec {
 
   private val defaultErrorArgs: Option[List[String]] = Some(List(minimumValueAsString, turnoverHMRCMaxWithCommas))

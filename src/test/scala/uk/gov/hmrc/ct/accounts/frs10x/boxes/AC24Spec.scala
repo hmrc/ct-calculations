@@ -7,7 +7,7 @@ package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito.when
-import uk.gov.hmrc.ct.{CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
+import uk.gov.hmrc.ct.{CompaniesHouseFiling, FilingCompanyType}
 import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4, MockFrs10xAccountsRetriever}
 import uk.gov.hmrc.ct.accounts.utils.CovidProfitAndLossSpecHelper
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, CtValidation}
