@@ -22,8 +22,5 @@ class CP672Spec extends WordSpec with MockitoSugar with Matchers with BoxValidat
 
 
   testBoxIsZeroOrPositive("CP672", CP672.apply)
-
-  testCannotExistWhen("CP672", CP672.apply) {
-    when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(true))).getMock[ComputationsBoxRetriever]
-  }
+  
 }
