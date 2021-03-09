@@ -7,13 +7,13 @@ package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito.when
-import uk.gov.hmrc.ct.{CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
+import uk.gov.hmrc.ct.{AbridgedFiling, CompaniesHouseFiling, FilingCompanyType, HMRCFiling, StatutoryAccountsFiling}
 import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes.UkTradingCompany
-import uk.gov.hmrc.ct.utils.CatoLimits._
+import uk.gov.hmrc.ct.utils.CatoInputBounds._
 import uk.gov.hmrc.ct.utils.UnitSpec
 
 class AC16Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever] with UnitSpec with MockFrs102AccountsRetriever {
@@ -36,22 +36,21 @@ class AC16Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever
 
   "AC16" should {
     "fail validation" when {
-      "its value is greater than the apportioned max turnover and the user is going through an hmrc journey" in {
+      "its value is greater than the apportioned max turnover and the user is going through an abridged hmrc journey" in {
         doMocks(true)
-
-        AC16(Some(turnoverHMRCMaxValue + 1)).validate(boxRetriever) shouldBe Set(CtValidation(
-          Some(ac16),
-          s"error.$ac16.hmrc.turnover.above.max",
-          Some(List("0", turnoverHMRCMaxWithCommas))))
+        AC16(Some(turnoverHMRCMaxValue632k + 1)).validate(boxRetriever) shouldBe Set(CtValidation(
+          boxId = Some(ac16),
+          errorMessageKey = s"error.$ac16.hmrc.turnover.above.max",
+          args = Some(List(oldMinWithCommas, turnoverHMRCMaxWithCommas))))
       }
 
       "its value is greater than the apportioned max turnover user is going through an coho journey" in {
         doMocks(false)
 
-        AC16(Some(turnoverCOHOMaxValue + 1)).validate(boxRetriever) shouldBe Set(CtValidation(
-          Some(ac16),
-          s"error.$ac16.coho.turnover.above.max",
-          Some(List("-" + turnoverCOHOMaxWithCommas, turnoverCOHOMaxWithCommas))))
+        AC16(Some(turnoverCOHOMaxValue10m + 1)).validate(boxRetriever) shouldBe Set(CtValidation(
+          boxId = Some(ac16),
+          errorMessageKey = s"error.$ac16.coho.turnover.above.max",
+          args = Some(List("-" + turnoverCOHOMaxWithCommas, turnoverCOHOMaxWithCommas))))
       }
 
       "empty" in {
@@ -62,11 +61,11 @@ class AC16Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever
     "pass validation" when {
       "its value is less than the apportioned max turnover and the user is going through an hmrc journey" in {
         doMocks(true)
-        AC16(Some(turnoverHMRCMaxValue)).validate(boxRetriever) shouldBe validationSuccess
+        AC16(Some(turnoverHMRCMaxValue632k)).validate(boxRetriever) shouldBe validationSuccess
       }
       "its value is less than the apportioned max turnover user is going through an coho journey" in {
         doMocks(false)
-        AC16(Some(turnoverCOHOMaxValue)).validate(boxRetriever) shouldBe validationSuccess
+        AC16(Some(turnoverCOHOMaxValue10m)).validate(boxRetriever) shouldBe validationSuccess
       }
 
     }

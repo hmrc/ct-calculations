@@ -12,7 +12,7 @@ import uk.gov.hmrc.ct.FilingCompanyType
 import uk.gov.hmrc.ct.accounts.{AC205, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.domain.CompanyTypes
-import uk.gov.hmrc.ct.utils.CatoLimits._
+import uk.gov.hmrc.ct.utils.CatoInputBounds._
 class AC71Spec extends WordSpec with Matchers {
 
   "AC71 validation if PY is not set" should {

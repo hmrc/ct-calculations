@@ -12,7 +12,7 @@ import uk.gov.hmrc.ct.accounts.validation.{Frs105TestBoxRetriever, ValidateAsset
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes
-import uk.gov.hmrc.ct.utils.CatoLimits._
+import uk.gov.hmrc.ct.utils.CatoInputBounds._
 
 class AC490Spec extends ValidateAssetsEqualSharesSpec[Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever] {
 

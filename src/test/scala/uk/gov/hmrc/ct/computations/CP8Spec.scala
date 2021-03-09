@@ -11,7 +11,7 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.formats._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import  uk.gov.hmrc.ct.utils.CatoLimits._
+import  uk.gov.hmrc.ct.utils.CatoInputBounds._
 
 class CP8Spec extends WordSpec with Matchers with MockitoSugar {
 
