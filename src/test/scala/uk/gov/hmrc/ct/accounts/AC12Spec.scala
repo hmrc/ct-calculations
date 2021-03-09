@@ -7,18 +7,18 @@ package uk.gov.hmrc.ct.accounts
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
-import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks.forAll
 import org.scalatest.prop.TableFor6
 import org.scalatest.prop.Tables.Table
 import org.scalatest.{Matchers, WordSpec}
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes
-import uk.gov.hmrc.ct.domain.CompanyTypes.{CompanyType, UkTradingCompany}
+import uk.gov.hmrc.ct.domain.CompanyTypes.CompanyType
 import uk.gov.hmrc.ct.{AbridgedFiling, CATO24, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
-
+import uk.gov.hmrc.ct.utils.CatoInputBounds._
 class AC12Spec extends WordSpec with Matchers with MockitoSugar {
 
   "AC12 validation" should {
@@ -89,7 +89,7 @@ class AC12Spec extends WordSpec with Matchers with MockitoSugar {
         s"$message" in {
           val validationResult = AC12(ac12Value).validate(boxRetriever)
           if (ac12Value.get < 0)
-            validationResult shouldBe Set(CtValidation(Some("AC12"), "error.AC12.mustBeZeroOrPositive"))
+            validationResult shouldBe Set(CtValidation(Some("AC12"), "error.AC12.hmrc.turnover.below.min", Some(List(minimumValueAsString, turnoverHMRCMaxWithCommas))))
           else
             validationResult shouldBe empty
         }

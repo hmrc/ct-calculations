@@ -8,6 +8,7 @@ package uk.gov.hmrc.ct.accounts
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.utils.CatoInputBounds.minimumValue0
 import uk.gov.hmrc.ct.validation.TurnoverValidation
 
 
@@ -29,8 +30,9 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
 
   override def validate(boxRetriever: AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     val isOpwEnabled = boxRetriever.cato24().value.getOrElse(false)
-    
-    if(!isOpwEnabled && boxRetriever.abridgedFiling().value) {
+    val isAbridged = boxRetriever.abridgedFiling().value
+
+    if(!isOpwEnabled && isAbridged) {
       Set.empty
     } else {
         val errors = collectErrors(
@@ -38,16 +40,15 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
             validateAsMandatory(this)
           },
           failIf(boxRetriever.hmrcFiling().value)(
-            collectErrors(
-              validateHmrcTurnover(boxRetriever, accountsStart, accountEnd)
+              collectErrors(
+              validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, minimumAmount = Some(minimumValue0))
             )
           ),
           failIf(!boxRetriever.hmrcFiling().value && boxRetriever.companiesHouseFiling().value)(
             collectErrors(
-              validateCoHoTurnover(boxRetriever, accountsStart, accountEnd)
+              validateCoHoTurnover(boxRetriever, accountsStart, accountEnd, minimumAmount = Some(minimumValue0))
             )
-          ),
-          validateZeroOrPositiveInteger(this)
+          )
         )
 
       if(errors.isEmpty) {

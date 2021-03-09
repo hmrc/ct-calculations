@@ -11,7 +11,7 @@ import uk.gov.hmrc.ct.box.CtValidation
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.FilingCompanyType
 import uk.gov.hmrc.ct.domain.CompanyTypes
-import uk.gov.hmrc.ct.utils.CatoLimits._
+import uk.gov.hmrc.ct.utils.CatoInputBounds._
 class AC70Spec extends WordSpec with Matchers {
 
   "AC70 validation for NON limited by guarantee" should {

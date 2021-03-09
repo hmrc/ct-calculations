@@ -14,7 +14,7 @@ import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AC205, AC206}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-import uk.gov.hmrc.ct.utils.CatoLimits._
+import uk.gov.hmrc.ct.utils.CatoInputBounds._
 
 class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
   import RelatedPartyTransactionsMockSetup._

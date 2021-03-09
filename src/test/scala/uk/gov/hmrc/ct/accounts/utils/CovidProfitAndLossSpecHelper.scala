@@ -7,7 +7,7 @@ package uk.gov.hmrc.ct.accounts.utils
 
 import org.scalatest.Assertion
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.utils.CatoLimits._
+import uk.gov.hmrc.ct.utils.CatoInputBounds._
 import uk.gov.hmrc.ct.utils.UnitSpec
 
 trait CovidProfitAndLossSpecHelper extends UnitSpec {
@@ -19,22 +19,22 @@ trait CovidProfitAndLossSpecHelper extends UnitSpec {
    def justOverLimit(max: Int): Int = max + 1
    def justUnderLimit(minimum: Int): Int = minimum - 1
 
-   val justUnderLimit: Int = turnoverHMRCMaxValue - 1
+   val justUnderLimit: Int = turnoverHMRCMaxValue632k - 1
 
    val zeroOrPositiveErrorMsg: String = "mustBeZeroOrPositive"
 
-   def turnoverBiggerThanMax(boxId: String, isCohoJourney: Boolean) =
+   def turnoverBiggerThanMax(boxId: String, isCohoJourney: Boolean): String =
      if(isCohoJourney) s"coho.turnover.$boxId.above.max"
       else s"hmrc.turnover.$boxId.above.max"
 
   def boxValidationIsSuccessful(validation: Set[CtValidation]): Assertion = validation shouldBe validationSuccess
 
-  def doesErrorMessageContain(validation: Set[CtValidation], errorMsgKey: String, shouldItContain: Boolean = true): Assertion =
-    validation.head.errorMessageKey.contains(errorMsgKey) shouldBe shouldItContain
+  def doesErrorMessageContain(validatedBox: Set[CtValidation], errorMsgKey: String, validationErrorsMatchMessageKey: Boolean = true): Assertion =
+    validatedBox.head.errorMessageKey.contains(errorMsgKey) shouldBe validationErrorsMatchMessageKey
 
-  def turnoverTooLargeErrorArguments(actualArgs: Set[CtValidation],
+  def turnoverTooLargeErrorArguments(validationResultArguments: Set[CtValidation],
                                      expectedArgs: Option[Seq[String]] = defaultErrorArgs): Assertion =  {
-    actualArgs.head.args shouldBe expectedArgs
+    validationResultArguments.head.args shouldBe expectedArgs
   }
 
 

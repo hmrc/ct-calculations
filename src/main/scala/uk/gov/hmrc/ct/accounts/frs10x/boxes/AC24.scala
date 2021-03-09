@@ -9,6 +9,7 @@ import uk.gov.hmrc.ct.accounts.AC12
 import uk.gov.hmrc.ct.accounts.frs10x.helpers.CovidProfitAndLossValidationHelper
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.utils.CatoInputBounds._
 
 case class AC24(value: Option[Int]) extends CtBoxIdentifier(name = "Income from covid-19 business support grants")
   with CtOptionalInteger
@@ -33,11 +34,15 @@ case class AC24(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
     retriever => retriever.isJointFiling()
   }
 
+  private val ac12MinimumValue = Some(minimumValue0)
+  private val ac16MinimumValue = Some(oldMinValue99999999)
+
   override def validateBox(boxRetriever: Frs10xBoxRetriever): PartialFunction[Box, Set[CtValidation]] =
   {
-    case box: AC16 if isJointJourney(boxRetriever)  => shortenedValidateHmrcTurnover(boxRetriever, box, ac16Id)
-    case box: AC12 if !isItCohoJourney(boxRetriever) => shortenedValidateHmrcTurnover(boxRetriever, box, ac12Id)
-    case box: AC16 if !isItCohoJourney(boxRetriever) => shortenedValidateHmrcTurnover(boxRetriever, box, ac16Id)
+    case box: AC12 if isJointJourney(boxRetriever)  => shortenedValidateHmrcTurnover(boxRetriever, box, ac12Id, ac12MinimumValue)
+    case box: AC16 if isJointJourney(boxRetriever)  => shortenedValidateHmrcTurnover(boxRetriever, box, ac16Id, ac16MinimumValue)
+    case box: AC12 if !isItCohoJourney(boxRetriever) => shortenedValidateHmrcTurnover(boxRetriever, box, ac12Id, ac12MinimumValue)
+    case box: AC16 if !isItCohoJourney(boxRetriever) => shortenedValidateHmrcTurnover(boxRetriever, box, ac16Id, ac16MinimumValue) // might not need this row
     case box: AC12 if isItCohoJourney(boxRetriever) => shortenedValidateCohoTurnover(boxRetriever, box, ac12Id)
     case box: AC16 if isItCohoJourney(boxRetriever) => shortenedValidateCohoTurnover(boxRetriever, box, ac16Id)
   }

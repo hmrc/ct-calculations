@@ -12,7 +12,7 @@ import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4, MockFrs10xAccountsRetriever}
 import uk.gov.hmrc.ct.accounts.utils.CovidProfitAndLossSpecHelper
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, CtValidation}
 import uk.gov.hmrc.ct.domain.CompanyTypes.UkTradingCompany
-import uk.gov.hmrc.ct.utils.CatoLimits._
+import uk.gov.hmrc.ct.utils.CatoInputBounds._
 
 class AC24Spec extends CovidProfitAndLossSpecHelper with MockFrs10xAccountsRetriever {
 
@@ -37,12 +37,12 @@ class AC24Spec extends CovidProfitAndLossSpecHelper with MockFrs10xAccountsRetri
       }
     }
     "validate successfully in the hmrc journey" when {
-      s"greater than 0 but less than $turnoverHMRCMaxValue, when combined with AC12" in new Setup {
+      s"greater than 0 but less than $turnoverHMRCMaxValue632k, when combined with AC12" in new Setup {
         doMocks(false)
         boxValidationIsSuccessful(makeAC24(5, emptyTurnover).validate(boxRetriever))
       }
 
-      s"greater than 0 but less than $turnoverHMRCMaxValue, when combined with AC16" in new Setup {
+      s"greater than 0 but less than $turnoverHMRCMaxValue632k, when combined with AC16" in new Setup {
         doMocks(false)
         boxValidationIsSuccessful(makeAC24(5, validGrossProfitAndLoss).validate(boxRetriever))
       }
@@ -57,36 +57,37 @@ class AC24Spec extends CovidProfitAndLossSpecHelper with MockFrs10xAccountsRetri
     }
 
     "fail in a non-coho journey" when {
-      s"more than $turnoverHMRCMaxValue" in new Setup {
+      s"more than $turnoverHMRCMaxValue632k" in new Setup {
         doMocks(false)
-        val validatedAC24 = makeAC24(justOverLimit(turnoverHMRCMaxValue), emptyTurnover).validate(boxRetriever)
+        val validatedAC24: Set[CtValidation] = makeAC24(justOverLimit(turnoverHMRCMaxValue632k), emptyTurnover).validate(boxRetriever)
 
         doesErrorMessageContain(validatedAC24, turnoverBiggerThanMax(ac12Id, isCohoJourney = false))
         turnoverTooLargeErrorArguments(validatedAC24)
       }
 
 
-      s"more than $turnoverHMRCMaxValue when combined with AC12" in new Setup {
+      s"more than $turnoverHMRCMaxValue632k when combined with AC12" in new Setup {
         doMocks(false)
         val turnover = AC12(Some(2))
-        val validatedAC24 = makeAC24(justUnderLimit(turnoverHMRCMaxValue), turnover).validate(boxRetriever)
+        val validatedAC24 = makeAC24(justUnderLimit(turnoverHMRCMaxValue632k), turnover).validate(boxRetriever)
 
         doesErrorMessageContain(validatedAC24, turnoverBiggerThanMax(ac12Id, isCohoJourney = false))
         turnoverTooLargeErrorArguments(validatedAC24)
       }
 
-      s"more than $turnoverHMRCMaxValue when combined with AC16" in new Setup {
+      s"more than $turnoverHMRCMaxValue632k when combined with AC16" in new Setup {
         doMocks(false)
         val validatedAC24 = makeAC24(justUnderLimit, validGrossProfitAndLoss).validate(boxRetriever)
+        val expectedArguments: Option[List[String]] = Some(List(oldMinWithCommas, turnoverHMRCMaxWithCommas))
 
         doesErrorMessageContain(validatedAC24, turnoverBiggerThanMax(ac16Id, isCohoJourney = false))
-        turnoverTooLargeErrorArguments(validatedAC24)
+        turnoverTooLargeErrorArguments(validatedAC24, expectedArguments)
       }
     }
     "fail in a coho journey" when {
       s"more than $turnoverCOHOMaxWithCommas" in new Setup {
         doMocks(true)
-        val validatedAC24 = makeAC24(justOverLimit(turnoverCOHOMaxValue), emptyTurnover).validate(boxRetriever)
+        val validatedAC24 = makeAC24(justOverLimit(turnoverCOHOMaxValue10m), emptyTurnover).validate(boxRetriever)
 
         doesErrorMessageContain(validatedAC24, turnoverBiggerThanMax(ac12Id, isCohoJourney = true))
         turnoverTooLargeErrorArguments(validatedAC24, Some(List("-10,200,000", "10,200,000")))
@@ -96,7 +97,7 @@ class AC24Spec extends CovidProfitAndLossSpecHelper with MockFrs10xAccountsRetri
       s"more than $turnoverCOHOMaxWithCommas when combined with AC12" in new Setup {
         doMocks(true)
         val turnover = AC12(Some(2))
-        val validatedAC24 = makeAC24(justUnderLimit(turnoverCOHOMaxValue), turnover).validate(boxRetriever)
+        val validatedAC24 = makeAC24(justUnderLimit(turnoverCOHOMaxValue10m), turnover).validate(boxRetriever)
 
         doesErrorMessageContain(validatedAC24, turnoverBiggerThanMax(ac12Id, isCohoJourney = true))
         turnoverTooLargeErrorArguments(validatedAC24, Some(List("-10,200,000", "10,200,000")))
@@ -104,7 +105,7 @@ class AC24Spec extends CovidProfitAndLossSpecHelper with MockFrs10xAccountsRetri
 
       s"more than $turnoverCOHOMaxWithCommas when combined with AC16" in new Setup {
         doMocks(true)
-        val validatedAC24 = makeAC24(justUnderLimit(turnoverCOHOMaxValue), validGrossProfitAndLoss).validate(boxRetriever)
+        val validatedAC24 = makeAC24(justUnderLimit(turnoverCOHOMaxValue10m), validGrossProfitAndLoss).validate(boxRetriever)
 
         doesErrorMessageContain(validatedAC24, turnoverBiggerThanMax(ac16Id, isCohoJourney = true))
         turnoverTooLargeErrorArguments(validatedAC24, Some(List("-10,200,000", "10,200,000")))
@@ -112,21 +113,22 @@ class AC24Spec extends CovidProfitAndLossSpecHelper with MockFrs10xAccountsRetri
     }
 
     "validate a joint journey as expected" when {
-      s"gross profit or loss is over $turnoverHMRCMaxValue then it should fail validation" in new Setup {
+      s"gross profit or loss is over $turnoverHMRCMaxValue632k then it should fail validation" in new Setup {
         doMocks(true)
         when(boxRetriever.isJointFiling()) thenReturn true
-        val validatedAC24: Set[CtValidation] = makeAC24(justOverLimit(turnoverHMRCMaxValue), validGrossProfitAndLoss).validate(boxRetriever)
+        val validatedAC24: Set[CtValidation] = makeAC24(justOverLimit(turnoverHMRCMaxValue632k), validGrossProfitAndLoss).validate(boxRetriever)
+        val expectedArguments: Option[List[String]] = Some(List(oldMinWithCommas, turnoverHMRCMaxWithCommas))
 
-        turnoverTooLargeErrorArguments(validatedAC24)
+        turnoverTooLargeErrorArguments(validatedAC24, expectedArguments)
         doesErrorMessageContain(validatedAC24, turnoverBiggerThanMax(ac16Id, isCohoJourney = false))
       }
 
-      s"gross profit or loss is less than $turnoverHMRCMaxValue, then it should pass validation" in new Setup {
+      s"gross profit or loss is less than $turnoverHMRCMaxValue632k, then it should pass validation" in new Setup {
         doMocks(true)
         when(boxRetriever.isJointFiling()) thenReturn true
 
         val validatedAC24: Set[CtValidation] =
-          makeAC24(justUnderLimit(turnoverHMRCMaxValue), AC16(Some(0))).validate(boxRetriever)
+          makeAC24(justUnderLimit(turnoverHMRCMaxValue632k), AC16(Some(0))).validate(boxRetriever)
 
          validatedAC24 shouldBe validationSuccess
       }

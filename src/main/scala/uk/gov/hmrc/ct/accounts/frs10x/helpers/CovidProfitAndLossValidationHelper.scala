@@ -56,8 +56,8 @@ trait CovidProfitAndLossValidationHelper[T <: AccountsBoxRetriever] extends Vali
   }
 
 
-   def shortenedValidateHmrcTurnover(boxRetriever: BoxRetriever, box: Box, boxId: String): Set[CtValidation] = {
-     validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, errorSuffix = s".hmrc.turnover.$boxId", secondaryIncome = box.orZero, minimumAmount = Some(0))
+   def shortenedValidateHmrcTurnover(boxRetriever: BoxRetriever, box: Box, boxId: String, minimumAmount: Option[Int] = None): Set[CtValidation] = {
+     validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, errorSuffix = s".hmrc.turnover.$boxId", secondaryIncome = box.orZero, minimumAmount)
    }
 
   def shortenedValidateCohoTurnover(boxRetriever: BoxRetriever, box: Box, boxId: String): Set[CtValidation] = {

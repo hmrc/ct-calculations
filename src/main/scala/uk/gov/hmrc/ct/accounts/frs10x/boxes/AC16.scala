@@ -11,7 +11,7 @@ import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-
+import uk.gov.hmrc.ct.utils.CatoInputBounds
 import uk.gov.hmrc.ct.validation.TurnoverValidation
 
 case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit or loss (current PoA)")
@@ -30,15 +30,34 @@ case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
       boxRetriever.ac4()
   }
 
+  private val isAbridgedFiling: FilingAttributesBoxValueRetriever => Boolean = boxRetriever =>
+    boxRetriever.abridgedFiling().value
+
+  private val isHmrcFiling: FilingAttributesBoxValueRetriever => Boolean = boxRetriever =>
+    boxRetriever.hmrcFiling().value
+
+  private val isJoint: FilingAttributesBoxValueRetriever => Boolean = boxRetriever =>
+    boxRetriever.isJointFiling()
+
+  private val isFullFiling: FilingAttributesBoxValueRetriever => Boolean = boxRetriever =>
+    boxRetriever.statutoryAccountsFiling().value
+
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever ): Set[CtValidation] = {
+
+//    val asd: Boolean = if (isHmrcFiling(boxRetriever)) {
+//      isAbridgedFiling(boxRetriever) || isFullFiling(boxRetriever)
+//    } else if (isJoint(boxRetriever)) {
+//      isAbridgedFiling(boxRetriever) || isFullFiling(boxRetriever)
+//    } else false
+
     collectErrors(
       validateAsMandatory(this),
-      failIf(boxRetriever.hmrcFiling().value)(
+      failIf(isHmrcFiling(boxRetriever))(
       collectErrors(
-        validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, minimumAmount = Some(0))
+        validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, minimumAmount = Some(CatoInputBounds.oldMinValue99999999))
       )
     ),
-    failIf(!boxRetriever.hmrcFiling().value && boxRetriever.companiesHouseFiling().value)(
+    failIf(!isHmrcFiling(boxRetriever) && boxRetriever.companiesHouseFiling().value)(
       collectErrors(
         validateCoHoTurnover(boxRetriever, accountsStart, accountEnd)
       )

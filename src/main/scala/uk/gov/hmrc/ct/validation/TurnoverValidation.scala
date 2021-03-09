@@ -75,12 +75,15 @@ trait TurnoverValidation extends Validators {
                                                                   start: BR => StartDate,
                                                                   end: BR => EndDate,
                                                                   secondaryIncome: Int = 0,
-                                                                  errorSuffix: String = s".coho.turnover"): Set[CtValidation] = {
+                                                                  errorSuffix: String = s".coho.turnover",
+                                                                  minimumAmount: Option[Int] = None
+                                                                  ): Set[CtValidation] = {
     val daysInPoa = daysBetweenDates(start(boxRetriever).value, end(boxRetriever).value)
     val daysInYear = getDaysInYear(boxRetriever, start, end)
     val maxTurnover = if (isFRS10x(boxRetriever)) 10200000.0 else 6500000.0
     val maximumTurnoverInYear = Math.floor(maxTurnover * daysInPoa / daysInYear).toInt
-    validateTurnoverRangeWithMinAndMaxMessages(this, s"error.${this.id}$errorSuffix", -maximumTurnoverInYear, maximumTurnoverInYear, secondaryIncome)
+    val minimumValue = minimumAmount.getOrElse(-maximumTurnoverInYear)
+    validateTurnoverRangeWithMinAndMaxMessages(this, s"error.${this.id}$errorSuffix", minimumValue, maximumTurnoverInYear, secondaryIncome)
   }
 
   protected def validateTurnoverRangeWithMinAndMaxMessages(box: OptionalIntIdBox, message: String, min: Int, max: Int, secondaryIncome: Int)(): Set[CtValidation] = {
