@@ -6,6 +6,7 @@
 package uk.gov.hmrc.ct.computations.retriever
 
 import uk.gov.hmrc.ct.accounts._
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.ACQ8999
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.lowEmissionCars._
@@ -514,4 +515,6 @@ trait ComputationsBoxRetriever extends BoxRetriever {
     else
       this.cp997()
   }
+
+  def acq899():ACQ8999
 }

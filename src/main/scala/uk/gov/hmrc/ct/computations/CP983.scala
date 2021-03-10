@@ -13,15 +13,15 @@ import uk.gov.hmrc.ct.validation.TurnoverValidation
 case class CP983(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover from off-payroll working")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[ComputationsBoxRetriever with Frs10xDormancyBoxRetriever]
+  with ValidatableBox[ComputationsBoxRetriever]
   with TurnoverValidation {
 
   val compsStartDate = { br: ComputationsBoxRetriever => br.cp1() }
   val compsEndDate = { br: ComputationsBoxRetriever => br.cp2() }
 
-  override def validate(boxRetriever: ComputationsBoxRetriever with Frs10xDormancyBoxRetriever): Set[CtValidation] = {
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     val cato24 = boxRetriever.cato24
-    val dormant = boxRetriever.acq8999().orFalse
+    val dormant = boxRetriever.acq899().orFalse
     collectErrors(
       requiredErrorIf(cato24.isTrue && !dormant &&  this.value.isEmpty),
       validateZeroOrPositiveInteger(this),

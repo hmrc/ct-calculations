@@ -16,9 +16,9 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.{BoxValidationFixture, CATO24}
 
-class CP983Spec extends WordSpec with Matchers with MockitoSugar with BoxValidationFixture[ComputationsBoxRetriever with Frs10xDormancyBoxRetriever]
+class CP983Spec extends WordSpec with Matchers with MockitoSugar with BoxValidationFixture[ComputationsBoxRetriever]
 {
-  trait StubComputationsBoxRetriever extends ComputationsBoxRetriever with Frs10xDormancyBoxRetriever{
+  trait StubComputationsBoxRetriever extends ComputationsBoxRetriever{
     self: FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever with Frs10xDirectorsBoxRetriever =>
 }
   override val boxRetriever = mock[StubComputationsBoxRetriever]
@@ -29,7 +29,7 @@ class CP983Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
       when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate("2019-12-31")))
       when(boxRetriever.cp7()).thenReturn(CP7(None))
       when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
-      when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(false)))
+      when(boxRetriever.acq899()).thenReturn(ACQ8999(Some(false)))
       val cp983 = CP983(None)
       cp983.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP983"), "error.CP983.required"))
     }
@@ -39,7 +39,7 @@ class CP983Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
       when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate("2019-12-31")))
       when(boxRetriever.cp7()).thenReturn(CP7(None))
       when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
-      when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(true)))
+      when(boxRetriever.acq899()).thenReturn(ACQ8999(Some(true)))
       val cp983 = CP983(None)
       cp983.validate(boxRetriever) shouldBe Set.empty
     }
@@ -48,7 +48,7 @@ class CP983Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
        when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate("2019-12-31")))
        when(boxRetriever.cp7()).thenReturn(CP7(None))
        when(boxRetriever.cato24()).thenReturn(CATO24(Some(false)))
-       when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(false)))
+       when(boxRetriever.acq899()).thenReturn(ACQ8999(Some(false)))
        val cp983 = CP983(None)
        cp983.validate(boxRetriever) shouldBe Set.empty
      }
@@ -58,7 +58,7 @@ class CP983Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
        when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate("2019-12-31")))
        when(boxRetriever.cp7()).thenReturn(CP7(None))
        when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
-       when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(false)))
+       when(boxRetriever.acq899()).thenReturn(ACQ8999(Some(false)))
        val cp983 = CP983(Some(-1))
        cp983.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP983"), "error.CP983.mustBeZeroOrPositive"))
      }
@@ -68,7 +68,7 @@ class CP983Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
      when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate("2019-12-31")))
      when(boxRetriever.cp7()).thenReturn(CP7(None))
      when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
-     when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(false)))
+     when(boxRetriever.acq899()).thenReturn(ACQ8999(Some(false)))
      val cp983 = CP983(Some(632001))
 
      cp983.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP983"), "error.CP983.above.max", Some(List("-632,000", "632,000"))))
@@ -80,7 +80,7 @@ class CP983Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
      when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate("2019-12-31")))
      when(boxRetriever.cp7()).thenReturn(CP7(Some(2)))
      when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
-     when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(false)))
+     when(boxRetriever.acq899()).thenReturn(ACQ8999(Some(false)))
      val cp983 = CP983(Some(631999))
 
      cp983.validate(boxRetriever) shouldBe Set(CtValidation(Some("CP983"), "error.CP983.above.max", Some(List("-632,000", "632,000"))))
@@ -91,7 +91,7 @@ class CP983Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
      when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate("2019-12-31")))
      when(boxRetriever.cp7()).thenReturn(CP7(None))
      when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
-     when(boxRetriever.acq8999()).thenReturn(ACQ8999(Some(false)))
+     when(boxRetriever.acq899()).thenReturn(ACQ8999(Some(false)))
      val cp983 = CP983(Some(632000))
 
      cp983.validate(boxRetriever) shouldBe Set.empty
