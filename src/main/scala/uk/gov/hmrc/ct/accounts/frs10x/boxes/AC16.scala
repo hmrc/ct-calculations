@@ -30,25 +30,10 @@ case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
       boxRetriever.ac4()
   }
 
-  private val isAbridgedFiling: FilingAttributesBoxValueRetriever => Boolean = boxRetriever =>
-    boxRetriever.abridgedFiling().value
-
   private val isHmrcFiling: FilingAttributesBoxValueRetriever => Boolean = boxRetriever =>
     boxRetriever.hmrcFiling().value
 
-  private val isJoint: FilingAttributesBoxValueRetriever => Boolean = boxRetriever =>
-    boxRetriever.isJointFiling()
-
-  private val isFullFiling: FilingAttributesBoxValueRetriever => Boolean = boxRetriever =>
-    boxRetriever.statutoryAccountsFiling().value
-
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever ): Set[CtValidation] = {
-
-//    val asd: Boolean = if (isHmrcFiling(boxRetriever)) {
-//      isAbridgedFiling(boxRetriever) || isFullFiling(boxRetriever)
-//    } else if (isJoint(boxRetriever)) {
-//      isAbridgedFiling(boxRetriever) || isFullFiling(boxRetriever)
-//    } else false
 
     collectErrors(
       validateAsMandatory(this),
