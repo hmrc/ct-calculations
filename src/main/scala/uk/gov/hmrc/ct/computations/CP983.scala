@@ -21,7 +21,7 @@ case class CP983(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover fr
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     val cato24 = boxRetriever.cato24
-    val dormant = boxRetriever.acq899().orFalse
+    val dormant = boxRetriever.acq8999a().orFalse
     collectErrors(
       requiredErrorIf(cato24.isTrue && !dormant &&  this.value.isEmpty),
       validateZeroOrPositiveInteger(this),

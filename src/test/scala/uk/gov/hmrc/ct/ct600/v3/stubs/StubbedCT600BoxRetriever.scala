@@ -406,5 +406,5 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
 
   override def cp129: CP129 = ???
 
-  override def acq899: ACQ8999 = ???
+  override def acq8999a: ACQ8999 = ???
 }
