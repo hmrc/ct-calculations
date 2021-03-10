@@ -7,7 +7,6 @@ package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito.when
-import uk.gov.hmrc.ct.{AbridgedFiling, CompaniesHouseFiling, FilingCompanyType, HMRCFiling, StatutoryAccountsFiling}
 import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
@@ -15,6 +14,7 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes.UkTradingCompany
 import uk.gov.hmrc.ct.utils.CatoInputBounds._
 import uk.gov.hmrc.ct.utils.UnitSpec
+import uk.gov.hmrc.ct.{CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
 
 class AC16Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever] with UnitSpec with MockFrs102AccountsRetriever {
 
@@ -36,7 +36,7 @@ class AC16Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever
 
   "AC16" should {
     "fail validation" when {
-      "its value is greater than the apportioned max turnover and the user is going through an abridged hmrc journey" in {
+      "its value is greater than the apportioned max turnover and the user is going through an hmrc journey" in {
         doMocks(true)
         AC16(Some(turnoverHMRCMaxValue632k + 1)).validate(boxRetriever) shouldBe Set(CtValidation(
           boxId = Some(ac16),

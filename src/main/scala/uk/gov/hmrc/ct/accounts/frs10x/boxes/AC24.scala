@@ -42,7 +42,7 @@ case class AC24(value: Option[Int]) extends CtBoxIdentifier(name = "Income from 
     case box: AC12 if isJointJourney(boxRetriever)  => shortenedValidateHmrcTurnover(boxRetriever, box, ac12Id, ac12MinimumValue)
     case box: AC16 if isJointJourney(boxRetriever)  => shortenedValidateHmrcTurnover(boxRetriever, box, ac16Id, ac16MinimumValue)
     case box: AC12 if !isItCohoJourney(boxRetriever) => shortenedValidateHmrcTurnover(boxRetriever, box, ac12Id, ac12MinimumValue)
-    case box: AC16 if !isItCohoJourney(boxRetriever) => shortenedValidateHmrcTurnover(boxRetriever, box, ac16Id, ac16MinimumValue) // might not need this row
+    case box: AC16 if !isItCohoJourney(boxRetriever) => shortenedValidateHmrcTurnover(boxRetriever, box, ac16Id, ac16MinimumValue)
     case box: AC12 if isItCohoJourney(boxRetriever) => shortenedValidateCohoTurnover(boxRetriever, box, ac12Id)
     case box: AC16 if isItCohoJourney(boxRetriever) => shortenedValidateCohoTurnover(boxRetriever, box, ac16Id)
   }
