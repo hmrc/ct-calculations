@@ -220,11 +220,9 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
   "CATO20 - UnclaimedAIA_FYA calculation" should {
     "calculate the value correctly" in new MachineryAndPlantCalculator {
       unclaimedAIAFirstYearAllowance(
-        cp81 = CP81(1),
-        cp83 = CP83(Some(2)),
         cp87 = CP87(3),
         cp88 = CP88(Some(4))
-      ) should be (CATO20(-4))
+      ) should be (CATO20(7))
     }
 
     "sumOfCP78AndCP666 -calculation" should {
