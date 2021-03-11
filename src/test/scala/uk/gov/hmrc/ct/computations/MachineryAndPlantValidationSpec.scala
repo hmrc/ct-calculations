@@ -367,21 +367,22 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       "+ CP82 (Additions Qualifying for Main Pool) + MainRatePool - CP672 (Proceed from Disposals from Main Pool) " +
       "+ UnclaimedAIA_FYA (Unclaimed FYA and AIA amounts)) - CATO-2730" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
-        cp78 = Some(2000),    // writtenDownValueBroughtForward
-        cp79 = Some(20),
-        cp80 = Some(30),
+        cp78 = Some(1000),    // writtenDownValueBroughtForward
+//        cp79 = Some(20),
+//        cp80 = Some(30),
         // CP81 - calculated  // (sum of cp79 and cpAux1) expenditureQualifyingForFirstYearAllowanceInput
         cp82 = Some(2000),    // additionsQualifyingWritingDownAllowanceMainPool
-        cp83 = Some(50),      // expenditureQualifyingAnnualInvestmentAllowance
-        cp87Input = Some(50), // firstYearAllowanceClaimedInput
+        // cp83 = Some(50),      // expenditureQualifyingAnnualInvestmentAllowance
+        cp87Input = Some(40), // firstYearAllowanceClaimedInput
+        cp88 = Some(10),
         cp672 = Some(1000),   // proceedsFromDisposalsFromMainPool
         cpAux1 = 0,
         cpAux2 = 0,
         cato21 = 18
       )
 
-      CP89(544).validate(stubTestComputationsRetriever) shouldBe Set()
-      CP89(550).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded", Some(Seq("544"))))
+      CP89(369).validate(stubTestComputationsRetriever) shouldBe Set()
+      CP89(550).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded", Some(Seq("369"))))
     }
 
     "validates when greater than MAX(0, MainPool% * ( CP78 (Main Pool brought forward) " +

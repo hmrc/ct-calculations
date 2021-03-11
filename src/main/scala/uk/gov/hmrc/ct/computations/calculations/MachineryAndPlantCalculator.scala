@@ -93,8 +93,8 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
     CP92(Some(result))
   }
 
-  def unclaimedAIAFirstYearAllowance(cp81: CP81, cp83: CP83, cp87: CP87, cp88: CP88): CATO20 = {
-    CATO20(cp81 - cp87 + cp83 - cp88)
+  def unclaimedAIAFirstYearAllowance(cp87: CP87, cp88: CP88): CATO20 = {
+    CATO20(cp87 + cp88)
   }
 
   def sumOfCP78AndCP666(cp78: CP78, cp666: CP666): Set[CtValidation] = {
