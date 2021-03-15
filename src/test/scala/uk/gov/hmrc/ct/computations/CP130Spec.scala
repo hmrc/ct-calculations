@@ -8,6 +8,7 @@ package uk.gov.hmrc.ct.computations
 import org.mockito.Mockito._
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 import org.scalatestplus.mockito.MockitoSugar
+import uk.gov.hmrc.ct.computations.covidSupport.CP123
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 class CP130Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter {

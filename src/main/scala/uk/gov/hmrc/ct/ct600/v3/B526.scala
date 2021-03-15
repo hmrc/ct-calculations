@@ -6,8 +6,7 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box.{CtBigDecimal, CtBoxIdentifier, Linked}
-import uk.gov.hmrc.ct.computations.CP126
-
+import uk.gov.hmrc.ct.computations.covidSupport.CP126
 
 
 case class B526(value: BigDecimal) extends CtBoxIdentifier("Coronavirus support schemes overpayment now due") with CtBigDecimal
