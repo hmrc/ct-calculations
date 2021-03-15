@@ -5,18 +5,30 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import org.mockito.Mockito._
-import uk.gov.hmrc.ct.{BoxValidationFixture, CATO22}
+import org.scalatest.{Matchers, WordSpec}
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.{BoxValidationFixture, CATO22}
 
 class CP668Spec extends WordSpec with Matchers with MockitoSugar with BoxValidationFixture[ComputationsBoxRetriever] {
 
   val boxRetriever = mock[ComputationsBoxRetriever]
 
+  override def setUpMocks = {
+    when(boxRetriever.cato22()).thenReturn(CATO22(0))
+    when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+    when(boxRetriever.cpAux3()).thenReturn(CPAux3(50))
+    when(boxRetriever.cp666()).thenReturn(CP666(50))
+    when(boxRetriever.cp667()).thenReturn(CP667(50))
+
+  }
+
+  testBoxIsZeroOrPositive("CP668", CP668.apply)
+
   "CP668" should {
+
 
     "be mandatory when CPQ8 is true and CPAux3 + CP666 > CP667" in {
 
@@ -122,5 +134,4 @@ class CP668Spec extends WordSpec with Matchers with MockitoSugar with BoxValidat
 
     mockRetriever
   }
-
 }
