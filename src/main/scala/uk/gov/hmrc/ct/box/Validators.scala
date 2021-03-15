@@ -29,9 +29,9 @@ import ValidatableBox._
         Set.empty
   }
 
-  protected def exceedsMax(value: Option[Int], max: Int = MAX_MONEY_AMOUNT_ALLOWED)(): Set[CtValidation] = {
+  protected def exceedsMax(value: Option[Int], max: Int = MAX_MONEY_AMOUNT_ALLOWED, errorMsg: String = "exceeds.max")(): Set[CtValidation] = {
     value match {
-      case Some(v) if v > max => errorMessage("exceeds.max", Seq(max))
+      case Some(v) if v > max => errorMessage(errorMsg, Seq(max))
       case _ => Set.empty
     }
   }

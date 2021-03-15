@@ -10,12 +10,28 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 
 case class CP672a(value: Option[Int]) extends CtBoxIdentifier(name = "Out Of Proceeds from disposals from main pool")  with CtOptionalInteger with Input with SelfValidatableBox[ComputationsBoxRetriever, Option[Int]] {
+
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
-    val max = boxRetriever.cp672().orZero
+    val hasCompanyCeasedTrading = boxRetriever.cpQ8().isTrue
+
+    val max = {
+      if (hasCompanyCeasedTrading) {
+        val proceedsFromDisposals = boxRetriever.cp84().orZero
+
+        exceedsMax(value, proceedsFromDisposals, "CP84.exceeds.max")
+      }
+      else {
+        val proceedsFromDisposalsFromMainPool = boxRetriever.cp672().orZero
+
+        exceedsMax(value, proceedsFromDisposalsFromMainPool, "CP672.exceeds.max")
+      }
+    }
+
     collectErrors(
       validateZeroOrPositiveInteger(),
-      exceedsMax(value, max)
+      max
     )
+
   }
 }
 object CP672a {
