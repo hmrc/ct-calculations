@@ -15,8 +15,8 @@ object CP126 extends Calculated[CP126, ComputationsBoxRetriever] {
     val cp122 = boxRetriever.cp122()
     val cp123 = boxRetriever.cp123()
     val cp124 = boxRetriever.cp124()
-    val cp125 = boxRetriever.cp125()
+    val cp125b = boxRetriever.cp125b()
 
-    CP126(cp122.value.getOrElse(0) - cp123.value.getOrElse(0) - cp124.value.getOrElse(0) + cp125.value.getOrElse(0))
+    CP126(cp122.value.getOrElse(0) - cp123.value.getOrElse(0) - cp124.value.getOrElse(0) + cp125b.value.getOrElse(0))
   }
 }

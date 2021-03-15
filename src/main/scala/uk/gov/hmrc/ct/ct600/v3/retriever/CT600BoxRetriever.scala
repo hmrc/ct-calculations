@@ -96,7 +96,7 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b473(): B473 = B473(cp124())
 
-  def b474(): B474 = B474(cp125())
+  def b474(): B474 = B474(cp125b())
 
   def b475(): B475 = B475(b440())
 
