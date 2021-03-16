@@ -3,9 +3,9 @@
  *
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.computations.covidSupport
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, CtValidation, Input, ValidatableBox}
+import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP121(value: Option[Int]) extends CtBoxIdentifier(name = "Amount of Eat Out to Help Out support claimed") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {

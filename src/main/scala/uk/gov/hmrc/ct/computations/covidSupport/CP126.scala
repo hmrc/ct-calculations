@@ -3,7 +3,7 @@
  *
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.computations.covidSupport
 
 import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever

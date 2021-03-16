@@ -6,7 +6,7 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
-import uk.gov.hmrc.ct.computations.{CP125b}
+import uk.gov.hmrc.ct.computations.covidSupport.CP125b
 
 case class B474(value: Option[Int]) extends CtBoxIdentifier("JRB overpayments") with CtOptionalInteger
 
