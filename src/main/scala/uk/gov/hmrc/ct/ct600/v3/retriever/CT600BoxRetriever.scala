@@ -96,9 +96,13 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b473(): B473 = B473(cp124())
 
-  def b474(): B474 = B474(cp125b())
+  def b474(): B474 = B474.calculate(this)
 
   def b475(): B475 = B475(b440())
+
+  def b476(): B476 = B476(cp125a())
+
+  def b477(): B477 = B477(cp125b())
 
   def b480(): B480 = {
     this match {

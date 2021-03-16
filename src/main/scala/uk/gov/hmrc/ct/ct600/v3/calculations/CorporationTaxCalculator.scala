@@ -101,7 +101,16 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B605(noneIfNegative(calc))
   }
 
+  def calculateJrbEothoOverpayments(b476: B476, b477: B477): B474 = {
+    val calc = b476.plus(b477)
+    B474(noneIfNeg(calc))
+  }
+
   private def noneIfNegative(calc: BigDecimal): Option[BigDecimal] = {
+    if (calc < BigDecimal(0)) None else Some(calc)
+  }
+
+  private def noneIfNeg(calc: Int): Option[Int] = {
     if (calc < BigDecimal(0)) None else Some(calc)
   }
 
