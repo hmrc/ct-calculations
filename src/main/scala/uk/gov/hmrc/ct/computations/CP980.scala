@@ -23,12 +23,15 @@ case class CP980(value: Option[Int]) extends CtBoxIdentifier(name = "Remuneratio
   }
 
   def cp980Breakdown(value: CtOptionalInteger, boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    failIf(value.orZero > (boxRetriever.cp983().orZero - boxRetriever.cp981().orZero)) {
-      Set(CtValidation(Some("CP980"), "error.cp980.breakdown"))
-    }
+    val cp980Error = boxRetriever.cp983().orZero - boxRetriever.cp981().orZero
+    failIf(value.orZero > cp980Error) {
+    val cp980Positive = if(cp980Error < 0) 0 else cp980Error
+    Set(CtValidation(Some("CP980"), "error.cp980.breakdown", Some(Seq(cp980Positive.toString))))
   }
-
+  }
 }
+
+
 
 object CP980 {
 

@@ -25,7 +25,7 @@ class CP980Spec extends WordSpec with Matchers with MockitoSugar {
 
       val result = CP980(Some(1000)).validate(boxRetriever)
 
-      result shouldBe Set(CtValidation(Some("CP980"), "error.cp980.breakdown"))
+      result shouldBe Set(CtValidation(Some("CP980"), "error.cp980.breakdown", Some(List("500"))))
     }
 
     " not show error if value is entered correctly" in {

@@ -18,15 +18,15 @@ class CP48Spec extends WordSpec with MockitoSugar with Matchers {
   "CP48" should {
     "not be valid if it is None and CP29 is not" in {
       when(boxRetriever.cp29()).thenReturn(CP29(Some(1)))
-      CP48(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP48"), "error.CP48.must.equal.CP29"))
+      CP48(None).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP48"), "error.CP48.must.equal.CP29", Some(List("1"))))
     }
     "not be valid if it is Some and CP29 is not" in {
       when(boxRetriever.cp29()).thenReturn(CP29(None))
-      CP48(Some(1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP48"), "error.CP48.must.equal.CP29"))
+      CP48(Some(1)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP48"), "error.CP48.must.equal.CP29", Some(List("0"))))
     }
     "not be valid if it is has a different value to CP29" in {
       when(boxRetriever.cp29()).thenReturn(CP29(Some(1)))
-      CP48(Some(2)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP48"), "error.CP48.must.equal.CP29"))
+      CP48(Some(2)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP48"), "error.CP48.must.equal.CP29", Some(List("1"))))
     }
     "not be valid if it is has the same negative value as CP29" in {
       when(boxRetriever.cp29()).thenReturn(CP29(Some(-1)))
