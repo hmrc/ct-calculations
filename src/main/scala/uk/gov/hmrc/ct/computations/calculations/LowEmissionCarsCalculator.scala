@@ -94,7 +94,7 @@ object LowEmissionCarsCalculator extends LowEmissionCarsCalculator
   def getMainRatePoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, MainRate) //CPaux2
 
   def getSpecialRatePoolSum(lec01: LEC01): Int = getSomePoolSum(lec01, SpecialRate) //CPaux3
-
+    
   private def getSomePoolSum(lec01: LEC01, poolGroup: LowEmissionCarRate): Int = {
     lec01.values.filter(x => taxPoolForCar(x) == poolGroup).map(car =>
     if (car.price.isDefined) car.price.get
