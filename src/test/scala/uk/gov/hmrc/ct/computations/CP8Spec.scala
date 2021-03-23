@@ -56,11 +56,11 @@ class CP8Spec extends WordSpec with Matchers with MockitoSugar {
     "pass when at max" in {
       CP8(Some(99999999)).validate(boxRetriever) shouldBe empty
     }
-    "pass when at min" in {
-      CP8(Some(-99999999)).validate(boxRetriever) shouldBe empty
+    "fail when negative" in {
+      CP8(Some(-99999999)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP8"), "error.CP8.mustBeZeroOrPositive"))
     }
-    "fail when below min" in {
-      CP8(Some(-100000000)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP8"), "error.CP8.below.min", Some(Seq(oldMinWithCommas, oldMaxWithCommas))))
+    "fail when below min and negative" in {
+      CP8(Some(-100000000)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP8"), "error.CP8.below.min", Some(Seq(oldMinWithCommas, oldMaxWithCommas))), CtValidation(Some("CP8"),"error.CP8.mustBeZeroOrPositive"))
     }
     "fail when above max" in {
       CP8(Some(100000000)).validate(boxRetriever) shouldBe Set(CtValidation(Some("CP8"), "error.CP8.above.max", Some(Seq(oldMinWithCommas, oldMaxWithCommas))))

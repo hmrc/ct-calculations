@@ -20,7 +20,8 @@ case class CP8(value: Option[Int]) extends CtBoxIdentifier(name = "Cost Of Sales
       },
       failIf(value.isEmpty){
         validateAsMandatory(this)
-      }
+      },
+      validateZeroOrPositiveInteger(this)
     )
   }
 }
