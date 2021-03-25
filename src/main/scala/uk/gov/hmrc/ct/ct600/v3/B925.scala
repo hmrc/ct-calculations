@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
+import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
-import uk.gov.hmrc.ct.box.ValidatableBox._
 
 
 case class B925(value: String) extends CtBoxIdentifier("sort code")

@@ -16,14 +16,14 @@
 
 package uk.gov.hmrc.ct.box
 
-import java.util.regex.Pattern
-
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 import uk.gov.hmrc.ct.utils.DateImplicits._
+
+import java.util.regex.Pattern
 
 trait ValidatableBox[T <: BoxRetriever] extends Validators with ExtraValidation {
 

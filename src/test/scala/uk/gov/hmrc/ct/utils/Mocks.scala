@@ -21,5 +21,4 @@ import org.scalatestplus.mockito.MockitoSugar
 
 trait Mocks extends MockitoSugar {
   val mockComputationsBoxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
-
 }

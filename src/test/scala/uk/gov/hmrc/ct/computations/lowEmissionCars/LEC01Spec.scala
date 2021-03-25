@@ -95,12 +95,22 @@ class LEC01Spec extends UnitSpec {
 
         carError(carNoPrice, fieldRequiredError(priceId))
       }
+      "the user enters a value less than 0" in {
+        val carNegativePrice = standardCar.copy(price = Some(-1))
+
+        carError(carNegativePrice, mustBeZeroOrPositiveError(priceId))
+      }
     }
 
     "fail car emissions validation" when {
       "the user doesn't enter a value" in {
         val carNoPurchasedState = standardCar.copy(emissions = None)
         carError(carNoPurchasedState, fieldRequiredError(emissionsId))
+      }
+      "the user enters a value less than 0" in {
+        val carNegativePrice = standardCar.copy(emissions = Some(-1))
+
+        carError(carNegativePrice, mustBeZeroOrPositiveError(emissionsId))
       }
     }
 

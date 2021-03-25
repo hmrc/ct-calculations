@@ -14,29 +14,24 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes
+package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import uk.gov.hmrc.ct.accounts.AccountsPreviousPeriodValidation
-import uk.gov.hmrc.ct.accounts.frs102.retriever.{Frs102AccountsBoxRetriever, FullAccountsBoxRetriever}
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
-case class AC13(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover (previous PoA)")
+case class AC15(value: Option[Int]) extends CtBoxIdentifier(name = "Cost of sales (previous PoA)")
   with CtOptionalInteger
   with Input
-  with ValidatableBox[Frs102AccountsBoxRetriever]
+  with ValidatableBox[Frs10xAccountsBoxRetriever]
+  with Validators
   with AccountsPreviousPeriodValidation
-  with Validators {
+  with Debit {
 
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    val errors = collectErrors(
-      validateInputAllowed("AC13", boxRetriever.ac205()),
-      validateZeroOrPositiveInteger(this)
+  override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateInputAllowed("AC15", boxRetriever.ac205()),
+      validateMoney(value, min = 0)
     )
-
-    if(errors.isEmpty) {
-      validateMoney(value, 0)
-    } else {
-      errors
-    }
   }
 }

@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs102.stubs.StubbedFullAccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts._
-import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
+import uk.gov.hmrc.ct.computations.covidSupport.CP121
 
-class AC17Spec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with AccountsPreviousPeriodValidationFixture[Frs102AccountsBoxRetriever] with MockFrs102AccountsRetriever {
+case class B647(value: Option[Int]) extends CtBoxIdentifier("Eat Out to Help Out Scheme reimbursed discounts included as taxable income") with CtOptionalInteger
 
-  testAccountsMoneyValidation("AC17", AC17.apply)
+object B647 extends Linked[CP121, B647] {
 
-  testAccountsPreviousPoAValidation("AC17", AC17.apply)
- }
+  override def apply(source: CP121): B647 = B647(source.value)
+}

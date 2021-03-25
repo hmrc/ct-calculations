@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.accounts.frs10x.boxes
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
 import uk.gov.hmrc.ct.accounts.AccountStatementValidationFixture
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC8088
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 
 class AC8088Spec extends AccountStatementValidationFixture[Frs10xAccountsBoxRetriever] with BeforeAndAfterEach {

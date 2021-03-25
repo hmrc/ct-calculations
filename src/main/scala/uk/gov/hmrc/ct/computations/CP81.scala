@@ -24,7 +24,7 @@ case class CP81(value: Int) extends CtBoxIdentifier(name = "Total expenditure qu
 
 object CP81 extends Calculated[CP81, ComputationsBoxRetriever] with CtTypeConverters with TotalExpenditureQualifyingForTheFirstYearAllowanceCalculator {
 
-  override def calculate(retriever: ComputationsBoxRetriever) = {
-    totalExpenditureQualifyingForTheFirstYearAllowance(cp79 = retriever.cp79, cp80 = retriever.cp80)
+  override def calculate(retriever: ComputationsBoxRetriever): CP81 = {
+    totalExpenditureQualifyingForTheFirstYearAllowance(cp79 = retriever.cp79, retriever.cpAux1)
   }
 }

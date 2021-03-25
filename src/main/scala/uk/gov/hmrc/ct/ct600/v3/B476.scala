@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frsse2008
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.box._
 
-case class AC14(value: Option[Int]) extends CtBoxIdentifier(name = "Current Cost of sales")
-                                    with CtOptionalInteger with Input
-                                    with SelfValidatableBox[AccountsBoxRetriever, Option[Int]] {
-  override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
-    validateMoney(value)
-  }
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
+import uk.gov.hmrc.ct.computations.covidSupport.{CP125a}
+
+case class B476(value: Option[Int]) extends CtBoxIdentifier("EOTHO overpayments") with CtOptionalInteger
+
+object B476 extends Linked[CP125a, B476] {
+
+  override def apply(source: CP125a): B476 = B476(source.value)
 }

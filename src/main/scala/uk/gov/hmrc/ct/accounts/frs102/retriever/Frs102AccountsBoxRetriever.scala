@@ -16,9 +16,11 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.retriever
 
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC13
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
 import uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors.LoansToDirectors
 import uk.gov.hmrc.ct.accounts.frs102.boxes.relatedPartyTransactions.RelatedPartyTransactions
+import uk.gov.hmrc.ct.accounts.frs10x.boxes._
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 
@@ -27,8 +29,6 @@ trait Frs102AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
   self: FilingAttributesBoxValueRetriever =>
 
   def ac13(): AC13
-
-  def ac14(): AC14
 
   def ac15(): AC15
 
@@ -43,6 +43,10 @@ trait Frs102AccountsBoxRetriever extends Frs10xAccountsBoxRetriever {
   def ac20(): AC20
 
   def ac21(): AC21
+
+  def ac24(): AC24
+
+  def ac25(): AC25
 
   def ac26(): AC26 = AC26.calculate(this)
 

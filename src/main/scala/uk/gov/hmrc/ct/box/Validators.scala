@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.box
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 trait Validators {
-
+import ValidatableBox._
   protected val boxId = getClass.getSimpleName
 
   protected def And(predicates: (() => Boolean)*)(): Boolean = {
@@ -40,9 +40,9 @@ trait Validators {
         Set.empty
   }
 
-  protected def exceedsMax(value: Option[Int], max: Int = MAX_MONEY_AMOUNT_ALLOWED)(): Set[CtValidation] = {
+  protected def exceedsMax(value: Option[Int], max: Int = MAX_MONEY_AMOUNT_ALLOWED, errorMsg: String = "exceeds.max")(): Set[CtValidation] = {
     value match {
-      case Some(v) if v > max => errorMessage("exceeds.max", Seq(max))
+      case Some(v) if v > max => errorMessage(errorMsg, Seq(max))
       case _ => Set.empty
     }
   }
@@ -63,9 +63,12 @@ trait Validators {
   }
 
   protected def validateMoney(value: Option[Int], min: Int = -99999999, max: Int = 99999999)(): Set[CtValidation] = {
+    val formattedMin = commaForThousands(min)
+    val formattedMax = commaForThousands(max)
+
     value match {
-      case Some(x) if x < min => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(min.toString, max.toString))))
-      case Some(x) if x > max => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", Some(Seq(min.toString, max.toString))))
+      case Some(x) if x < min => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.below.min", Some(Seq(formattedMin, formattedMax))))
+      case Some(x) if x > max => Set(CtValidation(boxId = Some(boxId), s"error.$boxId.above.max", Some(Seq(formattedMin, formattedMax))))
       case _ => Set.empty
     }
   }

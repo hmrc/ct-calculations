@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.approval.retriever
 
-import uk.gov.hmrc.ct.accounts.approval.boxes.{CompaniesHouseAccountsApproval, HmrcAccountsApproval}
+import uk.gov.hmrc.ct.accounts.approval.boxes.CompaniesHouseAccountsApproval
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 

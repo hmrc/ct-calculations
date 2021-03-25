@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes
+package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.accounts.AccountsPreviousPeriodValidation
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.Validators.ComputationValidatableBox
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class AC15(value: Option[Int]) extends CtBoxIdentifier(name = "Cost of sales (previous PoA)")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[Frs102AccountsBoxRetriever]
-  with Validators
-  with AccountsPreviousPeriodValidation
-  with Debit {
-
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
+case class CP87a(value: Option[Int]) extends CtBoxIdentifier(name = "Out Of First year allowance claimed")  with CtOptionalInteger with Input with ComputationValidatableBox[ComputationsBoxRetriever] with CtTypeConverters{
+  override def validate(boxRetriever: ComputationsBoxRetriever) = {
+    val max = boxRetriever.cp87Input().orZero
     collectErrors(
-      validateInputAllowed("AC15", boxRetriever.ac205()),
-      validateMoney(value, min = 0)
+      validateZeroOrPositiveInteger(this),
+      exceedsMax(value, max)
     )
   }
 }
+object CP87a {
+
+  def apply(int: Int): CP87a = CP87a(Some(int))
+
+}
+

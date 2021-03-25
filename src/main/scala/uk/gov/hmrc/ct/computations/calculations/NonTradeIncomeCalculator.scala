@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import uk.gov.hmrc.ct.{CATO01, CATO23}
 import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.{CATO01, CATO23}
 
 trait NonTradeIncomeCalculator extends CtTypeConverters {
 

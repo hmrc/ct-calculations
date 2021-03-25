@@ -30,6 +30,8 @@ trait FilingAttributesBoxValueRetriever extends BoxRetriever {
 
   def hmrcFiling(): HMRCFiling
 
+  def isJointFiling(): Boolean = hmrcFiling().value && companiesHouseFiling().value
+
   def companiesHouseSubmitted(): CompaniesHouseSubmitted
 
   def hmrcSubmitted(): HMRCSubmitted

@@ -33,6 +33,13 @@ trait ExtraValidation extends Validators {
     }
   }
 
+  def validateZeroOrPositiveInteger(boxId: String, value: Option[Int]): Set[CtValidation] = {
+    value match {
+      case Some(x) if x < 0 => Set(CtValidation(Some(boxId), s"error.$boxId.mustBeZeroOrPositive"))
+      case _ => validationSuccess
+    }
+  }
+
   def validateDateIsInclusive(boxId: String, minDate: LocalDate, dateToCompare: Option[LocalDate], maxDate: LocalDate): Set[CtValidation] = {
     dateToCompare match {
       case None => validationSuccess

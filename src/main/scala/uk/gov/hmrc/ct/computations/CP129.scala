@@ -14,21 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frs102.boxes
+package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class AC14(value: Option[Int]) extends CtBoxIdentifier(name = "Cost of sales (current PoA)")
-  with CtOptionalInteger
-  with Input
-  with ValidatableBox[Frs102AccountsBoxRetriever]
-  with Validators
-  with Debit {
-
-  override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
-    collectErrors(
-      validateMoney(value, min = 0)
-    )
+case class CP129(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did you claim any other coronavirus grants") with CtOptionalBoolean with Input with ValidatableBox[ComputationsBoxRetriever] {
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    collectErrors(validateAsMandatory(this))
   }
 }

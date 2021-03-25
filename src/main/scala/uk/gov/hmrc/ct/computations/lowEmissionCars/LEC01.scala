@@ -18,10 +18,10 @@ package uk.gov.hmrc.ct.computations.lowEmissionCars
 
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.CPQ1000
 import uk.gov.hmrc.ct.computations.formats.Cars
+import uk.gov.hmrc.ct.computations.lowEmissionCars.CarsHelper._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.computations.{CP1, CP2, CPQ1000}
-import CarsHelper._
 
 case class LEC01(values: List[Car] = List.empty) extends CtBoxIdentifier(name = "Low emission car")
   with CtValue[List[Car]]
@@ -44,12 +44,12 @@ case class LEC01(values: List[Car] = List.empty) extends CtBoxIdentifier(name = 
   }
 }
 
-case class Car(regNumber: Option[String],
-               isNew: Option[Boolean],
-               price: Option[Int],
-               emissions: Option[Int],
-               dateOfPurchase: Option[LocalDate]
-               ) extends ValidatableBox[ComputationsBoxRetriever]
+case class Car(override val regNumber: Option[String],
+               override val isNew: Option[Boolean],
+               override val price: Option[Int],
+               override val emissions: Option[Int],
+               override val dateOfPurchase: Option[LocalDate]
+               ) extends AbstractLowEmissionCar with ValidatableBox[ComputationsBoxRetriever]
   with ExtraValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
@@ -69,14 +69,32 @@ case class Car(regNumber: Option[String],
 
     private val validateIsCarNew = validateAsMandatory(isCarNewId, isNew)
 
-    private val validatePriceOfCar: Set[CtValidation] = validateAsMandatory(priceId, price)
+    private val validatePriceOfCar: Set[CtValidation] = collectErrors(
+      validateAsMandatory(priceId, price),
+      validateZeroOrPositiveInteger(priceId, price)
+    )
 
-    private val validateEmissionsOfCar = validateAsMandatory(emissionsId, emissions)
+    private val validateEmissionsOfCar = collectErrors(
+      validateAsMandatory(emissionsId, emissions),
+      validateZeroOrPositiveInteger(emissionsId, emissions)
+    )
 
     private def validateDateOfPurchase(startOfAccountingPeriod: LocalDate, endOfAccountingPeriod: LocalDate): Set[CtValidation] = {
     collectErrors(
       validateAsMandatory(dateOfPurchaseId, dateOfPurchase)(),
       validateDateIsInclusive(dateOfPurchaseId, startOfAccountingPeriod, dateOfPurchase, endOfAccountingPeriod)
+    )
+  }
+}
+
+object Car {
+  def apply(abstractCar: AbstractLowEmissionCar) = {
+    new Car(
+      regNumber = abstractCar.regNumber,
+      isNew = abstractCar.isNew,
+      price = abstractCar.price,
+      emissions = abstractCar.emissions,
+      dateOfPurchase = abstractCar.dateOfPurchase
     )
   }
 }

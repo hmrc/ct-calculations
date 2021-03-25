@@ -17,7 +17,6 @@
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
 import uk.gov.hmrc.ct.box.CtTypeConverters
-import uk.gov.hmrc.ct.computations.CP291
 import uk.gov.hmrc.ct.ct600.v3._
 
 trait B325Calculator extends CtTypeConverters {

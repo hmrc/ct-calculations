@@ -19,8 +19,6 @@ package uk.gov.hmrc.ct.computations.calculations
 import uk.gov.hmrc.ct.CATO20
 import uk.gov.hmrc.ct.box.{CtTypeConverters, CtValidation}
 import uk.gov.hmrc.ct.computations._
-import uk.gov.hmrc.ct.box._
-
 
 trait MachineryAndPlantCalculator extends CtTypeConverters {
 
@@ -106,40 +104,18 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
     CP92(Some(result))
   }
 
-  def unclaimedAIAFirstYearAllowance(cp81: CP81, cp83: CP83, cp87: CP87, cp88: CP88, cpAux1: CPAux1): CATO20 = {
-    CATO20(cp81 + cpAux1 - cp87 + cp83 - cp88 )
+  def unclaimedAIAFirstYearAllowance(cp87: CP87, cp88: CP88): CATO20 = {
+    CATO20(cp87 + cp88)
   }
+
   def sumOfCP78AndCP666(cp78: CP78, cp666: CP666): Set[CtValidation] = {
-    val totalValue=cp78 + cp666
+    val totalValue = cp78 + cp666
     if (totalValue > 312000)
       Set(CtValidation(None, "error.sum.of.cp78cp666.exceeds.total"))
     else
       Set.empty
   }
 
-  private def total(cpq8: CPQ8,
-                    cp78: CP78,
-                    cp81: CP81,
-                    cp82: CP82,
-                    cp84: CP84,
-                    cp91: CP91Input): Option[Int] = {
-    checkParameters(cpq8, cp78, cp81, cp82, cp84, cp91)
-    cpq8.value.flatMap(ceasedTrading => if (ceasedTrading) Some(calculation(cp78, cp81, cp82, cp84)) else None)
-  }
-
-  private def calculation(cp78: CP78,
-                          cp81: CP81,
-                          cp82: CP82,
-                          cp84: CP84): Int = cp78.orZero + cp81 + cp82.orZero - cp84.orZero
-
-  private def checkParameters(cpq8: CPQ8,
-                              cp78: CP78,
-                              cp81: CP81,
-                              cp82: CP82,
-                              cp84: CP84,
-                              cp91: CP91Input) {
-  }
+  case class BalancesResult(cp90: CP90, cp91: CP91)
 
 }
-
-case class BalancesResult(cp90: CP90, cp91: CP91)

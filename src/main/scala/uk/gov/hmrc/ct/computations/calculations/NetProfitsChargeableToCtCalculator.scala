@@ -18,9 +18,6 @@ package uk.gov.hmrc.ct.computations.calculations
 
 import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations._
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
-import uk.gov.hmrc.ct.computations.losses._
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 trait NetProfitsChargeableToCtCalculator extends CtTypeConverters {
 

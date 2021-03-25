@@ -27,6 +27,7 @@ import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AC205, AC206}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
+import uk.gov.hmrc.ct.utils.CatoInputBounds._
 
 class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
 
@@ -93,9 +94,9 @@ class LoansToDirectorsSpec extends WordSpec with MockitoSugar with Matchers with
       loans.validate(mockBoxRetriever) shouldBe Set(
         CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC304A.required", None),
         CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC305A.regexFailure",Some(List("^"))),
-        CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC306A.below.min", Some(List("-99999999", "99999999"))),
-        CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC307A.below.min", Some(List("-99999999", "99999999"))),
-        CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC308A.below.min", Some(List("-99999999", "99999999"))),
+        CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC306A.below.min", Some(List(oldMinWithCommas, oldMaxWithCommas))),
+        CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC307A.below.min", Some(List(oldMinWithCommas, oldMaxWithCommas))),
+        CtValidation(Some("LoansToDirectors"), "error.compoundList.loans.0.AC308A.below.min", Some(List(oldMinWithCommas, oldMaxWithCommas))),
         CtValidation(Some("LoansToDirectors"), "error.AC7501.regexFailure" ,Some(List("^")))
       )
     }
