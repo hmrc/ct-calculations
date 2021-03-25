@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ct.box
 
 import org.joda.time.LocalDate
+
 import scala.language.implicitConversions
 
 trait CtTypeConverters {

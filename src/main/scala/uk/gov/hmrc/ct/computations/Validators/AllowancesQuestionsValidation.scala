@@ -19,8 +19,8 @@ package uk.gov.hmrc.ct.computations.Validators
 import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.CPQ7
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.capitalAllowanceAndSBA._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 
 trait AllowancesQuestionsValidation {

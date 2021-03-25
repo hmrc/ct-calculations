@@ -57,7 +57,7 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
      */
 
 
-  "Low Emmission Cars calculations" should {
+  "Low Emission Cars calculations" should {
 
     "calculate values for Companies Still Trading" in {
       val companiesStillTrading =
@@ -68,28 +68,28 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
 
           ("Scenario 1 - Company still trading, some AIA can be claimed from the main pool, no disposals were made, user claims some but not all they're entitled to.",
             List(mainRatePoolCar(100)),
-            Some(false), Some(50), None, Some(0), Some(0), Some(15), Some(40), None, Some(0), Some(0),Some(0), Some(0), Some(0), Some(30), Some(30), None, None, Some(175), Some(0)),
+            Some(false), Some(50), None, Some(0), Some(0), Some(15), Some(40), None, Some(0), Some(0),Some(0), Some(0), Some(0), Some(30), Some(30), None, None, Some(135), Some(0)),
 
           ("Scenario 2 - Company still trading, some AIA, main pool allowance can be claimed from the main pool, there have been disposals on the main pool, but lower than the value of the pool. " +
             "User claims some of the allowance but not all they're entitled to.",
             List(mainRatePoolCar(100)),
-            Some(false), Some(50), None, Some(0), Some(0), Some(15), Some(40), None, Some(48), Some(0), None, Some(0), Some(0), Some(21), Some(21), None, None, Some(136), Some(0)),
+            Some(false), Some(50), None, Some(0), Some(0), Some(15), Some(40), None, Some(48), Some(0), None, Some(0), Some(0), Some(21), Some(21), None, None, Some(96), Some(0)),
 
           ("Scenario 3 - Company still trading, some AIA, there have been disposals on the main pool, higher than the value of the pool " +
             "(there will be balancing charges). User can't claim anything from the main pool.",
             List(mainRatePoolCar(270)),
-            Some(false), Some(50), None, Some(0), Some(0), Some(47), Some(69), None, Some(3000), Some(0),None, Some(0), Some(0), None, Some(0), Some(2564), Some(2564), Some(0), Some(0)),
+            Some(false), Some(50), None, Some(0), Some(0), Some(47), Some(69), None, Some(3000), Some(0),None, Some(0), Some(0), None, Some(0), Some(2633), Some(2633), Some(0), Some(0)),
 
           ("Scenario 4 - Company still trading, some AIA and FYA, there have been disposals on the main pool and secondary pool, " +
             "higher than the value of both pools (there will be balancing charges). User can't claim anything from the main pool.",
             List(mainRatePoolCar(270), specialRatePoolCar(594)),
-            Some(false), Some(11), Some(98), Some(31), Some(0),  Some(43), Some(77), Some(2111), Some(3500), Some(0), None, Some(1419), None, None, Some(0), Some(3068), Some(3068), Some(0), Some(0)),
+            Some(false), Some(11), Some(98), Some(31), Some(0),  Some(43), Some(77), Some(2111), Some(3500), Some(0), None, Some(1419), None, None, Some(0), Some(3176), Some(3176), Some(0), Some(0)),
 
           ("Scenario 5 - Company still trading, some AIA and FYA (also FYA cars), there have been disposals on the main pool and secondary pool, " +
             "the main disposals higher than the value of the main pool but the special rate disposals still leave some remaining special rate allowance " +
             "to be claimed (there will be only balancing charges on the main pool). user can't claim anything from the main pool but can claim from the secondary pool.",
             List(fyaRatePoolCar(25), mainRatePoolCar(50), specialRatePoolCar(600)),
-            Some(false), Some(11), Some(98), Some(30), Some(1),  Some(43), Some(77), Some(4), Some(3500), Some(21), Some(20), Some(0), Some(64), None, Some(85), Some(3348), Some(3348), Some(0), Some(674))
+            Some(false), Some(11), Some(98), Some(30), Some(1),  Some(43), Some(77), Some(4), Some(3500), Some(21), Some(20), Some(0), Some(64), None, Some(85), Some(3311), Some(3311), Some(0), Some(674))
         )
 
       forAll(companiesStillTrading) {

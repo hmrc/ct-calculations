@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
+import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDormancyBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.validation.TurnoverValidation
@@ -31,8 +32,9 @@ case class CP983(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover fr
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     val cato24 = boxRetriever.cato24
+    val dormant = boxRetriever.acq8999a().orFalse
     collectErrors(
-      requiredErrorIf(cato24.isTrue && this.value.isEmpty),
+      requiredErrorIf(cato24.isTrue && !dormant &&  this.value.isEmpty),
       validateZeroOrPositiveInteger(this),
       validateHmrcTurnover(boxRetriever, compsStartDate, compsEndDate, errorSuffix = "", secondaryIncome = boxRetriever.cp7().orZero)
     )

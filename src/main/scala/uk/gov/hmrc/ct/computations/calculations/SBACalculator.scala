@@ -17,10 +17,9 @@
 package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.computations.capitalAllowanceAndSBA.{SbaRate, SbaResults}
 import uk.gov.hmrc.ct.ct600.NumberRounding
 import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper
-import uk.gov.hmrc.ct.computations.capitalAllowanceAndSBA.SbaRate
-import uk.gov.hmrc.ct.computations.capitalAllowanceAndSBA.SbaResults
 
 
 trait SBACalculator extends NumberRounding with AccountingPeriodHelper {

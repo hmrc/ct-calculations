@@ -32,14 +32,12 @@ case class CP87Input(value: Option[Int]) extends CtBoxIdentifier(name = "First y
 
   private def firstYearAllowanceNotGreaterThanMaxFYA(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
 
-    val expenditureQualifyingForFirstYearAllowanceInput = retriever.cp81()
-    val cpAux1 = retriever.cpAux1()
-
-    val maxFYA = expenditureQualifyingForFirstYearAllowanceInput + cpAux1
+    val expenditureQualifyingForFirstYearAllowanceInput: CP81 = retriever.cp81()
+    val expenditureQualifyingForFYAValue = expenditureQualifyingForFirstYearAllowanceInput.value
 
     value match {
-      case Some(fyaClaimed) if fyaClaimed > maxFYA =>
-        Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.firstYearAllowanceClaimExceedsAllowance", args = Some(Seq(maxFYA.toString))))
+      case Some(fyaClaimed) if fyaClaimed > expenditureQualifyingForFirstYearAllowanceInput =>
+        Set(CtValidation(boxId = Some("CP87Input"), errorMessageKey = "error.CP87Input.firstYearAllowanceClaimExceedsAllowance", args = Some(Seq(expenditureQualifyingForFYAValue.toString))))
       case _ =>
         Set()
     }

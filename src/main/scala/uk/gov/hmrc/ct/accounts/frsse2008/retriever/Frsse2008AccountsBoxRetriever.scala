@@ -18,6 +18,7 @@ package uk.gov.hmrc.ct.accounts.frsse2008.retriever
 
 import uk.gov.hmrc.ct.accounts.AC12
 import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC13
 import uk.gov.hmrc.ct.accounts.frsse2008._
 import uk.gov.hmrc.ct.accounts.frsse2008.micro._
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
@@ -30,8 +31,6 @@ trait Frsse2008AccountsBoxRetriever extends AccountsBoxRetriever {
   def ac12(): AC12
 
   def ac13(): AC13
-
-  def ac14(): AC14
 
   def ac15(): AC15
 

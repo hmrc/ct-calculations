@@ -16,12 +16,14 @@
 
 package uk.gov.hmrc.ct.ct600.v3.stubs
 
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.ACQ8999
 import uk.gov.hmrc.ct.{CATO24, CountryOfRegistration}
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AC2, AC205, AC206}
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.box.stubs.StubbedFilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.computations.covidSupport.{CP121, CP122, CP123, CP124, CP125b, CP125a}
 import uk.gov.hmrc.ct.computations.lowEmissionCars.LEC01
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
@@ -270,6 +272,8 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
 
   override def cp79(): CP79 = ???
 
+  override def cp665(): CP665 = ???
+
   override def cp46(): CP46 = ???
 
   override def cp2(): CP2 = ???
@@ -287,6 +291,8 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def cp49(): CP49 = ???
 
   override def cp87Input(): CP87Input = ???
+
+  override def cp87a(): CP87a = ???
 
   override def cp301(): CP301 = ???
 
@@ -323,6 +329,8 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def cp1(): CP1 = ???
 
   override def cp672(): CP672 = ???
+
+  override def cp672a(): CP672a = ???
 
   override def cp666(): CP666 = ???
 
@@ -391,4 +399,26 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def cp983(): CP983 = ???
 
   override def cato24: CATO24 = ???
+
+  override def cp120: CP120 = ???
+
+  override def cp121: CP121 = ???
+  
+  override def cp122: CP122 = ???
+
+  override def cp123: CP123 = ???
+
+  override def cp124: CP124 = ???
+
+  override def cp125b: CP125b = ???
+
+  override def cp125a: CP125a = ???
+
+  override def cp127: CP127 = ???
+
+  override def cp128: CP128 = ???
+
+  override def cp129: CP129 = ???
+
+  override def acq8999a: ACQ8999 = ???
 }

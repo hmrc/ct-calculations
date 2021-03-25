@@ -18,14 +18,14 @@ package uk.gov.hmrc.ct.box
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
-import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.box.retriever.BoxRetriever
-import uk.gov.hmrc.ct.ct600.v3._
-import uk.gov.hmrc.ct.ct600.v3.retriever.{CT600BoxRetriever, RepaymentsBoxRetriever}
-import uk.gov.hmrc.ct.domain.ValidationConstants._
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.cato.time.DateHelper
 import uk.gov.hmrc.ct.box.ValidatableBox._
+import uk.gov.hmrc.ct.box.retriever.BoxRetriever
+import uk.gov.hmrc.ct.ct600.v3._
+import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
+import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 
 class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with ValidatableBox[BoxRetriever]{

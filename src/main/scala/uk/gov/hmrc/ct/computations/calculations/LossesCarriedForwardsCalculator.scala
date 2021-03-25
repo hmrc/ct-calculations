@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import uk.gov.hmrc.ct.CATO01
 import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations._
 

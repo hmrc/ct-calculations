@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.{Days, LocalDate, Period}
+import org.joda.time.{Days, LocalDate}
 import uk.gov.hmrc.ct.box._
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.CP3020._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP3020(value: Option[Int]) extends CtBoxIdentifier(name = "Qualifying donations to grassroots sports clubs")
   with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {

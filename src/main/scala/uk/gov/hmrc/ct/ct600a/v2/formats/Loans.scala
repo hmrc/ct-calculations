@@ -21,8 +21,6 @@ import uk.gov.hmrc.ct.ct600a.v2.{LP02, LP03}
 
 object Loans {
 
-  import uk.gov.hmrc.ct.ct600a.v2.formats._
-
   def lp02FromJsonString(json: String): LP02 = Json.fromJson[LP02](Json.parse(json)).get
 
   def toJsonString(lp02: LP02): String =  Json.toJson(lp02).toString()

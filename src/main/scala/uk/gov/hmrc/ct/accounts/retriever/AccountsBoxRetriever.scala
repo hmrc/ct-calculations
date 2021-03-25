@@ -17,8 +17,9 @@
 package uk.gov.hmrc.ct.accounts.retriever
 
 import uk.gov.hmrc.ct.CATO24
-import uk.gov.hmrc.ct.accounts._
+import uk.gov.hmrc.ct.accounts.{AC14, _}
 import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC13
 import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
 
 trait AccountsBoxRetriever extends BoxRetriever {
@@ -36,6 +37,10 @@ trait AccountsBoxRetriever extends BoxRetriever {
   def ac4(): AC4
 
   def ac12(): AC12
+
+  def ac13(): AC13
+
+  def ac14(): AC14
 
   def ac401(): AC401
 

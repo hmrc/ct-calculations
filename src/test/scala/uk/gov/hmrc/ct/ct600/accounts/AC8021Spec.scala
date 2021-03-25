@@ -19,8 +19,7 @@ package uk.gov.hmrc.ct.ct600.accounts
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.frs102._
-import uk.gov.hmrc.ct.accounts.frs10x.boxes.{Directors, _}
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC8021, AC8023, AC8033, AC8051, AC8052, AC8053, AC8054, AC8899, ACQ8003, ACQ8009, Directors}
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever

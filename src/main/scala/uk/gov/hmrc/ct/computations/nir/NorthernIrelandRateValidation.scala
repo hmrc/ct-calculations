@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.ct.computations.nir
 
+import uk.gov.hmrc.ct.computations.losses._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.AboutThisReturnBoxRetriever
-import uk.gov.hmrc.ct.computations.losses._
 
 trait NorthernIrelandRateValidation {
 

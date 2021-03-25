@@ -25,7 +25,7 @@ case class B528(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "Self-
 object B528 extends CorporationTaxCalculator with Calculated[B528, CT600BoxRetriever] {
 
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B528 = {
-    calculateSelfAssessmentOfTaxPayable(fieldValueRetriever.b525(), fieldValueRetriever.b527())
+    calculateSelfAssessmentOfTaxPayable(fieldValueRetriever.b525(), fieldValueRetriever.b526(), fieldValueRetriever.b527())
   }
 
 }

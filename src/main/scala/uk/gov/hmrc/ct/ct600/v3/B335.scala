@@ -18,11 +18,10 @@ package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
 import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.computations.losses._
 import uk.gov.hmrc.ct.ct600.calculations.{CorporationTaxCalculatorParameters, NINonTradingProfitCalculationParameters}
 import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
-import uk.gov.hmrc.ct.computations.losses._
 // was B44
 case class B335(value: Int) extends CtBoxIdentifier("Amount of profit with tax rate: B340 FY1") with CtInteger
 

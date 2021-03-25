@@ -16,12 +16,13 @@
 
 package uk.gov.hmrc.ct.computations.retriever
 
+import uk.gov.hmrc.ct.accounts._
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.ACQ8999
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.computations._
-import uk.gov.hmrc.ct.accounts._
-import uk.gov.hmrc.ct.accounts.frs105.boxes.AC415
-import uk.gov.hmrc.ct.computations.formats._
-import uk.gov.hmrc.ct.computations.lowEmissionCars.{LEC01, LEC10, LEC11, LEC12, LEC13}
+import uk.gov.hmrc.ct.computations.covidSupport.{CP121, CP122, CP123, CP124, CP125a, CP125b, CP126}
+import uk.gov.hmrc.ct.computations.lowEmissionCars._
+import uk.gov.hmrc.ct.computations.machineryAndPlant._
 import uk.gov.hmrc.ct.{CATO01, CATO02, CATO03, CATO13, CATO14, CATO15, CATO16, CATO20, CATO21, CATO22, CATO23, CATO24}
 
 trait ComputationsBoxRetriever extends BoxRetriever {
@@ -132,6 +133,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp87Input(): CP87Input
 
+  def cp87a(): CP87a
+
   def cp88(): CP88
 
   def cp89(): CP89
@@ -220,9 +223,13 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp93(): CP93 = CP93(cp186())
 
+  def cp94(): CP94 = CP94.calculate(this)
+
   def cp95(): CP95 = CP95(cp93())
 
   def cp96(): CP96 = CP96(cp91())
+
+  def cp97(): CP97 = CP97.calculate(this)
 
   def cp98(): CP98 = CP98(cp96())
 
@@ -238,11 +245,17 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp104(): CP104 = CP104(cp49())
 
+  def cp105(): CP105 = CP105.calculate(this)
+
   def cp106(): CP106 = CP106(cp51())
 
   def cp107(): CP107 = CP107(cp52())
 
   def cp108(): CP108 = CP108(cp53())
+
+  def cp109(): CP109 = CP109.calculate(this)
+
+  def cp110(): CP110 = CP110.calculate(this)
 
   def cp114(): CP114 = CP114(cp58())
 
@@ -251,6 +264,30 @@ trait ComputationsBoxRetriever extends BoxRetriever {
   def cp117(): CP117 = CP117.calculate(this)
 
   def cp118(): CP118 = CP118.calculate(this)
+
+  def cp120(): CP120
+
+  def cp121(): CP121
+
+  def cp122(): CP122
+
+  def cp123(): CP123
+
+  def cp124(): CP124
+
+  def cp125b(): CP125b
+
+  def cp125a(): CP125a
+
+  def cp126(): CP126 = CP126.calculate(this)
+
+  def cp127(): CP127
+
+  def cp128(): CP128
+
+  def cp129(): CP129
+
+  def cp130(): CP130 = CP130.calculate(this)
 
   def cp186(): CP186 = CP186.calculate(this)
 
@@ -362,6 +399,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp515(): CP515 = CP515(cp513())
 
+  def cp665(): CP665
+
   def cp666(): CP666
 
   def cp667(): CP667
@@ -375,6 +414,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
   def cp671(): CP671 = CP671(cp91())
 
   def cp672(): CP672
+
+  def cp672a(): CP672a
 
   def cp673(): CP673
 
@@ -488,4 +529,6 @@ trait ComputationsBoxRetriever extends BoxRetriever {
     else
       this.cp997()
   }
+
+  def acq8999a():ACQ8999
 }

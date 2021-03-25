@@ -14,23 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.accounts.frsse2008
+package uk.gov.hmrc.ct.computations.covidSupport
 
-import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class AC13(value: Option[Int]) extends CtBoxIdentifier(name = "Previous Turnover/Sales")
-                                    with CtOptionalInteger with Input
-                                    with SelfValidatableBox[AccountsBoxRetriever, Option[Int]] {
-  override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
-    val errors = collectErrors(
+case class CP123(value: Option[Int]) extends CtBoxIdentifier(name = "CJRS (Coronavirus Job Retention Scheme) and JSS entitlement") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateAsMandatory(this),
       validateZeroOrPositiveInteger(this)
     )
-
-    if(errors.isEmpty) {
-      validateMoney(value, 0)
-    } else {
-      errors
-    }
   }
 }

@@ -20,7 +20,6 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.ct600.v3.retriever.AboutThisReturnBoxRetriever
 
 case class CP281b(value: Option[Int])
   extends CtBoxIdentifier("Losses brought forward from on or after 01/04/2017")

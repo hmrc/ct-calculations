@@ -20,7 +20,7 @@ import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtInteger}
 import uk.gov.hmrc.ct.computations.calculations.LowEmissionCarsCalculator
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CPAux1(value: Int) extends CtBoxIdentifier("FYAPoolSum") with CtInteger
+case class CPAux1(value: Int) extends CtBoxIdentifier("FYAPoolSum/cars qualifying for FYA") with CtInteger
 
 object CPAux1 extends Calculated[CPAux1, ComputationsBoxRetriever] with LowEmissionCarsCalculator  {
 

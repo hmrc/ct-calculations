@@ -57,11 +57,9 @@ case class CP89(value: Option[Int]) extends CtBoxIdentifier(name = "Writing Down
 
   private def calcMainPoolAllowance(retriever: ComputationsBoxRetriever): Int = {
     val unclaimedFYA_AIA = unclaimedAIAFirstYearAllowance(
-      retriever.cp81(),
-      retriever.cp83(),
       retriever.cp87(),
-      retriever.cp88(),
-      retriever.cpAux1())
+      retriever.cp88()
+    )
 
     val cp78 = retriever.cp78().orZero
     val cp82 = retriever.cp82().orZero

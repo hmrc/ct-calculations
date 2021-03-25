@@ -21,8 +21,6 @@ import uk.gov.hmrc.ct.ct600a.v3.LoansToParticipators
 
 object LoansFormatter {
 
-  import uk.gov.hmrc.ct.ct600a.v3.formats._
-
   def LoansFromJsonString(json: String): LoansToParticipators = Json.fromJson[LoansToParticipators](Json.parse(json)).get
 
   def toJsonString(loans2p: LoansToParticipators): String =  Json.toJson(loans2p).toString()
