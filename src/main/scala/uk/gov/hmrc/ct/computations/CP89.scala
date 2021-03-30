@@ -56,18 +56,18 @@ case class CP89(value: Option[Int]) extends CtBoxIdentifier(name = "Writing Down
   }
 
   private def calcMainPoolAllowance(retriever: ComputationsBoxRetriever): Int = {
-    val unclaimedFYA_AIA = unclaimedAIAFirstYearAllowance(
-      retriever.cp87(),
-      retriever.cp88()
-    )
 
+    val claimedFYA_AIA = retriever.cato20()
     val cp78 = retriever.cp78().orZero
+    val cp79 = retriever.cp79().orZero
     val cp82 = retriever.cp82().orZero
+    val cp83 = retriever.cp83().orZero
+    val cpAux1 = retriever.cpAux1()
     val cpAux2 = retriever.cpAux2()
     val cp672 = retriever.cp672().orZero
     val mainPoolPercentage: BigDecimal = retriever.cato21().value
 
-    val allowance: BigDecimal = mainPoolPercentage * (cp78 + cp82 + cpAux2 - cp672 + unclaimedFYA_AIA) / BigDecimal(100)
+    val allowance: BigDecimal = mainPoolPercentage * (cp78 + cp79 + cp82 + cp83 + cpAux2 + cpAux1 - cp672 - claimedFYA_AIA) / BigDecimal(100)
 
     allowance.setScale(0, RoundingMode.UP).toInt
   }
