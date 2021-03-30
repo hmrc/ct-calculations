@@ -379,11 +379,11 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       "+ UnclaimedAIA_FYA (Unclaimed FYA and AIA amounts)) - CATO-2730" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
         cp78 = Some(1000),    // writtenDownValueBroughtForward
-//        cp79 = Some(20),
+        cp79 = Some(20),
 //        cp80 = Some(30),
         // CP81 - calculated  // (sum of cp79 and cpAux1) expenditureQualifyingForFirstYearAllowanceInput
         cp82 = Some(2000),    // additionsQualifyingWritingDownAllowanceMainPool
-        // cp83 = Some(50),      // expenditureQualifyingAnnualInvestmentAllowance
+         cp83 = Some(50),      // expenditureQualifyingAnnualInvestmentAllowance
         cp87Input = Some(40), // firstYearAllowanceClaimedInput
         cp88 = Some(10),
         cp672 = Some(1000),   // proceedsFromDisposalsFromMainPool
@@ -393,7 +393,7 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       )
 
       CP89(369).validate(stubTestComputationsRetriever) shouldBe Set()
-      CP89(550).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded", Some(Seq("369"))))
+      CP89(550).validate(stubTestComputationsRetriever) shouldBe Set(CtValidation(boxId = Some("CP89"), errorMessageKey = "error.CP89.mainPoolAllowanceExceeded", Some(Seq("373"))))
     }
 
     "validates when greater than MAX(0, MainPool% * ( CP78 (Main Pool brought forward) " +
@@ -401,8 +401,11 @@ class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
       "+ LEC14 (Unclaimed FYA and AIA amounts)))" in {
       val stubTestComputationsRetriever = new MyStubbedComputationsRetriever(
         cp78 = Some(100),   // writtenDownValueBroughtForward
+        cp79 = Some(30),
         cp82 = Some(100),   // additionsQualifyingWritingDownAllowanceMainPool
+        cp83 = Some(10),
         cp672 = Some(100),  // proceedsFromDisposalsFromMainPool
+        cpAux1 = 10,
         cpAux2 = 50,
         cato21 = 10,
         cato20 = 50

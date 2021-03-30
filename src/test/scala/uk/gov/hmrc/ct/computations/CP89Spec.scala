@@ -19,13 +19,14 @@ package uk.gov.hmrc.ct.computations
 import org.scalatestplus.mockito.MockitoSugar
 import org.mockito.Mockito._
 import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.{BoxValidationFixture, CATO21}
+import uk.gov.hmrc.ct.{BoxValidationFixture, CATO20, CATO21}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 class CP89Spec extends WordSpec with Matchers with MockitoSugar with BoxValidationFixture[ComputationsBoxRetriever] {
 
   val boxRetriever = mock[ComputationsBoxRetriever]
+
 
   "CP89" should {
 
@@ -63,6 +64,25 @@ class CP89Spec extends WordSpec with Matchers with MockitoSugar with BoxValidati
       when(mockRetriever.cp672()).thenReturn(CP672(Some(50)))
 
       CP89(Some(-20)).validate(mockRetriever) shouldBe Set(CtValidation(Some("CP89"), "error.CP89.mustBeZeroOrPositive"))
+    }
+
+
+    "return a error if value is more than CPAux2 + CPAUX2 + CP78 + CP79 + CP82 + CP83 - (CP672 + CATO20)" in {
+
+      val mockRetriever = setupRetriever()
+
+      when(mockRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+      when(mockRetriever.cp82()).thenReturn(CP82(10))
+      when(mockRetriever.cp83()).thenReturn(CP83(10))
+      when(mockRetriever.cpAux1()).thenReturn(CPAux1(10))
+      when(mockRetriever.cpAux2()).thenReturn(CPAux2(10))
+      when(mockRetriever.cato20()).thenReturn(CATO20(10))
+      when(mockRetriever.cp78()).thenReturn(CP78(Some(10)))
+      when(mockRetriever.cp79()).thenReturn(CP79(Some(10)))
+      when(mockRetriever.cp672()).thenReturn(CP672(Some(10)))
+      when(mockRetriever.cato21()).thenReturn(CATO21(100))
+
+      CP89(Some(41)).validate(mockRetriever) shouldBe Set(CtValidation(Some("CP89"), "error.CP89.mainPoolAllowanceExceeded", Some(List("40"))))
     }
 
     "not be mandatory if CPQ8 is true" in {
@@ -124,6 +144,8 @@ class CP89Spec extends WordSpec with Matchers with MockitoSugar with BoxValidati
     when(mockRetriever.cp88()).thenReturn(CP88(0))
     when(mockRetriever.cpAux1()).thenReturn(CPAux1(0))
     when(mockRetriever.cato21()).thenReturn(CATO21(0))
+    when(mockRetriever.cato20()).thenReturn(CATO20(0))
+    when(mockRetriever.cp79()).thenReturn(CP79(Some(0)))
 
     mockRetriever
   }
