@@ -68,12 +68,12 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
 
           ("Scenario 1 - Company still trading, some AIA can be claimed from the main pool, no disposals were made, user claims some but not all they're entitled to.",
             List(mainRatePoolCar(100)),
-            Some(false), Some(50), None, Some(0), Some(0), Some(15), Some(40), None, Some(0), Some(0),Some(0), Some(0), Some(0), Some(30), Some(30), None, None, Some(135), Some(0)),
+            Some(false), Some(50), None, Some(0), Some(0), Some(15), Some(40), None, Some(0), Some(0),Some(0), Some(0), Some(0), Some(30), Some(30), None, None, Some(175), Some(0)),
 
           ("Scenario 2 - Company still trading, some AIA, main pool allowance can be claimed from the main pool, there have been disposals on the main pool, but lower than the value of the pool. " +
             "User claims some of the allowance but not all they're entitled to.",
             List(mainRatePoolCar(100)),
-            Some(false), Some(50), None, Some(0), Some(0), Some(15), Some(40), None, Some(48), Some(0), None, Some(0), Some(0), Some(21), Some(21), None, None, Some(96), Some(0)),
+            Some(false), Some(50), None, Some(0), Some(0), Some(15), Some(40), None, Some(48), Some(0), None, Some(0), Some(0), Some(21), Some(21), None, None, Some(136), Some(0)),
 
           ("Scenario 3 - Company still trading, some AIA, there have been disposals on the main pool, higher than the value of the pool " +
             "(there will be balancing charges). User can't claim anything from the main pool.",
