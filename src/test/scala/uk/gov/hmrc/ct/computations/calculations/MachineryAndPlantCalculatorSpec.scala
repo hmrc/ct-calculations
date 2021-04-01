@@ -27,105 +27,105 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
 
     "calculate Balance Allowance" in new MachineryAndPlantCalculator {
       computeBalanceAllowance(cpq8 = CPQ8(Some(true)),
-                              cp78 = CP78(1),
-                              cp666 = CP666(2),
-                              cp674 = CP674(3),
-                              cp84 = CP84(4),
-                              cpAux1 = CPAux1(5),
-                              cpAux2 = CPAux2(6),
-                              cpAux3 = CPAux3(7),
-                              cp673 = CP673(8)) shouldBe CP90(Some(12))
+        cp78 = CP78(1),
+        cp666 = CP666(2),
+        cp674 = CP674(3),
+        cp84 = CP84(4),
+        cpAux1 = CPAux1(5),
+        cpAux2 = CPAux2(6),
+        cpAux3 = CPAux3(7),
+        cp673 = CP673(8)) shouldBe CP90(Some(12))
     }
 
     "calculate Balance Allowance where cpq8 is true and calculation < 0" in new MachineryAndPlantCalculator {
       computeBalanceAllowance(cpq8 = CPQ8(Some(true)),
-                              cp78 = CP78(1),
-                              cp666 = CP666(2),
-                              cp674 = CP674(3),
-                              cp84 = CP84(4),
-                              cpAux1 = CPAux1(5),
-                              cpAux2 = CPAux2(6),
-                              cpAux3 = CPAux3(7),
-                              cp673 = CP673(20)) shouldBe CP90(Some(0))
+        cp78 = CP78(1),
+        cp666 = CP666(2),
+        cp674 = CP674(3),
+        cp84 = CP84(4),
+        cpAux1 = CPAux1(5),
+        cpAux2 = CPAux2(6),
+        cpAux3 = CPAux3(7),
+        cp673 = CP673(20)) shouldBe CP90(Some(0))
     }
 
     "calculate Balance Allowance where cpq8 is false" in new MachineryAndPlantCalculator {
       computeBalanceAllowance(cpq8 = CPQ8(Some(false)),
-                              cp78 = CP78(1),
-                              cp666 = CP666(2),
-                              cp674 = CP674(3),
-                              cp84 = CP84(4),
-                              cpAux1 = CPAux1(5),
-                              cpAux2 = CPAux2(6),
-                              cpAux3 = CPAux3(7),
-                              cp673 = CP673(8)) shouldBe CP90(None)
+        cp78 = CP78(1),
+        cp666 = CP666(2),
+        cp674 = CP674(3),
+        cp84 = CP84(4),
+        cpAux1 = CPAux1(5),
+        cpAux2 = CPAux2(6),
+        cpAux3 = CPAux3(7),
+        cp673 = CP673(8)) shouldBe CP90(None)
     }
   }
 
   "computeBalancingCharge CP91" should {
     "calculate CP91 using cpq8 = true, negative balancing charge" in new MachineryAndPlantCalculator {
       computeBalancingCharge(cpq8 = CPQ8(Some(true)),
-                            cp78 = CP78(1),
-                            cp666 = CP666(2),
-                            cp674 = CP674(7),
-                            cp84 = CP84(30),
-                            cpAux1 = CPAux1(9),
-                            cpAux2 = CPAux2(10),
-                            cpAux3 = CPAux3(11),
-                            cp667 = CP667(12),
-                            cp673 = CP673(8),
-                            cp672 = CP672(0),
-                            cp82 = CP82(4),
-                            cato20 = CATO20(0)) shouldBe CP91(Some(10))
+        cp78 = CP78(1),
+        cp666 = CP666(2),
+        cp674 = CP674(7),
+        cp84 = CP84(30),
+        cpAux1 = CPAux1(9),
+        cpAux2 = CPAux2(10),
+        cpAux3 = CPAux3(11),
+        cp667 = CP667(12),
+        cp673 = CP673(8),
+        cp672 = CP672(0),
+        cp82 = CP82(4),
+        cato20 = CATO20(0)) shouldBe CP91(Some(10))
     }
 
 
     "calculate CP91 using cpq8 = true, positive balancing charge" in new MachineryAndPlantCalculator {
-      computeBalancingCharge( cpq8 = CPQ8(Some(true)),
-                              cp78 = CP78(1),
-                              cp666 = CP666(2),
-                              cp674 = CP674(7),
-                              cp84 = CP84(10),
-                              cpAux1 = CPAux1(9),
-                              cpAux2 = CPAux2(10),
-                              cpAux3 = CPAux3(11),
-                              cp667 = CP667(12),
-                              cp673 = CP673(8),
-                              cp672 = CP672(0),
-                              cp82 = CP82(4),
-                              cato20 = CATO20(0)) shouldBe CP91(Some(0))
+      computeBalancingCharge(cpq8 = CPQ8(Some(true)),
+        cp78 = CP78(1),
+        cp666 = CP666(2),
+        cp674 = CP674(7),
+        cp84 = CP84(10),
+        cpAux1 = CPAux1(9),
+        cpAux2 = CPAux2(10),
+        cpAux3 = CPAux3(11),
+        cp667 = CP667(12),
+        cp673 = CP673(8),
+        cp672 = CP672(0),
+        cp82 = CP82(4),
+        cato20 = CATO20(0)) shouldBe CP91(Some(0))
     }
 
     "calculate CP91 using cpq8 = false, cp672 > val1" in new MachineryAndPlantCalculator {
-      computeBalancingCharge( cpq8 = CPQ8(Some(false)),
-                              cp78 = CP78(1),
-                              cp666 = CP666(2),
-                              cp674 = CP674(7),
-                              cp84 = CP84(30),
-                              cpAux1 = CPAux1(9),
-                              cpAux2 = CPAux2(10),
-                              cpAux3 = CPAux3(11),
-                              cp667 = CP667(12),
-                              cp673 = CP673(8),
-                              cp672 = CP672(29),
-                              cp82 = CP82(4),
-                              cato20 = CATO20(13)) shouldBe CP91(Some(1))
+      computeBalancingCharge(cpq8 = CPQ8(Some(false)),
+        cp78 = CP78(1),
+        cp666 = CP666(2),
+        cp674 = CP674(7),
+        cp84 = CP84(30),
+        cpAux1 = CPAux1(9),
+        cpAux2 = CPAux2(10),
+        cpAux3 = CPAux3(11),
+        cp667 = CP667(12),
+        cp673 = CP673(8),
+        cp672 = CP672(29),
+        cp82 = CP82(4),
+        cato20 = CATO20(13)) shouldBe CP91(Some(1))
     }
 
     "calculate CP91 using cpq8 = false, cp672 <= val1" in new MachineryAndPlantCalculator {
-      computeBalancingCharge( cpq8 = CPQ8(Some(false)),
-                              cp78 = CP78(1),
-                              cp666 = CP666(2),
-                              cp674 = CP674(7),
-                              cp84 = CP84(30),
-                              cpAux1 = CPAux1(9),
-                              cpAux2 = CPAux2(10),
-                              cpAux3 = CPAux3(11),
-                              cp667 = CP667(12),
-                              cp673 = CP673(8),
-                              cp672 = CP672(28),
-                              cp82 = CP82(4),
-                              cato20 = CATO20(13)) shouldBe CP91(None)
+      computeBalancingCharge(cpq8 = CPQ8(Some(false)),
+        cp78 = CP78(1),
+        cp666 = CP666(2),
+        cp674 = CP674(7),
+        cp84 = CP84(30),
+        cpAux1 = CPAux1(9),
+        cpAux2 = CPAux2(10),
+        cpAux3 = CPAux3(11),
+        cp667 = CP667(12),
+        cp673 = CP673(8),
+        cp672 = CP672(28),
+        cp82 = CP82(4),
+        cato20 = CATO20(13)) shouldBe CP91(None)
     }
   }
 
@@ -165,7 +165,7 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
         cp89 = CP89(15),
         cp90 = CP90(None)) shouldBe CP186(Some(0))
     }
-    "return balanceAllowance when trading ceased is true and balance allowance is defined" in new MachineryAndPlantCalculator {//DONE
+    "return balanceAllowance when trading ceased is true and balance allowance is defined" in new MachineryAndPlantCalculator { //DONE
       computeTotalAllowancesClaimed(cpq8 = CPQ8(Some(true)),
         cp87 = CP87(10),
         cp88 = CP88(100),
@@ -184,46 +184,59 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
   "CP92 - Written Down Value calculation" should {
 
     "calculate CP92 using cpq8 = false and CP91 is null, value is -ve" in new MachineryAndPlantCalculator {
-      writtenDownValue( cpq8 = CPQ8(Some(false)),
-                        cp78 = CP78(Some(5)),
-                        cp82 = CP82(6),
-                        cp89 = CP89(7),
-                        cp91 = CP91(None),
-                        cp672 = CP672(9999),
-                        cato20 = CATO20(8),
-                        cpAux2 = CPAux2(7)) shouldBe CP92(Some(0))
+      writtenDownValue(cpq8 = CPQ8(Some(false)),
+        cp78 = CP78(Some(5)),
+        cp79 = CP79(Some(0)),
+        cp82 = CP82(6),
+        cp83 = CP83(0),
+        cp89 = CP89(7),
+        cp91 = CP91(None),
+        cp672 = CP672(9999),
+        cato20 = CATO20(8),
+        cpAux1 = CPAux1(0),
+        cpAux2 = CPAux2(7)) shouldBe CP92(Some(0))
     }
 
     "calculate CP92 using cpq8 = false and CP91 is null, value is +ve" in new MachineryAndPlantCalculator {
-      writtenDownValue( cpq8 = CPQ8(Some(false)),
-                        cp78 = CP78(Some(5)),
-                        cp82 = CP82(6),
-                        cp89 = CP89(7),
-                        cp91 = CP91(None),
-                        cp672 = CP672(0),
-                        cato20 = CATO20(8),
-                        cpAux2 = CPAux2(7)) shouldBe CP92(Some(19))
+      writtenDownValue(
+        cpq8 = CPQ8(Some(false)),
+        cp78 = CP78(Some(3)),
+        cp79 = CP79(Some(7)),
+        cp82 = CP82(4),
+        cp83 = CP83(8),
+        cp89 = CP89(11),
+        cp91 = CP91(None),
+        cp672 = CP672(10),
+        cato20 = CATO20(9),
+        cpAux1 = CPAux1(6),
+        cpAux2 = CPAux2(5)) shouldBe CP92(Some(3))
     }
 
     "calculate CP92 using cpq8 = true and CP91 is null, value is +ve" in new MachineryAndPlantCalculator {
-      writtenDownValue( cpq8 = CPQ8(Some(true)),
-                        cp78 = CP78(None),
-                        cp82 = CP82(None),
-                        cp89 = CP89(None),
-                        cp91 = CP91(None),
-                        cp672 = CP672(None),
-                        cato20 = CATO20(0),
-                        cpAux2 = CPAux2(0)) shouldBe CP92(Some(0))
+      writtenDownValue(cpq8 = CPQ8(Some(true)),
+        cp78 = CP78(None),
+        cp79 = CP79(Some(0)),
+        cp82 = CP82(None),
+        cp83 = CP83(0),
+        cp89 = CP89(None),
+        cp91 = CP91(None),
+        cp672 = CP672(None),
+        cato20 = CATO20(0),
+        cpAux1 = CPAux1(0),
+        cpAux2 = CPAux2(0)) shouldBe CP92(Some(0))
     }
 
     "calculate CP92 using cpq8 = false and CP91 is not null, value is +ve" in new MachineryAndPlantCalculator {
-      writtenDownValue( cpq8 = CPQ8(Some(false)),
+      writtenDownValue(cpq8 = CPQ8(Some(false)),
         cp78 = CP78(None),
+        cp79 = CP79(None),
         cp82 = CP82(None),
+        cp83 = CP83(0),
         cp89 = CP89(None),
         cp91 = CP91(Some(91)),
         cp672 = CP672(None),
         cato20 = CATO20(0),
+        cpAux1 = CPAux1(0),
         cpAux2 = CPAux2(0)) shouldBe CP92(Some(0))
     }
   }
@@ -233,7 +246,7 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
       unclaimedAIAFirstYearAllowance(
         cp87 = CP87(3),
         cp88 = CP88(Some(4))
-      ) should be (CATO20(7))
+      ) should be(CATO20(7))
     }
 
     "sumOfCP78AndCP666 -calculation" should {
@@ -247,7 +260,7 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
         sumOfCP78AndCP666(
           cp78 = CP78(310000),
           cp666 = CP666(2001)
-        ) should be(Set(CtValidation(None,"error.sum.of.cp78cp666.exceeds.total")))
+        ) should be(Set(CtValidation(None, "error.sum.of.cp78cp666.exceeds.total")))
       }
     }
   }

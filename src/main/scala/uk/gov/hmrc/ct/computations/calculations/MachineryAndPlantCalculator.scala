@@ -89,15 +89,27 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
 
   def writtenDownValue(cpq8: CPQ8,
                        cp78: CP78,
+                       cp79: CP79,
                        cp82: CP82,
+                       cp83: CP83,
                        cp89: CP89,
                        cp91: CP91,
                        cp672: CP672,
                        cato20: CATO20,
+                       cpAux1: CPAux1,
                        cpAux2: CPAux2): CP92 = {
 
+    val totalMainPoolExpenditure: Int = cp78 + cp82 + cpAux2
+    val totalFYAExpenditure: Int = cp79 + cpAux1
+    val totalAIA: Int = cp83
+    val totalFYAAndAIAClaimed: Int = cato20
+    val mainPoolClaimed: Int = cp89
+    val mainPoolDisposals: Int = cp672
+
     val result = (cpq8.value, cp91.value) match {
-      case (Some(false), None) => (cp78 + cp82 + cpAux2 + cato20 - cp89 - cp672).max(0)
+      case (Some(false), None) => (totalMainPoolExpenditure + totalFYAExpenditure + totalAIA
+        - (totalFYAAndAIAClaimed + mainPoolClaimed + mainPoolDisposals))
+        .max(0)
       case _ => 0
     }
 
