@@ -27,11 +27,13 @@ object CP105 extends Calculated[CP105, ComputationsBoxRetriever] with MachineryA
     val mainRateExpenditureOtherThanCars = boxRetriever.cp82().value.getOrElse(0)
     val writtenDownValueBroughtForward=boxRetriever.cp78().value.getOrElse(0)
     val fyaNotClaimed= boxRetriever.cp97().value
+    val aiaNotClaimed = boxRetriever.cp110().value
     val total = sumOf(
       carsQualifyingForMainRate,
       mainRateExpenditureOtherThanCars,
       writtenDownValueBroughtForward,
-      fyaNotClaimed
+      fyaNotClaimed,
+      aiaNotClaimed
     )
 
     CP105(total)
