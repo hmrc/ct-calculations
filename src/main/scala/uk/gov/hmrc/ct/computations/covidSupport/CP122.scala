@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ct.computations.covidSupport
 
 import uk.gov.hmrc.ct.box._
+import uk.gov.hmrc.ct.computations.covidSupport
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP122(value: Option[Int]) extends CtBoxIdentifier(name = "CJRS (Coronavirus Job Retention Scheme) and JSS received") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
@@ -25,9 +26,11 @@ case class CP122(value: Option[Int]) extends CtBoxIdentifier(name = "CJRS (Coron
     val cp124 = boxRetriever.cp124().value.getOrElse(0)
     val entitlementAndOverpaymentTotal = cp123 + cp124
 
-    collectErrors(
-      validateAsMandatory(this),
-      belowMin(this.value, entitlementAndOverpaymentTotal)
-    )
+    if(covidSupport.doesPeriodCoverCovid(boxRetriever.cp1().value, boxRetriever.cp2().value)) {
+      collectErrors(
+        validateAsMandatory(this),
+        belowMin(this.value, entitlementAndOverpaymentTotal)
+      )
+    } else Set.empty
   }
 }
