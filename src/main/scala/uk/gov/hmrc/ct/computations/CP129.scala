@@ -21,6 +21,8 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP129(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did you claim any other coronavirus grants") with CtOptionalBoolean with Input with ValidatableBox[ComputationsBoxRetriever] {
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    if(covidSupport.doesPeriodCoverCovid(boxRetriever.cp1().value, boxRetriever.cp2().value)){
     collectErrors(validateAsMandatory(this))
+    }else Set.empty
   }
 }
