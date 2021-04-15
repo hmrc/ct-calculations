@@ -48,7 +48,7 @@ case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
 
     collectErrors(
       requiredErrorIf(!boxRetriever.abridgedFiling().value),
-      requiredErrorIf(!boxRetriever.cato24().value.getOrElse(false)),
+      requiredErrorIf(boxRetriever.cato24().value.getOrElse(false)),
       failIf(isHmrcFiling(boxRetriever))(
       collectErrors(
         validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, minimumAmount = Some(CatoInputBounds.oldMinValue99999999))

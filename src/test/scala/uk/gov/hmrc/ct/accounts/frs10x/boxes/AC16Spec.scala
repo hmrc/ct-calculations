@@ -29,7 +29,7 @@ import uk.gov.hmrc.ct.{AbridgedFiling, CATO24, CompaniesHouseFiling, FilingCompa
 
 class AC16Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever] with UnitSpec with MockFrs102AccountsRetriever {
 
-  private def doMocks(hmrcFiling: Boolean, abridged:Boolean = true, cato24:Boolean = true): Unit = {
+  private def doMocks(hmrcFiling: Boolean, abridged:Boolean = true): Unit = {
     when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate("2019-09-01")))
     when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate("2020-08-31")))
     when(boxRetriever.companyType()).thenReturn(FilingCompanyType(UkTradingCompany))
@@ -40,8 +40,13 @@ class AC16Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever
       when(boxRetriever.hmrcFiling()) thenReturn HMRCFiling(false)
       when(boxRetriever.companiesHouseFiling()) thenReturn CompaniesHouseFiling(true)
     }
+    if(abridged){
     when(boxRetriever.abridgedFiling()) thenReturn AbridgedFiling(abridged)
-    when(boxRetriever.cato24()) thenReturn CATO24(Some(cato24))
+    when(boxRetriever.cato24()) thenReturn CATO24(Some(false))
+    } else {
+      when(boxRetriever.abridgedFiling()) thenReturn AbridgedFiling(abridged)
+      when(boxRetriever.cato24()) thenReturn CATO24(Some(true))
+    }
   }
 
   private val ac16 = "AC16"
@@ -65,13 +70,8 @@ class AC16Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever
           args = Some(List("-" + turnoverCOHOMaxWithCommas, turnoverCOHOMaxWithCommas))))
       }
 
-      "its not an abridged company" in {
+      "its not an abridged company and is off payroll " in {
         doMocks(true, abridged = false)
-        AC16(Some(turnoverHMRCMaxValue632k)).validate(boxRetriever) shouldBe fieldRequiredError(ac16)
-      }
-
-      "its select off payroll working" in {
-       doMocks(true, cato24 = false)
         AC16(Some(turnoverHMRCMaxValue632k)).validate(boxRetriever) shouldBe fieldRequiredError(ac16)
       }
     }
