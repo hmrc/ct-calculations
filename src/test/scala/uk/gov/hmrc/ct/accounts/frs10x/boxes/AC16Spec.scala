@@ -25,11 +25,11 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.domain.CompanyTypes.UkTradingCompany
 import uk.gov.hmrc.ct.utils.CatoInputBounds._
 import uk.gov.hmrc.ct.utils.UnitSpec
-import uk.gov.hmrc.ct.{CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
+import uk.gov.hmrc.ct.{AbridgedFiling, CATO24, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
 
 class AC16Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever] with UnitSpec with MockFrs102AccountsRetriever {
 
-  private def doMocks(hmrcFiling: Boolean): Unit = {
+  private def doMocks(hmrcFiling: Boolean, abridged:Boolean = true, cato24:Boolean = true): Unit = {
     when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate("2019-09-01")))
     when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate("2020-08-31")))
     when(boxRetriever.companyType()).thenReturn(FilingCompanyType(UkTradingCompany))
@@ -40,6 +40,8 @@ class AC16Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever
       when(boxRetriever.hmrcFiling()) thenReturn HMRCFiling(false)
       when(boxRetriever.companiesHouseFiling()) thenReturn CompaniesHouseFiling(true)
     }
+    when(boxRetriever.abridgedFiling()) thenReturn AbridgedFiling(abridged)
+    when(boxRetriever.cato24()) thenReturn CATO24(Some(cato24))
   }
 
   private val ac16 = "AC16"
@@ -57,16 +59,20 @@ class AC16Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever
 
       "its value is greater than the apportioned max turnover user is going through an coho journey" in {
         doMocks(false)
-
         AC16(Some(turnoverCOHOMaxValue10m + 1)).validate(boxRetriever) shouldBe Set(CtValidation(
           boxId = Some(ac16),
           errorMessageKey = s"error.$ac16.coho.turnover.above.max",
           args = Some(List("-" + turnoverCOHOMaxWithCommas, turnoverCOHOMaxWithCommas))))
       }
 
-      "empty" in {
-        doMocks(true)
-        AC16(None).validate(boxRetriever) shouldBe fieldRequiredError(ac16)
+      "its not an abridged company" in {
+        doMocks(true, abridged = false)
+        AC16(Some(turnoverHMRCMaxValue632k)).validate(boxRetriever) shouldBe fieldRequiredError(ac16)
+      }
+
+      "its select off payroll working" in {
+       doMocks(true, cato24 = false)
+        AC16(Some(turnoverHMRCMaxValue632k)).validate(boxRetriever) shouldBe fieldRequiredError(ac16)
       }
     }
     "pass validation" when {
