@@ -47,7 +47,7 @@ case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever ): Set[CtValidation] = {
 
     collectErrors(
-      validateAsMandatory(this),
+      requiredErrorIf(boxRetriever.abridgedFiling().value && !boxRetriever.cato24().value.getOrElse(false)),
       failIf(isHmrcFiling(boxRetriever))(
       collectErrors(
         validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, minimumAmount = Some(CatoInputBounds.oldMinValue99999999))
