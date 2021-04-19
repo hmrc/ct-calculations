@@ -24,5 +24,11 @@ case class B711(value: Option[Int]) extends CtBoxIdentifier with CtOptionalInteg
 
 object B711 extends Linked[CP297, B711] {
 
-  override def apply(source: CP297): B711 = B711(source.value)
+  override def apply(source: CP297): B711 = {
+    val b711Value = source.value match {
+      case Some(0) => None
+      case sourceValue => sourceValue
+    }
+    B711(b711Value)
+  }
 }

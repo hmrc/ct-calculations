@@ -23,5 +23,11 @@ case class B705(value: Option[Int]) extends CtBoxIdentifier("Total capital allow
 
 object B705 extends Linked[CP248, B705] {
 
-  override def apply(source: CP248): B705 = B705(source.value)
+  override def apply(source: CP248): B705 = {
+    val b705Value = source.value match {
+      case Some(0) => None
+      case sourceValue => sourceValue
+    }
+    B705(b705Value)
+  }
 }
