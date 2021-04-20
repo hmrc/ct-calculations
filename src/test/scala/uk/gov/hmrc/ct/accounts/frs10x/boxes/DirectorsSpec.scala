@@ -168,7 +168,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
       val director = Director("444", "")
       val directors = Directors(List(director))
 
-      val expectedError = Set(CtValidation(Some("ac8001"), "error.Directors.ac8001.text.sizeRange", Some(List("1", "40"))))
+      val expectedError = Set(CtValidation(Some("ac8001"), "error.ac8001.sizeRange.empty", Some(List("1"))))
       directors.validate(mockBoxRetriever) shouldBe expectedError
     }
 
@@ -177,7 +177,7 @@ class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with Before
       val director = Director("444", "a" * 41)
       val directors = Directors(List(director))
 
-      val expectedError = Set(CtValidation(Some("ac8001"), "error.Directors.ac8001.text.sizeRange", Some(List("1", "40"))))
+      val expectedError = Set(CtValidation(Some("ac8001"), "error.ac8001.text.sizeRange", Some(List("1", "40"))))
       directors.validate(mockBoxRetriever) shouldBe expectedError
     }
 
