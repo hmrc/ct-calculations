@@ -318,6 +318,11 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators with ExtraValidation 
     }
   }
 
+  def validateNotEmpty(boxId: String, value: String, min: Int)(): Set[CtValidation] = {
+    failIf (value.size < min) {
+      Set(CtValidation(Some(boxId), s"error.$boxId.sizeRange.empty", Some(Seq(min.toString))))
+    }
+  }
 
   /*
   This was labelled as @deprecated("", "29-09-2016 or earlier").

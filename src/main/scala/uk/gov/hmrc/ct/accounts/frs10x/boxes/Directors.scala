@@ -104,7 +104,8 @@ case class Director(id: String,
                      ) extends ValidatableBox[Frs10xDirectorsBoxRetriever] {
 
   override def validate(boxRetriever: Frs10xDirectorsBoxRetriever): Set[CtValidation] =
-    validateStringByLength("ac8001", ac8001, "Directors.ac8001", 1, 40) ++
+    validateNotEmptyStringByLength("ac8001", ac8001, 1, 40) ++
+      validateNotEmpty("ac8001", ac8001, 1) ++
       validateRawStringByRegex("ac8001", ac8001, errorCodeBoxId = "Directors.ac8001", ValidCoHoNamesCharacters) ++
       validateAppointmentDateAsMandatoryWhenAppointed(boxRetriever) ++
       validateAppointmentDateAsWithinPOA(boxRetriever) ++
