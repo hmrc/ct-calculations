@@ -41,8 +41,9 @@ class AC16Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever
       when(boxRetriever.companiesHouseFiling()) thenReturn CompaniesHouseFiling(true)
     }
     if(abridged){
-    when(boxRetriever.abridgedFiling()) thenReturn AbridgedFiling(abridged)
-    when(boxRetriever.cato24()) thenReturn CATO24(Some(false))
+      when(boxRetriever.abridgedFiling()) thenReturn AbridgedFiling(abridged)
+      when(boxRetriever.cato24()) thenReturn CATO24(Some(false))
+      when(boxRetriever.ac16()) thenReturn AC16(None)
     } else {
       when(boxRetriever.abridgedFiling()) thenReturn AbridgedFiling(abridged)
       when(boxRetriever.cato24()) thenReturn CATO24(Some(true))
@@ -70,7 +71,7 @@ class AC16Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever
           args = Some(List("-" + turnoverCOHOMaxWithCommas, turnoverCOHOMaxWithCommas))))
       }
 
-      "its not an abridged company and is off payroll " in {
+      "its an abridged company and is not off payroll, the ac16 field is required" in {
         doMocks(true, abridged = true)
         AC16(Some(turnoverHMRCMaxValue632k)).validate(boxRetriever) shouldBe fieldRequiredError(ac16)
       }
