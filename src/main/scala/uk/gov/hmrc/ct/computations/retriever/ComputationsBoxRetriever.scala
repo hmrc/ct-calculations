@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.computations.retriever
 
 import uk.gov.hmrc.ct.accounts._
-import uk.gov.hmrc.ct.accounts.frs10x.boxes.ACQ8999
+import uk.gov.hmrc.ct.accounts.frs10x.boxes.{ACQ8991, ACQ8999}
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.covidSupport.{CP121, CP122, CP123, CP124, CP125a, CP125b, CP126}
@@ -531,4 +531,6 @@ trait ComputationsBoxRetriever extends BoxRetriever {
   }
 
   def acq8999a():ACQ8999
+
+  def acq8991a():ACQ8991
 }
