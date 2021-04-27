@@ -24,13 +24,8 @@ case class CP120(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did you
     val apStartDate = boxRetriever.cp1().value
     val apEndDate = boxRetriever.cp2().value
 
-    val dormantAndHasNotTraded = (boxRetriever.acq8999a().value.getOrElse(true), boxRetriever.acq8991a().value.getOrElse(true)) match {
-      case (true, false) => false
-      case _ => true
-    }
-
     def validateAsMandatoryIfInDate() = {
-      if(covidSupport.doesPeriodCoverEotho(apStartDate, apEndDate) && dormantAndHasNotTraded){
+      if(covidSupport.doesPeriodCoverEotho(apStartDate, apEndDate) && boxRetriever.acq8999a().value.getOrElse(true)){
         validateAsMandatory(this)()
       } else {
         validationSuccess
