@@ -25,7 +25,7 @@ case class CP120(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did you
     val apEndDate = boxRetriever.cp2().value
 
     def validateAsMandatoryIfInDate() = {
-      if(covidSupport.doesPeriodCoverEotho(apStartDate, apEndDate)){
+      if(covidSupport.doesPeriodCoverEotho(apStartDate, apEndDate) && !boxRetriever.acq8999a().value.getOrElse(false)){
         validateAsMandatory(this)()
       } else {
         validationSuccess
