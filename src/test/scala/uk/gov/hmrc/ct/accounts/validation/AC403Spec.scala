@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.validation
 
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.mockito.Mockito._
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.{AC401, AC403}

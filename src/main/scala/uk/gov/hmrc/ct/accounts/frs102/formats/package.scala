@@ -276,12 +276,12 @@ package object formats {
     val baseFormat = Json.format[RelatedPartyTransaction]
 
     override def reads(json: JsValue): JsResult[RelatedPartyTransaction] = baseFormat
-      .compose(withDefault("ac7801", AC7801(None)))
-      .compose(withDefault("ac299A", AC299A(None)))
-      .compose(withDefault("ac300A", AC300A(None)))
-      .compose(withDefault("ac301A", AC301A(None)))
-      .compose(withDefault("ac302A", AC302A(None)))
-      .compose(withDefault("ac303A", AC303A(None)))
+      .composeWith(withDefault("ac7801", AC7801(None)))
+      .composeWith(withDefault("ac299A", AC299A(None)))
+      .composeWith(withDefault("ac300A", AC300A(None)))
+      .composeWith(withDefault("ac301A", AC301A(None)))
+      .composeWith(withDefault("ac302A", AC302A(None)))
+      .composeWith(withDefault("ac303A", AC303A(None)))
       .reads(json)
 
     override def writes(o: RelatedPartyTransaction): JsValue = baseFormat.writes(o)
@@ -291,7 +291,7 @@ package object formats {
     val baseFormat = Json.format[RelatedPartyTransactions]
 
     override def reads(json: JsValue): JsResult[RelatedPartyTransactions] = baseFormat
-      .compose(withDefault("ac7806", AC7806(None)))
+      .composeWith(withDefault("ac7806", AC7806(None)))
       .reads(json)
 
     override def writes(o: RelatedPartyTransactions): JsValue = baseFormat.writes(o)
@@ -301,12 +301,12 @@ package object formats {
     val baseFormat = Json.format[LoanToDirector]
 
     override def reads(json: JsValue): JsResult[LoanToDirector] = baseFormat
-      .compose(withDefault("ac304A", AC304A(None)))
-      .compose(withDefault("ac305A", AC305A(None)))
-      .compose(withDefault("ac306A", AC306A(None)))
-      .compose(withDefault("ac307A", AC307A(None)))
-      .compose(withDefault("ac308A", AC308A(None)))
-      .compose(withDefault("ac309A", AC309A(None)))
+      .composeWith(withDefault("ac304A", AC304A(None)))
+      .composeWith(withDefault("ac305A", AC305A(None)))
+      .composeWith(withDefault("ac306A", AC306A(None)))
+      .composeWith(withDefault("ac307A", AC307A(None)))
+      .composeWith(withDefault("ac308A", AC308A(None)))
+      .composeWith(withDefault("ac309A", AC309A(None)))
       .reads(json)
 
     override def writes(o: LoanToDirector): JsValue = baseFormat.writes(o)
@@ -316,7 +316,7 @@ package object formats {
     val baseFormat = Json.format[LoansToDirectors]
 
     override def reads(json: JsValue): JsResult[LoansToDirectors] = baseFormat
-      .compose(withDefault("ac7501", AC7501(None)))
+      .composeWith(withDefault("ac7501", AC7501(None)))
       .reads(json)
 
     override def writes(o: LoansToDirectors): JsValue = baseFormat.writes(o)

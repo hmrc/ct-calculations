@@ -33,8 +33,8 @@ package object formats {
     val baseFormat = Json.format[CompaniesHouseAccountsApproval]
 
     override def reads(json: JsValue): JsResult[CompaniesHouseAccountsApproval] = baseFormat
-      .compose(withDefault("ac8091", AC8091(None)))
-      .compose(withDefault("ac198A", AC198A(None)))
+      .composeWith(withDefault("ac8091", AC8091(None)))
+      .composeWith(withDefault("ac198A", AC198A(None)))
       .reads(json)
 
     override def writes(o: CompaniesHouseAccountsApproval): JsValue = baseFormat.writes(o)
@@ -44,8 +44,8 @@ package object formats {
     val baseFormat = Json.format[HmrcAccountsApproval]
 
     override def reads(json: JsValue): JsResult[HmrcAccountsApproval] = baseFormat
-      .compose(withDefault("ac8091", AC8091(None)))
-      .compose(withDefault("ac198A", AC198A(None)))
+      .composeWith(withDefault("ac8091", AC8091(None)))
+      .composeWith(withDefault("ac198A", AC198A(None)))
       .reads(json)
 
     override def writes(o: HmrcAccountsApproval): JsValue = baseFormat.writes(o)

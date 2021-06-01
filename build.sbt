@@ -18,13 +18,12 @@
     .disablePlugins(JUnitXmlReportPlugin)
     .settings(majorVersion := 2)
     .settings(scoverageSettings: _*)
-    .settings(makePublicallyAvailableOnBintray := true)
     .settings(
       name := appName,
       scalaVersion := "2.12.11",
       libraryDependencies ++= Seq(
         "com.typesafe.play" % "play-json-joda_2.12" % "2.7.4",
-        "uk.gov.hmrc" %% "play-time" % "0.13.0",
+        "uk.gov.hmrc" %% "play-time" % "0.14.0",
         "org.scalatest" %% "scalatest" % "3.0.8" % "test",
         "org.mockito" % "mockito-all" % "1.10.19" % "test",
         "org.pegdown" % "pegdown" % "1.6.0" % "test"
