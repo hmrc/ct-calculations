@@ -34,4 +34,13 @@ package object losses {
 
   def northernIrelandJourneyActive(b7: B7): Boolean = b7.isTrue
 
+  private val ecblStart = new LocalDate("2020-03-31")
+  private val ecblEnd = new LocalDate("2022-04-01")
+
+  def doesPeriodCoverECBL(endDate: LocalDate): Boolean = checkForDatePeriod(endDate, Some(ecblStart), Some(ecblEnd))
+
+  private def checkForDatePeriod(endDate: LocalDate, constraintStart: Option[LocalDate], constraintEnd: Option[LocalDate]) = {
+    constraintStart.forall(cs => endDate.isAfter(cs)) && constraintEnd.forall(ce => endDate.isBefore(ce))
+  }
+
 }
