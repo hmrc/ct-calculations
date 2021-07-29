@@ -24,7 +24,7 @@ case class CP123(value: Option[Int]) extends CtBoxIdentifier(name = "CJRS (Coron
     if (doesPeriodCoverCovid(boxRetriever.cp1().value, boxRetriever.cp2().value)) {
       collectErrors(
         validateAsMandatory(this),
-        validateZeroOrPositiveInteger(this)
+        validatePositiveInteger(this)
       )
     } else Set.empty
   }
