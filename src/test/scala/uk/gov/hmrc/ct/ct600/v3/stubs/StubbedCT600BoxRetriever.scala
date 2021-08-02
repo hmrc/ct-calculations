@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.accounts.{AC2, AC205, AC206}
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.box.stubs.StubbedFilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations._
-import uk.gov.hmrc.ct.computations.covidSupport.{CP121, CP122, CP123, CP124, CP125b, CP125a}
+import uk.gov.hmrc.ct.computations.covidSupport.{CP121, CP122, CP123, CP124, CP125}
 import uk.gov.hmrc.ct.computations.lowEmissionCars.LEC01
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
@@ -410,9 +410,7 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
 
   override def cp124: CP124 = ???
 
-  override def cp125b: CP125b = ???
-
-  override def cp125a: CP125a = ???
+  override def cp125: CP125 = ???
 
   override def cp127: CP127 = ???
 
