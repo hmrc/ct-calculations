@@ -45,6 +45,7 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
                              cp78: CP78,
                              cp82: CP82,
                              cp84: CP84,
+                             cp88: CP88,
                              cp666: CP666,
                              cp667: CP667,
                              cp672: CP672,
@@ -62,7 +63,7 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
       case Some(false) => {
         val x: Int = cp78 + cp82 + cpAux2 + cato20
         if (cp672 > x)
-          Some(cp672 - x)
+          Some(cp672 - x + cp88)
         else None
       }
       case _ => None

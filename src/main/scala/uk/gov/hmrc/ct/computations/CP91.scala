@@ -29,6 +29,7 @@ object CP91 extends Calculated[CP91, ComputationsBoxRetriever] with MachineryAnd
                            cp78 = fieldValueRetriever.cp78(),
                            cp82 = fieldValueRetriever.cp82(),
                            cp84 = fieldValueRetriever.cp84(),
+                          cp88 = fieldValueRetriever.cp88(),
                            cp666 = fieldValueRetriever.cp666(),
                            cp667 = fieldValueRetriever.cp667(),
                            cp672 = fieldValueRetriever.cp672(),
