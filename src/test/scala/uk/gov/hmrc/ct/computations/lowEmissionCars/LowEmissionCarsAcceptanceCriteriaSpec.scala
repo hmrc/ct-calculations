@@ -89,7 +89,7 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
             "the main disposals higher than the value of the main pool but the special rate disposals still leave some remaining special rate allowance " +
             "to be claimed (there will be only balancing charges on the main pool). user can't claim anything from the main pool but can claim from the secondary pool.",
             List(fyaRatePoolCar(25), mainRatePoolCar(50), specialRatePoolCar(600)),
-            Some(false), Some(11), Some(98), Some(30), Some(1),  Some(43), Some(77), Some(4), Some(3500), Some(21), Some(20), Some(0), Some(64), None, Some(85), Some(3311), Some(3311), Some(0), Some(674))
+            Some(false), Some(11), Some(98), Some(30), Some(1),  Some(43), Some(77), Some(4), Some(3500), Some(21), Some(20), Some(0), Some(64), None, Some(85), Some(3375), Some(3375), Some(0), Some(674))
         )
 
       forAll(companiesStillTrading) {

@@ -69,6 +69,7 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
         cp666 = CP666(2),
         cp674 = CP674(7),
         cp84 = CP84(30),
+        cp88 = CP88(10),
         cpAux1 = CPAux1(9),
         cpAux2 = CPAux2(10),
         cpAux3 = CPAux3(11),
@@ -86,6 +87,7 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
         cp666 = CP666(2),
         cp674 = CP674(7),
         cp84 = CP84(10),
+        cp88 = CP88(10),
         cpAux1 = CPAux1(9),
         cpAux2 = CPAux2(10),
         cpAux3 = CPAux3(11),
@@ -102,6 +104,7 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
         cp666 = CP666(2),
         cp674 = CP674(7),
         cp84 = CP84(30),
+        cp88 = CP88(10),
         cpAux1 = CPAux1(9),
         cpAux2 = CPAux2(10),
         cpAux3 = CPAux3(11),
@@ -109,7 +112,7 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
         cp673 = CP673(8),
         cp672 = CP672(29),
         cp82 = CP82(4),
-        cato20 = CATO20(13)) shouldBe CP91(Some(1))
+        cato20 = CATO20(13)) shouldBe CP91(Some(11))
     }
 
     "calculate CP91 using cpq8 = false, cp672 <= val1" in new MachineryAndPlantCalculator {
@@ -118,6 +121,7 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
         cp666 = CP666(2),
         cp674 = CP674(7),
         cp84 = CP84(30),
+        cp88 = CP88(1),
         cpAux1 = CPAux1(9),
         cpAux2 = CPAux2(10),
         cpAux3 = CPAux3(11),
