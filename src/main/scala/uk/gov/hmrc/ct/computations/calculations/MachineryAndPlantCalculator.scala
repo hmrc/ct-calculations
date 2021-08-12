@@ -19,6 +19,7 @@ package uk.gov.hmrc.ct.computations.calculations
 import uk.gov.hmrc.ct.CATO20
 import uk.gov.hmrc.ct.box.{CtTypeConverters, CtValidation}
 import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.computations.machineryAndPlant._
 
 trait MachineryAndPlantCalculator extends CtTypeConverters {
 
@@ -44,7 +45,10 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
   def computeBalancingCharge(cpq8: CPQ8,
                              cp78: CP78,
                              cp82: CP82,
+                             cp83: CP83,
                              cp84: CP84,
+                             cp88: CP88,
+                             cp97: CP97,
                              cp666: CP666,
                              cp667: CP667,
                              cp672: CP672,
@@ -52,15 +56,14 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
                              cp674: CP674,
                              cpAux1: CPAux1,
                              cpAux2: CPAux2,
-                             cpAux3: CPAux3,
-                             cato20: CATO20): CP91 = {
+                             cpAux3: CPAux3): CP91 = {
     val result: Option[Int] = cpq8.value match {
       case Some(true) => {
         val sum: Int = cp78 + cp666 + cp674 - cp84 - cp667 + cpAux1 + cpAux2 + cpAux3 - cp673
         Some(sum.min(0).abs)
       }
       case Some(false) => {
-        val x: Int = cp78 + cp82 + cpAux2 + cato20
+        val x: Int = cp78 + cp82 + cpAux2 + cp97 + cp83 - cp88
         if (cp672 > x)
           Some(cp672 - x)
         else None

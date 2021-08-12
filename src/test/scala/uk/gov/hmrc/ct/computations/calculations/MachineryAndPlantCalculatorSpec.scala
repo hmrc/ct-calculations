@@ -20,6 +20,7 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.CATO20
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations._
+import uk.gov.hmrc.ct.computations.machineryAndPlant._
 
 class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
 
@@ -66,6 +67,9 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
     "calculate CP91 using cpq8 = true, negative balancing charge" in new MachineryAndPlantCalculator {
       computeBalancingCharge(cpq8 = CPQ8(Some(true)),
         cp78 = CP78(1),
+        cp83 = CP83(1),
+        cp88 = CP88(1),
+        cp97 = CP97(1),
         cp666 = CP666(2),
         cp674 = CP674(7),
         cp84 = CP84(30),
@@ -75,14 +79,16 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
         cp667 = CP667(12),
         cp673 = CP673(8),
         cp672 = CP672(0),
-        cp82 = CP82(4),
-        cato20 = CATO20(0)) shouldBe CP91(Some(10))
+        cp82 = CP82(4)) shouldBe CP91(Some(10))
     }
 
 
     "calculate CP91 using cpq8 = true, positive balancing charge" in new MachineryAndPlantCalculator {
       computeBalancingCharge(cpq8 = CPQ8(Some(true)),
         cp78 = CP78(1),
+        cp83 = CP83(1),
+        cp88 = CP88(1),
+        cp97 = CP97(1),
         cp666 = CP666(2),
         cp674 = CP674(7),
         cp84 = CP84(10),
@@ -92,8 +98,7 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
         cp667 = CP667(12),
         cp673 = CP673(8),
         cp672 = CP672(0),
-        cp82 = CP82(4),
-        cato20 = CATO20(0)) shouldBe CP91(Some(0))
+        cp82 = CP82(4)) shouldBe CP91(Some(0))
     }
 
     "calculate CP91 using cpq8 = false, cp672 > val1" in new MachineryAndPlantCalculator {
@@ -101,6 +106,9 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
         cp78 = CP78(1),
         cp666 = CP666(2),
         cp674 = CP674(7),
+        cp83 = CP83(1),
+        cp88 = CP88(1),
+        cp97 = CP97(1),
         cp84 = CP84(30),
         cpAux1 = CPAux1(9),
         cpAux2 = CPAux2(10),
@@ -108,13 +116,15 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
         cp667 = CP667(12),
         cp673 = CP673(8),
         cp672 = CP672(29),
-        cp82 = CP82(4),
-        cato20 = CATO20(13)) shouldBe CP91(Some(1))
+        cp82 = CP82(4)) shouldBe CP91(Some(13))
     }
 
     "calculate CP91 using cpq8 = false, cp672 <= val1" in new MachineryAndPlantCalculator {
       computeBalancingCharge(cpq8 = CPQ8(Some(false)),
         cp78 = CP78(1),
+        cp83 = CP83(1),
+        cp88 = CP88(1),
+        cp97 = CP97(13),
         cp666 = CP666(2),
         cp674 = CP674(7),
         cp84 = CP84(30),
@@ -124,8 +134,7 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
         cp667 = CP667(12),
         cp673 = CP673(8),
         cp672 = CP672(28),
-        cp82 = CP82(4),
-        cato20 = CATO20(13)) shouldBe CP91(None)
+        cp82 = CP82(4)) shouldBe CP91(None)
     }
   }
 
