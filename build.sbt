@@ -29,3 +29,9 @@
         "org.pegdown" % "pegdown" % "1.6.0" % "test"
       )
     )
+    .settings(
+      //TODO: Remove before master merge
+      headerLicense := Some(HeaderLicense.Custom(
+        """Copyright 2021 HM Revenue & Customs
+          |
+          |""".stripMargin)))

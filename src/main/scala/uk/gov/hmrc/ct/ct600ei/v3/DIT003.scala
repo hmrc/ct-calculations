@@ -1,3 +1,8 @@
+/*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ */
+
 package uk.gov.hmrc.ct.ct600ei.v3
 
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, Input}
