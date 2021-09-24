@@ -1,17 +1,6 @@
 /*
  * Copyright 2021 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.version.calculations
@@ -101,15 +90,19 @@ trait ReturnVersionsCalculator {
   private def ct600ForLimitedBySharesCharity(ct600Version: Option[Version], charityAllExempt: Option[Boolean], charityNoIncome: Option[Boolean]) = {
     (ct600Version, charityAllExempt, charityNoIncome) match {
       case (Some(version), Some(true), _) => Set(Return(CT600e, version),
+                                                 Return(CT600ei, version),
                                                  Return(CT600j, version))
       case (Some(version), _, Some(true)) => Set(Return(CT600e, version),
+                                                 Return(CT600ei, version),
                                                  Return(CT600j, version))
       case (Some(version), Some(false), _) => Set(Return(CT600e, version),
                                                   Return(CT600, version),
                                                   Return(CT600a, version),
+                                                  Return(CT600ei, version),
                                                   Return(CT600j, version))
       case (Some(version), _, _) => Set(Return(CT600, version),
                                         Return(CT600a, version),
+                                        Return(CT600ei, version),
                                         Return(CT600j, version))
       case (None, _, _) => ???
     }
@@ -118,13 +111,17 @@ trait ReturnVersionsCalculator {
   private def ct600ForLimitedByGuaranteeCharity(ct600Version: Option[Version], charityAllExempt: Option[Boolean], charityNoIncome: Option[Boolean]) = {
     (ct600Version, charityAllExempt, charityNoIncome) match {
       case (Some(version), Some(true), _) => Set(Return(CT600e, version),
+                                                 Return(CT600ei, version),
                                                  Return(CT600j, version))
       case (Some(version), _, Some(true)) => Set(Return(CT600e, version),
+                                                  Return(CT600ei, version),
                                                  Return(CT600j, version))
       case (Some(version), Some(false), _) => Set(Return(CT600e, version),
                                                   Return(CT600, version),
+                                                  Return(CT600ei, version),
                                                   Return(CT600j, version))
       case (Some(version), _, _) => Set(Return(CT600, version),
+                                        Return(CT600ei, version),
                                         Return(CT600j, version))
       case (None, _, _) => ???
     }
@@ -141,8 +138,10 @@ trait ReturnVersionsCalculator {
                                                  Return(CT600j, version))
       case (Some(version), Some(false), _) => Set(Return(CT600e, version),
                                                   Return(CT600, version),
+                                                  Return(CT600ei, version),
                                                   Return(CT600j, version))
       case (Some(version), _, _) => Set(Return(CT600, version),
+                                        Return(CT600ei, version),
                                         Return(CT600j, version))
       case (None, _, _) => ???
     }
@@ -276,12 +275,14 @@ trait ReturnVersionsCalculator {
 
   private def ct600ReturnsForMembersClub(version: Version): Set[Return] = {
     Set(Return(CT600, version),
+        Return(CT600ei, version),
         Return(CT600j, version))
   }
 
   private def ct600ForCompany(version: Version): Set[Return] = {
     Set(Return(CT600, version),
         Return(CT600a, version),
+        Return(CT600ei, version),
         Return(CT600j, version))
   }
 
