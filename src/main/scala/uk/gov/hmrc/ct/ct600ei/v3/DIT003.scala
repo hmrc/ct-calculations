@@ -1,17 +1,6 @@
 /*
  * Copyright 2021 HM Revenue & Customs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package uk.gov.hmrc.ct.ct600ei.v3
@@ -26,9 +15,12 @@ case class DIT003(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did th
   with Validators {
 
   override def validate(boxRetriever: CT600EiBoxRetriever): Set[CtValidation] = {
-    (boxRetriever.dit002(), value) match {
-      case (DIT002(None), None) => Set(CtValidation(Some("DIT002"), "error.DIT002.required"))
+    (boxRetriever.dit001().value, boxRetriever.dit003().value, value) match {
+      case (Some(true), Some(false), Some(false)) => Set(CtValidation(Some("DIT002"), "error.DIT002.required"), CtValidation(Some("DIT003"), "error.DIT002.required"))
       case _ => Set.empty
     }
   }
+}
+object DIT003 {
+  def apply(value: Boolean): DIT003 = DIT003(Some(value))
 }
