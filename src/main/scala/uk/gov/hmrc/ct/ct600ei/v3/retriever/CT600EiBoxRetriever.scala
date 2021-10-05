@@ -23,7 +23,7 @@ import uk.gov.hmrc.ct.ct600ei.v3.{DIT001, DIT002, DIT003}
 
 trait CT600EiBoxRetriever extends BoxRetriever {
 
-  self: CT600BoxRetriever =>
+  self: FilingAttributesBoxValueRetriever  =>
 
   def dit001(): DIT001
 
