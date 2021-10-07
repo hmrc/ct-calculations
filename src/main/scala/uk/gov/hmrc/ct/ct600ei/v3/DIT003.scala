@@ -19,16 +19,9 @@ package uk.gov.hmrc.ct.ct600ei.v3
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, CtValidation, Input, ValidatableBox, Validators}
 import uk.gov.hmrc.ct.ct600ei.v3.retriever.CT600EiBoxRetriever
 
-case class DIT003(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did the company export goods or services?")
+case class DIT003(value: Option[Boolean]) extends CtBoxIdentifier(name = "Services")
   with CtOptionalBoolean
   with Input
-  with ValidatableBox[CT600EiBoxRetriever]
-  with Validators {
-
-  override def validate(boxRetriever: CT600EiBoxRetriever): Set[CtValidation] = {
-    (boxRetriever.dit002(), value) match {
-      case (DIT002(None), None) => validateBooleanAsMandatory("DIT003", this)
-      case _ => Set.empty
-    }
+  object DIT003 {
+    def apply(value: Boolean): DIT003 = DIT003(Some(value))
   }
-}
