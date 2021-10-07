@@ -40,6 +40,7 @@ object ReturnVersionsFixture {
 
   val jointAbbreviatedStatutoryFRSSE2008V2Returns = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                                         Return(CoHoStatutoryAbbreviatedAccounts, FRSSE2008),
+    Return(CT600ei, CT600Version2),
                                                         Return(CT600, CT600Version2),
                                                         Return(CT600a, CT600Version2),
                                                         Return(CT600j, CT600Version2),
@@ -47,6 +48,7 @@ object ReturnVersionsFixture {
 
   val jointMicroFRSSE2008V2Returns = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
                                          Return(CoHoMicroEntityAccounts, FRSSE2008),
+    Return(CT600ei, CT600Version2),
                                          Return(CT600, CT600Version2),
                                          Return(CT600a, CT600Version2),
                                          Return(CT600j, CT600Version2),
@@ -62,6 +64,7 @@ object ReturnVersionsFixture {
 
   val jointAbridgedMicroFRSSE2008V2Returns = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
                                                  Return(CoHoMicroEntityAbridgedAccounts, FRSSE2008),
+    Return(CT600ei, CT600Version2),
                                                  Return(CT600, CT600Version2),
                                                  Return(CT600a, CT600Version2),
                                                  Return(CT600j, CT600Version2),
@@ -77,6 +80,7 @@ object ReturnVersionsFixture {
 
   val jointStatutoryFRSSE2008V2Returns = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
                                              Return(CoHoStatutoryAccounts, FRSSE2008),
+    Return(CT600ei, CT600Version2),
                                              Return(CT600, CT600Version2),
                                              Return(CT600a, CT600Version2),
                                              Return(CT600j, CT600Version2),
@@ -124,9 +128,9 @@ object ReturnVersionsFixture {
 
 
   val hmrcOnlyMicroFRSSE2008V2Returns = Set(Return(HmrcMicroEntityAccounts, FRSSE2008),
+    Return(CT600ei, CT600Version2),
                                    Return(CT600, CT600Version2),
                                    Return(CT600a, CT600Version2),
-                                   Return(CT600ei, CT600Version3),
                                    Return(CT600j, CT600Version2),
                                    Return(Computations, ComputationsCT20141001))
 
@@ -138,9 +142,9 @@ object ReturnVersionsFixture {
                                    Return(Computations, ComputationsCT20150201))
 
   val hmrcOnlyStatutoryFRSSE2008V2Returns = Set(Return(HmrcStatutoryAccounts, FRSSE2008),
+    Return(CT600ei, CT600Version2),
                                                 Return(CT600, CT600Version2),
                                                 Return(CT600a, CT600Version2),
-                                                Return(CT600ei, CT600Version3),
                                                 Return(CT600j, CT600Version2),
                                                 Return(Computations, ComputationsCT20141001))
 
@@ -154,7 +158,7 @@ object ReturnVersionsFixture {
   val hmrcOnlyUploadAccountsV2Returns = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
                                             Return(CT600, CT600Version2),
                                             Return(CT600a, CT600Version2),
-                                            Return(CT600ei, CT600Version3),
+                                            Return(CT600ei, CT600Version2),
                                             Return(CT600j, CT600Version2),
                                             Return(Computations, ComputationsCT20141001))
 

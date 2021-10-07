@@ -16,8 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600ei.v3
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, CtValidation, Input, ValidatableBox, Validators}
-import uk.gov.hmrc.ct.ct600ei.v3.retriever.CT600EiBoxRetriever
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalBoolean, Input}
 
 case class DIT003(value: Option[Boolean]) extends CtBoxIdentifier(name = "Services")
   with CtOptionalBoolean
