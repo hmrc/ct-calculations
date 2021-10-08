@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDormancyBoxRetriever
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.validation.TurnoverValidation
