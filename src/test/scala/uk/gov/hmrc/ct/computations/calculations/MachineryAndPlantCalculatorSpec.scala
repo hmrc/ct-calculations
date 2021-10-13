@@ -257,20 +257,5 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
         cp88 = CP88(Some(4))
       ) should be(CATO20(7))
     }
-
-    "sumOfCP78AndCP666 -calculation" should {
-      "Should not return Error" in new MachineryAndPlantCalculator {
-        sumOfCP78AndCP666(
-          cp78 = CP78(31000),
-          cp666 = CP666(2000)
-        ) should be(Set())
-      }
-      "Should return Error" in new MachineryAndPlantCalculator {
-        sumOfCP78AndCP666(
-          cp78 = CP78(310000),
-          cp666 = CP666(2001)
-        ) should be(Set(CtValidation(None, "error.sum.of.cp78cp666.exceeds.total")))
-      }
-    }
   }
 }

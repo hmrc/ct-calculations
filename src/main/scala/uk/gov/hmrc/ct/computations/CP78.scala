@@ -22,10 +22,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP78(value: Option[Int]) extends CtBoxIdentifier(name = "Written down value brought forward") with CtOptionalInteger with MachineryAndPlantCalculator with Input with SelfValidatableBox[ComputationsBoxRetriever,  Option[Int]] {
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
-    collectErrors(
-      validateZeroOrPositiveInteger(),
-      sumOfCP78AndCP666(this,boxRetriever.cp666())
-    )
+    collectErrors(validateZeroOrPositiveInteger())
   }
 }
 
