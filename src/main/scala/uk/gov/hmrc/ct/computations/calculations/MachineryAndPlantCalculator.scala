@@ -123,14 +123,6 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
     CATO20(cp87 + cp88)
   }
 
-  def sumOfCP78AndCP666(cp78: CP78, cp666: CP666): Set[CtValidation] = {
-    val totalValue = cp78 + cp666
-    if (totalValue > 312000)
-      Set(CtValidation(None, "error.sum.of.cp78cp666.exceeds.total"))
-    else
-      Set.empty
-  }
-
   case class BalancesResult(cp90: CP90, cp91: CP91)
 
 }
