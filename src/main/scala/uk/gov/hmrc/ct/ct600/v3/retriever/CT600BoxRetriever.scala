@@ -166,6 +166,7 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
       case r: CT600EiBoxRetriever => {
         r.dit001() match {
           case DIT001(Some(true)) => B618(None)
+          case DIT001(None) => B618(None)
           case _ => B618(Some(true))
         }
       }
