@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -418,6 +418,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
   def cp673(): CP673
 
   def cp674(): CP674
+
+  def cp675(): CP675
 
   def cp980(): CP980
 
