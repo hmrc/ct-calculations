@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,8 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.{B471, _}
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
-
+import uk.gov.hmrc.ct.ct600ei.v3.DIT001
+import uk.gov.hmrc.ct.ct600ei.v3.retriever.CT600EiBoxRetriever
 
 trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBoxRetriever with AboutThisReturnBoxRetriever {
 
@@ -147,6 +148,30 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
   def b600(): B600 = B600.calculate(this)
 
   def b605(): B605 = B605.calculate(this)
+
+  def b616(): B616 =
+    this match {
+      case r: CT600EiBoxRetriever => B616(r.dit002())
+      case _ => B616(None)
+    }
+
+  def b617(): B617 =
+    this match {
+      case r: CT600EiBoxRetriever => B617(r.dit003())
+      case _ => B617(None)
+    }
+
+  def b618(): B618 =
+    this match {
+      case r: CT600EiBoxRetriever => {
+        r.dit001() match {
+          case DIT001(Some(true)) => B618(None)
+          case DIT001(None) => B618(None)
+          case _ => B618(Some(true))
+        }
+      }
+      case _ => B618(None)
+    }
 
   def b620(): B620
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,6 +55,12 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def b8(): B8 = ???
 
   override def b45(): B45 = ???
+
+  override def b616(): B616 = ???
+
+  override def b617(): B617 = ???
+
+  override def b618(): B618 = ???
 
   override def b780(): B780 = ???
 

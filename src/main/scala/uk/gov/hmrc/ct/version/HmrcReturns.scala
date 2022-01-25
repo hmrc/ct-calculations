@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,10 @@ object HmrcReturns {
 
   case object CT600a extends ReturnType {
     override def key(): String = "CT600a"
+  }
+
+  case object CT600ei extends ReturnType {
+    override def key(): String = "CT600ei"
   }
 
   case object CT600j extends ReturnType {
@@ -61,7 +65,7 @@ object HmrcReturns {
     override def coHoReturnType: Accounts = CoHoAbridgedAccounts
   }
 
-  val returns: Set[ReturnType] = Set(Computations, CT600, CT600a, CT600e, CT600j, HmrcMicroEntityAccounts, HmrcStatutoryAccounts, HmrcUploadedAccounts, HmrcAbridgedAccounts)
+  val returns: Set[ReturnType] = Set(Computations, CT600, CT600a,CT600ei, CT600e, CT600j, HmrcMicroEntityAccounts, HmrcStatutoryAccounts, HmrcUploadedAccounts, HmrcAbridgedAccounts)
 
   def fromKey(key: String): ReturnType = {
     returns.find(_.key() == key).getOrElse(throw new IllegalArgumentException(s"Unknown key for HmrcReturn: $key"))
