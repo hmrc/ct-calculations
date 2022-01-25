@@ -20,25 +20,15 @@ import org.mockito.Mockito.when
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.BoxValidationFixture
-import uk.gov.hmrc.ct.computations.machineryAndPlant.CP675
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
 
-class CP675Spec extends WordSpec with MockitoSugar with Matchers{
+class CP675Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever]{
   val boxRetriever = mock[ComputationsBoxRetriever]
 
-  "CP675 validation" should {
-    "show correct error" in {
-      val boxRetriever = new StubbedComputationsBoxRetriever
-      val result = CP675(-100).validate(boxRetriever)
 
-    }
-
-    "not show error if value is entered correctly" in {
-      val boxRetriever = new StubbedComputationsBoxRetriever
-      val result = CP675(100).validate(boxRetriever)
-
-      result shouldBe Set.empty
-    }
+  override def setUpMocks = {
+    when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
   }
+
+  testBoxIsZeroOrPositive("CP675", CP675.apply)
 }
