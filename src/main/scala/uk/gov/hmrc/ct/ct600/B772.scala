@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.ct600
 
-import org.mockito.Mockito.when
-import org.scalatest.{Matchers, WordSpec}
-import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.ct.BoxValidationFixture
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
+import uk.gov.hmrc.ct.computations.CP675
 
-class CP675Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever]{
-  val boxRetriever = mock[ComputationsBoxRetriever]
+case class B772(value: Option[Int])extends CtBoxIdentifier with CtOptionalInteger
 
+object B772 extends Linked[CP675, B772] {
 
-  override def setUpMocks = {
-    when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
-  }
-
-  testBoxIsZeroOrPositive("CP675", CP675.apply)
+  override def apply(source: CP675): B772 = B772(source.value)
 }
