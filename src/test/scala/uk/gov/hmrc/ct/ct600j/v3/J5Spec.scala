@@ -20,7 +20,6 @@ import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 
 class J5Spec extends WordSpec with MockitoSugar with Matchers {

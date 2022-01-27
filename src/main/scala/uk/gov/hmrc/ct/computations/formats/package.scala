@@ -411,6 +411,8 @@ package object formats {
 
   implicit val cp674Format: Format[CP674] = new OptionalIntegerFormat[CP674](CP674.apply)
 
+  implicit val cp675Format: Format[CP675] = new OptionalIntegerFormat[CP675](CP675.apply)
+
   implicit val cp980Format: Format[CP980] = new OptionalIntegerFormat[CP980](CP980.apply)
 
   implicit val cp981Format: Format[CP981] = new OptionalIntegerFormat[CP981](CP981.apply)
