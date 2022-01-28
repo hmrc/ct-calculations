@@ -16,18 +16,17 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, SelfValidatableBox}
+import org.mockito.Mockito.when
+import org.scalatest.{Matchers, WordSpec}
+import org.scalatestplus.mockito.MockitoSugar
+import uk.gov.hmrc.ct.BoxValidationFixture
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP677(value: Option[Int]) extends CtBoxIdentifier(name = "super deduction claim amount")  with CtOptionalInteger with SelfValidatableBox[ComputationsBoxRetriever, Option[Int]] {
-  override def validate(boxRetriever: ComputationsBoxRetriever) = {
-    collectErrors(
-      validateZeroOrPositiveInteger()
-    )
+class CP678Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever]{
+  val boxRetriever = mock[ComputationsBoxRetriever]
+
+  override def setUpMocks = {
+    when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
   }
-}
-
-object CP677 {
-
-  def apply(value: Int): CP677 = CP677(Some(value))
+  testBoxIsZeroOrPositive("CP678", CP678.apply)
 }
