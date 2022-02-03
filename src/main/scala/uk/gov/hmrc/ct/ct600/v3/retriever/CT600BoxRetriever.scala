@@ -19,7 +19,6 @@ package uk.gov.hmrc.ct.ct600.v3.retriever
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.ct600.B772
 import uk.gov.hmrc.ct.ct600.v3.{B471, _}
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 import uk.gov.hmrc.ct.ct600ei.v3.DIT001
@@ -180,6 +179,10 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b690(): B690 = B690(cp88())
 
+  def b693(): B693
+
+  def b694(): B694
+
   def b695(): B695 = B695(cp668())
 
   def b700(): B700 = B700(cp670())
@@ -187,6 +190,8 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
   def b705(): B705 = B705(cp248())
 
   def b710(): B710 = B710(cp247())
+
+  def b773(): B773
 
   def b735(): B735
 
