@@ -16,9 +16,8 @@
 
 package uk.gov.hmrc.ct.computations.superdeductions
 
-import org.joda.time.Days
+import org.joda.time.{Days, LocalDate}
 import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
-import uk.gov.hmrc.ct.utils.DateImplicits.DateOperators
 
 
 case class SuperDeductionPercentage(percentage: BigDecimal)
@@ -27,14 +26,24 @@ case class SuperDeductionPercentage(percentage: BigDecimal)
 
 object SuperDeductionPercentage {
 
+  implicit class RichLocalDate(date: LocalDate) {
+    def isAfterOrEqual(date2: LocalDate): Boolean = {
+      date.isAfter(date2) || date.equals(date2)
+    }
+
+    def isBeforeOrEqual(date2: LocalDate): Boolean = {
+      date.isBefore(date2) || date.equals(date2)
+    }
+  }
+
   def apply(hmrcAccountingPeriod: HmrcAccountingPeriod, superDeductionPeriod: SuperDeductionPeriod): SuperDeductionPercentage = {
     val percentage:Double = if (hmrcAccountingPeriod.end.value.isBefore(superDeductionPeriod.start.value)) {
       0
-    } else if (hmrcAccountingPeriod.end.value <= superDeductionPeriod.end.value) {
+    } else if (hmrcAccountingPeriod.start.value.isAfterOrEqual(superDeductionPeriod.start.value) && hmrcAccountingPeriod.end.value.isBeforeOrEqual(superDeductionPeriod.end.value)) {
       1.3
     } else {
-      val overlapStart = if (hmrcAccountingPeriod.start.value <= superDeductionPeriod.start.value) superDeductionPeriod.start.value else hmrcAccountingPeriod.start.value
-      val overlapEnd = if (hmrcAccountingPeriod.end.value <= superDeductionPeriod.end.value) hmrcAccountingPeriod.end.value else superDeductionPeriod.end.value
+      val overlapStart = if (hmrcAccountingPeriod.start.value.isBeforeOrEqual(superDeductionPeriod.start.value)) superDeductionPeriod.start.value else hmrcAccountingPeriod.start.value
+      val overlapEnd = if (hmrcAccountingPeriod.end.value.isBeforeOrEqual(superDeductionPeriod.end.value)) hmrcAccountingPeriod.end.value else superDeductionPeriod.end.value
       val daysOverlap = Days.daysBetween(overlapStart, overlapEnd).getDays + 1
       ((daysOverlap.toDouble / hmrcAccountingPeriod.noOfDaysInAccountingPeriod.toDouble) * 0.3) + 1
     }

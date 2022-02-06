@@ -427,13 +427,13 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp676(): CP676
 
-  def cp677(): CP677 = CP677.calculate(this)
+  def cp677(): CP677
 
-  def cp678(): CP678 = CP678.calculate(this)
+  def cp678(): CP678
 
-  def cp679(): CP679 = CP679.calculate(this)
+  def cp679(): CP679
 
-  def cp680(): CP680 = CP680.calculate(this)
+  def cp680(): CP680
 
   def cp980(): CP980
 
@@ -513,7 +513,7 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cato23(): CATO23 = CATO23.calculate(this)
 
-  def cpSuperDeductionPercentage(): CPSuperDeductionPercentage = CPSuperDeductionPercentage.calculate(this)
+  def cpSuperDeductionPercentage():CPSuperDeductionPercentage
 
   def cato24(): CATO24
 
@@ -548,5 +548,4 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def acq8999a(): ACQ8999
 
-  def cpSuperDeductionOverlap(): CPSuperDeductionOverlap = CPSuperDeductionOverlap.calculate(this)
 }
