@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.stubs
 
+import uk.gov.hmrc.ct.accounts.{AC5, AC6}
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.ACQ8999
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValue
@@ -278,4 +279,8 @@ import uk.gov.hmrc.ct.{CATO11, CATO12, CATO24, CountryOfRegistration}
   override def cp129: CP129 = ???
 
   override def acq8999a: ACQ8999 = ???
+
+    override def ac5(): AC5 = ???
+
+    override def ac6(): AC6 = ???
   }

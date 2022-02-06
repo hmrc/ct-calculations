@@ -513,6 +513,8 @@ package object formats {
 
   implicit val cato22Format: Format[CATO22] = new BigDecimalFormat[CATO22](CATO22.apply)
 
+  implicit val cpSuperDeductionPercentageFormat: Format[CPSuperDeductionPercentage] = new BigDecimalFormat[CPSuperDeductionPercentage](CPSuperDeductionPercentage.apply)
+
   implicit val cato23Format: Format[CATO23] = new IntegerFormat[CATO23](CATO23.apply)
 
 }

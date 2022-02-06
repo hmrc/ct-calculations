@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.accounts
 
-import org.joda.time.Days
-import uk.gov.hmrc.ct.box.{EndDate, StartDate}
+import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, EndDate, Input, StartDate}
 
-case class HmrcAccountingPeriod(start: StartDate, end: EndDate) {
-  lazy val noOfDaysInAccountingPeriod = Days.daysBetween(start.value, end.value).getDays + 1
-}
+case class AC6(value: LocalDate) extends CtBoxIdentifier("Super Deduction Period End Date") with EndDate with Input
