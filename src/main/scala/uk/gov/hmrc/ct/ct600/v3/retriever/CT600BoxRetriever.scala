@@ -195,6 +195,14 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b735(): B735
 
+  def b741(): B741
+
+  def b742(): B742
+
+  def b743(): B743
+
+  def b744(): B744
+
   def b750(): B750
 
   def b755(): B755

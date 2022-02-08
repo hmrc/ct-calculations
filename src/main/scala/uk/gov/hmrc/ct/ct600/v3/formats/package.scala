@@ -104,6 +104,14 @@ package object formats {
 
   implicit val B735Format: Format[B735] = new OptionalIntegerFormat[B735](B735.apply)
 
+  implicit val B741Format: Format[B741] = new OptionalIntegerFormat[B741](B741.apply)
+
+  implicit val B742Format: Format[B742] = new OptionalIntegerFormat[B742](B742.apply)
+
+  implicit val B743Format: Format[B743] = new OptionalIntegerFormat[B743](B743.apply)
+
+  implicit val B744Format: Format[B744] = new OptionalIntegerFormat[B744](B744.apply)
+
   implicit val B750Format: Format[B750] = new OptionalIntegerFormat[B750](B750.apply)
 
   implicit val B755Format: Format[B755] = new OptionalIntegerFormat[B755](B755.apply)
