@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
-import uk.gov.hmrc.ct.computations.CP675
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger}
 
-case class B772(value: Option[Int])extends CtBoxIdentifier with CtOptionalInteger
-
-object B772 extends Linked[CP675, B772] {
-
-  override def apply(source: CP675): B772 = B772(source.value)
-}
+case class B694(value: Option[Int]) extends CtBoxIdentifier("Balancing charge in respect of SR allowance") with CtOptionalInteger

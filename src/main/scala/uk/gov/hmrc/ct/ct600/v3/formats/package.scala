@@ -18,7 +18,6 @@ package uk.gov.hmrc.ct.ct600.v3
 
 import play.api.libs.json.Format
 import uk.gov.hmrc.ct.box.formats._
-import uk.gov.hmrc.ct.ct600.B772
 import uk.gov.hmrc.ct.ct600j.v3._
 
 package object formats {
@@ -95,6 +94,10 @@ package object formats {
 
   implicit val B595Format: Format[B595] = new OptionalBigDecimalFormat[B595](B595.apply)
 
+  implicit val B693Format: Format[B693] = new OptionalIntegerFormat[B693](B693.apply)
+
+  implicit val B694Format: Format[B694] = new OptionalIntegerFormat[B694](B694.apply)
+
   implicit val B705Format: Format[B705] = new OptionalIntegerFormat[B705](B705.apply)
 
   implicit val B710Format: Format[B710] = new OptionalIntegerFormat[B710](B710.apply)
@@ -108,6 +111,8 @@ package object formats {
   implicit val B760Format: Format[B760] = new IntegerFormat[B760](B760.apply)
 
   implicit val B765Format: Format[B765] = new IntegerFormat[B765](B765.apply)
+
+  implicit val B773Format: Format[B773] = new OptionalIntegerFormat[B773](B773.apply)
 
   implicit val B775Format: Format[B775] = new IntegerFormat[B775](B775.apply)
 
