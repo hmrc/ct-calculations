@@ -21,6 +21,7 @@ import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.formats._
 import play.api.libs.json.JodaWrites._
 import play.api.libs.json.JodaReads._
+import uk.gov.hmrc.ct.accounts.{AC5, AC6}
 import uk.gov.hmrc.ct.computations.covidSupport.{CP121, CP122, CP123, CP124, CP125}
 import uk.gov.hmrc.ct.computations.lowEmissionCars.{Car, LEC01}
 import uk.gov.hmrc.ct.computations.machineryAndPlant.{CP105, CP109, CP110, CP94, CP97}
@@ -36,6 +37,10 @@ package object formats {
   implicit val cp1Format: Format[CP1] = new DateFormat[CP1](CP1.apply)
 
   implicit val cp2Format: Format[CP2] = new DateFormat[CP2](CP2.apply)
+
+  implicit val ac5Format: Format[AC5] = new DateFormat[AC5](AC5.apply)
+
+  implicit val ac6Format: Format[AC6] = new DateFormat[AC6](AC6.apply)
 
   implicit val cp6Format: Format[CP6] = new IntegerFormat[CP6](CP6.apply)
 
