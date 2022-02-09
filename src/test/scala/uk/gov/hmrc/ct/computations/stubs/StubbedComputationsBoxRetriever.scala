@@ -287,4 +287,6 @@ import uk.gov.hmrc.ct.{CATO11, CATO12, CATO24, CountryOfRegistration}
     override def ac5(): AC5 = ???
 
     override def ac6(): AC6 = ???
+
+    override def cpSuperDeductionPercentage(): CPSuperDeductionPercentage = ???
   }
