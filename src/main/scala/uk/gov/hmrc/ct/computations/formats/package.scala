@@ -420,7 +420,7 @@ package object formats {
 
   implicit val cp676Format: Format[CP676] = new OptionalIntegerFormat[CP676](CP676.apply)
 
-  implicit val cp677Format: Format[CP677] = new OptionalIntegerFormat[CP677](CP677.apply)
+  implicit val cp677Format: Format[CP677] = new OptionalBigDecimalFormat[CP677](CP677.apply)
 
   implicit val cp678Format: Format[CP678] = new OptionalIntegerFormat[CP678](CP678.apply)
 
