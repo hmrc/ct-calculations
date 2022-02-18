@@ -18,7 +18,15 @@ package uk.gov.hmrc.ct.computations
 
 import org.joda.time.Days
 import uk.gov.hmrc.ct.box.{EndDate, StartDate}
+import uk.gov.hmrc.ct.computations.superdeductions.SuperDeductionPeriod
+import uk.gov.hmrc.ct.utils.DateImplicits.DateOperators
 
 case class HmrcAccountingPeriod(start: StartDate, end: EndDate) {
   lazy val noOfDaysInAccountingPeriod = Days.daysBetween(start.value, end.value).getDays + 1
+
+  def overlapsSuperDeduction(superDeductionPeriod: SuperDeductionPeriod):Boolean = (this, superDeductionPeriod) match {
+    case (h,s) if (h.start.value <= s.end.value) && (h.end.value >= s.start.value ) => true
+    case _ => false
+
+  }
 }
