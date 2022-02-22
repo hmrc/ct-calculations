@@ -20,15 +20,11 @@ import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.accounts.{AC5, AC6}
 
 package object superdeductions {
-  private val superDeductionStart = AC5(new LocalDate("2021-04-01"))
-  private val superDeductionEnd = AC6(new LocalDate("2023-03-31"))
-  private val superDPeriod = SuperDeductionPeriod(superDeductionStart, superDeductionEnd)
+  private val superDeductionStart = new LocalDate("2021-04-01")
+  private val superDeductionEnd = new LocalDate("2023-03-31")
 
   def isThereSuperDeductionOverLap(cp1: CP1, cp2: CP2):Boolean = {
-    HmrcAccountingPeriod(cp1, cp2).overlapsSuperDeduction(superDPeriod)
-  }
-
-  def superDeductionsPercentage(cp1: CP1, cp2: CP2):BigDecimal = {
-    SuperDeductionPercentage(HmrcAccountingPeriod(cp1, cp2), superDPeriod).percentage
+    HmrcAccountingPeriod(cp1, cp2).overlapsSuperDeduction(
+      SuperDeductionPeriod(AC5(superDeductionStart), AC6(superDeductionEnd)))
   }
 }
