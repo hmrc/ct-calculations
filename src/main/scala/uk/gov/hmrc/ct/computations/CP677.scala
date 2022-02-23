@@ -29,6 +29,8 @@ case class CP677(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "supe
 
 object CP677 extends Calculated[CP677, ComputationsBoxRetriever] with CtTypeConverters {
   override def calculate(boxRetriever: ComputationsBoxRetriever): CP677 = {
-    CP677()
+    CP677(boxRetriever.cp675().value.map{ x =>
+      x * superdeductions.superDeductionsPercentage(boxRetriever.cp1(), boxRetriever.cp2())
+    })
   }
 }
