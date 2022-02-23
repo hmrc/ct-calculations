@@ -28,7 +28,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.{CATO11, CATO12, CATO24, CountryOfRegistration}
 
 
-  class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with StubbedAccountsBoxRetriever with StubbedFilingAttributesBoxValueRetriever {
+class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with StubbedAccountsBoxRetriever with StubbedFilingAttributesBoxValueRetriever {
 
   override def ap1(): AP1 = ???
 
@@ -284,9 +284,11 @@ import uk.gov.hmrc.ct.{CATO11, CATO12, CATO24, CountryOfRegistration}
 
   override def acq8999a: ACQ8999 = ???
 
-    override def ac5(): AC5 = ???
+  override def ac5(): AC5 = ???
 
-    override def ac6(): AC6 = ???
+  override def ac6(): AC6 = ???
 
-    override def cpSuperDeductionPercentage(): CPSuperDeductionPercentage = ???
-  }
+  override def cpSuperDeductionPercentage(): CPSuperDeductionPercentage = ???
+
+  override def cpSuperDeductionOverlap(): CPSuperDeductionOverlap = ???
+}
