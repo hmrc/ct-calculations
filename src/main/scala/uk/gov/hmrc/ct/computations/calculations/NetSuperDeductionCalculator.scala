@@ -22,15 +22,15 @@ import uk.gov.hmrc.ct.computations._
 trait NetSuperDeductionCalculator extends CtTypeConverters {
 
   def netSuperDeductionClaim(cp677: CP677, cp678: CP678): CP679 = {
-    if (cp677>=cp678)
-      CP679(Some(cp677.minus(cp678)))
+    if (cp677 > cp678)
+      CP679(Some(cp677 - cp678))
     else
       CP679(None)
     }
 
   def netSuperDeductionBalancingCharge(cp677: CP677, cp678: CP678): CP680 = {
-    if (cp677<cp678)
-      CP680(Some(cp678.minus(cp677)))
+    if (cp677 < cp678)
+      CP680(Some(cp677 - cp678))
     else
       CP680(None)
     }

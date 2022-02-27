@@ -16,17 +16,22 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger, CtTypeConverters}
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger, SelfValidatableBox}
+import uk.gov.hmrc.ct.computations.CP679.netSuperDeductionClaim
 import uk.gov.hmrc.ct.computations.calculations.NetSuperDeductionCalculator
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP680(value: Option[Int]) extends CtBoxIdentifier(name = "net super deduction balancing charge")  with CtOptionalInteger
+case class CP680(value: Option[Int]) extends CtBoxIdentifier(name = "net super deduction balancing charge")  with CtOptionalInteger with SelfValidatableBox[ComputationsBoxRetriever, Option[Int]] {
+  override def validate(boxRetriever: ComputationsBoxRetriever) = {
+    collectErrors(
+      validateZeroOrPositiveInteger()
+    )
+  }
+}
 
-object CP680 extends Calculated[CP680, ComputationsBoxRetriever] with NetSuperDeductionCalculator with CtTypeConverters {
+object CP680 extends Calculated[CP680, ComputationsBoxRetriever] with NetSuperDeductionCalculator {
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP680 = {
-    if(superdeductions.isThereSuperDeductionOverLap(fieldValueRetriever.cp1(), fieldValueRetriever.cp2())) {
-      netSuperDeductionBalancingCharge(fieldValueRetriever.cp677(), fieldValueRetriever.cp678)
-    } else CP680(None)
+    netSuperDeductionBalancingCharge(fieldValueRetriever.cp677(),fieldValueRetriever.cp678)
   }
 }
