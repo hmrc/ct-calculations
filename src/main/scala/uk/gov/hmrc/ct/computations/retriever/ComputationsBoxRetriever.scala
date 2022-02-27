@@ -513,7 +513,7 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cato23(): CATO23 = CATO23.calculate(this)
 
-  def cpSuperDeductionPercentage():CPSuperDeductionPercentage
+  def cpSuperDeductionPercentage(): CPSuperDeductionPercentage = CPSuperDeductionPercentage.calculate(this)
 
   def cato24(): CATO24
 
@@ -548,4 +548,5 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def acq8999a(): ACQ8999
 
+  def cpSuperDeductionOverlap(): CPSuperDeductionOverlap = CPSuperDeductionOverlap.calculate(this)
 }

@@ -524,6 +524,8 @@ package object formats {
 
   implicit val cpSuperDeductionPercentageFormat: Format[CPSuperDeductionPercentage] = new BigDecimalFormat[CPSuperDeductionPercentage](CPSuperDeductionPercentage.apply)
 
+  implicit val cpSuperDeductionOverlapFormat: Format[CPSuperDeductionOverlap] = new BooleanFormat[CPSuperDeductionOverlap](CPSuperDeductionOverlap.apply)
+
   implicit val cato23Format: Format[CATO23] = new IntegerFormat[CATO23](CATO23.apply)
 
 }

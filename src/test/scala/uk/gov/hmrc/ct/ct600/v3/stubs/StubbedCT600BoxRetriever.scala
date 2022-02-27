@@ -457,4 +457,6 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def ac6(): AC6 = ???
 
   override def cpSuperDeductionPercentage(): _root_.uk.gov.hmrc.ct.computations.CPSuperDeductionPercentage = ???
+
+  override def cpSuperDeductionOverlap(): CPSuperDeductionOverlap = ???
 }
