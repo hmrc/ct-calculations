@@ -16,20 +16,14 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger, SelfValidatableBox}
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalBigDecimal, CtOptionalInteger, CtTypeConverters, SelfValidatableBox}
 import uk.gov.hmrc.ct.computations.calculations.NetSuperDeductionCalculator
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP679(value: Option[Int]) extends CtBoxIdentifier(name = "net super deductions claim")  with CtOptionalInteger with SelfValidatableBox[ComputationsBoxRetriever, Option[Int]] {
-  override def validate(boxRetriever: ComputationsBoxRetriever) = {
-    collectErrors(
-      validateZeroOrPositiveInteger()
-    )
-  }
-}
+case class CP679(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "net super deductions claim")  with CtOptionalBigDecimal
 
 
-object CP679 extends Calculated[CP679, ComputationsBoxRetriever] with NetSuperDeductionCalculator {
+object CP679 extends Calculated[CP679, ComputationsBoxRetriever] with NetSuperDeductionCalculator with CtTypeConverters{
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP679 = {
     netSuperDeductionClaim(fieldValueRetriever.cp677(),fieldValueRetriever.cp678)

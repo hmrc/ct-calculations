@@ -18,19 +18,20 @@ package uk.gov.hmrc.ct.computations.calculations
 
 import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations._
+import scala.math.BigDecimal
 
 trait NetSuperDeductionCalculator extends CtTypeConverters {
 
   def netSuperDeductionClaim(cp677: CP677, cp678: CP678): CP679 = {
-    if (cp677 >= cp678)
-      CP679(Some(cp677 - cp678))
+    if (cp677.getOrElse(BigDecimal(0)).compareTo(cp678.getOrElse(BigDecimal(0))) >=0)
+      CP679(Some(cp677.minus(cp678)))
     else
       CP679(None)
     }
 
   def netSuperDeductionBalancingCharge(cp677: CP677, cp678: CP678): CP680 = {
-    if (cp677 < cp678)
-      CP680(Some(cp677 - cp678))
+    if (cp677.getOrElse(BigDecimal(0)).compareTo(cp678.getOrElse(BigDecimal(0))) < 0)
+      CP680(Some(cp678.minus(cp677)))
     else
       CP680(None)
     }

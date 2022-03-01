@@ -36,31 +36,8 @@ class CP678Spec  extends WordSpec with MockitoSugar with Matchers with BeforeAnd
       when(mockRetriever.cp676()).thenReturn(CP676(200))
       when(mockRetriever.cp1()).thenReturn(CP1(new LocalDate(2022,4,1)))
       when(mockRetriever.cp2()).thenReturn(CP2(new LocalDate(2023,3,31)))
+      when(mockRetriever.cpSuperDeductionPercentage()).thenReturn(CPSuperDeductionPercentage(130))
       CP678.calculate(mockRetriever) shouldBe CP678(Some(260))
-    }
-    "Calculate the correct value" in {
-      when(mockRetriever.cp1()).thenReturn(CP1(new LocalDate(2022,10,1)))
-      when(mockRetriever.cp2()).thenReturn(CP2(new LocalDate(2023,9,30)))
-      when(mockRetriever.cp676()).thenReturn(CP676(Some(100)))
-      CP678.calculate(mockRetriever) shouldBe CP678(Some(114))
-    }
-    "Calculate the correct value when CP676 is 0" in {
-      when(mockRetriever.cp1()).thenReturn(CP1(new LocalDate(2022,10,1)))
-      when(mockRetriever.cp2()).thenReturn(CP2(new LocalDate(2023,9,30)))
-      when(mockRetriever.cp676()).thenReturn(CP676(Some(0)))
-      CP678.calculate(mockRetriever) shouldBe CP678(Some(0))
-    }
-    "Calculate correct value when CP676 is not present" in {
-      when(mockRetriever.cp1()).thenReturn(CP1(new LocalDate(2022,10,1)))
-      when(mockRetriever.cp2()).thenReturn(CP2(new LocalDate(2023,9,30)))
-      when(mockRetriever.cp676()).thenReturn(CP676(None))
-      CP678.calculate(mockRetriever) shouldBe CP678(None)
-    }
-    "Not Calculate when dates outside super deduction period" in {
-      when(mockRetriever.cp1()).thenReturn(CP1(new LocalDate(1993,10,1)))
-      when(mockRetriever.cp2()).thenReturn(CP2(new LocalDate(1994,9,30)))
-      when(mockRetriever.cp676()).thenReturn(CP676(None))
-      CP678.calculate(mockRetriever) shouldBe CP678(None)
     }
   }
 
