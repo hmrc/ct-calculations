@@ -28,5 +28,4 @@ class CP680Spec extends WordSpec with MockitoSugar with Matchers with BoxValidat
   override def setUpMocks = {
     when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
   }
-  testBoxIsZeroOrPositive("CP680", CP680.apply)
 }
