@@ -16,17 +16,16 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, SelfValidatableBox}
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalBigDecimal, CtOptionalInteger, CtTypeConverters, SelfValidatableBox}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP678(value: Option[Int]) extends CtBoxIdentifier(name = "super deductions balancing charge")  with CtOptionalInteger with SelfValidatableBox[ComputationsBoxRetriever, Option[Int]] {
-  override def validate(boxRetriever: ComputationsBoxRetriever) = {
-    collectErrors(
-      validateZeroOrPositiveInteger()
-    )
-  }
-}
+case class CP678(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "super deductions balancing charge")  with CtOptionalBigDecimal
 
-object CP678 {
-  def apply(value:Int): CP678 = CP678(Some(value))
+
+object CP678 extends Calculated[CP678, ComputationsBoxRetriever] with CtTypeConverters{
+  override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP678 = {
+    CP678(fieldValueRetriever.cp676().value.map{ x =>
+      x * superdeductions.superDeductionsPercentage(fieldValueRetriever.cp1(), fieldValueRetriever.cp2())
+    })
+  }
 }
