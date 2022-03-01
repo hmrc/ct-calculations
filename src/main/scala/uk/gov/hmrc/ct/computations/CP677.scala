@@ -19,18 +19,12 @@ package uk.gov.hmrc.ct.computations
 import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalBigDecimal, CtOptionalInteger, CtTypeConverters, SelfValidatableBox}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP677(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "super deduction claim amount")  with CtOptionalBigDecimal with SelfValidatableBox[ComputationsBoxRetriever, Option[BigDecimal]] {
-  override def validate(boxRetriever: ComputationsBoxRetriever) = {
-    collectErrors(
-      validateZeroOrPositiveInteger()
-    )
-  }
-}
+case class CP677(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "super deduction claim amount")  with CtOptionalBigDecimal
 
-object CP677 extends Calculated[CP677, ComputationsBoxRetriever] with CtTypeConverters {
-  override def calculate(boxRetriever: ComputationsBoxRetriever): CP677 = {
-    CP677(boxRetriever.cp675().value.map{ x =>
-      x * superdeductions.superDeductionsPercentage(boxRetriever.cp1(), boxRetriever.cp2())
+object CP677 extends Calculated[CP677, ComputationsBoxRetriever] with CtTypeConverters{
+  override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP677 = {
+    CP677(fieldValueRetriever.cp675().value.map{ x =>
+      x * superdeductions.superDeductionsPercentage(fieldValueRetriever.cp1(), fieldValueRetriever.cp2())
     })
   }
 }
