@@ -16,17 +16,29 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.mockito.Mockito.when
-import org.scalatest.{Matchers, WordSpec}
+import org.mockito.Mockito.{reset, when}
+import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.ct.BoxValidationFixture
+import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class CP678Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever]{
-  val boxRetriever = mock[ComputationsBoxRetriever]
+class CP678Spec  extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter {
 
-  override def setUpMocks = {
-    when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+  val mockRetriever = mock[ComputationsBoxRetriever]
+
+  before {
+    reset(mockRetriever)
   }
-  testBoxIsZeroOrPositive("CP678", CP678.apply)
+
+
+  "CP677" should {
+    "be CP677 with associate percentage of 675 for period of superdeduction" in {
+      when(mockRetriever.cp676()).thenReturn(CP676(200))
+      when(mockRetriever.cp1()).thenReturn(CP1(new LocalDate(2022,4,1)))
+      when(mockRetriever.cp2()).thenReturn(CP2(new LocalDate(2023,3,31)))
+      when(mockRetriever.cpSuperDeductionPercentage()).thenReturn(CPSuperDeductionPercentage(130))
+      CP678.calculate(mockRetriever) shouldBe CP678(Some(260))
+    }
+  }
+
 }
