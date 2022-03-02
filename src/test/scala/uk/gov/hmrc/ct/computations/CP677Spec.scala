@@ -20,26 +20,40 @@ import org.joda.time.LocalDate
 import org.mockito.Mockito.{reset, when}
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
 import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.ct.BoxValidationFixture
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 class CP677Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter {
 
-  val mockRetriever = mock[ComputationsBoxRetriever]
+  val boxRetriever = mock[ComputationsBoxRetriever]
 
   before {
-    reset(mockRetriever)
+    reset(boxRetriever)
   }
 
-
-  "CP677" should {
-    "be CP677 with associate percentage of 675 for period of superdeduction" in {
-      when(mockRetriever.cp675()).thenReturn(CP675(100))
-      when(mockRetriever.cp1()).thenReturn(CP1(new LocalDate(2022,4,1)))
-      when(mockRetriever.cp2()).thenReturn(CP2(new LocalDate(2023,3,31)))
-      when(mockRetriever.cpSuperDeductionPercentage()).thenReturn(CPSuperDeductionPercentage(130))
-      CP677.calculate(mockRetriever) shouldBe CP677(Some(130))
+  "CP677" should{
+    "Calculate the correct value" in {
+      when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate(2022,10,1)))
+      when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate(2023,9,30)))
+      when(boxRetriever.cp675()).thenReturn(CP675(Some(100)))
+      CP677.calculate(boxRetriever) shouldBe CP677(Some(BigDecimal(114.959)))
+    }
+    "Calculate the correct value when CP675 is 0" in {
+      when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate(2022,10,1)))
+      when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate(2023,9,30)))
+      when(boxRetriever.cp675()).thenReturn(CP675(Some(0)))
+      CP677.calculate(boxRetriever) shouldBe CP677(Some(BigDecimal(0)))
+    }
+    "Calculate correct value when CP675 is not present" in {
+      when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate(2022,10,1)))
+      when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate(2023,9,30)))
+      when(boxRetriever.cp675()).thenReturn(CP675(None))
+      CP677.calculate(boxRetriever) shouldBe CP677(None)
+    }
+    "Not Calculate when dates outside super deduction period" in {
+      when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate(1993,10,1)))
+      when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate(1994,9,30)))
+      when(boxRetriever.cp675()).thenReturn(CP675(None))
+      CP677.calculate(boxRetriever) shouldBe CP677(None)
     }
   }
-
 }
