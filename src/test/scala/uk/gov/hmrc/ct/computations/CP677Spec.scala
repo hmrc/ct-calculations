@@ -35,7 +35,7 @@ class CP677Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndA
       when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate(2022,10,1)))
       when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate(2023,9,30)))
       when(boxRetriever.cp675()).thenReturn(CP675(Some(100)))
-      CP677.calculate(boxRetriever) shouldBe CP677(Some(BigDecimal(114.959)))
+      CP677.calculate(boxRetriever) shouldBe CP677(Some(BigDecimal(115)))
     }
     "Calculate the correct value when CP675 is 0" in {
       when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate(2022,10,1)))
