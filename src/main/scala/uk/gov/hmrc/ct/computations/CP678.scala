@@ -16,12 +16,12 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalBigDecimal, CtOptionalInteger, CtTypeConverters, SelfValidatableBox}
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger, CtTypeConverters}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 import scala.math.BigDecimal.RoundingMode
 
-case class CP678(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "super deductions balancing charge")  with CtOptionalBigDecimal
+case class CP678(value: Option[Int]) extends CtBoxIdentifier(name = "super deductions balancing charge")  with CtOptionalInteger
 
 
 object CP678 extends Calculated[CP678, ComputationsBoxRetriever] with CtTypeConverters{
