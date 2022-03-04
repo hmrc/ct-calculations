@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.ct.computations
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalBigDecimal, CtOptionalInteger, CtTypeConverters, SelfValidatableBox}
+import uk.gov.hmrc.ct.box.{Calculated, CtBoxIdentifier, CtOptionalInteger, CtTypeConverters}
 import uk.gov.hmrc.ct.computations.calculations.NetSuperDeductionCalculator
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class CP680(value: Option[BigDecimal]) extends CtBoxIdentifier(name = "net super deduction balancing charge")  with CtOptionalBigDecimal
+case class CP680(value: Option[Int]) extends CtBoxIdentifier(name = "net super deduction balancing charge")  with CtOptionalInteger
 
 object CP680 extends Calculated[CP680, ComputationsBoxRetriever] with NetSuperDeductionCalculator with CtTypeConverters {
 
