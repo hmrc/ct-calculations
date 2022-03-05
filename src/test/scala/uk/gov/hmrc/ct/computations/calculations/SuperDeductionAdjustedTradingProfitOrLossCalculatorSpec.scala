@@ -22,7 +22,7 @@ import uk.gov.hmrc.ct.computations._
 class SuperDeductionAdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
 
   "Calculator for Adjusted Trading Profit (CP117) for super deduction" should {
-    "return a trading profit calculated as CP44 + CP54 - CP59 - CP186 + CP91 + CP670 - CP668 + cp679 - CP297 - CP986" in
+    "return a trading profit calculated as CP44 + CP54 - CP59 - CP186 + CP91 + CP670 - CP668 + cp678 - CP297 - CP986" in
       new AdjustedTradingProfitOrLossCalculator {
         val cp117 = calculateAdjustedTradingProfit(
           cp44 = CP44(5000),
@@ -34,11 +34,12 @@ class SuperDeductionAdjustedTradingProfitOrLossCalculatorSpec extends WordSpec w
           cp668 = CP668(Some(300)),
           cpq19 = CPQ19(Some(false)),
           cp297 = CP297(Some(0)),
-          cp678 = CP678(Some(1000)))
+          cp678 = CP678(Some(1000)),
+          cp679 = CP679(None))
         cp117 shouldBe CP117(11950)
       }
 
-    "return a trading profit calculated as CP44 + CP54 - CP59 - CP186 + CP91 + CP670 - CP668 - cp680 - CP297 - CP986" in
+    "return a trading profit calculated as CP44 + CP54 - CP59 - CP186 + CP91 + CP670 - CP668 - cp679 - CP297 - CP986" in
       new AdjustedTradingProfitOrLossCalculator {
         val cp117 = calculateAdjustedTradingProfit(
           cp44 = CP44(5000),
@@ -50,8 +51,9 @@ class SuperDeductionAdjustedTradingProfitOrLossCalculatorSpec extends WordSpec w
           cp668 = CP668(Some(300)),
           cpq19 = CPQ19(Some(false)),
           cp297 = CP297(Some(0)),
-          cp678 = CP678(None))
-        cp117 shouldBe CP117(10950)
+          cp678 = CP678(None),
+          cp679 = CP679(Some(100)))
+        cp117 shouldBe CP117(10850)
       }
 
     "return a trading profit of zero if there is a loss CP44 + CP54 - CP59 - CP186 + CP91 + CP670 - CP668 + CP678 - CP297 - CP986" in
@@ -66,7 +68,8 @@ class SuperDeductionAdjustedTradingProfitOrLossCalculatorSpec extends WordSpec w
           cp668 = CP668(Some(4000)),
           cpq19 = CPQ19(Some(false)),
           cp297 = CP297(Some(0)),
-          cp678 = CP678(Some(1000)))
+          cp678 = CP678(Some(1000)),
+          cp679 = CP679(None))
         cp117 shouldBe CP117(0)
       }
 
@@ -86,7 +89,8 @@ class SuperDeductionAdjustedTradingProfitOrLossCalculatorSpec extends WordSpec w
           cp668 = CP668(Some(500)),
           cpq19 = CPQ19(Some(false)),
           cp297 = CP297(Some(0)),
-          cp678 = CP678(Some(100)))
+          cp678 = CP678(Some(100)),
+          cp679 = CP679(None))
 
         cp118 shouldBe CP118(0)
       }
@@ -102,11 +106,12 @@ class SuperDeductionAdjustedTradingProfitOrLossCalculatorSpec extends WordSpec w
           cp668 = CP668(Some(3000)),
           cpq19 = CPQ19(Some(false)),
           cp297 = CP297(Some(0)),
-          cp678 = CP678(Some(100)))
+          cp678 = CP678(Some(100)),
+          cp679 = CP679(None))
         cp118 shouldBe CP118(34650)
       }
 
-    "return a trading loss if there is a loss CP44 + CP54 - CP59 - CP186 + CP91 + CP670 + CP678 - CP668 - CP297 v2" in
+    "return a trading loss if there is a loss CP44 + CP54 - CP59 - CP186 + CP91 + CP670 - CP679 - CP668 - CP297" in
       new AdjustedTradingProfitOrLossCalculator {
         val cp118 = calculateAdjustedTradingLoss(
           cp44 = CP44(-40000),
@@ -118,8 +123,9 @@ class SuperDeductionAdjustedTradingProfitOrLossCalculatorSpec extends WordSpec w
           cp668 = CP668(Some(3000)),
           cpq19 = CPQ19(Some(false)),
           cp297 = CP297(Some(0)),
-          cp678 = CP678(None))
-        cp118 shouldBe CP118(34750)
+          cp678 = CP678(None),
+          cp679 = CP679(Some(100)))
+        cp118 shouldBe CP118(34850)
       }
 
   }
