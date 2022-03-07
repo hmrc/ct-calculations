@@ -64,32 +64,32 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
         Table(
           ("Scenario",
             "LEC01",
-            "CPQ8", "CP78", "CP666", "CP79", "CP80", "CP82", "CP83", "CP667", "CP672", "CP87_Input","CP668", "CP670", "CP88", "CP89", "CP186", "CP91", "CP671", "CP92", "CP669"),
+            "CPQ8", "CP78", "CP666", "CP79", "CP80", "CP82", "CP83", "CP667", "CP672", "CP87_Input","CP668", "CP670", "CP88", "CP89", "CP186", "CP91", "CP671", "CP92", "CP669", "CP677"),
 
           ("Scenario 1 - Company still trading, some AIA can be claimed from the main pool, no disposals were made, user claims some but not all they're entitled to.",
             List(mainRatePoolCar(100)),
-            Some(false), Some(50), None, Some(0), Some(0), Some(15), Some(40), None, Some(0), Some(0),Some(0), Some(0), Some(0), Some(30), Some(30), None, None, Some(175), Some(0)),
+            Some(false), Some(50), None, Some(0), Some(0), Some(15), Some(40), None, Some(0), Some(0),Some(0), Some(0), Some(0), Some(30), Some(30), None, None, Some(175), Some(0), Some(0)),
 
           ("Scenario 2 - Company still trading, some AIA, main pool allowance can be claimed from the main pool, there have been disposals on the main pool, but lower than the value of the pool. " +
             "User claims some of the allowance but not all they're entitled to.",
             List(mainRatePoolCar(100)),
-            Some(false), Some(50), None, Some(0), Some(0), Some(15), Some(40), None, Some(48), Some(0), None, Some(0), Some(0), Some(21), Some(21), None, None, Some(136), Some(0)),
+            Some(false), Some(50), None, Some(0), Some(0), Some(15), Some(40), None, Some(48), Some(0), None, Some(0), Some(0), Some(21), Some(21), None, None, Some(136), Some(0), Some(0)),
 
           ("Scenario 3 - Company still trading, some AIA, there have been disposals on the main pool, higher than the value of the pool " +
             "(there will be balancing charges). User can't claim anything from the main pool.",
             List(mainRatePoolCar(270)),
-            Some(false), Some(50), None, Some(0), Some(0), Some(47), Some(69), None, Some(3000), Some(0),None, Some(0), Some(0), None, Some(0), Some(2564), Some(2564), Some(0), Some(0)),
+            Some(false), Some(50), None, Some(0), Some(0), Some(47), Some(69), None, Some(3000), Some(0),None, Some(0), Some(0), None, Some(0), Some(2564), Some(2564), Some(0), Some(0), Some(0)),
 
           ("Scenario 4 - Company still trading, some AIA and FYA, there have been disposals on the main pool and secondary pool, " +
             "higher than the value of both pools (there will be balancing charges). User can't claim anything from the main pool.",
             List(mainRatePoolCar(270), specialRatePoolCar(594)),
-            Some(false), Some(11), Some(98), Some(31), Some(0),  Some(43), Some(77), Some(2111), Some(3500), Some(0), None, Some(1419), None, None, Some(0), Some(3068), Some(3068), Some(0), Some(0)),
+            Some(false), Some(11), Some(98), Some(31), Some(0),  Some(43), Some(77), Some(2111), Some(3500), Some(0), None, Some(1419), None, None, Some(0), Some(3068), Some(3068), Some(0), Some(0), Some(0)),
 
           ("Scenario 5 - Company still trading, some AIA and FYA (also FYA cars), there have been disposals on the main pool and secondary pool, " +
             "the main disposals higher than the value of the main pool but the special rate disposals still leave some remaining special rate allowance " +
             "to be claimed (there will be only balancing charges on the main pool). user can't claim anything from the main pool but can claim from the secondary pool.",
             List(fyaRatePoolCar(25), mainRatePoolCar(50), specialRatePoolCar(600)),
-            Some(false), Some(11), Some(98), Some(30), Some(1),  Some(43), Some(77), Some(4), Some(3500), Some(21), Some(20), Some(0), Some(64), None, Some(85), Some(3349), Some(3349), Some(0), Some(674))
+            Some(false), Some(11), Some(98), Some(30), Some(1),  Some(43), Some(77), Some(4), Some(3500), Some(21), Some(20), Some(0), Some(64), None, Some(85), Some(3349), Some(3349), Some(0), Some(674), Some(0))
         )
 
       forAll(companiesStillTrading) {
@@ -113,7 +113,8 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
          cp91: Option[Int],
          cp671: Option[Int],
          cp92: Option[Int],
-         cp669: Option[Int]) => {
+         cp669: Option[Int],
+         cp677: Option[Int]) => {
 
           val retriever = new TestComputationsRetriever(
             lec01 = lec01,
@@ -129,7 +130,8 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
             cp666 = cp666,
             cp667 = cp667,
             cp668 = cp668,
-            cp672 = cp672
+            cp672 = cp672,
+            cp677 = cp677
           ) with StubbedAccountsBoxRetriever
 
           assert(retriever.cp91().value equals cp91, clue("CP91", retriever.cp91().value, cp91))
@@ -147,19 +149,19 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
         ("Scenario",
           "LEC01",
           "CPQ8", "CP78", "CP666", "CP674", "CP79", "CP80", "CP82", "CP83", "CP84", "CP673",
-          "CP90", "CP186", "CP91", "CP671", "CP92", "CP669"),
+          "CP90", "CP186", "CP91", "CP671", "CP92", "CP669", "CP677"),
 
         ("Scenario 6 - Company not trading, higher disposals than allowances: balancing charges.",
           List(fyaRatePoolCar(20), mainRatePoolCar(30), specialRatePoolCar(40)),
           Some(true),
           Some(20), Some(30), Some(30),Some(0), None, None, None, Some(1000), Some(300),
-          Some(0), Some(0), Some(1130), Some(1130), Some(0), Some(0)),
+          Some(0), Some(0), Some(1130), Some(1130), Some(0), Some(0), Some(0)),
 
         ("Scenario 7 - Company not trading, lower disposals than allowances: balance allowances.",
           List(fyaRatePoolCar(20), mainRatePoolCar(30), specialRatePoolCar(40)),
           Some(true),
           Some(500), Some(600), Some(1000),Some(0), None, None, None, Some(10), Some(5),
-          Some(2175), Some(2175), Some(0), Some(0), Some(0), Some(0))
+          Some(2175), Some(2175), Some(0), Some(0), Some(0), Some(0), Some(0))
       )
 
     "calculate values for Companies No Longer Trading" in {
@@ -181,7 +183,8 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
          cp91: Option[Int],
          cp671: Option[Int],
          cp92: Option[Int],
-         cp669: Option[Int]) => {
+         cp669: Option[Int],
+         cp677: Option[Int]) => {
 
           val retriever = new TestComputationsRetriever(
             lec01 = lec01,
@@ -194,7 +197,8 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
             cp84 = cp84,
             cp666 = cp666,
             cp673 = cp673,
-            cp674 = cp674
+            cp674 = cp674,
+            cp677 = cp677
           ) with Frsse2008AccountsBoxRetriever
 
           assert(retriever.cp90().value equals cp90, clue("CP90", retriever.cp90().value, cp90))
@@ -238,7 +242,8 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
                                   cp668: Option[Int] = None,
                                   cp672: Option[Int] = None,
                                   cp673: Option[Int] = None,
-                                  cp674: Option[Int] = None
+                                  cp674: Option[Int] = None,
+                                  cp677: Option[Int] = None
                                    ) extends StubbedComputationsBoxRetriever {
 
     self: Frsse2008AccountsBoxRetriever =>
