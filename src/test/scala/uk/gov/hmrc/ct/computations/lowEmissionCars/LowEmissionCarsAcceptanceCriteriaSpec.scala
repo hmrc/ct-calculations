@@ -54,6 +54,7 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
         CP670       Special Rate pool balancing charge
         CP92        Main pool written down value carried forward
         CP669       Special Rate pool written down value carried forward
+        CP677       Super-Deduction claimed
      */
 
 
@@ -273,6 +274,8 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
     override def cp673: CP673 = CP673(cp673)
 
     override def cp674: CP674 = CP674(cp674)
+
+    override def cp677(): CP677 = CP677(cp677)
 
     override def cp87Input: CP87Input = CP87Input(cp87Input)
 
