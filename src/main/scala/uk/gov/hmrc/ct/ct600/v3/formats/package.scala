@@ -94,6 +94,10 @@ package object formats {
 
   implicit val B595Format: Format[B595] = new OptionalBigDecimalFormat[B595](B595.apply)
 
+  implicit val B691Format: Format[B691] = new OptionalIntegerFormat[B691](B691.apply)
+
+  implicit val B692Format: Format[B692] = new OptionalIntegerFormat[B692](B692.apply)
+
   implicit val B693Format: Format[B693] = new OptionalIntegerFormat[B693](B693.apply)
 
   implicit val B694Format: Format[B694] = new OptionalIntegerFormat[B694](B694.apply)

@@ -17,11 +17,12 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, Linked}
-import uk.gov.hmrc.ct.computations.CP675
+import uk.gov.hmrc.ct.computations.CP678
 
-case class B772(value: Option[Int])extends CtBoxIdentifier(name = "Machinery and Plant - Super deduction") with CtOptionalInteger
+case class B692(value: Option[Int]) extends CtBoxIdentifier("Machinery and Plant - Super deduction (BC)") with CtOptionalInteger
 
-object B772 extends Linked[CP675, B772] {
+object B692 extends Linked[CP678, B692] {
 
-  override def apply(source: CP675): B772 = B772(source.value)
+  override def apply(source: CP678): B692 = B692(source.value)
 }
+
