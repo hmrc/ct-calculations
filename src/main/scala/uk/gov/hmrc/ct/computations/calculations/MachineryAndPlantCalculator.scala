@@ -85,7 +85,8 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
       ceasedTrading =>
         if (!ceasedTrading) {
           cp677 match {
-            case CP677(value) if value.nonEmpty => Some(cp87 + cp88 + cp89 + cp677)
+            case CP677(value) if value.nonEmpty => println("CP186-Answer:" + Some(cp87 + cp88 + cp89 + cp677))
+              Some(cp87 + cp88 + cp89 + cp677)
             case _ => Some(cp87 + cp88 + cp89)
           }
         } else {
