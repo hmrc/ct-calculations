@@ -80,6 +80,7 @@ trait AdjustedTradingProfitForPeriodCalculator extends CtTypeConverters {
 trait AdjustedTradingProfitCalculator {
 
   def adjustedTradingProfitCalculation(cp117: CP117): CP289 = {
+    println("CP289 Answer - " + CP289(if (cp117.value < 0) None else Some(cp117.value)))
     CP289(if (cp117.value < 0) None else Some(cp117.value))
   }
 
