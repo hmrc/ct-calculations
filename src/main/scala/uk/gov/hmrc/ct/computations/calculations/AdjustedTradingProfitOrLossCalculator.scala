@@ -29,9 +29,8 @@ trait AdjustedTradingProfitOrLossCalculator extends CtTypeConverters {
                                      cp668: CP668,
                                      cp297: CP297,
                                      cpq19: CPQ19,
-                                     cp679: CP679,
-                                     cp680: CP680): CP117 = {
-    CP117(profit(cp44, cp54, cp59, cp186, cp91, cp670, cp668, cp297, cpq19, cp679, cp680) max 0)
+                                     cp678: CP678): CP117 = {
+    CP117(profit(cp44, cp54, cp59, cp186, cp91, cp670, cp668, cp297, cpq19, cp678) max 0)
   }
 
   def calculateAdjustedTradingLoss(cp44: CP44,
@@ -43,9 +42,8 @@ trait AdjustedTradingProfitOrLossCalculator extends CtTypeConverters {
                                    cp668: CP668,
                                    cp297: CP297,
                                    cpq19: CPQ19,
-                                   cp679: CP679,
-                                   cp680: CP680): CP118 = {
-    CP118((profit(cp44, cp54, cp59, cp186, cp91, cp670, cp668, cp297, cpq19, cp679, cp680) min 0).abs)
+                                   cp678: CP678): CP118 = {
+    CP118((profit(cp44, cp54, cp59, cp186, cp91, cp670, cp668, cp297, cpq19, cp678) min 0).abs)
   }
 
   private def profit(cp44: CP44,
@@ -57,11 +55,9 @@ trait AdjustedTradingProfitOrLossCalculator extends CtTypeConverters {
                      cp668: CP668,
                      cp297: CP297,
                      cpq19: CPQ19,
-                     cp679: CP679,
-                     cp680:CP680) = {
-    (cp679, cp680) match {
-      case (CP679(v), _) if v.nonEmpty => cp44 + cp54 - cp59 - cp186 + cp91 + cp670 - cp668 - cp679 - cp297
-      case (_, CP680(v)) if v.nonEmpty => cp44 + cp54 - cp59 - cp186 + cp91 + cp670 - cp668 + cp680 - cp297
+                     cp678: CP678) = {
+    cp678 match {
+      case CP678(Some(_))  => cp44 + cp54 - cp59 - cp186 + cp91 + cp670 + cp678 - cp668 - cp297
       case _ => cp44 + cp54 - cp59 - cp186 + cp91 + cp670 - cp668 - cp297
     }
 
