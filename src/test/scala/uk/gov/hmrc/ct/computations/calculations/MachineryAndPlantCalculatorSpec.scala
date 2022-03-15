@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
+import org.joda.time.LocalDate
 import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.CATO20
 import uk.gov.hmrc.ct.box.CtValidation
@@ -140,53 +141,76 @@ class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
 
   "computeTotalAllowances CP186" should {
     "return zero for all zero values when ceasedTrading is false" in new MachineryAndPlantCalculator {
-      computeTotalAllowancesClaimed(cpq8 = CPQ8(value = Some(false)),
+      computeTotalAllowancesClaimed(
+        cpq8 = CPQ8(value = Some(false)),
         cp87 = CP87(0),
         cp88 = CP88(0),
         cp89 = CP89(0),
-        cp90 = CP90(None)) shouldBe CP186(Some(0))
+        cp90 = CP90(None),
+        cp677 = CP677(None)) shouldBe CP186(Some(0))
     }
     "return Some(10) for totalFirstYearAllowanceClaimed == 10 and 0 for all others when ceasedTrading is false" in new MachineryAndPlantCalculator {
-      computeTotalAllowancesClaimed(cpq8 = CPQ8(value = Some(false)),
+      computeTotalAllowancesClaimed(
+        cpq8 = CPQ8(value = Some(false)),
         cp87 = CP87(10),
         cp88 = CP88(0),
         cp89 = CP89(0),
-        cp90 = CP90(None)) shouldBe CP186(Some(10))
+        cp90 = CP90(None),
+        cp677 = CP677(None)) shouldBe CP186(Some(10))
     }
     "return Some(125) from all but write down allowances entered when ceasedTrading is false" in new MachineryAndPlantCalculator {
-      computeTotalAllowancesClaimed(cpq8 = CPQ8(value = Some(false)),
+      computeTotalAllowancesClaimed(
+        cpq8 = CPQ8(value = Some(false)),
         cp87 = CP87(10),
         cp88 = CP88(115),
         cp89 = CP89(0),
-        cp90 = CP90(None)) shouldBe CP186(Some(125))
+        cp90 = CP90(None),
+        cp677 = CP677(None)) shouldBe CP186(Some(125))
     }
     "return Some(125) from all values entered when ceasedTrading is false" in new MachineryAndPlantCalculator {
-      computeTotalAllowancesClaimed(cpq8 = CPQ8(value = Some(false)),
+      computeTotalAllowancesClaimed(
+        cpq8 = CPQ8(value = Some(false)),
         cp87 = CP87(10),
         cp88 = CP88(100),
         cp89 = CP89(15),
-        cp90 = CP90(None)) shouldBe CP186(Some(125))
+        cp90 = CP90(None),
+        cp677 = CP677(None)) shouldBe CP186(Some(125))
     }
     "return None when ceasedTrading is false and balance allowance is not defined" in new MachineryAndPlantCalculator {
-      computeTotalAllowancesClaimed(cpq8 = CPQ8(value = Some(true)),
+      computeTotalAllowancesClaimed(
+        cpq8 = CPQ8(value = Some(true)),
         cp87 = CP87(10),
         cp88 = CP88(100),
         cp89 = CP89(15),
-        cp90 = CP90(None)) shouldBe CP186(Some(0))
+        cp90 = CP90(None),
+        cp677 = CP677(None)) shouldBe CP186(Some(0))
     }
     "return balanceAllowance when trading ceased is true and balance allowance is defined" in new MachineryAndPlantCalculator { //DONE
-      computeTotalAllowancesClaimed(cpq8 = CPQ8(Some(true)),
+      computeTotalAllowancesClaimed(
+        cpq8 = CPQ8(Some(true)),
         cp87 = CP87(10),
         cp88 = CP88(100),
         cp89 = CP89(15),
-        cp90 = CP90(Some(345))) shouldBe CP186(Some(345))
+        cp90 = CP90(Some(345)),
+        cp677 = CP677(None)) shouldBe CP186(Some(345))
     }
     "return None when ceasedTrading is not defined" in new MachineryAndPlantCalculator {
-      computeTotalAllowancesClaimed(cpq8 = CPQ8(value = None),
+      computeTotalAllowancesClaimed(
+        cpq8 = CPQ8(value = None),
         cp87 = CP87(10),
         cp88 = CP88(100),
         cp89 = CP89(15),
-        cp90 = CP90(None)) shouldBe CP186(None)
+        cp90 = CP90(None),
+        cp677 = CP677(None)) shouldBe CP186(None)
+    }
+    "return Some(225) from all values entered when ceasedTrading is false and dates overlap super deduction period" in new MachineryAndPlantCalculator {
+      computeTotalAllowancesClaimed(
+        cpq8 = CPQ8(value = Some(false)),
+        cp87 = CP87(10),
+        cp88 = CP88(100),
+        cp89 = CP89(15),
+        cp90 = CP90(None),
+        cp677 = CP677(Some(100))) shouldBe CP186(Some(225))
     }
   }
 
