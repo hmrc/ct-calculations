@@ -179,6 +179,10 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b690(): B690 = B690(cp88())
 
+  def b691(): B691 = B691(cp677())
+
+  def b692(): B692 = B692(cp678())
+
   def b693(): B693
 
   def b694(): B694
@@ -191,7 +195,6 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b710(): B710 = B710(cp247())
 
-  def b773(): B773
 
   def b735(): B735
 
@@ -218,6 +221,8 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
   def b771():B771 = B771(cp296())
 
   def b772():B772 = B772(cp675())
+
+  def b773(): B773
 
   def b780(): B780 = B780(cp118())
 
