@@ -28,9 +28,9 @@ trait AdjustedTradingProfitOrLossCalculator extends CtTypeConverters {
                                      cp670: CP670,
                                      cp668: CP668,
                                      cp297: CP297,
-
-                                     cpq19: CPQ19): CP117 = {
-    CP117(profit(cp44, cp54, cp59, cp186, cp91, cp670, cp668, cp297, cpq19) max 0)
+                                     cpq19: CPQ19,
+                                     cp678: CP678): CP117 = {
+    CP117(profit(cp44, cp54, cp59, cp186, cp91, cp670, cp668, cp297, cpq19, cp678) max 0)
   }
 
   def calculateAdjustedTradingLoss(cp44: CP44,
@@ -41,9 +41,9 @@ trait AdjustedTradingProfitOrLossCalculator extends CtTypeConverters {
                                    cp670: CP670,
                                    cp668: CP668,
                                    cp297: CP297,
-
-                                   cpq19: CPQ19): CP118 = {
-    CP118((profit(cp44, cp54, cp59, cp186, cp91, cp670, cp668, cp297, cpq19) min 0).abs)
+                                   cpq19: CPQ19,
+                                   cp678: CP678): CP118 = {
+    CP118((profit(cp44, cp54, cp59, cp186, cp91, cp670, cp668, cp297, cpq19, cp678) min 0).abs)
   }
 
   private def profit(cp44: CP44,
@@ -54,8 +54,13 @@ trait AdjustedTradingProfitOrLossCalculator extends CtTypeConverters {
                      cp670: CP670,
                      cp668: CP668,
                      cp297: CP297,
-                     cpq19: CPQ19) = {
-    cp44 + cp54 - cp59 - cp186 + cp91 + cp670 - cp668 - cp297
+                     cpq19: CPQ19,
+                     cp678: CP678) = {
+    cp678 match {
+      case CP678(Some(_))  => cp44 + cp54 - cp59 - cp186 + cp91 + cp670 + cp678 - cp668 - cp297
+      case _ => cp44 + cp54 - cp59 - cp186 + cp91 + cp670 - cp668 - cp297
+    }
+
   }
 }
 
