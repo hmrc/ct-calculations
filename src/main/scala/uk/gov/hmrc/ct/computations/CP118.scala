@@ -35,7 +35,8 @@ object CP118 extends Calculated[CP118, ComputationsBoxRetriever] with AdjustedTr
       cp670 = fieldValueRetriever.cp670(),
       cp668 = fieldValueRetriever.cp668(),
       cp297 = fieldValueRetriever.cp297(),
-      cpq19 = fieldValueRetriever.cpQ19()
+      cpq19 = fieldValueRetriever.cpQ19(),
+      cp678 = fieldValueRetriever.cp678()
     )
   }
 }
