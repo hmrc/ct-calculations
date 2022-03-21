@@ -25,10 +25,8 @@ case class CP677(value: Option[Int]) extends CtBoxIdentifier(name = "super deduc
 
 object CP677 extends Calculated[CP677, ComputationsBoxRetriever] with CtTypeConverters{
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP677 = {
-    if(superdeductions.isThereSuperDeductionOverLap(fieldValueRetriever.cp1(), fieldValueRetriever.cp2())) {
-      CP677(fieldValueRetriever.cp675().value.map { x =>
-        (x * superdeductions.superDeductionsPercentage(fieldValueRetriever.cp1(), fieldValueRetriever.cp2())).setScale(0, RoundingMode.UP).toInt
-      })
-    } else CP677(None)
+    CP677(fieldValueRetriever.cp675().value.map{ x =>
+      (x * superdeductions.superDeductionsPercentage(fieldValueRetriever.cp1(), fieldValueRetriever.cp2())).setScale(0, RoundingMode.UP).toInt
+    })
   }
 }
