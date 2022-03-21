@@ -26,6 +26,8 @@ case class CP679(value: Option[Int]) extends CtBoxIdentifier(name = "net super d
 object CP679 extends Calculated[CP679, ComputationsBoxRetriever] with NetSuperDeductionCalculator with CtTypeConverters{
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP679 = {
-    netSuperDeductionClaim(fieldValueRetriever.cp677(),fieldValueRetriever.cp678)
+    if(superdeductions.isThereSuperDeductionOverLap(fieldValueRetriever.cp1(), fieldValueRetriever.cp2())) {
+      netSuperDeductionClaim(fieldValueRetriever.cp677(),fieldValueRetriever.cp678)
+    } else CP679(None)
   }
 }
