@@ -26,6 +26,13 @@ class CP680Spec extends WordSpec with MockitoSugar with Matchers with BoxValidat
   val boxRetriever = mock[ComputationsBoxRetriever]
 
   override def setUpMocks = {
-    when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
+    when(boxRetriever.cp677()).thenReturn(CP677(Option(100)))
+    when(boxRetriever.cp678()).thenReturn(CP678(Option(100)))
+  }
+
+  "CP680" should {
+    "Return None if CPQ8 is false" in {
+      CP680.calculate(boxRetriever) shouldBe CP680(None)
+    }
   }
 }
