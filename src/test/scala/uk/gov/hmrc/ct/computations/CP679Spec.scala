@@ -21,17 +21,17 @@ import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.BoxValidationFixture
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.utils.UnitSpec
 
-class CP679Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] {
-  val boxRetriever = mock[ComputationsBoxRetriever]
+class CP679Spec extends UnitSpec {
 
-  override def setUpMocks = {
-    when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
-  }
+
 
   "CP679" should {
-    "Return 0 if CPQ8 is false" in {
-      CP679.calculate(boxRetriever) shouldBe CP679(Some(0))
+    "Return CP677 - CP678" in {
+      when(mockComputationsBoxRetriever.cp677()).thenReturn(CP677(Option(110)))
+      when(mockComputationsBoxRetriever.cp678()).thenReturn(CP678(Option(100)))
+      CP679.calculate(mockComputationsBoxRetriever) shouldBe CP679(Some(10))
     }
   }
 }
