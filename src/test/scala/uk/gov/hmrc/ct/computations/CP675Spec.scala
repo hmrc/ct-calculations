@@ -31,4 +31,10 @@ class CP675Spec extends WordSpec with MockitoSugar with Matchers with BoxValidat
   }
 
   testBoxIsZeroOrPositive("CP675", CP675.apply)
+
+  "CP675" should {
+    "return its value as option" in {
+      CP675.apply(100) shouldBe CP675(Some(100))
+    }
+  }
 }
