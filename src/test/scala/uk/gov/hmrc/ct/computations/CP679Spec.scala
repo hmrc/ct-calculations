@@ -33,16 +33,5 @@ class CP679Spec extends UnitSpec {
       when(mockComputationsBoxRetriever.cp678()).thenReturn(CP678(Option(100)))
       CP679.calculate(mockComputationsBoxRetriever) shouldBe CP679(Some(10))
     }
-    "return None" in {
-      when(mockComputationsBoxRetriever.cp677()).thenReturn(CP677(Option(100)))
-      when(mockComputationsBoxRetriever.cp678()).thenReturn(CP678(Option(110)))
-      CP679.calculate(mockComputationsBoxRetriever) shouldBe CP679(None)
-    }
-  }
-
-  "CP679" should {
-    "Return 0 if CPQ8 is false" in {
-      CP679.calculate(boxRetriever) shouldBe CP679(Some(0))
-    }
   }
 }
