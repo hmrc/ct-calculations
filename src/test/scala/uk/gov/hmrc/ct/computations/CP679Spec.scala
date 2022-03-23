@@ -39,4 +39,10 @@ class CP679Spec extends UnitSpec {
       CP679.calculate(mockComputationsBoxRetriever) shouldBe CP679(None)
     }
   }
+
+  "CP679" should {
+    "Return 0 if CPQ8 is false" in {
+      CP679.calculate(boxRetriever) shouldBe CP679(Some(0))
+    }
+  }
 }

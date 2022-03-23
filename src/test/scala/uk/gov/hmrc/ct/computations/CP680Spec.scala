@@ -21,21 +21,18 @@ import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.BoxValidationFixture
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import uk.gov.hmrc.ct.utils.UnitSpec
 
-class CP680Spec extends UnitSpec {
+class CP680Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever]{
+  val boxRetriever = mock[ComputationsBoxRetriever]
 
+  override def setUpMocks = {
+    when(boxRetriever.cp677()).thenReturn(CP677(Option(100)))
+    when(boxRetriever.cp678()).thenReturn(CP678(Option(100)))
+  }
 
   "CP680" should {
-    "Return CP678-CP677" in {
-      when(mockComputationsBoxRetriever.cp677()).thenReturn(CP677(Option(100)))
-      when(mockComputationsBoxRetriever.cp678()).thenReturn(CP678(Option(110)))
-      CP680.calculate(mockComputationsBoxRetriever) shouldBe CP680(Some(10))
-    }
-    "return None" in {
-      when(mockComputationsBoxRetriever.cp677()).thenReturn(CP677(Option(110)))
-      when(mockComputationsBoxRetriever.cp678()).thenReturn(CP678(Option(100)))
-      CP680.calculate(mockComputationsBoxRetriever) shouldBe CP680(None)
+    "Return None if CPQ8 is false" in {
+      CP680.calculate(boxRetriever) shouldBe CP680(None)
     }
   }
 }
