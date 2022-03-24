@@ -32,5 +32,10 @@ class CP680Spec extends UnitSpec {
       when(mockComputationsBoxRetriever.cp678()).thenReturn(CP678(Option(110)))
       CP680.calculate(mockComputationsBoxRetriever) shouldBe CP680(Some(10))
     }
+    "return None" in {
+      when(mockComputationsBoxRetriever.cp677()).thenReturn(CP677(Option(110)))
+      when(mockComputationsBoxRetriever.cp678()).thenReturn(CP678(Option(100)))
+      CP680.calculate(mockComputationsBoxRetriever) shouldBe CP680(None)
+    }
   }
 }
