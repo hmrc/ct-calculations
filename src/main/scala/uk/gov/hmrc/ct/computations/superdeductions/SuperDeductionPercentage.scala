@@ -30,7 +30,7 @@ object SuperDeductionPercentage {
   def apply(hmrcAccountingPeriod: HmrcAccountingPeriod, superDeductionPeriod: SuperDeductionPeriod): SuperDeductionPercentage = {
     val percentage:Double = if (hmrcAccountingPeriod.end.value.isBefore(superDeductionPeriod.start.value)) {
       0
-    } else if (hmrcAccountingPeriod.start.value >= superDeductionPeriod.start.value && hmrcAccountingPeriod.end.value <= superDeductionPeriod.end.value) {
+    } else if (hmrcAccountingPeriod.end.value <= superDeductionPeriod.end.value) {
       1.3
     } else {
       val overlapStart = if (hmrcAccountingPeriod.start.value <= superDeductionPeriod.start.value) superDeductionPeriod.start.value else hmrcAccountingPeriod.start.value

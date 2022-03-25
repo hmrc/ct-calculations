@@ -55,5 +55,15 @@ class SuperDeductionPercentageSpec extends WordSpec with Matchers {
       val hmrcAccountingPeriod = HmrcAccountingPeriod(AC3(new LocalDate(2023,3,10)), AC4(new LocalDate(2024,3,9)))
       SuperDeductionPercentage(hmrcAccountingPeriod, superDeductionPeriod).percentage should be(1.01803)
     }
+
+    "be 1.3 if end date of HMRC accounting period overlaps even by a day" in {
+      val hmrcAccountingPeriod = HmrcAccountingPeriod(AC3(new LocalDate(2020,4,2)), AC4(new LocalDate(2021,4,1)))
+      SuperDeductionPercentage(hmrcAccountingPeriod, superDeductionPeriod).percentage should be(1.30000)
+    }
+
+    "be 1.3 if end date of HMRC accounting period overlaps even by a few day" in {
+      val hmrcAccountingPeriod = HmrcAccountingPeriod(AC3(new LocalDate(2020,5,2)), AC4(new LocalDate(2021,5,1)))
+      SuperDeductionPercentage(hmrcAccountingPeriod, superDeductionPeriod).percentage should be(1.30000)
+    }
   }
 }
