@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import uk.gov.hmrc.ct.CATO20
 import uk.gov.hmrc.ct.box.{CtTypeConverters, CtValidation}
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.machineryAndPlant._
+import uk.gov.hmrc.ct.computations.superdeductions.isThereSuperDeductionOverLap
 
 trait MachineryAndPlantCalculator extends CtTypeConverters {
 
@@ -78,11 +79,15 @@ trait MachineryAndPlantCalculator extends CtTypeConverters {
                                     cp87: CP87,
                                     cp88: CP88,
                                     cp89: CP89,
-                                    cp90: CP90 = CP90(value = None)): CP186 = {
+                                    cp90: CP90 = CP90(value = None),
+                                    cp677: CP677): CP186 = {
     val result = cpq8.value.flatMap {
       ceasedTrading =>
         if (!ceasedTrading) {
-          Some(cp87 + cp88 + cp89)
+          cp677 match {
+            case CP677(value) if value.nonEmpty => Some(cp87 + cp88 + cp89 + cp677)
+            case _ => Some(cp87 + cp88 + cp89)
+          }
         } else {
           Some(cp90.orZero)
         }

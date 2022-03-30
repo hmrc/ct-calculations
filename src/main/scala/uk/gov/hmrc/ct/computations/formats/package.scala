@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.formats._
 import play.api.libs.json.JodaWrites._
 import play.api.libs.json.JodaReads._
+import uk.gov.hmrc.ct.accounts.{AC5, AC6}
 import uk.gov.hmrc.ct.computations.covidSupport.{CP121, CP122, CP123, CP124, CP125}
 import uk.gov.hmrc.ct.computations.lowEmissionCars.{Car, LEC01}
 import uk.gov.hmrc.ct.computations.machineryAndPlant.{CP105, CP109, CP110, CP94, CP97}
@@ -36,6 +37,10 @@ package object formats {
   implicit val cp1Format: Format[CP1] = new DateFormat[CP1](CP1.apply)
 
   implicit val cp2Format: Format[CP2] = new DateFormat[CP2](CP2.apply)
+
+  implicit val ac5Format: Format[AC5] = new DateFormat[AC5](AC5.apply)
+
+  implicit val ac6Format: Format[AC6] = new DateFormat[AC6](AC6.apply)
 
   implicit val cp6Format: Format[CP6] = new IntegerFormat[CP6](CP6.apply)
 
@@ -411,6 +416,18 @@ package object formats {
 
   implicit val cp674Format: Format[CP674] = new OptionalIntegerFormat[CP674](CP674.apply)
 
+  implicit val cp675Format: Format[CP675] = new OptionalIntegerFormat[CP675](CP675.apply)
+
+  implicit val cp676Format: Format[CP676] = new OptionalIntegerFormat[CP676](CP676.apply)
+
+  implicit val cp677Format: Format[CP677] = new OptionalIntegerFormat[CP677](CP677.apply)
+
+  implicit val cp678Format: Format[CP678] = new OptionalIntegerFormat[CP678](CP678.apply)
+
+  implicit val cp679Format: Format[CP679] = new OptionalIntegerFormat[CP679](CP679.apply)
+
+  implicit val cp680Format: Format[CP680] = new OptionalIntegerFormat[CP680](CP680.apply)
+
   implicit val cp980Format: Format[CP980] = new OptionalIntegerFormat[CP980](CP980.apply)
 
   implicit val cp981Format: Format[CP981] = new OptionalIntegerFormat[CP981](CP981.apply)
@@ -504,6 +521,10 @@ package object formats {
   implicit val cato21Format: Format[CATO21] = new BigDecimalFormat[CATO21](CATO21.apply)
 
   implicit val cato22Format: Format[CATO22] = new BigDecimalFormat[CATO22](CATO22.apply)
+
+  implicit val cpSuperDeductionPercentageFormat: Format[CPSuperDeductionPercentage] = new BigDecimalFormat[CPSuperDeductionPercentage](CPSuperDeductionPercentage.apply)
+
+  implicit val cpSuperDeductionOverlapFormat: Format[CPSuperDeductionOverlap] = new BooleanFormat[CPSuperDeductionOverlap](CPSuperDeductionOverlap.apply)
 
   implicit val cato23Format: Format[CATO23] = new IntegerFormat[CATO23](CATO23.apply)
 

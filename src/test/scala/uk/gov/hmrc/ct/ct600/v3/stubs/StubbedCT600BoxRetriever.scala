@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.ct600.v3.stubs
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.ACQ8999
 import uk.gov.hmrc.ct.{CATO24, CountryOfRegistration}
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AC2, AC205, AC206}
+import uk.gov.hmrc.ct.accounts.{AC2, AC205, AC206, AC5, AC6}
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.box.stubs.StubbedFilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations._
@@ -66,6 +66,10 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
 
   override def b690(): B690 = ???
 
+  override def b693(): B693 = ???
+
+  override def b694(): B694 = ???
+
   override def b975(): B975 = ???
 
   override def b980(): B980 = ???
@@ -82,7 +86,17 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
 
   override def b2(): B2 = ???
 
+  override def b773(): B773 = ???
+
   override def b735(): B735 = ???
+
+  override def b741(): B741 = ???
+
+  override def b742(): B742 = ???
+
+  override def b743(): B743 = ???
+
+  override def b744(): B744 = ???
 
   override def b705(): B705 = ???
 
@@ -220,6 +234,10 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
 
   override def cp674(): CP674 = ???
 
+  override def cp675(): CP675 = ???
+
+  override def cp676(): CP676 = ???
+
   override def cp668(): CP668 = ???
 
   override def cp80(): CP80 = ???
@@ -340,6 +358,14 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
 
   override def cp666(): CP666 = ???
 
+  override def cp677(): CP677 = ???
+
+  override def cp678(): CP678 = ???
+
+  override def cp679(): CP679 = ???
+
+  override def cp680(): CP680 = ???
+
   override def cp25(): CP25 = ???
 
   override def cp285(): CP285 = ???
@@ -425,4 +451,12 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
   override def cp129: CP129 = ???
 
   override def acq8999a: ACQ8999 = ???
+
+  override def ac5(): AC5 = ???
+
+  override def ac6(): AC6 = ???
+
+  override def cpSuperDeductionPercentage(): _root_.uk.gov.hmrc.ct.computations.CPSuperDeductionPercentage = ???
+
+  override def cpSuperDeductionOverlap(): CPSuperDeductionOverlap = ???
 }

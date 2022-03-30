@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,8 @@ object CP186 extends Calculated[CP186, ComputationsBoxRetriever] with MachineryA
                                   cp87 = fieldValueRetriever.cp87(),
                                   cp88 = fieldValueRetriever.cp88(),
                                   cp89 = fieldValueRetriever.cp89(),
-                                  cp90 = fieldValueRetriever.cp90())
+                                  cp90 = fieldValueRetriever.cp90(),
+                                  cp677 = fieldValueRetriever.cp677())
   }
 
 }

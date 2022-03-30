@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,11 +94,27 @@ package object formats {
 
   implicit val B595Format: Format[B595] = new OptionalBigDecimalFormat[B595](B595.apply)
 
+  implicit val B691Format: Format[B691] = new OptionalIntegerFormat[B691](B691.apply)
+
+  implicit val B692Format: Format[B692] = new OptionalIntegerFormat[B692](B692.apply)
+
+  implicit val B693Format: Format[B693] = new OptionalIntegerFormat[B693](B693.apply)
+
+  implicit val B694Format: Format[B694] = new OptionalIntegerFormat[B694](B694.apply)
+
   implicit val B705Format: Format[B705] = new OptionalIntegerFormat[B705](B705.apply)
 
   implicit val B710Format: Format[B710] = new OptionalIntegerFormat[B710](B710.apply)
 
   implicit val B735Format: Format[B735] = new OptionalIntegerFormat[B735](B735.apply)
+
+  implicit val B741Format: Format[B741] = new OptionalIntegerFormat[B741](B741.apply)
+
+  implicit val B742Format: Format[B742] = new OptionalIntegerFormat[B742](B742.apply)
+
+  implicit val B743Format: Format[B743] = new OptionalIntegerFormat[B743](B743.apply)
+
+  implicit val B744Format: Format[B744] = new OptionalIntegerFormat[B744](B744.apply)
 
   implicit val B750Format: Format[B750] = new OptionalIntegerFormat[B750](B750.apply)
 
@@ -108,11 +124,15 @@ package object formats {
 
   implicit val B765Format: Format[B765] = new IntegerFormat[B765](B765.apply)
 
+  implicit val B773Format: Format[B773] = new OptionalIntegerFormat[B773](B773.apply)
+
   implicit val B775Format: Format[B775] = new IntegerFormat[B775](B775.apply)
 
   implicit val B711Format: Format[B711] = new OptionalIntegerFormat[B711](B711.apply)
 
   implicit val B771Format: Format[B771] = new OptionalIntegerFormat[B771](B771.apply)
+
+  implicit val B772Format: Format[B772] = new OptionalIntegerFormat[B772](B772.apply)
 
   implicit val B780Format: Format[B780] = new IntegerFormat[B780](B780.apply)
 

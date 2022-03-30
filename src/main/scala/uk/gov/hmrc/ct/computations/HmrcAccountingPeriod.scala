@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,17 @@
 
 package uk.gov.hmrc.ct.computations
 
+import org.joda.time.Days
 import uk.gov.hmrc.ct.box.{EndDate, StartDate}
+import uk.gov.hmrc.ct.computations.superdeductions.SuperDeductionPeriod
+import uk.gov.hmrc.ct.utils.DateImplicits.DateOperators
 
-case class HmrcAccountingPeriod(start: StartDate, end: EndDate)
+case class HmrcAccountingPeriod(start: StartDate, end: EndDate) {
+  lazy val noOfDaysInAccountingPeriod = Days.daysBetween(start.value, end.value).getDays + 1
+
+  def overlapsSuperDeduction(superDeductionPeriod: SuperDeductionPeriod):Boolean = (this, superDeductionPeriod) match {
+    case (h,s) if (h.start.value <= s.end.value) && (h.end.value >= s.start.value ) => true
+    case _ => false
+
+  }
+}

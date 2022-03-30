@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.stubs
 
+import uk.gov.hmrc.ct.accounts.{AC5, AC6}
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.ACQ8999
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValue
@@ -27,7 +28,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.{CATO11, CATO12, CATO24, CountryOfRegistration}
 
 
-  class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with StubbedAccountsBoxRetriever with StubbedFilingAttributesBoxValueRetriever {
+class StubbedComputationsBoxRetriever extends ComputationsBoxRetriever with StubbedAccountsBoxRetriever with StubbedFilingAttributesBoxValueRetriever {
 
   override def ap1(): AP1 = ???
 
@@ -69,7 +70,11 @@ import uk.gov.hmrc.ct.{CATO11, CATO12, CATO24, CountryOfRegistration}
 
   override def cpQ17(): CPQ17 = ???
 
+  override def cp676(): CP676 = ???
+
   override def cp674(): CP674 = ???
+
+  override def cp675(): CP675 = ???
 
   override def cp668(): CP668 = ???
 
@@ -189,6 +194,14 @@ import uk.gov.hmrc.ct.{CATO11, CATO12, CATO24, CountryOfRegistration}
 
   override def cp666(): CP666 = ???
 
+  override def cp677(): CP677 = ???
+
+  override def cp678(): CP678 = ???
+
+  override def cp679(): CP679 = ???
+
+  override def cp680(): CP680 = ???
+
   override def cp25(): CP25 = ???
 
   override def cp285(): CP285 = ???
@@ -270,4 +283,12 @@ import uk.gov.hmrc.ct.{CATO11, CATO12, CATO24, CountryOfRegistration}
   override def cp129: CP129 = ???
 
   override def acq8999a: ACQ8999 = ???
-  }
+
+  override def ac5(): AC5 = ???
+
+  override def ac6(): AC6 = ???
+
+  override def cpSuperDeductionPercentage(): CPSuperDeductionPercentage = ???
+
+  override def cpSuperDeductionOverlap(): CPSuperDeductionOverlap = ???
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,9 +33,11 @@ class AdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
           cp670 = CP670(Some(5000)),
           cp668 = CP668(Some(300)),
           cpq19 = CPQ19(Some(false)),
-          cp297 = CP297(Some(0)))
+          cp297 = CP297(Some(0)),
+          cp678 = CP678(None))
         cp117 shouldBe CP117(10950)
       }
+
     "return a trading profit of zero if there is a loss CP44 + CP54 - CP59 - CP186 + CP91 + CP670 - CP668 - CP297 - CP986" in
       new AdjustedTradingProfitOrLossCalculator {
         val cp117 = calculateAdjustedTradingProfit(
@@ -47,7 +49,8 @@ class AdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
           cp670 = CP670(Some(7000)),
           cp668 = CP668(Some(3000)),
           cpq19 = CPQ19(Some(false)),
-          cp297 = CP297(Some(0)))
+          cp297 = CP297(Some(0)),
+          cp678 = CP678(None))
         cp117 shouldBe CP117(0)
       }
 
@@ -62,7 +65,8 @@ class AdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
           cp670 = CP670(Some(5000)),
           cp668 = CP668(Some(300)),
           cpq19 = CPQ19(Some(false)),
-          cp297 = CP297(Some(0)))
+          cp297 = CP297(Some(0)),
+          cp678 = CP678(None))
 
         cp117 shouldBe CP117(10950)
 
@@ -79,7 +83,8 @@ class AdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
           cp670 = CP670(Some(5000)),
           cp668 = CP668(Some(300)),
           cpq19 = CPQ19(Some(true)),
-          cp297 = CP297(Some(0)))
+          cp297 = CP297(Some(0)),
+          cp678 = CP678(None))
 
         cp117 shouldBe CP117(10950)
       }
@@ -97,7 +102,8 @@ class AdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
           cp670 = CP670(Some(10000)),
           cp668 = CP668(Some(500)),
           cpq19 = CPQ19(Some(false)),
-          cp297 = CP297(Some(0)))
+          cp297 = CP297(Some(0)),
+          cp678 = CP678(None))
 
         cp118 shouldBe CP118(0)
       }
@@ -112,7 +118,8 @@ class AdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
           cp670 = CP670(Some(7000)),
           cp668 = CP668(Some(3000)),
           cpq19 = CPQ19(Some(false)),
-          cp297 = CP297(Some(0)))
+          cp297 = CP297(Some(0)),
+          cp678 = CP678(None))
         cp118 shouldBe CP118(34750)
       }
 
@@ -127,7 +134,8 @@ class AdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
           cp670 = CP670(Some(7000)),
           cp668 = CP668(Some(3000)),
           cpq19 = CPQ19(Some(true)),
-          cp297 = CP297(Some(0)))
+          cp297 = CP297(Some(0)),
+          cp678 = CP678(None))
 
         cp118 shouldBe CP118(34750)
       }
@@ -144,7 +152,8 @@ class AdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
           cp670 = CP670(Some(0)),
           cp668 = CP668(Some(0)),
           cpq19 = CPQ19(Some(false)),
-          cp297 = CP297(Some(0)))
+          cp297 = CP297(Some(0)),
+          cp678 = CP678(None))
         cp118 shouldBe CP118(10000)
       }
   }

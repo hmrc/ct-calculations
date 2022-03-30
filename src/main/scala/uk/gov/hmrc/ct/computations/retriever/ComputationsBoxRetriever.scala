@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,10 @@ trait ComputationsBoxRetriever extends BoxRetriever {
   def ac401(): AC401
 
   def ac402(): AC402
+
+  def ac5(): AC5
+
+  def ac6(): AC6
 
   def ac403(): AC403
 
@@ -179,11 +183,11 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp303(): CP303
 
-  def cp3010() : CP3010
+  def cp3010(): CP3010
 
-  def cp3020() : CP3020
+  def cp3020(): CP3020
 
-  def cp3030() : CP3030
+  def cp3030(): CP3030
 
   def cp501(): CP501
 
@@ -419,6 +423,18 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cp674(): CP674
 
+  def cp675(): CP675
+
+  def cp676(): CP676
+
+  def cp677(): CP677 = CP677.calculate(this)
+
+  def cp678(): CP678 = CP678.calculate(this)
+
+  def cp679(): CP679 = CP679.calculate(this)
+
+  def cp680(): CP680 = CP680.calculate(this)
+
   def cp980(): CP980
 
   def cp981(): CP981
@@ -497,6 +513,8 @@ trait ComputationsBoxRetriever extends BoxRetriever {
 
   def cato23(): CATO23 = CATO23.calculate(this)
 
+  def cpSuperDeductionPercentage(): CPSuperDeductionPercentage = CPSuperDeductionPercentage.calculate(this)
+
   def cato24(): CATO24
 
   def lec01(): LEC01
@@ -522,11 +540,13 @@ trait ComputationsBoxRetriever extends BoxRetriever {
   // tricky! losses.northernIrelandJourneyActive should be used. Failed on retriever type integration.
   def chooseCp997(): CP997Abstract = {
     val ni = this.cp997NI()
-    if ( ni.value.isDefined )
+    if (ni.value.isDefined)
       ni
     else
       this.cp997()
   }
 
-  def acq8999a():ACQ8999
+  def acq8999a(): ACQ8999
+
+  def cpSuperDeductionOverlap(): CPSuperDeductionOverlap = CPSuperDeductionOverlap.calculate(this)
 }

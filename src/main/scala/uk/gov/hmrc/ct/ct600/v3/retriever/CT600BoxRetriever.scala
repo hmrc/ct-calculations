@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -179,6 +179,14 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b690(): B690 = B690(cp88())
 
+  def b691(): B691 = B691(cp677())
+
+  def b692(): B692 = B692(cp678())
+
+  def b693(): B693
+
+  def b694(): B694
+
   def b695(): B695 = B695(cp668())
 
   def b700(): B700 = B700(cp670())
@@ -187,7 +195,16 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b710(): B710 = B710(cp247())
 
+
   def b735(): B735
+
+  def b741(): B741
+
+  def b742(): B742
+
+  def b743(): B743
+
+  def b744(): B744
 
   def b750(): B750
 
@@ -202,6 +219,10 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
   def b711():B711 = B711(cp297())
 
   def b771():B771 = B771(cp296())
+
+  def b772():B772 = B772(cp675())
+
+  def b773(): B773
 
   def b780(): B780 = B780(cp118())
 

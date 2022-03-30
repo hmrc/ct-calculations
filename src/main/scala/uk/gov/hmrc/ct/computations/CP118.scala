@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,8 @@ object CP118 extends Calculated[CP118, ComputationsBoxRetriever] with AdjustedTr
       cp670 = fieldValueRetriever.cp670(),
       cp668 = fieldValueRetriever.cp668(),
       cp297 = fieldValueRetriever.cp297(),
-      cpq19 = fieldValueRetriever.cpQ19()
+      cpq19 = fieldValueRetriever.cpQ19(),
+      cp678 = fieldValueRetriever.cp678()
     )
   }
 }
