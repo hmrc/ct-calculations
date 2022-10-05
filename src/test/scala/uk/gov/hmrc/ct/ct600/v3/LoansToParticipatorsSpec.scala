@@ -26,28 +26,31 @@ import uk.gov.hmrc.ct.ct600a.v3._
 class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
   //Know this isn't a V3 date but required so our +9 months date aren't before the current date
-  val currentAPEndDate = new LocalDate(2014, 6, 1)
+  val currentAPEndDate = new LocalDate(2019, 6, 1)
 
   val boxRetriever = new StubbedCT600BoxRetriever {
     override def cp2(): CP2 = CP2(currentAPEndDate)
     override def lpq03(): LPQ03 = LPQ03(Some(true))
   }
 
-  val validLoan = Loan(id = "1",
+  val validLoan2016 = Loan(id = "1",
     name = Some("Smurfette"),
-    amount = Some(200),
+    amount=None,
+    amountBetween06042016To06042022 = Some(200),
     amountBefore06042016 = None)
 
-  val validRepaymentWithin9Months = Repayment(
+  /*val validRepaymentWithin9Months = Repayment(
     id = "3",
-    amount = Some(50),
+    amount=None,
+    amountBetween06042016To06042022 = Some(50),
     amountBefore06042016 = None,
     date = Some(currentAPEndDate.plusDays(3))
   )
 
   val validRepaymentAfter9Months = Repayment(
     id = "4",
-    amount = Some(50),
+    amount=None,
+    amountBetween06042016To06042022 = Some(50),
     date = Some(currentAPEndDate.plusMonths(10)),
     amountBefore06042016 = None,
     endDateOfAP = Some(currentAPEndDate.plusYears(1))
@@ -55,8 +58,39 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
   val validWriteOff = WriteOff(
     id = "2",
+    amount=None,
     date = Some(currentAPEndDate.plusDays(2)),
-    amount = Some(50),
+    amountBetween06042016To06042022 = Some(50),
+    endDateOfAP = Some(currentAPEndDate.plusDays(1))
+  )*/
+  val validLoan = Loan(id = "5",
+    name = Some("Smurfette"),
+    amount=Some(200),
+    amountBetween06042016To06042022 = None,
+    amountBefore06042016 = None)
+
+  val validRepaymentWithin9Months = Repayment(
+    id = "6",
+    amount=Some(50),
+    amountBetween06042016To06042022 = None,
+    amountBefore06042016 = None,
+    date = Some(currentAPEndDate.plusDays(3))
+  )
+
+  val validRepaymentAfter9Months = Repayment(
+    id = "7",
+    amount=Some(50),
+    amountBetween06042016To06042022 = None,
+    date = Some(currentAPEndDate.plusMonths(10)),
+    amountBefore06042016 = None,
+    endDateOfAP = Some(currentAPEndDate.plusYears(1))
+  )
+
+  val validWriteOff = WriteOff(
+    id = "8",
+    amount=Some(50),
+    date = Some(currentAPEndDate.plusDays(2)),
+    amountBetween06042016To06042022 = None,
     endDateOfAP = Some(currentAPEndDate.plusDays(1))
   )
 
@@ -117,7 +151,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return an error if a loan has an amountBefore06042016 greater then amount" in {
-      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = Some(validLoan.amount.get + 1))))
+      val l2pBox = LoansToParticipators(List(validLoan2016.copy(amountBefore06042016 = Some(validLoan2016.amountBetween06042016To06042022.get + 1))))
 
       val errors = l2pBox.validate(boxRetriever)
 
@@ -623,12 +657,12 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
     "not allow total of repayments and write offs amounts after April 2016 to exceed the one in Loan" in {
       // Loans after April 2016 = 10. Repayments + writeoffs against those = 11
-      val l2pBox = LoansToParticipators(List(validLoan.copy(
-        amount = Some(20),
+      val l2pBox = LoansToParticipators(List(validLoan2016.copy(
+        amountBetween06042016To06042022 = Some(20),
         amountBefore06042016 = Some(10),
-        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amount = Some(10), amountBefore06042016 = Some(5))),
-        otherRepayments = List(validRepaymentAfter9Months.copy(amount = Some(6), amountBefore06042016 = Some(3))),
-        writeOffs = List(validWriteOff.copy(amount = Some(4), amountBefore06042016 = Some(1)))
+        repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBetween06042016To06042022 = Some(10), amountBefore06042016 = Some(5))),
+        otherRepayments = List(validRepaymentAfter9Months.copy(amountBetween06042016To06042022 = Some(6), amountBefore06042016 = Some(3))),
+        writeOffs = List(validWriteOff.copy(amountBetween06042016To06042022 = Some(4), amountBefore06042016 = Some(1)))
       )))
 
       val errors = l2pBox.validate(boxRetriever)
