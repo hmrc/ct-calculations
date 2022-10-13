@@ -172,14 +172,14 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
 
     val a35Table = Table(
       ("expectedValue", "loans2p"),
-      (None, LoansToParticipators(loans =  Loan(id = "1", name = Some("Bilbo"),amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, Some(new LocalDate("2012-12-31"))))) :: Nil)), // too early
-      (Some(1), LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(200), writeOffs = List(WriteOff("123", Some(1), None, Some(new LocalDate("2013-01-01"))))) :: Nil)),  // ok
-      (Some(1), LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(250), writeOffs = List(WriteOff("123", Some(1), None, Some(new LocalDate("2013-09-30"))))) :: Nil)), // ok
-      (None, LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(375), writeOffs = List(WriteOff("123", Some(1), None, Some(new LocalDate("2013-10-01")), someDate("2013-12-31")))) :: Nil)),  // too late
+      (None, LoansToParticipators(loans =  Loan(id = "1", name = Some("Bilbo"),amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, None, Some(new LocalDate("2012-12-31"))))) :: Nil)), // too early
+      (Some(1), LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(200), writeOffs = List(WriteOff("123", Some(1), None,None, Some(new LocalDate("2013-01-01"))))) :: Nil)),  // ok
+      (Some(1), LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(250), writeOffs = List(WriteOff("123", Some(1), None, None, Some(new LocalDate("2013-09-30"))))) :: Nil)), // ok
+      (None, LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(375), writeOffs = List(WriteOff("123", Some(1), None, None, Some(new LocalDate("2013-10-01")), someDate("2013-12-31")))) :: Nil)),  // too late
       (Some(4), LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(50), writeOffs = List(
-          WriteOff("123", Some(1), None, Some(new LocalDate("2013-01-01"))),
-          WriteOff("456", Some(2), None, Some(new LocalDate("2013-10-01")), someDate("2013-12-31")),
-          WriteOff("789", Some(3), None, Some(new LocalDate("2013-09-30"))))) :: Nil)
+          WriteOff("123", Some(1), None, None, Some(new LocalDate("2013-01-01"))),
+          WriteOff("456", Some(2), None, None, Some(new LocalDate("2013-10-01")), someDate("2013-12-31")),
+          WriteOff("789", Some(3), None, None, Some(new LocalDate("2013-09-30"))))) :: Nil)
         )
       )
     "correctly validate A35 (A5v2) using write offs made between the end of the accounting period and 9months and 1 day later" in new LoansToParticipatorsCalculator {
@@ -209,10 +209,10 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
     "correctly calculate A45 (A7v2) applying new tax rate for accounting periods ending on or after 6 April 2016" in new LoansToParticipatorsCalculator {
 
       val l2p_None = LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(123), repaymentWithin9Months = None) :: Nil) // illegal state - boolean says yes but repaid before AP end
-      val l2p_Invalid = LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(123), repaymentWithin9Months = Some(Repayment(id = "1", amount = Some(1), date = Some(new LocalDate("2012-12-31")))), writeOffs = List(WriteOff("123", Some(1), None, Some(new LocalDate("2012-12-31"))))) ::
-                                                    Loan(id = "1", name = Some("Bilbo"), amount = Some(375), writeOffs = List(WriteOff("123", Some(1), None, Some(new LocalDate("2013-10-01")), someDate("2013-12-31")))) :: Nil) // not valid repayments and writeoffs
-      val l2p_1 = LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(123), repaymentWithin9Months = Some(Repayment(id = "1", amount = Some(4), amountBefore06042016 = Some(3), date = Some(new LocalDate("2017-01-01")))), writeOffs = List(WriteOff("123", Some(7), amountBefore06042016 = Some(2), Some(new LocalDate("2017-01-01"))))) :: Nil)  // ok
-      val l2p_2 = LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(123), repaymentWithin9Months = Some(Repayment(id = "1", amount = Some(4), amountBefore06042016 = Some(300), date = Some(new LocalDate("2017-01-01")))), writeOffs = List(WriteOff("123", Some(7), amountBefore06042016 = Some(33), Some(new LocalDate("2017-01-01"))))) :: Nil)  // ok
+      val l2p_Invalid = LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(123), repaymentWithin9Months = Some(Repayment(id = "1", amount = Some(1), date = Some(new LocalDate("2012-12-31")))), writeOffs = List(WriteOff("123", Some(1), None, None, Some(new LocalDate("2012-12-31"))))) ::
+                                                    Loan(id = "1", name = Some("Bilbo"), amount = Some(375), writeOffs = List(WriteOff("123", Some(1), None, None, Some(new LocalDate("2013-10-01")), someDate("2013-12-31")))) :: Nil) // not valid repayments and writeoffs
+      val l2p_1 = LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(123), repaymentWithin9Months = Some(Repayment(id = "1", amount = Some(4), amountBefore06042016 = Some(3), date = Some(new LocalDate("2017-01-01")))), writeOffs = List(WriteOff("123", Some(7),None, amountBefore06042016 = Some(2), Some(new LocalDate("2017-01-01"))))) :: Nil)  // ok
+      val l2p_2 = LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(123), repaymentWithin9Months = Some(Repayment(id = "1", amount = Some(4), amountBefore06042016 = Some(300), date = Some(new LocalDate("2017-01-01")))), writeOffs = List(WriteOff("123", Some(7), None, amountBefore06042016 = Some(33), Some(new LocalDate("2017-01-01"))))) :: Nil)  // ok
 
       val after6April2016 = CP2(new LocalDate("2016-12-31"))
       calculateA45(A40(Some(1)), l2p_None, after6April2016) shouldBe A45(Some(0.33))
@@ -350,14 +350,14 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
 
     val a60Table = Table(
       ("expectedValue", "loans2p", "filingDate"),
-      (None, LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, Some(new LocalDate("2014-09-30")), someDate("2014-12-31")))))), someDate("2015-10-01")), // too early
-      (None, LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, Some(new LocalDate("2014-09-30")), None))))), someDate("2015-10-01")),  // too early
-      (Some(1), LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")))))), someDate("2015-10-01")),  // ok
-      (None, LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")))))), someDate("2015-09-30")), // filing date too early
+      (None, LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, None, Some(new LocalDate("2014-09-30")), someDate("2014-12-31")))))), someDate("2015-10-01")), // too early
+      (None, LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, None, Some(new LocalDate("2014-09-30")), None))))), someDate("2015-10-01")),  // too early
+      (Some(1), LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")))))), someDate("2015-10-01")),  // ok
+      (None, LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")))))), someDate("2015-09-30")), // filing date too early
       (Some(6), LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(
-          WriteOff("123", Some(1), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
-          WriteOff("456", Some(2), None, Some(new LocalDate("2014-09-30")), someDate("2014-12-31")),
-          WriteOff("789", Some(5), None, Some(new LocalDate("2014-12-31")), someDate("2014-12-31")))))), someDate("2015-10-01"))
+          WriteOff("123", Some(1), None, None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
+          WriteOff("456", Some(2), None, None, Some(new LocalDate("2014-09-30")), someDate("2014-12-31")),
+          WriteOff("789", Some(5), None, None, Some(new LocalDate("2014-12-31")), someDate("2014-12-31")))))), someDate("2015-10-01"))
     )
     "correctly calculate A60 (A9v2) using write offs made more than 9 months after the end of the accounting period" in new LoansToParticipatorsCalculator {
       forAll(a60Table) {
@@ -371,14 +371,14 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
 
     val a60InverseTable = Table(
       ("A9InverseExpectedValue", "loans2p", "filingDate"),
-      (None, LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, Some(new LocalDate("2014-05-31")), someDate("2014-12-31")))) :: Nil), someDate("2015-06-01")),
-      (None, LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, Some(new LocalDate("2014-06-01")), None))) :: Nil), someDate("2015-10-01")),
-      (None, LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, Some(new LocalDate("2014-06-01")), someDate("2014-12-31")))) :: Nil), someDate("2014-10-01")),
-      (Some(1), LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")))) :: Nil), someDate("2015-09-30")),
+      (None, LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, None, Some(new LocalDate("2014-05-31")), someDate("2014-12-31")))) :: Nil), someDate("2015-06-01")),
+      (None, LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, None, Some(new LocalDate("2014-06-01")), None))) :: Nil), someDate("2015-10-01")),
+      (None, LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, None, Some(new LocalDate("2014-06-01")), someDate("2014-12-31")))) :: Nil), someDate("2014-10-01")),
+      (Some(1), LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(WriteOff("123", Some(1), None, None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")))) :: Nil), someDate("2015-09-30")),
       (Some(2), LoansToParticipators(loans = Loan(id = "1", name = Some("Bilbo"), amount = Some(100), writeOffs = List(
-          WriteOff("123", Some(1), None, Some(new LocalDate("2014-05-31")), someDate("2014-12-31")),
-          WriteOff("456", Some(2), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
-          WriteOff("789", Some(5), None, Some(new LocalDate("2014-06-01")), someDate("2014-12-31")))) :: Nil), someDate("2015-09-30"))
+          WriteOff("123", Some(1), None, None, Some(new LocalDate("2014-05-31")), someDate("2014-12-31")),
+          WriteOff("456", Some(2), None, None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
+          WriteOff("789", Some(5), None, None, Some(new LocalDate("2014-06-01")), someDate("2014-12-31")))) :: Nil), someDate("2015-09-30"))
     )
     "correctly calculate A60Inverse using write offs made more than 9 months after the end of the accounting period" in new LoansToParticipatorsCalculator {
       forAll(a60InverseTable) {
@@ -437,19 +437,19 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
       val l2p_1 = LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(123),
         otherRepayments = List(Repayment(id = "1", amount = Some(1), amountBefore06042016 = Some(330), date = Some(new LocalDate("2013-10-01")), endDateOfAP = someDate("2013-12-31"))),
         writeOffs = List(
-          WriteOff("123", Some(1), Some(1), Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
-          WriteOff("456", Some(2), Some(1), Some(new LocalDate("2014-09-30")), someDate("2014-12-31")),
-          WriteOff("789", Some(5), Some(1), Some(new LocalDate("2014-12-31")), someDate("2014-12-31"))))))
+          WriteOff("123", Some(1), Some(1), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
+          WriteOff("456", Some(2), Some(1), None, Some(new LocalDate("2014-09-30")), someDate("2014-12-31")),
+          WriteOff("789", Some(5), Some(1), None, Some(new LocalDate("2014-12-31")), someDate("2014-12-31"))))))
       val l2p_2 = LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(123),
         otherRepayments = List(Repayment(id = "1", amount = Some(1), amountBefore06042016 = None, date = Some(new LocalDate("2013-10-01")), endDateOfAP = someDate("2013-12-31"))),
         writeOffs = List(
-          WriteOff("123", Some(1), Some(0), Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
-          WriteOff("789", Some(5), None, Some(new LocalDate("2014-12-31")), someDate("2014-12-31"))))))
+          WriteOff("123", Some(1), Some(0), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
+          WriteOff("789", Some(5), None, None, Some(new LocalDate("2014-12-31")), someDate("2014-12-31"))))))
       val l2p_3 = LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(123),
         otherRepayments = List(Repayment(id = "1", amount = Some(1), amountBefore06042016 = Some(10), date = Some(new LocalDate("2013-10-01")), endDateOfAP = someDate("2013-12-31"))),
         writeOffs = List(
-          WriteOff("123", Some(1), Some(5), Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
-          WriteOff("789", Some(5), None, Some(new LocalDate("2014-12-31")), someDate("2014-12-31"))))))
+          WriteOff("123", Some(1), Some(5), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
+          WriteOff("789", Some(5), None, None, Some(new LocalDate("2014-12-31")), someDate("2014-12-31"))))))
 
 
       val after6April2016 = CP2(new LocalDate("2016-12-31"))
@@ -457,18 +457,18 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
       calculateA70(A65(Some(333)), l2p_invalid, after6April2016, LPQ07(someDate("2014-10-01"))) shouldBe A70(Some(108.23))
       calculateA70(A65(Some(333)), l2p_invalid2, after6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70(Some(108.23))
       calculateA70(A65(Some(333)), l2p_1, after6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70(Some(108.23))
-      calculateA70(A65(Some(333)), l2p_1, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(83.25))
+      calculateA70(A65(Some(333)), l2p_1, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(83.48))
       calculateA70(A65(Some(333)), l2p_2, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(108.23))
-      calculateA70(A65(Some(333)), l2p_3, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(107.10))
+      calculateA70(A65(Some(333)), l2p_3, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(107.48))
 
       val on6April2016 = CP2(new LocalDate("2016-04-06"))
       calculateA70(A65(Some(1)), l2p_invalid, on6April2016, LPQ07(someDate("2014-10-01"))) shouldBe A70(Some(0.33))
       calculateA70(A65(Some(333)), l2p_invalid, on6April2016, LPQ07(someDate("2014-10-01"))) shouldBe A70(Some(108.23))
       calculateA70(A65(Some(333)), l2p_invalid2, on6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70(Some(108.23))
       calculateA70(A65(Some(333)), l2p_1, on6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70(Some(108.23))
-      calculateA70(A65(Some(333)), l2p_1, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(83.25))
+      calculateA70(A65(Some(333)), l2p_1, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(83.48))
       calculateA70(A65(Some(333)), l2p_2, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(108.23))
-      calculateA70(A65(Some(333)), l2p_3, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(107.10))
+      calculateA70(A65(Some(333)), l2p_3, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(107.48))
 
     }
 
@@ -489,37 +489,37 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
       val l2p_1 = LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(123),
           otherRepayments = List(Repayment(id = "1", amount = Some(1), amountBefore06042016 = Some(330), date = Some(new LocalDate("2014-10-01")), endDateOfAP = someDate("2014-12-31"))),
           writeOffs = List(
-            WriteOff("123", Some(1), Some(1), Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
-            WriteOff("456", Some(2), Some(1), Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
-            WriteOff("789", Some(5), Some(1), Some(new LocalDate("2014-10-01")), someDate("2014-12-31"))))))
+            WriteOff("123", Some(1), Some(1), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
+            WriteOff("456", Some(2), Some(1), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
+            WriteOff("789", Some(5), Some(1), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31"))))))
       val l2p_2 = LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(123),
         otherRepayments = List(Repayment(id = "1", amount = Some(1), amountBefore06042016 = None, date = Some(new LocalDate("2014-10-01")), endDateOfAP = someDate("2014-12-31"))),
         writeOffs = List(
-          WriteOff("123", Some(1), Some(0), Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
-          WriteOff("456", Some(2), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
-          WriteOff("789", Some(5), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31"))))))
+          WriteOff("123", Some(1), Some(0), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
+          WriteOff("456", Some(2), None, None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
+          WriteOff("789", Some(5), None, None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31"))))))
       val l2p_3 = LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(123),
         otherRepayments = List(Repayment(id = "1", amount = Some(1), amountBefore06042016 = Some(10), date = Some(new LocalDate("2014-10-01")), endDateOfAP = someDate("2014-12-31"))),
         writeOffs = List(
-          WriteOff("123", Some(1), Some(0), Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
-          WriteOff("456", Some(2), Some(5), Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
-          WriteOff("789", Some(5), Some(0), Some(new LocalDate("2014-10-01")), someDate("2014-12-31"))))))
+          WriteOff("123", Some(1), Some(0), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
+          WriteOff("456", Some(2), Some(5), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31")),
+          WriteOff("789", Some(5), Some(0), None, Some(new LocalDate("2014-10-01")), someDate("2014-12-31"))))))
 
       val after6April2016 = CP2(new LocalDate("2016-12-31"))
       calculateA70Inverse(A65Inverse(Some(1)), l2p_invalid, after6April2016, LPQ07(someDate("2015-06-01"))) shouldBe A70Inverse(Some(0.33))
       calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70Inverse(Some(108.23))
       calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid2, after6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70Inverse(Some(108.23))
-      calculateA70Inverse(A65Inverse(Some(333)), l2p_1, after6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(83.25))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_1, after6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(83.48))
       calculateA70Inverse(A65Inverse(Some(333)), l2p_2, after6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(108.23))
-      calculateA70Inverse(A65Inverse(Some(333)), l2p_3, after6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(107.10))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_3, after6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(107.48))
 
       val on6April2016 = CP2(new LocalDate("2016-04-06"))
       calculateA70Inverse(A65Inverse(Some(1)), l2p_invalid, on6April2016, LPQ07(someDate("2015-06-01"))) shouldBe A70Inverse(Some(0.33))
       calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70Inverse(Some(108.23))
       calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid2, on6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70Inverse(Some(108.23))
-      calculateA70Inverse(A65Inverse(Some(333)), l2p_1, on6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(83.25))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_1, on6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(83.48))
       calculateA70Inverse(A65Inverse(Some(333)), l2p_2, on6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(108.23))
-      calculateA70Inverse(A65Inverse(Some(333)), l2p_3, on6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(107.10))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_3, on6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(107.48))
     }
 
     "correctly calculate A75 (A12v2), total outstanding loans" in new LoansToParticipatorsCalculator {
