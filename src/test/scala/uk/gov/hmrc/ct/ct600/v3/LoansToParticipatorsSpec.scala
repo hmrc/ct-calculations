@@ -40,30 +40,6 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     amountBetween06042016To06042022 = Some(200),
     amountBefore06042016 = None)
 
-  /*val validRepaymentWithin9Months = Repayment(
-    id = "3",
-    amount=None,
-    amountBetween06042016To06042022 = Some(50),
-    amountBefore06042016 = None,
-    date = Some(currentAPEndDate.plusDays(3))
-  )
-
-  val validRepaymentAfter9Months = Repayment(
-    id = "4",
-    amount=None,
-    amountBetween06042016To06042022 = Some(50),
-    date = Some(currentAPEndDate.plusMonths(10)),
-    amountBefore06042016 = None,
-    endDateOfAP = Some(currentAPEndDate.plusYears(1))
-  )
-
-  val validWriteOff = WriteOff(
-    id = "2",
-    amount=None,
-    date = Some(currentAPEndDate.plusDays(2)),
-    amountBetween06042016To06042022 = Some(50),
-    endDateOfAP = Some(currentAPEndDate.plusDays(1))
-  )*/
   val validLoan = Loan(id = "5",
     name = Some("Smurfette"),
     amount=Some(200),
