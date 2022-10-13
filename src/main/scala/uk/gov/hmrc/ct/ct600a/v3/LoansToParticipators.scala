@@ -24,7 +24,6 @@ import uk.gov.hmrc.ct.ct600a.v3.formats.LoansFormatter
 import uk.gov.hmrc.ct.ct600a.v3.retriever.CT600ABoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 import uk.gov.hmrc.ct.utils.DateImplicits._
-import uk.gov.hmrc.ct.computations.CP2
 
 
 case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIdentifier(name = "Loans to participators.") with CtValue[List[Loan]] with Input with ValidatableBox[CT600ABoxRetriever] {
@@ -34,6 +33,7 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
   override def value = loans
 
   val DateOF2016TaxRateForLoans = new LocalDate(2016, 4, 6)
+  val DateOF2022TaxRateForLoans = new LocalDate(2022, 4, 6)
 
 
   override def asBoxString = LoansFormatter.asBoxString(this)
@@ -60,7 +60,6 @@ case class Loan ( id: String,
                   otherRepayments: List[Repayment] = List.empty,
                   writeOffs: List[WriteOff] = List.empty) {
 
-  val DateOF2022TaxRateForLoans = new LocalDate(2022, 4, 6)
 
 
   def validate(boxRetriever: CT600ABoxRetriever, loansToParticipators: LoansToParticipators): Set[CtValidation] = {
@@ -86,13 +85,12 @@ case class Loan ( id: String,
     loansToParticipators.loans.exists(loan => loan.id != id && loan.name.exists(existingName => name.exists(_.trim.toLowerCase == existingName.trim.toLowerCase)))
   }
 
-  private def invalidLoanAmount: Boolean = amount.exists(_ < MIN_MONEY_AMOUNT_ALLOWED) || amount.exists(_ > MAX_MONEY_AMOUNT_ALLOWED) || amount.isEmpty
+  private def invalidLoanAmount: Boolean = amount.exists(_ < MIN_MONEY_AMOUNT_ALLOWED) || amount.exists(_ > MAX_MONEY_AMOUNT_ALLOWED) 
 
   private def invalidBalancedAmount: Boolean = amount.exists(_ < totalAmountRepaymentsAndWriteOffs)
 
   private def invalidLoanBeforeApril2022Amount: Boolean = amountBetween06042016To06042022.exists(_ < MIN_MONEY_AMOUNT_ALLOWED) || amountBetween06042016To06042022.exists(_ > MAX_MONEY_AMOUNT_ALLOWED)
 
-  private def shouldApply2022TaxRateForLoans(cp2: CP2): Boolean = cp2.value >= DateOF2022TaxRateForLoans
 
   private def invalidBeforeApril2022BalancedAmount: Boolean =  {
     amountBetween06042016To06042022 match {
@@ -188,7 +186,7 @@ case class Repayment(id: String, amount: Option[Int], amountBetween06042016To060
     validateRepayment(invalidDateAfter9Months(boxRetriever), s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.date.range", errorArgsOtherRepaymentsDate(boxRetriever), loanIndex) ++
     validateRepayment(invalidRepaymentAmount, s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.amount.value", None, loanIndex) ++
     validateRepayment(invalidRepaymentBeforeApril2022AmountAfter9Months, s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.beforeApril2022Amount.value", Some(Seq(amount.getOrElse(0).toString)), loanIndex) ++
-    validateRepayment(invalidRepaymentBeforeApril2016AmountAfter9Months, s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.beforeApril2016Amount.value", Some(Seq(amount.getOrElse(0).toString)), loanIndex) ++
+    validateRepayment(invalidRepaymentBeforeApril2016AmountAfter9Months, s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.beforeApril2016Amount.value", Some(Seq(amountBetween06042016To06042022.getOrElse(0).toString)), loanIndex) ++
     validateRepayment(invalidApEndDateRequired, s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.endDateOfAP.required", None, loanIndex) ++
     validateRepayment(invalidApEndDateRange(boxRetriever), s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.endDateOfAP.range", errorArgsOtherRepaymentsApEndDate(boxRetriever), loanIndex)
   }
@@ -196,8 +194,8 @@ case class Repayment(id: String, amount: Option[Int], amountBetween06042016To060
   def validateWithin9Months(boxRetriever: CT600ABoxRetriever, loanIndex: Int): Set[CtValidation] = {
     validateRepayment(invalidDateWithin9Months(boxRetriever), s"$repaymentWithin9monthsErrorCode.date.range",  errorArgsRepaymentsWith9MonthsDate(boxRetriever), loanIndex) ++
     validateRepayment(invalidRepaymentAmount, s"$repaymentWithin9monthsErrorCode.amount.value", None, loanIndex) ++
-    validateRepayment(invalidRepaymentBeforeApril2016AmountWithin9Months, s"$repaymentWithin9monthsErrorCode.beforeApril2016Amount.value", Some(Seq(amount.getOrElse(0).toString)), loanIndex)
-    validateRepayment(invalidRepaymentBeforeApril2022AmountWithin9Months, s"$repaymentWithin9monthsErrorCode.beforeApril2022Amount.value", Some(Seq(amount.getOrElse(0).toString)), loanIndex)
+    validateRepayment(invalidRepaymentBeforeApril2022AmountWithin9Months, s"$repaymentWithin9monthsErrorCode.beforeApril2022Amount.value", Some(Seq(amount.getOrElse(0).toString)), loanIndex) ++
+    validateRepayment(invalidRepaymentBeforeApril2016AmountWithin9Months, s"$repaymentWithin9monthsErrorCode.beforeApril2016Amount.value", Some(Seq(amountBetween06042016To06042022.getOrElse(0).toString)), loanIndex)
   }
 
   private def invalidDateWithin9Months(boxRetriever: CT600ABoxRetriever): Boolean = !date.exists(_ > currentAPEndDate(boxRetriever)) || date.exists(_ > earlierOfNowAndAPEndDatePlus9Months(boxRetriever)) || date.isEmpty
@@ -212,11 +210,11 @@ case class Repayment(id: String, amount: Option[Int], amountBetween06042016To060
 
   private def invalidRepaymentAmount: Boolean = amount.exists(_ < MIN_MONEY_AMOUNT_ALLOWED) || amount.exists(_ > MAX_MONEY_AMOUNT_ALLOWED) || amount.isEmpty
 
-  private def invalidRepaymentBeforeApril2016AmountWithin9Months: Boolean = amountBefore06042016.exists(ab => ab < 0 || amount.exists(_ < ab))
+  private def invalidRepaymentBeforeApril2016AmountWithin9Months: Boolean = amountBefore06042016.exists(ab => ab < 0 || amountBetween06042016To06042022.exists(_ < ab))
 
   private def invalidRepaymentBeforeApril2022AmountWithin9Months: Boolean = amountBetween06042016To06042022.exists(ab => ab < 0 || amount.exists(_ < ab))
 
-  private def invalidRepaymentBeforeApril2016AmountAfter9Months: Boolean = amountBefore06042016.exists(ab => ab < 0 || amount.exists(_ < ab))
+  private def invalidRepaymentBeforeApril2016AmountAfter9Months: Boolean = amountBefore06042016.exists(ab => ab < 0 || amountBetween06042016To06042022.exists(_ < ab))
 
   private def invalidRepaymentBeforeApril2022AmountAfter9Months: Boolean = amountBetween06042016To06042022.exists(ab => ab < 0 || amount.exists(_ < ab))
 

@@ -457,18 +457,18 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
       calculateA70(A65(Some(333)), l2p_invalid, after6April2016, LPQ07(someDate("2014-10-01"))) shouldBe A70(Some(108.23))
       calculateA70(A65(Some(333)), l2p_invalid2, after6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70(Some(108.23))
       calculateA70(A65(Some(333)), l2p_1, after6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70(Some(108.23))
-      calculateA70(A65(Some(333)), l2p_1, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(83.25))
+      calculateA70(A65(Some(333)), l2p_1, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(83.48))
       calculateA70(A65(Some(333)), l2p_2, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(108.23))
-      calculateA70(A65(Some(333)), l2p_3, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(107.10))
+      calculateA70(A65(Some(333)), l2p_3, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(107.48))
 
       val on6April2016 = CP2(new LocalDate("2016-04-06"))
       calculateA70(A65(Some(1)), l2p_invalid, on6April2016, LPQ07(someDate("2014-10-01"))) shouldBe A70(Some(0.33))
       calculateA70(A65(Some(333)), l2p_invalid, on6April2016, LPQ07(someDate("2014-10-01"))) shouldBe A70(Some(108.23))
       calculateA70(A65(Some(333)), l2p_invalid2, on6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70(Some(108.23))
       calculateA70(A65(Some(333)), l2p_1, on6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70(Some(108.23))
-      calculateA70(A65(Some(333)), l2p_1, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(83.25))
+      calculateA70(A65(Some(333)), l2p_1, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(83.48))
       calculateA70(A65(Some(333)), l2p_2, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(108.23))
-      calculateA70(A65(Some(333)), l2p_3, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(107.10))
+      calculateA70(A65(Some(333)), l2p_3, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70(Some(107.48))
 
     }
 
@@ -509,17 +509,17 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
       calculateA70Inverse(A65Inverse(Some(1)), l2p_invalid, after6April2016, LPQ07(someDate("2015-06-01"))) shouldBe A70Inverse(Some(0.33))
       calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid, after6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70Inverse(Some(108.23))
       calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid2, after6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70Inverse(Some(108.23))
-      calculateA70Inverse(A65Inverse(Some(333)), l2p_1, after6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(83.25))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_1, after6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(83.48))
       calculateA70Inverse(A65Inverse(Some(333)), l2p_2, after6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(108.23))
-      calculateA70Inverse(A65Inverse(Some(333)), l2p_3, after6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(107.10))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_3, after6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(107.48))
 
       val on6April2016 = CP2(new LocalDate("2016-04-06"))
       calculateA70Inverse(A65Inverse(Some(1)), l2p_invalid, on6April2016, LPQ07(someDate("2015-06-01"))) shouldBe A70Inverse(Some(0.33))
       calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid, on6April2016, LPQ07(someDate("2015-10-01"))) shouldBe A70Inverse(Some(108.23))
       calculateA70Inverse(A65Inverse(Some(333)), l2p_invalid2, on6April2016, LPQ07(someDate("2014-01-01"))) shouldBe A70Inverse(Some(108.23))
-      calculateA70Inverse(A65Inverse(Some(333)), l2p_1, on6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(83.25))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_1, on6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(83.48))
       calculateA70Inverse(A65Inverse(Some(333)), l2p_2, on6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(108.23))
-      calculateA70Inverse(A65Inverse(Some(333)), l2p_3, on6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(107.10))
+      calculateA70Inverse(A65Inverse(Some(333)), l2p_3, on6April2016, LPQ07(someDate("2015-09-30"))) shouldBe A70Inverse(Some(107.48))
     }
 
     "correctly calculate A75 (A12v2), total outstanding loans" in new LoansToParticipatorsCalculator {
