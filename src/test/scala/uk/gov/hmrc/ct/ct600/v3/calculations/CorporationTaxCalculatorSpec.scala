@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.CATO23
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.ct600.calculations.{CorporationTaxCalculatorParameters, NINonTradingProfitCalculationParameters, NITradingProfitCalculationParameters}
+import uk.gov.hmrc.ct.ct600.v2.{B37, B38, B39, B42}
 import uk.gov.hmrc.ct.ct600.v3._
 
 class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
@@ -76,11 +77,11 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
 
   // These tests assume that delegate code is tested thoroughly by v2 tests
   "B340" in new CorporationTaxCalculator {
-    rateOfTaxFy1(CP1(new LocalDate(2014, 4, 1))) shouldBe 0.21
+    rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 4, 1)), CP2(new LocalDate(2014, 12, 31))), b315 = B315(299999), noOfCompanies = B326(1)) shouldBe BigDecimal("0.21")
   }
 
   "B390" in new CorporationTaxCalculator {
-    rateOfTaxFy2(CP2(new LocalDate(2015, 4, 1))) shouldBe 0.20
+    rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2015, 1, 1)), CP2(new LocalDate(2015, 12, 31))), b315 = B315(299999), b328 = B328(1)) shouldBe BigDecimal("0.20")
   }
 
 

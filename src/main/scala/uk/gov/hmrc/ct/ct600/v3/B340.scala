@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,10 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box.{AnnualConstant, Calculated, CtBigDecimal, CtBoxIdentifier}
+import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
+import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper.{endingFinancialYear, startingFinancialYear}
+import uk.gov.hmrc.ct.ct600.v2.B45
+import uk.gov.hmrc.ct.ct600.v2.B45.rateOfTaxFy1
 import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
@@ -26,6 +30,11 @@ case class B340(value: BigDecimal) extends CtBoxIdentifier(name = "First Rate Of
 object B340 extends CorporationTaxCalculator with Calculated[B340, CT600BoxRetriever] {
 
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B340 = {
-    B340(rateOfTaxFy1(fieldValueRetriever.cp1()))
+    val accountingPeriod = HmrcAccountingPeriod(fieldValueRetriever.cp1(), fieldValueRetriever.cp2())
+    val fy1: Int = startingFinancialYear(accountingPeriod.start)
+    val fy2: Int = endingFinancialYear(accountingPeriod.end)
+    B340(rateOfTaxFy1(HmrcAccountingPeriod(fieldValueRetriever.cp1(),fieldValueRetriever.cp2()),
+      fieldValueRetriever.b315(),
+      if (fy2 != fy1) fieldValueRetriever.b327() else fieldValueRetriever.b326() ))
   }
 }

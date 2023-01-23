@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,15 @@ abstract class RateFromString(private val unifiedTaxRate: String) extends CtCons
   val smallCompaniesRateOfTax: BigDecimal = BigDecimal(unifiedTaxRate)
 }
 
+abstract class RateFromConstants(private val allCtConstants: AllCtConstants) extends CtConstants {
+
+  val lowerRelevantAmount: BigDecimal = allCtConstants.lowerRelevantAmount
+  val upperRelevantAmount: BigDecimal = allCtConstants.upperRelevantAmount
+  val reliefFraction: BigDecimal = allCtConstants.reliefFraction
+  val rateOfTax: BigDecimal = allCtConstants.rateOfTax
+  val smallCompaniesRateOfTax: BigDecimal = allCtConstants.smallCompaniesRateOfTax
+}
+
 case class AllCtConstants(lowerRelevantAmount: BigDecimal,
                           upperRelevantAmount: BigDecimal,
                           reliefFraction: BigDecimal,
@@ -49,6 +58,10 @@ case class AllCtConstants(lowerRelevantAmount: BigDecimal,
 
 case class NorthernIrelandRate(private val unifiedTaxRate: String, northernIrelandRate: BigDecimal) extends RateFromString(unifiedTaxRate) {
   def revaluationRatio: BigDecimal = northernIrelandRate / rateOfTax
+}
+
+case class NorthernIrelandRateV3(private val allCtConstants: AllCtConstants, northernIrelandRate: BigDecimal) extends RateFromConstants(allCtConstants){
+  def revaluationRatio: BigDecimal = northernIrelandRate / allCtConstants.rateOfTax
 }
 
 case class UnifiedRateOfTax(private val unifiedTaxRate: String) extends RateFromString(unifiedTaxRate)
@@ -122,7 +135,17 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
 
     TaxYear(2019) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal("0.125")),
 
-    TaxYear(2020) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal("0.19"))
+    TaxYear(2020) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal("0.19")) ,
+
+    TaxYear(2021) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal("0.19")) ,
+
+    TaxYear(2022) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal("0.19")) ,
+
+    TaxYear(2023) -> NorthernIrelandRateV3(AllCtConstants(lowerRelevantAmount = BigDecimal("50000"),
+      upperRelevantAmount = BigDecimal("2500000"),
+      reliefFraction = BigDecimal("0.015"),
+      rateOfTax = BigDecimal("0.25"),
+      smallCompaniesRateOfTax = BigDecimal("0.19")),northernIrelandRate = BigDecimal("0.19"))
     // Everything after last year entry has the same rates. Last entry with the highest year number matters.
   )
 
@@ -130,6 +153,8 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
   val maxYear: TaxYear = data.keys.reduceLeft((y1: TaxYear, y2: TaxYear) => if (y1.year > y2.year) y1 else y2)
 
   def lowProfitsThreshold(numberOfCompanies: Option[Int]): Int = 300000 / (numberOfCompanies.getOrElse(0) + 1)
+
+  def lowProfitsThresholdV3(numberOfCompanies: Option[Int]): Int = 500000 / (numberOfCompanies.getOrElse(0) + 1)
 }
 
 

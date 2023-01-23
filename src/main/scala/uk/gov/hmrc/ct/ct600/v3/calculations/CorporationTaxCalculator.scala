@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
-import uk.gov.hmrc.ct.box.{CtTypeConverters, EndDate, StartDate}
+import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtTypeConverters, EndDate, StartDate}
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper._
 import uk.gov.hmrc.ct.ct600.calculations._
+import uk.gov.hmrc.ct.ct600.v2.{B37, B38, B39, B42}
 import uk.gov.hmrc.ct.ct600.v3._
 
 
@@ -45,7 +46,7 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B345(b340.multiply(b335))
   }
 
-  def rateOfTaxFy1(start: StartDate): BigDecimal = {
+ /* def rateOfTaxFy1(start: StartDate): BigDecimal = {
     Ct600AnnualConstants.getConstantsFromYear(
       startingFinancialYear(start)
     ).rateOfTax
@@ -55,6 +56,27 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     Ct600AnnualConstants.getConstantsFromYear(
       endingFinancialYear(end)
     ).rateOfTax
+  }*/
+  def rateOfTaxFy1(accountingPeriod: HmrcAccountingPeriod, b315:B315, noOfCompanies: CtOptionalInteger): BigDecimal = {
+    calculateRateOfTaxYear(TaxYear(startingFinancialYear(accountingPeriod.start)),b315, noOfCompanies)
+  }
+
+  def rateOfTaxFy2(accountingPeriod: HmrcAccountingPeriod, b315:B315, b328:B328): BigDecimal = {
+    calculateRateOfTaxYear(TaxYear(endingFinancialYear(accountingPeriod.end)), b315, b328)
+  }
+
+  // smallCompaniesRateOfTax, rateOfTax,
+  private def calculateRateOfTaxYear(taxYear: TaxYear,b315:B315,noOfCompanies: CtOptionalInteger): BigDecimal = {
+    val constantsForTaxYear = Ct600AnnualConstants.constantsForTaxYear(taxYear)
+    val rate = constantsForTaxYear.rateOfTax
+
+    val taxable = b315
+    if (taxable > Ct600AnnualConstants.lowProfitsThresholdV3(noOfCompanies.value) || taxable <= 0) rate
+    else
+      {
+        B329(true)
+        constantsForTaxYear.smallCompaniesRateOfTax
+      }
   }
 
   def financialYear1(accountingPeriod: HmrcAccountingPeriod): Int = {
