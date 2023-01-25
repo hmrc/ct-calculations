@@ -500,6 +500,8 @@ package object formats {
 
   implicit val cato04Format: Format[CATO04] = new BigDecimalFormat[CATO04](CATO04.apply)
 
+  implicit val cato05Format: Format[CATO05] = new BigDecimalFormat[CATO05](CATO05.apply)
+
   implicit val cato10Format: Format[CATO10] = new BooleanFormat[CATO10](CATO10.apply)
 
   implicit val cato11Format: Format[CATO11] = new OptionalStringFormat[CATO11](CATO11.apply)

@@ -51,6 +51,10 @@ case class NorthernIrelandRate(private val unifiedTaxRate: String, northernIrela
   def revaluationRatio: BigDecimal = northernIrelandRate / rateOfTax
 }
 
+case class NorthernIrelandRateV3(private val allCtConstants: AllCtConstants, northernIrelandRate: BigDecimal) extends RateFromString(allCtConstants.rateOfTax.toString()) {
+  def revaluationRatio: BigDecimal = northernIrelandRate / rateOfTax
+}
+
 case class UnifiedRateOfTax(private val unifiedTaxRate: String) extends RateFromString(unifiedTaxRate)
 
 
@@ -122,7 +126,13 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
 
     TaxYear(2019) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal("0.125")),
 
-    TaxYear(2020) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal("0.19"))
+    TaxYear(2020) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal("0.19")) ,
+
+    TaxYear(2023) -> NorthernIrelandRateV3(AllCtConstants(lowerRelevantAmount = BigDecimal("50000"),
+      upperRelevantAmount = BigDecimal("2500000"),
+      reliefFraction = BigDecimal("0.0015"),
+      rateOfTax = BigDecimal("0.25"),
+      smallCompaniesRateOfTax = BigDecimal("0.19")),northernIrelandRate = BigDecimal("0.19"))
     // Everything after last year entry has the same rates. Last entry with the highest year number matters.
   )
 
