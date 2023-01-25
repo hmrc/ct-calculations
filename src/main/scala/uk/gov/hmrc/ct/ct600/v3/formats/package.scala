@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,6 +79,12 @@ package object formats {
   implicit val B305Format: Format[B305] = new IntegerFormat[B305](B305.apply)
 
   implicit val B315Format: Format[B315] = new IntegerFormat[B315](B315.apply)
+
+  implicit val B326Format: Format[B326] = new OptionalIntegerFormat[B326](B326.apply)
+
+  implicit val B327Format: Format[B327] = new OptionalIntegerFormat[B327](B327.apply)
+
+  implicit val B328Format: Format[B328] = new OptionalIntegerFormat[B328](B328.apply)
 
   implicit val B335Format: Format[B335] = new IntegerFormat[B335](B335.apply)
 
