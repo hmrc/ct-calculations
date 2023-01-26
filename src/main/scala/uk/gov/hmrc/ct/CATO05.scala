@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,9 @@ object CATO05 extends Calculated[CATO05, CT600BoxRetriever] with MarginalRateRel
     computeMarginalRateReliefV3(b315 = boxRetriever.b315(),
       b335 = boxRetriever.b335(),
       b385 = boxRetriever.b385(),
-      b39 = boxRetriever.b39(),
+      b326 = boxRetriever.b326(),
+      b327 = boxRetriever.b327(),
+      b328 = boxRetriever.b328(),
       accountingPeriod = HmrcAccountingPeriod(boxRetriever.cp1(), boxRetriever.cp2()))
   }
 }
