@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.ct600.v3
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, CtValidation, Input, ValidatableBox}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-case class B328(value: Option[Int]) extends CtBoxIdentifier("number of associated companies in this period") with CtOptionalInteger with Input  with ValidatableBox[ComputationsBoxRetriever] {
+case class B328(value: Option[Int]) extends CtBoxIdentifier("associated companies in the second financial year") with CtOptionalInteger with Input  with ValidatableBox[ComputationsBoxRetriever] {
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       validateZeroOrPositiveInteger(this)
@@ -28,6 +28,6 @@ case class B328(value: Option[Int]) extends CtBoxIdentifier("number of associate
 }
 
 object B328 {
-  def apply(int: Option[Int]):B328 = B328(int)
+  def apply(int: Int):B328 = B328(Some(int))
 }
 
