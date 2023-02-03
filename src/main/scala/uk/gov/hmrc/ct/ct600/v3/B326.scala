@@ -28,5 +28,5 @@ case class B326(value: Option[Int]) extends CtBoxIdentifier("number of associate
 }
 
 object B326 {
-  def apply(int: Option[Int]):B326 = B326(int)
+  def apply(int: Int):B326 = B326(Some(int))
 }
