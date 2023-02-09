@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,6 +69,12 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
   def b315(): B315 = B315.calculate(this)
 
   def b325(): B325 = B325.calculate(this)
+
+  def b326(): B326
+
+  def b327(): B327
+
+  def b328(): B328
 
   def b330(): B330 = B330.calculate(this)
 

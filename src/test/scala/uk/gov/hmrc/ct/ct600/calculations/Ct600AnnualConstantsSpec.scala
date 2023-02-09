@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,12 +98,30 @@ class Ct600AnnualConstantsSpec extends WordSpec with Matchers {
       data.rateOfTax shouldBe BigDecimal("0.19")
     }
 
-    "return max year when asked for something ahead of explicitly supported years" in {
-      val data = Ct600AnnualConstants.constantsForTaxYear(TaxYear(2999))
+    "return constants for 2022" in {
+      val data = Ct600AnnualConstants.constantsForTaxYear(TaxYear(2022))
       data.lowerRelevantAmount shouldBe BigDecimal("0")
       data.upperRelevantAmount shouldBe BigDecimal("0")
       data.reliefFraction shouldBe BigDecimal("0.00")
       data.rateOfTax shouldBe BigDecimal("0.19")
+    }
+
+    "return constants for 2023" in {
+      val data = Ct600AnnualConstants.constantsForTaxYear(TaxYear(2023))
+      data.lowerRelevantAmount shouldBe BigDecimal("50000")
+      data.upperRelevantAmount shouldBe BigDecimal("2500000")
+      data.reliefFraction shouldBe BigDecimal("0.015")
+      data.rateOfTax shouldBe BigDecimal("0.25")
+      data.smallCompaniesRateOfTax shouldBe BigDecimal("0.19")
+    }
+    "return max year when asked for something ahead of explicitly supported years" in {
+      val data = Ct600AnnualConstants.constantsForTaxYear(TaxYear(2999))
+      data.lowerRelevantAmount shouldBe BigDecimal("50000")
+      data.upperRelevantAmount shouldBe BigDecimal("2500000")
+      data.reliefFraction shouldBe BigDecimal("0.015")
+      data.rateOfTax shouldBe BigDecimal("0.25")
+      data.smallCompaniesRateOfTax shouldBe BigDecimal("0.19")
+
     }
   }
 }
