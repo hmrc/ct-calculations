@@ -24,7 +24,7 @@ import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper._
 import uk.gov.hmrc.ct.ct600.calculations.Ct600AnnualConstants._
 import uk.gov.hmrc.ct.ct600.calculations.{CtConstants, TaxYear}
 import uk.gov.hmrc.ct.ct600.v2._
-import uk.gov.hmrc.ct.ct600.v3.{B315, B326, B327, B328, B335, B385}
+import uk.gov.hmrc.ct.ct600.v3.{B315, B326, B327, B328, B329, B335, B385}
 
 
 trait MarginalRateReliefCalculatorV3 extends CtTypeConverters with NumberRounding {
@@ -44,7 +44,7 @@ trait MarginalRateReliefCalculatorV3 extends CtTypeConverters with NumberRoundin
     else{
       fy1Result = calculateForFinancialYear(fy1,b335, b315, b326, accountingPeriod, constantsForTaxYear(TaxYear(fy1)))
     }
-
+    B329(true)
     CATO05(roundedTwoDecimalPlaces(fy1Result + fy2Result))
   }
 

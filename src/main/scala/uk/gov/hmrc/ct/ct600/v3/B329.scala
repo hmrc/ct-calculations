@@ -16,14 +16,8 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import org.scalatest.{Matchers, WordSpec}
-import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.ct.BoxValidationFixture
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+import uk.gov.hmrc.ct.box.{Calculated, CtBoolean, CtBoxIdentifier}
+import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-class B327Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] {
+case class B329(value: Boolean) extends CtBoxIdentifier(name = "claiming SPR or MRR")  with CtBoolean
 
-  val boxRetriever =  mock[ComputationsBoxRetriever]
-
-  testBoxIsZeroOrPositive("B327", B327.apply)
-}

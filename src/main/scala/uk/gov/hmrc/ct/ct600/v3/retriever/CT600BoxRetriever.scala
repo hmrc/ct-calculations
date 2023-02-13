@@ -76,6 +76,8 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b328(): B328
 
+  def b329(): B329
+
   def b330(): B330 = B330.calculate(this)
 
   def b335(): B335 = B335.calculate(this)
