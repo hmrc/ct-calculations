@@ -153,6 +153,8 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
   val maxYear: TaxYear = data.keys.reduceLeft((y1: TaxYear, y2: TaxYear) => if (y1.year > y2.year) y1 else y2)
 
   def lowProfitsThreshold(numberOfCompanies: Option[Int]): Int = 300000 / (numberOfCompanies.getOrElse(0) + 1)
+
+  def lowProfitsThresholdV3(numberOfCompanies: Option[Int]): Int = 500000 / (numberOfCompanies.getOrElse(0) + 1)
 }
 
 
