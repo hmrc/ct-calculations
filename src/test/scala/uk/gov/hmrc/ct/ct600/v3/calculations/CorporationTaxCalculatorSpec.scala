@@ -162,6 +162,12 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
 
   }
 
+  "B440" should {
+    "be equal to B430-435" in new CorporationTaxCalculator {
+      totalCorporationTaxChargeable(B430(4000), B435(500)) shouldBe B440(3500)
+    }
+  }
+  
   "B45" should {
     "be same as B45Inputs if CP287 == 0" in new CorporationTaxCalculator {
       defaultSetIfLossCarriedForward(B45Input(None), CP287(0)) shouldBe B45(None)
