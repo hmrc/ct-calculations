@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3.retriever
 
+import uk.gov.hmrc.ct.CATO05
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
@@ -27,6 +28,8 @@ import uk.gov.hmrc.ct.ct600ei.v3.retriever.CT600EiBoxRetriever
 trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBoxRetriever with AboutThisReturnBoxRetriever {
 
   self: AccountsBoxRetriever with FilingAttributesBoxValueRetriever =>
+
+  def cato05(): CATO05 = CATO05.calculate(this)
 
   def b1(): B1
 
@@ -108,7 +111,9 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever with CT600DeclarationBo
 
   def b430() : B430 = B430.calculate(this)
 
-  def b440(): B440 = B440(b430())
+  def b435(): B435 = B435(cato05())
+
+  def b440(): B440 = B440.calculate(this)
 
   def b471(): B471 = B471(cp122())
 

@@ -46,17 +46,10 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B345(b340.multiply(b335))
   }
 
- /* def rateOfTaxFy1(start: StartDate): BigDecimal = {
-    Ct600AnnualConstants.getConstantsFromYear(
-      startingFinancialYear(start)
-    ).rateOfTax
+  def totalCorporationTaxChargeable(CorporationTax: B430, marginalReliefRate: B435): B440 = {
+    B440(CorporationTax minus  marginalReliefRate.value)
   }
 
-  def rateOfTaxFy2(end: EndDate): BigDecimal = {
-    Ct600AnnualConstants.getConstantsFromYear(
-      endingFinancialYear(end)
-    ).rateOfTax
-  }*/
   def rateOfTaxFy1(accountingPeriod: HmrcAccountingPeriod, b315:B315, noOfCompanies: CtOptionalInteger): BigDecimal = {
     calculateRateOfTaxYear(TaxYear(startingFinancialYear(accountingPeriod.start)),b315, noOfCompanies)
   }
