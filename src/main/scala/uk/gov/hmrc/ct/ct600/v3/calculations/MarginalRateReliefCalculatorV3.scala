@@ -34,17 +34,19 @@ trait MarginalRateReliefCalculatorV3 extends CtTypeConverters with NumberRoundin
 
     val fy1: Int = startingFinancialYear(accountingPeriod.start)
     val fy2: Int = endingFinancialYear(accountingPeriod.end)
-    var fy1Result=BigDecimal(0);
-    var fy2Result=BigDecimal(0);
+    var fy1Result=BigDecimal(0)
+    var fy2Result=BigDecimal(0)
 
     if (fy2 != fy1){
       fy1Result = calculateForFinancialYear(fy1,b335, b315, b327, accountingPeriod, constantsForTaxYear(TaxYear(fy1)))
-       fy2Result =calculateForFinancialYear(fy2,b385, b315, b328, accountingPeriod, constantsForTaxYear(TaxYear(fy2)))
+      fy2Result = calculateForFinancialYear(fy2,b385, b315, b328, accountingPeriod, constantsForTaxYear(TaxYear(fy2)))
     }
     else{
       fy1Result = calculateForFinancialYear(fy1,b335, b315, b326, accountingPeriod, constantsForTaxYear(TaxYear(fy1)))
     }
     B329(true)
+
+    println()
     CATO05(roundedTwoDecimalPlaces(fy1Result + fy2Result))
   }
 
@@ -55,10 +57,14 @@ trait MarginalRateReliefCalculatorV3 extends CtTypeConverters with NumberRoundin
                                         accountingPeriod: HmrcAccountingPeriod,
                                         constants: CtConstants): BigDecimal = {
     val daysInAccountingPeriod = daysBetween(accountingPeriod.start.value, accountingPeriod.end.value)
+    println(b315)
+    println(daysInAccountingPeriod)
+    println()
+
 
     val apDaysInFy = accountingPeriodDaysInFinancialYear(financialYear, accountingPeriod)
 
-    val apFyRatio = apDaysInFy / daysInAccountingPeriod
+    val apFyRatio: BigDecimal = apDaysInFy / daysInAccountingPeriod
 
     val msFyRatio = apDaysInFy / (365 max daysInAccountingPeriod)
 
@@ -67,6 +73,8 @@ trait MarginalRateReliefCalculatorV3 extends CtTypeConverters with NumberRoundin
     val proRataLrma = (constants.lowerRelevantAmount * msFyRatio) / (noOfCompanies.orZero + 1)
 
     val proRataUrma = constants.upperRelevantAmount * msFyRatio / (noOfCompanies.orZero + 1)
+
+    val a = 1
 
     val mscrdueap = if (apportionedProfit > 0 &&
                         apportionedProfit > proRataLrma &&

@@ -142,7 +142,7 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
     TaxYear(2022) -> NorthernIrelandRate(unifiedTaxRate = "0.19", northernIrelandRate = BigDecimal("0.19")) ,
 
     TaxYear(2023) -> NorthernIrelandRateV3(AllCtConstants(lowerRelevantAmount = BigDecimal("50000"),
-      upperRelevantAmount = BigDecimal("2500000"),
+      upperRelevantAmount = BigDecimal("250000"),
       reliefFraction = BigDecimal("0.015"),
       rateOfTax = BigDecimal("0.25"),
       smallCompaniesRateOfTax = BigDecimal("0.19")),northernIrelandRate = BigDecimal("0.19"))
