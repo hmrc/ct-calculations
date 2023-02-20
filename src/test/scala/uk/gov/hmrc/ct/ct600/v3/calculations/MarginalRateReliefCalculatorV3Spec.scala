@@ -53,19 +53,19 @@ class MarginalRateReliefCalculatorV3Spec extends WordSpec with Matchers {
     }
   }
   "MarginalReliefCalculator" should {
-    "Satisfy basic calculation 1 from example in ticket DLS-6918" in{
+    "Satisfy basic calculation 1 from example in ticket DLS-6918" in{///24658
                                                     //total prof,    fy1,   fy2,          ACboth, ACFY1,   ACFY2,     Financial period
-      val rateRelief = computeMarginalRateReliefV3(B315(100000),B335(75000), B385(25000), B326(0), B327(0), B328(0), HmrcAccountingPeriod(CP1(new LocalDate(2023, 1, 1)), CP2(new LocalDate(2023, 12, 31))))
-      rateRelief shouldBe CATO05(22750)
+      val rateRelief = computeMarginalRateReliefV3(B315(100000),B335(100000), B385(0), B326(0), B327(0), B328(0), HmrcAccountingPeriod(CP1(new LocalDate(2024, 4, 1)), CP2(new LocalDate(2025, 3, 31))))
+      rateRelief shouldBe CATO05(2250)
     }
     "Satisfy calculations example in ticket DLS-6918" in {
                                                   //total prof,    fy1,       fy2,          ACboth, ACFY1,   ACFY2,     Financial period
-      val rateRelief = computeMarginalRateReliefV3(B315(175000),B335(43151), B385(131849), B326(2), B327(0), B328(0), HmrcAccountingPeriod(CP1(new LocalDate(2023, 1, 1)), CP2(new LocalDate(2023, 12, 31))))
-      rateRelief shouldBe CATO05(41160.94)
+      val rateRelief = computeMarginalRateReliefV3(B315(175000),B335(43151), B385(131849), B326(2), B327(2), B328(2), HmrcAccountingPeriod(CP1(new LocalDate(2023, 1, 1)), CP2(new LocalDate(2023, 12, 31))))
+      rateRelief shouldBe CATO05(0)
     }
     "Satisfy calculations for short AP company" in {
-      val rateRelief = computeMarginalRateReliefV3(B315(175000),B335(43151), B385(131849), B326(0), B327(0), B328(0), HmrcAccountingPeriod(CP1(new LocalDate(2024, 1, 1)), CP2(new LocalDate(2024, 6, 30))))
-      rateRelief shouldBe CATO05(4760.24)
+      val rateRelief = computeMarginalRateReliefV3(B315(25000),B335(12363), B385(12637), B326(0), B327(0), B328(0), HmrcAccountingPeriod(CP1(new LocalDate(2024, 1, 1)), CP2(new LocalDate(2024, 6, 30))))
+      rateRelief shouldBe CATO05(1494.86)
     }
 
     "Return 0 if date is before new financial year 2023" in {
