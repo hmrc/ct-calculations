@@ -58,7 +58,7 @@ class MarginalRateReliefCalculatorV3Spec extends WordSpec with Matchers {
       val rateRelief = computeMarginalRateReliefV3(B315(100000),B335(100000), B385(0), B326(0), B327(0), B328(0), HmrcAccountingPeriod(CP1(new LocalDate(2024, 4, 1)), CP2(new LocalDate(2025, 3, 31))))
       rateRelief shouldBe CATO05(2250)
     }
-    "Satisfy calculations example in ticket DLS-6918" in {
+    "Satisfy calculations for AP straddling commencement date" in {
                                                   //total prof,    fy1,       fy2,          ACboth, ACFY1,   ACFY2,     Financial period
       val rateRelief = computeMarginalRateReliefV3(B315(175000),B335(43151), B385(131849), B326(2), B327(2), B328(2), HmrcAccountingPeriod(CP1(new LocalDate(2023, 1, 1)), CP2(new LocalDate(2023, 12, 31))))
       rateRelief shouldBe CATO05(0)
@@ -66,6 +66,11 @@ class MarginalRateReliefCalculatorV3Spec extends WordSpec with Matchers {
     "Satisfy calculations for short AP company" in {
       val rateRelief = computeMarginalRateReliefV3(B315(25000),B335(12363), B385(12637), B326(0), B327(0), B328(0), HmrcAccountingPeriod(CP1(new LocalDate(2024, 1, 1)), CP2(new LocalDate(2024, 6, 30))))
       rateRelief shouldBe CATO05(1494.86)
+    }
+
+    "Satisfy change in no of associated companies but no change in rates or thresholds" in {
+      val rateRelief = computeMarginalRateReliefV3(B315(55000),B335(27424), B385(27576), B326(3), B327(3), B328(3), HmrcAccountingPeriod(CP1(new LocalDate(2023, 10, 1)), CP2(new LocalDate(2024, 9, 30))))
+      rateRelief shouldBe CATO05(112.50)
     }
 
     "Return 0 if date is before new financial year 2023" in {
