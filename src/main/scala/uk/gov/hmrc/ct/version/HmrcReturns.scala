@@ -35,6 +35,10 @@ object HmrcReturns {
     override def key(): String = "CT600ei"
   }
 
+  case object CT600ac extends ReturnType {
+    override def key(): String = "CT600ac"
+  }
+
   case object CT600j extends ReturnType {
     override def key(): String = "CT600j"
   }
