@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.computations
+package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.ct600.v3.B350.{endingFinancialYear, startingFinancialYear}
+import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.ct600.v3.B350.financialYearForDate
 
 package object associatedCompanies
 {
-  def doesPeriodCoverTwoFinancialYears(accountingPeriod: HmrcAccountingPeriod) = {
-    val fy1 = startingFinancialYear(accountingPeriod.start)
-    val fy2 = endingFinancialYear(accountingPeriod.end)
+  def doesPeriodCoverTwoFinancialYears(startDate: LocalDate, endDate: LocalDate) = {
+    val fy1 = financialYearForDate(startDate)
+    val fy2 = financialYearForDate(endDate)
     if (fy1 != fy2) {
       true
     } else {
       false
     }
   }
-  def splitFincialYearForHelpText(accountingPeriod: HmrcAccountingPeriod) = {
-    if (accountingPeriod.start.value.getMonthOfYear < 4) {
-      accountingPeriod.start.value.getYear
+  def splitFincialYearForHelpText(startDate: LocalDate, endDate: LocalDate) = {
+    if (startDate.getMonthOfYear < 4) {
+     startDate.getYear
     } else {
-      accountingPeriod.end.value.getYear}
+      endDate.getYear}
   }
 }
