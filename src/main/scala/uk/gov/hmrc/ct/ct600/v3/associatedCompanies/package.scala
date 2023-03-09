@@ -32,8 +32,9 @@ package object associatedCompanies
   }
   def splitFincialYearForHelpText(startDate: LocalDate, endDate: LocalDate) = {
     if (startDate.getMonthOfYear < 4) {
-     startDate.getYear
+      startDate.getYear.toString
     } else {
-      endDate.getYear}
+      endDate.getYear.toString
+    }
   }
 }
