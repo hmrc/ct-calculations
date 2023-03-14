@@ -154,7 +154,7 @@ object Ct600AnnualConstants extends Ct600AnnualConstants {
 
   def lowProfitsThreshold(numberOfCompanies: Option[Int]): Int = 300000 / (numberOfCompanies.getOrElse(0) + 1)
 
-  def lowProfitsThresholdV3(numberOfCompanies: Option[Int]): Int = 500000 / (numberOfCompanies.getOrElse(0) + 1)
+  def lowProfitsThresholdV3(numberOfCompanies: Option[Int]): Int = 50000 / (numberOfCompanies.getOrElse(0) + 1)
 }
 
 

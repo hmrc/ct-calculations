@@ -21,6 +21,9 @@ import uk.gov.hmrc.ct.ct600.v3.B350.financialYearForDate
 
 package object associatedCompanies
 {
+
+  val multipleTaxRateV3StartDate = LocalDate.parse("2023-04-01")
+
   def doesPeriodCoverTwoFinancialYears(startDate: LocalDate, endDate: LocalDate) = {
     val fy1 = financialYearForDate(startDate)
     val fy2 = financialYearForDate(endDate)
