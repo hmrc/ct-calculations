@@ -16,15 +16,17 @@
 
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
-import uk.gov.hmrc.ct.{CATO04, CATO05}
+import uk.gov.hmrc.ct.CATO05
 import uk.gov.hmrc.ct.box.{CtInteger, CtOptionalInteger, CtTypeConverters}
 import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
 import uk.gov.hmrc.ct.ct600.NumberRounding
 import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper._
 import uk.gov.hmrc.ct.ct600.calculations.Ct600AnnualConstants._
 import uk.gov.hmrc.ct.ct600.calculations.{CtConstants, TaxYear}
-import uk.gov.hmrc.ct.ct600.v2._
-import uk.gov.hmrc.ct.ct600.v3.{B315, B326, B327, B328, B329, B335, B385}
+import uk.gov.hmrc.ct.ct600.v3._
+
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 
 trait MarginalRateReliefCalculatorV3 extends CtTypeConverters with NumberRounding {
@@ -38,11 +40,15 @@ trait MarginalRateReliefCalculatorV3 extends CtTypeConverters with NumberRoundin
     var fy2Result=BigDecimal(0)
 
     if (fy2 != fy1){
-      fy1Result = calculateForFinancialYear(fy1,b335, b315, b327, accountingPeriod, constantsForTaxYear(TaxYear(fy1)))
-      fy2Result = calculateForFinancialYear(fy2,b385, b315, b328, accountingPeriod, constantsForTaxYear(TaxYear(fy2)))
+      val fy1Constants = constantsForTaxYear(TaxYear(fy1))
+      val fy2Constants = constantsForTaxYear(TaxYear(fy2))
+      val differentUpperLimits = fy1Constants.upperRelevantAmount != fy2Constants.upperRelevantAmount
+
+      fy1Result = calculateForFinancialYear(fy1,b335, b315, b327, accountingPeriod, fy1Constants, differentUpperLimits)
+      fy2Result = calculateForFinancialYear(fy2,b385, b315, b328, accountingPeriod, fy2Constants, differentUpperLimits)
     }
     else{
-      fy1Result = calculateForFinancialYear(fy1,b335, b315, b326, accountingPeriod, constantsForTaxYear(TaxYear(fy1)))
+      fy1Result = calculateForFinancialYear(fy1,b335, b315, b326, accountingPeriod, constantsForTaxYear(TaxYear(fy1)), differentUpperLimits = false)
     }
     B329(true)
     CATO05(roundedTwoDecimalPlaces(fy1Result + fy2Result))
@@ -53,14 +59,16 @@ trait MarginalRateReliefCalculatorV3 extends CtTypeConverters with NumberRoundin
                                         b315: B315,
                                         noOfCompanies: CtOptionalInteger,
                                         accountingPeriod: HmrcAccountingPeriod,
-                                        constants: CtConstants): BigDecimal = {
+                                        constants: CtConstants,
+                                        differentUpperLimits: Boolean): BigDecimal = {
     val daysInAccountingPeriod = daysBetween(accountingPeriod.start.value, accountingPeriod.end.value)
 
     val apDaysInFy = accountingPeriodDaysInFinancialYear(financialYear, accountingPeriod)
 
     val apFyRatio = apDaysInFy / daysInAccountingPeriod
 
-    val msFyRatio = apDaysInFy / (365 max daysInAccountingPeriod)
+    val thresholdTotalFyDays = if (differentUpperLimits) daysInFY(financialYear) else 365 max daysInAccountingPeriod
+    val msFyRatio = apDaysInFy / thresholdTotalFyDays
 
     val apportionedProfit = b315.value * apFyRatio
 
@@ -79,4 +87,10 @@ trait MarginalRateReliefCalculatorV3 extends CtTypeConverters with NumberRoundin
     mscrdueap
   }
 
+  def daysInFY(year: Int): Int = {
+    val start = LocalDate.of(year, 4, 1)
+    val end = start.plusYears(1).withMonth(3).withDayOfMonth(31)
+
+    (start.until(end, ChronoUnit.DAYS) + 1).toInt
+  }
 }
