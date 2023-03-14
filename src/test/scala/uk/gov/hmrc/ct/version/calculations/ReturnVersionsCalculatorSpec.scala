@@ -342,6 +342,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
     "for Member Club filing" when {
       "return versions for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600ac, CT600Version2),
           Return(CT600, CT600Version2),
           Return(CT600j, CT600Version2),
           Return(Computations, ComputationsCT20141001))
@@ -357,6 +358,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return versions for AP starting on or after 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
+          Return(CT600ac, CT600Version3),
           Return(CT600j, CT600Version3),
           Return(Computations, ComputationsCT20150201))
 
@@ -371,6 +373,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return versions for AP starting on 2015-12-31" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
+          Return(CT600ac, CT600Version3),
           Return(CT600j, CT600Version3),
           Return(Computations, ComputationsCT20150201))
 
@@ -385,6 +388,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return versions for AP starting on or after 2016-01-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
+          Return(CT600ac, CT600Version3),
           Return(CT600j, CT600Version3),
           Return(Computations, ComputationsCT20161001))
 
@@ -399,6 +403,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return version for AP starting on or after 2016-04-02" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
+          Return(CT600ac, CT600Version3),
           Return(CT600j, CT600Version3),
           Return(Computations, ComputationsCT20161001))
 
@@ -413,6 +418,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return version for AP starting on 2017-03-31" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
+          Return(CT600ac, CT600Version3),
           Return(CT600j, CT600Version3),
           Return(Computations, ComputationsCT20171001))
 
@@ -427,6 +433,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return version for AP starting on or after 2017-04-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
+          Return(CT600ac, CT600Version3),
           Return(CT600j, CT600Version3),
           Return(Computations, ComputationsCT20171001))
 
@@ -441,6 +448,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return version for AP starting on or after 2017-05-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
+          Return(CT600ac, CT600Version3),
           Return(CT600j, CT600Version3),
           Return(Computations, ComputationsCT20171001))
 
@@ -455,6 +463,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return version for AP starting on or after 2017-04-06" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
+          Return(CT600ac, CT600Version3),
           Return(CT600j, CT600Version3),
           Return(Computations, ComputationsCT20171001))
 
@@ -469,6 +478,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return version for AP starting on 2018-04-05" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
+          Return(CT600ac, CT600Version3),
           Return(CT600j, CT600Version3),
           Return(Computations, ComputationsCT20180406))
 
@@ -484,6 +494,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       "return version for AP starting on or after 2018-04-06" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
           Return(CT600, CT600Version3),
+          Return(CT600ac, CT600Version3),
           Return(CT600j, CT600Version3),
           Return(Computations, ComputationsCT20180406))
 
@@ -500,8 +511,9 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
     "for Non company charity filing" when {
       "return versions for all proceeds used for charitable purposes for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+                                  Return(CT600ac, CT600Version2),
                                  Return(CT600e, CT600Version2),
-          Return(CT600j, CT600Version2))
+                                  Return(CT600j, CT600Version2))
 
         private val apStartDate = Some(LocalDate.parse("2015-03-31"))
         private val apEndDate = Some(LocalDate.parse("2015-12-31"))
@@ -516,6 +528,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
       "return versions for all proceeds used for charitable purposes for AP starting on or after 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+                                 Return(CT600ac, CT600Version3),
                                  Return(CT600e, CT600Version3),
                                  Return(CT600j, CT600Version3))
 
@@ -785,6 +798,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
 
       "return versions when no income for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+                                 Return(CT600ac, CT600Version2),
                                  Return(CT600e, CT600Version2),
                                  Return(CT600j, CT600Version2))
 
@@ -802,6 +816,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
       "return versions when no income for AP starting on or after 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+                                 Return(CT600ac, CT600Version3),
                                  Return(CT600e, CT600Version3),
                                  Return(CT600j, CT600Version3))
 
@@ -1052,6 +1067,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
     "for Non company CASC filing" when {
       "return versions for all proceeds used for charitable purposes for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+                                 Return(CT600ac, CT600Version2),
                                  Return(CT600e, CT600Version2),
                                  Return(CT600j, CT600Version2))
 
@@ -1068,6 +1084,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
       "return versions for all proceeds used for charitable purposes for AP starting on or after 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+                                 Return(CT600ac, CT600Version3),
                                  Return(CT600e, CT600Version3),
                                  Return(CT600j, CT600Version3))
 
@@ -1314,6 +1331,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
       "return versions when no income for AP starting before 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+                                 Return(CT600ac, CT600Version2),
                                  Return(CT600e, CT600Version2),
                                  Return(CT600j, CT600Version2))
 
@@ -1331,6 +1349,7 @@ class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
       }
       "return versions when no income for AP starting on or after 2015-04-01" in new ReturnVersionsCalculatorWithDefaults {
         val expectedResult = Set(Return(HmrcUploadedAccounts, UploadedAccounts),
+          Return(CT600ac, CT600Version3),
                                  Return(CT600e, CT600Version3),
                                  Return(CT600j, CT600Version3))
 
