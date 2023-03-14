@@ -93,5 +93,10 @@ class MarginalRateReliefCalculatorV3Spec extends WordSpec with Matchers {
       val rateRelief = computeMarginalRateReliefV3(B315(175000),B335(43151), B385(131849), B326(2), B327(0), B328(0), HmrcAccountingPeriod(CP1(new LocalDate(2022, 1, 11)), CP2(new LocalDate(2023, 1, 10))))
       rateRelief shouldBe CATO05(0)
     }
+
+    "Satisfy multi year accounting period with different threshold limits" in {
+      val rateRelief = computeMarginalRateReliefV3(B315(170178), B335(92731), B385(77446), B326(0), B327(0), B328(0), HmrcAccountingPeriod(CP1(new LocalDate(2022, 10, 1)), CP2(new LocalDate(2023, 8, 30))))
+      rateRelief shouldBe CATO05(395.68)
+    }
   }
 }
