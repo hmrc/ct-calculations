@@ -16,12 +16,13 @@
 
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
-import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtTypeConverters, EndDate, StartDate}
+import uk.gov.hmrc.ct.CATO05
+import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtTypeConverters}
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper._
 import uk.gov.hmrc.ct.ct600.calculations._
-import uk.gov.hmrc.ct.ct600.v2.{B37, B38, B39, B42}
 import uk.gov.hmrc.ct.ct600.v3._
+
 
 
 trait CorporationTaxCalculator extends CtTypeConverters {
@@ -67,7 +68,6 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     if (taxable > Ct600AnnualConstants.lowProfitsThresholdV3(noOfCompanies.value) || taxable <= 0) rate
     else
       {
-        B329(true)
         constantsForTaxYear.smallCompaniesRateOfTax
       }
   }
@@ -115,6 +115,10 @@ trait CorporationTaxCalculator extends CtTypeConverters {
   def calculateTotalTaxToPay(b525: B525, b595: B595): B600 = {
     val calc = b525.minus(b595)
     B600(noneIfNegative(calc))
+  }
+
+  def calculateSCROrMRREligible(cato05: CATO05, b390: B390,b340:B340): B329 = {
+    if ((cato05.value > BigDecimal(0) )||((b340.value.equals(BigDecimal("0.19")))|| b390.value.equals(BigDecimal("0.19")))) B329(true) else B329(false)
   }
 
   def calculateSelfAssessmentOfTaxPayable(b525: B525, b526: B526, b527: B527): B528 = {
