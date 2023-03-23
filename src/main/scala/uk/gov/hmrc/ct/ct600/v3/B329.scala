@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import uk.gov.hmrc.ct.box.{Calculated, CtBoolean, CtBoxIdentifier}
+import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
 import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
@@ -24,7 +25,7 @@ case class B329(value: Boolean) extends CtBoxIdentifier(name = "claiming SPR or 
 
 object B329 extends CorporationTaxCalculator with Calculated[B329, CT600BoxRetriever]  {
   override def calculate(fieldValueRetriever: CT600BoxRetriever): B329 = {
-    calculateSCROrMRREligible(fieldValueRetriever.cato05(),
+    calculateSCROrMRREligible(HmrcAccountingPeriod(fieldValueRetriever.cp1(), fieldValueRetriever.cp2()),fieldValueRetriever.cato05(),
       fieldValueRetriever.b390(),
       fieldValueRetriever.b340())
   }

@@ -22,6 +22,7 @@ import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper._
 import uk.gov.hmrc.ct.ct600.calculations._
 import uk.gov.hmrc.ct.ct600.v3._
+import uk.gov.hmrc.ct.ct600.v3.associatedCompanies.doesfilingperiodcoversafter2023
 
 
 
@@ -117,8 +118,8 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B600(noneIfNegative(calc))
   }
 
-  def calculateSCROrMRREligible(cato05: CATO05, b390: B390,b340:B340): B329 = {
-    if ((cato05.value > BigDecimal(0) )||((b340.value.equals(BigDecimal("0.19")))|| b390.value.equals(BigDecimal("0.19")))) B329(true) else B329(false)
+  def calculateSCROrMRREligible(accountingPeriod: HmrcAccountingPeriod,cato05: CATO05, b390: B390,b340:B340): B329 = {
+    if (doesfilingperiodcoversafter2023(accountingPeriod.start.value,accountingPeriod.end.value) && ((cato05.value > BigDecimal(0) )||((b340.value.equals(BigDecimal("0.19")))|| b390.value.equals(BigDecimal("0.19"))))) B329(true) else B329(false)
   }
 
   def calculateSelfAssessmentOfTaxPayable(b525: B525, b526: B526, b527: B527): B528 = {

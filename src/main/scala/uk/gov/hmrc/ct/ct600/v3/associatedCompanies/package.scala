@@ -17,6 +17,7 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import org.joda.time.LocalDate
+import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
 import uk.gov.hmrc.ct.ct600.v3.B350.financialYearForDate
 
 package object associatedCompanies
@@ -38,6 +39,13 @@ package object associatedCompanies
       startDate.getYear.toString
     } else {
       endDate.getYear.toString
+    }
+  }
+  def doesfilingperiodcoversafter2023(startDate: LocalDate, endDate: LocalDate) = {
+    if(startDate.isAfter(multipleTaxRateV3StartDate) || endDate.isAfter(multipleTaxRateV3StartDate)) {
+      true
+    } else {
+      false
     }
   }
 }
