@@ -135,6 +135,7 @@ trait ReturnVersionsCalculator {
                                                   Return(CT600ei, version),
                                                   Return(CT600j, version))
       case (Some(version), _, _) => Set(Return(CT600, version),
+                                        Return(CT600ac, version),
                                         Return(CT600ei, version),
                                         Return(CT600j, version))
       case (None, _, _) => ???
@@ -158,6 +159,7 @@ trait ReturnVersionsCalculator {
                                                   Return(CT600ei, version),
                                                   Return(CT600j, version))
       case (Some(version), _, _) => Set(Return(CT600, version),
+                                        Return(CT600ac, version),
                                         Return(CT600ei, version),
                                         Return(CT600j, version))
       case (None, _, _) => ???
