@@ -251,9 +251,9 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   }
 
 
-  private def shouldApply2016TO2022OR2023TaxRateForLoans(cp2: CP2): Boolean = cp2.value >= DateOF2016TaxRateForLoans && cp2.value < DateOF2022TaxRateForLoans
+  private def shouldApply2016TO2022OR2023TaxRateForLoans(cp2: CP2): Boolean = cp2.value >= DateOF2016TaxRateForLoans && cp2.value < DateOF2022TaxRateForLoans || cp2.value >= DateOf2023TaxRateForLoans
 
-  private def shouldApply2022TaxRateForLoans(cp2: CP2): Boolean = cp2.value >= DateOF2022TaxRateForLoans
+  private def shouldApply2022TaxRateForLoans(cp2: CP2): Boolean = cp2.value >= DateOF2022TaxRateForLoans && cp2.value < DateOf2023TaxRateForLoans
 
 
   private def amountAt2016To2022OrAfter2023TaxRate(amountOpt: Option[Int], amountsBeforeApril2016: Int) = {
