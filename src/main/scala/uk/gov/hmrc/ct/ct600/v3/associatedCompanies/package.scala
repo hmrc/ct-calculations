@@ -41,8 +41,8 @@ package object associatedCompanies
       endDate.getYear.toString
     }
   }
-  def doesfilingperiodcoversafter2023(startDate: LocalDate, endDate: LocalDate) = {
-    if(startDate.isAfter(multipleTaxRateV3StartDate) || endDate.isAfter(multipleTaxRateV3StartDate)) {
+  def doesfilingperiodcoversafter2023(endDate: LocalDate) = {
+    if(endDate.isAfter(multipleTaxRateV3StartDate)) {
       true
     } else {
       false
