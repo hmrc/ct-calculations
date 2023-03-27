@@ -101,11 +101,9 @@ trait ReturnVersionsCalculator {
   private def ct600ForLimitedBySharesCharity(ct600Version: Option[Version], charityAllExempt: Option[Boolean], charityNoIncome: Option[Boolean]) = {
     (ct600Version, charityAllExempt, charityNoIncome) match {
       case (Some(version), Some(true), _) => Set(Return(CT600e, version),
-                                                 Return(CT600ac, version),
                                                  Return(CT600ei, version),
                                                  Return(CT600j, version))
       case (Some(version), _, Some(true)) => Set(Return(CT600e, version),
-                                                 Return(CT600ac, version),
                                                  Return(CT600ei, version),
                                                  Return(CT600j, version))
       case (Some(version), Some(false), _) => Set(Return(CT600e, version),
@@ -126,11 +124,9 @@ trait ReturnVersionsCalculator {
   private def ct600ForLimitedByGuaranteeCharity(ct600Version: Option[Version], charityAllExempt: Option[Boolean], charityNoIncome: Option[Boolean]) = {
     (ct600Version, charityAllExempt, charityNoIncome) match {
       case (Some(version), Some(true), _) => Set(Return(CT600e, version),
-                                                 Return(CT600ac, version),
                                                  Return(CT600ei, version),
                                                  Return(CT600j, version))
       case (Some(version), _, Some(true)) => Set(Return(CT600e, version),
-                                                  Return(CT600ac, version),
                                                   Return(CT600ei, version),
                                                  Return(CT600j, version))
       case (Some(version), Some(false), _) => Set(Return(CT600e, version),
@@ -139,7 +135,6 @@ trait ReturnVersionsCalculator {
                                                   Return(CT600ei, version),
                                                   Return(CT600j, version))
       case (Some(version), _, _) => Set(Return(CT600, version),
-                                        Return(CT600ac, version),
                                         Return(CT600ei, version),
                                         Return(CT600j, version))
       case (None, _, _) => ???
@@ -163,7 +158,6 @@ trait ReturnVersionsCalculator {
                                                   Return(CT600ei, version),
                                                   Return(CT600j, version))
       case (Some(version), _, _) => Set(Return(CT600, version),
-                                        Return(CT600ac, version),
                                         Return(CT600ei, version),
                                         Return(CT600j, version))
       case (None, _, _) => ???
