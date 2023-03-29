@@ -16,18 +16,14 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBigDecimal, CtBoxIdentifier}
-import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.CATO05
+import uk.gov.hmrc.ct.box.{CtBigDecimal, CtBoxIdentifier, Linked}
 
-// was B70
-case class B440(value: BigDecimal) extends CtBoxIdentifier("Corporation Tax Chargeable") with CtBigDecimal
+// was B64
+case class B435(value: BigDecimal) extends CtBoxIdentifier("Marginal Relief") with CtBigDecimal
 
-object B440 extends CorporationTaxCalculator with Calculated[B440, CT600BoxRetriever]  {
 
-  override def calculate(fieldValueRetriever: CT600BoxRetriever): B440 = {
+object B435 extends Linked[CATO05, B435] {
 
-    totalCorporationTaxChargeable(fieldValueRetriever.b430(), fieldValueRetriever.b435())
-
-  }
+  override def apply(source: CATO05): B435 = B435(source.value)
 }

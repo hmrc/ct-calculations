@@ -9,7 +9,7 @@
       ScoverageKeys.coverageHighlighting := true,
       ScoverageKeys.coverageExcludedFiles := ";.*Routes.*;views.*",
       ScoverageKeys.coverageExcludedPackages := """<empty>;.*javascript.*;.*models.*;.*Routes.*;.*testonly.*""",
-      parallelExecution in Test := false
+      Test / parallelExecution := false
     )
   }
 

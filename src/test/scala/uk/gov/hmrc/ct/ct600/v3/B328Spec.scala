@@ -16,18 +16,14 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBigDecimal, CtBoxIdentifier}
-import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import org.scalatest.{Matchers, WordSpec}
+import org.scalatestplus.mockito.MockitoSugar
+import uk.gov.hmrc.ct.BoxValidationFixture
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-// was B70
-case class B440(value: BigDecimal) extends CtBoxIdentifier("Corporation Tax Chargeable") with CtBigDecimal
+class B328Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] {
 
-object B440 extends CorporationTaxCalculator with Calculated[B440, CT600BoxRetriever]  {
+  val boxRetriever =  mock[ComputationsBoxRetriever]
 
-  override def calculate(fieldValueRetriever: CT600BoxRetriever): B440 = {
-
-    totalCorporationTaxChargeable(fieldValueRetriever.b430(), fieldValueRetriever.b435())
-
-  }
+  testBoxIsZeroOrPositive("B328", B328.apply)
 }

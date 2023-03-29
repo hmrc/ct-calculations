@@ -16,18 +16,17 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import uk.gov.hmrc.ct.box.{Calculated, CtBigDecimal, CtBoxIdentifier}
-import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalInteger, CtValidation, Input, ValidatableBox}
+import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-// was B70
-case class B440(value: BigDecimal) extends CtBoxIdentifier("Corporation Tax Chargeable") with CtBigDecimal
-
-object B440 extends CorporationTaxCalculator with Calculated[B440, CT600BoxRetriever]  {
-
-  override def calculate(fieldValueRetriever: CT600BoxRetriever): B440 = {
-
-    totalCorporationTaxChargeable(fieldValueRetriever.b430(), fieldValueRetriever.b435())
-
+case class B326(value: Option[Int]) extends CtBoxIdentifier("number of associated companies in this period") with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    collectErrors(
+      validateZeroOrPositiveInteger(this)
+    )
   }
+}
+
+object B326 {
+  def apply(int: Int):B326 = B326(Some(int))
 }
