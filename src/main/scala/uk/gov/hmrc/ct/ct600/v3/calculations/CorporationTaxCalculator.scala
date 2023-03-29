@@ -16,11 +16,14 @@
 
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
-import uk.gov.hmrc.ct.box.{CtTypeConverters, EndDate, StartDate}
+import uk.gov.hmrc.ct.CATO05
+import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtTypeConverters}
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper._
 import uk.gov.hmrc.ct.ct600.calculations._
 import uk.gov.hmrc.ct.ct600.v3._
+import uk.gov.hmrc.ct.ct600.v3.associatedCompanies.doesfilingperiodcoversafter2023
+
 
 
 trait CorporationTaxCalculator extends CtTypeConverters {
@@ -45,16 +48,29 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B345(b340.multiply(b335))
   }
 
-  def rateOfTaxFy1(start: StartDate): BigDecimal = {
-    Ct600AnnualConstants.getConstantsFromYear(
-      startingFinancialYear(start)
-    ).rateOfTax
+  def totalCorporationTaxChargeable(CorporationTax: B430, marginalReliefRate: B435): B440 = {
+    B440(CorporationTax minus  marginalReliefRate.value)
   }
 
-  def rateOfTaxFy2(end: EndDate): BigDecimal = {
-    Ct600AnnualConstants.getConstantsFromYear(
-      endingFinancialYear(end)
-    ).rateOfTax
+  def rateOfTaxFy1(accountingPeriod: HmrcAccountingPeriod, b315:B315, noOfCompanies: CtOptionalInteger): BigDecimal = {
+    calculateRateOfTaxYear(TaxYear(startingFinancialYear(accountingPeriod.start)),b315, noOfCompanies)
+  }
+
+  def rateOfTaxFy2(accountingPeriod: HmrcAccountingPeriod, b315:B315, b328:B328): BigDecimal = {
+    calculateRateOfTaxYear(TaxYear(endingFinancialYear(accountingPeriod.end)), b315, b328)
+  }
+
+  // smallCompaniesRateOfTax, rateOfTax,
+  private def calculateRateOfTaxYear(taxYear: TaxYear,b315:B315,noOfCompanies: CtOptionalInteger): BigDecimal = {
+    val constantsForTaxYear = Ct600AnnualConstants.constantsForTaxYear(taxYear)
+    val rate = constantsForTaxYear.rateOfTax
+
+    val taxable = b315
+    if (taxable > Ct600AnnualConstants.lowProfitsThresholdV3(noOfCompanies.value) || taxable <= 0) rate
+    else
+      {
+        constantsForTaxYear.smallCompaniesRateOfTax
+      }
   }
 
   def financialYear1(accountingPeriod: HmrcAccountingPeriod): Int = {
@@ -100,6 +116,10 @@ trait CorporationTaxCalculator extends CtTypeConverters {
   def calculateTotalTaxToPay(b525: B525, b595: B595): B600 = {
     val calc = b525.minus(b595)
     B600(noneIfNegative(calc))
+  }
+
+  def calculateSCROrMRREligible(accountingPeriod: HmrcAccountingPeriod,cato05: CATO05, b390: B390,b340:B340): B329 = {
+    if (doesfilingperiodcoversafter2023(accountingPeriod.end.value) && ((cato05.value > BigDecimal(0) )||((b340.value.equals(BigDecimal("0.19")))|| b390.value.equals(BigDecimal("0.19"))))) B329(true) else B329(false)
   }
 
   def calculateSelfAssessmentOfTaxPayable(b525: B525, b526: B526, b527: B527): B528 = {

@@ -21,6 +21,7 @@ import org.scalatest.{Matchers, WordSpec}
 import uk.gov.hmrc.ct.CATO23
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.ct600.calculations.{CorporationTaxCalculatorParameters, NINonTradingProfitCalculationParameters, NITradingProfitCalculationParameters}
+import uk.gov.hmrc.ct.ct600.v2.{B37, B38, B39, B42}
 import uk.gov.hmrc.ct.ct600.v3._
 
 class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
@@ -76,11 +77,11 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
 
   // These tests assume that delegate code is tested thoroughly by v2 tests
   "B340" in new CorporationTaxCalculator {
-    rateOfTaxFy1(CP1(new LocalDate(2014, 4, 1))) shouldBe 0.21
+    rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 4, 1)), CP2(new LocalDate(2014, 12, 31))), b315 = B315(299999), noOfCompanies = B326(1)) shouldBe BigDecimal("0.21")
   }
 
   "B390" in new CorporationTaxCalculator {
-    rateOfTaxFy2(CP2(new LocalDate(2015, 4, 1))) shouldBe 0.20
+    rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2015, 1, 1)), CP2(new LocalDate(2015, 12, 31))), b315 = B315(299999), b328 = B328(1)) shouldBe BigDecimal("0.20")
   }
 
 
@@ -161,6 +162,12 @@ class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
 
   }
 
+  "B440" should {
+    "be equal to B430-435" in new CorporationTaxCalculator {
+      totalCorporationTaxChargeable(B430(4000), B435(500)) shouldBe B440(3500)
+    }
+  }
+  
   "B45" should {
     "be same as B45Inputs if CP287 == 0" in new CorporationTaxCalculator {
       defaultSetIfLossCarriedForward(B45Input(None), CP287(0)) shouldBe B45(None)

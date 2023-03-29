@@ -14,20 +14,25 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.ct.ct600.v3
+package uk.gov.hmrc.ct
 
 import uk.gov.hmrc.ct.box.{Calculated, CtBigDecimal, CtBoxIdentifier}
-import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
+import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
+import uk.gov.hmrc.ct.ct600.v3.calculations.MarginalRateReliefCalculatorV3
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
-// was B70
-case class B440(value: BigDecimal) extends CtBoxIdentifier("Corporation Tax Chargeable") with CtBigDecimal
+case class CATO05(value: BigDecimal) extends CtBoxIdentifier("Marginal Rate Relief") with CtBigDecimal
 
-object B440 extends CorporationTaxCalculator with Calculated[B440, CT600BoxRetriever]  {
 
-  override def calculate(fieldValueRetriever: CT600BoxRetriever): B440 = {
+object CATO05 extends Calculated[CATO05, CT600BoxRetriever] with MarginalRateReliefCalculatorV3 {
 
-    totalCorporationTaxChargeable(fieldValueRetriever.b430(), fieldValueRetriever.b435())
-
+  override def calculate(boxRetriever: CT600BoxRetriever): CATO05 = {
+    computeMarginalRateReliefV3(b315 = boxRetriever.b315(),
+      b335 = boxRetriever.b335(),
+      b385 = boxRetriever.b385(),
+      b326 = boxRetriever.b326(),
+      b327 = boxRetriever.b327(),
+      b328 = boxRetriever.b328(),
+      accountingPeriod = HmrcAccountingPeriod(boxRetriever.cp1(), boxRetriever.cp2()))
   }
 }
