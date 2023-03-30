@@ -270,8 +270,8 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   private def amountAtNewTaxRate(amountOpt: Option[Int], amountsBeforeApril2022: Int) = {
     amountOpt match {
       case Some(amount) => {
-        val beforeApril2022 = BigDecimal(amount - amountsBeforeApril2022) * LoansRateAfterApril2022
-        val afterApril2022 = BigDecimal(amountsBeforeApril2022) * LoansRateBetweenApril2016TO2022OrAfterApril2023
+        val afterApril2022 = BigDecimal(amount - amountsBeforeApril2022) * LoansRateAfterApril2022
+        val beforeApril2022 = BigDecimal(amountsBeforeApril2022) * LoansRateBetweenApril2016TO2022OrAfterApril2023
         Some(beforeApril2022.setScale(2, BigDecimal.RoundingMode.HALF_UP) + afterApril2022.setScale(2, BigDecimal.RoundingMode.HALF_UP))
       }
       case None => None

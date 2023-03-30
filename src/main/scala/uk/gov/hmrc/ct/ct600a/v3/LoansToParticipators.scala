@@ -32,10 +32,6 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
 
   override def value = loans
 
-  val DateOF2016TaxRateForLoans = new LocalDate(2016, 4, 6)
-  val DateOF2022TaxRateForLoans = new LocalDate(2022, 4, 6)
-
-
   override def asBoxString = LoansFormatter.asBoxString(this)
 
   override def validate(boxRetriever: CT600ABoxRetriever): Set[CtValidation] = {
@@ -54,6 +50,7 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
 case class Loan ( id: String,
                   name: Option[String],
                   amount: Option[Int]= None,
+                  amountBetween06042022To06042023: Option[Int] = None,
                   amountBetween06042016To06042022: Option[Int] = None,
                   amountBefore06042016: Option[Int] = None,
                   repaymentWithin9Months: Option[Repayment] = None,
@@ -68,12 +65,15 @@ case class Loan ( id: String,
     validateLoan(invalidLoanNameUnique(loansToParticipators), s"loans.$loanIndex.uniqueName") ++
     validateLoan(invalidLoanAmount, s"loans.$loanIndex.amount.value",Some(Seq(amount.getOrElse(0).toString))) ++
     validateLoan(invalidBalancedAmount, s"loans.$loanIndex.unbalanced", balancedAmountArgs) ++
-    validateLoan(invalidLoanBeforeApril2022Amount, s"loans.$loanIndex.beforeApril2022Amount.value",Some(Seq(amount.getOrElse(0).toString))) ++
+    validateLoan(invalidLoanBeforeApril2023Amount, s"loans.$loanIndex.beforeApril2023Amount.value",Some(Seq(amount.getOrElse(0).toString))) ++
+    validateLoan(invalidBeforeApril2023BalancedAmount, s"loans.$loanIndex.unbalanced.beforeApril2023Amount", balancedBeforeApril2023AmountArgs) ++
+    validateLoan(invalidLoanBeforeApril2022Amount, s"loans.$loanIndex.beforeApril2022Amount.value",Some(Seq(amountBetween06042022To06042023.getOrElse(0).toString))) ++
     validateLoan(invalidBeforeApril2022BalancedAmount, s"loans.$loanIndex.unbalanced.beforeApril2022Amount", balancedBeforeApril2022AmountArgs) ++
     validateLoan(invalidLoanBeforeApril2016Amount, s"loans.$loanIndex.beforeApril2016Amount.value", Some(Seq(amountBetween06042016To06042022.getOrElse(0).toString))) ++
     validateLoan(invalidBalancedBeforeApril2016Amount, s"loans.$loanIndex.unbalanced.beforeApril2016Amount", balancedBeforeApril2016AmountArgs) ++
     validateLoan(invalidBalancedAfterApril2016Amount, s"loans.$loanIndex.unbalanced.afterApril2016Amount", balancedAfterApril2016AmountArgs) ++
     validateLoan(invalidBalancedAfterApril2022Amount, s"loans.$loanIndex.unbalanced.afterApril2022Amount", balancedAfterApril2022AmountArgs) ++
+    validateLoan(invalidBalancedAfterApril2023Amount, s"loans.$loanIndex.unbalanced.afterApril2023Amount", balancedAfterApril2023AmountArgs) ++
     repaymentWithin9Months.map(_.validateWithin9Months(boxRetriever, loanIndex)).getOrElse(Set()) ++
     otherRepayments.foldRight(Set[CtValidation]())((repayment, tail) => repayment.validateAfter9Months(boxRetriever, loansToParticipators, loanIndex) ++ tail) ++
     writeOffs.foldRight(Set[CtValidation]())((writeOff, tail) => writeOff.validate(boxRetriever, loansToParticipators, loanIndex) ++ tail)
@@ -91,6 +91,14 @@ case class Loan ( id: String,
 
   private def invalidLoanBeforeApril2022Amount: Boolean = amountBetween06042016To06042022.exists(_ < MIN_MONEY_AMOUNT_ALLOWED) || amountBetween06042016To06042022.exists(_ > MAX_MONEY_AMOUNT_ALLOWED)
 
+  private def invalidLoanBeforeApril2023Amount: Boolean = amountBetween06042022To06042023.exists(_ < MIN_MONEY_AMOUNT_ALLOWED) || amountBetween06042022To06042023.exists(_ > MAX_MONEY_AMOUNT_ALLOWED)
+
+  private def invalidBeforeApril2023BalancedAmount: Boolean = {
+    amountBetween06042022To06042023 match {
+      case Some(am) => totalAmountBeforeApril2023RepaymentsAndWriteOffs > am
+      case None => totalAmountBeforeApril2023RepaymentsAndWriteOffs > 0
+    }
+  }
 
   private def invalidBeforeApril2022BalancedAmount: Boolean =  {
     amountBetween06042016To06042022 match {
@@ -103,6 +111,13 @@ case class Loan ( id: String,
     amountBefore06042016 match {
       case Some(am) => totalAmountBeforeApril2016RepaymentsAndWriteOffs > am
       case None => totalAmountBeforeApril2016RepaymentsAndWriteOffs > 0
+    }
+  }
+
+  private def invalidBalancedAfterApril2023Amount: Boolean = {
+    (amount, amountBetween06042016To06042022, amountBetween06042022To06042023) match {
+      case (Some(a), Some(b), Some(c)) => (a - b -c) < totalAmountAfterApril2023RepaymentsAndWriteOffs
+      case _ => false
     }
   }
 
@@ -148,17 +163,35 @@ case class Loan ( id: String,
     repaymentBefore2022Total + otherRepaymentBefore2022Total + writeOffBefore2022Total
   }
 
+  def totalAmountBeforeApril2023RepaymentsAndWriteOffs: Int = {
+
+    val repaymentBefore2023Total: Int = repaymentWithin9Months.flatMap(_.amountBetween06042022To06042023).sum
+    val otherRepaymentBefore2023Total: Int = otherRepayments.flatMap(_.amountBetween06042022To06042023).sum
+    val writeOffBefore2023Total: Int = writeOffs.flatMap(_.amountBetween06042022To06042023).sum
+
+    repaymentBefore2023Total + otherRepaymentBefore2023Total + writeOffBefore2023Total
+  }
+
+  private def totalAmountAfterApril2023RepaymentsAndWriteOffs: Int = totalAmountRepaymentsAndWriteOffs - totalAmountBeforeApril2023RepaymentsAndWriteOffs - totalAmountBeforeApril2022RepaymentsAndWriteOffs
+
   private def totalAmountAfterApril2022RepaymentsAndWriteOffs: Int = totalAmountRepaymentsAndWriteOffs - totalAmountBeforeApril2022RepaymentsAndWriteOffs
 
   private def balancedAmountArgs: Option[Seq[String]] = Some(Seq(totalAmountRepaymentsAndWriteOffs.toString, amount.getOrElse(0).toString))
+
+  private def balancedBeforeApril2023AmountArgs: Option[Seq[String]] = Some(Seq(totalAmountBeforeApril2023RepaymentsAndWriteOffs.toString, amountBetween06042022To06042023.getOrElse(0).toString))
 
   private def balancedBeforeApril2022AmountArgs: Option[Seq[String]] = Some(Seq(totalAmountBeforeApril2022RepaymentsAndWriteOffs.toString, amountBetween06042016To06042022.getOrElse(0).toString))
 
   private def balancedBeforeApril2016AmountArgs: Option[Seq[String]] = Some(Seq(totalAmountBeforeApril2016RepaymentsAndWriteOffs.toString, amountBefore06042016.getOrElse(0).toString))
 
+  private def balancedAfterApril2023AmountArgs: Option[Seq[String]] = Some(Seq(
+    totalAmountAfterApril2023RepaymentsAndWriteOffs.toString,
+    (amount.getOrElse(0) - amountBetween06042022To06042023.getOrElse(0)).toString
+  ))
+
   private def balancedAfterApril2022AmountArgs: Option[Seq[String]] = Some(Seq(
     totalAmountAfterApril2022RepaymentsAndWriteOffs.toString,
-    (amount.getOrElse(0) - amountBetween06042016To06042022.getOrElse(0)).toString
+    (amountBetween06042022To06042023.getOrElse(0) - amountBetween06042016To06042022.getOrElse(0)).toString
   ))
 
   private def balancedAfterApril2016AmountArgs: Option[Seq[String]] = Some(Seq(
@@ -175,7 +208,7 @@ case class Loan ( id: String,
 
 }
 
-case class Repayment(id: String, amount: Option[Int], amountBetween06042016To06042022: Option[Int] = None, amountBefore06042016: Option[Int] = None, date: Option[LocalDate], endDateOfAP: Option[LocalDate] = None) extends LoansDateRules {
+case class Repayment(id: String, amount: Option[Int], amountBetween06042022To06042023: Option[Int] = None, amountBetween06042016To06042022: Option[Int] = None, amountBefore06042016: Option[Int] = None, date: Option[LocalDate], endDateOfAP: Option[LocalDate] = None) extends LoansDateRules {
 
   val repaymentWithin9monthsErrorCode = "repaymentWithin9Months"
   val repaymentAfter9MonthsErrorCode = "otherRepayments"
@@ -185,7 +218,8 @@ case class Repayment(id: String, amount: Option[Int], amountBetween06042016To060
 
     validateRepayment(invalidDateAfter9Months(boxRetriever), s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.date.range", errorArgsOtherRepaymentsDate(boxRetriever), loanIndex) ++
     validateRepayment(invalidRepaymentAmount, s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.amount.value", None, loanIndex) ++
-    validateRepayment(invalidRepaymentBeforeApril2022AmountAfter9Months, s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.beforeApril2022Amount.value", Some(Seq(amount.getOrElse(0).toString)), loanIndex) ++
+    validateRepayment(invalidRepaymentBeforeApril2023AmountAfter9Months, s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.beforeApril2023Amount.value", Some(Seq(amount.getOrElse(0).toString)), loanIndex) ++
+    validateRepayment(invalidRepaymentBeforeApril2022AmountAfter9Months, s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.beforeApril2022Amount.value", Some(Seq(amountBetween06042022To06042023.getOrElse(0).toString)), loanIndex) ++
     validateRepayment(invalidRepaymentBeforeApril2016AmountAfter9Months, s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.beforeApril2016Amount.value", Some(Seq(amountBetween06042016To06042022.getOrElse(0).toString)), loanIndex) ++
     validateRepayment(invalidApEndDateRequired, s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.endDateOfAP.required", None, loanIndex) ++
     validateRepayment(invalidApEndDateRange(boxRetriever), s"$repaymentAfter9MonthsErrorCode.$repaymentIndex.endDateOfAP.range", errorArgsOtherRepaymentsApEndDate(boxRetriever), loanIndex)
@@ -194,7 +228,8 @@ case class Repayment(id: String, amount: Option[Int], amountBetween06042016To060
   def validateWithin9Months(boxRetriever: CT600ABoxRetriever, loanIndex: Int): Set[CtValidation] = {
     validateRepayment(invalidDateWithin9Months(boxRetriever), s"$repaymentWithin9monthsErrorCode.date.range",  errorArgsRepaymentsWith9MonthsDate(boxRetriever), loanIndex) ++
     validateRepayment(invalidRepaymentAmount, s"$repaymentWithin9monthsErrorCode.amount.value", None, loanIndex) ++
-    validateRepayment(invalidRepaymentBeforeApril2022AmountWithin9Months, s"$repaymentWithin9monthsErrorCode.beforeApril2022Amount.value", Some(Seq(amount.getOrElse(0).toString)), loanIndex) ++
+    validateRepayment(invalidRepaymentBeforeApril2023AmountWithin9Months, s"$repaymentWithin9monthsErrorCode.beforeApril2023Amount.value", Some(Seq(amount.getOrElse(0).toString)), loanIndex) ++
+    validateRepayment(invalidRepaymentBeforeApril2022AmountWithin9Months, s"$repaymentWithin9monthsErrorCode.beforeApril2022Amount.value", Some(Seq(amountBetween06042022To06042023.getOrElse(0).toString)), loanIndex) ++
     validateRepayment(invalidRepaymentBeforeApril2016AmountWithin9Months, s"$repaymentWithin9monthsErrorCode.beforeApril2016Amount.value", Some(Seq(amountBetween06042016To06042022.getOrElse(0).toString)), loanIndex)
   }
 
@@ -206,7 +241,7 @@ case class Repayment(id: String, amount: Option[Int], amountBetween06042016To060
 
   private def invalidApEndDateRequired: Boolean = endDateOfAP.isEmpty
 
-  private def invalidApEndDateRange(boxRetriever: CT600ABoxRetriever): Boolean = !endDateOfAP.map(_ > currentAPEndDate(boxRetriever)).getOrElse(true)
+  private def invalidApEndDateRange(boxRetriever: CT600ABoxRetriever): Boolean = !endDateOfAP.forall(_ > currentAPEndDate(boxRetriever))
 
   private def invalidRepaymentAmount: Boolean = amount.exists(_ < MIN_MONEY_AMOUNT_ALLOWED) || amount.exists(_ > MAX_MONEY_AMOUNT_ALLOWED) || amount.isEmpty
 
@@ -214,9 +249,13 @@ case class Repayment(id: String, amount: Option[Int], amountBetween06042016To060
 
   private def invalidRepaymentBeforeApril2022AmountWithin9Months: Boolean = amountBetween06042016To06042022.exists(ab => ab < 0 || amount.exists(_ < ab))
 
+  private def invalidRepaymentBeforeApril2023AmountWithin9Months: Boolean = amountBetween06042022To06042023.exists(ab => ab < 0 || amount.exists(_ < ab))
+
   private def invalidRepaymentBeforeApril2016AmountAfter9Months: Boolean = amountBefore06042016.exists(ab => ab < 0 || amountBetween06042016To06042022.exists(_ < ab))
 
   private def invalidRepaymentBeforeApril2022AmountAfter9Months: Boolean = amountBetween06042016To06042022.exists(ab => ab < 0 || amount.exists(_ < ab))
+
+  private def invalidRepaymentBeforeApril2023AmountAfter9Months: Boolean = amountBetween06042022To06042023.exists(ab => ab < 0 || amount.exists(_ < ab))
 
 
 
@@ -250,7 +289,7 @@ case class Repayment(id: String, amount: Option[Int], amountBetween06042016To060
     Some(Seq(toErrorArgsFormat(currentAPEndDate(boxRetriever))))
 }
 
-case class WriteOff(id: String, amount: Option[Int], amountBetween06042016To06042022: Option[Int] = None, amountBefore06042016: Option[Int] = None, date: Option[LocalDate], endDateOfAP : Option[LocalDate] = None) extends LoansDateRules {
+case class WriteOff(id: String, amount: Option[Int], amountBetween06042022To06042023: Option[Int] = None, amountBetween06042016To06042022: Option[Int] = None, amountBefore06042016: Option[Int] = None, date: Option[LocalDate], endDateOfAP : Option[LocalDate] = None) extends LoansDateRules {
 
   private val writeOffErrorCode = "writeOffs"
 
@@ -261,6 +300,7 @@ case class WriteOff(id: String, amount: Option[Int], amountBetween06042016To0604
     validateWriteOff(invalidWriteOffAmount, s"$writeOffErrorCode.$writeOffIndex.amount.value", None, loanIndex) ++
     validateWriteOff(invalidWriteOffBeforeApril2016Amount, s"$writeOffErrorCode.$writeOffIndex.beforeApril2016Amount.value", Some(Seq(amount.toString)), loanIndex) ++
     validateWriteOff(invalidWriteOffBeforeApril2022Amount, s"$writeOffErrorCode.$writeOffIndex.beforeApril2022Amount.value", Some(Seq(amount.toString)), loanIndex) ++
+    validateWriteOff(invalidWriteOffBeforeApril2023Amount, s"$writeOffErrorCode.$writeOffIndex.beforeApril2023Amount.value", Some(Seq(amount.toString)), loanIndex) ++
     validateWriteOff(invalidApEndDateRequired(boxRetriever), s"$writeOffErrorCode.$writeOffIndex.endDateOfAP.required", None, loanIndex) ++
     validateWriteOff(invalidApEndDateRange(boxRetriever), s"$writeOffErrorCode.$writeOffIndex.endDateOfAP.range", errorArgsWriteOffApEndDate(boxRetriever), loanIndex)
   }
@@ -273,6 +313,8 @@ case class WriteOff(id: String, amount: Option[Int], amountBetween06042016To0604
 
   private def invalidWriteOffBeforeApril2022Amount: Boolean = amountBetween06042016To06042022.exists(ab => ab < 0 || amount.exists(_ < ab))
 
+  private def invalidWriteOffBeforeApril2023Amount: Boolean = amountBetween06042022To06042023.exists(ab => ab < 0 || amount.exists(_ < ab))
+
   private def invalidApEndDateRequired(boxRetriever: CT600ABoxRetriever): Boolean = {
     date.exists(_ > currentAPEndDatePlus9Months(boxRetriever)) match {
       case true => endDateOfAP.isEmpty
@@ -280,7 +322,7 @@ case class WriteOff(id: String, amount: Option[Int], amountBetween06042016To0604
     }
   }
 
-  private def invalidApEndDateRange(boxRetriever: CT600ABoxRetriever): Boolean = !endDateOfAP.map(_ > currentAPEndDate(boxRetriever)).getOrElse(true)
+  private def invalidApEndDateRange(boxRetriever: CT600ABoxRetriever): Boolean = !endDateOfAP.forall(_ > currentAPEndDate(boxRetriever))
 
   def validateWriteOff(invalid: Boolean, errorMsg: String, errorArgs: Option[Seq[String]], loanIndex: Int): Set[CtValidation] = {
     invalid match {
