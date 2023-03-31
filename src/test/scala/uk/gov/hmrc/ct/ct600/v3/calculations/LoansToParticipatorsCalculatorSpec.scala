@@ -89,10 +89,10 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
 
     "correctly calculate A20 (A3v2) applying new tax rate for accounting periods ending on or after 6 April 2016" in new LoansToParticipatorsCalculator {
 
-      val loans2p_None = LoansToParticipators(loan(amountBefore06042016 = None))
-      val loans2p_0 = LoansToParticipators(loan(amountBefore06042016 = Some(0)))
-      val loans2p_1 = LoansToParticipators(loan(amountBefore06042016 = Some(1)))
-      val loans2p_3 = LoansToParticipators(loan(amountBefore06042016 = Some(3)))
+      val loans2p_None = LoansToParticipators(List(loan()))
+      val loans2p_0 = LoansToParticipators(List(loan(amountBefore06042016 = Some(0))))
+      val loans2p_1 = LoansToParticipators(List(loan(amountBefore06042016 = Some(1))))
+      val loans2p_3 = LoansToParticipators(List(loan(amountBefore06042016 = Some(3))))
       val loasn2p_4 = LoansToParticipators(loans = loans2p_None.loans ::: loans2p_0.loans ::: loans2p_1.loans ::: loans2p_3.loans ::: Nil)
 
       val after6April2016 = CP2(new LocalDate("2016-12-31"))
@@ -112,6 +112,15 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
       calculateA20(A15(Some(333)),loasn2p_4, on6April2016 ) shouldBe A20(Some(107.93))
     }
 
+    "calculate A20 with new tax rate for 2023 FY" in new LoansToParticipatorsCalculator {
+      calculateA20(
+        A15(Some(100)),
+        LoansToParticipators(loans = List(
+          loan().copy(amountBetween06042022To06042023 = Some(25))
+        )),
+        CP2(new LocalDate("2023-04-07"))
+      ) shouldBe A20(Some(32.82))
+    }
 
     val reliefDueNowOnLoanTable = Table(
       ("expectedValue", "repaymentDate"),
@@ -204,6 +213,31 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
 
       calculateA45(A40(Some(1)), unusedLoans, before6April2016) shouldBe A45(Some(0.25))
       calculateA45(A40(Some(333)), unusedLoans, before6April2016) shouldBe A45(Some(83.25))
+    }
+
+    "Calculate A45 applying new tax rate for accounting periods ending on or after 6 April 2023" in new LoansToParticipatorsCalculator {
+      val after6April2023: CP2 = CP2(new LocalDate("2023-12-31"))
+
+      calculateA45(A40(Some(1)), LoansToParticipators(), after6April2023) shouldBe A45(Some(0.33))
+      calculateA45(A40(Some(333)), LoansToParticipators(), after6April2023) shouldBe A45(Some(108.23))
+    }
+
+    "Calculate A45 applying new tax rate for accounting periods ending on or after 6 April 2023 and repayments within 9 months" in new LoansToParticipatorsCalculator {
+
+      val after6April2023: CP2 = CP2(new LocalDate("2023-12-31"))
+      val l2p: LoansToParticipators = LoansToParticipators(loans =
+        Loan(id = "1", name = Some("Testing"), amount = Some(123),
+          repaymentWithin9Months = Some(
+            Repayment(id = "1", amount = Some(4), amountBetween06042022To06042023 = Some(3), date = Some(new LocalDate("2024-05-01")))
+          ),
+          writeOffs = List(
+            WriteOff("123", Some(7), amountBetween06042022To06042023 = Some(2), None, None, Some(new LocalDate("2024-05-01")))
+          )
+        ) :: Nil
+      )
+
+      calculateA45(A40(Some(1)), l2p, after6April2023) shouldBe A45(Some(0.39))
+      calculateA45(A40(Some(333)), l2p, after6April2023) shouldBe A45(Some(108.29))
     }
 
     "correctly calculate A45 (A7v2) applying new tax rate for accounting periods ending on or after 6 April 2016" in new LoansToParticipatorsCalculator {
@@ -472,6 +506,35 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
 
     }
 
+    "Calculate A70 applying new tax rate for accounting periods ending on or after 6 April 2023" in new LoansToParticipatorsCalculator {
+      val l2p_1 = LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(123),
+        otherRepayments = List(Repayment(id = "1", amount = Some(1), amountBetween06042022To06042023 = Some(330), date = Some(new LocalDate("2023-10-01")), endDateOfAP = someDate("2023-12-31"))),
+        writeOffs = List(
+          WriteOff("123", Some(1), Some(1), None, None, Some(new LocalDate("2023-10-01")), someDate("2023-12-31")),
+          WriteOff("456", Some(2), Some(1), None, None, Some(new LocalDate("2023-09-30")), someDate("2023-12-31")),
+          WriteOff("789", Some(5), Some(1), None, None, Some(new LocalDate("2023-12-31")), someDate("2023-12-31"))))))
+      val l2p_2 = LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(123),
+        otherRepayments = List(Repayment(id = "1", amount = Some(1), amountBetween06042022To06042023 = None, date = Some(new LocalDate("2023-10-01")), endDateOfAP = someDate("2023-12-31"))),
+        writeOffs = List(
+          WriteOff("123", Some(1), Some(0), None, None, Some(new LocalDate("2023-10-01")), someDate("2023-12-31")),
+          WriteOff("789", Some(5), None, None, None, Some(new LocalDate("2023-12-31")), someDate("2023-12-31"))))))
+      val l2p_3 = LoansToParticipators(loans = List(Loan(id = "1", name = Some("Bilbo"), amount = Some(123),
+        otherRepayments = List(Repayment(id = "1", amount = Some(1), amountBetween06042022To06042023 = Some(10), date = Some(new LocalDate("2023-10-01")), endDateOfAP = someDate("2023-12-31"))),
+        writeOffs = List(
+          WriteOff("123", Some(1), Some(5), None, None, Some(new LocalDate("2023-10-01")), someDate("2023-12-31")),
+          WriteOff("789", Some(5), None, None, None, Some(new LocalDate("2023-12-31")), someDate("2023-12-31"))))))
+
+      val after6April2023 = CP2(new LocalDate("2023-12-31"))
+      calculateA70(A65(Some(333)), l2p_1, after6April2023, LPQ07(someDate("2024-01-01"))) shouldBe A70(Some(108.23))
+      calculateA70(A65(Some(333)), l2p_1, after6April2023, LPQ07(someDate("2025-10-01"))) shouldBe A70(Some(112.39))
+      calculateA70(A65(Some(333)), l2p_2, after6April2023, LPQ07(someDate("2025-10-01"))) shouldBe A70(Some(108.23))
+      calculateA70(A65(Some(333)), l2p_3, after6April2023, LPQ07(someDate("2025-10-01"))) shouldBe A70(Some(108.41))
+
+      val on6April2023 = CP2(new LocalDate("2023-04-06"))
+      calculateA70(A65(Some(333)), l2p_1, on6April2023, LPQ07(someDate("2024-01-01"))) shouldBe A70(Some(108.23))
+      calculateA70(A65(Some(333)), l2p_2, on6April2023, LPQ07(someDate("2025-10-01"))) shouldBe A70(Some(108.23))
+    }
+
     "correctly calculate A70Inverse applying old tax rate for accounting periods ending before 6 April 2016" in new LoansToParticipatorsCalculator {
 
       val before6April2016 = CP2(new LocalDate("2014-12-31"))
@@ -547,7 +610,7 @@ class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
 
   }
   
-  def loan(amountBefore06042016: Option[Int]) = Loan(id = "1", name = Some("Bilbo"), amount = Some(1), amountBefore06042016 = amountBefore06042016) :: Nil
-
-
+  def loan(amountBefore06042016: Option[Int] = None): Loan = {
+    Loan(id = "1", name = Some("Bilbo"), amount = Some(1), amountBefore06042016 = amountBefore06042016)
+  }
 }

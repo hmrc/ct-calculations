@@ -48,15 +48,16 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
 
   // CHRIS cardinality 1..1 - cannot be null
   def calculateA20(a15: A15, loans2p: LoansToParticipators, cp2: CP2): A20 = {
-    val value =  if(shouldApply2022TaxRateForLoans(cp2)) {
-      val amountOfA15BeforeApril2022: Int = loans2p.loans.flatMap(_.amountBetween06042016To06042022).sum
-      amountAtNewTaxRate(a15.value, amountOfA15BeforeApril2022)
-    }else if(shouldApply2016TO2022OR2023TaxRateForLoans(cp2)) {
-      val amountOfA15BeforeApril2016: Int = loans2p.loans.flatMap(_.amountBefore06042016).sum
-      amountAt2016To2022OrAfter2023TaxRate(a15.value, amountOfA15BeforeApril2016)
+    val value = if(shouldApply2023TaxRateForLoans(cp2)) {
+      amountAtNewTaxRate(a15.value, loans2p.loans.flatMap(_.amountBetween06042022To06042023).sum)
+    } else if (shouldApply2022TaxRateForLoans(cp2)) {
+      amountAt2022TaxRate(a15.value, loans2p.loans.flatMap(_.amountBetween06042016To06042022).sum)
+    } else if (shouldApply2016TaxRateForLoans(cp2)) {
+      amountAt2016To2022TaxRate(a15.value, loans2p.loans.flatMap(_.amountBefore06042016).sum)
     } else {
       amountAtOldTaxRate(a15.value)
     }
+
     A20(value)
   }
 
@@ -83,23 +84,25 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
 
   // CHRIS cardinality 1..1 - cannot be empty
   def calculateA45(a40: A40, loans2p: LoansToParticipators, cp2: CP2): A45 = {
-    if(shouldApply2022TaxRateForLoans(cp2)||shouldApply2016TO2022OR2023TaxRateForLoans(cp2)) {
+    val value =
+      if(shouldApply2022TaxRateForLoans(cp2)||shouldApply2016TaxRateForLoans(cp2) || shouldApply2023TaxRateForLoans(cp2)) {
 
-      val validRepayments: List[Repayment] = validRepaymentsWithin9Months(loans2p.loans, cp2.value)
-      val validWriteOffs: List[WriteOff] = validWriteOffsWithin9Months(loans2p.loans, cp2.value)
-      if(shouldApply2022TaxRateForLoans(cp2)){
-        val amountOfA40BeforeApril2022 = totalAmountBeforeApril2022(validRepayments,validWriteOffs)
-        val value = amountAtNewTaxRate(a40.value, amountOfA40BeforeApril2022)
-        A45(value)
-      }else{
-        val amountOfA40InverseBeforeApril2016=totalAmountBeforeApril2016(validRepayments,validWriteOffs)
-        val value = amountAt2016To2022OrAfter2023TaxRate(a40.value, amountOfA40InverseBeforeApril2016)
-        A45(value)
-      }
+        val validRepayments: List[Repayment] = validRepaymentsWithin9Months(loans2p.loans, cp2.value)
+        val validWriteOffs: List[WriteOff] = validWriteOffsWithin9Months(loans2p.loans, cp2.value)
 
-    } else {
-      A45(amountAtOldTaxRate(a40.value))
-    }
+        if (shouldApply2023TaxRateForLoans(cp2)) {
+          val amountOfA40BeforeApril2023 = totalAmountBeforeApril2023(validRepayments, validWriteOffs)
+          amountAtNewTaxRate(a40.value, amountOfA40BeforeApril2023)
+        } else if(shouldApply2022TaxRateForLoans(cp2)) {
+          val amountOfA40BeforeApril2022 = totalAmountBeforeApril2022(validRepayments,validWriteOffs)
+          amountAt2022TaxRate(a40.value, amountOfA40BeforeApril2022)
+        } else {
+          val amountOfA40InverseBeforeApril2016=totalAmountBeforeApril2016(validRepayments,validWriteOffs)
+          amountAt2016To2022TaxRate(a40.value, amountOfA40InverseBeforeApril2016)
+        }
+      } else amountAtOldTaxRate(a40.value)
+
+    A45(value)
   }
 
   // CHRIS cardinality 0..1 - can be null
@@ -141,43 +144,45 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
 
   // CHRIS cardinality 1..1 - cannot be null
   def calculateA70(a65: A65, loans2p: LoansToParticipators, cp2: CP2, filingDate: LPQ07): A70 = {
-    if(shouldApply2022TaxRateForLoans(cp2)||shouldApply2016TO2022OR2023TaxRateForLoans(cp2)) {
-      val validRepayments: List[Repayment] = validRepaymentsWithLaterReliefNowDue(loans2p.loans, cp2.value, filingDate)
-      val validWriteOffs: List[WriteOff] = vailidWriteOffWithLaterReliefNowDue(loans2p.loans, cp2.value, filingDate)
-      if(shouldApply2022TaxRateForLoans(cp2)){
-        val amountOfA65BeforeApril2022 = totalAmountBeforeApril2022(validRepayments,validWriteOffs)
+    val value =
+      if(shouldApply2022TaxRateForLoans(cp2)||shouldApply2016TaxRateForLoans(cp2) || shouldApply2023TaxRateForLoans(cp2)) {
+        val validRepayments: List[Repayment] = validRepaymentsWithLaterReliefNowDue(loans2p.loans, cp2.value, filingDate)
+        val validWriteOffs: List[WriteOff] = vailidWriteOffWithLaterReliefNowDue(loans2p.loans, cp2.value, filingDate)
 
-        val value = amountAtNewTaxRate(a65.value, amountOfA65BeforeApril2022)
-        A70(value)
-      }else{
-        val amountOfA65BeforeApril2016=totalAmountBeforeApril2016(validRepayments,validWriteOffs)
+        if (shouldApply2023TaxRateForLoans(cp2)) {
+          val amountOfA65BeforeApril2023 = totalAmountBeforeApril2023(validRepayments, validWriteOffs)
+          amountAtNewTaxRate(a65.value, amountOfA65BeforeApril2023)
+        } else if(shouldApply2022TaxRateForLoans(cp2)) {
+          val amountOfA65BeforeApril2022 = totalAmountBeforeApril2022(validRepayments,validWriteOffs)
+          amountAt2022TaxRate(a65.value, amountOfA65BeforeApril2022)
+        } else {
+          val amountOfA65BeforeApril2016=totalAmountBeforeApril2016(validRepayments,validWriteOffs)
+          amountAt2016To2022TaxRate(a65.value, amountOfA65BeforeApril2016)
+        }
+      } else amountAtOldTaxRate(a65.value)
 
-        val value = amountAt2016To2022OrAfter2023TaxRate(a65.value, amountOfA65BeforeApril2016)
-        A70(value)
-      }
-    } else {
-      A70(amountAtOldTaxRate(a65.value))
-    }
+    A70(value)
   }
 
   def calculateA70Inverse(a65Inverse: A65Inverse, loans2p: LoansToParticipators, cp2: CP2, filingDate: LPQ07): A70Inverse = {
-    if(shouldApply2022TaxRateForLoans(cp2)||shouldApply2016TO2022OR2023TaxRateForLoans(cp2))  {
-      val validRepayments: List[Repayment] = validRepaymentsWithLaterReliefNotYetDue(loans2p.loans, cp2.value, filingDate)
-      val validWriteOffs: List[WriteOff] = vailidWriteOffWithLaterReliefNotYetDue(loans2p.loans, cp2.value, filingDate)
-      if(shouldApply2022TaxRateForLoans(cp2)){
-        val amountOfA65InverseBeforeApril2022 = totalAmountBeforeApril2022(validRepayments,validWriteOffs)
-        val value = amountAtNewTaxRate(a65Inverse.value, amountOfA65InverseBeforeApril2022)
-        A70Inverse(value)
-      }
-      else{
-        val amountOfA65InverseBeforeApril2016=totalAmountBeforeApril2016(validRepayments,validWriteOffs)
-        val value = amountAt2016To2022OrAfter2023TaxRate(a65Inverse.value, amountOfA65InverseBeforeApril2016)
-        A70Inverse(value)
-      }
-    } else {
-      A70Inverse(amountAtOldTaxRate(a65Inverse.value))
-    }
+    val value =
+      if(shouldApply2022TaxRateForLoans(cp2)||shouldApply2016TaxRateForLoans(cp2) || shouldApply2023TaxRateForLoans(cp2))  {
+        val validRepayments: List[Repayment] = validRepaymentsWithLaterReliefNotYetDue(loans2p.loans, cp2.value, filingDate)
+        val validWriteOffs: List[WriteOff] = vailidWriteOffWithLaterReliefNotYetDue(loans2p.loans, cp2.value, filingDate)
 
+        if (shouldApply2023TaxRateForLoans(cp2)) {
+          val amountOfA65InverseBeforeApril2023 = totalAmountBeforeApril2023(validRepayments, validWriteOffs)
+          amountAtNewTaxRate(a65Inverse.value, amountOfA65InverseBeforeApril2023)
+        } else if(shouldApply2022TaxRateForLoans(cp2)) {
+          val amountOfA65InverseBeforeApril2022 = totalAmountBeforeApril2022(validRepayments,validWriteOffs)
+          amountAt2022TaxRate(a65Inverse.value, amountOfA65InverseBeforeApril2022)
+        }  else {
+          val amountOfA65InverseBeforeApril2016=totalAmountBeforeApril2016(validRepayments,validWriteOffs)
+          amountAt2016To2022TaxRate(a65Inverse.value, amountOfA65InverseBeforeApril2016)
+        }
+      } else amountAtOldTaxRate(a65Inverse.value)
+
+    A70Inverse(value)
   }
 
   def calculateA75(a15: A15, lp04: LP04): A75 = {
@@ -251,34 +256,43 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   }
 
 
-  private def shouldApply2016TO2022OR2023TaxRateForLoans(cp2: CP2): Boolean = cp2.value >= DateOF2016TaxRateForLoans && cp2.value < DateOF2022TaxRateForLoans || cp2.value >= DateOf2023TaxRateForLoans
+  private def shouldApply2016TaxRateForLoans(cp2: CP2): Boolean = cp2.value >= DateOF2016TaxRateForLoans && cp2.value < DateOF2022TaxRateForLoans
 
   private def shouldApply2022TaxRateForLoans(cp2: CP2): Boolean = cp2.value >= DateOF2022TaxRateForLoans && cp2.value < DateOf2023TaxRateForLoans
 
+  private def shouldApply2023TaxRateForLoans(cp2: CP2): Boolean = cp2.value >= DateOf2023TaxRateForLoans
 
-  private def amountAt2016To2022OrAfter2023TaxRate(amountOpt: Option[Int], amountsBeforeApril2016: Int) = {
+
+  private def amountAt2016To2022TaxRate(amountOpt: Option[Int], amountsBeforeApril2016: Int) = {
     amountOpt match {
-      case Some(amount) => {
+      case Some(amount) =>
         val beforeApril2016 = BigDecimal(amount - amountsBeforeApril2016) * LoansRateBetweenApril2016TO2022OrAfterApril2023
         val afterApril2016 = BigDecimal(amountsBeforeApril2016) * LoansRateBeforeApril2016
         Some(beforeApril2016.setScale(2, BigDecimal.RoundingMode.HALF_UP) + afterApril2016.setScale(2, BigDecimal.RoundingMode.HALF_UP))
-      }
       case None => None
     }
   }
 
-  private def amountAtNewTaxRate(amountOpt: Option[Int], amountsBeforeApril2022: Int) = {
+  private def amountAt2022TaxRate(amountOpt: Option[Int], amountsBeforeApril2022: Int) = {
     amountOpt match {
-      case Some(amount) => {
+      case Some(amount) =>
         val afterApril2022 = BigDecimal(amount - amountsBeforeApril2022) * LoansRateAfterApril2022
         val beforeApril2022 = BigDecimal(amountsBeforeApril2022) * LoansRateBetweenApril2016TO2022OrAfterApril2023
         Some(beforeApril2022.setScale(2, BigDecimal.RoundingMode.HALF_UP) + afterApril2022.setScale(2, BigDecimal.RoundingMode.HALF_UP))
-      }
+      case None => None
+    }
+  }
+  private def amountAtNewTaxRate(amountOpt: Option[Int], amountsBeforeApril2023: Int) = {
+    amountOpt match {
+      case Some(amount) =>
+        val afterApril2023 = BigDecimal(amount - amountsBeforeApril2023) * LoansRateBetweenApril2016TO2022OrAfterApril2023
+        val beforeApril2023 = BigDecimal(amountsBeforeApril2023) * LoansRateAfterApril2022
+        Some(beforeApril2023.setScale(2, BigDecimal.RoundingMode.HALF_UP) + afterApril2023.setScale(2, BigDecimal.RoundingMode.HALF_UP))
       case None => None
     }
   }
 
-  private def totalAmountBeforeApril2016(validRepayments: List[Repayment],validWriteOffs: List[WriteOff]): Int ={
+  private def totalAmountBeforeApril2016(validRepayments: List[Repayment], validWriteOffs: List[WriteOff]): Int ={
 
     val sumOfRepaymentsBeforeApril2016 = validRepayments.flatMap(_.amountBefore06042016).sum
 
@@ -296,6 +310,15 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
 
     sumOfRepaymentsBeforeApril2022 + sumOflWriteOffsBeforeApril2022
 
+  }
+
+  private def totalAmountBeforeApril2023(validRepayments: List[Repayment], validWriteOffs: List[WriteOff]): Int = {
+
+    val sumOfRepaymentsBeforeApril2023 = validRepayments.flatMap(_.amountBetween06042022To06042023).sum
+
+    val sumOflWriteOffsBeforeApril2023 = validWriteOffs.flatMap(_.amountBetween06042022To06042023).sum
+
+    sumOfRepaymentsBeforeApril2023 + sumOflWriteOffsBeforeApril2023
   }
 
 }
