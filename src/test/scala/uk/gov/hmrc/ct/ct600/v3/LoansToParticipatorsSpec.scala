@@ -475,6 +475,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       errors.size shouldBe 1
       errors.head.boxId shouldBe Some("LoansToParticipators")
       errors.head.errorMessageKey shouldBe "error.compoundList.loans.0.writeOffs.0.beforeApril2016Amount.value"
+      errors.head.args shouldBe Some(List("50"))
     }
 
     "return an error if a write off has a date > 9 months after current AP End Date and no apEndDate" in {

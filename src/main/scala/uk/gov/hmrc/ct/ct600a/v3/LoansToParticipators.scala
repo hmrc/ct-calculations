@@ -298,9 +298,9 @@ case class WriteOff(id: String, amount: Option[Int], amountBetween06042022To0604
 
     validateWriteOff(invalidDate(boxRetriever), s"$writeOffErrorCode.$writeOffIndex.date.range", errorArgsWriteOffDate(boxRetriever), loanIndex) ++
     validateWriteOff(invalidWriteOffAmount, s"$writeOffErrorCode.$writeOffIndex.amount.value", None, loanIndex) ++
-    validateWriteOff(invalidWriteOffBeforeApril2016Amount, s"$writeOffErrorCode.$writeOffIndex.beforeApril2016Amount.value", Some(Seq(amount.toString)), loanIndex) ++
-    validateWriteOff(invalidWriteOffBeforeApril2022Amount, s"$writeOffErrorCode.$writeOffIndex.beforeApril2022Amount.value", Some(Seq(amount.toString)), loanIndex) ++
-    validateWriteOff(invalidWriteOffBeforeApril2023Amount, s"$writeOffErrorCode.$writeOffIndex.beforeApril2023Amount.value", Some(Seq(amount.toString)), loanIndex) ++
+    validateWriteOff(invalidWriteOffBeforeApril2016Amount, s"$writeOffErrorCode.$writeOffIndex.beforeApril2016Amount.value", Some(Seq(amount.getOrElse(0).toString)), loanIndex) ++
+    validateWriteOff(invalidWriteOffBeforeApril2022Amount, s"$writeOffErrorCode.$writeOffIndex.beforeApril2022Amount.value", Some(Seq(amount.getOrElse(0).toString)), loanIndex) ++
+    validateWriteOff(invalidWriteOffBeforeApril2023Amount, s"$writeOffErrorCode.$writeOffIndex.beforeApril2023Amount.value", Some(Seq(amount.getOrElse(0).toString)), loanIndex) ++
     validateWriteOff(invalidApEndDateRequired(boxRetriever), s"$writeOffErrorCode.$writeOffIndex.endDateOfAP.required", None, loanIndex) ++
     validateWriteOff(invalidApEndDateRange(boxRetriever), s"$writeOffErrorCode.$writeOffIndex.endDateOfAP.range", errorArgsWriteOffApEndDate(boxRetriever), loanIndex)
   }
