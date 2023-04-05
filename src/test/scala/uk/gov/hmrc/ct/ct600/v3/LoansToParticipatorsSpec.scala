@@ -383,10 +383,10 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return repayment index with empty ids" in {
-      val loanBob = Loan("1234", Some("Bob"), Some(1000), None, None, None, None, List(Repayment("37647364", Some(100), None, None, None, None)), List.empty)
-      val repayment1 = Repayment("45e0d65240504c869e7f4ce520a8d756", None, None, None, None, None)
-      val repayment2 = Repayment("40b9c9b7e721403984ee5779a2126ff6", None, None, None, None, None)
-      val loanTom = Loan("837843", Some("Tom"), Some(200), None, None, None,None, List(repayment1, repayment2), List.empty)
+      val loanBob = Loan("1234", Some("Bob"), Some(1000), None, None, None, List(Repayment("37647364", Some(100), None, None, None)), List.empty)
+      val repayment1 = Repayment("45e0d65240504c869e7f4ce520a8d756", None, None, None, None)
+      val repayment2 = Repayment("40b9c9b7e721403984ee5779a2126ff6", None, None, None, None)
+      val loanTom = Loan("837843", Some("Tom"), Some(200), None, None,None, List(repayment1, repayment2), List.empty)
 
       val l2p =  LoansToParticipators(List(loanTom, loanBob))
       val loanIndex = LoansToParticipators.findLoanIndex(loanTom, l2p)
@@ -513,10 +513,10 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
     }
 
     "return write off index with empty ids" in {
-      val loanBob = Loan("1234", Some("Bob"), Some(1000), None, None, None, None, List.empty, List(WriteOff("37647364", Some(100), None, None, None, None)))
-      val writeOff1 = WriteOff("45e0d65240504c869e7f4ce520a8d756", None, None, None, None, None)
-      val writeOff2 = WriteOff("40b9c9b7e721403984ee5779a2126ff6", None, None, None, None, None)
-      val loanTom = Loan("837843", Some("Tom"), Some(200), None, None, None, None, List.empty, List(writeOff1, writeOff2))
+      val loanBob = Loan("1234", Some("Bob"), Some(1000), None, None, None, List.empty, List(WriteOff("37647364", Some(100), None, None, None)))
+      val writeOff1 = WriteOff("45e0d65240504c869e7f4ce520a8d756", None, None, None, None)
+      val writeOff2 = WriteOff("40b9c9b7e721403984ee5779a2126ff6", None, None, None, None)
+      val loanTom = Loan("837843", Some("Tom"), Some(200), None, None, None, List.empty, List(writeOff1, writeOff2))
 
       val l2p =  LoansToParticipators(List(loanTom, loanBob))
       val loanIndex = LoansToParticipators.findLoanIndex(loanTom, l2p)
