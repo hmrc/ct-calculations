@@ -637,6 +637,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       val l2pBox = LoansToParticipators(List(validLoan2016.copy(
         amountBetween06042016To06042022 = Some(20),
         amountBefore06042016 = Some(10),
+        amount = Some(201),
         repaymentWithin9Months = Some(validRepaymentWithin9Months.copy(amountBetween06042016To06042022 = Some(10), amountBefore06042016 = Some(5))),
         otherRepayments = List(validRepaymentAfter9Months.copy(amountBetween06042016To06042022 = Some(6), amountBefore06042016 = Some(3))),
         writeOffs = List(validWriteOff.copy(amountBetween06042016To06042022 = Some(4), amountBefore06042016 = Some(1)))
@@ -644,7 +645,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
 
-      errors.size shouldBe 2
+      errors.size shouldBe 1
       errors.head.boxId shouldBe Some("LoansToParticipators")
       errors.head.errorMessageKey shouldBe "error.compoundList.loans.0.unbalanced.afterApril2016Amount"
       errors.head.args should be (Some(List("20", "10")))
