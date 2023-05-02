@@ -133,7 +133,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
 
-      errors.size shouldBe 2
+      errors.size shouldBe 3
       errors.contains(CtValidation(Some("LoansToParticipators"), "error.compoundList.loans.0.beforeApril2016Amount.value", Some(List("200")))) shouldBe true
     }
 
@@ -644,7 +644,7 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
 
       val errors = l2pBox.validate(boxRetriever)
 
-      errors.size shouldBe 1
+      errors.size shouldBe 2
       errors.head.boxId shouldBe Some("LoansToParticipators")
       errors.head.errorMessageKey shouldBe "error.compoundList.loans.0.unbalanced.afterApril2016Amount"
       errors.head.args should be (Some(List("20", "10")))
