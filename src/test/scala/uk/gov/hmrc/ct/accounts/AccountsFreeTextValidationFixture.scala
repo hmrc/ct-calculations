@@ -26,7 +26,7 @@ trait AccountsFreeTextValidationFixture[T <: AccountsBoxRetriever] extends WordS
   def boxRetriever: T
 
   //This can be overridden if mock box retriever calls need to be made
-  def setUpMocks(): Unit = Unit
+  def setUpMocks(): Unit = ()
 
   def testTextFieldValidation(boxId: String, builder: (Option[String]) => ValidatableBox[T], testLowerLimit: Option[Int] = None, testUpperLimit: Option[Int] = None, testMandatory: Option[Boolean] = Some(false)) = {
 

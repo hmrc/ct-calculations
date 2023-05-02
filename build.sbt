@@ -14,16 +14,15 @@
   }
 
   lazy val CtCalculations = (project in file("."))
-    .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
+    .enablePlugins(SbtAutoBuildPlugin)
     .disablePlugins(JUnitXmlReportPlugin)
     .settings(majorVersion := 2)
     .settings(scoverageSettings: _*)
     .settings(
       name := appName,
-      scalaVersion := "2.12.11",
+      scalaVersion := "2.13.10",
       libraryDependencies ++= Seq(
         "com.typesafe.play" %% "play-json-joda" % "2.9.2",
-        "uk.gov.hmrc" %% "play-time" % "0.14.0",
         "org.scalatest" %% "scalatest" % "3.0.8" % "test",
         "org.mockito" % "mockito-all" % "1.10.19" % "test",
         "org.pegdown" % "pegdown" % "1.6.0" % "test"

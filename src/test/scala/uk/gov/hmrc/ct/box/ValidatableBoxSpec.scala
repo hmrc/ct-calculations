@@ -20,7 +20,6 @@ import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.{Matchers, WordSpec}
 import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.cato.time.DateHelper
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3._
@@ -103,7 +102,7 @@ class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with
 
   "validateDateAsBlank" should {
     "return error if not blank" in {
-      validateDateAsBlank("testBox", testOptDateBox(Some(DateHelper.now()))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.nonBlankValue"))
+      validateDateAsBlank("testBox", testOptDateBox(Some(LocalDate.now()))) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.nonBlankValue"))
     }
 
     "return no errors if blank" in {

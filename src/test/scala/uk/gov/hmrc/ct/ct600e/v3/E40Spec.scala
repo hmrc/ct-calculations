@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.ct.ct600e.v3
 
+import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
-import uk.gov.hmrc.cato.time.DateHelper
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
@@ -27,7 +27,7 @@ import uk.gov.hmrc.ct.domain.ValidationConstants._
 class E40Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter{
 
   val boxRetriever = mock[CT600EBoxRetriever]
-  val NOW = DateHelper.now()
+  val NOW = LocalDate.now()
   val APEnd = NOW.minusMonths(1)
 
   before{
