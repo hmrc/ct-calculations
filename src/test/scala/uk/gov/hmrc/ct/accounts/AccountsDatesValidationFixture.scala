@@ -28,7 +28,7 @@ trait AccountsDatesValidationFixture[T <: AccountsBoxRetriever] extends WordSpec
   def boxRetriever: T
 
   //This can be overridden if mock box retriever calls need to be made
-  def setUpMocks(): Unit = Unit
+  def setUpMocks(): Unit = ()
 
   def testDateIsMandatory(boxId: String, builder: (Option[LocalDate]) => ValidatableBox[T]): Unit = {
     setUpMocks()
