@@ -84,7 +84,7 @@ case class Loan ( id: String,
     loansToParticipators.loans.exists(loan => loan.id != id && loan.name.exists(existingName => name.exists(_.trim.toLowerCase == existingName.trim.toLowerCase)))
   }
 
-  private def invalidLoanAmount: Boolean = amount.exists(_ < MIN_MONEY_AMOUNT_ALLOWED) || amount.exists(_ > MAX_MONEY_AMOUNT_ALLOWED)
+  private def invalidLoanAmount: Boolean = amount.exists(_ < MIN_MONEY_AMOUNT_ALLOWED) || amount.exists(_ > MAX_MONEY_AMOUNT_ALLOWED) || amount.isEmpty
 
   private def invalidBalancedAmount: Boolean = amount.exists(_ < totalAmountRepaymentsAndWriteOffs)
 
