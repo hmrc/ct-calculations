@@ -148,6 +148,27 @@ class LoansToParticipatorsSpec extends WordSpec with Matchers {
       errors.last.errorMessageKey shouldBe "error.compoundList.loans.0.unbalanced.beforeApril2016Amount"
     }
 
+    "pass validation if a loan has amountBefore06042016 set to 0" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBefore06042016 = Some(0))))
+      l2pBox.validate(boxRetriever) shouldBe empty
+    }
+
+    "return an error if a loan has invalid amountBefore06042022" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBetween06042016To06042022 = Some(-1))))
+
+      val errors = l2pBox.validate(boxRetriever)
+
+      errors.size shouldBe 2
+      errors.head.boxId shouldBe Some("LoansToParticipators")
+      errors.head.errorMessageKey shouldBe "error.compoundList.loans.0.beforeApril2022Amount.value"
+      errors.last.errorMessageKey shouldBe "error.compoundList.loans.0.unbalanced.beforeApril2022Amount"
+    }
+
+    "pass validation if a loan has amountBefore06042022 set to 0" in {
+      val l2pBox = LoansToParticipators(List(validLoan.copy(amountBetween06042016To06042022 = Some(0))))
+      l2pBox.validate(boxRetriever) shouldBe empty
+    }
+
     "return an error if a loan has the same name as an existing Loan" in {
       val l2pBox = LoansToParticipators(List(validLoan.copy(id = "999", name = Some("Kylo Ren")), validLoan.copy(id = "987", name = Some(" KYLO Ren "))))
 

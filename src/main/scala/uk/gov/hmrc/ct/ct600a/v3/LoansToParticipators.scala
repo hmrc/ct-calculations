@@ -88,7 +88,7 @@ case class Loan ( id: String,
 
   private def invalidBalancedAmount: Boolean = amount.exists(_ < totalAmountRepaymentsAndWriteOffs)
 
-  private def invalidLoanBeforeApril2022Amount: Boolean = amountBetween06042016To06042022.exists(_ < MIN_MONEY_AMOUNT_ALLOWED) || amountBetween06042016To06042022.exists(_ > MAX_MONEY_AMOUNT_ALLOWED)
+  private def invalidLoanBeforeApril2022Amount: Boolean = amountBetween06042016To06042022.exists(_ < 0) || amountBetween06042016To06042022.exists(_ > MAX_MONEY_AMOUNT_ALLOWED)
 
 
   private def invalidBeforeApril2022BalancedAmount: Boolean =  {
