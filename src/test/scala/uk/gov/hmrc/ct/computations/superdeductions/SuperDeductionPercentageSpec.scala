@@ -17,11 +17,12 @@
 package uk.gov.hmrc.ct.computations.superdeductions
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.{AC3, AC4, AC5, AC6}
 import uk.gov.hmrc.ct.computations.{HmrcAccountingPeriod, calculations}
 
-class SuperDeductionPercentageSpec extends WordSpec with Matchers {
+class SuperDeductionPercentageSpec extends AnyWordSpec with Matchers {
   val superDeductionPeriod = SuperDeductionPeriod(AC5(new LocalDate(2021,4,1)), AC6(new LocalDate(2023,3,31)))
   "SuperDeductionPercentage" should {
     "be 0 if filing period does not overlap super deduction period " in {

@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations.{CP501, CP502}
 
-class NonBankInterestSimilarIncomeReceivableCalculatorSpec extends WordSpec with Matchers {
+class NonBankInterestSimilarIncomeReceivableCalculatorSpec extends AnyWordSpec with Matchers {
 
   "NonBankInterestSimilarIncomeReceivableCalculator" should {
     "sum up the gross interest from property and the ancilliary income if both are defined" in new NonBankInterestSimilarIncomeReceivableCalculator {

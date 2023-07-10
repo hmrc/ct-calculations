@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.ct600e.v3.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.ct600e.v3._
 
-class IncomeCalculatorSpec extends WordSpec with Matchers with IncomeCalculator {
+class IncomeCalculatorSpec extends AnyWordSpec with Matchers with IncomeCalculator {
 
   "IncomeCalculator" should {
     "return None if all income boxes are None" in {

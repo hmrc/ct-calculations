@@ -17,11 +17,12 @@
 package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.CATO02
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
 
-class AnnualInvestmentAllowanceCalculatorSpec extends WordSpec with Matchers {
+class AnnualInvestmentAllowanceCalculatorSpec extends AnyWordSpec with Matchers {
 
   "AnnualInvestmentAllowanceCalculator.maximum using real periods" should {
     val amounts = AnnualInvestmentAllowancePeriods()

@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations._
 
-class ProfitAndLossCalculatorSpec extends WordSpec with Matchers {
+class ProfitAndLossCalculatorSpec extends AnyWordSpec with Matchers {
 
   "Calculating Gross Profit Or Loss Before Tax (CP44)" should {
     "return a positive number when profit is greater than costs" in new ProfitAndLossCalculator {

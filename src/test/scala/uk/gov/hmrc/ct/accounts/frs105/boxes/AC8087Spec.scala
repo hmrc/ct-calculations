@@ -17,11 +17,13 @@
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
+import org.scalatest.BeforeAndAfter
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.MockFrs105AccountsRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC8087Spec extends WordSpec
+class AC8087Spec extends AnyWordSpec
                  with MockitoSugar
                  with Matchers
                  with BeforeAndAfter

@@ -17,7 +17,9 @@
 package uk.gov.hmrc.ct.computations
 
 import org.mockito.Mockito.when
-import org.scalatest.{Assertion, Matchers, WordSpec}
+import org.scalatest.Assertion
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.BoxValidationFixture
 import uk.gov.hmrc.ct.box.CtValidation
@@ -25,7 +27,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.utils.UnitSpec
 
 
-class CP672aSpec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] with UnitSpec{
+class CP672aSpec extends AnyWordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] with UnitSpec{
 
   val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
 
@@ -35,7 +37,7 @@ class CP672aSpec extends WordSpec with MockitoSugar with Matchers with BoxValida
 
   private val lowerThan672a: Option[Int] = Some(50)
 
-  override def setUpMocks() = {
+  override def setUpMocks(): Unit = {
     when(boxRetriever.cp672()) thenReturn CP672(lowerThan672a)
     hasCompanyCeasedTradingMock(false)
   }

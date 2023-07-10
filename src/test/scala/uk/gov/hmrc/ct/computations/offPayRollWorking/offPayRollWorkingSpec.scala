@@ -17,11 +17,12 @@
 package uk.gov.hmrc.ct.computations.offPayRollWorking
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.{AC401, AC403}
 import uk.gov.hmrc.ct.box.CtValidation
 
-class offPayRollWorkingSpec extends WordSpec with Matchers {
+class offPayRollWorkingSpec extends AnyWordSpec with Matchers {
 
   "isOPWEnabled" should {
     "return false for before 2017-04-05" in {

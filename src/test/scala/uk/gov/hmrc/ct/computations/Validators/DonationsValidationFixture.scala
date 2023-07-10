@@ -18,13 +18,14 @@ package uk.gov.hmrc.ct.computations.Validators
 
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.CATO13
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-trait DonationsValidationFixture extends WordSpec with Matchers with MockitoSugar {
+trait DonationsValidationFixture extends AnyWordSpec with Matchers with MockitoSugar {
 
   def testGlobalDonationsValidationErrors(box: ValidatableBox[ComputationsBoxRetriever])(boxRetriever: ComputationsBoxRetriever): Unit = {
     when(boxRetriever.cp301()).thenReturn(CP301(1))

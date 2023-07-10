@@ -18,13 +18,14 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito.when
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.FilingCompanyType
 import uk.gov.hmrc.ct.accounts.{AC205, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.domain.CompanyTypes
 import uk.gov.hmrc.ct.utils.CatoInputBounds._
-class AC71Spec extends WordSpec with Matchers {
+class AC71Spec extends AnyWordSpec with Matchers {
 
   "AC71 validation if PY is not set" should {
     CompanyTypes.AllCompanyTypes.foreach { companyType =>

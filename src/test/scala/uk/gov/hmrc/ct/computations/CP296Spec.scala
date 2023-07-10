@@ -17,11 +17,12 @@
 package uk.gov.hmrc.ct.computations
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
 
-class CP296Spec extends WordSpec with Matchers with MockitoSugar {
+class CP296Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
   "calculate" should {
       val testBuildingCost = 1001

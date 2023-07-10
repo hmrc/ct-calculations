@@ -17,12 +17,13 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors
 
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
-class AC7501Spec extends WordSpec
+class AC7501Spec extends AnyWordSpec
   with MockitoSugar
   with Matchers
   with MockFrs102AccountsRetriever

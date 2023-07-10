@@ -17,11 +17,12 @@
 package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4, AC401, AC403}
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
 
-class ApportionedTurnoverCalculatorSpec extends WordSpec with Matchers {
+class ApportionedTurnoverCalculatorSpec extends AnyWordSpec with Matchers {
 
   // Filing period that is 18 months long and contains a leap year
   val ac3 = AC3(new LocalDate(2012, 1, 1))

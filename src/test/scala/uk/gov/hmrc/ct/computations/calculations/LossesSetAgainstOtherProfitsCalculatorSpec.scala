@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.CATO01
 import uk.gov.hmrc.ct.computations.{CP118, CP997, CP998, CPQ19}
 
-class LossesSetAgainstOtherProfitsCalculatorSpec extends WordSpec with Matchers {
+class LossesSetAgainstOtherProfitsCalculatorSpec extends AnyWordSpec with Matchers {
 
   "Losses Set Against Other Profits Calculator" should {
     "return CP118 when CP118 is less than CATO01 and CP118 is positive" in new LossesSetAgainstOtherProfitsCalculator {

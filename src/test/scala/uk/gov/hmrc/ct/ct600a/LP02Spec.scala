@@ -17,11 +17,12 @@
 package uk.gov.hmrc.ct.ct600a
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.ct600a.v2.formats.Loans
 import uk.gov.hmrc.ct.ct600a.v2.{Loan, LP02}
 
-class LP02Spec extends WordSpec with Matchers {
+class LP02Spec extends AnyWordSpec with Matchers {
 
   val someId = "123"
   

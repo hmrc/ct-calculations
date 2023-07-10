@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.ct.ct600.v2.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.ct600._
 import uk.gov.hmrc.ct.ct600.v2._
 
-class Ct600FinalisationCalculatorSpec extends WordSpec with Matchers {
+class Ct600FinalisationCalculatorSpec extends AnyWordSpec with Matchers {
 
   "Ct600FinalisationCalculator - computeTaxPayable" should {
 

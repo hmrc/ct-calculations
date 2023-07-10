@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.ct.ct600a.v2.formats
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.Json
 import uk.gov.hmrc.ct.ct600a.v2.{Loan, LP02}
 
-class LoansSpec extends WordSpec with Matchers {
+class LoansSpec extends AnyWordSpec with Matchers {
 
   implicit val formatter = Json.format[LP02Holder]
 

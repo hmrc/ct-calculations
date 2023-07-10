@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations.{CP85, CP86, CP87}
 
-class TotalFirstYearAllowanceClaimedCalculationSpec extends WordSpec with Matchers {
+class TotalFirstYearAllowanceClaimedCalculationSpec extends AnyWordSpec with Matchers {
 
   "TotalFirstYearAllowanceClaimedCalculation" should {
     "return an option with the calculation value" in new TotalFirstYearAllowanceClaimedCalculation {

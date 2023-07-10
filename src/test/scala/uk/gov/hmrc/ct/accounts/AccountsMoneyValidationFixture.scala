@@ -19,11 +19,12 @@ package uk.gov.hmrc.ct.accounts
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 import ValidatableBox._
-trait AccountsMoneyValidationFixture[T <: AccountsBoxRetriever] extends WordSpec with Matchers with MockitoSugar {
+trait AccountsMoneyValidationFixture[T <: AccountsBoxRetriever] extends AnyWordSpec with Matchers with MockitoSugar {
 
   def boxRetriever: T
 

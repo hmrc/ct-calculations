@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors.{AC306A, AC307A, AC308A, AC309A}
 
-class LoansToDirectorsCalculatorSpec extends WordSpec with Matchers {
+class LoansToDirectorsCalculatorSpec extends AnyWordSpec with Matchers {
 
   "LoansToDirectorsCalculator" should {
     "calculating AC309A" when {

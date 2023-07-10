@@ -18,12 +18,13 @@ package uk.gov.hmrc.ct.ct600.v2.validation
 
 import org.scalatestplus.mockito.MockitoSugar
 import org.mockito.Mockito._
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.ct600.v2.{RSQ7, RSQ8}
 import uk.gov.hmrc.ct.ct600.v2.retriever.ReturnStatementsBoxRetriever
 
-class RSQ7MutuallyExclusiveWithRSQ8Spec extends WordSpec with Matchers with MockitoSugar with RSQ7MutuallyExclusiveWithRSQ8 {
+class RSQ7MutuallyExclusiveWithRSQ8Spec extends AnyWordSpec with Matchers with MockitoSugar with RSQ7MutuallyExclusiveWithRSQ8 {
 
   "validateMutualExclusivity" should {
 

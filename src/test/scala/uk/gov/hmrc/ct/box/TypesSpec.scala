@@ -17,9 +17,10 @@
 package uk.gov.hmrc.ct.box
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class TypesSpec extends WordSpec with Matchers {
+class TypesSpec extends AnyWordSpec with Matchers {
 
   "CtOptionalInteger" should {
 

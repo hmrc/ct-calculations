@@ -16,14 +16,15 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.MockFrs102AccountsRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.FilingCompanyType
 import uk.gov.hmrc.ct.domain.CompanyTypes
 import uk.gov.hmrc.ct.utils.CatoInputBounds._
-class AC70Spec extends WordSpec with Matchers {
+class AC70Spec extends AnyWordSpec with Matchers {
 
   "AC70 validation for NON limited by guarantee" should {
       val companyTypes = CompanyTypes.AllCompanyTypes.filterNot(CompanyTypes.LimitedByGuaranteeCompanyTypes.contains)

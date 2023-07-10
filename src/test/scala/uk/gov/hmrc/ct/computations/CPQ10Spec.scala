@@ -19,11 +19,12 @@ package uk.gov.hmrc.ct.computations
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class CPQ10Spec extends WordSpec with Matchers with MockitoSugar {
+class CPQ10Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
 
 

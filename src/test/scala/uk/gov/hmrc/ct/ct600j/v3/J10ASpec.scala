@@ -19,12 +19,13 @@ package uk.gov.hmrc.ct.ct600j.v3
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 
-class J10ASpec extends WordSpec with MockitoSugar with Matchers {
+class J10ASpec extends AnyWordSpec with MockitoSugar with Matchers {
 
   "J10A validate" should {
     "not return errors when B140 is false" in {

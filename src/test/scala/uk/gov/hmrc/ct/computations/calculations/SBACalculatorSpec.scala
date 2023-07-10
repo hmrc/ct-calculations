@@ -17,9 +17,10 @@
 package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
-import uk.gov.hmrc.ct.computations.capitalAllowanceAndSBA._
-class SBACalculatorSpec extends WordSpec with Matchers {
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+
+class SBACalculatorSpec extends AnyWordSpec with Matchers {
 
   "SBA calculator" should {
 

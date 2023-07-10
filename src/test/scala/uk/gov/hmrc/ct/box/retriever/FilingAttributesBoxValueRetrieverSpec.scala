@@ -16,12 +16,13 @@
 
 package uk.gov.hmrc.ct.box.retriever
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.CtValue
 import uk.gov.hmrc.ct.domain.CompanyTypes
 
-class FilingAttributesBoxValueRetrieverSpec extends WordSpec with Matchers {
+class FilingAttributesBoxValueRetrieverSpec extends AnyWordSpec with Matchers {
 
   "FilingAttributesBoxValueRetriever" should {
     "have 14 functions" in {

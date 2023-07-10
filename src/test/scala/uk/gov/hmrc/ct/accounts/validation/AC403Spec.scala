@@ -18,12 +18,13 @@ package uk.gov.hmrc.ct.accounts.validation
 
 import org.scalatestplus.mockito.MockitoSugar
 import org.mockito.Mockito._
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.{AC401, AC403}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC403Spec extends WordSpec with Matchers with MockitoSugar {
+class AC403Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
   val boxRetriever = mock[AccountsBoxRetriever]
 

@@ -17,13 +17,15 @@
 package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.LocalDate
-import org.scalatest.{Assertion, Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.Assertion
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.lowEmissionCars.{Car, LEC01}
 
 case class TestCalculator() extends LowEmissionCarsCalculator
 
-class LowEmissionCarsCalculatorSpec extends WordSpec with Matchers with LowEmissionCarsCalculator {
+class LowEmissionCarsCalculatorSpec extends AnyWordSpec with Matchers with LowEmissionCarsCalculator {
 
   private val calculator = TestCalculator()
 

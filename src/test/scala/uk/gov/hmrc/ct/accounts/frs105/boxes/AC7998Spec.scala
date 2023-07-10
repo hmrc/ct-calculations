@@ -19,11 +19,12 @@ package uk.gov.hmrc.ct.accounts.frs105.boxes
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AC3, AccountsIntegerValidationFixture, MockFrs105AccountsRetriever}
 
-class AC7998Spec extends WordSpec with Matchers with MockitoSugar with AccountsIntegerValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
+class AC7998Spec extends AnyWordSpec with Matchers with MockitoSugar with AccountsIntegerValidationFixture[Frs105AccountsBoxRetriever] with MockFrs105AccountsRetriever {
 
   private val boxID = "AC7998"
   private val minNumberOfEmployees = Some(0)

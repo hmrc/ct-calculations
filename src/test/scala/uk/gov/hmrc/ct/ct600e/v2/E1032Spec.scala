@@ -19,12 +19,14 @@ package uk.gov.hmrc.ct.ct600e.v2
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
+import org.scalatest.BeforeAndAfter
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.ct600e.v2.retriever.CT600EBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 
-class E1032Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter{
+class E1032Spec extends AnyWordSpec with MockitoSugar with Matchers with BeforeAndAfter{
 
   val boxRetriever = mock[CT600EBoxRetriever]
   val NOW = LocalDate.now()

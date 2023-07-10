@@ -17,11 +17,12 @@
 package uk.gov.hmrc.ct.ct600.v2
 
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.ct600.v2.retriever.CT600BoxRetriever
 import org.mockito.Mockito._
 
-class B42Spec extends WordSpec with Matchers with MockitoSugar {
+class B42Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
   "B42" should {
 

@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.CATO01
 import uk.gov.hmrc.ct.computations.{CP43, CP502, CP509, CP510}
 
-class NonTradeIncomeCalculatorSpec extends WordSpec with Matchers {
+class NonTradeIncomeCalculatorSpec extends AnyWordSpec with Matchers {
 
   "computeNonTradeIncome" should {
     "return CP43 + CP502 + CP509 + CP510" in new NonTradeIncomeCalculator {

@@ -17,7 +17,8 @@
 package uk.gov.hmrc.ct.computations
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
 import uk.gov.hmrc.ct._
@@ -110,7 +111,7 @@ class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
 }
 
 
-class MachineryAndPlantValidationSpec extends WordSpec with Matchers {
+class MachineryAndPlantValidationSpec extends AnyWordSpec with Matchers {
   val stubBoxRetriever = new MyStubbedComputationsRetriever
 
   "CP78 " should {

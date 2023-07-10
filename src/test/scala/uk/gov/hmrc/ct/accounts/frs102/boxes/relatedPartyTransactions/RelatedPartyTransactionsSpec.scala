@@ -19,7 +19,9 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes.relatedPartyTransactions
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.frs102.boxes.AC7800
 import uk.gov.hmrc.ct.accounts.frs102.retriever.AbridgedAccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AC205, AC206}
@@ -27,7 +29,7 @@ import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.utils.CatoInputBounds._
 
-class RelatedPartyTransactionsSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
+class RelatedPartyTransactionsSpec extends AnyWordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
   import RelatedPartyTransactionsMockSetup._
 
   val mockBoxRetriever = mock[AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever]

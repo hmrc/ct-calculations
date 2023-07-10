@@ -17,11 +17,12 @@
 package uk.gov.hmrc.ct.ct600.calculations
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations.{CP1, CP2, HmrcAccountingPeriod}
 
 
-class AccountingPeriodHelperSpec extends WordSpec with Matchers {
+class AccountingPeriodHelperSpec extends AnyWordSpec with Matchers {
 
   "accountingPeriodDaysInFinancialYear" should {
 

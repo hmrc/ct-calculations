@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.ct600e.v2.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.ct600e.v2._
 
-class LoansAndDebtorsCalculatorSpec extends WordSpec with Matchers with LoansAndDebtorsCalculator {
+class LoansAndDebtorsCalculatorSpec extends AnyWordSpec with Matchers with LoansAndDebtorsCalculator {
 
   "LoansAndDebtorsCalculator" should {
     "return None if all income boxes are None" in {

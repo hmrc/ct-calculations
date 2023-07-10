@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.ct.ct600.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class Ct600AnnualConstantsSpec extends WordSpec with Matchers {
+class Ct600AnnualConstantsSpec extends AnyWordSpec with Matchers {
 
   "Ct600AnnualConstants" should {
 

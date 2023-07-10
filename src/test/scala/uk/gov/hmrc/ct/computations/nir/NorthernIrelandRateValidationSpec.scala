@@ -20,7 +20,8 @@ import org.joda.time.LocalDate
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.CATO01
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations._
@@ -67,7 +68,7 @@ object LossesBroughtForwardAgainstNonTradingProfit {
 }
 
 
-class NorthernIrelandRateValidationSpec extends WordSpec with Matchers with MockitoSugar {
+class NorthernIrelandRateValidationSpec extends AnyWordSpec with Matchers with MockitoSugar {
 
   "NorthernIrelandRateValidation" should {
     "if NIR is active for current period with NIR losses carried forward from previous period" when {

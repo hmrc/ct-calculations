@@ -21,7 +21,8 @@ import org.mockito.Mockito._
 import org.scalatest.prop.TableDrivenPropertyChecks.forAll
 import org.scalatest.prop.TableFor6
 import org.scalatest.prop.Tables.Table
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
@@ -30,7 +31,7 @@ import uk.gov.hmrc.ct.domain.CompanyTypes
 import uk.gov.hmrc.ct.domain.CompanyTypes.CompanyType
 import uk.gov.hmrc.ct.{AbridgedFiling, CATO24, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
 import uk.gov.hmrc.ct.utils.CatoInputBounds._
-class AC12Spec extends WordSpec with Matchers with MockitoSugar {
+class AC12Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
   "AC12 validation" should {
 

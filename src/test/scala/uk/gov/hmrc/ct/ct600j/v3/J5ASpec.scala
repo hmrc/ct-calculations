@@ -18,7 +18,8 @@ package uk.gov.hmrc.ct.ct600j.v3
 
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
@@ -27,7 +28,7 @@ import org.joda.time.LocalDate
 import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 
 
-class J5ASpec extends WordSpec with MockitoSugar with Matchers {
+class J5ASpec extends AnyWordSpec with MockitoSugar with Matchers {
 
   "J5A validate" should {
     "not return errors when B140 is false" in {

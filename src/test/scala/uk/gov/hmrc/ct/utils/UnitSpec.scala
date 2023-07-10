@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.utils
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.CtValidation
 
-trait UnitSpec extends WordSpec with Matchers with Mocks {
+trait UnitSpec extends AnyWordSpec with Matchers with Mocks {
 
  val validationSuccess: Set[CtValidation] = Set()
 

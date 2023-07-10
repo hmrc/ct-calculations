@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations._
 
-class SuperDeductionAdjustedTradingProfitOrLossCalculatorSpec extends WordSpec with Matchers {
+class SuperDeductionAdjustedTradingProfitOrLossCalculatorSpec extends AnyWordSpec with Matchers {
 
   "Calculator for Adjusted Trading Profit (CP117) for super deduction" should {
     "return a trading profit calculated as CP44 + CP54 - CP59 - CP186 + CP91 + CP670 - CP668 + cp679 - CP297 - CP986" in

@@ -16,13 +16,14 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.version.calculations.ComputationsBoxRetrieverForTest
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 
-class CP503Spec extends WordSpec with MockitoSugar with Matchers {
+class CP503Spec extends AnyWordSpec with MockitoSugar with Matchers {
 
   "validateNotExceedingCP501" should {
     "return validation error if value is more that CP501" in {

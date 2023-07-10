@@ -16,12 +16,13 @@
 
 package uk.gov.hmrc.ct.ct600e.v3
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 
-class E25Spec extends WordSpec with MockitoSugar with Matchers {
+class E25Spec extends AnyWordSpec with MockitoSugar with Matchers {
 
 
   "E25 calculated from E20" should {

@@ -19,12 +19,14 @@ package uk.gov.hmrc.ct.accounts.approval.accountsApproval.accountsApproval
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
+import org.scalatest.BeforeAndAfter
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.approval.boxes.AC198A
 import uk.gov.hmrc.ct.accounts.{AC4, AccountsDatesValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 
-class AC198ASpec extends WordSpec
+class AC198ASpec extends AnyWordSpec
   with MockitoSugar
   with Matchers
   with MockFrs102AccountsRetriever

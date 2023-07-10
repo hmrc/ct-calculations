@@ -22,9 +22,10 @@
       name := appName,
       scalaVersion := "2.13.10",
       libraryDependencies ++= Seq(
-        "com.typesafe.play" %% "play-json-joda" % "2.9.2",
-        "org.scalatest" %% "scalatest" % "3.0.8" % "test",
-        "org.mockito" % "mockito-all" % "1.10.19" % "test",
+        "com.typesafe.play" %% "play-json-joda" % "2.9.4",
+        "org.scalatest" %% "scalatest" % "3.2.16" % "test",
+        "org.scalatestplus" %% "mockito-3-4" % "3.2.10.0" % "test",
+        "com.vladsch.flexmark" % "flexmark-all" % "0.64.8" % "test",
         "org.pegdown" % "pegdown" % "1.6.0" % "test"
       )
     )

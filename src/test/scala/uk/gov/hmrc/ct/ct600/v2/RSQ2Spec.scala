@@ -17,14 +17,15 @@
 package uk.gov.hmrc.ct.ct600.v2
 
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.computations.CP287
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class RSQ2Spec extends WordSpec with Matchers with MockitoSugar {
+class RSQ2Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
   "RSQ2 validation" should {
 

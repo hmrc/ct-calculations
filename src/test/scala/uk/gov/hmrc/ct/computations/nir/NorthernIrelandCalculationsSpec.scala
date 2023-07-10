@@ -17,13 +17,14 @@
 package uk.gov.hmrc.ct.computations.nir
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations.{CP1, CP2, CP291, HmrcAccountingPeriod}
 import uk.gov.hmrc.ct.ct600.calculations.NITradingProfitCalculationParameters
 import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
 import uk.gov.hmrc.ct.ct600.v3._
 
-class NorthernIrelandCalculationsSpec extends WordSpec with NorthernIrelandCalculations with Matchers{
+class NorthernIrelandCalculationsSpec extends AnyWordSpec with NorthernIrelandCalculations with Matchers{
   "B360 = B355 * B350" in new CorporationTaxCalculator {
 
     calculateTaxForTradingProfitForFirstFinancialYear(B350(Some(40)), B355(Some(BigDecimal("40.41")))) shouldBe B360(Some(BigDecimal("1616.4")))

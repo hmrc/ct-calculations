@@ -19,14 +19,15 @@ package uk.gov.hmrc.ct.computations.lowEmissionCars
 import org.joda.time.LocalDate
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.CountryOfRegistration
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations._
 
-class LowEmissionCarsAcceptanceCriteriaSpec extends WordSpec with Matchers {
+class LowEmissionCarsAcceptanceCriteriaSpec extends AnyWordSpec with Matchers {
 
   /*    CPQ8        Ceased Trading
         CP78        Written down value brought forward

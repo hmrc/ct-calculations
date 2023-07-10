@@ -17,9 +17,10 @@
 package uk.gov.hmrc.ct.accounts.frsse2008.calculations
 
 import org.joda.time.LocalDate
-import org.scalatest.{WordSpec, Matchers}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class PeriodCalculatorSpec extends WordSpec with Matchers {
+class PeriodCalculatorSpec extends AnyWordSpec with Matchers {
 
   "periodHeading" should {
 

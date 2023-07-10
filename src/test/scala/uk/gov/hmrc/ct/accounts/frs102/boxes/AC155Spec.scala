@@ -18,11 +18,12 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC155Spec extends WordSpec with Matchers with MockitoSugar {
+class AC155Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
   "AC155" should {
 

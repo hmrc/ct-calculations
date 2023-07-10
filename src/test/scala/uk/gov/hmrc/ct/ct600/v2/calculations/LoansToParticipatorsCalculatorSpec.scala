@@ -18,13 +18,14 @@ package uk.gov.hmrc.ct.ct600.v2.calculations
 
 import org.joda.time.LocalDate
 import org.scalatest.prop.TableDrivenPropertyChecks._
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations.CP2
 import uk.gov.hmrc.ct.ct600.v2.B80
 import uk.gov.hmrc.ct.ct600a._
 import uk.gov.hmrc.ct.ct600a.v2._
 
-class LoansToParticipatorsCalculatorSpec extends WordSpec with Matchers {
+class LoansToParticipatorsCalculatorSpec extends AnyWordSpec with Matchers {
 
   def someDate(value:String):Option[LocalDate] = Some(new LocalDate(value))
 

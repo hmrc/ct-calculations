@@ -16,12 +16,14 @@
 
 package uk.gov.hmrc.ct
 
+import org.scalatest.BeforeAndAfter
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-trait BoxValidationFixture[T <: ComputationsBoxRetriever] extends WordSpec with Matchers with MockitoSugar with BeforeAndAfter {
+trait BoxValidationFixture[T <: ComputationsBoxRetriever] extends AnyWordSpec with Matchers with MockitoSugar with BeforeAndAfter {
 
   def boxRetriever: T
 

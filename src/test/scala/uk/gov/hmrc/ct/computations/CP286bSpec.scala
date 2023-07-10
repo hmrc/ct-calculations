@@ -17,13 +17,14 @@
 package uk.gov.hmrc.ct.computations
 
 import org.mockito.Mockito.when
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.nir.NorthernIrelandRateValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class CP286bSpec extends WordSpec with Matchers with MockitoSugar with NorthernIrelandRateValidation{
+class CP286bSpec extends AnyWordSpec with Matchers with MockitoSugar with NorthernIrelandRateValidation{
 
   "CP286b" should {
     val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]

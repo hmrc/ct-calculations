@@ -17,11 +17,12 @@
 package uk.gov.hmrc.ct.ct600a
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.ct600a.v2.formats.Loans
 import uk.gov.hmrc.ct.ct600a.v2.{WriteOff, LP03}
 
-class LP03Spec extends WordSpec with Matchers {
+class LP03Spec extends AnyWordSpec with Matchers {
 
   "LP03 to json" should {
     "create valid json for a single writeoff using only required fields " in {
