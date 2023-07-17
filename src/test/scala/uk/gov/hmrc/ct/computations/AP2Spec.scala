@@ -17,7 +17,8 @@
 package uk.gov.hmrc.ct.computations
 
 import org.mockito.Mockito.when
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.BoxValidationFixture
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.{AC12, AC401, AC403}
@@ -25,7 +26,7 @@ import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class AP2Spec extends WordSpec with Matchers with BoxValidationFixture[AccountsBoxRetriever with ComputationsBoxRetriever] {
+class AP2Spec extends AnyWordSpec with Matchers with BoxValidationFixture[AccountsBoxRetriever with ComputationsBoxRetriever] {
 
   trait AccountsBoxRetrieverWithComputationsBoxRetriever extends AccountsBoxRetriever with ComputationsBoxRetriever with FilingAttributesBoxValueRetriever
   override val boxRetriever = mock[AccountsBoxRetrieverWithComputationsBoxRetriever]

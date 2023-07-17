@@ -17,11 +17,12 @@
 package uk.gov.hmrc.ct.computations.calculations
 
 import org.scalatest.prop.TableDrivenPropertyChecks.forAll
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations.{CP997c, _}
 import org.scalatest.prop.Tables.Table
 
-class LossesCarriedForwardsCalculatorSpec extends WordSpec with Matchers {
+class LossesCarriedForwardsCalculatorSpec extends AnyWordSpec with Matchers {
 
   val table = Table(
     ("CP281", "CP118", "CP283", "CP998", "CP997", "CP287", "result"),

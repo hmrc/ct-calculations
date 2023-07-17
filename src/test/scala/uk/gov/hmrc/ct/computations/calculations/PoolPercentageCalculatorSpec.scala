@@ -17,11 +17,12 @@
 package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
 
-class PoolPercentageCalculatorSpec extends WordSpec with Matchers  {
+class PoolPercentageCalculatorSpec extends AnyWordSpec with Matchers  {
 
   val calculator = PoolPercentageCalculator(oldMainRate = 18, newMainRate = 18, oldSpecialRate = 8, newSpecialRate = 6, newRateStartDate =  new LocalDate("2019-01-01"))
 

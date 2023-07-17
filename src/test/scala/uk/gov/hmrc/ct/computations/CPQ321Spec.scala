@@ -19,7 +19,8 @@ package uk.gov.hmrc.ct.computations
 import org.joda.time.LocalDate
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.Json
 import uk.gov.hmrc.ct.CATO13
 import uk.gov.hmrc.ct.box.CtValidation
@@ -27,7 +28,7 @@ import uk.gov.hmrc.ct.computations.Validators.DonationsValidationFixture
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.formats._
 
-class CPQ321Spec extends WordSpec with Matchers with MockitoSugar with DonationsValidationFixture {
+class CPQ321Spec extends AnyWordSpec with Matchers with MockitoSugar with DonationsValidationFixture {
 
   implicit val format = Json.format[CPQ321Holder]
 

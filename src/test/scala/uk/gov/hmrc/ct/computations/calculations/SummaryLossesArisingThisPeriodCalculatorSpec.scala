@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations.{CP118, CP235}
 import uk.gov.hmrc.ct.ct600.v2.B122
 
-class SummaryLossesArisingThisPeriodCalculatorSpec extends WordSpec with Matchers {
+class SummaryLossesArisingThisPeriodCalculatorSpec extends AnyWordSpec with Matchers {
 
   "SummaryLossesArisingThisPeriodCalculator" should {
     "return None if Adjusted trading profit or loss equals zero" in new SummaryLossesArisingThisPeriodCalculator {

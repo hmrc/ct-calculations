@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.ct600e.v3.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.ct600e.v3._
 
-class ExpenditureCalculatorSpec extends WordSpec with ExpenditureCalculator with Matchers {
+class ExpenditureCalculatorSpec extends AnyWordSpec with ExpenditureCalculator with Matchers {
 
   "ExpenditureCalculator" should {
     "return None if all Expenditure boxes are None" in {

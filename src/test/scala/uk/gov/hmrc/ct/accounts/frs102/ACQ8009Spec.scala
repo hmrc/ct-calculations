@@ -17,15 +17,14 @@
 package uk.gov.hmrc.ct.accounts.frs102
 
 import org.mockito.Mockito._
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC8021, AC8023, ACQ8009}
-import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling, MicroEntityFiling}
 
-class ACQ8009Spec extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach {
+class ACQ8009Spec extends AnyWordSpec with Matchers with MockitoSugar with BeforeAndAfterEach {
 
   val mockBoxRetriever = mock[MockableFrs10xBoxretrieverWithFilingAttributes]
 

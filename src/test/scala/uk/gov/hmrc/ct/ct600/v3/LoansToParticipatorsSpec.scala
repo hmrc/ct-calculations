@@ -17,13 +17,14 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.CP2
 import uk.gov.hmrc.ct.ct600.v3.stubs.StubbedCT600BoxRetriever
 import uk.gov.hmrc.ct.ct600a.v3._
 
-class LoansToParticipatorsSpec extends WordSpec with Matchers {
+class LoansToParticipatorsSpec extends AnyWordSpec with Matchers {
 
   //Know this isn't a V3 date but required so our +9 months date aren't before the current date
   val currentAPEndDate = new LocalDate(2021, 2, 1)

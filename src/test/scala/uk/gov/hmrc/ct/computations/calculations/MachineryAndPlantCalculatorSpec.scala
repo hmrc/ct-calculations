@@ -16,14 +16,13 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.CATO20
-import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.machineryAndPlant._
 
-class MachineryAndPlantCalculatorSpec extends WordSpec with Matchers {
+class MachineryAndPlantCalculatorSpec extends AnyWordSpec with Matchers {
 
   "computeBalanceAllowance CP90" should {
 

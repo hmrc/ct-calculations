@@ -18,7 +18,8 @@ package uk.gov.hmrc.ct.computations
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito.when
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.BoxValidationFixture
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever

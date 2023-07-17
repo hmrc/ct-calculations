@@ -17,14 +17,15 @@
 package uk.gov.hmrc.ct.computations
 
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.Json
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.formats._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import  uk.gov.hmrc.ct.utils.CatoInputBounds._
 
-class CP8Spec extends WordSpec with Matchers with MockitoSugar {
+class CP8Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
   implicit val format = Json.format[CP8Holder]
 

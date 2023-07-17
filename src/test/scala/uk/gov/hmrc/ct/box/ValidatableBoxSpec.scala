@@ -18,7 +18,8 @@ package uk.gov.hmrc.ct.box
 
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
@@ -27,7 +28,7 @@ import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever
 import uk.gov.hmrc.ct.domain.ValidationConstants._
 
 
-class ValidatableBoxSpec  extends WordSpec with MockitoSugar  with Matchers with ValidatableBox[BoxRetriever]{
+class ValidatableBoxSpec  extends AnyWordSpec with MockitoSugar  with Matchers with ValidatableBox[BoxRetriever]{
 
   override def validate(boxRetriever: BoxRetriever): Set[CtValidation] = ???
 

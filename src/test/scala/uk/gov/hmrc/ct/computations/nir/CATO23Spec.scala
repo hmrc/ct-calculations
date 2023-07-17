@@ -17,13 +17,14 @@
 package uk.gov.hmrc.ct.computations.nir
 
 import org.mockito.Mockito.when
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.computations.{CP997NI, CP998}
 import uk.gov.hmrc.ct.{BoxValidationFixture, CATO01, CATO23}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class CATO23Spec extends WordSpec with Matchers with MockitoSugar with BoxValidationFixture[ComputationsBoxRetriever] {
+class CATO23Spec extends AnyWordSpec with Matchers with MockitoSugar with BoxValidationFixture[ComputationsBoxRetriever] {
 
   override val boxRetriever: ComputationsBoxRetriever = makeBoxRetriever()
 

@@ -18,7 +18,9 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes.loansToDirectors
 
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC8021, Director, Directors}
@@ -26,7 +28,7 @@ import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
-class AC304ASpec extends WordSpec
+class AC304ASpec extends AnyWordSpec
   with MockitoSugar
   with Matchers
   with MockFrs102AccountsRetriever

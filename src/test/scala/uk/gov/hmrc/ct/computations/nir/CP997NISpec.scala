@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.ct.computations.nir
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.CATO01
@@ -24,7 +25,7 @@ import uk.gov.hmrc.ct.computations.stubs.NorthernIrelandStubbedComputationsBoxRe
 import uk.gov.hmrc.ct.ct600.v3._
 
 
-class CP997NISpec extends WordSpec with Matchers with MockitoSugar with NorthernIrelandRateValidation {
+class CP997NISpec extends AnyWordSpec with Matchers with MockitoSugar with NorthernIrelandRateValidation {
 
 
     def makeBoxRetriever(cpq117Value: Option[Boolean] = Some(true), cato01Value: Int = 1000, cp997dValue: Option[Int] = Some(200), cp997eValue: Option[Int] = Some(200), b7Value: Option[Boolean] = Some(true)) = {

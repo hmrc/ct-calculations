@@ -18,7 +18,8 @@ package uk.gov.hmrc.ct.accounts.validation
 
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.FilingCompanyType
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
@@ -30,7 +31,7 @@ trait Frs102TestBoxRetriever extends Frs102AccountsBoxRetriever with FilingAttri
 
 trait Frs105TestBoxRetriever extends Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever
 
-trait ValidateAssetsEqualSharesSpec[T <: FilingAttributesBoxValueRetriever] extends WordSpec with Matchers with MockitoSugar {
+trait ValidateAssetsEqualSharesSpec[T <: FilingAttributesBoxValueRetriever] extends AnyWordSpec with Matchers with MockitoSugar {
 
   def addOtherBoxValue100Mock(mockRetriever: T): Unit
 
@@ -42,7 +43,7 @@ trait ValidateAssetsEqualSharesSpec[T <: FilingAttributesBoxValueRetriever] exte
 
     s"$boxId" should {
       "for NON limited by guarantee company" when {
-        val noLimitedByGuaranteeCompanies = CompanyTypes.AllCompanyTypes.filterNot(CompanyTypes.LimitedByGuaranteeCompanyTypes.contains)
+        val noLimitedByGuaranteeCompanies = CompanyTypes.AllCompanyTypes.diff(CompanyTypes.LimitedByGuaranteeCompanyTypes)
         noLimitedByGuaranteeCompanies.foreach { companyType =>
           s"return an error if it has a different value to other box for companyType: $companyType" in {
             val retriever = createMock()

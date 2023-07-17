@@ -18,10 +18,11 @@ package uk.gov.hmrc.ct.computations
 
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{FunSuite, Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class CP999Spec extends WordSpec with Matchers with MockitoSugar  {
+class CP999Spec extends AnyWordSpec with Matchers with MockitoSugar  {
   "CP999" should {
     "return 0 if didCompanyMakeDonations didCompanyMakeGrassrootsDonations are both false" in {
       val boxRetriever = mock[ComputationsBoxRetriever]

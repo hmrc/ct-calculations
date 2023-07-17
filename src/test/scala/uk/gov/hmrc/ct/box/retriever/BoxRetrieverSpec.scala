@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.ct.box.retriever
 
-import org.scalatest.Matchers._
-import org.scalatest.WordSpec
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box._
 
-class BoxRetrieverSpec extends WordSpec {
+class BoxRetrieverSpec extends AnyWordSpec with Matchers {
 
   val fakeBox1Validation = CtValidation(Some("FakeBox1"), "fake1")
   val fakeBox2Validation = CtValidation(Some("FakeBox2"), "fake2")

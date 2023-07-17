@@ -17,12 +17,13 @@
 package uk.gov.hmrc.ct.computations.calculations
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.CATO03
 import uk.gov.hmrc.ct.computations._
 
 
-class WritingDownAllowanceCalculatorSpec extends WordSpec with Matchers {
+class WritingDownAllowanceCalculatorSpec extends AnyWordSpec with Matchers {
 
   "WritingDownAllowanceCalculator" should {
 

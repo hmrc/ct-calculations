@@ -17,14 +17,15 @@
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.CATO05
 import uk.gov.hmrc.ct.CATO05.computeMarginalRateReliefV3
 import uk.gov.hmrc.ct.computations.{CP1, CP2, HmrcAccountingPeriod}
 import uk.gov.hmrc.ct.ct600.calculations.InvalidAccountingPeriodException
 import uk.gov.hmrc.ct.ct600.v3.{B315, B326, B327, B328, B335, B385}
 
-class MarginalRateReliefCalculatorV3Spec extends WordSpec with Matchers {
+class MarginalRateReliefCalculatorV3Spec extends AnyWordSpec with Matchers {
 
   "V3 MarginalRateReliefCaclculator input validation" should {
 

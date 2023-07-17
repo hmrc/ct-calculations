@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
 
-class TotalFixedAssetsCalculatorSpec extends WordSpec with Matchers with TotalFixedAssetsCalculator {
+class TotalFixedAssetsCalculatorSpec extends AnyWordSpec with Matchers with TotalFixedAssetsCalculator {
 
   "TotalFixedAssetsCalculator" should {
 

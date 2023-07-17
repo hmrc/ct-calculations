@@ -16,13 +16,14 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.accounts.{AC401, AC403}
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
 
 
-class CP986Spec extends WordSpec with Matchers with MockitoSugar {
+class CP986Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
   "CP986" should {
     "calculate cp986 as 0 if they have made a loss this year." in {

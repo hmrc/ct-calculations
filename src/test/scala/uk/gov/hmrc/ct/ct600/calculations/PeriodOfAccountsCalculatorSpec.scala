@@ -17,10 +17,11 @@
 package uk.gov.hmrc.ct.ct600.calculations
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.{AC3, AC4}
 
-class PeriodOfAccountsCalculatorSpec extends WordSpec with Matchers with PeriodOfAccountsCalculator {
+class PeriodOfAccountsCalculatorSpec extends AnyWordSpec with Matchers with PeriodOfAccountsCalculator {
 
   "isLongPeriodOfAccounts" should {
 

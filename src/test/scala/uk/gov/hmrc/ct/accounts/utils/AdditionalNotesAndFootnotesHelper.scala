@@ -17,10 +17,11 @@
 package uk.gov.hmrc.ct.accounts.utils
 
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.CtValidation
 
-trait AdditionalNotesAndFootnotesHelper extends WordSpec with Matchers with MockitoSugar {
+trait AdditionalNotesAndFootnotesHelper extends AnyWordSpec with Matchers with MockitoSugar {
 
   val input: String = "Some very off balance arrangements"
 

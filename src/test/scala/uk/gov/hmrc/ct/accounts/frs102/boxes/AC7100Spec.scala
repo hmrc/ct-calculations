@@ -17,11 +17,12 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC7100Spec extends WordSpec with Matchers with MockitoSugar {
+class AC7100Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
   val boxRetriever = mock[Frs10xDirectorsBoxRetriever]
 

@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.ct.accounts.frs102
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC8033
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC8033Spec extends WordSpec with Matchers {
+class AC8033Spec extends AnyWordSpec with Matchers {
 
   "AC8033 should" should {
 

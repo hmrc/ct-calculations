@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
 
-class TotalCreditorsWithinOneYearCalculatorSpec extends WordSpec with Matchers with TotalCreditorsWithinOneYearCalculator {
+class TotalCreditorsWithinOneYearCalculatorSpec extends AnyWordSpec with Matchers with TotalCreditorsWithinOneYearCalculator {
 
   "calculateCurrentTotalCreditorsWithinOneYear" should {
 

@@ -17,7 +17,9 @@
 package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import org.mockito.Mockito._
-import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
 import uk.gov.hmrc.ct.accounts.frs102.retriever.{AbridgedAccountsBoxRetriever, FullAccountsBoxRetriever}
@@ -29,7 +31,7 @@ import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling}
 
 
-class ACQ8161Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
+class ACQ8161Spec extends AnyWordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
 
   private trait Test105BoxRetriever extends Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever
   private trait Test102AbridgedBoxRetriever extends AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever

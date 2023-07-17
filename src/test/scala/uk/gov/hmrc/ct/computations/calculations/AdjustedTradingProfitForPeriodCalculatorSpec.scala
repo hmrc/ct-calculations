@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations.{CP117, CP282, CPQ17}
 
-class AdjustedTradingProfitForPeriodCalculatorSpec extends WordSpec with Matchers {
+class AdjustedTradingProfitForPeriodCalculatorSpec extends AnyWordSpec with Matchers {
 
   "AdjustedTradingProfitForPeriodCalculator" should {
     "Return None if CPQ17  Trading losses not used from previous accounting periods is not defined" in new AdjustedTradingProfitForPeriodCalculator {

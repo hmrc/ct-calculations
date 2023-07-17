@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.CATO13
 import uk.gov.hmrc.ct.computations.{CP293, CP294, CP997}
 
-class NetProfitsChargeableToCtWithoutDonationsCalculatorSpec extends WordSpec with Matchers {
+class NetProfitsChargeableToCtWithoutDonationsCalculatorSpec extends AnyWordSpec with Matchers {
 
   "NetProfitsChargeableToCtCalculator" should {
     "return CP293 - CP294 when CP293 > CP294" in new NetProfitsChargeableToCtWithoutDonationsCalculator {

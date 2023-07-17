@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations._
 
-class IncomeFromPropertyCalculatorSpec extends WordSpec with Matchers  {
+class IncomeFromPropertyCalculatorSpec extends AnyWordSpec with Matchers  {
 
   "Income from Property calculator" should {
     "calculate net income" in new IncomeFromPropertyCalculator {

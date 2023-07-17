@@ -19,12 +19,14 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
+import org.scalatest.BeforeAndAfter
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.{MockFrs102AccountsRetriever, AccountsMoneyValidationFixture, AC205}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC5052CSpec extends WordSpec with MockitoSugar with Matchers with MockFrs102AccountsRetriever with AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with BeforeAndAfter {
+class AC5052CSpec extends AnyWordSpec with MockitoSugar with Matchers with MockFrs102AccountsRetriever with AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with BeforeAndAfter {
 
   before {
     when(boxRetriever.ac52).thenReturn(AC52(Some(STANDARD_MAX + 1)))

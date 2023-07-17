@@ -17,13 +17,14 @@
 package uk.gov.hmrc.ct.ct600.v2.calculations
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations.{CP1, CP2, CP295, HmrcAccountingPeriod}
 import uk.gov.hmrc.ct.ct600._
 import uk.gov.hmrc.ct.ct600.calculations.CorporationTaxCalculatorParameters
 import uk.gov.hmrc.ct.ct600.v2._
 
-class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
+class CorporationTaxCalculatorSpec extends AnyWordSpec with Matchers {
 
   "CorporationTaxCalculator - rateOfTaxFy1 & rateOfTaxFy2" should {
 

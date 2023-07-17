@@ -18,7 +18,8 @@ package uk.gov.hmrc.ct.version.calculations
 
 import org.joda.time.LocalDate
 import org.scalatest.prop.TableDrivenPropertyChecks._
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.accounts.frsse2008.stubs.StubbedAccountsBoxRetriever
@@ -32,7 +33,7 @@ import uk.gov.hmrc.ct.version.HmrcReturns._
 import uk.gov.hmrc.ct.version.HmrcVersions._
 import uk.gov.hmrc.ct.version.{Return, Version}
 
-class ReturnVersionsCalculatorSpec extends WordSpec with Matchers {
+class ReturnVersionsCalculatorSpec extends AnyWordSpec with Matchers {
 
   import ReturnVersionsFixture._
 

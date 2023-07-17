@@ -22,7 +22,8 @@ import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks.forAll
 import org.scalatest.prop.TableFor6
 import org.scalatest.prop.Tables.Table
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.Json
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
@@ -31,7 +32,7 @@ import uk.gov.hmrc.ct.domain.CompanyTypes
 import uk.gov.hmrc.ct.domain.CompanyTypes.CompanyType
 import uk.gov.hmrc.ct.{AbridgedFiling, CATO24, CompaniesHouseFiling, FilingCompanyType, HMRCFiling}
 
-class CP7Spec extends WordSpec with Matchers with MockitoSugar {
+class CP7Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
   implicit val format = {
     import uk.gov.hmrc.ct.computations.formats._

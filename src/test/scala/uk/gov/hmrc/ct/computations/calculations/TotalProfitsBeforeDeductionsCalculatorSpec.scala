@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations._
 
-class TotalProfitsBeforeDeductionsCalculatorSpec extends WordSpec with Matchers {
+class TotalProfitsBeforeDeductionsCalculatorSpec extends AnyWordSpec with Matchers {
 
   "NetTradingProfitCalculator" should {
 

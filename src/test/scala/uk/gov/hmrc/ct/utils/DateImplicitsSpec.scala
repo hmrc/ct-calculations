@@ -17,10 +17,11 @@
 package uk.gov.hmrc.cato.filing.util
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.utils.DateImplicits._
 
-class DateImplicitsSpec extends WordSpec with Matchers {
+class DateImplicitsSpec extends AnyWordSpec with Matchers {
 
   "date operator" should {
 

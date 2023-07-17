@@ -16,13 +16,14 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.accounts.AC403
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.stubs.StubbedComputationsBoxRetriever
 
-class CP981Spec extends WordSpec with Matchers with MockitoSugar {
+class CP981Spec extends AnyWordSpec with Matchers with MockitoSugar {
   "CP981 validation" should {
     "show correct error if under zero" in {
       val boxRetriever = new StubbedComputationsBoxRetriever {

@@ -16,13 +16,14 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frs105.boxes._
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC24
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC13, AC25}
 
-class ProfitOrLossFinancialYearCalculatorSpec extends WordSpec with Matchers {
+class ProfitOrLossFinancialYearCalculatorSpec extends AnyWordSpec with Matchers {
 
   "ProfitOrLossFinancialYearCalculator" should {
     "calculate AC435 and" when {

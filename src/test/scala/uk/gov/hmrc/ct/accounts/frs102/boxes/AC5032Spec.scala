@@ -18,13 +18,14 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
-class AC5032Spec extends WordSpec with MockitoSugar with Matchers with MockFrs102AccountsRetriever with AccountsFreeTextValidationFixture[Frs102AccountsBoxRetriever] {
+class AC5032Spec extends AnyWordSpec with MockitoSugar with Matchers with MockFrs102AccountsRetriever with AccountsFreeTextValidationFixture[Frs102AccountsBoxRetriever] {
 
   override def setUpMocks(): Unit = {
     when(boxRetriever.ac32()).thenReturn(AC32(Some(4)))

@@ -17,13 +17,14 @@
 package uk.gov.hmrc.ct.ct600e.validations
 
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.ct600e.v2.E1001
 import uk.gov.hmrc.ct.ct600e.v3.E10
 import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 
-class ValidateRegisteredCharityNumberSpec extends WordSpec with Matchers with MockitoSugar {
+class ValidateRegisteredCharityNumberSpec extends AnyWordSpec with Matchers with MockitoSugar {
 
   val boxRetriever = mock[CT600EBoxRetriever]
 

@@ -18,11 +18,12 @@ package uk.gov.hmrc.ct.ct600j.v3
 
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.CtValidation
 
 
-class J5Spec extends WordSpec with MockitoSugar with Matchers {
+class J5Spec extends AnyWordSpec with MockitoSugar with Matchers {
 
   "J5 validate" should {
     "not return errors when B140 is false" in {

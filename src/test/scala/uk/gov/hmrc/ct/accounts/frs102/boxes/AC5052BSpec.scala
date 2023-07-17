@@ -17,14 +17,15 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import org.mockito.Mockito._
+import org.scalatest.BeforeAndAfter
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
-import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
-import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.box.ValidatableBox._
 
-class AC5052BSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter
+class AC5052BSpec extends AnyWordSpec with MockitoSugar with Matchers with BeforeAndAfter
   with MockFrs102AccountsRetriever with AccountsFreeTextValidationFixture[Frs102AccountsBoxRetriever] {
 
   testTextFieldValidation("AC5052B", AC5052B, testUpperLimit = Some(StandardCohoTextFieldLimit))

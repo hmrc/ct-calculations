@@ -16,12 +16,14 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
+import org.scalatest.BeforeAndAfter
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class CP265Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfter {
+class CP265Spec extends AnyWordSpec with MockitoSugar with Matchers with BeforeAndAfter {
 
   val mockRetriever = mock[ComputationsBoxRetriever]
 

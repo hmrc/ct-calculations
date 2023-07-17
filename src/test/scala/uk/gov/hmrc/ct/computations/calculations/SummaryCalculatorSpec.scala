@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations._
 import org.scalatest.prop.TableDrivenPropertyChecks._
 
-class SummaryCalculatorSpec extends WordSpec with Matchers {
+class SummaryCalculatorSpec extends AnyWordSpec with Matchers {
 
   "Calculating TradingLossesBroughtForwardForSummary (CP257)" should {
     "return None if CP238 and CP283b are both None" in new SummaryCalculator {

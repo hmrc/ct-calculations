@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.{CATO14, CATO15, CATO16}
 
-class ExpensesCalculatorSpec extends WordSpec with Matchers {
+class ExpensesCalculatorSpec extends AnyWordSpec with Matchers {
 
   "Calculating total expenses - CP38" should {
     "calculate as CATO14(Directors Expenses) + CATO15(Property Expenses) + CATO15(General Administrative Expenses)" in new ExpensesCalculator {

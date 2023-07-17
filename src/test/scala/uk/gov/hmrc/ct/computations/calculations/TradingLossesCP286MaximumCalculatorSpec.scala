@@ -18,12 +18,13 @@ package uk.gov.hmrc.ct.computations.calculations
 
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.CATO01
 import uk.gov.hmrc.ct.computations._
 
 
-class TradingLossesCP286MaximumCalculatorSpec extends WordSpec with Matchers {
+class TradingLossesCP286MaximumCalculatorSpec extends AnyWordSpec with Matchers {
 
   val table = Table(
     ("message",                                                         "CP117",    "CATO01",   "cp998",  "cp997",    "cp283",   "result"),

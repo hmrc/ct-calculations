@@ -18,15 +18,16 @@ package uk.gov.hmrc.ct.ct600.accounts
 
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC8021, AC8023, AC8033, AC8051, AC8052, AC8053, AC8054, AC8899, ACQ8003, ACQ8009, Directors}
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling, MicroEntityFiling, StatutoryAccountsFiling}
 
-
-class AC8021Spec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
+class AC8021Spec extends AnyWordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
 
   private trait TestBoxRetriever extends Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever
 

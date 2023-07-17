@@ -17,13 +17,14 @@
 package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
 import org.mockito.Mockito._
-import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDormancyBoxRetriever
-import uk.gov.hmrc.ct.accounts.frs10x.boxes.{ACQ8991, ACQ8999}
 import uk.gov.hmrc.ct.box.CtValidation
 
-class ACQ8991Spec extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach {
+class ACQ8991Spec extends AnyWordSpec with Matchers with MockitoSugar with BeforeAndAfterEach {
 
   val mockBoxRetriever = mock[Frs10xDormancyBoxRetriever]
 

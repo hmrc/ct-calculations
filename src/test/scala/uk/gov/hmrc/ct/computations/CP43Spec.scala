@@ -17,12 +17,13 @@
 package uk.gov.hmrc.ct.computations
 
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.BoxValidationFixture
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
-class CP43Spec extends WordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] {
+class CP43Spec extends AnyWordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] {
 
   val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
   private val outOfRangeError = Set(CtValidation(Some("CP43"), "error.CP43.outOfRange", Some(Seq("0", "99,999,999"))))

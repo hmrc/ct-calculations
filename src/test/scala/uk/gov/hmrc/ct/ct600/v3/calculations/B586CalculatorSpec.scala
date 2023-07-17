@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.ct600.v3._
 
-class B586CalculatorSpec extends WordSpec with Matchers {
+class B586CalculatorSpec extends AnyWordSpec with Matchers {
 
   "B586" should{
 

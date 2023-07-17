@@ -19,14 +19,15 @@ package uk.gov.hmrc.ct.computations
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.CATO01
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 import scala.util.Random
 
-class CPQ17Spec extends WordSpec with Matchers with MockitoSugar {
+class CPQ17Spec extends AnyWordSpec with Matchers with MockitoSugar {
   import CPQ17Spec._
 
   "CPQ17" should {

@@ -18,7 +18,8 @@ package uk.gov.hmrc.ct.ct600e.v3
 
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 
@@ -30,7 +31,7 @@ Transactional error (en): Box E50 must be greater than 0 (zero) if Box E95 is co
 Transactional error (cy): Mae’n rhaid i Flwch E50 fod yn fwy na 0 (sero) os yw Blwch E95 wedi ei gwblhau
 
  */
-class E50Spec extends WordSpec with Matchers with MockitoSugar {
+class E50Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
   val boxRetriever = mock[CT600EBoxRetriever]
 

@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.computations.{CP294, CP998, CP286}
 
-class TradingLossesThisAndLaterPeriodCalculationSpec extends WordSpec with Matchers {
+class TradingLossesThisAndLaterPeriodCalculationSpec extends AnyWordSpec with Matchers {
 
   "Trading Losses This And Later Period Calculation" should {
     "return CP294(0) if CP998 and CP286 contain None values" in new TradingLossesThisAndLaterPeriodCalculation {

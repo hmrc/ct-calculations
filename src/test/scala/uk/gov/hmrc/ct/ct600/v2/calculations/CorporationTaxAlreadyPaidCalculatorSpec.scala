@@ -16,10 +16,11 @@
 
 package uk.gov.hmrc.ct.ct600.v2.calculations
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.ct600.v2.{B86, B91, B92, B93}
 
-class CorporationTaxAlreadyPaidCalculatorSpec extends WordSpec with Matchers {
+class CorporationTaxAlreadyPaidCalculatorSpec extends AnyWordSpec with Matchers {
 
   "corporationTaxOutstanding" should {
 

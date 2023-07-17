@@ -20,13 +20,15 @@ import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
-import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.accounts.frs102.{DirectorsMockSetup, MockableFrs10xBoxretrieverWithFilingAttributes}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling, MicroEntityFiling, StatutoryAccountsFiling}
 
-class DirectorsSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
+class DirectorsSpec extends AnyWordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
 
   val mockBoxRetriever = mock[MockableFrs10xBoxretrieverWithFilingAttributes]
 

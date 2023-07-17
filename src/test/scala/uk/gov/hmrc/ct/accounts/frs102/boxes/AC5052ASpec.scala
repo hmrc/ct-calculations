@@ -18,12 +18,14 @@ package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpec}
+import org.scalatest.BeforeAndAfter
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever, MockFrs102AccountsRetriever, MockFullAccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 
-class AC5052AAbridgedSpec extends WordSpec with MockitoSugar with Matchers with MockAbridgedAccountsRetriever with AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with BeforeAndAfter {
+class AC5052AAbridgedSpec extends AnyWordSpec with MockitoSugar with Matchers with MockAbridgedAccountsRetriever with AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with BeforeAndAfter {
 
   before {
     when(boxRetriever.ac52()).thenReturn(AC52(Some(STANDARD_MAX + 1)))
@@ -91,7 +93,7 @@ class AC5052AAbridgedSpec extends WordSpec with MockitoSugar with Matchers with 
   }
 }
 
-class AC5052AFullSpec extends WordSpec with MockitoSugar with Matchers with MockFullAccountsRetriever with AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with BeforeAndAfter {
+class AC5052AFullSpec extends AnyWordSpec with MockitoSugar with Matchers with MockFullAccountsRetriever with AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with BeforeAndAfter {
 
   before {
     when(boxRetriever.ac52()).thenReturn(AC52(Some(STANDARD_MAX + 1)))

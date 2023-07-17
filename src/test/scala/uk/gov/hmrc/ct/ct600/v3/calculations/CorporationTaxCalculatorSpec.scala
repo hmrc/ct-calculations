@@ -17,14 +17,15 @@
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
 import org.joda.time.LocalDate
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.CATO23
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.ct600.calculations.{CorporationTaxCalculatorParameters, NINonTradingProfitCalculationParameters, NITradingProfitCalculationParameters}
 import uk.gov.hmrc.ct.ct600.v2.{B37, B38, B39, B42}
 import uk.gov.hmrc.ct.ct600.v3._
 
-class CorporationTaxCalculatorSpec extends WordSpec with Matchers {
+class CorporationTaxCalculatorSpec extends AnyWordSpec with Matchers {
 
   "B510" should {
     " = B475v3 + B480v3" in new CorporationTaxCalculator {

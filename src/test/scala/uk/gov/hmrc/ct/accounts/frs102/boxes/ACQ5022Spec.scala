@@ -16,12 +16,13 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.frs102.BoxesFixture
 import uk.gov.hmrc.ct.box.CtValidation
 
 
-class ACQ5022Spec extends WordSpec with Matchers with BoxesFixture {
+class ACQ5022Spec extends AnyWordSpec with Matchers with BoxesFixture {
 
   "ACQ5022" should {
 
