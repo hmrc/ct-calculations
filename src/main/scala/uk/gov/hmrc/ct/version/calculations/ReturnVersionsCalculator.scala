@@ -178,7 +178,7 @@ trait ReturnVersionsCalculator {
                               companyType: FilingCompanyType,
                               charityAllExempt: Option[Boolean],
                               charityNoIncome: Option[Boolean]): Set[Return] = {
-
+// "We're deactivating this check due to unforeseen data scenarios, and further investigation is required to determine its relevance. The code will remain intact during this investigation."
    /* if (isIllegalArguments(companyType.value, hmrcFiling.value, coHoFiling.value, microEntityFiling.value)) {
       throw new IllegalArgumentException(s"")
     }*/
@@ -305,7 +305,7 @@ trait ReturnVersionsCalculator {
         Return(CT600ei, version),
         Return(CT600j, version))
   }
-
+//  In CATO, we are temporarily deactivating this condition due to data mapping complexities, but we intend to investigate its applicability to our business scenarios without removing the code altogether.
  /* private def isIllegalArguments(companyType: CompanyType, hmrcFiling: Boolean, coHoFiling: Boolean, microEntityFiling: Boolean): Boolean = {
     (companyType, hmrcFiling, coHoFiling, microEntityFiling) match {
       case (Charity | LimitedByGuaranteeCharity | LimitedBySharesCharity | CASC | LimitedByGuaranteeCASC | LimitedBySharesCASC, true, true, _) => true
