@@ -178,10 +178,10 @@ trait ReturnVersionsCalculator {
                               companyType: FilingCompanyType,
                               charityAllExempt: Option[Boolean],
                               charityNoIncome: Option[Boolean]): Set[Return] = {
-
-    if (isIllegalArguments(companyType.value, hmrcFiling.value, coHoFiling.value, microEntityFiling.value)) {
+// "We're deactivating this check due to unforeseen data scenarios, and further investigation is required to determine its relevance. The code will remain intact during this investigation."
+   /* if (isIllegalArguments(companyType.value, hmrcFiling.value, coHoFiling.value, microEntityFiling.value)) {
       throw new IllegalArgumentException(s"")
-    }
+    }*/
 
     val isOnOrAfterFrs102And105Date = poaStartDate >= new LocalDate(2016, 1, 1)
 
@@ -305,14 +305,14 @@ trait ReturnVersionsCalculator {
         Return(CT600ei, version),
         Return(CT600j, version))
   }
-
-  private def isIllegalArguments(companyType: CompanyType, hmrcFiling: Boolean, coHoFiling: Boolean, microEntityFiling: Boolean): Boolean = {
+//  In CATO, we are temporarily deactivating this condition due to data mapping complexities, but we intend to investigate its applicability to our business scenarios without removing the code altogether.
+ /* private def isIllegalArguments(companyType: CompanyType, hmrcFiling: Boolean, coHoFiling: Boolean, microEntityFiling: Boolean): Boolean = {
     (companyType, hmrcFiling, coHoFiling, microEntityFiling) match {
       case (Charity | LimitedByGuaranteeCharity | LimitedBySharesCharity | CASC | LimitedByGuaranteeCASC | LimitedBySharesCASC, true, true, _) => true
       case (Charity | LimitedByGuaranteeCharity | LimitedBySharesCharity | CASC | LimitedByGuaranteeCASC | LimitedBySharesCASC, _, _, true) => true
       case _ => false
     }
-  }
+  }*/
 
   private def v3CharityNoIncome(br: V3CT600EBoxRetriever): Option[Boolean] = {
     (br.e15().value, br.e20().value) match {
