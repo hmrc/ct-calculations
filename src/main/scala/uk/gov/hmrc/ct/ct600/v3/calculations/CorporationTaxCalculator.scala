@@ -17,9 +17,11 @@
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
 import uk.gov.hmrc.ct.CATO05
+import uk.gov.hmrc.ct.CATO05.daysInFY
 import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtTypeConverters}
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper._
+import uk.gov.hmrc.ct.ct600.calculations.Ct600AnnualConstants.constantsForTaxYear
 import uk.gov.hmrc.ct.ct600.calculations._
 import uk.gov.hmrc.ct.ct600.v3._
 import uk.gov.hmrc.ct.ct600.v3.associatedCompanies.doesfilingperiodcoversafter2023
@@ -53,25 +55,43 @@ trait CorporationTaxCalculator extends CtTypeConverters {
   }
 
   def rateOfTaxFy1(accountingPeriod: HmrcAccountingPeriod, b315:B315, noOfCompanies: CtOptionalInteger): BigDecimal = {
-    calculateRateOfTaxYear(TaxYear(startingFinancialYear(accountingPeriod.start)),b315, noOfCompanies)
+    calculateRateOfTaxYear(accountingPeriod,TaxYear(startingFinancialYear(accountingPeriod.start)),b315, noOfCompanies)
   }
 
   def rateOfTaxFy2(accountingPeriod: HmrcAccountingPeriod, b315:B315, b328:B328): BigDecimal = {
-    calculateRateOfTaxYear(TaxYear(endingFinancialYear(accountingPeriod.end)), b315, b328)
+    calculateRateOfTaxYear(accountingPeriod,TaxYear(endingFinancialYear(accountingPeriod.end)), b315, b328)
   }
 
   // smallCompaniesRateOfTax, rateOfTax,
-  private def calculateRateOfTaxYear(taxYear: TaxYear,b315:B315,noOfCompanies: CtOptionalInteger): BigDecimal = {
-    val constantsForTaxYear = Ct600AnnualConstants.constantsForTaxYear(taxYear)
-    val rate = constantsForTaxYear.rateOfTax
+  private def calculateRateOfTaxYear(accountingPeriod: HmrcAccountingPeriod,taxYear: TaxYear,b315:B315,noOfCompanies: CtOptionalInteger): BigDecimal = {
+    val constantForTaxYear = Ct600AnnualConstants.constantsForTaxYear(taxYear)
+    val rate = constantForTaxYear.rateOfTax
 
     val taxable = b315
-    if (taxable > Ct600AnnualConstants.lowProfitsThresholdV3(noOfCompanies.value) || taxable <= 0) rate
-    else
-      {
-        constantsForTaxYear.smallCompaniesRateOfTax
-      }
-  }
+
+    val daysInAccountingPeriod = daysBetween(accountingPeriod.start.value, accountingPeriod.end.value)
+
+    val apDaysInFy = accountingPeriodDaysInFinancialYear(startingFinancialYear(accountingPeriod.start), accountingPeriod)
+    val fy1: Int = startingFinancialYear(accountingPeriod.start)
+    val fy2: Int = endingFinancialYear(accountingPeriod.end)
+    var differentUpperLimits = false
+    if (fy2 != fy1) {
+      val fy1Constants = constantsForTaxYear(TaxYear(fy1))
+      val fy2Constants = constantsForTaxYear(TaxYear(fy2))
+
+      differentUpperLimits = fy1Constants.upperRelevantAmount != fy2Constants.upperRelevantAmount
+    }
+      val thresholdTotalFyDays = if (differentUpperLimits) daysInFY(startingFinancialYear(accountingPeriod.start)) else 365 max daysInAccountingPeriod
+      val msFyRatio = apDaysInFy / thresholdTotalFyDays
+
+      val proRataLrma = (constantForTaxYear.lowerRelevantAmount * msFyRatio) / (noOfCompanies.orZero + 1)
+
+
+    if (taxable.toDouble <= proRataLrma.toDouble) constantForTaxYear.smallCompaniesRateOfTax
+    else rate
+    }
+
+
 
   def financialYear1(accountingPeriod: HmrcAccountingPeriod): Int = {
     startingFinancialYear(accountingPeriod.start)
