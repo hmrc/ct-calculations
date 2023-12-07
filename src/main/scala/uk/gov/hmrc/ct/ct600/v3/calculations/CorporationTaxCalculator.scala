@@ -54,20 +54,19 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     B440(CorporationTax minus  marginalReliefRate.value)
   }
 
-  def rateOfTaxFy1(accountingPeriod: HmrcAccountingPeriod, b315:B315, noOfCompanies: CtOptionalInteger): BigDecimal = {
-    calculateRateOfTaxYear(accountingPeriod,TaxYear(startingFinancialYear(accountingPeriod.start)),b315, noOfCompanies)
+  def rateOfTaxFy1(accountingPeriod: HmrcAccountingPeriod, taxable:B335, noOfCompanies: CtOptionalInteger): BigDecimal = {
+    calculateRateOfTaxYear(accountingPeriod,TaxYear(startingFinancialYear(accountingPeriod.start)),taxable, noOfCompanies)
   }
 
-  def rateOfTaxFy2(accountingPeriod: HmrcAccountingPeriod, b315:B315, b328:B328): BigDecimal = {
-    calculateRateOfTaxYear(accountingPeriod,TaxYear(endingFinancialYear(accountingPeriod.end)), b315, b328)
+  def rateOfTaxFy2(accountingPeriod: HmrcAccountingPeriod, taxable:B385, b328:B328): BigDecimal = {
+    calculateRateOfTaxYear(accountingPeriod,TaxYear(endingFinancialYear(accountingPeriod.end)), taxable, b328)
   }
 
   // smallCompaniesRateOfTax, rateOfTax,
-  private def calculateRateOfTaxYear(accountingPeriod: HmrcAccountingPeriod,taxYear: TaxYear,b315:B315,noOfCompanies: CtOptionalInteger): BigDecimal = {
+  private def calculateRateOfTaxYear(accountingPeriod: HmrcAccountingPeriod,taxYear: TaxYear,taxable:Int,noOfCompanies: CtOptionalInteger): BigDecimal = {
     val constantForTaxYear = Ct600AnnualConstants.constantsForTaxYear(taxYear)
     val rate = constantForTaxYear.rateOfTax
 
-    val taxable = b315
 
     val daysInAccountingPeriod = daysBetween(accountingPeriod.start.value, accountingPeriod.end.value)
 
