@@ -78,11 +78,11 @@ class CorporationTaxCalculatorSpec extends AnyWordSpec with Matchers {
 
   // These tests assume that delegate code is tested thoroughly by v2 tests
   "B340" in new CorporationTaxCalculator {
-    rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 4, 1)), CP2(new LocalDate(2014, 12, 31))), b315 = B315(299999), noOfCompanies = B326(1)) shouldBe BigDecimal("0.21")
+    rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 4, 1)), CP2(new LocalDate(2014, 12, 31))), taxable = B335(299999), noOfCompanies = B326(1)) shouldBe BigDecimal("0.21")
   }
 
   "B390" in new CorporationTaxCalculator {
-    rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2015, 1, 1)), CP2(new LocalDate(2015, 12, 31))), b315 = B315(299999), b328 = B328(1)) shouldBe BigDecimal("0.20")
+    rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2015, 1, 1)), CP2(new LocalDate(2015, 12, 31))), taxable = B385(299999), b328 = B328(1)) shouldBe BigDecimal("0.20")
   }
 
 
