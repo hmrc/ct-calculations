@@ -70,7 +70,9 @@ trait CorporationTaxCalculator extends CtTypeConverters {
 
     val daysInAccountingPeriod = daysBetween(accountingPeriod.start.value, accountingPeriod.end.value)
 
-    val apDaysInFy = accountingPeriodDaysInFinancialYear(startingFinancialYear(accountingPeriod.start), accountingPeriod)
+
+    val apDaysInFy = accountingPeriodDaysInFinancialYear(taxYear.year, accountingPeriod)
+
     val fy1: Int = startingFinancialYear(accountingPeriod.start)
     val fy2: Int = endingFinancialYear(accountingPeriod.end)
     var differentUpperLimits = false
@@ -80,15 +82,17 @@ trait CorporationTaxCalculator extends CtTypeConverters {
 
       differentUpperLimits = fy1Constants.upperRelevantAmount != fy2Constants.upperRelevantAmount
     }
-      val thresholdTotalFyDays = if (differentUpperLimits) daysInFY(startingFinancialYear(accountingPeriod.start)) else 365 max daysInAccountingPeriod
+      val thresholdTotalFyDays = if (differentUpperLimits) daysInFY(taxYear.year) else 365 max daysInAccountingPeriod
       val msFyRatio = apDaysInFy / thresholdTotalFyDays
 
       val proRataLrma = (constantForTaxYear.lowerRelevantAmount * msFyRatio) / (noOfCompanies.orZero + 1)
 
-
-    if (taxable.toDouble <= proRataLrma.toDouble) constantForTaxYear.smallCompaniesRateOfTax
-    else rate
-    }
+      val result = taxable.toDouble match {
+      case t if t <= proRataLrma.toDouble => constantForTaxYear.smallCompaniesRateOfTax
+      case _ => rate
+      }
+      result
+  }
 
 
 
