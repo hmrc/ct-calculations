@@ -33,6 +33,7 @@ object CATO05 extends Calculated[CATO05, CT600BoxRetriever] with MarginalRateRel
       b326 = boxRetriever.b326(),
       b327 = boxRetriever.b327(),
       b328 = boxRetriever.b328(),
+      b620 = boxRetriever.b620(),
       accountingPeriod = HmrcAccountingPeriod(boxRetriever.cp1(), boxRetriever.cp2()))
   }
 }
