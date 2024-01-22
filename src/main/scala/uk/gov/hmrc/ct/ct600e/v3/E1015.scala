@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.ct600e.v3
 
 import uk.gov.hmrc.ct.box.{AnnualConstant, Calculated, CtBigDecimal, CtBoxIdentifier}
 import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
-import uk.gov.hmrc.ct.ct600.v3.{B315, B327, B328, B335, B385}
+import uk.gov.hmrc.ct.ct600.v3.{B315, B327, B328, B335, B385, B620}
 import uk.gov.hmrc.ct.ct600.v3.calculations.CorporationTaxCalculator
 import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 
@@ -27,6 +27,6 @@ case class E1015(value: BigDecimal) extends CtBoxIdentifier("Second Financial Ye
 object E1015 extends CorporationTaxCalculator with Calculated[E1015, CT600EBoxRetriever] {
 
   override def calculate(fieldValueRetriever: CT600EBoxRetriever): E1015 = E1015(rateOfTaxFy2(HmrcAccountingPeriod(fieldValueRetriever.e3(),fieldValueRetriever.e4()),
-    B385(0),
+    B385(0),B620(Some(0)),
     B328(None)))
 }

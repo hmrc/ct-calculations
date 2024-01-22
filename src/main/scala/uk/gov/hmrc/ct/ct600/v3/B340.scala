@@ -34,7 +34,7 @@ object B340 extends CorporationTaxCalculator with Calculated[B340, CT600BoxRetri
     val fy1: Int = startingFinancialYear(accountingPeriod.start)
     val fy2: Int = endingFinancialYear(accountingPeriod.end)
     B340(rateOfTaxFy1(HmrcAccountingPeriod(fieldValueRetriever.cp1(),fieldValueRetriever.cp2()),
-      fieldValueRetriever.b335(),
+      fieldValueRetriever.b335(),fieldValueRetriever.b620(),
       if (fy2 != fy1) fieldValueRetriever.b327() else fieldValueRetriever.b326() ))
   }
 }
