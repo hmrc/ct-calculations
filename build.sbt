@@ -4,7 +4,7 @@
   lazy val scoverageSettings = {
     import scoverage._
     Seq(
-      ScoverageKeys.coverageMinimum := 80,
+      ScoverageKeys.coverageMinimumStmtTotal := 80,
       ScoverageKeys.coverageFailOnMinimum := false,
       ScoverageKeys.coverageHighlighting := true,
       ScoverageKeys.coverageExcludedFiles := ";.*Routes.*;views.*",
@@ -12,7 +12,7 @@
       Test / parallelExecution := false
     )
   }
-
+  val scope = "test"
   lazy val CtCalculations = (project in file("."))
     .enablePlugins(SbtAutoBuildPlugin)
     .disablePlugins(JUnitXmlReportPlugin)
@@ -22,10 +22,11 @@
       name := appName,
       scalaVersion := "2.13.10",
       libraryDependencies ++= Seq(
-        "com.typesafe.play" %% "play-json-joda" % "2.9.4",
-        "org.scalatest" %% "scalatest" % "3.2.16" % "test",
-        "org.scalatestplus" %% "mockito-3-4" % "3.2.10.0" % "test",
-        "com.vladsch.flexmark" % "flexmark-all" % "0.64.8" % "test",
+        "org.playframework" %% "play-json-joda" % "3.0.1",
+        "org.scalatest" %% "scalatest" % "3.2.18" % scope,
+        "org.apache.pekko" %% "pekko-testkit" % "1.0.2" % scope,
+        "org.scalatestplus" %% "mockito-4-11" % "3.2.17.0" % scope,
+        "com.vladsch.flexmark" % "flexmark-all" % "0.64.8" % scope,
         "org.pegdown" % "pegdown" % "1.6.0" % "test"
       )
     )
