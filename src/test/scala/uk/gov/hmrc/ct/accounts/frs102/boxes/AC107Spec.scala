@@ -17,7 +17,7 @@
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.accounts.{AC205, AccountsIntegerValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.accounts.frs105.retriever.Frs105AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 
@@ -28,7 +28,7 @@ case class AC7999a(value: Option[Boolean]) extends CtBoxIdentifier(name = "Compa
   override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
 
     val startOfAccountingPeriod: LocalDate = boxRetriever.ac3().value
-    val mandatoryNotesStartDate: LocalDate = new LocalDate(2017,1,1)
+    val mandatoryNotesStartDate: LocalDate = LocalDate.of(2017,1,1)
 
     passIf(startOfAccountingPeriod.isBefore(mandatoryNotesStartDate)) {
       collectErrors(

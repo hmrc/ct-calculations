@@ -24,7 +24,7 @@ import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 
 

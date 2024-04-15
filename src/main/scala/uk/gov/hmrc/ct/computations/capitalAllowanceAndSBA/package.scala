@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.box.CtDate
 
 package object capitalAllowanceAndSBA {

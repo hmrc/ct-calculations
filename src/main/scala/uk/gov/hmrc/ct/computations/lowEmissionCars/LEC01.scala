@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.lowEmissionCars
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.CPQ1000
 import uk.gov.hmrc.ct.computations.formats.Cars

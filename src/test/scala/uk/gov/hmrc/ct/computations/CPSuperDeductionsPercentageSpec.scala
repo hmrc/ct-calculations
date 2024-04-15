@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
@@ -35,10 +35,10 @@ class CPSuperDeductionsPercentageSpec extends AnyWordSpec with MockitoSugar with
 
   "CPSuperDeductionPercentage" should {
     "calculate correct percentage of super deductions" in {
-      when(mockRetriever.ac5()).thenReturn(AC5(new LocalDate(2021,4,1)))
-      when(mockRetriever.ac6()).thenReturn(AC6(new LocalDate(2023,3,31)))
-      when(mockRetriever.cp1()).thenReturn(CP1(new LocalDate(2022,10,1)))
-      when(mockRetriever.cp2()).thenReturn(CP2(new LocalDate(2023,9,30)))
+      when(mockRetriever.ac5()).thenReturn(AC5(LocalDate.of(2021,4,1)))
+      when(mockRetriever.ac6()).thenReturn(AC6(LocalDate.of(2023,3,31)))
+      when(mockRetriever.cp1()).thenReturn(CP1(LocalDate.of(2022,10,1)))
+      when(mockRetriever.cp2()).thenReturn(CP2(LocalDate.of(2023,9,30)))
       CPSuperDeductionPercentage.calculate(mockRetriever) shouldBe CPSuperDeductionPercentage(1.14959)
     }
   }

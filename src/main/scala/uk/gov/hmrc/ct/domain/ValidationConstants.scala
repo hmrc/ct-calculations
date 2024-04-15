@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.ct.domain
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 object ValidationConstants {
 
@@ -25,8 +26,8 @@ object ValidationConstants {
 
   val ERROR_ARGS_DATE_FORMAT = "d MMMM YYYY"
 
-  val EARLIEST_AP_END_DATE_CUTOFF = new LocalDate(2008, 3, 31)
+  val EARLIEST_AP_END_DATE_CUTOFF = LocalDate.of(2008,3,31)
 
-  def toErrorArgsFormat(date: LocalDate) = date.toString(ERROR_ARGS_DATE_FORMAT)
+  def toErrorArgsFormat(date: LocalDate) = date.format(DateTimeFormatter.ofPattern(ERROR_ARGS_DATE_FORMAT))
 
 }

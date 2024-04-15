@@ -15,7 +15,7 @@
  */
 
 package uk.gov.hmrc.ct.computations.lowEmissionCars
-import org.joda.time.LocalDate
+import java.time.LocalDate
 
 trait AbstractLowEmissionCar {
   val regNumber: Option[String]

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.prop.TableDrivenPropertyChecks.forAll
@@ -112,8 +112,8 @@ class CP7Spec extends AnyWordSpec with Matchers with MockitoSugar {
           forAll(testTable) { (startDateString: String, endDateString: String, abridgedFiling: Boolean, cp7Value: Option[Int], required: Boolean, message: String) =>
             val boxRetriever = mock[TestComputationsBoxRetriever]
 
-            when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate(startDateString)))
-            when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate(endDateString)))
+            when(boxRetriever.cp1()).thenReturn(CP1(LocalDate.parse(startDateString)))
+            when(boxRetriever.cp2()).thenReturn(CP2(LocalDate.parse(endDateString)))
             when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
             when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(false))
             when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(abridgedFiling))
@@ -493,8 +493,8 @@ class CP7Spec extends AnyWordSpec with Matchers with MockitoSugar {
         forAll(table) { (startDateString: String, endDateString: String, abridgedFiling: Boolean, cp7Value: Int, expectedErrorKey: String, message: String) =>
           val boxRetriever = mock[TestComputationsBoxRetriever]
 
-          when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate(startDateString)))
-          when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate(endDateString)))
+          when(boxRetriever.cp1()).thenReturn(CP1(LocalDate.parse(startDateString)))
+          when(boxRetriever.cp2()).thenReturn(CP2(LocalDate.parse(endDateString)))
           when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(isHmrcFiling))
           when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(isCoHoFiling))
           when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(abridgedFiling))
@@ -507,7 +507,7 @@ class CP7Spec extends AnyWordSpec with Matchers with MockitoSugar {
             }
             else {
               val error = validationResult.find { error =>
-                error.boxId.contains("CP7") && error.errorMessageKey == expectedErrorKey && error.args.map { args => args.size == 2}.getOrElse(true)
+                error.boxId.contains("CP7") && error.errorMessageKey == expectedErrorKey && error.args.forall { args => args.size == 2 }
               }
               withClue(s"HMRC: $isHmrcFiling, CoHo: $isCoHoFiling ::: $message : $validationResult"){error should not be empty}
             }

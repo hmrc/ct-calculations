@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.BeforeAndAfterEach
@@ -34,7 +34,7 @@ class CP252Spec extends AnyWordSpec with MockitoSugar with Matchers with BoxVali
   override def setUpMocks = {
     when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
     when(boxRetriever.cp79()).thenReturn(CP79(Some(333)))
-    when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate("2019-04-01")))
+    when(boxRetriever.cp1()).thenReturn(CP1(LocalDate.parse("2019-04-01")))
   }
 
   override def beforeEach = setUpMocks
@@ -54,7 +54,7 @@ class CP252Spec extends AnyWordSpec with MockitoSugar with Matchers with BoxVali
     val thisBoxRetriever = mock[ComputationsBoxRetriever]
     when(thisBoxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
     when(thisBoxRetriever.cp79()).thenReturn(CP79(Some(333)))
-    when(thisBoxRetriever.cp1()).thenReturn(CP1(new LocalDate("2020-04-01")))
+    when(thisBoxRetriever.cp1()).thenReturn(CP1(LocalDate.parse("2020-04-01")))
 
     CP252(Some(333)).validate(thisBoxRetriever) shouldBe Set(CtValidation(Some("CP252"), "error.CP252.cannot.exist", None))
   }

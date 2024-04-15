@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.validation
 
-import org.joda.time.{Days, LocalDate}
+import java.time.{LocalDate, Period}
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.ValidatableBox.{commaForThousands, _}
 import uk.gov.hmrc.ct.box._
@@ -24,13 +24,13 @@ import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetri
 import uk.gov.hmrc.ct.domain.CompanyTypes
 import uk.gov.hmrc.ct.utils.DateImplicits._
 
+import java.time.temporal.ChronoUnit
+
 trait TurnoverValidation extends Validators {
 
   self: OptionalIntIdBox =>
 
-  private def daysBetweenDates(start: LocalDate, end: LocalDate): Int = {
-    Days.daysBetween(start, end).getDays + 1
-  }
+  private def daysBetweenDates(start: LocalDate, end: LocalDate): Long = start.until(end, ChronoUnit.DAYS) + 1
 
   protected def isFrs10xHmrcAbridgedReturnWithLongPoA[BR <: AccountsBoxRetriever with FilingAttributesBoxValueRetriever](start: (BR) => StartDate, end: (BR) => EndDate)(boxRetriever: BR): Boolean = {
     boxRetriever.hmrcFiling().value &&
@@ -40,21 +40,21 @@ trait TurnoverValidation extends Validators {
   }
 
   protected def isFRS10x(boxRetriever: AccountsBoxRetriever): Boolean = {
-    boxRetriever.ac3().value >= new LocalDate(2016, 1, 1)
+    boxRetriever.ac3().value >= LocalDate.of(2016,1,1)
   }
 
   private def isLongPoA[BR <: BoxRetriever](boxRetriever: BR, start: (BR) => StartDate, end: (BR) => EndDate): Boolean = {
     start(boxRetriever).value.plusMonths(12) <= end(boxRetriever).value
   }
 
-  protected def getDaysInYear[BR <: BoxRetriever](boxRetriever: BR, start: (BR) => StartDate, end: (BR) => EndDate): Int = {
+  protected def getDaysInYear[BR <: BoxRetriever](boxRetriever: BR, start: (BR) => StartDate, end: (BR) => EndDate): Long = {
     val poaStartDate = start(boxRetriever).value
     val poaEndDate = end(boxRetriever).value
 
     val daysInYearFromStartDate = daysBetweenDates(poaStartDate, poaStartDate.plusYears(1).minusDays(1))
     val daysInYearEndingEndDate = daysBetweenDates(poaEndDate.minusYears(1).plusDays(1), poaEndDate)
 
-    (isLongPoA(boxRetriever, start, end), poaStartDate.getDayOfMonth, poaStartDate.getMonthOfYear) match {
+    (isLongPoA(boxRetriever, start, end), poaStartDate.getDayOfMonth, poaStartDate.getMonthValue) match {
       case (_, 29, 2) => 366
       case (true, _, _) => daysInYearFromStartDate max daysInYearEndingEndDate
       case (false, _, _) => daysInYearFromStartDate min daysInYearEndingEndDate

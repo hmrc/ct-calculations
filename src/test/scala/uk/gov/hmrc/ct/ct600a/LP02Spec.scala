@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600a
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.ct600a.v2.formats.Loans
@@ -32,7 +32,7 @@ class LP02Spec extends AnyWordSpec with Matchers {
       Loans.toJsonString(lp02) shouldEqual """{"loans":[{"id":"123","name":"Bilbo","amount":123,"repaid":false}]}"""
     }
     "create valid json for a single loan using all available fields" in {
-      val lp02 = LP02(Some(List(new Loan(someId, "Bilbo", 123, false, Some(new LocalDate("1939-09-01")), Some(1)))))
+      val lp02 = LP02(Some(List(new Loan(someId, "Bilbo", 123, false, Some(LocalDate.parse("1939-09-01")), Some(1)))))
       Loans.toJsonString(lp02) shouldEqual """{"loans":[{"id":"123","name":"Bilbo","amount":123,"repaid":false,"lastRepaymentDate":"1939-09-01","totalAmountRepaid":1}]}"""
     }
     "create valid json for multiple loans" in {

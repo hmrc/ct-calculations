@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.box.EndDate
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.B7
@@ -34,8 +34,8 @@ package object losses {
 
   def northernIrelandJourneyActive(b7: B7): Boolean = b7.isTrue
 
-  private val ecblStart = new LocalDate("2020-03-31")
-  private val ecblEnd = new LocalDate("2022-04-01")
+  private val ecblStart = LocalDate.parse("2020-03-31")
+  private val ecblEnd = LocalDate.parse("2022-04-01")
 
   def doesPeriodCoverECBL(endDate: LocalDate): Boolean = checkForDatePeriod(endDate, Some(ecblStart), Some(ecblEnd))
 

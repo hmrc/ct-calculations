@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito.when
 import uk.gov.hmrc.ct.{CompaniesHouseFiling, FilingCompanyType}
 import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4, MockFrs10xAccountsRetriever}
@@ -153,8 +153,8 @@ class AC24Spec extends CovidProfitAndLossSpecHelper with MockFrs10xAccountsRetri
 
   trait Setup {
     def doMocks(isCohoJourney: Boolean): Unit = {
-      when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate("2019-09-01")))
-      when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate("2020-08-31")))
+      when(boxRetriever.ac3()).thenReturn(AC3(LocalDate.parse("2019-09-01")))
+      when(boxRetriever.ac4()).thenReturn(AC4(LocalDate.parse("2020-08-31")))
       when(boxRetriever.companyType()).thenReturn(FilingCompanyType(UkTradingCompany))
       if (isCohoJourney) {
         when(boxRetriever.companiesHouseFiling()) thenReturn CompaniesHouseFiling(true)

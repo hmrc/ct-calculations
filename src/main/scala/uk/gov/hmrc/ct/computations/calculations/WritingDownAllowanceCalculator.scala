@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.joda.time.Days
 import uk.gov.hmrc.ct.CATO03
 import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations._
 
+import java.time.temporal.ChronoUnit
 import scala.math.BigDecimal.RoundingMode._
 
 trait WritingDownAllowanceCalculator extends CtTypeConverters {
@@ -65,7 +65,7 @@ trait WritingDownAllowanceCalculator extends CtTypeConverters {
 
   private def apportionOfAccountingPeriod(cp1: CP1,
                                           cp2: CP2): BigDecimal = {
-    val daysInAccountingPeriod = BigDecimal(Days.daysBetween(cp1.value, cp2.value).getDays + 1)
+    val daysInAccountingPeriod = BigDecimal(cp1.value.until(cp2.value, ChronoUnit.DAYS) + 1)
     val daysInYear = daysInAccountingPeriod max DaysInNormalYear
 
     round(daysInAccountingPeriod / daysInYear, 2)

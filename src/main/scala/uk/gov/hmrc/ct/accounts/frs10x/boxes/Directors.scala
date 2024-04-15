@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.accounts.frs102.validation.DirectorsReportEnabledCalculator
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.ValidatableBox.ValidCoHoNamesCharacters

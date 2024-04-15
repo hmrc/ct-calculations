@@ -82,7 +82,7 @@ trait CorporationTaxCalculator extends CtTypeConverters {
 
       differentUpperLimits = fy1Constants.upperRelevantAmount != fy2Constants.upperRelevantAmount
     }
-      val thresholdTotalFyDays = if (differentUpperLimits) daysInFY(taxYear.year) else 365 max daysInAccountingPeriod
+      val thresholdTotalFyDays = if (differentUpperLimits) daysInFY(taxYear.year) else 365L max daysInAccountingPeriod
       val msFyRatio = apDaysInFy / thresholdTotalFyDays
 
       val proRataLrma = (constantForTaxYear.lowerRelevantAmount * msFyRatio) / (noOfCompanies.orZero + 1)

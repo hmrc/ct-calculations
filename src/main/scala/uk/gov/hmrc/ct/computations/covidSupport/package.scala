@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 
 package object covidSupport {
   //Dates exclusive
-  private val eothoStart = new LocalDate("2020-08-02")
-  private val eothoEnd = new LocalDate("2020-09-01")
-  private val covidStart = new LocalDate("2020-02-29")
+  private val eothoStart = LocalDate.parse("2020-08-02")
+  private val eothoEnd = LocalDate.parse("2020-09-01")
+  private val covidStart = LocalDate.parse("2020-02-29")
   //Covid end TBC
 
   def doesPeriodCoverCovid(startDate: LocalDate, endDate: LocalDate): Boolean = checkPeriodWithinConstraints(startDate, endDate, Some(covidStart), None)

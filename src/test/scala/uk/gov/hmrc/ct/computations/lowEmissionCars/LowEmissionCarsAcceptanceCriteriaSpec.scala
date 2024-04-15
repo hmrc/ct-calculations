@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.lowEmissionCars
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 import org.scalatest.matchers.should.Matchers
@@ -222,11 +222,11 @@ class LowEmissionCarsAcceptanceCriteriaSpec extends AnyWordSpec with Matchers {
 
   private def clue(boxId: String, calcValue: Option[Int], expectedValue: Option[Int]) = s"Calculated value $boxId of $calcValue was not equal to expected $expectedValue"
 
-  private def fyaRatePoolCar(value: Int) = Car(regNumber = Some("ABC123Z"), isNew = Some(true), price = Some(value), emissions = Some(110), dateOfPurchase = Some(new LocalDate("2013-03-31")))
+  private def fyaRatePoolCar(value: Int) = Car(regNumber = Some("ABC123Z"), isNew = Some(true), price = Some(value), emissions = Some(110), dateOfPurchase = Some(LocalDate.parse("2013-03-31")))
 
-  private def mainRatePoolCar(value: Int) = Car(regNumber = Some("XYZ123A"), isNew = Some(true), price = Some(value), emissions = Some(160), dateOfPurchase = Some(new LocalDate("2009-04-01")))
+  private def mainRatePoolCar(value: Int) = Car(regNumber = Some("XYZ123A"), isNew = Some(true), price = Some(value), emissions = Some(160), dateOfPurchase = Some(LocalDate.parse("2009-04-01")))
 
-  private def specialRatePoolCar(value: Int) = Car(regNumber = Some("XYZ789C"), isNew = Some(true), price = Some(value), emissions = Some(161), dateOfPurchase = Some(new LocalDate("2013-03-31")))
+  private def specialRatePoolCar(value: Int) = Car(regNumber = Some("XYZ789C"), isNew = Some(true), price = Some(value), emissions = Some(161), dateOfPurchase = Some(LocalDate.parse("2013-03-31")))
 
   class TestComputationsRetriever(lec01: List[Car],
                                   cpq8: Option[Boolean],

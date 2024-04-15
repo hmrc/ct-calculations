@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.utils
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 
 object DateImplicits {
 

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
 import uk.gov.hmrc.ct.ct600.v3.B350.financialYearForDate
 
@@ -35,7 +35,7 @@ package object associatedCompanies
     }
   }
   def splitFincialYearForHelpText(startDate: LocalDate, endDate: LocalDate) = {
-    if (startDate.getMonthOfYear < 4) {
+    if (startDate.getMonthValue < 4) {
       startDate.getYear.toString
     } else {
       endDate.getYear.toString

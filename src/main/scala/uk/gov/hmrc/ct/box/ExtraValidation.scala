@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.box
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.domain.ValidationConstants.toErrorArgsFormat
 import uk.gov.hmrc.ct.utils.DateImplicits._
 

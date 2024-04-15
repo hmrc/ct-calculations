@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.CtValidation
@@ -26,7 +26,7 @@ import uk.gov.hmrc.ct.computations.lowEmissionCars.{Car, LEC01}
 
 class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
                                      cpq8: Option[Boolean] = None,
-                                     cp1: LocalDate = new LocalDate("2019-04-02"),
+                                     cp1: LocalDate = LocalDate.parse("2019-04-02"),
                                      cp78: Option[Int] = None,
                                      cp79: Option[Int] = None,
                                      cp80: Option[Int] = None,

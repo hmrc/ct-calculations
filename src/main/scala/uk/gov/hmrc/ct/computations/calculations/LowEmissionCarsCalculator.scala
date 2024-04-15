@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.RoundingFunctions._
 import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations._
@@ -29,13 +29,13 @@ object LowEmissionCarsCalculator extends LowEmissionCarsCalculator
 
   def taxPoolForCar(car: AbstractLowEmissionCar): LowEmissionCarRate = {
     car.dateOfPurchase match {
-      case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2009-04-01") => range1(car)
-      case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2013-04-01") => range2(car)
-      case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2015-04-01") => range3(car)
-      case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2018-04-01") => range4(car)
-      case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2021-04-01") => range5(car)
-      case Some(dateOfPurchase) if dateOfPurchase < new LocalDate("2025-04-01") => range6(car)
-      case Some(dateOfPurchase) if dateOfPurchase >= new LocalDate("2025-04-01") => range7(car)
+      case Some(dateOfPurchase) if dateOfPurchase < LocalDate.parse("2009-04-01") => range1(car)
+      case Some(dateOfPurchase) if dateOfPurchase < LocalDate.parse("2013-04-01") => range2(car)
+      case Some(dateOfPurchase) if dateOfPurchase < LocalDate.parse("2015-04-01") => range3(car)
+      case Some(dateOfPurchase) if dateOfPurchase < LocalDate.parse("2018-04-01") => range4(car)
+      case Some(dateOfPurchase) if dateOfPurchase < LocalDate.parse("2021-04-01") => range5(car)
+      case Some(dateOfPurchase) if dateOfPurchase < LocalDate.parse("2025-04-01") => range6(car)
+      case Some(dateOfPurchase) if dateOfPurchase >= LocalDate.parse("2025-04-01") => range7(car)
       case _ => ErrorState
     }
   }

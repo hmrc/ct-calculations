@@ -16,12 +16,14 @@
 
 package uk.gov.hmrc.ct.computations.lowEmissionCars
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.{CP1, CP2, CPQ1000}
 import uk.gov.hmrc.ct.utils.UnitSpec
 import CarsHelper._
+
+import java.time.format.DateTimeFormatter
 class LEC01Spec extends UnitSpec {
 
   "LEC01" should {
@@ -116,9 +118,9 @@ class LEC01Spec extends UnitSpec {
 
     "fail date of purchase validation" when {
       val dateOutOfRangeErrorMsg = s"error.$dateOfPurchaseId.not.betweenInclusive"
-      val dateFormat = "d MMMM yyyy"
+      val dateFormat = DateTimeFormatter.ofPattern("d MMMM yyyy")
       val outOfRangeError = Set(CtValidation(Some(dateOfPurchaseId), dateOutOfRangeErrorMsg,
-        Some(List(today.toString(dateFormat), oneYearFromToday.toString(dateFormat)))))
+        Some(List(today.format(dateFormat), oneYearFromToday.format(dateFormat)))))
 
       when(mockComputationsBoxRetriever.cp1()) thenReturn CP1(today)
       when(mockComputationsBoxRetriever.cp2()) thenReturn CP2(oneYearFromToday)

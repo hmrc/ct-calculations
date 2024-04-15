@@ -56,7 +56,7 @@ trait MarginalRateReliefCalculator extends CtTypeConverters with NumberRounding 
 
     val apFyRatio = apDaysInFy / daysInAccountingPeriod
 
-    val msFyRatio = apDaysInFy / (365 max daysInAccountingPeriod)
+    val msFyRatio = apDaysInFy / (365L max daysInAccountingPeriod)
 
     val apportionedProfit = (b37 plus b38) * apFyRatio
 

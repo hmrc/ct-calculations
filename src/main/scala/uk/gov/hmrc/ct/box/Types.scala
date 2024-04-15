@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.box
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 
 import scala.language.implicitConversions
 

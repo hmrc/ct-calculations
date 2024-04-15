@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs102
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.{AC8021, AC8023, ACQ8003, ACQ8009}
@@ -31,8 +31,8 @@ object DirectorsMockSetup extends MockitoSugar {
 
   def setupDefaults(mockBoxRetriever: MockableFrs10xBoxretrieverWithFilingAttributes) = {
     // POA responses
-    when (mockBoxRetriever.ac3()).thenReturn (AC3(new LocalDate(2015, 4, 6)) )
-    when (mockBoxRetriever.ac4()).thenReturn (AC4(new LocalDate(2016, 4, 5)) )
+    when (mockBoxRetriever.ac3()).thenReturn (AC3(LocalDate.of(2015,4,6)) )
+    when (mockBoxRetriever.ac4()).thenReturn (AC4(LocalDate.of(2016,4,5)) )
 
     // directors report enabled responses
     when (mockBoxRetriever.companiesHouseFiling()).thenReturn (CompaniesHouseFiling (true) )

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.version.calculations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -82,7 +82,7 @@ class ReturnVersionsCalculatorSpec extends AnyWordSpec with Matchers {
       "return accounts version for Micro entity accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
 
         calculateReturnVersions(
-          poaStartDate = new LocalDate(2016, 1, 1),
+          poaStartDate = LocalDate.of(2016,1,1),
           coHoFiling = CompaniesHouseFiling(true),
           microEntityFiling = MicroEntityFiling(true)
         ) shouldBe coHoOnlyFRS105Returns
@@ -91,7 +91,7 @@ class ReturnVersionsCalculatorSpec extends AnyWordSpec with Matchers {
       "return accounts version for abridged statutory accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
 
         calculateReturnVersions(
-          poaStartDate = new LocalDate(2016, 1, 2),
+          poaStartDate = LocalDate.of(2016,1,2),
           coHoFiling = CompaniesHouseFiling(true),
           abridgedFiling = AbridgedFiling(true)
         ) shouldBe coHoOnlyAbridgedFRS102Returns
@@ -100,7 +100,7 @@ class ReturnVersionsCalculatorSpec extends AnyWordSpec with Matchers {
       "return accounts version for full statutory accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
 
         calculateReturnVersions(
-          poaStartDate = new LocalDate(2016, 1, 3),
+          poaStartDate = LocalDate.of(2016,1,3),
           coHoFiling = CompaniesHouseFiling(true),
           statutoryAccountsFiling = StatutoryAccountsFiling(true)
         ) shouldBe coHoOnlyFullFRS102Returns
@@ -118,7 +118,7 @@ class ReturnVersionsCalculatorSpec extends AnyWordSpec with Matchers {
           override def companiesHouseFiling(): CompaniesHouseFiling = CompaniesHouseFiling(true)
           override def hmrcFiling(): HMRCFiling = HMRCFiling(false)
           override def countryOfRegistration(): CountryOfRegistration = CountryOfRegistration(Some("EW"))
-          override def ac3(): AC3 = AC3(new LocalDate(2015,3,30))
+          override def ac3(): AC3 = AC3(LocalDate.of(2015,3,30))
           override def ac2(): AC2 = AC2(Some("Random company name"))
         }
 
@@ -128,7 +128,7 @@ class ReturnVersionsCalculatorSpec extends AnyWordSpec with Matchers {
       "match successfully for ComputationsBoxRetriever" in {
 
         ReturnVersionsCalculator.doCalculation(new ComputationsBoxRetrieverForTest with StubbedAccountsBoxRetriever {
-          override def ac3(): AC3 = AC3(new LocalDate(2015,3,30))
+          override def ac3(): AC3 = AC3(LocalDate.of(2015,3,30))
         }) shouldBe jointMicroFRSSE2008V2Returns
       }
     }
@@ -222,7 +222,7 @@ class ReturnVersionsCalculatorSpec extends AnyWordSpec with Matchers {
       "return HMRC version for micro accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
 
         calculateReturnVersions(
-          poaStartDate = new LocalDate(2016, 1, 1),
+          poaStartDate = LocalDate.of(2016,1,1),
           apStartDate = Some(LocalDate.parse("2016-01-01")),
           apEndDate = Some(LocalDate.parse("2016-01-01")),
           hmrcFiling = HMRCFiling(true),
@@ -232,7 +232,7 @@ class ReturnVersionsCalculatorSpec extends AnyWordSpec with Matchers {
       "return HMRC version for abridged accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
 
         calculateReturnVersions(
-          poaStartDate = new LocalDate(2016, 1, 1),
+          poaStartDate = LocalDate.of(2016,1,1),
           apStartDate = Some(LocalDate.parse("2016-01-01")),
           apEndDate = Some(LocalDate.parse("2016-01-01")),
           hmrcFiling = HMRCFiling(true),
@@ -242,7 +242,7 @@ class ReturnVersionsCalculatorSpec extends AnyWordSpec with Matchers {
       "return HMRC version for full statutory accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
 
         calculateReturnVersions(
-          poaStartDate = new LocalDate(2016, 1, 3),
+          poaStartDate = LocalDate.of(2016,1,3),
           apStartDate = Some(LocalDate.parse("2016-01-03")),
           apEndDate = Some(LocalDate.parse("2016-01-03")),
           hmrcFiling = HMRCFiling(true),
@@ -252,7 +252,7 @@ class ReturnVersionsCalculatorSpec extends AnyWordSpec with Matchers {
       "return HMRC versions for uploaded accounts with POA start after FRS102 epoch" in new ReturnVersionsCalculatorWithDefaults {
 
         calculateReturnVersions(
-          poaStartDate = new LocalDate(2016, 1, 2),
+          poaStartDate = LocalDate.of(2016,1,2),
           apStartDate = Some(LocalDate.parse("2016-01-02")),
           apEndDate = Some(LocalDate.parse("2016-01-02")),
           hmrcFiling = HMRCFiling(true),
@@ -3647,7 +3647,7 @@ class ReturnVersionsCalculatorSpec extends AnyWordSpec with Matchers {
 
 class ReturnVersionsCalculatorWithDefaults extends  ReturnVersionsCalculator {
   override def calculateReturnVersions(
-                                        poaStartDate: LocalDate = new LocalDate(2015, 3, 30),
+                                        poaStartDate: LocalDate = LocalDate.of(2015,3,30),
                                         apStartDate: Option[LocalDate] = None,
                                         apEndDate: Option[LocalDate] = None,
                                         coHoFiling: CompaniesHouseFiling = CompaniesHouseFiling(false),

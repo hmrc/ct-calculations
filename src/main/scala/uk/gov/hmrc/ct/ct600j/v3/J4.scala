@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600j.v3
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtDate, Linked}
 import uk.gov.hmrc.ct.ct600.v3.B35
 

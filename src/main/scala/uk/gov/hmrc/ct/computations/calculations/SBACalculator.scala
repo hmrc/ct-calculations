@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.computations.capitalAllowanceAndSBA.{SbaRate, SbaResults}
 import uk.gov.hmrc.ct.ct600.NumberRounding
 import uk.gov.hmrc.ct.ct600.calculations.AccountingPeriodHelper
@@ -30,12 +30,12 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
   val ratePriorTy2020: SBARateForTaxYear = 0.02
   val rateAfterTy2020: SBARateForTaxYear = 0.03
 
-  def getDaysIntheYear(apStartDate: LocalDate): Int = {
+  def getDaysIntheYear(apStartDate: LocalDate): Long = {
     val yearAfterApStart = apStartDate.plusYears(1)
     if (apStartDate.getDayOfMonth == yearAfterApStart.getDayOfMonth) daysBetween(apStartDate, yearAfterApStart) - 1 else 366
   }
 
-  def apportionedCostOfBuilding(cost: BigDecimal, daysInTheYear: Int, rateForTy: SBARateForTaxYear): BigDecimal = (cost * rateForTy) / daysInTheYear
+  def apportionedCostOfBuilding(cost: BigDecimal, daysInTheYear: Long, rateForTy: SBARateForTaxYear): BigDecimal = (cost * rateForTy) / daysInTheYear
 
   def isEarliestWrittenContractAfterAPStart(contractDate: LocalDate, apStartDate: LocalDate): Boolean = contractDate.isAfter(apStartDate)
 
@@ -68,7 +68,7 @@ trait SBACalculator extends NumberRounding with AccountingPeriodHelper {
                                 dailyRateAfter2020: BigDecimal,
                                 dailyRateBefore2020: BigDecimal): Option[SbaResults] = {
     val splitRate: Boolean = daysToApplyTax.isBefore(endOfTaxYear2019) && apEndDate.isAfter(endOfTaxYear2019)
-    val totalDaysCharged: Int = daysBetween(daysToApplyTax, apEndDate)
+    val totalDaysCharged: Long = daysBetween(daysToApplyTax, apEndDate)
 
     if(splitRate){
       val daysBefore2020 =  daysBetween(daysToApplyTax, endOfTaxYear2019)

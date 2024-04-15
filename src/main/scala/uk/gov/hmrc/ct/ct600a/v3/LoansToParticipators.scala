@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600a.v3
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600a.v3.LoansToParticipators._
 import uk.gov.hmrc.ct.ct600a.v3.formats.LoansFormatter
@@ -31,8 +31,8 @@ case class LoansToParticipators(loans: List[Loan] = List.empty) extends CtBoxIde
 
   override def value = loans
 
-  val DateOF2016TaxRateForLoans = new LocalDate(2016, 4, 6)
-  val DateOF2022TaxRateForLoans = new LocalDate(2022, 4, 6)
+  val DateOF2016TaxRateForLoans = LocalDate.of(2016,4,6)
+  val DateOF2022TaxRateForLoans = LocalDate.of(2022,4,6)
 
 
   override def asBoxString = LoansFormatter.asBoxString(this)
@@ -200,7 +200,7 @@ case class Repayment(id: String, amount: Option[Int], amountBetween06042016To060
   private def invalidDateWithin9Months(boxRetriever: CT600ABoxRetriever): Boolean = !date.exists(_ > currentAPEndDate(boxRetriever)) || date.exists(_ > earlierOfNowAndAPEndDatePlus9Months(boxRetriever)) || date.isEmpty
 
   private def invalidDateAfter9Months(boxRetriever: CT600ABoxRetriever): Boolean = {
-    !(date.exists(_ > currentAPEndDatePlus9Months(boxRetriever)) && date.exists(_ <= LocalDate.now().toDateTimeAtStartOfDay.toLocalDate)) || date.isEmpty
+    !(date.exists(_ > currentAPEndDatePlus9Months(boxRetriever)) && date.exists(_ <= LocalDate.now().atStartOfDay().toLocalDate)) || date.isEmpty
   }
 
   private def invalidApEndDateRequired: Boolean = endDateOfAP.isEmpty
@@ -237,7 +237,7 @@ case class Repayment(id: String, amount: Option[Int], amountBetween06042016To060
     }
   }
 
-  def dateAtStartOfToday: LocalDate = LocalDate.now().toDateTimeAtStartOfDay.toLocalDate
+  def dateAtStartOfToday: LocalDate = LocalDate.now().atStartOfDay().toLocalDate
 
   def errorArgsRepaymentsWith9MonthsDate(boxRetriever: CT600ABoxRetriever): Some[Seq[String]] =
     Some(Seq(toErrorArgsFormat(currentAPEndDate(boxRetriever)), toErrorArgsFormat(earlierOfNowAndAPEndDatePlus9Months(boxRetriever))))
@@ -264,7 +264,7 @@ case class WriteOff(id: String, amount: Option[Int], amountBetween06042016To0604
     validateWriteOff(invalidApEndDateRange(boxRetriever), s"$writeOffErrorCode.$writeOffIndex.endDateOfAP.range", errorArgsWriteOffApEndDate(boxRetriever), loanIndex)
   }
 
-  private def invalidDate(boxRetriever: CT600ABoxRetriever): Boolean = !(date.exists(_ > currentAPEndDate(boxRetriever)) && date.exists(_ < LocalDate.now().plusDays(1).toDateTimeAtStartOfDay.toLocalDate)) || date.isEmpty
+  private def invalidDate(boxRetriever: CT600ABoxRetriever): Boolean = !(date.exists(_ > currentAPEndDate(boxRetriever)) && date.exists(_ < LocalDate.now().plusDays(1).atStartOfDay().toLocalDate)) || date.isEmpty
 
   private def invalidWriteOffAmount: Boolean = amount.exists(_ < MIN_MONEY_AMOUNT_ALLOWED) || amount.exists(_ > MAX_MONEY_AMOUNT_ALLOWED) || amount.isEmpty
 
@@ -302,7 +302,7 @@ case class WriteOff(id: String, amount: Option[Int], amountBetween06042016To0604
 
 object LoansToParticipators {
 
-  val MIN_DATE = new LocalDate(0)
+  val MIN_DATE: LocalDate = LocalDate.MIN
 
   def sortLoans(loans: List[Loan]): List[Loan] = loans.sortWith(_.id < _.id).sortWith(_.name.getOrElse("").toLowerCase() < _.name.getOrElse("").toLowerCase())
 

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 
 package object machineryAndPlant {
   val ecoFriendlyMachineryAndPlantEndDate = LocalDate.parse("2020-04-01")

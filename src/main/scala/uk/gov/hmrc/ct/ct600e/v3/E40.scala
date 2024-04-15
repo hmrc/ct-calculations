@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600e.v3
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.box.{CtBoxIdentifier, CtOptionalDate, Input, ValidatableBox}
 import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 

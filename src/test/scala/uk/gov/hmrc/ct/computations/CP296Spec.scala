@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
@@ -26,7 +26,7 @@ class CP296Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
   "calculate" should {
       val testBuildingCost = 1001
-      val testAPStart = new LocalDate("2019-04-01")
+      val testAPStart = LocalDate.parse("2019-04-01")
 
     "not include buildings with start date before AP start date" in {
       val testBuilding = Building(None, None, None, None, Some(testAPStart.minusDays(1)), None, Some(testBuildingCost), None)

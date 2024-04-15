@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.approval.boxes
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box._
 

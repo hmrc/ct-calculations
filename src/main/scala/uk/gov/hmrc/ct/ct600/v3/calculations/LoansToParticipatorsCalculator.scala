@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations.CP2
 import uk.gov.hmrc.ct.ct600.v3._
@@ -28,8 +28,8 @@ trait LoansToParticipatorsCalculator extends CtTypeConverters {
   val LoansRateBeforeApril2016 = 0.25
   val LoansRateBetweenApril2016TO2022 = 0.325
   val LoansRateAfterApril2022 = 0.3375
-  val DateOF2016TaxRateForLoans = new LocalDate(2016, 4, 6)
-  val DateOF2022TaxRateForLoans = new LocalDate(2022, 4, 6)
+  val DateOF2016TaxRateForLoans = LocalDate.of(2016,4,6)
+  val DateOF2022TaxRateForLoans = LocalDate.of(2022,4,6)
   def calculateLPQ01(lpq04: LPQ04, lpq10: LPQ10, a5: A5, lpq03: LPQ03): LPQ01 = {
     (lpq04.value, lpq10.value, a5.value, lpq03.value) match {
       case (Some(true), Some(true), _, _) => LPQ01(true)

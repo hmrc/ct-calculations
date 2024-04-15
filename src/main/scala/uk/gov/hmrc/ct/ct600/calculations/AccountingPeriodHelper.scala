@@ -16,10 +16,12 @@
 
 package uk.gov.hmrc.ct.ct600.calculations
 
-import org.joda.time.{Days, LocalDate}
 import uk.gov.hmrc.ct.box.{EndDate, StartDate}
 import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
 import uk.gov.hmrc.ct.utils.DateImplicits._
+
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 object AccountingPeriodHelper extends AccountingPeriodHelper
 
@@ -38,26 +40,28 @@ trait AccountingPeriodHelper {
     endingFinancialYear(accountingPeriod.end) > startingFinancialYear(accountingPeriod.start)
   }
 
-  def financialYearStartingIn(year: Int): (LocalDate, LocalDate) = (new LocalDate(year, 4, 1), new LocalDate(year + 1, 3, 31))
+  def financialYearStartingIn(year: Int): (LocalDate, LocalDate) = (LocalDate.of(year, 4, 1), LocalDate.of(year + 1, 3, 31))
 
   def startingFinancialYear(date: StartDate): Int = financialYearForDate(date.value)
 
   def endingFinancialYear(date: EndDate): Int = financialYearForDate(date.value)
 
-   def financialYearForDate(date: LocalDate): Int = if (date.getMonthOfYear < 4) date.getYear - 1 else date.getYear
+   def financialYearForDate(date: LocalDate): Int = if (date.getMonthValue < 4) date.getYear - 1 else date.getYear
 
-  def daysBetween(start: LocalDate, end: LocalDate): Int = Days.daysBetween(start, end).getDays + 1
+  def daysBetween(start: LocalDate, end: LocalDate): Long = start.until(end, ChronoUnit.DAYS) + 1
 
   def validateAccountingPeriod(accountingPeriod: HmrcAccountingPeriod) = {
     if (accountingPeriod.start.value > accountingPeriod.end.value) {
       throw new InvalidAccountingPeriodException("Accounting Period start date must be before the end date")
     }
-    
-    if (daysBetween(accountingPeriod.start.value, accountingPeriod.end.value) > maximumNumberOfDaysInAccountingPeriod(accountingPeriod)) {
+
+    val i = daysBetween(accountingPeriod.start.value, accountingPeriod.end.value)
+    val decimal = maximumNumberOfDaysInAccountingPeriod(accountingPeriod)
+    if (i > decimal) {
       throw new InvalidAccountingPeriodException("Accounting Period must not be longer than one calendar year")
     }
     
-    if (accountingPeriod.start.value < new LocalDate(2006, 10, 2)) {
+    if (accountingPeriod.start.value < LocalDate.of(2006,10,2)) {
       throw new InvalidAccountingPeriodException("Accounting Period must not be before 1st October 2006")
     }
   }

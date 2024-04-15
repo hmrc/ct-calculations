@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600j.v3
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 

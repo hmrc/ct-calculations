@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.computations.capitalAllowanceAndSBA
 import uk.gov.hmrc.ct.ct600.NumberRounding
 
 
-case class SbaRate(numberOfDaysRate: Int, dailyRate: BigDecimal, rateYearlyPercentage: BigDecimal) extends NumberRounding {
+case class SbaRate(numberOfDaysRate: Long, dailyRate: BigDecimal, rateYearlyPercentage: BigDecimal) extends NumberRounding {
   val rateYearlyPercentageAsInt = roundedToInt(rateYearlyPercentage * 100)
   val costRate = roundedToIntHalfUp(numberOfDaysRate * dailyRate)
 }

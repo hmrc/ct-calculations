@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v2.calculations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
 import org.scalatest.matchers.should.Matchers
@@ -32,42 +32,42 @@ class MarginalRateReliefCalculatorSpec extends AnyWordSpec with Matchers {
 
     "Fail validation for an AP where the end date is before the start date" in new Calculator {
       an[InvalidAccountingPeriodException] should be thrownBy
-        calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(new LocalDate(2014, 9, 1)), CP2(new LocalDate(2014, 5, 31))))
+        calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(LocalDate.of(2014,9,1)), CP2(LocalDate.of(2014,5,31))))
 
       an[InvalidAccountingPeriodException] should be thrownBy
-        calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(new LocalDate(2014, 9, 1)), CP2(new LocalDate(2013, 1, 31))))
+        calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(LocalDate.of(2014,9,1)), CP2(LocalDate.of(2013,1,31))))
     }
 
     "Not fail validation for an AP of 365 days across multiple non-leap years" in new Calculator {
-      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(new LocalDate(2013, 3, 1)), CP2(new LocalDate(2014, 2, 28))))
-      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(new LocalDate(2013, 4, 1)), CP2(new LocalDate(2014, 3, 31))))
-      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(new LocalDate(2013, 10, 1)), CP2(new LocalDate(2014, 9, 30))))
+      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(LocalDate.of(2013,3,1)), CP2(LocalDate.of(2014,2,28))))
+      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(LocalDate.of(2013,4,1)), CP2(LocalDate.of(2014,3,31))))
+      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(LocalDate.of(2013,10,1)), CP2(LocalDate.of(2014,9,30))))
     }
 
     "Fail validation for an AP of 365 days across multiple non-leap years" in new Calculator {
       an[InvalidAccountingPeriodException] should be thrownBy
-        calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(new LocalDate(2013, 3, 1)), CP2(new LocalDate(2014, 3, 1))))
+        calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(LocalDate.of(2013,3,1)), CP2(LocalDate.of(2014,3,1))))
       an[InvalidAccountingPeriodException] should be thrownBy
-        calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(new LocalDate(2013, 4, 1)), CP2(new LocalDate(2014, 4, 1))))
+        calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(LocalDate.of(2013,4,1)), CP2(LocalDate.of(2014,4,1))))
       an[InvalidAccountingPeriodException] should be thrownBy
-        calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(new LocalDate(2013, 10, 1)), CP2(new LocalDate(2014, 10, 1))))
+        calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(LocalDate.of(2013,10,1)), CP2(LocalDate.of(2014,10,1))))
     }
 
     "Not fail validation for an AP of 366 days starting beginning of February on a leap year and ending at the end of January the following year" in new Calculator {
-      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(new LocalDate(2012, 2, 1)), CP2(new LocalDate(2013, 1, 31))))
+      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(LocalDate.of(2012,2,1)), CP2(LocalDate.of(2013,1,31))))
     }
 
     "Not fail validation for short APs in a single financial year which is not a leap year" in new Calculator {
-      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(new LocalDate(2014, 9, 1)), CP2(new LocalDate(2014, 12, 31))))
-      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(new LocalDate(2013, 12, 1)), CP2(new LocalDate(2014, 3, 1))))
-      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(new LocalDate(2014, 3, 1)), CP2(new LocalDate(2014, 3, 31))))
-      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(new LocalDate(2014, 1, 1)), CP2(new LocalDate(2014, 3, 31))))
-      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(new LocalDate(2014, 9, 1)), CP2(new LocalDate(2014, 11, 30))))
+      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(LocalDate.of(2014,9,1)), CP2(LocalDate.of(2014,12,31))))
+      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(LocalDate.of(2013,12,1)), CP2(LocalDate.of(2014,3,1))))
+      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(LocalDate.of(2014,3,1)), CP2(LocalDate.of(2014,3,31))))
+      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(LocalDate.of(2014,1,1)), CP2(LocalDate.of(2014,3,31))))
+      calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(LocalDate.of(2014,9,1)), CP2(LocalDate.of(2014,11,30))))
     }
 
     "Fail validation for an AP which starts before 1st April 2012" in new Calculator {
       an[InvalidAccountingPeriodException] should be thrownBy
-        calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(new LocalDate(2006, 10, 1)), CP2(new LocalDate(2007, 9, 30))))
+        calculateMRR(B37(300001), B38(None), B39(None), HmrcAccountingPeriod(CP1(LocalDate.of(2006,10,1)), CP2(LocalDate.of(2007,9,30))))
     }
   }
 
@@ -79,21 +79,21 @@ class MarginalRateReliefCalculatorSpec extends AnyWordSpec with Matchers {
     (1000000, "2013-04-01", "2014-03-31", 0, 3750.00),
     (1400000, "2013-04-01", "2014-03-31", 0, 750.00),
     (1499999, "2013-04-01", "2014-03-31", 0, 0.01),
-    (1500000, "2013-11-01", "2014-10-1", 0, 0.00),
-    (300000, "2014-1-01", "2014-3-31", 0, 523.97),
-    (300001, "2014-1-01", "2014-3-31", 0, 523.97),
-    (400000, "2014-1-01", "2014-3-31", 0, 0.00),
-    (1000000, "2014-1-01", "2014-3-31", 0, 0.00),
-    (1400000, "2014-1-01", "2014-3-31", 0, 0.00),
-    (1499999, "2014-1-01", "2014-3-31", 0, 0.00),
-    (1500000, "2014-1-01", "2014-3-31", 0, 0.00),
-    (200000, "2013-11-01", "2014-10-1", 0, 0.00),
-    (300000, "2013-11-01", "2014-10-1", 0, 5118.40),
-    (400000, "2013-11-01", "2014-10-1", 0, 4643.03),
-    (1000000, "2013-11-01", "2014-10-1", 0, 1790.79),
-    (1400000, "2013-11-01", "2014-10-1", 0, 0.00),
-    (1499999, "2013-11-01", "2014-10-1", 0, 0.00),
-    (1500000, "2013-11-01", "2014-10-1", 0, 0.00),
+    (1500000, "2013-11-01", "2014-10-01", 0, 0.00),
+    (300000, "2014-01-01", "2014-03-31", 0, 523.97),
+    (300001, "2014-01-01", "2014-03-31", 0, 523.97),
+    (400000, "2014-01-01", "2014-03-31", 0, 0.00),
+    (1000000, "2014-01-01", "2014-03-31", 0, 0.00),
+    (1400000, "2014-01-01", "2014-03-31", 0, 0.00),
+    (1499999, "2014-01-01", "2014-03-31", 0, 0.00),
+    (1500000, "2014-01-01", "2014-03-31", 0, 0.00),
+    (200000, "2013-11-01", "2014-10-01", 0, 0.00),
+    (300000, "2013-11-01", "2014-10-01", 0, 5118.40),
+    (400000, "2013-11-01", "2014-10-01", 0, 4643.03),
+    (1000000, "2013-11-01", "2014-10-01", 0, 1790.79),
+    (1400000, "2013-11-01", "2014-10-01", 0, 0.00),
+    (1499999, "2013-11-01", "2014-10-01", 0, 0.00),
+    (1500000, "2013-11-01", "2014-10-01", 0, 0.00),
     (300000, "2013-04-01", "2014-03-31", 500, 8981.28),
     (300001, "2013-04-01", "2014-03-31", 500, 8981.27),
     (299500, "2013-04-01", "2014-03-31", 500, 0.00),
@@ -110,13 +110,13 @@ class MarginalRateReliefCalculatorSpec extends AnyWordSpec with Matchers {
     (1400000, "2014-01-01", "2014-03-31", 500, 0.00),
     (1499999, "2014-01-01", "2014-03-31", 500, 0.00),
     (1500000, "2014-01-01", "2014-03-31", 500, 0.00),
-    (200000, "2013-11-01", "2014-10-1", 500, 0.00),
-    (300000, "2013-11-01", "2014-10-1", 500, 5107.51),
-    (400000, "2013-11-01", "2014-10-1", 500, 4634.86),
-    (1000000, "2013-11-01", "2014-10-1", 500, 1787.52),
-    (1400000, "2013-11-01", "2014-10-1", 500, 0.00),
-    (1499999, "2013-11-01", "2014-10-1", 500, 0.00),
-    (1500000, "2013-11-01", "2014-10-1", 500, 0.00)
+    (200000, "2013-11-01", "2014-10-01", 500, 0.00),
+    (300000, "2013-11-01", "2014-10-01", 500, 5107.51),
+    (400000, "2013-11-01", "2014-10-01", 500, 4634.86),
+    (1000000, "2013-11-01", "2014-10-01", 500, 1787.52),
+    (1400000, "2013-11-01", "2014-10-01", 500, 0.00),
+    (1499999, "2013-11-01", "2014-10-01", 500, 0.00),
+    (1500000, "2013-11-01", "2014-10-01", 500, 0.00)
   )
 
   val jiraCalculationCATO1672Examples = Table(
@@ -219,7 +219,7 @@ class MarginalRateReliefCalculatorSpec extends AnyWordSpec with Matchers {
             b37 = B37(b37Value),
             b38 = B38(Some(b38Value)),
             b39 = B39(None),
-            accountingPeriod = HmrcAccountingPeriod(CP1(new LocalDate(cp1Value)), CP2(new LocalDate(cp2Value)))
+            accountingPeriod = HmrcAccountingPeriod(CP1(LocalDate.parse(cp1Value)), CP2(LocalDate.parse(cp2Value)))
           ) should be(CATO04(cato04Value))
 
       }
@@ -236,7 +236,7 @@ class MarginalRateReliefCalculatorSpec extends AnyWordSpec with Matchers {
             b37 = B37(b37Value),
             b38 = B38(Some(b38Value)),
           b39 = B39(None),
-            accountingPeriod = HmrcAccountingPeriod(CP1(new LocalDate(cp1Value)), CP2(new LocalDate(cp2Value)))
+            accountingPeriod = HmrcAccountingPeriod(CP1(LocalDate.parse(cp1Value)), CP2(LocalDate.parse(cp2Value)))
           ) should be(CATO04(cato04Value))
 
       }
@@ -254,7 +254,7 @@ class MarginalRateReliefCalculatorSpec extends AnyWordSpec with Matchers {
             b37 = B37(b37Value),
             b38 = B38(Some(b38Value)),
             b39 = B39(Option(b39Value)),
-            accountingPeriod = HmrcAccountingPeriod(CP1(new LocalDate(cp1Value)), CP2(new LocalDate(cp2Value)))
+            accountingPeriod = HmrcAccountingPeriod(CP1(LocalDate.parse(cp1Value)), CP2(LocalDate.parse(cp2Value)))
           ) should be(CATO04(cato04Value))
       }
     }
@@ -272,7 +272,7 @@ class MarginalRateReliefCalculatorSpec extends AnyWordSpec with Matchers {
           b37 = B37(b37Value),
           b38 = B38(Some(b38Value)),
           b39 = B39(Option(b39Value)),
-          accountingPeriod = HmrcAccountingPeriod(CP1(new LocalDate(cp1Value)), CP2(new LocalDate(cp2Value)))
+          accountingPeriod = HmrcAccountingPeriod(CP1(LocalDate.parse(cp1Value)), CP2(LocalDate.parse(cp2Value)))
         ) should be(CATO04(cato04Value))
     }
   }

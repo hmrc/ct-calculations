@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.box
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 
 trait StartDate extends CtDate {
   self: CtBoxIdentifier =>

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3.calculations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.CATO23
@@ -58,15 +58,15 @@ class CorporationTaxCalculatorSpec extends AnyWordSpec with Matchers {
   }
 
   "B330" in new CorporationTaxCalculator {
-    financialYear1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 6, 1)),CP2(new LocalDate(2015, 5, 31)) )) shouldBe 2014
+    financialYear1(HmrcAccountingPeriod(CP1(LocalDate.of(2014,6,1)),CP2(LocalDate.of(2015,5,31)) )) shouldBe 2014
   }
 
   "B380" should {
     "be none when period end is in same financial year" in new CorporationTaxCalculator {
-      financialYear2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 6, 1)), CP2(new LocalDate(2014, 5, 31)))) shouldBe None
+      financialYear2(HmrcAccountingPeriod(CP1(LocalDate.of(2014,6,1)), CP2(LocalDate.of(2014,5,31)))) shouldBe None
     }
     "be the following year when period end in next financial year" in new CorporationTaxCalculator {
-      financialYear2(HmrcAccountingPeriod(CP1(new LocalDate(2014, 6, 1)), CP2(new LocalDate(2015, 5, 31)))) shouldBe Some(2015)
+      financialYear2(HmrcAccountingPeriod(CP1(LocalDate.of(2014,6,1)), CP2(LocalDate.of(2015,5,31)))) shouldBe Some(2015)
     }
   }
 
@@ -78,11 +78,11 @@ class CorporationTaxCalculatorSpec extends AnyWordSpec with Matchers {
 
   // These tests assume that delegate code is tested thoroughly by v2 tests
   "B340" in new CorporationTaxCalculator {
-    rateOfTaxFy1(HmrcAccountingPeriod(CP1(new LocalDate(2014, 4, 1)), CP2(new LocalDate(2014, 12, 31))), taxable = B335(299999),frankedInvestment=B620(Some(0)), noOfCompanies = B326(1)) shouldBe BigDecimal("0.21")
+    rateOfTaxFy1(HmrcAccountingPeriod(CP1(LocalDate.of(2014,4,1)), CP2(LocalDate.of(2014,12,31))), taxable = B335(299999),frankedInvestment=B620(Some(0)), noOfCompanies = B326(1)) shouldBe BigDecimal("0.21")
   }
 
   "B390" in new CorporationTaxCalculator {
-    rateOfTaxFy2(HmrcAccountingPeriod(CP1(new LocalDate(2015, 1, 1)), CP2(new LocalDate(2015, 12, 31))), taxable = B385(299999),frankedInvestment=B620(Some(0)), b328 = B328(1)) shouldBe BigDecimal("0.20")
+    rateOfTaxFy2(HmrcAccountingPeriod(CP1(LocalDate.of(2015,1,1)), CP2(LocalDate.of(2015,12,31))), taxable = B385(299999),frankedInvestment=B620(Some(0)), b328 = B328(1)) shouldBe BigDecimal("0.20")
   }
 
 
@@ -90,25 +90,25 @@ class CorporationTaxCalculatorSpec extends AnyWordSpec with Matchers {
   "B335 apportioned profits chargeable FY1" in new CorporationTaxCalculator {
     calculateApportionedProfitsChargeableFy1(
       CorporationTaxCalculatorParameters(CP295(20000),
-        HmrcAccountingPeriod(CP1(new LocalDate(2014, 10, 1)), CP2(new LocalDate(2015, 9, 30))))) shouldBe B335(9973)
+        HmrcAccountingPeriod(CP1(LocalDate.of(2014,10,1)), CP2(LocalDate.of(2015,9,30))))) shouldBe B335(9973)
   }
 
   "B385 apportioned profits chargeable FY2" in new CorporationTaxCalculator {
     calculateApportionedProfitsChargeableFy2(
       CorporationTaxCalculatorParameters(CP295(20000),
-        HmrcAccountingPeriod(CP1(new LocalDate(2014, 10, 1)), CP2(new LocalDate(2015, 9, 30))))) shouldBe B385(10027)
+        HmrcAccountingPeriod(CP1(LocalDate.of(2014,10,1)), CP2(LocalDate.of(2015,9,30))))) shouldBe B385(10027)
   }
 
   "B335 apportioned non trading profit for FY1 when Northern Ireland is active" in new CorporationTaxCalculator {
     calculateNIApportionedNonTradingProfitsChargeableFy1(
       NINonTradingProfitCalculationParameters(CATO23(1000),
-        HmrcAccountingPeriod(CP1(new LocalDate(2018, 4, 12)), CP2(new LocalDate(2019, 4, 11))))) shouldBe B335(970)
+        HmrcAccountingPeriod(CP1(LocalDate.of(2018,4,12)), CP2(LocalDate.of(2019,4,11))))) shouldBe B335(970)
   }
 
   "B385 apportioned non trading profit for FY2 when Northern Ireland is active" in new CorporationTaxCalculator {
     calculateNIApportionedNonTradingProfitsChargeableFy2(
       NINonTradingProfitCalculationParameters(CATO23(1000),
-        HmrcAccountingPeriod(CP1(new LocalDate(2018, 4, 12)), CP2(new LocalDate(2019, 4, 11))))) shouldBe B385(30)
+        HmrcAccountingPeriod(CP1(LocalDate.of(2018,4,12)), CP2(LocalDate.of(2019,4,11))))) shouldBe B385(30)
   }
 
   // ----------------------------------------------------------------------

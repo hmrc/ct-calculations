@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.v3
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.CtValidation
@@ -27,8 +27,8 @@ import uk.gov.hmrc.ct.ct600a.v3._
 class LoansToParticipatorsSpec extends AnyWordSpec with Matchers {
 
   //Know this isn't a V3 date but required so our +9 months date aren't before the current date
-  val currentAPEndDate = new LocalDate(2021, 2, 1)
-  val currentAPEndDatebefore2016 = new LocalDate(2014, 6, 1)
+  val currentAPEndDate = LocalDate.of(2021,2,1)
+  val currentAPEndDatebefore2016 = LocalDate.of(2014,6,1)
 
   val boxRetriever = new StubbedCT600BoxRetriever {
     override def cp2(): CP2 = CP2(currentAPEndDate)

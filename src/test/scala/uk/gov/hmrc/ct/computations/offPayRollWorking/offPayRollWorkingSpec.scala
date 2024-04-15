@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.offPayRollWorking
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.{AC401, AC403}
@@ -26,15 +26,15 @@ class offPayRollWorkingSpec extends AnyWordSpec with Matchers {
 
   "isOPWEnabled" should {
     "return false for before 2017-04-05" in {
-      isOPWEnabled(new LocalDate("2017-04-04")) shouldBe false
+      isOPWEnabled(LocalDate.parse("2017-04-04")) shouldBe false
     }
 
     "return false for 2017-04-05" in {
-      isOPWEnabled(new LocalDate("2017-04-05")) shouldBe false
+      isOPWEnabled(LocalDate.parse("2017-04-05")) shouldBe false
     }
 
     "return true for before 2017-04-05" in {
-      isOPWEnabled(new LocalDate("2017-04-06")) shouldBe true
+      isOPWEnabled(LocalDate.parse("2017-04-06")) shouldBe true
     }
   }
 

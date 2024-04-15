@@ -16,13 +16,11 @@
 
 package uk.gov.hmrc.ct.box.formats
 
-import org.joda.time.LocalDate
-import play.api.libs.json.JodaReads._
-import play.api.libs.json.JodaWrites._
+import java.time.LocalDate
 import play.api.libs.json._
 import uk.gov.hmrc.ct.box.CtOptionalDate
 
-class OptionalDateFormat[T <: CtOptionalDate](builder: (Option[LocalDate] => T)) extends Format[T] {
+class OptionalDateFormat[T <: CtOptionalDate](builder: (Option[LocalDate] => T)) extends Format[T] with EnvReads with EnvWrites {
 
   override def reads(json: JsValue): JsResult[T] = {
     JsSuccess(builder(json.asOpt[LocalDate]))

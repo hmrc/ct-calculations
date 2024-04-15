@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.box
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.box.ValidatableBox._
 import uk.gov.hmrc.ct.box.retriever.BoxRetriever
 import uk.gov.hmrc.ct.ct600.v3.retriever.RepaymentsBoxRetriever

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.prop.TableDrivenPropertyChecks.forAll
 import org.scalatest.prop.TableFor6
@@ -62,8 +62,8 @@ class AC12Spec extends AnyWordSpec with Matchers with MockitoSugar {
           forAll(testTable) { (startDateString: String, endDateString: String, abridgedFiling: Boolean, ac12Value: Option[Int], required: Boolean, message: String) =>
             val boxRetriever = mock[TestBoxRetriever]
 
-            when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate(startDateString)))
-            when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate(endDateString)))
+            when(boxRetriever.ac3()).thenReturn(AC3(LocalDate.parse(startDateString)))
+            when(boxRetriever.ac4()).thenReturn(AC4(LocalDate.parse(endDateString)))
             when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
             when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(false))
             when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(abridgedFiling))
@@ -90,8 +90,8 @@ class AC12Spec extends AnyWordSpec with Matchers with MockitoSugar {
       testValues.foreach { case (ac12Value: Option[Int], message: String) =>
         val boxRetriever = mock[TestBoxRetriever]
 
-        when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate("2017-01-01")))
-        when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate("2017-12-31")))
+        when(boxRetriever.ac3()).thenReturn(AC3(LocalDate.parse("2017-01-01")))
+        when(boxRetriever.ac4()).thenReturn(AC4(LocalDate.parse("2017-12-31")))
         when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(true))
         when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(true))
         when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(false))
@@ -610,8 +610,8 @@ class AC12Spec extends AnyWordSpec with Matchers with MockitoSugar {
         forAll(table) { (startDateString: String, endDateString: String, abridgedFiling: Boolean, ac12Value: Int, expectedErrorKey: String, message: String) =>
           val boxRetriever = mock[TestBoxRetriever]
 
-          when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate(startDateString)))
-          when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate(endDateString)))
+          when(boxRetriever.ac3()).thenReturn(AC3(LocalDate.parse(startDateString)))
+          when(boxRetriever.ac4()).thenReturn(AC4(LocalDate.parse(endDateString)))
           when(boxRetriever.hmrcFiling()).thenReturn(HMRCFiling(isHmrcFiling))
           when(boxRetriever.companiesHouseFiling()).thenReturn(CompaniesHouseFiling(isCoHoFiling))
           when(boxRetriever.abridgedFiling()).thenReturn(AbridgedFiling(abridgedFiling))

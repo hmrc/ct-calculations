@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.Validators
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.CPQ7
 import uk.gov.hmrc.ct.computations.capitalAllowanceAndSBA._

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito.when
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -37,8 +37,8 @@ class CP983Spec extends AnyWordSpec with Matchers with MockitoSugar with BoxVali
 
   "CP983 validation" should {
     "mandatory" in {
-      when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate("2019-01-01")))
-      when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate("2019-12-31")))
+      when(boxRetriever.cp1()).thenReturn(CP1(LocalDate.parse("2019-01-01")))
+      when(boxRetriever.cp2()).thenReturn(CP2(LocalDate.parse("2019-12-31")))
       when(boxRetriever.cp7()).thenReturn(CP7(None))
       when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
       when(boxRetriever.acq8999a()).thenReturn(ACQ8999(Some(false)))
@@ -47,8 +47,8 @@ class CP983Spec extends AnyWordSpec with Matchers with MockitoSugar with BoxVali
     }
 
     "not mandatory if ACQ8999 is true" in {
-      when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate("2019-01-01")))
-      when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate("2019-12-31")))
+      when(boxRetriever.cp1()).thenReturn(CP1(LocalDate.parse("2019-01-01")))
+      when(boxRetriever.cp2()).thenReturn(CP2(LocalDate.parse("2019-12-31")))
       when(boxRetriever.cp7()).thenReturn(CP7(None))
       when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
       when(boxRetriever.acq8999a()).thenReturn(ACQ8999(Some(true)))
@@ -56,8 +56,8 @@ class CP983Spec extends AnyWordSpec with Matchers with MockitoSugar with BoxVali
       cp983.validate(boxRetriever) shouldBe Set.empty
     }
      "not mandatory if CATO24 is false" in {
-       when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate("2019-01-01")))
-       when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate("2019-12-31")))
+       when(boxRetriever.cp1()).thenReturn(CP1(LocalDate.parse("2019-01-01")))
+       when(boxRetriever.cp2()).thenReturn(CP2(LocalDate.parse("2019-12-31")))
        when(boxRetriever.cp7()).thenReturn(CP7(None))
        when(boxRetriever.cato24()).thenReturn(CATO24(Some(false)))
        when(boxRetriever.acq8999a()).thenReturn(ACQ8999(Some(false)))
@@ -66,8 +66,8 @@ class CP983Spec extends AnyWordSpec with Matchers with MockitoSugar with BoxVali
      }
 
      "Can't be negative" in {
-       when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate("2019-01-01")))
-       when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate("2019-12-31")))
+       when(boxRetriever.cp1()).thenReturn(CP1(LocalDate.parse("2019-01-01")))
+       when(boxRetriever.cp2()).thenReturn(CP2(LocalDate.parse("2019-12-31")))
        when(boxRetriever.cp7()).thenReturn(CP7(None))
        when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
        when(boxRetriever.acq8999a()).thenReturn(ACQ8999(Some(false)))
@@ -76,8 +76,8 @@ class CP983Spec extends AnyWordSpec with Matchers with MockitoSugar with BoxVali
      }
 
    "Can't be more than 632000" in {
-     when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate("2019-01-01")))
-     when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate("2019-12-31")))
+     when(boxRetriever.cp1()).thenReturn(CP1(LocalDate.parse("2019-01-01")))
+     when(boxRetriever.cp2()).thenReturn(CP2(LocalDate.parse("2019-12-31")))
      when(boxRetriever.cp7()).thenReturn(CP7(None))
      when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
      when(boxRetriever.acq8999a()).thenReturn(ACQ8999(Some(false)))
@@ -88,8 +88,8 @@ class CP983Spec extends AnyWordSpec with Matchers with MockitoSugar with BoxVali
    }
 
    "Can't be more than 632000 with CP7" in {
-     when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate("2019-01-01")))
-     when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate("2019-12-31")))
+     when(boxRetriever.cp1()).thenReturn(CP1(LocalDate.parse("2019-01-01")))
+     when(boxRetriever.cp2()).thenReturn(CP2(LocalDate.parse("2019-12-31")))
      when(boxRetriever.cp7()).thenReturn(CP7(Some(2)))
      when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
      when(boxRetriever.acq8999a()).thenReturn(ACQ8999(Some(false)))
@@ -99,8 +99,8 @@ class CP983Spec extends AnyWordSpec with Matchers with MockitoSugar with BoxVali
 
    }
    "No errors for value under 632000" in {
-     when(boxRetriever.cp1()).thenReturn(CP1(new LocalDate("2019-01-01")))
-     when(boxRetriever.cp2()).thenReturn(CP2(new LocalDate("2019-12-31")))
+     when(boxRetriever.cp1()).thenReturn(CP1(LocalDate.parse("2019-01-01")))
+     when(boxRetriever.cp2()).thenReturn(CP2(LocalDate.parse("2019-12-31")))
      when(boxRetriever.cp7()).thenReturn(CP7(None))
      when(boxRetriever.cato24()).thenReturn(CATO24(Some(true)))
      when(boxRetriever.acq8999a()).thenReturn(ACQ8999(Some(false)))

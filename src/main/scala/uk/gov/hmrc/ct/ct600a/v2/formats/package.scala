@@ -18,8 +18,6 @@ package uk.gov.hmrc.ct.ct600a.v2
 
 import play.api.libs.json.{Format, Json}
 import uk.gov.hmrc.ct.box.formats._
-import play.api.libs.json.JodaWrites._
-import play.api.libs.json.JodaReads._
 
 package object formats {
 

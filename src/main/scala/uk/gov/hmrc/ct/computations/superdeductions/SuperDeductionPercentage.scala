@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.ct.computations.superdeductions
 
-import org.joda.time.Days
 import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
 import uk.gov.hmrc.ct.utils.DateImplicits.DateOperators
+
+import java.time.temporal.ChronoUnit
 
 
 case class SuperDeductionPercentage(percentage: BigDecimal)
@@ -35,7 +36,7 @@ object SuperDeductionPercentage {
     } else {
       val overlapStart = if (hmrcAccountingPeriod.start.value <= superDeductionPeriod.start.value) superDeductionPeriod.start.value else hmrcAccountingPeriod.start.value
       val overlapEnd = if (hmrcAccountingPeriod.end.value <= superDeductionPeriod.end.value) hmrcAccountingPeriod.end.value else superDeductionPeriod.end.value
-      val daysOverlap = Days.daysBetween(overlapStart, overlapEnd).getDays + 1
+      val daysOverlap = overlapStart.until(overlapEnd, ChronoUnit.DAYS) + 1
       ((daysOverlap.toDouble / hmrcAccountingPeriod.noOfDaysInAccountingPeriod.toDouble) * 0.3) + 1
     }
     val str: String = "%.5f".format(percentage)
