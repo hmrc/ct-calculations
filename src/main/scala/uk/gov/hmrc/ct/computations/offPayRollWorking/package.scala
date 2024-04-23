@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.box.{CtOptionalInteger, CtValidation}
 
 package object offPayRollWorking {
-  val opwApplies2020 = new LocalDate("2017-04-05")
+  val opwApplies2020 = LocalDate.parse("2017-04-05")
 
   def isOPWEnabled(apEndDate: LocalDate) = apEndDate.isAfter(opwApplies2020)
 

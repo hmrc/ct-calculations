@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.approval.accountsApproval.accountsApproval
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -30,7 +30,7 @@ class AccountsApprovalSpec extends AnyWordSpec with Matchers with MockitoSugar {
 
   val boxRetriever = mock[TestAccountsRetriever]
 
-  val Date = Some(new LocalDate())
+  val Date = Some(LocalDate.now())
   val True = Some(true)
   val Approver = Some("approver")
 

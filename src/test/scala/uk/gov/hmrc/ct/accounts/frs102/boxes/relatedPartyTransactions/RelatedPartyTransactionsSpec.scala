@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes.relatedPartyTransactions
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.BeforeAndAfterEach
@@ -138,8 +138,8 @@ object RelatedPartyTransactionsMockSetup extends MockitoSugar {
 
   def setupDefaults(mockBoxRetriever: AbridgedAccountsBoxRetriever with FilingAttributesBoxValueRetriever) = {
     // previous POA responses
-    when(mockBoxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate(2014, 4, 6))))
-    when(mockBoxRetriever.ac206()).thenReturn(AC206(Some(new LocalDate(2015, 4, 5))))
+    when(mockBoxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.of(2014,4,6))))
+    when(mockBoxRetriever.ac206()).thenReturn(AC206(Some(LocalDate.of(2015,4,5))))
 
     when(mockBoxRetriever.ac7800()).thenReturn(AC7800(Some(true)))
   }

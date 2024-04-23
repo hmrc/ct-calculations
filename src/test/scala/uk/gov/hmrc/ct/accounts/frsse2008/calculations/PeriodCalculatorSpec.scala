@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frsse2008.calculations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -25,8 +25,8 @@ class PeriodCalculatorSpec extends AnyWordSpec with Matchers {
   "periodHeading" should {
 
     "return heading components containing multiple months" in {
-      val startDate = new LocalDate(2014, 1, 1)
-      val endDate = new LocalDate(2014, 7, 1)
+      val startDate = LocalDate.of(2014,1,1)
+      val endDate = LocalDate.of(2014,7,1)
 
       PeriodCalculator.periodHeadingComponents(startDate, endDate).monthCount shouldBe 6
       PeriodCalculator.periodHeadingComponents(startDate, endDate).messageKey shouldBe "periodHeader.plural"
@@ -34,8 +34,8 @@ class PeriodCalculatorSpec extends AnyWordSpec with Matchers {
     }
 
     "return heading components containing a single month" in {
-      val startDate = new LocalDate(2014, 1, 1)
-      val endDate = new LocalDate(2014, 2, 1)
+      val startDate = LocalDate.of(2014,1,1)
+      val endDate = LocalDate.of(2014,2,1)
 
       PeriodCalculator.periodHeadingComponents(startDate, endDate).monthCount shouldBe 1
       PeriodCalculator.periodHeadingComponents(startDate, endDate).messageKey shouldBe "periodHeader.singular"
@@ -43,8 +43,8 @@ class PeriodCalculatorSpec extends AnyWordSpec with Matchers {
     }
 
     "return heading components containing a partial month with only 15 days" in {
-      val startDate = new LocalDate(2014, 1, 1)
-      val endDate = new LocalDate(2014, 2, 15)
+      val startDate = LocalDate.of(2014,1,1)
+      val endDate = LocalDate.of(2014,2,15)
 
       PeriodCalculator.periodHeadingComponents(startDate, endDate).monthCount shouldBe 1
       PeriodCalculator.periodHeadingComponents(startDate, endDate).messageKey shouldBe "periodHeader.singular"
@@ -52,8 +52,8 @@ class PeriodCalculatorSpec extends AnyWordSpec with Matchers {
     }
 
     "return heading components containing a partial month with only 16 days" in {
-      val startDate = new LocalDate(2014, 1, 1)
-      val endDate = new LocalDate(2014, 2, 16)
+      val startDate = LocalDate.of(2014,1,1)
+      val endDate = LocalDate.of(2014,2,16)
 
       PeriodCalculator.periodHeadingComponents(startDate, endDate).monthCount shouldBe 2
       PeriodCalculator.periodHeadingComponents(startDate, endDate).messageKey shouldBe "periodHeader.plural"
@@ -61,8 +61,8 @@ class PeriodCalculatorSpec extends AnyWordSpec with Matchers {
     }
 
     "return heading components where the period is 12 months" in {
-      val startDate = new LocalDate(2014, 1, 1)
-      val endDate = new LocalDate(2015, 1, 1)
+      val startDate = LocalDate.of(2014,1,1)
+      val endDate = LocalDate.of(2015,1,1)
 
       PeriodCalculator.periodHeadingComponents(startDate, endDate).monthCount shouldBe 12
       PeriodCalculator.periodHeadingComponents(startDate, endDate).messageKey shouldBe ""
@@ -70,8 +70,8 @@ class PeriodCalculatorSpec extends AnyWordSpec with Matchers {
     }
 
     "return heading components where the period is greater than 12 months" in {
-      val startDate = new LocalDate(2014, 1, 1)
-      val endDate = new LocalDate(2015, 4, 30)
+      val startDate = LocalDate.of(2014,1,1)
+      val endDate = LocalDate.of(2015,4,30)
 
       PeriodCalculator.periodHeadingComponents(startDate, endDate).monthCount shouldBe 16
       PeriodCalculator.periodHeadingComponents(startDate, endDate).messageKey shouldBe "periodHeader.plural"

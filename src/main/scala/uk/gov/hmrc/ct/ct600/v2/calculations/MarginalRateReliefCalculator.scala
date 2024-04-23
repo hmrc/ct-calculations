@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ trait MarginalRateReliefCalculator extends CtTypeConverters with NumberRounding 
 
     val apFyRatio = apDaysInFy / daysInAccountingPeriod
 
-    val msFyRatio = apDaysInFy / (365 max daysInAccountingPeriod)
+    val msFyRatio = apDaysInFy / (365L max daysInAccountingPeriod)
 
     val apportionedProfit = (b37 plus b38) * apFyRatio
 

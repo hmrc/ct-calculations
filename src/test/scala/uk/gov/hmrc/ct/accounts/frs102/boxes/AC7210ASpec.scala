@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.should.Matchers
@@ -40,37 +40,37 @@ class AC7210ASpec extends AnyWordSpec with MockitoSugar with Matchers with MockF
       "pass validation if AC7210A has a value AC7200 is true" in {
         when(boxRetriever.ac7200()).thenReturn(AC7200(Some(true)))
         when(boxRetriever.ac7210B()).thenReturn(AC7210B(None))
-        when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate(2015, 12, 1))))
+        when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.of(2015,12,1))))
         AC7210A(Some(1224)).validate(boxRetriever) shouldBe empty
       }
       "pass validation if AC7210A is empty and AC7200 is false" in {
         when(boxRetriever.ac7200()).thenReturn(AC7200(Some(false)))
         when(boxRetriever.ac7210B()).thenReturn(AC7210B(None))
-        when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate(2015, 12, 1))))
+        when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.of(2015,12,1))))
         AC7210A(None).validate(boxRetriever) shouldBe empty
       }
       "pass validation if AC7210A is empty and AC7200 is empty" in {
         when(boxRetriever.ac7200()).thenReturn(AC7200(None))
         when(boxRetriever.ac7210B()).thenReturn(AC7210B(None))
-        when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate(2015, 12, 1))))
+        when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.of(2015,12,1))))
         AC7210A(None).validate(boxRetriever) shouldBe empty
       }
       "fail validation if AC7210A has a value AC7200 is false" in {
         when(boxRetriever.ac7200()).thenReturn(AC7200(Some(false)))
         when(boxRetriever.ac7210B()).thenReturn(AC7210B(None))
-        when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate(2015, 12, 1))))
+        when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.of(2015,12,1))))
         AC7210A(Some(1224)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7210A"), "error.AC7210A.cannot.exist"))
       }
       "fail validation if AC7210A has a value AC7200 is empty" in {
         when(boxRetriever.ac7200()).thenReturn(AC7200(None))
         when(boxRetriever.ac7210B()).thenReturn(AC7210B(None))
-        when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate(2015, 12, 1))))
+        when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.of(2015,12,1))))
         AC7210A(Some(1224)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7210A"), "error.AC7210A.cannot.exist"))
       }
       "fail validation if AC7210A has no value and AC7200 is true" in {
         when(boxRetriever.ac7200()).thenReturn(AC7200(Some(true)))
         when(boxRetriever.ac7210B()).thenReturn(AC7210B(None))
-        when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate(2015, 12, 1))))
+        when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.of(2015,12,1))))
         AC7210A(None).validate(boxRetriever) shouldBe Set(CtValidation(None, "error.abridged.additional.dividend.note.one.box.required"))
       }
     }
@@ -79,31 +79,31 @@ class AC7210ASpec extends AnyWordSpec with MockitoSugar with Matchers with MockF
       "pass validation if AC7210A has a value AC7200 is true" in {
         when(boxRetriever.ac7200()).thenReturn(AC7200(Some(true)))
         when(boxRetriever.ac7210B()).thenReturn(AC7210B(Some(1234)))
-        when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate(2015, 12, 1))))
+        when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.of(2015,12,1))))
         AC7210A(Some(1224)).validate(boxRetriever) shouldBe empty
       }
       "pass validation if AC7210A is empty and AC7200 is false" in {
         when(boxRetriever.ac7200()).thenReturn(AC7200(Some(false)))
         when(boxRetriever.ac7210B()).thenReturn(AC7210B(Some(1234)))
-        when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate(2015, 12, 1))))
+        when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.of(2015,12,1))))
         AC7210A(None).validate(boxRetriever) shouldBe empty
       }
       "pass validation if AC7210A is empty and AC7200 is empty" in {
         when(boxRetriever.ac7200()).thenReturn(AC7200(None))
         when(boxRetriever.ac7210B()).thenReturn(AC7210B(Some(1234)))
-        when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate(2015, 12, 1))))
+        when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.of(2015,12,1))))
         AC7210A(None).validate(boxRetriever) shouldBe empty
       }
       "fail validation if AC7210A has a value AC7200 is false" in {
         when(boxRetriever.ac7200()).thenReturn(AC7200(Some(false)))
         when(boxRetriever.ac7210B()).thenReturn(AC7210B(Some(1234)))
-        when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate(2015, 12, 1))))
+        when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.of(2015,12,1))))
         AC7210A(Some(1224)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7210A"), "error.AC7210A.cannot.exist"))
       }
       "fail validation if AC7210A has a value AC7200 is empty" in {
         when(boxRetriever.ac7200()).thenReturn(AC7200(None))
         when(boxRetriever.ac7210B()).thenReturn(AC7210B(Some(1234)))
-        when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate(2015, 12, 1))))
+        when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.of(2015,12,1))))
         AC7210A(Some(1224)).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC7210A"), "error.AC7210A.cannot.exist"))
       }
     }

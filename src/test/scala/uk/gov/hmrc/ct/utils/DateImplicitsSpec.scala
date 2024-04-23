@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.cato.filing.util
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.utils.DateImplicits._
@@ -25,8 +25,8 @@ class DateImplicitsSpec extends AnyWordSpec with Matchers {
 
   "date operator" should {
 
-    val DATE_2012_04_01 = new LocalDate(2012, 4, 1)
-    val DATE_2012_04_02 = new LocalDate(2012, 4, 2)
+    val DATE_2012_04_01 = LocalDate.of(2012,4,1)
+    val DATE_2012_04_02 = LocalDate.of(2012,4,2)
 
     "< should behave as JodaTime isBefore" in {
 

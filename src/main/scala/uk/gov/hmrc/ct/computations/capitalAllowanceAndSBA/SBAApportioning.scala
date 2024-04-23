@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.computations.capitalAllowanceAndSBA
 import uk.gov.hmrc.ct.ct600.NumberRounding
 
 
-case class SbaRate(numberOfDaysRate: Int, dailyRate: BigDecimal, rateYearlyPercentage: BigDecimal) extends NumberRounding {
+case class SbaRate(numberOfDaysRate: Long, dailyRate: BigDecimal, rateYearlyPercentage: BigDecimal) extends NumberRounding {
   val rateYearlyPercentageAsInt = roundedToInt(rateYearlyPercentage * 100)
   val costRate = roundedToIntHalfUp(numberOfDaysRate * dailyRate)
 }

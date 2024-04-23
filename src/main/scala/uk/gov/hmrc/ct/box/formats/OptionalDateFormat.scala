@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,11 @@
 
 package uk.gov.hmrc.ct.box.formats
 
-import org.joda.time.LocalDate
-import play.api.libs.json.JodaReads._
-import play.api.libs.json.JodaWrites._
+import java.time.LocalDate
 import play.api.libs.json._
 import uk.gov.hmrc.ct.box.CtOptionalDate
 
-class OptionalDateFormat[T <: CtOptionalDate](builder: (Option[LocalDate] => T)) extends Format[T] {
+class OptionalDateFormat[T <: CtOptionalDate](builder: (Option[LocalDate] => T)) extends Format[T] with EnvReads with EnvWrites {
 
   override def reads(json: JsValue): JsResult[T] = {
     JsSuccess(builder(json.asOpt[LocalDate]))

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.joda.time.Days
+import java.time.Period
 import play.api.libs.json.{Format, Json}
 import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4, AC401}
 import uk.gov.hmrc.ct.computations._
 
+import java.time.temporal.ChronoUnit
 import scala.math.BigDecimal.RoundingMode
 
 trait ApportionedTurnoverCalculator {
@@ -64,24 +65,24 @@ trait ApportionedTurnoverCalculator {
     val accountingPeriodEnd   = cp2.value
     val turnover              = ac12.orZero + ac401.orZero
 
-    val periodOfAccounts       = Days.daysBetween(periodOfAccountsStart, periodOfAccountsEnd).plus(1)
-    val beforeAccountingPeriod = Days.daysBetween(periodOfAccountsStart, accountingPeriodStart)
-    val duringAccountingPeriod = Days.daysBetween(accountingPeriodStart, accountingPeriodEnd).plus(1)
-    val afterAccountingPeriod  = Days.daysBetween(accountingPeriodEnd, periodOfAccountsEnd)
+    val periodOfAccountsDays       = periodOfAccountsStart.until(periodOfAccountsEnd, ChronoUnit.DAYS) + 1
+    val beforeAccountingPeriodDays = periodOfAccountsStart.until(accountingPeriodStart, ChronoUnit.DAYS)
+    val duringAccountingPeriodDays = accountingPeriodStart.until(accountingPeriodEnd, ChronoUnit.DAYS) + 1
+    val afterAccountingPeriodDays  = accountingPeriodEnd.until(periodOfAccountsEnd, ChronoUnit.DAYS)
 
-    def prorateTurnover(period: Days): Option[Int] = {
+    def prorateTurnover(accountingPeriodDays: Long): Option[Int] = {
       def prorate: Option[Int] = {
-        val proportion = BigDecimal.valueOf(period.getDays) / BigDecimal.valueOf(periodOfAccounts.getDays)
+        val proportion = BigDecimal.valueOf(accountingPeriodDays) / BigDecimal.valueOf(periodOfAccountsDays)
 
             Some((BigDecimal.valueOf(turnover) * proportion).setScale(0, RoundingMode.DOWN).toInt)
       }
 
-      if (periodOfAccounts.getDays > 0 && period.getDays > 0) prorate else None
+      if (periodOfAccountsDays > 0 && accountingPeriodDays > 0) prorate else None
     }
 
-    val apportionedTurnover = ApportionedTurnover(beforeAccountingPeriod = prorateTurnover(beforeAccountingPeriod),
-                                                  duringAccountingPeriod = prorateTurnover(duringAccountingPeriod),
-                                                  afterAccountingPeriod  = prorateTurnover(afterAccountingPeriod))
+    val apportionedTurnover = ApportionedTurnover(beforeAccountingPeriod = prorateTurnover(beforeAccountingPeriodDays),
+                                                  duringAccountingPeriod = prorateTurnover(duringAccountingPeriodDays),
+                                                  afterAccountingPeriod  = prorateTurnover(afterAccountingPeriodDays))
 
     val residual = turnover - apportionedTurnover.total
 

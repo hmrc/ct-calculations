@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.prop.TableDrivenPropertyChecks._
 import org.scalatest.prop.Tables.Table
@@ -260,7 +260,7 @@ class DirectorsSpec extends AnyWordSpec with MockitoSugar with Matchers with Bef
 
     "no error if at least one director appointed if are-there-appointments question is yes" in {
       when(mockBoxRetriever.acQ8003()).thenReturn(ACQ8003(Some(true)))
-      val directors = Directors(List(Director("444", "Jack", ac8005 = Some(true), ac8007 = Some(new LocalDate(2016, 4, 5))), Director("555", "Jill")))
+      val directors = Directors(List(Director("444", "Jack", ac8005 = Some(true), ac8007 = Some(LocalDate.of(2016,4,5))), Director("555", "Jill")))
 
       directors.validate(mockBoxRetriever) shouldBe empty
     }
@@ -288,7 +288,7 @@ class DirectorsSpec extends AnyWordSpec with MockitoSugar with Matchers with Bef
 
     "no error if at least one director resigned if are-there-resignations question is yes" in {
       when(mockBoxRetriever.acQ8009()).thenReturn(ACQ8009(Some(true)))
-      val directors = Directors(List(Director("444", "Jack", ac8011 = Some(true), ac8013 =  Some(new LocalDate(2016, 4, 5))), Director("555", "Jill")))
+      val directors = Directors(List(Director("444", "Jack", ac8011 = Some(true), ac8013 =  Some(LocalDate.of(2016,4,5))), Director("555", "Jill")))
 
       directors.validate(mockBoxRetriever) shouldBe empty
     }
@@ -305,7 +305,7 @@ class DirectorsSpec extends AnyWordSpec with MockitoSugar with Matchers with Bef
       when(mockBoxRetriever.acQ8003()).thenReturn(ACQ8003(Some(true)))
       val expectedError = Set(CtValidation(Some("ac8007.444"), "error.ac8007.not.betweenInclusive", Some(List("6 April 2015", "5 April 2016"))))
 
-      val directors = Directors(List(Director("444", "Jack", ac8005 = Some(true), ac8007 = Some(new LocalDate(2015, 4, 5))), Director("555", "Jill")))
+      val directors = Directors(List(Director("444", "Jack", ac8005 = Some(true), ac8007 = Some(LocalDate.of(2015,4,5))), Director("555", "Jill")))
       directors.validate(mockBoxRetriever) shouldBe expectedError
     }
 
@@ -313,8 +313,8 @@ class DirectorsSpec extends AnyWordSpec with MockitoSugar with Matchers with Bef
       when(mockBoxRetriever.acQ8003()).thenReturn(ACQ8003(Some(false)))
       when(mockBoxRetriever.acQ8009()).thenReturn(ACQ8009(Some(true)))
       val directors = Directors(List(
-        Director("1", "Test Name One", ac8005 = Some(true), ac8007 = Some(new LocalDate(2016, 1, 1)), ac8011 = Some(true), ac8013 = Some(new LocalDate(2016, 2, 1))),
-        Director("2", "Test Name Two", ac8005 = None, ac8007 = None, ac8011 = Some(true), ac8013 = Some(new LocalDate(2016, 2, 1)))
+        Director("1", "Test Name One", ac8005 = Some(true), ac8007 = Some(LocalDate.of(2016,1,1)), ac8011 = Some(true), ac8013 = Some(LocalDate.of(2016,2,1))),
+        Director("2", "Test Name Two", ac8005 = None, ac8007 = None, ac8011 = Some(true), ac8013 = Some(LocalDate.of(2016,2,1)))
       ))
 
       directors.validate(mockBoxRetriever) shouldBe Set(
@@ -327,8 +327,8 @@ class DirectorsSpec extends AnyWordSpec with MockitoSugar with Matchers with Bef
       when(mockBoxRetriever.acQ8003()).thenReturn(ACQ8003(Some(true)))
       when(mockBoxRetriever.acQ8009()).thenReturn(ACQ8009(Some(false)))
       val directors = Directors(List(
-        Director("1", "Test Name One", ac8005 = Some(true), ac8007 = Some(new LocalDate(2016, 1, 1)), ac8011 = Some(true), ac8013 = Some(new LocalDate(2016, 2, 1))),
-        Director("2", "Test Name Two", ac8005 = Some(true), ac8007 = Some(new LocalDate(2016, 1, 1)), ac8011 = None, ac8013 = None)
+        Director("1", "Test Name One", ac8005 = Some(true), ac8007 = Some(LocalDate.of(2016,1,1)), ac8011 = Some(true), ac8013 = Some(LocalDate.of(2016,2,1))),
+        Director("2", "Test Name Two", ac8005 = Some(true), ac8007 = Some(LocalDate.of(2016,1,1)), ac8011 = None, ac8013 = None)
       ))
 
       directors.validate(mockBoxRetriever) shouldBe Set(

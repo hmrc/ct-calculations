@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,12 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.{Days, LocalDate}
+import java.time.{LocalDate, Period}
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.CP3020._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
+
+import java.time.temporal.ChronoUnit
 
 case class CP3020(value: Option[Int]) extends CtBoxIdentifier(name = "Qualifying donations to grassroots sports clubs")
   with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
@@ -40,21 +42,21 @@ case class CP3020(value: Option[Int]) extends CtBoxIdentifier(name = "Qualifying
   }
 
   private def apportionedLimit(apStart: LocalDate, apEnd: LocalDate) = {
-    val daysAfter010417 = Days.daysBetween(grassrootsStart, apEnd).getDays + 1
-    val apDays = Days.daysBetween(apStart, apEnd).getDays + 1
+    val daysAfter010417 = grassrootsStart.until(apEnd, ChronoUnit.DAYS) + 1
+    val apDays = apStart.until(apEnd, ChronoUnit.DAYS) + 1
     val eligibleDays =  (daysAfter010417 min apDays) max 0
     (eligibleDays * maxQualifyingAmount) / daysInYear(apStart, apEnd)
   }
 
   private def daysInYear(apStart: LocalDate, apEnd: LocalDate) = {
-    val leapYearOption = (apStart.year().isLeap, apEnd.year().isLeap) match {
+    val leapYearOption = (apStart.isLeapYear, apEnd.isLeapYear) match {
       case (true, _) => Some(apStart.getYear)
       case (_, true) => Some(apEnd.getYear)
       case _ => None
     }
 
     val leapDayInAp = leapYearOption
-      .map(new LocalDate(_, 2, 29))
+      .map(LocalDate.of(_, 2, 29))
       .exists(l => !l.isBefore(apStart) && !l.isAfter(apEnd))
 
     if (leapDayInAp) 366 else 365

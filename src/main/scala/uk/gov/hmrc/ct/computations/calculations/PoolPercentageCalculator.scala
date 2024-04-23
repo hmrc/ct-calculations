@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.joda.time.{Days, LocalDate}
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
-import uk.gov.hmrc.ct.utils.DateImplicits._
 
+import java.time.temporal.ChronoUnit
+import java.time.{LocalDate, Period}
 import scala.math.BigDecimal.RoundingMode
 
 
@@ -27,7 +27,7 @@ case class PoolPercentageCalculator(oldMainRate: Int = 18,
                                     newMainRate: Int = 18,
                                     oldSpecialRate: Int = 8,
                                     newSpecialRate: Int = 6,
-                                    newRateStartDate: LocalDate = new LocalDate("2019-04-01")) {
+                                    newRateStartDate: LocalDate = LocalDate.parse("2019-04-01")) {
 
   def apportionedMainRate(cp1: CP1, cp2: CP2): BigDecimal = {
     val daysInAP = daysInPeriodIncludingStartAndEndDays(cp1.value, cp2.value)
@@ -47,23 +47,23 @@ case class PoolPercentageCalculator(oldMainRate: Int = 18,
     (apportionedSpecialRateBefore + apportionedSpecialRateOnAndAfter).setScale(2, RoundingMode.HALF_UP)
   }
 
-  private def daysInPeriodIncludingStartAndEndDays(startDate: LocalDate, endDate: LocalDate): Int = Days.daysBetween(startDate, endDate.plusDays(1)).getDays
+  private def daysInPeriodIncludingStartAndEndDays(startDate: LocalDate, endDate: LocalDate): Long = startDate.until(endDate, ChronoUnit.DAYS) + 1
 
-  private[calculations] def daysBefore(startDate: LocalDate, endDate: LocalDate):  Int = {
-    (startDate < newRateStartDate, endDate < newRateStartDate) match {
-      case (_, _) if endDate < startDate => throw new IllegalArgumentException("start date must be before end date!")
-      case (true, false) => Days.daysBetween(startDate, newRateStartDate).getDays
-      case (true, true) => 1 + Days.daysBetween(startDate, newRateStartDate).getDays - Days.daysBetween(endDate, newRateStartDate).getDays // 1 is to include start day
+  private[calculations] def daysBefore(startDate: LocalDate, endDate: LocalDate):  Long = {
+    (startDate.isBefore(newRateStartDate), endDate.isBefore(newRateStartDate)) match {
+      case (_, _) if endDate.isBefore(startDate) => throw new IllegalArgumentException("start date must be before end date!")
+      case (true, false) => startDate.until(newRateStartDate, ChronoUnit.DAYS)
+      case (true, true) => 1 + startDate.until(newRateStartDate, ChronoUnit.DAYS) - endDate.until(newRateStartDate, ChronoUnit.DAYS) // 1 is to include start day
       case (_, _) => 0
     }
 
   }
 
-  private[calculations] def daysOnAndAfter(startDate: LocalDate, endDate: LocalDate): Int = {
-    (startDate < newRateStartDate, endDate < newRateStartDate) match {
-      case (_, _) if endDate < startDate => throw new IllegalArgumentException("start date must be before end date!")
-      case (true, false) => 1 + Days.daysBetween(newRateStartDate, endDate).getDays // 1 is to include start day
-      case (false, false) => 1 + Days.daysBetween(newRateStartDate, endDate).getDays - Days.daysBetween(newRateStartDate, startDate).getDays  // the 1 is to include start day
+  private[calculations] def daysOnAndAfter(startDate: LocalDate, endDate: LocalDate): Long = {
+    (startDate.isBefore(newRateStartDate), endDate.isBefore(newRateStartDate)) match {
+      case (_, _) if endDate.isBefore(startDate) => throw new IllegalArgumentException("start date must be before end date!")
+      case (true, false) => 1 + newRateStartDate.until(endDate, ChronoUnit.DAYS) // 1 is to include start day
+      case (false, false) => 1 + newRateStartDate.until(endDate, ChronoUnit.DAYS) - newRateStartDate.until(startDate, ChronoUnit.DAYS)  // the 1 is to include start day
       case (_, _) => 0
     }
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.version.calculations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.retriever.{BoxRetriever, FilingAttributesBoxValueRetriever}
@@ -183,7 +183,7 @@ trait ReturnVersionsCalculator {
       throw new IllegalArgumentException(s"")
     }*/
 
-    val isOnOrAfterFrs102And105Date = poaStartDate >= new LocalDate(2016, 1, 1)
+    val isOnOrAfterFrs102And105Date = poaStartDate >= LocalDate.of(2016,1,1)
 
     val cohoReturn: Set[Return] = (isOnOrAfterFrs102And105Date, coHoFiling, microEntityFiling, statutoryAccountsFiling, abridgedFiling, abbreviatedAccountsFiling) match {
       case (false, CompaniesHouseFiling(true), MicroEntityFiling(true), _, AbridgedFiling(false), _) =>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,13 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.Validators.TradingLossesValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.utils.DateImplicits._
+
+import java.time.format.DateTimeFormatter
 
 
 case class CP285(value: Option[LocalDate]) extends CtBoxIdentifier(name = "End date of accounting period from which trading loss is being brought back")
@@ -30,7 +32,7 @@ case class CP285(value: Option[LocalDate]) extends CtBoxIdentifier(name = "End d
   with TradingLossesValidation {
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
-    val DateFormat = "dd/MM/yyyy"
+    val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
     collectErrors(
       requiredErrorIf({ value.isEmpty && boxRetriever.cpQ18().value.contains(true) }) ,
@@ -39,7 +41,7 @@ case class CP285(value: Option[LocalDate]) extends CtBoxIdentifier(name = "End d
         val providedDate = value.getOrElse(throw new IllegalStateException("The value of CP285 is empty and that does not appear to be possible."))
         val cp2 = boxRetriever.cp2().value
         passIf (providedDate > cp2 && !(providedDate > cp2.plusYears(1))) {
-          Set(CtValidation(Some(boxId), "error.CP285.date.outside.range", Some(Seq(cp2.plusDays(1).toString(DateFormat), cp2.plusYears(1).toString(DateFormat)))))
+          Set(CtValidation(Some(boxId), "error.CP285.date.outside.range", Some(Seq(cp2.plusDays(1).format(dateFormat), cp2.plusYears(1).format(dateFormat)))))
         }
       }
     )

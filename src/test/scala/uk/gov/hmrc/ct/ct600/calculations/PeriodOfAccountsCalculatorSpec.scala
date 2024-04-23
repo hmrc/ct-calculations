@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600.calculations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.{AC3, AC4}
@@ -26,22 +26,22 @@ class PeriodOfAccountsCalculatorSpec extends AnyWordSpec with Matchers with Peri
   "isLongPeriodOfAccounts" should {
 
     "return true for a PoA of 15 months" in {
-      val poaStartDate = AC3(new LocalDate(2015, 4, 1))
-      val poaEndDate = AC4(new LocalDate(2016, 7, 1))
+      val poaStartDate = AC3(LocalDate.of(2015,4,1))
+      val poaEndDate = AC4(LocalDate.of(2016,7,1))
 
       isLongPeriodOfAccounts(poaStartDate, poaEndDate) shouldBe true
     }
 
     "return true for a PoA of 12 months" in {
-      val poaStartDate = AC3(new LocalDate(2015, 4, 1))
-      val poaEndDate = AC4(new LocalDate(2016, 4, 1))
+      val poaStartDate = AC3(LocalDate.of(2015,4,1))
+      val poaEndDate = AC4(LocalDate.of(2016,4,1))
 
       isLongPeriodOfAccounts(poaStartDate, poaEndDate) shouldBe true
     }
 
     "return false for a PoA of 12 months minus one day" in {
-      val poaStartDate = AC3(new LocalDate(2015, 4, 1))
-      val poaEndDate = AC4(new LocalDate(2016, 3, 31))
+      val poaStartDate = AC3(LocalDate.of(2015,4,1))
+      val poaEndDate = AC4(LocalDate.of(2016,3,31))
 
       isLongPeriodOfAccounts(poaStartDate, poaEndDate) shouldBe false
     }

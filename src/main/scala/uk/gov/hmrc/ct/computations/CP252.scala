@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.Validators.ComputationValidatableBox
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
@@ -28,7 +28,7 @@ case class CP252(value: Option[Int]) extends CtBoxIdentifier("Expenditure on des
     validateZeroOrPositiveInteger(this) ++
       environmentFriendlyExpenditureCannotExceedRelevantFYAExpenditure(boxRetriever, this) ++
       cannotExistErrorIf(hasValue && boxRetriever.cpQ8().isTrue) ++
-      cannotExistErrorIf(hasValue && boxRetriever.cp1().value.isAfter(new LocalDate("2020-03-31")))
+      cannotExistErrorIf(hasValue && boxRetriever.cp1().value.isAfter(LocalDate.parse("2020-03-31")))
   }
 }
 

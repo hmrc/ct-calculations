@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs102.boxes.relatedPartyTransactions
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import uk.gov.hmrc.ct.accounts.{MockFrs102AccountsRetriever, AccountsMoneyValidationFixture, AC206}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
@@ -25,7 +25,7 @@ class AC302ASpec extends AccountsMoneyValidationFixture[Frs102AccountsBoxRetriev
 
   override def setUpMocks() = {
     super.setUpMocks()
-    when(boxRetriever.ac206()).thenReturn(AC206(Some(new LocalDate())))
+    when(boxRetriever.ac206()).thenReturn(AC206(Some(LocalDate.now())))
   }
 
   testAccountsMoneyValidationWithMin("AC302A", 0, AC302A.apply)

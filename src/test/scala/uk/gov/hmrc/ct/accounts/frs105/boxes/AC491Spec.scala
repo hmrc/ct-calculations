@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs105.boxes
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.FilingCompanyType
@@ -43,7 +43,7 @@ class AC491Spec extends ValidateAssetsEqualSharesSpec[Frs105AccountsBoxRetriever
 
   override def createMock(): Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever = {
     val boxRetrieverMock = mock[Frs105TestBoxRetriever]
-    when(boxRetrieverMock.ac205()).thenReturn(AC205(Some(new LocalDate())))
+    when(boxRetrieverMock.ac205()).thenReturn(AC205(Some(LocalDate.now())))
     boxRetrieverMock
   }
 
@@ -53,7 +53,7 @@ class AC491Spec extends ValidateAssetsEqualSharesSpec[Frs105AccountsBoxRetriever
       val value = None
       val boxRetriever = createMock()
       when(boxRetriever.companyType()).thenReturn(FilingCompanyType(companyType))
-      when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate())))
+      when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.now())))
       when(boxRetriever.ac69()).thenReturn(AC69(value))
 
       AC491(value).validate(boxRetriever) shouldBe Set(CtValidation(Some("AC491"), "error.AC491.required"))

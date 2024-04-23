@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ trait MarginalRateReliefCalculatorV3 extends CtTypeConverters with NumberRoundin
 
     val apFyRatio = apDaysInFy / daysInAccountingPeriod
 
-    val thresholdTotalFyDays = if (differentUpperLimits) daysInFY(financialYear) else 365 max daysInAccountingPeriod
+    val thresholdTotalFyDays = if (differentUpperLimits) daysInFY(financialYear) else 365L max daysInAccountingPeriod
     val msFyRatio = apDaysInFy / thresholdTotalFyDays
 
     val apportionedProfit = (b315.value + b620) * apFyRatio

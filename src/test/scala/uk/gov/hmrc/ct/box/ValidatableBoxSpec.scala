@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.box
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -97,7 +97,7 @@ class ValidatableBoxSpec  extends AnyWordSpec with MockitoSugar  with Matchers w
     }
 
     "return no errors if any value present" in {
-      validateDateAsMandatory("testBox", testOptDateBox(Some(new LocalDate))) shouldBe Set()
+      validateDateAsMandatory("testBox", testOptDateBox(Some(LocalDate.now()))) shouldBe Set()
     }
   }
 
@@ -113,43 +113,43 @@ class ValidatableBoxSpec  extends AnyWordSpec with MockitoSugar  with Matchers w
 
   "validateDateAsBefore" should {
     "return error if date is after" in {
-      validateDateAsBefore("testBox", testOptDateBox(Some(new LocalDate("2013-01-01"))), new LocalDate("2012-12-31")) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.before"))
+      validateDateAsBefore("testBox", testOptDateBox(Some(LocalDate.parse("2013-01-01"))), LocalDate.parse("2012-12-31")) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.before"))
     }
     "return error if date is the same" in {
-      validateDateAsBefore("testBox", testOptDateBox(Some(new LocalDate("2013-12-31"))), new LocalDate("2012-12-31")) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.before"))
+      validateDateAsBefore("testBox", testOptDateBox(Some(LocalDate.parse("2013-12-31"))), LocalDate.parse("2012-12-31")) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.before"))
     }
     "return no errors if date is before" in {
-      validateDateAsBefore("testBox", testOptDateBox(Some(new LocalDate("2012-12-30"))), new LocalDate("2012-12-31")) shouldBe Set()
+      validateDateAsBefore("testBox", testOptDateBox(Some(LocalDate.parse("2012-12-30"))), LocalDate.parse("2012-12-31")) shouldBe Set()
     }
   }
 
   "validateDateAsAfter" should {
     "return error if date is before" in {
-      validateDateAsAfter("testBox", testOptDateBox(Some(new LocalDate("2012-12-30"))), new LocalDate("2012-12-31")) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.after"))
+      validateDateAsAfter("testBox", testOptDateBox(Some(LocalDate.parse("2012-12-30"))), LocalDate.parse("2012-12-31")) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.after"))
     }
     "return error if date is the same" in {
-      validateDateAsAfter("testBox", testOptDateBox(Some(new LocalDate("2012-12-31"))), new LocalDate("2012-12-31")) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.after"))
+      validateDateAsAfter("testBox", testOptDateBox(Some(LocalDate.parse("2012-12-31"))), LocalDate.parse("2012-12-31")) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.after"))
     }
     "return no errors if date is after" in {
-      validateDateAsAfter("testBox", testOptDateBox(Some(new LocalDate("2013-01-01"))), new LocalDate("2012-12-31")) shouldBe Set()
+      validateDateAsAfter("testBox", testOptDateBox(Some(LocalDate.parse("2013-01-01"))), LocalDate.parse("2012-12-31")) shouldBe Set()
     }
   }
 
   "validateDateBetweenInclusive" should {
-    val minDate = new LocalDate("2012-12-31")
-    val maxDate = new LocalDate("2013-12-31")
+    val minDate = LocalDate.parse("2012-12-31")
+    val maxDate = LocalDate.parse("2013-12-31")
 
     "return error if date is before start date" in {
-      validateDateAsBetweenInclusive("testBox", testOptDateBox(Some(new LocalDate("2012-12-30"))), minDate, maxDate) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.betweenInclusive", Some(Seq(toErrorArgsFormat(minDate), toErrorArgsFormat(maxDate)))))
+      validateDateAsBetweenInclusive("testBox", testOptDateBox(Some(LocalDate.parse("2012-12-30"))), minDate, maxDate) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.betweenInclusive", Some(Seq(toErrorArgsFormat(minDate), toErrorArgsFormat(maxDate)))))
     }
     "return no errors if date is on start date" in {
-      validateDateAsBetweenInclusive("testBox", testOptDateBox(Some(new LocalDate("2012-12-31"))), minDate, maxDate) shouldBe Set()
+      validateDateAsBetweenInclusive("testBox", testOptDateBox(Some(LocalDate.parse("2012-12-31"))), minDate, maxDate) shouldBe Set()
     }
     "return error if date is after end date" in {
-      validateDateAsBetweenInclusive("testBox", testOptDateBox(Some(new LocalDate("2014-01-01"))), minDate, maxDate) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.betweenInclusive", Some(Seq(toErrorArgsFormat(minDate), toErrorArgsFormat(maxDate)))))
+      validateDateAsBetweenInclusive("testBox", testOptDateBox(Some(LocalDate.parse("2014-01-01"))), minDate, maxDate) shouldBe Set(CtValidation(Some("testBox"), "error.testBox.not.betweenInclusive", Some(Seq(toErrorArgsFormat(minDate), toErrorArgsFormat(maxDate)))))
     }
     "return no errors if date is on end date" in {
-      validateDateAsBetweenInclusive("testBox", testOptDateBox(Some(new LocalDate("2013-12-31"))), minDate, maxDate) shouldBe Set()
+      validateDateAsBetweenInclusive("testBox", testOptDateBox(Some(LocalDate.parse("2013-12-31"))), minDate, maxDate) shouldBe Set()
     }
   }
 

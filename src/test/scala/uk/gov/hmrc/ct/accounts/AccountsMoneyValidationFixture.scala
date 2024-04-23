@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.should.Matchers
@@ -32,7 +32,7 @@ trait AccountsMoneyValidationFixture[T <: AccountsBoxRetriever] extends AnyWordS
   val STANDARD_MAX = 99999999
 
   def setUpMocks(): Unit = {
-    when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate())))
+    when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.now())))
   }
 
   def testAccountsMoneyValidation(boxId: String, builder: (Option[Int]) => ValidatableBox[T], testEmpty: Boolean = true): Unit = {

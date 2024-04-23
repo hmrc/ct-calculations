@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts.frs10x.boxes
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito.when
 import uk.gov.hmrc.ct.accounts._
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xAccountsBoxRetriever
@@ -30,8 +30,8 @@ import uk.gov.hmrc.ct.{AbridgedFiling, CATO24, CompaniesHouseFiling, FilingCompa
 class AC16Spec extends AccountsMoneyValidationFixture[Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever] with UnitSpec with MockFrs102AccountsRetriever {
 
   private def doMocks(hmrcFiling: Boolean, abridged:Boolean = false): Unit = {
-    when(boxRetriever.ac3()).thenReturn(AC3(new LocalDate("2019-09-01")))
-    when(boxRetriever.ac4()).thenReturn(AC4(new LocalDate("2020-08-31")))
+    when(boxRetriever.ac3()).thenReturn(AC3(LocalDate.parse("2019-09-01")))
+    when(boxRetriever.ac4()).thenReturn(AC4(LocalDate.parse("2020-08-31")))
     when(boxRetriever.companyType()).thenReturn(FilingCompanyType(UkTradingCompany))
     if (hmrcFiling) {
       when(boxRetriever.hmrcFiling()) thenReturn HMRCFiling(true)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.box
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -116,12 +116,12 @@ class TypesSpec extends AnyWordSpec with Matchers {
 
     "asLocalDate will return the value " in {
 
-      val expectedVal = Some(new LocalDate(2015,1,1))
+      val expectedVal = Some(LocalDate.of(2015,1,1))
 
       class TestBox extends CtBoxIdentifier("Test") with CtDate{
 
 
-        override def value: LocalDate = new LocalDate(2015,1,1)
+        override def value: LocalDate = LocalDate.of(2015,1,1)
       }
 
       new TestBox().asLocalDate shouldBe expectedVal
@@ -134,12 +134,12 @@ class TypesSpec extends AnyWordSpec with Matchers {
 
     "asLocalDate will return the value " in {
 
-      val expectedVal = Some(new LocalDate(2015,1,1))
+      val expectedVal = Some(LocalDate.of(2015,1,1))
 
       class TestBox extends CtBoxIdentifier("Test") with CtOptionalDate{
 
 
-        override def value: Option[LocalDate] = Some(new LocalDate(2015,1,1))
+        override def value: Option[LocalDate] = Some(LocalDate.of(2015,1,1))
       }
 
       new TestBox().asLocalDate shouldBe expectedVal

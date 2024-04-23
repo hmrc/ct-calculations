@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,6 @@ package uk.gov.hmrc.ct.computations
 import play.api.libs.json.{Format, Json, OFormat}
 import uk.gov.hmrc.ct._
 import uk.gov.hmrc.ct.box.formats._
-import play.api.libs.json.JodaWrites._
-import play.api.libs.json.JodaReads._
 import uk.gov.hmrc.ct.accounts.{AC5, AC6}
 import uk.gov.hmrc.ct.computations.covidSupport.{CP121, CP122, CP123, CP124, CP125}
 import uk.gov.hmrc.ct.computations.lowEmissionCars.{Car, LEC01}

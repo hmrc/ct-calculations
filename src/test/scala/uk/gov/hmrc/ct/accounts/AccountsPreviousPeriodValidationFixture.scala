@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.accounts
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.should.Matchers
@@ -36,11 +36,11 @@ trait AccountsPreviousPeriodValidationFixture[T <: AccountsBoxRetriever] extends
 
     s"$boxId" should {
       "pass validation when has valid value and AC205 is populated" in {
-        when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate("2015-01-01"))))
+        when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.parse("2015-01-01"))))
         builder(Some(1)).validate(boxRetriever) shouldBe empty
       }
       "pass validation when empty and AC205 is populated" in {
-        when(boxRetriever.ac205()).thenReturn(AC205(Some(new LocalDate("2015-01-01"))))
+        when(boxRetriever.ac205()).thenReturn(AC205(Some(LocalDate.parse("2015-01-01"))))
         builder(None).validate(boxRetriever) shouldBe empty
       }
       "pass validation when empty and AC205 is empty" in {

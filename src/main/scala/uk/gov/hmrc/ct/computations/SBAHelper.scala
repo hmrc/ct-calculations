@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 
 trait SBAHelper  {
 
@@ -33,6 +33,6 @@ trait SBAHelper  {
   val carriedForwardId = "SBA01J"
   val claimNoteId = "SBA01K"
 
-  val dateLowerBound = new LocalDate(2018, 10, 29)
-  val exampleUpperBoundDate = new LocalDate(2019, 10, 28)
+  val dateLowerBound = LocalDate.of(2018,10,29)
+  val exampleUpperBoundDate = LocalDate.of(2019,10,28)
 }

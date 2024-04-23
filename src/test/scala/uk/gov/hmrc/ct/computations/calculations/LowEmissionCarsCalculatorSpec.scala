@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.Assertion
@@ -41,144 +41,144 @@ class LowEmissionCarsCalculatorSpec extends AnyWordSpec with Matchers with LowEm
   private def costOfCar(value: Int) = Some(value)
   private def emissionsOfCar(value: Int) = Some(value)
   private def carBelongsToThisTaxPool(car: Car, taxPool: LowEmissionCarRate) = calculator.taxPoolForCar(car) shouldBe taxPool
-  private val exampleCar = Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(123), dateOfPurchase = Some(new LocalDate("2009-03-31")))
+  private val exampleCar = Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(123), dateOfPurchase = Some(LocalDate.parse("2009-03-31")))
 
   //This car list will give a Special Rates Pool value of 50.50
   val specialRatesCarList: LEC01 = LEC01(List(
-    Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(666), dateOfPurchase = Some(new LocalDate("2014-01-31"))),
-    Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(20), emissionsOfCar(1), dateOfPurchase = Some(new LocalDate("2014-01-31"))),
-    Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(40), emissionsOfCar(777), dateOfPurchase = Some(new LocalDate("2014-01-31")))
+    Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(666), dateOfPurchase = Some(LocalDate.parse("2014-01-31"))),
+    Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(20), emissionsOfCar(1), dateOfPurchase = Some(LocalDate.parse("2014-01-31"))),
+    Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(40), emissionsOfCar(777), dateOfPurchase = Some(LocalDate.parse("2014-01-31")))
   ))
 
   "getFYAPoolSum" should {
 
       "return correct pool for range1 car" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(123), dateOfPurchase = Some(new LocalDate("2009-03-31")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(123), dateOfPurchase = Some(LocalDate.parse("2009-03-31")))) shouldBe MainRate
       }
 
     "return correct pool for a range 2 car" when {
       "the car is new and has <=110 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(110), dateOfPurchase = Some(new LocalDate("2009-04-01")))) shouldBe FYA
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(110), dateOfPurchase = Some(new LocalDate("2013-03-31")))) shouldBe FYA
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(110), dateOfPurchase = Some(LocalDate.parse("2009-04-01")))) shouldBe FYA
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(110), dateOfPurchase = Some(LocalDate.parse("2013-03-31")))) shouldBe FYA
       }
       "the car is new and has 111-160 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(111), dateOfPurchase = Some(new LocalDate("2009-04-01")))) shouldBe MainRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(160), dateOfPurchase = Some(new LocalDate("2009-04-01")))) shouldBe MainRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(111), dateOfPurchase = Some(new LocalDate("2013-03-31")))) shouldBe MainRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(160), dateOfPurchase = Some(new LocalDate("2013-03-31")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(111), dateOfPurchase = Some(LocalDate.parse("2009-04-01")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(160), dateOfPurchase = Some(LocalDate.parse("2009-04-01")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(111), dateOfPurchase = Some(LocalDate.parse("2013-03-31")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(160), dateOfPurchase = Some(LocalDate.parse("2013-03-31")))) shouldBe MainRate
       }
       "the car is new and has >160 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(161), dateOfPurchase = Some(new LocalDate("2009-04-01")))) shouldBe SpecialRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(161), dateOfPurchase = Some(new LocalDate("2013-03-31")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(161), dateOfPurchase = Some(LocalDate.parse("2009-04-01")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(161), dateOfPurchase = Some(LocalDate.parse("2013-03-31")))) shouldBe SpecialRate
       }
       "the car is 2nd hand and has <=160 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(160), dateOfPurchase = Some(new LocalDate("2009-04-01")))) shouldBe MainRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(160), dateOfPurchase = Some(new LocalDate("2013-03-31")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(160), dateOfPurchase = Some(LocalDate.parse("2009-04-01")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(160), dateOfPurchase = Some(LocalDate.parse("2013-03-31")))) shouldBe MainRate
       }
       "the car is 2nd hand and has >160 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(161), dateOfPurchase = Some(new LocalDate("2009-04-01")))) shouldBe SpecialRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(161), dateOfPurchase = Some(new LocalDate("2013-03-31")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(161), dateOfPurchase = Some(LocalDate.parse("2009-04-01")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(161), dateOfPurchase = Some(LocalDate.parse("2013-03-31")))) shouldBe SpecialRate
       }
     }
 
     "return correct pool for a range 2 car" when {
       "the car is new and has <=95 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(95), dateOfPurchase = Some(new LocalDate("2013-04-01")))) shouldBe FYA
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(95), dateOfPurchase = Some(new LocalDate("2015-03-31")))) shouldBe FYA
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(95), dateOfPurchase = Some(LocalDate.parse("2013-04-01")))) shouldBe FYA
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(95), dateOfPurchase = Some(LocalDate.parse("2015-03-31")))) shouldBe FYA
       }
       "the car is new and has 96-130 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(96), dateOfPurchase = Some(new LocalDate("2013-04-01")))) shouldBe MainRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(96), dateOfPurchase = Some(new LocalDate("2015-03-31")))) shouldBe MainRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(new LocalDate("2013-04-01")))) shouldBe MainRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(new LocalDate("2015-03-31")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(96), dateOfPurchase = Some(LocalDate.parse("2013-04-01")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(96), dateOfPurchase = Some(LocalDate.parse("2015-03-31")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(LocalDate.parse("2013-04-01")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(LocalDate.parse("2015-03-31")))) shouldBe MainRate
       }
       "the car is new and has >130 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(new LocalDate("2013-04-01")))) shouldBe SpecialRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(new LocalDate("2015-03-31")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(LocalDate.parse("2013-04-01")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(LocalDate.parse("2015-03-31")))) shouldBe SpecialRate
       }
 
       "the car is 2nd hand and has <=130 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(new LocalDate("2013-04-01")))) shouldBe MainRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(new LocalDate("2015-03-31")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(LocalDate.parse("2013-04-01")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(LocalDate.parse("2015-03-31")))) shouldBe MainRate
       }
       "the car is 2nd hand and has >130 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(new LocalDate("2013-04-01")))) shouldBe SpecialRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(new LocalDate("2015-03-31")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(LocalDate.parse("2013-04-01")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(LocalDate.parse("2015-03-31")))) shouldBe SpecialRate
       }
     }
 
     "return correct pool for a range 4 car" when {
       "the car is new and has <=75 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(75), dateOfPurchase = Some(new LocalDate("2015-04-01")))) shouldBe FYA
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(75), dateOfPurchase = Some(LocalDate.parse("2015-04-01")))) shouldBe FYA
       }
       "the car is new and has 76-130 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(76), dateOfPurchase = Some(new LocalDate("2015-04-01")))) shouldBe MainRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(new LocalDate("2015-04-01")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(76), dateOfPurchase = Some(LocalDate.parse("2015-04-01")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(LocalDate.parse("2015-04-01")))) shouldBe MainRate
       }
       "the car is new and has >130 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(new LocalDate("2015-04-01")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(LocalDate.parse("2015-04-01")))) shouldBe SpecialRate
       }
       "the car is new and haswith <=130 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(new LocalDate("2015-04-01")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(LocalDate.parse("2015-04-01")))) shouldBe MainRate
       }
       "the car is new and has with >130 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(new LocalDate("2015-04-01")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(LocalDate.parse("2015-04-01")))) shouldBe SpecialRate
       }
 
       "the car is new and has <=75 emissions for the purchase date of 2018-03-31" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(75), dateOfPurchase = Some(new LocalDate("2018-03-31")))) shouldBe FYA
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(75), dateOfPurchase = Some(LocalDate.parse("2018-03-31")))) shouldBe FYA
       }
       "the car is new and has 76-130 emissions for the purchase date of 2018-03-31" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(76), dateOfPurchase = Some(new LocalDate("2018-03-31")))) shouldBe MainRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(new LocalDate("2018-03-31")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(76), dateOfPurchase = Some(LocalDate.parse("2018-03-31")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(LocalDate.parse("2018-03-31")))) shouldBe MainRate
       }
       "the car is new and has >130 emissions for the purchase date of 2018-03-31" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(new LocalDate("2018-03-31")))) shouldBe SpecialRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(150), dateOfPurchase = Some(new LocalDate("2019-04-25")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(LocalDate.parse("2018-03-31")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(150), dateOfPurchase = Some(LocalDate.parse("2019-04-25")))) shouldBe SpecialRate
       }
       "the is 2nd hand and has <=130 emissions for the purchase date of 2018-03-31" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(new LocalDate("2018-03-31")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(130), dateOfPurchase = Some(LocalDate.parse("2018-03-31")))) shouldBe MainRate
       }
       "the is 2nd hand and has >130 emissions for the purchase date of 2018-03-31" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(new LocalDate("2018-03-31")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(131), dateOfPurchase = Some(LocalDate.parse("2018-03-31")))) shouldBe SpecialRate
       }
     }
 
     "return correct pool for a range 5 car" when {
       "the car is new and has <=50 emissions for the purchase date of 2018-04-01" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(45), dateOfPurchase = Some(new LocalDate("2018-04-01")))) shouldBe FYA
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(45), dateOfPurchase = Some(LocalDate.parse("2018-04-01")))) shouldBe FYA
       }
       "the car is new and has 51-110 emissions for the purchase date of 2018-04-01" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(60), dateOfPurchase = Some(new LocalDate("2018-04-01")))) shouldBe MainRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(110), dateOfPurchase = Some(new LocalDate("2018-04-01")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(60), dateOfPurchase = Some(LocalDate.parse("2018-04-01")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(110), dateOfPurchase = Some(LocalDate.parse("2018-04-01")))) shouldBe MainRate
       }
 
       "the car is 2nd hand and has <=110 emissions for the purchase date of 2018-04-01" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(100), dateOfPurchase = Some(new LocalDate("2018-04-01")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(100), dateOfPurchase = Some(LocalDate.parse("2018-04-01")))) shouldBe MainRate
       }
       "the car is 2nd hand and has >110 emissions for the purchase date of 2018-04-01" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(140), dateOfPurchase = Some(new LocalDate("2018-04-01")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(140), dateOfPurchase = Some(LocalDate.parse("2018-04-01")))) shouldBe SpecialRate
       }
 
       "the car is new and has <=50 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(49), dateOfPurchase = Some(new LocalDate("2018-06-01")))) shouldBe FYA
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(50), dateOfPurchase = Some(new LocalDate("2018-06-01")))) shouldBe FYA
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(30), dateOfPurchase = Some(new LocalDate("2019-06-02")))) shouldBe FYA
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(49), dateOfPurchase = Some(LocalDate.parse("2018-06-01")))) shouldBe FYA
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(50), dateOfPurchase = Some(LocalDate.parse("2018-06-01")))) shouldBe FYA
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(30), dateOfPurchase = Some(LocalDate.parse("2019-06-02")))) shouldBe FYA
 
       }
       "the car is new and has 51-110 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(51), dateOfPurchase = Some(new LocalDate("2018-06-01")))) shouldBe MainRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(110), dateOfPurchase = Some(new LocalDate("2018-06-01")))) shouldBe MainRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(90), dateOfPurchase = Some(new LocalDate("2019-06-02")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(51), dateOfPurchase = Some(LocalDate.parse("2018-06-01")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(110), dateOfPurchase = Some(LocalDate.parse("2018-06-01")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(90), dateOfPurchase = Some(LocalDate.parse("2019-06-02")))) shouldBe MainRate
       }
 
       "the car is 2nd hand and has <=110 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(109), dateOfPurchase = Some(new LocalDate("2018-06-01")))) shouldBe MainRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(108), dateOfPurchase = Some(new LocalDate("2019-04-02")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(109), dateOfPurchase = Some(LocalDate.parse("2018-06-01")))) shouldBe MainRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(108), dateOfPurchase = Some(LocalDate.parse("2019-04-02")))) shouldBe MainRate
       }
       "the car is 2nd hand and has >110 emissions" in {
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(111), dateOfPurchase = Some(new LocalDate("2018-06-01")))) shouldBe SpecialRate
-        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(120), dateOfPurchase = Some(new LocalDate("2019-05-06")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(111), dateOfPurchase = Some(LocalDate.parse("2018-06-01")))) shouldBe SpecialRate
+        calculator.taxPoolForCar(Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(10), emissionsOfCar(120), dateOfPurchase = Some(LocalDate.parse("2019-05-06")))) shouldBe SpecialRate
       }
     }
 
@@ -188,7 +188,7 @@ class LowEmissionCarsCalculatorSpec extends AnyWordSpec with Matchers with LowEm
         carIsNew,
         costOfCar(10),
         emissionsOfCar(0),
-        dateOfPurchase = Some(new LocalDate("2021-04-01")))
+        dateOfPurchase = Some(LocalDate.parse("2021-04-01")))
 
       val secondHandCar = firstHandCar.copy(isNew = carIsSecondHand)
 
@@ -222,7 +222,7 @@ class LowEmissionCarsCalculatorSpec extends AnyWordSpec with Matchers with LowEm
     }
 
     "return correct pool for a range 7 car, if the car is purchased on or after 2025-04-01" when {
-      val dateAfterRange6 = new LocalDate("2025-04-01")
+      val dateAfterRange6 = LocalDate.parse("2025-04-01")
       val zeroEmissions = 0
       val specialRateEmissions = 51
 
@@ -255,17 +255,17 @@ class LowEmissionCarsCalculatorSpec extends AnyWordSpec with Matchers with LowEm
 
     "return x for fya eligible cars" in {
       val lec01 = LEC01(List(
-        Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(1), dateOfPurchase = Some( new LocalDate("2014-01-31"))),
-        Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(20), emissionsOfCar(666), dateOfPurchase = Some( new LocalDate("2014-01-31"))),
-        Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(40), emissionsOfCar(1), dateOfPurchase = Some( new LocalDate("2014-01-31")))
+        Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(1), dateOfPurchase = Some( LocalDate.parse("2014-01-31"))),
+        Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(20), emissionsOfCar(666), dateOfPurchase = Some( LocalDate.parse("2014-01-31"))),
+        Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(40), emissionsOfCar(1), dateOfPurchase = Some( LocalDate.parse("2014-01-31")))
       ))
       calculator.getFYAPoolSum(lec01) shouldBe 50
     }
     "return x for main rate pool cars" in {
       val lec01 = LEC01(List(
-        Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(129), dateOfPurchase = Some( new LocalDate("2014-01-31"))),
-        Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(20), emissionsOfCar(666), dateOfPurchase = Some( new LocalDate("2014-01-31"))),
-        Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(40), emissionsOfCar(129), dateOfPurchase = Some( new LocalDate("2014-01-31")))
+        Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(10), emissionsOfCar(129), dateOfPurchase = Some( LocalDate.parse("2014-01-31"))),
+        Car(regNumber = carReg(registrationNumber), carIsNew, costOfCar(20), emissionsOfCar(666), dateOfPurchase = Some( LocalDate.parse("2014-01-31"))),
+        Car(regNumber = carReg(registrationNumber), carIsSecondHand, costOfCar(40), emissionsOfCar(129), dateOfPurchase = Some( LocalDate.parse("2014-01-31")))
       ))
       calculator.getMainRatePoolSum(lec01) shouldBe 50
     }
@@ -281,25 +281,25 @@ class LowEmissionCarsCalculatorSpec extends AnyWordSpec with Matchers with LowEm
 
   "pass the CATO-2525 jira acceptance criteria" in {
     val lec01 = LEC01(List(
-      Car(regNumber = Some("Car1"), carIsNew, costOfCar(100), emissionsOfCar(110), dateOfPurchase = Some( new LocalDate("2009-04-01"))),
-      Car(regNumber = Some("Car2"), carIsSecondHand, costOfCar(111), emissionsOfCar(150), dateOfPurchase = Some( new LocalDate("2009-04-01"))),
-      Car(regNumber = Some("Car3"), carIsNew, costOfCar(222), emissionsOfCar(180), dateOfPurchase = Some( new LocalDate("2009-04-01"))),
-      Car(regNumber = Some("CAR16"), carIsSecondHand, costOfCar(333), emissionsOfCar(165), dateOfPurchase = Some( new LocalDate("2009-04-01"))),
-      Car(regNumber = Some("CAR4"), carIsNew, costOfCar(444), emissionsOfCar(115), dateOfPurchase = Some( new LocalDate("2013-03-31"))),
-      Car(regNumber = Some("CAR5"), carIsNew, costOfCar(555), emissionsOfCar(90), dateOfPurchase = Some( new LocalDate("2015-03-31"))),
-      Car(regNumber = Some("CAR6"), carIsNew, costOfCar(666), emissionsOfCar(96), dateOfPurchase = Some( new LocalDate("2015-03-31"))),
-      Car(regNumber = Some("CAR7"), carIsSecondHand, costOfCar(777), emissionsOfCar(130), dateOfPurchase = Some( new LocalDate("2015-03-31"))),
-      Car(regNumber = Some("CAR8"), carIsNew, costOfCar(888), emissionsOfCar(140), dateOfPurchase = Some( new LocalDate("2015-03-31"))),
-      Car(regNumber = Some("CAR17"), carIsSecondHand, costOfCar(999), emissionsOfCar(150), dateOfPurchase = Some( new LocalDate("2015-03-31"))),
-      Car(regNumber = Some("CAR9"), carIsNew, costOfCar(1111), emissionsOfCar(75), dateOfPurchase = Some( new LocalDate("2015-04-01"))),
-      Car(regNumber = Some("CAR10"), carIsNew, costOfCar(2222), emissionsOfCar(76), dateOfPurchase = Some( new LocalDate("2015-06-01"))),
-      Car(regNumber = Some("CAR11"), carIsSecondHand, costOfCar(3333), emissionsOfCar(130), dateOfPurchase = Some( new LocalDate("2015-06-01"))),
-      Car(regNumber = Some("CAR12"), carIsNew, costOfCar(4444), emissionsOfCar(131), dateOfPurchase = Some( new LocalDate("2015-06-01"))),
-      Car(regNumber = Some("CAR18"), carIsSecondHand, costOfCar(5555), emissionsOfCar(131), dateOfPurchase = Some( new LocalDate("2015-06-01"))),
-      Car(regNumber = Some("CAR13"), carIsNew, costOfCar(6666), emissionsOfCar(1), dateOfPurchase = Some( new LocalDate("2008-02-01"))),
-      Car(regNumber = Some("CAR14"), carIsSecondHand, costOfCar(7777), emissionsOfCar(1), dateOfPurchase = Some( new LocalDate("2008-02-01"))),
-      Car(regNumber = Some("CAR15"), carIsNew, costOfCar(8888), emissionsOfCar(600), dateOfPurchase = Some( new LocalDate("2008-02-01"))),
-      Car(regNumber = Some("CAR19"), carIsSecondHand, costOfCar(9999), emissionsOfCar(600), dateOfPurchase = Some( new LocalDate("2008-02-01")))
+      Car(regNumber = Some("Car1"), carIsNew, costOfCar(100), emissionsOfCar(110), dateOfPurchase = Some( LocalDate.parse("2009-04-01"))),
+      Car(regNumber = Some("Car2"), carIsSecondHand, costOfCar(111), emissionsOfCar(150), dateOfPurchase = Some( LocalDate.parse("2009-04-01"))),
+      Car(regNumber = Some("Car3"), carIsNew, costOfCar(222), emissionsOfCar(180), dateOfPurchase = Some( LocalDate.parse("2009-04-01"))),
+      Car(regNumber = Some("CAR16"), carIsSecondHand, costOfCar(333), emissionsOfCar(165), dateOfPurchase = Some( LocalDate.parse("2009-04-01"))),
+      Car(regNumber = Some("CAR4"), carIsNew, costOfCar(444), emissionsOfCar(115), dateOfPurchase = Some( LocalDate.parse("2013-03-31"))),
+      Car(regNumber = Some("CAR5"), carIsNew, costOfCar(555), emissionsOfCar(90), dateOfPurchase = Some( LocalDate.parse("2015-03-31"))),
+      Car(regNumber = Some("CAR6"), carIsNew, costOfCar(666), emissionsOfCar(96), dateOfPurchase = Some( LocalDate.parse("2015-03-31"))),
+      Car(regNumber = Some("CAR7"), carIsSecondHand, costOfCar(777), emissionsOfCar(130), dateOfPurchase = Some( LocalDate.parse("2015-03-31"))),
+      Car(regNumber = Some("CAR8"), carIsNew, costOfCar(888), emissionsOfCar(140), dateOfPurchase = Some( LocalDate.parse("2015-03-31"))),
+      Car(regNumber = Some("CAR17"), carIsSecondHand, costOfCar(999), emissionsOfCar(150), dateOfPurchase = Some( LocalDate.parse("2015-03-31"))),
+      Car(regNumber = Some("CAR9"), carIsNew, costOfCar(1111), emissionsOfCar(75), dateOfPurchase = Some( LocalDate.parse("2015-04-01"))),
+      Car(regNumber = Some("CAR10"), carIsNew, costOfCar(2222), emissionsOfCar(76), dateOfPurchase = Some( LocalDate.parse("2015-06-01"))),
+      Car(regNumber = Some("CAR11"), carIsSecondHand, costOfCar(3333), emissionsOfCar(130), dateOfPurchase = Some( LocalDate.parse("2015-06-01"))),
+      Car(regNumber = Some("CAR12"), carIsNew, costOfCar(4444), emissionsOfCar(131), dateOfPurchase = Some( LocalDate.parse("2015-06-01"))),
+      Car(regNumber = Some("CAR18"), carIsSecondHand, costOfCar(5555), emissionsOfCar(131), dateOfPurchase = Some( LocalDate.parse("2015-06-01"))),
+      Car(regNumber = Some("CAR13"), carIsNew, costOfCar(6666), emissionsOfCar(1), dateOfPurchase = Some( LocalDate.parse("2008-02-01"))),
+      Car(regNumber = Some("CAR14"), carIsSecondHand, costOfCar(7777), emissionsOfCar(1), dateOfPurchase = Some( LocalDate.parse("2008-02-01"))),
+      Car(regNumber = Some("CAR15"), carIsNew, costOfCar(8888), emissionsOfCar(600), dateOfPurchase = Some( LocalDate.parse("2008-02-01"))),
+      Car(regNumber = Some("CAR19"), carIsSecondHand, costOfCar(9999), emissionsOfCar(600), dateOfPurchase = Some( LocalDate.parse("2008-02-01")))
     ))
     calculator.getFYAPoolSum(lec01) shouldBe 1766
     calculator.getMainRatePoolSum(lec01) shouldBe 40883
@@ -463,8 +463,8 @@ class LowEmissionCarsCalculatorSpec extends AnyWordSpec with Matchers with LowEm
   }
 
   private def errorStateTest(localDateString: String): Assertion = {
-    val notNewCar = exampleCar.copy(dateOfPurchase = Some(new LocalDate(localDateString)), isNew = None)
-    val noEmissionsCar = exampleCar.copy(dateOfPurchase = Some(new LocalDate(localDateString)), emissions = None)
+    val notNewCar = exampleCar.copy(dateOfPurchase = Some(LocalDate.parse(localDateString)), isNew = None)
+    val noEmissionsCar = exampleCar.copy(dateOfPurchase = Some(LocalDate.parse(localDateString)), emissions = None)
 
     val result1 = calculator.taxPoolForCar(notNewCar)
     val result2 = calculator.taxPoolForCar(noEmissionsCar)
