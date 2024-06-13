@@ -18,12 +18,13 @@ package uk.gov.hmrc.ct.box.formats
 
 import java.time.LocalDate
 import play.api.libs.json._
+import uk.gov.hmrc.ct.MongoDateFormats
 import uk.gov.hmrc.ct.box.CtOptionalDate
 
-class OptionalDateFormat[T <: CtOptionalDate](builder: (Option[LocalDate] => T)) extends Format[T] with EnvReads with EnvWrites {
+class OptionalDateFormat[T <: CtOptionalDate](builder: Option[LocalDate] => T) extends Format[T] {
 
   override def reads(json: JsValue): JsResult[T] = {
-    JsSuccess(builder(json.asOpt[LocalDate]))
+    JsSuccess(builder(json.asOpt[LocalDate](MongoDateFormats.localDateFormat)))
   }
 
   override def writes(o: T): JsValue = {

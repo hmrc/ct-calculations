@@ -4,7 +4,7 @@
   lazy val scoverageSettings = {
     import scoverage._
     Seq(
-      ScoverageKeys.coverageMinimum := 80,
+      ScoverageKeys.coverageMinimumStmtTotal := 80,
       ScoverageKeys.coverageFailOnMinimum := false,
       ScoverageKeys.coverageHighlighting := true,
       ScoverageKeys.coverageExcludedFiles := ";.*Routes.*;views.*",
@@ -14,7 +14,6 @@
   }
 
   lazy val CtCalculations = (project in file("."))
-    .enablePlugins(SbtAutoBuildPlugin)
     .disablePlugins(JUnitXmlReportPlugin)
     .settings(majorVersion := 2)
     .settings(scoverageSettings: _*)
