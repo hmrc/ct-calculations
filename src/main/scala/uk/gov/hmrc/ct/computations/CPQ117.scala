@@ -37,9 +37,9 @@ case class CPQ117(value: Option[Boolean])
     val lossesReformApplies = lossReform2017Applies(boxRetriever.cp2())
     collectErrors(
       requiredErrorIf( (value.isEmpty && isNorthernIrelandActive) &&
-        boxRetriever.cpQ17().isTrue && lossesReformApplies),
+        boxRetriever.cpQ17().isTrue && lossesReformApplies)(),
       cannotExistErrorIf(value.nonEmpty &&
-        (boxRetriever.cpQ17().isFalse || !lossesReformApplies || !isNorthernIrelandActive))
+        (boxRetriever.cpQ17().isFalse || !lossesReformApplies || !isNorthernIrelandActive))()
     )
   }
 }

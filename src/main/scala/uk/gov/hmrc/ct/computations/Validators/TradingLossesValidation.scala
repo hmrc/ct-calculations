@@ -33,88 +33,88 @@ trait TradingLossesValidation extends Validators with CtTypeConverters {
     cp118 > cato01
   }
 
-   def answeredNoToTradingLossesNotUsedFromPreviousPeriod(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ17.hasValue && boxRetriever.cpQ17.isFalse
+   def answeredNoToTradingLossesNotUsedFromPreviousPeriod(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
+     boxRetriever.cpQ17().hasValue && boxRetriever.cpQ17().isFalse
   }
 
-   def answeredYesToTradingLossesNotUsedFromPreviousPeriod(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ17.isTrue
+   def answeredYesToTradingLossesNotUsedFromPreviousPeriod(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
+     boxRetriever.cpQ17().isTrue
   }
 
-   def notAnsweredTradingLossesNotUsedFromPreviousPeriod(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ17.noValue
+   def notAnsweredTradingLossesNotUsedFromPreviousPeriod(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
+     boxRetriever.cpQ17().noValue
   }
 
-   def answeredNoToCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ19.hasValue && boxRetriever.cpQ19.isFalse
+   def answeredNoToCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
+     boxRetriever.cpQ19().hasValue && boxRetriever.cpQ19().isFalse
   }
 
-   def answeredYesToCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ19.isTrue
+   def answeredYesToCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
+     boxRetriever.cpQ19().isTrue
   }
 
-   def answeredYesToCurrentTradingLossesAgainstToPreviousPeriod(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ20.isTrue
+   def answeredYesToCurrentTradingLossesAgainstToPreviousPeriod(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
+     boxRetriever.cpQ20().isTrue
   }
 
-   def notAnsweredCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
-     boxRetriever.cpQ19.noValue
+   def notAnsweredCurrentTradingLossesAgainstNonTradingProfit(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
+     boxRetriever.cpQ19().noValue
   }
 
-   def netTradingProfitGreaterThanTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
+   def netTradingProfitGreaterThanTradingProfit(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
     boxRetriever.cp284().orZero > boxRetriever.cp117().value
   }
 
-   def netTradingProfitEqualsTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
+   def netTradingProfitEqualsTradingProfit(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
      boxRetriever.cp284().orZero == boxRetriever.cp117().value
   }
 
-   def netTradingProfitPlusNonTradingProfitGreaterThanZero(boxRetriever: ComputationsBoxRetriever)() = {
+   def netTradingProfitPlusNonTradingProfitGreaterThanZero(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
      boxRetriever.cp284().orZero + boxRetriever.cato01().value > 0
   }
 
-   def nonTradingProfitNotGreaterThanTradingLoss(boxRetriever: ComputationsBoxRetriever)() = {
+   def nonTradingProfitNotGreaterThanTradingLoss(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
      boxRetriever.cp118().value <= boxRetriever.cato01().value
   }
 
-   def netTradingProfitPlusNonTradingProfitEqualsZero(boxRetriever: ComputationsBoxRetriever)() = {
+   def netTradingProfitPlusNonTradingProfitEqualsZero(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
      boxRetriever.cp284().orZero + boxRetriever.cato01().value == 0
   }
 
-  def hasTradingLoss(boxRetriever: ComputationsBoxRetriever)()  = {
+  def hasTradingLoss(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
     boxRetriever.cp118().value > 0
   }
 
-   def hasTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
+   def hasTradingProfit(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
      boxRetriever.cp117().value > 0
   }
 
-   def noTradingLoss(boxRetriever: ComputationsBoxRetriever)() = {
+   def noTradingLoss(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
      boxRetriever.cp118().value == 0
   }
 
-   def noTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
+   def noTradingProfit(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
      boxRetriever.cp117().value == 0
   }
 
-   def noNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
+   def noNonTradingProfit(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
      boxRetriever.cato01().value == 0
   }
 
-   def hasNonTradingProfit(boxRetriever: ComputationsBoxRetriever)() = {
+   def hasNonTradingProfit(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
      boxRetriever.cato01().value > 0
   }
 
-   def noTradingProfitOrLoss(boxRetriever: ComputationsBoxRetriever)() = {
-    And(noTradingProfit(boxRetriever), noTradingLoss(boxRetriever))
+   def noTradingProfitOrLoss(boxRetriever: ComputationsBoxRetriever)(): Boolean = {
+    And(noTradingProfit(boxRetriever), noTradingLoss(boxRetriever))()
   }
 
-  def sumOfBroughtForwardErrors(retriever: ComputationsBoxRetriever) = {
+  def sumOfBroughtForwardErrors(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
     failIf(retriever.cp283a() + retriever.cp283b() > retriever.cp117()) {
       Set(CtValidation(Some("CP283a"), "error.CP283.exceeds.totalProfit"),
         CtValidation(Some("CP283b"), "error.CP283.exceeds.totalProfit")
       )
-    }
+    } ()
   }
 
 }

@@ -18,11 +18,6 @@ package uk.gov.hmrc.ct.computations
 
 import java.time.LocalDate
 import org.mockito.Mockito.when
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
-import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.ct.BoxValidationFixture
-import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.utils.UnitSpec
 
 class CP680Spec extends UnitSpec {

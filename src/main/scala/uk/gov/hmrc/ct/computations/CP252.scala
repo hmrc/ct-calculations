@@ -24,11 +24,11 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP252(value: Option[Int]) extends CtBoxIdentifier("Expenditure on designated environmentally friendly machinery and plant") with CtOptionalInteger with Input with ComputationValidatableBox[ComputationsBoxRetriever] {
 
-  override def validate(boxRetriever: ComputationsBoxRetriever) = {
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     validateZeroOrPositiveInteger(this) ++
-      environmentFriendlyExpenditureCannotExceedRelevantFYAExpenditure(boxRetriever, this) ++
-      cannotExistErrorIf(hasValue && boxRetriever.cpQ8().isTrue) ++
-      cannotExistErrorIf(hasValue && boxRetriever.cp1().value.isAfter(LocalDate.parse("2020-03-31")))
+      environmentFriendlyExpenditureCannotExceedRelevantFYAExpenditure(boxRetriever, this)() ++
+      cannotExistErrorIf(hasValue && boxRetriever.cpQ8().isTrue)() ++
+      cannotExistErrorIf(hasValue && boxRetriever.cp1().value.isAfter(LocalDate.parse("2020-03-31")))()
   }
 }
 

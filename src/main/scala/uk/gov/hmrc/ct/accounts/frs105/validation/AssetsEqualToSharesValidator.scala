@@ -25,7 +25,7 @@ trait AssetsEqualToSharesValidator extends ValidatableBox[Frs105AccountsBoxRetri
   def validateAssetsEqualToShares(boxId: String, otherBox: CtOptionalInteger)(): Set[CtValidation] = {
     failIf(value != otherBox.value) {
       Set(CtValidation(None, s"error.$boxId.assetsNotEqualToShares"))
-    }
+    } ()
   }
 
 }

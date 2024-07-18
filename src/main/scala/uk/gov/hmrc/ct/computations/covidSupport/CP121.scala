@@ -25,7 +25,7 @@ case class CP121(value: Option[Int]) extends CtBoxIdentifier(name = "Amount of E
     if(covidSupport.doesPeriodCoverEotho(boxRetriever.cp1().value, boxRetriever.cp2().value)){
     collectErrors(
       validateAsMandatory(this),
-      validateMoney(this.value, 0, boxRetriever.cp7.value.getOrElse(0))
+      validateMoney(this.value, 0, boxRetriever.cp7().value.getOrElse(0))()
     )
     }else Set.empty
   }

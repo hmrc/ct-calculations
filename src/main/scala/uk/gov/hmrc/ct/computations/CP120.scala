@@ -32,6 +32,6 @@ case class CP120(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did you
       }
     }
 
-    collectErrors(validateAsMandatoryIfInDate)
+    collectErrors(validateAsMandatoryIfInDate())()
   }
 }

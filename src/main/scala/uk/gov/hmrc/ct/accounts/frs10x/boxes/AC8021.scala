@@ -34,9 +34,9 @@ case class AC8021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you
     val fileDRToHmrc = boxRetriever.ac8023()
 
     (coHoFiling, hmrcFiling, microEntityFiling, fileDRToHmrc) match {
-      case (false, _, _, _) => cannotExistErrorIf(hasValue)
-      case (true, true, true, AC8023(Some(false))) => failIf(orFalse)(Set(CtValidation(Some("AC8021"), "error.AC8021.cannot.be.true")))
-      case (true, _, _, _) => validateAsMandatory()
+      case (false, _, _, _) => cannotExistErrorIf(hasValue)()
+      case (true, true, true, AC8023(Some(false))) => failIf(orFalse)(Set(CtValidation(Some("AC8021"), "error.AC8021.cannot.be.true")))()
+      case (true, _, _, _) => validateAsMandatory()()
     }
   }
 

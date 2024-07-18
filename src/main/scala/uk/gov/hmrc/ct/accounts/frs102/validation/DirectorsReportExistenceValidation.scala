@@ -28,7 +28,7 @@ trait DirectorsReportExistenceValidation extends Validators {
                                          boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever)(): Set[CtValidation] = {
     failIf(includeDirectorsReportValue.contains(false) && directorsReportPopulated(boxRetriever)) {
       Set(CtValidation(None, s"error.$boxId.directorsReport.cannot.exist"))
-    }
+    }()
   }
 
   def directorsReportPopulated(boxRetriever: Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Boolean = {

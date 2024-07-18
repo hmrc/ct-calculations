@@ -30,11 +30,11 @@ case class ACQ5021(value: Option[Boolean]) extends CtBoxIdentifier(name = "Goodw
     import boxRetriever._
     collectErrors(
 
-      cannotExistErrorIf(hasValue && ac42.noValue && ac43.noValue),
+      cannotExistErrorIf(hasValue && ac42().noValue && ac43().noValue)(),
 
-      failIf(anyHaveValue(ac42, ac43)) {
-        atLeastOneBoxHasValue("balance.sheet.intangible.assets", this, acq5022)
-      }
+      failIf(anyHaveValue(ac42(), ac43())) {
+        atLeastOneBoxHasValue("balance.sheet.intangible.assets", this, acq5022())
+      }()
     )
   }
 }

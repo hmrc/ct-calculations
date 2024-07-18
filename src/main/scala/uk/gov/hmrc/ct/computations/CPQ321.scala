@@ -25,14 +25,14 @@ case class CPQ321(value: Option[Boolean]) extends CtBoxIdentifier(name = "Did yo
   with CtOptionalBoolean with Input with ValidatableBox[ComputationsBoxRetriever] with DonationsValidation {
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      failIf(!boxRetriever.cp2.value.isBefore(grassrootsStart) && noValue) {
+      failIf(!boxRetriever.cp2().value.isBefore(grassrootsStart) && noValue) {
         Set(CtValidation(Some("CPQ321"), s"error.CPQ321.required"))
-      },
+      } (),
       validateLessThanTotalDonationsInPAndL(boxRetriever),
       validateLessThanNetProfit(boxRetriever),
-      failIf(isTrue && !boxRetriever.cp3010.isPositive && !boxRetriever.cp3020.isPositive && !boxRetriever.cp3030.isPositive) {
+      failIf(isTrue && !boxRetriever.cp3010().isPositive && !boxRetriever.cp3020().isPositive && !boxRetriever.cp3030().isPositive) {
         Set(CtValidation(None, "error.CPQ321.no.grassroots.donations"))
-      }
+      } ()
     )
   }
 }

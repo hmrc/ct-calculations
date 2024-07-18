@@ -29,10 +29,10 @@ case class AC405(value: Option[Int]) extends CtBoxIdentifier(name = "Other incom
   override def validate(boxRetriever: Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever with Frs10xDormancyBoxRetriever): Set[CtValidation] = {
     failIf(!boxRetriever.acq8999().orFalse && (boxRetriever.hmrcFiling().value || boxRetriever.acq8161().orFalse)) (
       collectErrors(
-        validateMoney(value),
-        validateAtLeastOneCurrentYearFieldPopulated(boxRetriever)
+        validateMoney(value)(),
+        validateAtLeastOneCurrentYearFieldPopulated(boxRetriever)()
       )
-    )
+    )()
   }
 
   def validateAtLeastOneCurrentYearFieldPopulated(boxRetriever: Frs105AccountsBoxRetriever with FilingAttributesBoxValueRetriever with Frs10xFilingQuestionsBoxRetriever with Frs10xDormancyBoxRetriever)(): Set[CtValidation] = {
@@ -50,6 +50,6 @@ case class AC405(value: Option[Int]) extends CtBoxIdentifier(name = "Other incom
       ).nonEmpty
     failIf(!anyCurrentYearFieldHasAValue) {
       Set(CtValidation(boxId = None, "error.profit.loss.one.box.required"))
-    }
+    } ()
   }
 }

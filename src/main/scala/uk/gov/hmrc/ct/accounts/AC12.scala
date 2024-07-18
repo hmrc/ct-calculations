@@ -47,23 +47,23 @@ case class AC12(value: Option[Int]) extends CtBoxIdentifier(name = "Current Turn
       Set.empty
     } else {
         val errors = collectErrors(
-          failIf(isFrs10xHmrcAbridgedReturnWithLongPoA(accountsStart, accountEnd)(boxRetriever)) {
+          failIf(isFrs10xHmrcAbridgedReturnWithLongPoA(accountsStart, accountEnd)(boxRetriever)) { ();
             validateAsMandatory(this)
-          },
+          }(),
           failIf(boxRetriever.hmrcFiling().value)(
               collectErrors(
-              validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, minimumAmount = Some(minimumValue0))
+              validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, minimumAmount = Some(minimumValue0))()
             )
-          ),
+          )(),
           failIf(!boxRetriever.hmrcFiling().value && boxRetriever.companiesHouseFiling().value)(
             collectErrors(
               validateCoHoTurnover(boxRetriever, accountsStart, accountEnd, minimumAmount = Some(minimumValue0))
             )
-          )
+          )()
         )
 
       if(errors.isEmpty) {
-        validateMoney(value)
+        validateMoney(value)()
       } else {
         errors
       }

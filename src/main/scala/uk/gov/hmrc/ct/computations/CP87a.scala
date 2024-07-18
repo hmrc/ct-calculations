@@ -21,11 +21,11 @@ import uk.gov.hmrc.ct.computations.Validators.ComputationValidatableBox
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP87a(value: Option[Int]) extends CtBoxIdentifier(name = "Out Of First year allowance claimed")  with CtOptionalInteger with Input with ComputationValidatableBox[ComputationsBoxRetriever] with CtTypeConverters{
-  override def validate(boxRetriever: ComputationsBoxRetriever) = {
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     val max = boxRetriever.cp87Input().orZero
     collectErrors(
       validateZeroOrPositiveInteger(this),
-      exceedsMax(value, max)
+      exceedsMax(value, max)()
     )
   }
 }

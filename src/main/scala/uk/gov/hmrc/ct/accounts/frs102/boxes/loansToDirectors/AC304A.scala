@@ -30,10 +30,10 @@ case class AC304A(value: Option[String]) extends CtBoxIdentifier(name = "Directo
   override def validate(boxRetriever: Frs102AccountsBoxRetriever with Frs10xDirectorsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      validateAsMandatory(),
-      validateOptionalStringByLength(1, StandardCohoNameFieldLimit),
-      validateCohoOptionalNameField(),
-      validateCustomDirectorName(boxRetriever)
+      validateAsMandatory()(),
+      validateOptionalStringByLength(1, StandardCohoNameFieldLimit)(),
+      validateCohoOptionalNameField()(),
+      validateCustomDirectorName(boxRetriever)()
     )
 
   }

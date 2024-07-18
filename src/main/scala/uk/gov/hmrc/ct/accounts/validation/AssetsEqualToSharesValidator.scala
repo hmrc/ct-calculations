@@ -25,10 +25,10 @@ trait AssetsEqualToSharesValidator extends Validators {
     collectErrors(
       failIf(value != otherBox.value && !isLimitedByGuarantee) {
         Set(CtValidation(None, s"error.$boxId.assetsNotEqualToShares"))
-      },
+      } (),
       failIf(value != otherBox.value && isLimitedByGuarantee) {
         Set(CtValidation(None, s"error.$boxId.assetsNotEqualToMembersFunds"))
-      }
+      } ()
     )
   }
 

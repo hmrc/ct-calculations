@@ -28,8 +28,8 @@ case class AC106A(value: Option[String]) extends CtBoxIdentifier(name = "Employe
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
-      validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
-      validateCoHoStringReturnIllegalChars()
+      validateOptionalStringByLength(1, StandardCohoTextFieldLimit)(),
+      validateCoHoStringReturnIllegalChars()()
     )
   }
 }

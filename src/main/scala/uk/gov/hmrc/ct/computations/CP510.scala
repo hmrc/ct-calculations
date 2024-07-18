@@ -31,7 +31,7 @@ case class CP510(value: Option[Int]) extends CtBoxIdentifier(name = "Unallowable
   private def unAllowableExpensesError(boxRetriever: ComputationsBoxRetriever) = {
     failIf(hasValue && value.get > boxRetriever.cp508().value) {
       Set(CtValidation(None, "block.incomeFromProperty.unAllowable.error"))
-    }
+    } ()
   }
 
 }

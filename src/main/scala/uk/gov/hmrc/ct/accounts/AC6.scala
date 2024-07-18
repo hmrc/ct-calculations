@@ -17,6 +17,6 @@
 package uk.gov.hmrc.ct.accounts
 
 import java.time.LocalDate
-import uk.gov.hmrc.ct.box.{CtBoxIdentifier, EndDate, Input, StartDate}
+import uk.gov.hmrc.ct.box.{CtBoxIdentifier, EndDate, Input}
 
 case class AC6(value: LocalDate) extends CtBoxIdentifier("Super Deduction Period End Date") with EndDate with Input

@@ -47,8 +47,8 @@ case class AC5064A(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
     val isMandatory = anyHaveValue(ac64(), ac65())
 
     collectErrors (
-      failIf(!isMandatory)(validateCannotExist(boxRetriever)),
-      failIf(isMandatory)(validateNoteIsMandatory(boxRetriever)),
+      failIf(!isMandatory)(validateCannotExist(boxRetriever)())(),
+      failIf(isMandatory)(validateNoteIsMandatory(boxRetriever)())(),
       validateStringMaxLength("AC5064A", value.getOrElse(""), StandardCohoTextFieldLimit),
       validateCoHoStringReturnIllegalChars("AC5064A", this)
     )

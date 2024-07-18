@@ -65,17 +65,17 @@ case class Car(override val regNumber: Option[String],
     )
   }
 
-    private val validateRegNumber: Set[CtValidation] = validateAsMandatory(registrationNumberId, regNumber)
+    private val validateRegNumber: Set[CtValidation] = validateAsMandatory(registrationNumberId, regNumber)()
 
-    private val validateIsCarNew = validateAsMandatory(isCarNewId, isNew)
+    private val validateIsCarNew = validateAsMandatory(isCarNewId, isNew)()
 
     private val validatePriceOfCar: Set[CtValidation] = collectErrors(
-      validateAsMandatory(priceId, price),
+      validateAsMandatory(priceId, price)(),
       validateZeroOrPositiveInteger(priceId, price)
     )
 
     private val validateEmissionsOfCar = collectErrors(
-      validateAsMandatory(emissionsId, emissions),
+      validateAsMandatory(emissionsId, emissions)(),
       validateZeroOrPositiveInteger(emissionsId, emissions)
     )
 

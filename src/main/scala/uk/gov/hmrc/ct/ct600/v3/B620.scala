@@ -26,6 +26,6 @@ case class B620(value: Option[Int]) extends CtBoxIdentifier("Franked investment"
 
     failIf (bfq1.value.getOrElse(false) && !hasValue) {
       Set(CtValidation(Some("B620"), "error.B620.required"))
-    }
+    } ()
   }
 }

@@ -28,6 +28,6 @@ case class E27(value: Option[Int]) extends CtBoxIdentifier("Value of any non-qua
         case Some(x) if x < 0 => Set(CtValidation(Some(id), s"error.$id.mustBePositive"))
         case _ => Set()
       }
-    }
+    } ()
   }
 }

@@ -34,7 +34,7 @@ case class CP982(value: Option[Int]) extends CtBoxIdentifier(name = "Expenses fr
     failIf(value.isPositive && value.orZero > cp981Error) {
       val cp981Positive = if(cp981Error < 0) 0 else cp981Error
       Set(CtValidation(Some("CP982"), "error.cp982.breakdown", Some(Seq(cp981Positive.toString))))
-    }
+    } ()
   }
 }
 

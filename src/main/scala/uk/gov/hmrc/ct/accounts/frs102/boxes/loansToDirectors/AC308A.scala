@@ -27,7 +27,7 @@ case class AC308A(value: Option[Int]) extends CtBoxIdentifier(name = "Advances o
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors {
-      validateMoney(value)
+      validateMoney(value)()
     }
   }
 }

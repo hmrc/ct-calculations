@@ -22,7 +22,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 case class CP673(value: Option[Int]) extends CtBoxIdentifier(name = "Market value of unsold assets")  with CtOptionalInteger with Input with SelfValidatableBox[ComputationsBoxRetriever, Option[Int]] {
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
     collectErrors(
-      validateZeroOrPositiveInteger()
+      validateZeroOrPositiveInteger()()
     )
   }
 }

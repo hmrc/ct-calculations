@@ -29,10 +29,10 @@ case class CP281(value: Option[Int]) extends CtBoxIdentifier("Losses brought for
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      requiredErrorIf(value.isEmpty && boxRetriever.cpQ17.isTrue),
-      cannotExistErrorIf(value.nonEmpty && !boxRetriever.cpQ17().orFalse),
-      exceedsMax(value),
-      belowMin(value, min = 1),
+      requiredErrorIf(value.isEmpty && boxRetriever.cpQ17().isTrue)(),
+      cannotExistErrorIf(value.nonEmpty && !boxRetriever.cpQ17().orFalse)(),
+      exceedsMax(value)(),
+      belowMin(value, min = 1)(),
       sumBreakdownIncorrectErrors(boxRetriever)
     )
   }
@@ -42,7 +42,7 @@ case class CP281(value: Option[Int]) extends CtBoxIdentifier("Losses brought for
     val cp281b = retriever.cp281b()
     failIf((cp281a.value.isDefined || cp281b.value.isDefined) && cp281a + cp281b != this.orZero) {
       Set(CtValidation(None, "error.CP281.breakdown.sum.incorrect"))
-    }
+    } ()
   }
 }
 

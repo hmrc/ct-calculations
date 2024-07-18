@@ -31,16 +31,16 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     collectErrors (
-      cannotExistErrorIf(!boxRetriever.ac7800().orFalse && (transactions.nonEmpty || ac7806.value.nonEmpty)),
+      cannotExistErrorIf(!boxRetriever.ac7800().orFalse && (transactions.nonEmpty || ac7806.value.nonEmpty))(),
 
       failIf(boxRetriever.ac7800().orFalse) {
         collectErrors(
-          validateSimpleField(boxRetriever),
-          validateTransactionRequired(boxRetriever),
-          validateAtMost20transactions(boxRetriever),
-          validateTransactions(boxRetriever)
+          validateSimpleField(boxRetriever)(),
+          validateTransactionRequired(boxRetriever)(),
+          validateAtMost20transactions(boxRetriever) (),
+          validateTransactions(boxRetriever)()
         )
-      }
+      } ()
     )
   }
   
@@ -57,16 +57,16 @@ case class RelatedPartyTransactions(transactions: List[RelatedPartyTransaction] 
   def validateTransactionRequired(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
     failIf(transactions.isEmpty) {
       Set(CtValidation(None, "error.RelatedPartyTransactions.atLeast1", None))
-    }
+    } ()
   }
 
   def validateAtMost20transactions(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
     failIf(transactions.length > 20) {
       Set(CtValidation(None, "error.RelatedPartyTransactions.atMost20", None))
-    }
+    } ()
   }
 
-  def validateSimpleField(boxRetriever: Frs102AccountsBoxRetriever)() = {
+  def validateSimpleField(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
     ac7806.validate(boxRetriever).map {
       error => error.copy(boxId = Some("RelatedPartyTransactions"))
     }

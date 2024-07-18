@@ -33,9 +33,9 @@ case class AC7999a(value: Option[Boolean]) extends CtBoxIdentifier(name = "Compa
     passIf(startOfAccountingPeriod.isBefore(mandatoryNotesStartDate)) {
       collectErrors(
         failIf(value.isEmpty) {
-          validateAsMandatory()
-        }
+          validateAsMandatory()()
+        } ()
       )
-    }
+    } ()
   }
 }

@@ -31,16 +31,16 @@ case class AC141(value: Option[Int]) extends CtBoxIdentifier(name = "Debtors - T
 
     failIf (anyHaveValue(ac52(), ac53()))(
       collectErrors(
-        validateMoney(value),
-        totalEqualToCurrentAmount(boxRetriever)
+        validateMoney(value)(),
+        totalEqualToCurrentAmount(boxRetriever)()
       )
-    )
+    )()
   }
 
-  def totalEqualToCurrentAmount(boxRetriever: FullAccountsBoxRetriever)() = {
+  def totalEqualToCurrentAmount(boxRetriever: FullAccountsBoxRetriever)(): Set[CtValidation] = {
     failIf(this.value != boxRetriever.ac53().value) {
       Set(CtValidation(None, "error.debtors.previousYearTotal.notEqualsTo.previousYearAmount"))
-    }
+    }()
   }
 
 }

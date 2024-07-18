@@ -24,7 +24,7 @@ case class A5(value: Option[Boolean]) extends CtBoxIdentifier(name = "Were any l
   override def validate(boxRetriever: CT600ABoxRetriever): Set[CtValidation] = {
     failIf(boxRetriever.lpq04().orFalse) {
       validateBooleanAsMandatory("A5", this)
-    }
+    } ()
   }
 
 }

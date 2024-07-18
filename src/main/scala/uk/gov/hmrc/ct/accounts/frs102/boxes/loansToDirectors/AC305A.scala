@@ -28,9 +28,9 @@ case class AC305A(value: Option[String]) extends CtBoxIdentifier(name = "Descrip
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      validateAsMandatory(),
-      validateOptionalStringByLength(1, 250),
-      validateCoHoStringReturnIllegalChars()
+      validateAsMandatory()(),
+      validateOptionalStringByLength(1, 250)(),
+      validateCoHoStringReturnIllegalChars()()
     )
   }
 }

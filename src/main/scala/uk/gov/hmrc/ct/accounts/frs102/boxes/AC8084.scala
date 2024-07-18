@@ -28,7 +28,7 @@ case class AC8084(value: Option[Boolean]) extends CtBoxIdentifier(name = "The me
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     collectErrors(
-      failIf(boxRetriever.abridgedFiling().value)(validateAsMandatory(this))
+      failIf(boxRetriever.abridgedFiling().value)(validateAsMandatory(this))()
     )
   }
   

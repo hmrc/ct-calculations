@@ -24,13 +24,13 @@ package object formats {
 
   private def withDefault[A](key:String, default:A)(implicit writes:Writes[A]) = __.json.update((__ \ key).json.copyFrom((__ \ key).json.pick orElse Reads.pure(Json.toJson(default))))
 
-  implicit val ac8092Format = new OptionalStringFormat[AC8092](AC8092.apply)
-  implicit val ac8091Format = new OptionalBooleanFormat[AC8091](AC8091.apply)
-  implicit val ac198AFormat = new OptionalDateFormat[AC198A](AC198A.apply)
-  implicit val ac199AFormat = new StringFormat[AC199A](AC199A.apply)
+  implicit val ac8092Format: OptionalStringFormat[AC8092] = new OptionalStringFormat[AC8092](AC8092.apply)
+  implicit val ac8091Format: OptionalBooleanFormat[AC8091] = new OptionalBooleanFormat[AC8091](AC8091.apply)
+  implicit val ac198AFormat: OptionalDateFormat[AC198A] = new OptionalDateFormat[AC198A](AC198A.apply)
+  implicit val ac199AFormat: StringFormat[AC199A] = new StringFormat[AC199A](AC199A.apply)
 
-  implicit val coHoAccountsApprovalFormatWithDefaults = new Format[CompaniesHouseAccountsApproval] {
-    val baseFormat = Json.format[CompaniesHouseAccountsApproval]
+  implicit val coHoAccountsApprovalFormatWithDefaults: Format[CompaniesHouseAccountsApproval] = new Format[CompaniesHouseAccountsApproval] {
+    val baseFormat: OFormat[CompaniesHouseAccountsApproval] = Json.format[CompaniesHouseAccountsApproval]
 
     override def reads(json: JsValue): JsResult[CompaniesHouseAccountsApproval] = baseFormat
       .composeWith(withDefault("ac8091", AC8091(None)))
@@ -40,8 +40,8 @@ package object formats {
     override def writes(o: CompaniesHouseAccountsApproval): JsValue = baseFormat.writes(o)
   }
 
-  implicit val hmrcAccountsApprovalFormatWithDefaults = new Format[HmrcAccountsApproval] {
-    val baseFormat = Json.format[HmrcAccountsApproval]
+  implicit val hmrcAccountsApprovalFormatWithDefaults: Format[HmrcAccountsApproval] = new Format[HmrcAccountsApproval] {
+    val baseFormat: OFormat[HmrcAccountsApproval] = Json.format[HmrcAccountsApproval]
 
     override def reads(json: JsValue): JsResult[HmrcAccountsApproval] = baseFormat
       .composeWith(withDefault("ac8091", AC8091(None)))

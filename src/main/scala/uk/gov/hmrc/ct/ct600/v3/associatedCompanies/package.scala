@@ -17,7 +17,6 @@
 package uk.gov.hmrc.ct.ct600.v3
 
 import java.time.LocalDate
-import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
 import uk.gov.hmrc.ct.ct600.v3.B350.financialYearForDate
 
 package object associatedCompanies
@@ -25,7 +24,7 @@ package object associatedCompanies
 
   val multipleTaxRateV3StartDate = LocalDate.parse("2023-03-31")
 
-  def doesPeriodCoverTwoFinancialYears(startDate: LocalDate, endDate: LocalDate) = {
+  def doesPeriodCoverTwoFinancialYears(startDate: LocalDate, endDate: LocalDate): Boolean = {
     val fy1 = financialYearForDate(startDate)
     val fy2 = financialYearForDate(endDate)
     if (fy1 != fy2) {
@@ -34,14 +33,14 @@ package object associatedCompanies
       false
     }
   }
-  def splitFincialYearForHelpText(startDate: LocalDate, endDate: LocalDate) = {
+  def splitFincialYearForHelpText(startDate: LocalDate, endDate: LocalDate): String = {
     if (startDate.getMonthValue < 4) {
       startDate.getYear.toString
     } else {
       endDate.getYear.toString
     }
   }
-  def doesfilingperiodcoversafter2023(endDate: LocalDate) = {
+  def doesfilingperiodcoversafter2023(endDate: LocalDate): Boolean = {
     if(endDate.isAfter(multipleTaxRateV3StartDate)) {
       true
     } else {

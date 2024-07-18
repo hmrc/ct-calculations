@@ -34,16 +34,16 @@ case class LoansToDirectors(loans: List[LoanToDirector] = List.empty, ac7501: AC
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever with Frs10xDirectorsBoxRetriever with FilingAttributesBoxValueRetriever): Set[CtValidation] = {
     collectErrors (
-      cannotExistErrorIf(!boxRetriever.ac7500().orFalse && (loans.nonEmpty || ac7501.value.nonEmpty)),
+      cannotExistErrorIf(!boxRetriever.ac7500().orFalse && (loans.nonEmpty || ac7501.value.nonEmpty))(),
 
       failIf(boxRetriever.ac7500().orFalse) {
         collectErrors(
-          validateSimpleField(boxRetriever),
-          validateLoanRequired(boxRetriever),
-          validateAtMost20Loans(boxRetriever),
-          validateLoans(boxRetriever)
+          validateSimpleField(boxRetriever)(),
+          validateLoanRequired(boxRetriever)(),
+          validateAtMost20Loans(boxRetriever)(),
+          validateLoans(boxRetriever)()
         )
-      }
+      } ()
     )
   }
 
@@ -62,13 +62,13 @@ case class LoansToDirectors(loans: List[LoanToDirector] = List.empty, ac7501: AC
   def validateLoanRequired(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
     failIf(loans.isEmpty) {
       Set(CtValidation(None, "error.LoansToDirectors.atLeast1", None))
-    }
+    } ()
   }
 
   def validateAtMost20Loans(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
     failIf(loans.length > 20) {
       Set(CtValidation(None, "error.LoansToDirectors.atMost20", None))
-    }
+    } ()
   }
 
   def validateSimpleField(boxRetriever: Frs102AccountsBoxRetriever)() = {
@@ -111,7 +111,7 @@ case class LoanToDirector(uuid: String,
 
     failIf(!anyAmountFieldHasAValue) {
       Set(CtValidation(boxId = None, "error.LoansToDirectors.one.field.required"))
-    }
+    } ()
   }
 
   def calculateAC309A(): LoanToDirector = {

@@ -27,7 +27,7 @@ case class AC416(value: Option[Int]) extends CtBoxIdentifier(name = "Staff costs
 
   override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateMoney(value)
+      validateMoney(value)()
     )
   }
 }

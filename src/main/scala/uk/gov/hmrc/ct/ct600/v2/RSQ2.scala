@@ -27,8 +27,8 @@ case class RSQ2(inputValue: Option[Boolean], defaultValue: Option[Boolean]) exte
     boxRetriever match {
       case compsRetriever: ComputationsBoxRetriever => {
         collectErrors(
-          cannotExistErrorIf(CP287GreaterThenZeroAndHaveInputValue(compsRetriever)),
-          requiredErrorIf(CP287NotExistsAndNoInputValue(compsRetriever))
+          cannotExistErrorIf(CP287GreaterThenZeroAndHaveInputValue(compsRetriever)())(),
+          requiredErrorIf(CP287NotExistsAndNoInputValue(compsRetriever)())()
         )
       }
       case _ => validateAsMandatory(this) //Charities may not have Computations, but still need to validate as mandatory

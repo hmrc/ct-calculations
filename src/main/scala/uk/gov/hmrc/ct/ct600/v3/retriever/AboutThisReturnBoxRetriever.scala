@@ -73,7 +73,7 @@ trait AboutThisReturnBoxRetriever extends BoxRetriever {
 
   def b95(): B95 = {
     this match {
-      case r: CT600ABoxRetriever => B95(r.lpq01)
+      case r: CT600ABoxRetriever => B95(r.lpq01())
       case _ => B95(false)
     }
   }

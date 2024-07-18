@@ -31,8 +31,8 @@ case class CP286a(value: Option[Int])
     collectErrors(
       requiredErrorIf(value.isEmpty && boxRetriever.cpQ18().isTrue
         && mayHaveNirLosses(boxRetriever) &&
-        !hasValue),
-      cannotExistErrorIf(value.nonEmpty && !boxRetriever.cpQ18().orFalse),
+        !hasValue)(),
+      cannotExistErrorIf(value.nonEmpty && !boxRetriever.cpQ18().orFalse)(),
       validateIntegerRange("CP286a", this, 0, boxRetriever.cp286().orZero)
     )
   }

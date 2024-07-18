@@ -32,9 +32,9 @@ case class AC190(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at 
 
     failIf (anyHaveValue(ac76(), ac77()))(
       collectErrors(
-        validateTotalEqualToCurrentAmount(boxRetriever)
+        validateTotalEqualToCurrentAmount(boxRetriever)()
       )
-    )
+    )()
   }
 
   def validateTotalEqualToCurrentAmount(boxRetriever: Frs102AccountsBoxRetriever with Frs10xDormancyBoxRetriever)() = {
@@ -46,7 +46,7 @@ case class AC190(value: Option[Int]) extends CtBoxIdentifier(name = "Balance at 
 
     failIf(notEqualToAC76 && (!dormant || boxRetriever.ac187())) {
       Set(CtValidation(None, "error.AC190.mustEqual.AC76"))
-    }
+    }()
   }
 
 }
@@ -58,7 +58,7 @@ object AC190 extends Calculated[AC190, Frs102AccountsBoxRetriever]
     // From now on AC189 should have a value only if AC187 is true. However, it needs to be checked
     // in case there are incomplete filings that have AC189 only at the point of release.
     if (boxRetriever.ac187() || boxRetriever.ac189().hasValue) {
-      AC190(Some(boxRetriever.ac77 + boxRetriever.ac189()))
+      AC190(Some(boxRetriever.ac77() + boxRetriever.ac189()))
     }
     else {
       AC190(None)

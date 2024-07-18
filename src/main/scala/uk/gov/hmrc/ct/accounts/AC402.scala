@@ -28,9 +28,9 @@ with Input
 
     collectErrors(
       failIf(ac404.value.isDefined && value.isEmpty){
-        Set(CtValidation(Some("AC402"), "error.AC402.required"))
-      },
-      exceedsMax(value,999999),
+        Set(CtValidation(Some("AC402"), "error.AC402.required"))()
+      }(),
+      exceedsMax(value,999999)(),
       validateZeroOrPositiveInteger(this)
     )
   }

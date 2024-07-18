@@ -17,10 +17,9 @@
 package uk.gov.hmrc.ct.computations.calculations
 
 import uk.gov.hmrc.ct.CATO20
-import uk.gov.hmrc.ct.box.{CtTypeConverters, CtValidation}
+import uk.gov.hmrc.ct.box.CtTypeConverters
 import uk.gov.hmrc.ct.computations._
 import uk.gov.hmrc.ct.computations.machineryAndPlant._
-import uk.gov.hmrc.ct.computations.superdeductions.isThereSuperDeductionOverLap
 
 trait MachineryAndPlantCalculator extends CtTypeConverters {
 

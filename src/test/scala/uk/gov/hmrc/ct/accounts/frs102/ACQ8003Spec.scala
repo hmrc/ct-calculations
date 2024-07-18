@@ -26,9 +26,9 @@ import uk.gov.hmrc.ct.box.CtValidation
 
 class ACQ8003Spec extends AnyWordSpec with Matchers with MockitoSugar with BeforeAndAfterEach {
 
-  val mockBoxRetriever = mock[MockableFrs10xBoxretrieverWithFilingAttributes]
+  val mockBoxRetriever: MockableFrs10xBoxretrieverWithFilingAttributes = mock[MockableFrs10xBoxretrieverWithFilingAttributes]
 
-  override def beforeEach = {
+  override def beforeEach(): Unit = {
     DirectorsMockSetup.setupDefaults(mockBoxRetriever)
   }
 

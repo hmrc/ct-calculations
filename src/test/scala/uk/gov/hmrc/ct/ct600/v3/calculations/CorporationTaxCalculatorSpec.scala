@@ -21,8 +21,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.CATO23
 import uk.gov.hmrc.ct.computations._
-import uk.gov.hmrc.ct.ct600.calculations.{CorporationTaxCalculatorParameters, NINonTradingProfitCalculationParameters, NITradingProfitCalculationParameters}
-import uk.gov.hmrc.ct.ct600.v2.{B37, B38, B39, B42}
+import uk.gov.hmrc.ct.ct600.calculations.{CorporationTaxCalculatorParameters, NINonTradingProfitCalculationParameters}
 import uk.gov.hmrc.ct.ct600.v3._
 
 class CorporationTaxCalculatorSpec extends AnyWordSpec with Matchers {

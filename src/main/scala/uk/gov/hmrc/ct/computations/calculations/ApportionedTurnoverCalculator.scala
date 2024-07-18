@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.computations.calculations
 
-import java.time.Period
 import play.api.libs.json.{Format, Json}
 import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4, AC401}
 import uk.gov.hmrc.ct.computations._

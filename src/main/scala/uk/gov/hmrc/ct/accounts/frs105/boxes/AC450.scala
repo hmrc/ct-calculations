@@ -26,7 +26,7 @@ case class AC450(value: Option[Int]) extends CtBoxIdentifier(name = "Fixed asset
 
   override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateMoney(value, min = 0)
+      validateMoney(value, min = 0)()
     )
   }
 }

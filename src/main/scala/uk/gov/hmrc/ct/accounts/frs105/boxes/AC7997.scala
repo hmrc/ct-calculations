@@ -24,18 +24,18 @@ case class AC7997(value: Option[String]) extends CtBoxIdentifier(name = "Advance
 with Input
 with SelfValidatableBox[Frs105AccountsBoxRetriever, Option[String]] {
 
-  override def validate(boxRetriever: Frs105AccountsBoxRetriever) = {
+  override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
     collectErrors (
-      cannotExistErrorIf(value.nonEmpty && ac7992().isFalse),
+      cannotExistErrorIf(value.nonEmpty && ac7992().isFalse)(),
 
       failIf (boxRetriever.ac7992().isTrue) (
         collectErrors (
-          validateStringAsMandatory(),
-          validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
-          validateCoHoStringReturnIllegalChars()
+          validateStringAsMandatory()(),
+          validateOptionalStringByLength(1, StandardCohoTextFieldLimit)(),
+          validateCoHoStringReturnIllegalChars()()
         )
-      )
+      ) ()
     )
   }
 }

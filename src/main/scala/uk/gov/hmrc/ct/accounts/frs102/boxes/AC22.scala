@@ -27,7 +27,7 @@ case class AC22(value: Option[Int]) extends CtBoxIdentifier(name = "Turnover (cu
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateMoney(value)
+      validateMoney(value)()
     )
   }
 }

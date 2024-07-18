@@ -28,6 +28,6 @@ case class AC8089(value: Option[Boolean]) extends CtBoxIdentifier(name = "The di
   override def validate(boxRetriever: Frs10xDormancyBoxRetriever): Set[CtValidation] = {
     failIf(boxRetriever.acq8999().orFalse) (
       validateBooleanAsTrue("AC8089", this)
-    )
+    )()
   }
 }

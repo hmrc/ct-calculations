@@ -38,19 +38,19 @@ trait AccountsApproval extends Input with ValidatableBox[AccountsBoxRetriever wi
     collectWithBoxId(boxId) {
       collectErrors(
         failIf(!approvalEnabled(boxRetriever)) {
-          cannotExistErrorIf(anyValuesPopulated)
-        },
-        failIf(approvalEnabled(boxRetriever)) {
+          cannotExistErrorIf(anyValuesPopulated)()
+        }(),
+        failIf(approvalEnabled(boxRetriever)) { ();
           collectErrors(
             ac8091.validate(boxRetriever),
             ac198A.validate(boxRetriever),
-            validateApproverRequired(boxRetriever),
-            validateAtMost12Approvers(boxRetriever),
-            validateAtMost12OtherApprovers(boxRetriever),
-            validateApprovers(boxRetriever),
-            validateOtherApprovers(boxRetriever)
+            validateApproverRequired(boxRetriever)(),
+            validateAtMost12Approvers(boxRetriever)(),
+            validateAtMost12OtherApprovers(boxRetriever)(),
+            validateApprovers(boxRetriever)(),
+            validateOtherApprovers(boxRetriever)()
           )
-        }
+        }()
       )
     }
   }
@@ -63,21 +63,21 @@ trait AccountsApproval extends Input with ValidatableBox[AccountsBoxRetriever wi
 
     failIf(ac199A.isEmpty && filteredOtherApprovers.isEmpty) {
       Set(CtValidation(None, s"error.$boxId.atLeast1", None))
-    }
+    }()
   }
 
   private def validateAtMost12Approvers(boxRetriever: AccountsBoxRetriever)(): Set[CtValidation] = {
 
     failIf(filteredApprovers.length > 12) {
       Set(CtValidation(None, s"error.$boxId.approvers.atMost12", None))
-    }
+    }()
   }
 
   private def validateAtMost12OtherApprovers(boxRetriever: AccountsBoxRetriever)(): Set[CtValidation] = {
 
     failIf(filteredOtherApprovers.length > 12) {
       Set(CtValidation(None, s"error.$boxId.otherApprovers.atMost12", None))
-    }
+    }()
   }
 
   private def validateApprovers(boxRetriever: AccountsBoxRetriever)(): Set[CtValidation] = {

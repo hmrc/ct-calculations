@@ -65,7 +65,7 @@ trait ExtraValidation extends Validators {
  def validateStringByRegex(boxId: String, str: String, regex: String): Set[CtValidation] =
    passIf(str.matches(regex)) {
      Set(CtValidation(Some(boxId), s"error.$boxId.invalidPostcode"))
-   }
+   } ()
 
   def validateOptionalStringByLength(value: Option[String], min: Int, max: Int, boxId: String, boxIdPrefix: Option[String])(): Set[CtValidation] = {
     value match {

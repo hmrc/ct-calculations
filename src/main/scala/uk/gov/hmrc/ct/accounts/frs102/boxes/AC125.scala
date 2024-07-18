@@ -37,21 +37,21 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
         collectErrors(
           failIf(isMandatory)(
             collectErrors(
-              validateMoney(value, min = 0),
-              validateAbridgedOneFieldMandatory(boxRetriever)
+              validateMoney(value, min = 0)(),
+              validateAbridgedOneFieldMandatory(boxRetriever)()
             )
-          ),
-          failIf(!isMandatory)(validateAbridgedNoteCannotExist(boxRetriever))
+          )(),
+          failIf(!isMandatory)(validateAbridgedNoteCannotExist(boxRetriever))()
         )
       case x: FullAccountsBoxRetriever =>
         collectErrors(
           failIf(isMandatory)(
             collectErrors(
-              validateMoney(value, min = 0),
-              validateFullOneFieldMandatory(x)
+              validateMoney(value, min = 0)(),
+              validateFullOneFieldMandatory(x)()
             )
-          ),
-          failIf(!isMandatory)(validateFullNoteCannotExist(x))
+          )(),
+          failIf(!isMandatory)(validateFullNoteCannotExist(x))()
         )
     }
   }
@@ -59,7 +59,7 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
   private def validateAbridgedNoteCannotExist(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     import boxRetriever._
 
-    val anyBoxPopulated = Stream(
+    val anyBoxPopulated: Boolean = LazyList(
       ac124(),
       ac125(),
       ac126(),
@@ -168,7 +168,7 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
   }
 
   private def validateAbridgedOneFieldMandatory(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
-    val anyBoxPopulated: Boolean = Stream (
+    val anyBoxPopulated: Boolean = LazyList(
         boxRetriever.ac124(),
         boxRetriever.ac125(),
         boxRetriever.ac126(),
@@ -183,13 +183,13 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
 
     failIf(!anyBoxPopulated)(
       Set(CtValidation(None, "error.tangible.assets.note.one.box.required"))
-    )
+    )()
   }
 
   private def validateFullOneFieldMandatory(boxRetriever: FullAccountsBoxRetriever)(): Set[CtValidation] = {
     import boxRetriever._
 
-    val anyBoxPopulated = Stream(
+    val anyBoxPopulated: Boolean = LazyList(
       ac124(),
       ac124A(),
       ac124B(),
@@ -273,7 +273,7 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
 
     failIf(!anyBoxPopulated)(
       Set(CtValidation(None, "error.tangible.assets.note.one.box.required"))
-    )
+    )()
   }
 }
 

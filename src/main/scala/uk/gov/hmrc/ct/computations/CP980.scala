@@ -26,7 +26,7 @@ case class CP980(value: Option[Int]) extends CtBoxIdentifier(name = "Remuneratio
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       validateZeroOrPositiveInteger(this),
-      exceedsMax(this.value, 999999),
+      exceedsMax(this.value, 999999)(),
       cp980Breakdown(this, boxRetriever)
 
     )
@@ -38,7 +38,7 @@ case class CP980(value: Option[Int]) extends CtBoxIdentifier(name = "Remuneratio
     failIf(value.orZero > cp980Error) {
     val cp980Positive = if(cp980Error < 0) 0 else cp980Error
     Set(CtValidation(Some("CP980"), "error.cp980.breakdown", Some(Seq(cp980Positive.toString))))
-  }
+  } ()
   }
 }
 

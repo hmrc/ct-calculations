@@ -23,8 +23,8 @@ case class CP303(value: Option[Int]) extends CtBoxIdentifier(name = "Non qualify
   with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      cannotExistErrorIf(hasValue && boxRetriever.cpQ21().isFalse),
-      requiredErrorIf(!hasValue && boxRetriever.cpQ21().isTrue),
+      cannotExistErrorIf(hasValue && boxRetriever.cpQ21().isFalse)(),
+      requiredErrorIf(!hasValue && boxRetriever.cpQ21().isTrue)(),
       validateZeroOrPositiveInteger(this)
     )
   }

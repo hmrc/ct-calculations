@@ -26,7 +26,7 @@ case class AC465(value: Option[Int]) extends CtBoxIdentifier(name = "Prepayments
 
   override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateMoney(value, min = 0)
+      validateMoney(value, min = 0)()
     )
   }
 }

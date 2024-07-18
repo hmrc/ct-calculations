@@ -36,7 +36,7 @@ class CP88Spec extends AnyWordSpec with MockitoSugar with Matchers with BoxValid
     when(boxRetriever.cato02()).thenReturn(CATO02(5555))
   }
 
-  override def beforeEach = setUpMocks
+  override def beforeEach = setUpMocks()
 
   testBoxIsZeroOrPositive("CP88", CP88.apply)
 

@@ -24,6 +24,6 @@ case class AC14(value: Option[Int]) extends CtBoxIdentifier(name = "Current Cost
                                     with SelfValidatableBox[AccountsBoxRetriever, Option[Int]]
                                     with Debit {
   override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
-    validateMoney(value, min = 0)
+    validateMoney(value, min = 0)()
   }
 }

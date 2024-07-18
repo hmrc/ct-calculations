@@ -28,6 +28,6 @@ case class ACQ8990(value: Option[Boolean]) extends CtBoxIdentifier(name = "Profi
   override def validate(boxRetriever: Frs10xDormancyBoxRetriever): Set[CtValidation] = {
     failIf(boxRetriever.profitAndLossStatementRequired().value) {
       validateBooleanAsTrue("ACQ8990", this)
-    }
+    }()
   }
 }

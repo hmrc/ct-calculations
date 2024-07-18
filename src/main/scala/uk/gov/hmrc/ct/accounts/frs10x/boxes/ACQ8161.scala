@@ -33,31 +33,31 @@ case class ACQ8161(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do yo
     collectErrors(
       failIf(boxRetriever.companiesHouseFiling().value)(
         validateBooleanAsMandatory("ACQ8161", this)
-      ),
+      )(),
       passIf(boxRetriever.hmrcFiling().value)(
         boxRetriever match {
-          case boxRetriever: FullAccountsBoxRetriever => validateFull(boxRetriever)
-          case boxRetriever: Frs102AccountsBoxRetriever => validateAbridged(boxRetriever)
-          case boxRetriever: Frs105AccountsBoxRetriever => validateMicro(boxRetriever)
+          case boxRetriever: FullAccountsBoxRetriever => validateFull(boxRetriever)()
+          case boxRetriever: Frs102AccountsBoxRetriever => validateAbridged(boxRetriever)()
+          case boxRetriever: Frs105AccountsBoxRetriever => validateMicro(boxRetriever)()
           case unknown => throw new IllegalStateException("unexpected retriever type: " + unknown)
         }
-      )
+      )()
     )
   }
 
   private def validateAbridged(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
     import boxRetriever._
-    ensureIsEmpty(ac16, ac17, ac18, ac19, ac20, ac21, ac26, ac27, ac28, ac29, ac30, ac31, ac34, ac35, ac36, ac37, ac5032)
+    ensureIsEmpty(ac16(), ac17(), ac18(), ac19(), ac20(), ac21(), ac26(), ac27(), ac28(), ac29(), ac30(), ac31(), ac34(), ac35(), ac36(), ac37(), ac5032())
   }
 
   private def validateFull(boxRetriever: FullAccountsBoxRetriever)(): Set[CtValidation] = {
     import boxRetriever._
-    ensureIsEmpty(ac12, ac13, ac14, ac15, ac22, ac23) ++ validateAbridged(boxRetriever)
+    ensureIsEmpty(ac12(), ac13(), ac14(), ac15(), ac22(), ac23()) ++ validateAbridged(boxRetriever)()
   }
 
   private def validateMicro(boxRetriever: Frs105AccountsBoxRetriever)(): Set[CtValidation] = {
     import boxRetriever._
-    ensureIsEmpty(ac12, ac13, ac405, ac406, ac410, ac411, ac415, ac416, ac420, ac421, ac425, ac426, ac34, ac35)
+    ensureIsEmpty(ac12(), ac13(), ac405(), ac406(), ac410(), ac411(), ac415(), ac416(), ac420(), ac421(), ac425(), ac426(), ac34(), ac35())
   }
 
   private def ensureIsEmpty(values: OptionalCtValue[_]*): Set[CtValidation] = {

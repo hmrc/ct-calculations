@@ -27,15 +27,15 @@ with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
-      cannotExistErrorIf(!boxRetriever.ac7900().orFalse && value.nonEmpty),
+      cannotExistErrorIf(!boxRetriever.ac7900().orFalse && value.nonEmpty)(),
 
       failIf (boxRetriever.ac7900().orFalse) (
         collectErrors (
-          validateStringAsMandatory(),
-          validateOptionalStringByLength(1, StandardCohoTextFieldLimit),
-          validateCoHoStringReturnIllegalChars()
+          validateStringAsMandatory()(),
+          validateOptionalStringByLength(1, StandardCohoTextFieldLimit)(),
+          validateCoHoStringReturnIllegalChars()()
         )
-      )
+      )()
     )
   }
 }

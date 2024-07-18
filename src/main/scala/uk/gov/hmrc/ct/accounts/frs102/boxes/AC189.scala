@@ -33,9 +33,9 @@ case class AC189(value: Option[Int]) extends CtBoxIdentifier(name = "Surplus or 
     val dormant = boxRetriever.acq8999().orFalse
 
     collectErrors (
-      failIf(hasReserve && (!dormant || boxRetriever.ac187()))(validateIntegerAsMandatory("AC189", this)),
-      failIf(!hasReserve)(validateNoteCannotExist(boxRetriever)),
-      validateMoney(value)
+      failIf(hasReserve && (!dormant || boxRetriever.ac187()))(validateIntegerAsMandatory("AC189", this))(),
+      failIf(!hasReserve)(validateNoteCannotExist(boxRetriever))(),
+      validateMoney(value)()
     )
   }
 

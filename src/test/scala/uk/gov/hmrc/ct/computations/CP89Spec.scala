@@ -123,7 +123,7 @@ class CP89Spec extends AnyWordSpec with Matchers with MockitoSugar with BoxValid
     }
 
     testCannotExistWhen("CP89", CP89.apply) {
-      val boxRetriever = setupRetriever
+      val boxRetriever = setupRetriever()
       when(boxRetriever.cato21()).thenReturn(CATO21(10))
       when(boxRetriever.cp81()).thenReturn(CP81(1000))
       when(boxRetriever.cp88()).thenReturn(CP88(0))

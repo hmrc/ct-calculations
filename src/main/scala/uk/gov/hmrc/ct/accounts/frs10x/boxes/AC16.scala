@@ -47,17 +47,17 @@ case class AC16(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever with FilingAttributesBoxValueRetriever ): Set[CtValidation] = {
 
     collectErrors(
-      requiredErrorIf(boxRetriever.abridgedFiling().value && !boxRetriever.cato24().value.getOrElse(false) && boxRetriever.ac16().value.isEmpty),
+      requiredErrorIf(boxRetriever.abridgedFiling().value && !boxRetriever.cato24().value.getOrElse(false) && boxRetriever.ac16().value.isEmpty)(),
       failIf(isHmrcFiling(boxRetriever))(
       collectErrors(
-        validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, minimumAmount = Some(CatoInputBounds.oldMinValue99999999))
+        validateHmrcTurnover(boxRetriever, accountsStart, accountEnd, minimumAmount = Some(CatoInputBounds.oldMinValue99999999))()
       )
-    ),
+    )(),
     failIf(!isHmrcFiling(boxRetriever) && boxRetriever.companiesHouseFiling().value)(
       collectErrors(
         validateCoHoTurnover(boxRetriever, accountsStart, accountEnd)
       )
-    )
+    )()
     )
   }
 }
@@ -66,7 +66,7 @@ object AC16 extends Calculated[AC16, Frs10xAccountsBoxRetriever with FilingAttri
     if(!boxRetriever.cato24().isTrue && boxRetriever.abridgedFiling().value) {
       AC16(None)
     } else {
-      calculateAC16(boxRetriever.ac12, boxRetriever.ac24, boxRetriever.ac401, boxRetriever.ac403, boxRetriever.ac14())
+      calculateAC16(boxRetriever.ac12(), boxRetriever.ac24(), boxRetriever.ac401(), boxRetriever.ac403(), boxRetriever.ac14())
     }
   }
 }

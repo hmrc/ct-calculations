@@ -32,12 +32,12 @@ case class CPQ17(value: Option[Boolean])
     val lossesReformApplies = lossReform2017Applies(boxRetriever.cp2())
 
     collectErrors(
-      requiredErrorIf({ value.isEmpty && (hasTradingProfit(boxRetriever) ||
-        (lossesReformApplies && hasNonTradingProfit(boxRetriever))
-        )}),
-      cannotExistErrorIf(value.nonEmpty && (noTradingProfit(boxRetriever) &&
-        !(lossesReformApplies && !noNonTradingProfit(boxRetriever))
-        ))
-    )
+      requiredErrorIf({ value.isEmpty && (hasTradingProfit(boxRetriever)() ||
+        (lossesReformApplies && hasNonTradingProfit(boxRetriever)())
+        )})(),
+      cannotExistErrorIf(value.nonEmpty && (noTradingProfit(boxRetriever)() &&
+        !(lossesReformApplies && !noNonTradingProfit(boxRetriever)())
+        ))()
+    ) ()
   }
 }

@@ -92,7 +92,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators with ExtraValidation 
 
     passIf(allEmpty || allNonEmpty) {
       Set(CtValidation(Some(boxId), s"error.$boxId.allornone"))
-    }
+    } ()
   }
 
   protected def validateAllFilledOrEmptyStringsForBankDetails(boxRetriever: RepaymentsBoxRetriever, boxId: String): Set[CtValidation] = {
@@ -172,7 +172,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators with ExtraValidation 
       case Some(x) => {
         passIf (min <= x && x <= max) {
            Set(CtValidation(Some(boxId), s"error.$boxId.outOfRange", Some(Seq(commaForThousands(min), commaForThousands(max)))))
-        }
+        } ()
       }
       case _ => validationSuccess
     }
@@ -225,7 +225,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators with ExtraValidation 
       case Some(x) if x.nonEmpty => {
         passIf (x.matches(regex)) {
           Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
-        }
+        } ()
       }
       case _ => validationSuccess
     }
@@ -234,13 +234,13 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators with ExtraValidation 
   protected def validateRawStringByRegex(boxId: String, value: String, errorCodeBoxId: String, regex: String): Set[CtValidation] = {
     passIf (value.matches(regex)) {
       Set(CtValidation(Some(boxId), s"error.$errorCodeBoxId.regexFailure"))
-    }
+    } ()
   }
 
   protected def validateStringByRegex(boxId: String, box: StringIdBox, regex: String): Set[CtValidation] = {
     passIf (box.value.isEmpty || box.value.matches(regex)) {
       Set(CtValidation(Some(boxId), s"error.$boxId.regexFailure"))
-    }
+    } ()
   }
 
   protected def validateCoHoStringReturnIllegalChars(boxId: String, box: OptionalStringIdBox): Set[CtValidation] = {
@@ -273,7 +273,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators with ExtraValidation 
     val illegalChars = getIllegalCharacters(value)
     passIf (illegalChars.isEmpty) {
       Set(CtValidation(Some(boxId), s"error.$errorCode.regexFailure", Some(Seq(illegalChars))))
-    }
+    } ()
   }
 
   protected def validateOptionalStringByLengthMin(boxId: String, box: OptionalStringIdBox, min: Int): Set[CtValidation] = {
@@ -303,25 +303,25 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators with ExtraValidation 
   def validateNotEmptyStringByLengthMin(boxId: String, value: String, min: Int): Set[CtValidation] = {
     failIf (value.nonEmpty && value.size < min ) {
       Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange.min", Some(Seq(min.toString))))
-    }
+    } ()
   }
 
   def validateNotEmptyStringByLength(boxId: String, value: String, min: Int, max: Int): Set[CtValidation] = {
     failIf (value.nonEmpty && value.size < min || value.size > max) {
       Set(CtValidation(Some(boxId), s"error.$boxId.text.sizeRange", Some(Seq(min.toString, max.toString))))
-    }
+    } ()
   }
 
   def validateStringByLength(boxId: String, value: String, errorCodeId: String, min: Int, max: Int): Set[CtValidation] = {
     failIf (value.size < min || value.size > max) {
       Set(CtValidation(Some(boxId), s"error.$errorCodeId.text.sizeRange", Some(Seq(min.toString, max.toString))))
-    }
+    } ()
   }
 
   def validateNotEmpty(boxId: String, value: String, min: Int): Set[CtValidation] = {
     failIf (value.size < min) {
       Set(CtValidation(Some(boxId), s"error.$boxId.sizeRange.empty", Some(Seq(min.toString))))
-    }
+    } ()
   }
 
   /*
@@ -331,7 +331,7 @@ trait ValidatableBox[T <: BoxRetriever] extends Validators with ExtraValidation 
   def validateStringMaxLength(boxId: String, value: String, max: Int): Set[CtValidation] = {
     failIf (value.size > max) {
       Set(CtValidation(Some(boxId), s"error.$boxId.max.length", Some(Seq(commaForThousands(max)))))
-    }
+    } ()
   }
 
   def validatePostcode(boxId: String, box: OptionalStringIdBox): Set[CtValidation] = {

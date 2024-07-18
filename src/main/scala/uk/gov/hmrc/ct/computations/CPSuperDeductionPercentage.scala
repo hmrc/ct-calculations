@@ -19,7 +19,6 @@ package uk.gov.hmrc.ct.computations
 import uk.gov.hmrc.ct.box.{Calculated, CtBigDecimal, CtBoxIdentifier}
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import uk.gov.hmrc.ct.computations.superdeductions.{SuperDeductionPercentage, SuperDeductionPeriod}
-import uk.gov.hmrc.ct.ct600.v2.retriever.CT600BoxRetriever
 
 case class CPSuperDeductionPercentage(value: BigDecimal) extends CtBoxIdentifier(name = "super deduction percentage") with CtBigDecimal
 

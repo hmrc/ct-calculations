@@ -31,14 +31,14 @@ case class AC71(value: Option[Int]) extends CtBoxIdentifier(name = "Called up sh
     val hasPY = boxRetriever.ac205().hasValue
     collectErrors(
       failIf(!hasPY || limitedByGuarantee)(
-        cannotExistErrorIf(value.nonEmpty)
-      ),
+        cannotExistErrorIf(value.nonEmpty)()
+      )(),
       failIf(hasPY && !limitedByGuarantee)(
         collectErrors(
           validateAsMandatory(this),
-          validateMoney(value, min = 1)
+          validateMoney(value, min = 1)()
         )
-      )
+      )()
     )
   }
 

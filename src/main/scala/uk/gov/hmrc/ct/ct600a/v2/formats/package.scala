@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.ct600a.v2
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Format, Json, OFormat}
 import uk.gov.hmrc.ct.box.formats._
 
 package object formats {
@@ -55,11 +55,11 @@ package object formats {
 
   implicit val a13Format: Format[A13] = new OptionalBigDecimalFormat[A13](A13.apply)
 
-  implicit val loanFormatter = Json.format[Loan]
+  implicit val loanFormatter: OFormat[Loan] = Json.format[Loan]
 
   implicit val lp02Format: Format[LP02] = Json.format[LP02]
 
-  implicit val writeOffFormatter = Json.format[WriteOff]
+  implicit val writeOffFormatter: OFormat[WriteOff] = Json.format[WriteOff]
 
   implicit val lp03Format: Format[LP03] = Json.format[LP03]
 

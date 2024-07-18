@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct
 import play.api.libs.json.{ Format, JsError, JsNumber, JsObject, JsString, JsSuccess, Reads, Writes, __ }
 
 import java.time.{ Instant, LocalDate, LocalDateTime, ZoneOffset }
-import scala.util.{ Success, Try }
+import scala.util.Try
 
 object MongoDateFormats extends MongoDateFormats
 

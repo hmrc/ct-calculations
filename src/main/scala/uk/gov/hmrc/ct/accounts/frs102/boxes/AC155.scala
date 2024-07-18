@@ -29,14 +29,14 @@ case class AC155(value: Option[Int]) extends CtBoxIdentifier(name = "Total credi
     import boxRetriever._
 
     failIf (anyHaveValue(ac58(), ac59()))(
-      validateMatchesBalanceSheetValue(boxRetriever)
-    )
+      validateMatchesBalanceSheetValue(boxRetriever)()
+    )()
   }
 
-  def validateMatchesBalanceSheetValue(boxRetriever: Frs102AccountsBoxRetriever)() = {
+  def validateMatchesBalanceSheetValue(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
     failIf(value != boxRetriever.ac59().value) {
       Set(CtValidation(None, "error.creditors.within.one.year.note.previous.total.not.equal.balance.sheet"))
-    }
+    }()
   }
 }
 

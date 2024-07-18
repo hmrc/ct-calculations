@@ -24,6 +24,6 @@ case class LPQ03(value: Option[Boolean]) extends CtBoxIdentifier(name = "During 
 
     failIf(boxRetriever.lpq04().orFalse) {
       validateBooleanAsMandatory("LPQ03", this)
-    }
+    } ()
   }
 }

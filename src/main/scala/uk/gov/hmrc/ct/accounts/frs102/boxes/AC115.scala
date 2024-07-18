@@ -119,9 +119,9 @@ case class AC115(value: Option[Int]) extends CtBoxIdentifier(name = "Additions")
     val isMandatory = anyHaveValue(ac42(), ac43())
 
     collectErrors(
-      failIf(isMandatory)(validateNoteEntered(boxRetriever)),
-      failIf(!isMandatory)(validateNoteCannotExists(boxRetriever)),
-      validateMoney(value, min = 0)
+      failIf(isMandatory)(validateNoteEntered(boxRetriever))(),
+      failIf(!isMandatory)(validateNoteCannotExists(boxRetriever))(),
+      validateMoney(value, min = 0)()
     )
   }
 

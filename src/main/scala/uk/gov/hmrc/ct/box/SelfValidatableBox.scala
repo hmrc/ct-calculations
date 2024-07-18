@@ -96,7 +96,7 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
   }
 
   protected def validateDateAsBetweenInclusive(minDate: LocalDate, maxDate: LocalDate)()(implicit ev: <:<[B, Option[LocalDate]]): Set[CtValidation] = {
-    validateDateAsBetweenInclusive(box.value, minDate, maxDate, box.id)
+    validateDateAsBetweenInclusive(box.value, minDate, maxDate, box.id) ()
   }
 
   protected def validateDateAsBetweenInclusive(date: Option[LocalDate], minDate: LocalDate, maxDate: LocalDate, messageId: String)(): Set[CtValidation] = {
@@ -171,7 +171,7 @@ trait SelfValidatableBox[T <: BoxRetriever, B] extends Validators with Validatab
   def validateOptionalIntegerLessOrEqualBox(other: CtBoxIdentifier with CtOptionalInteger)()(implicit ev: <:<[B, Option[Int]]): Set[CtValidation] = {
     failIf (box.value.nonEmpty && other.value.nonEmpty && box.value.get > other.value.get) {
       Set(CtValidation(Some(box.id), s"error.${box.id}.mustBeLessOrEqual.${other.id}"))
-    }
+    } ()
   }
 
   def validateNotEmptyStringByLength(value: String, min: Int, max: Int)(): Set[CtValidation] = {

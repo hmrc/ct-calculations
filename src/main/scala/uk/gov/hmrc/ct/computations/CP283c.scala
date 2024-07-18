@@ -32,7 +32,7 @@ case class CP283c(value: Option[Int])
       requiredErrorIf(
         boxRetriever.cp283b().isPositive &&
           mayHaveNirLosses(boxRetriever) &&
-          !hasValue),
+          !hasValue)(),
       validateIntegerRange("CP283c", this, 0, boxRetriever.cp283b().orZero),
       lossesBroughtForwardError(boxRetriever)
     )
@@ -41,7 +41,7 @@ case class CP283c(value: Option[Int])
   private def lossesBroughtForwardError(retriever: ComputationsBoxRetriever) = {
     failIf(this.orZero != Math.min(retriever.cp117().value, retriever.cp281c().orZero)) {
       Set(CtValidation(None, "error.lossesBroughtForwardError.error1"))
-    }
+    } ()
   }
 }
 

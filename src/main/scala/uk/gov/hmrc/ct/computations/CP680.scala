@@ -26,7 +26,7 @@ object CP680 extends Calculated[CP680, ComputationsBoxRetriever] with NetSuperDe
 
   override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CP680 = {
     if(superdeductions.isThereSuperDeductionOverLap(fieldValueRetriever.cp1(), fieldValueRetriever.cp2())) {
-      netSuperDeductionBalancingCharge(fieldValueRetriever.cp677(), fieldValueRetriever.cp678)
+      netSuperDeductionBalancingCharge(fieldValueRetriever.cp677(), fieldValueRetriever.cp678())
     } else CP680(None)
   }
 }

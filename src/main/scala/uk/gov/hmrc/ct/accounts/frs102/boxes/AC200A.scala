@@ -28,8 +28,8 @@ extends CtBoxIdentifier(name = "Company does have off balance sheet arrangements
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       failIf(value.isEmpty) {
-        validateAsMandatory()
-      }
+        validateAsMandatory()()
+      } ()
     )
   }
   }

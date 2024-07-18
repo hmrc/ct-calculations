@@ -26,7 +26,7 @@ case class LPQ07(value: Option[LocalDate]) extends CtBoxIdentifier(name = "When 
     failIf(boxRetriever.lpq04().orFalse) {
       validateDateAsMandatory("LPQ07", this) ++
       validateDateAsBetweenInclusive("LPQ07", this, LocalDate.now(), LocalDate.now().plusYears(2))
-    }
+    } ()
   }
 
 }

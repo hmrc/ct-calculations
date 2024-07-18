@@ -34,6 +34,6 @@ case class CPQ21(value: Option[Boolean]) extends CtBoxIdentifier(name = "Donatio
   private def validateHasCharitableDonations(box: CtOptionalBoolean, retriever: ComputationsBoxRetriever): Set[CtValidation] = {
     failIf(box.isTrue && !retriever.cp301().isPositive && !retriever.cp302().isPositive && !retriever.cp303().isPositive) {
       Set(CtValidation(None, "error.CPQ21.no.charitable.donations"))
-    }
+    } ()
   }
 }

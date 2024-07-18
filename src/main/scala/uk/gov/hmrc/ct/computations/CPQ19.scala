@@ -33,9 +33,9 @@ case class CPQ19(value: Option[Boolean]) extends CtBoxIdentifier(name = "Do you 
     val valuePopulated = () => value.nonEmpty
 
     collectErrors(
-      requiredErrorIf(And(hasTradingLoss(boxRetriever), hasNonTradingProfit(boxRetriever), valueEmpty)),
-      cannotExistErrorIf(And(hasNonTradingProfit(boxRetriever), noTradingLoss(boxRetriever), valuePopulated)) ,
-      cannotExistErrorIf(And(noNonTradingProfit(boxRetriever), valuePopulated))
+      requiredErrorIf(And(hasTradingLoss(boxRetriever), hasNonTradingProfit(boxRetriever), valueEmpty)())(),
+      cannotExistErrorIf(And(hasNonTradingProfit(boxRetriever), noTradingLoss(boxRetriever), valuePopulated)())(),
+      cannotExistErrorIf(And(noNonTradingProfit(boxRetriever), valuePopulated)())()
     )
 
   }

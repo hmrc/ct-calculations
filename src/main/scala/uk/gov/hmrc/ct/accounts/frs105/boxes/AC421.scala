@@ -28,7 +28,7 @@ case class AC421(value: Option[Int]) extends CtBoxIdentifier(name = "Depreciatio
 
   override def validate(boxRetriever: Frs105AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateMoney(value)
+      validateMoney(value)()
     )
   }
 }

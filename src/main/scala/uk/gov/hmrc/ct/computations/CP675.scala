@@ -22,7 +22,7 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 case class CP675(value: Option[Int]) extends CtBoxIdentifier(name = "Expenditure on which you want to claim the super-deduction allowance") with CtOptionalInteger with Input with SelfValidatableBox[ComputationsBoxRetriever, Option[Int]] {
   override def validate(boxRetriever: ComputationsBoxRetriever) = {
     collectErrors(
-      validateZeroOrPositiveInteger()
+      validateZeroOrPositiveInteger()()
     )
   }
 }

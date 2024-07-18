@@ -30,20 +30,20 @@ case class AC5058A(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
 
     collectErrors (
       failIf(!isMandatory)(
-        validateCannotExist(boxRetriever)
-      ),
+        validateCannotExist(boxRetriever)()
+      )(),
       failIf(isMandatory)(
-        validateNoteIsMandatory(boxRetriever)
-      ),
-      validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoStringReturnIllegalChars()
+        validateNoteIsMandatory(boxRetriever)()
+      )(),
+      validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit)(),
+      validateCoHoStringReturnIllegalChars()()
     )
   }
 
   private def validateCannotExist(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
     boxRetriever match {
-      case x: AbridgedAccountsBoxRetriever => failIf(hasValue)(Set(CtValidation(None, "error.balanceSheet.creditorsWithinOneYear.cannotExist")))
-      case x: FullAccountsBoxRetriever => failIf(fullNoteHasValue(x))(Set(CtValidation(None, "error.balanceSheet.creditorsWithinOneYear.cannotExist")))
+      case x: AbridgedAccountsBoxRetriever => failIf(hasValue)(Set(CtValidation(None, "error.balanceSheet.creditorsWithinOneYear.cannotExist")))()
+      case x: FullAccountsBoxRetriever => failIf(fullNoteHasValue(x))(Set(CtValidation(None, "error.balanceSheet.creditorsWithinOneYear.cannotExist")))()
       case _ => Set.empty
     }
   }
@@ -51,7 +51,7 @@ case class AC5058A(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
   private def validateNoteIsMandatory(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
     boxRetriever match {
       case x: FullAccountsBoxRetriever =>
-        failIf(!fullNoteHasValue(x))(Set(CtValidation(None, "error.creditors.within.one.year.note.one.box.required")))
+        failIf(!fullNoteHasValue(x))(Set(CtValidation(None, "error.creditors.within.one.year.note.one.box.required")))()
       case _ => Set.empty
     }
   }

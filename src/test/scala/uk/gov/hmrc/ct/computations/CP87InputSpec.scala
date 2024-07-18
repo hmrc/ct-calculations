@@ -36,7 +36,7 @@ class CP87InputSpec extends AnyWordSpec with MockitoSugar with Matchers with Box
     when(boxRetriever.cpAux1()).thenReturn(CPAux1(5555))
   }
 
-  override def beforeEach = setUpMocks
+  override def beforeEach = setUpMocks()
 
   testBoxIsZeroOrPositive("CP87Input", CP87Input.apply)
 

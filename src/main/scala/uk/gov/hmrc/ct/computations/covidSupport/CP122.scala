@@ -29,7 +29,7 @@ case class CP122(value: Option[Int]) extends CtBoxIdentifier(name = "CJRS (Coron
     if(covidSupport.doesPeriodCoverCovid(boxRetriever.cp1().value, boxRetriever.cp2().value)) {
       collectErrors(
         validateAsMandatory(this),
-        belowMin(this.value, entitlementAndOverpaymentTotal)
+        belowMin(this.value, entitlementAndOverpaymentTotal)()
       )
     } else Set.empty
   }

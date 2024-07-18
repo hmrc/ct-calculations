@@ -30,8 +30,8 @@ case class AC15(value: Option[Int]) extends CtBoxIdentifier(name = "Cost of sale
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateInputAllowed("AC15", boxRetriever.ac205()),
-      validateMoney(value, min = 0)
+      validateInputAllowed("AC15", boxRetriever.ac205())(),
+      validateMoney(value, min = 0)()
     )
   }
 }

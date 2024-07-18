@@ -42,13 +42,13 @@ with Validators {
 
     collectErrors (
       failIf(!isMandatory)(
-        validateCannotExist(boxRetriever)
-      ),
+        validateCannotExist(boxRetriever)()
+      )(),
       failIf(isMandatory)(
-        validateNotEmpty(boxRetriever)
-      ),
-      validateMoney(value, min = 0),
-      validateOptionalIntegerLessOrEqualBox(boxRetriever.ac52())
+        validateNotEmpty(boxRetriever)()
+      )(),
+      validateMoney(value, min = 0)(),
+      validateOptionalIntegerLessOrEqualBox(boxRetriever.ac52())()
     )
   }
 

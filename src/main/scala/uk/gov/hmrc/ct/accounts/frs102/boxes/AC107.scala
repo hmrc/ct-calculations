@@ -35,9 +35,9 @@ case class AC107(value: Option[Int]) extends CtBoxIdentifier(name = "Average num
 
     passIf(doesNotHavePreviousPoA) {
       collectErrors(
-        validateAsMandatory(),
-          validateIntegerRange(minNumberOfEmployees, maxNumberOfEmployees)
+        validateAsMandatory()(),
+          validateIntegerRange(minNumberOfEmployees, maxNumberOfEmployees)()
       )
-    }
+    }()
   }
 }

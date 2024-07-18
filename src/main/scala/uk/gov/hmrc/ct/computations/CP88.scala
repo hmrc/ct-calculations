@@ -21,10 +21,10 @@ import uk.gov.hmrc.ct.computations.Validators.ComputationValidatableBox
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP88(value: Option[Int]) extends CtBoxIdentifier(name = "Annual Investment Allowance") with CtOptionalInteger with Input with ComputationValidatableBox[ComputationsBoxRetriever] {
-  override def validate(boxRetriever: ComputationsBoxRetriever) = collectErrors(
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = collectErrors(
     validateZeroOrPositiveInteger(this),
-    cannotExistErrorIf(hasValue && boxRetriever.cpQ8().isTrue),
-    mandatoryIfCompanyIsTrading(boxRetriever, "CP88", value),
+    cannotExistErrorIf(hasValue && boxRetriever.cpQ8().isTrue)(),
+    mandatoryIfCompanyIsTrading(boxRetriever, "CP88", value)(),
     annualInvestmentAllowanceNotGreaterThanMaxAIA(boxRetriever)
   )
 

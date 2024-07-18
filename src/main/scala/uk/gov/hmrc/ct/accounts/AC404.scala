@@ -31,7 +31,7 @@ case class AC404(value: Option[Int]) extends CtBoxIdentifier(name = "Previous De
     collectErrors(
       failIf(ac402.value.isDefined && value.isEmpty) {
         Set(CtValidation(Some("AC404"), "error.AC404.required"))
-      },
+      }(),
       DeductionCannotBeGreaterThanProfit(boxRetriever.ac402(), this)
     )
   }

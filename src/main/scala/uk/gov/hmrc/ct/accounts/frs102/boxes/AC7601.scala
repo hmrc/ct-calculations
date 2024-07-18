@@ -27,7 +27,7 @@ with Validators {
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
-      cannotExistErrorIf(!boxRetriever.ac7600().orFalse && value.nonEmpty),
+      cannotExistErrorIf(!boxRetriever.ac7600().orFalse && value.nonEmpty)(),
 
       failIf (boxRetriever.ac7600().orFalse) (
         collectErrors (
@@ -35,7 +35,7 @@ with Validators {
           validateOptionalStringByLength("AC7601", this, 1, StandardCohoTextFieldLimit),
           validateCoHoStringReturnIllegalChars("AC7601", this)
         )
-      )
+      )()
     )
   }
 }

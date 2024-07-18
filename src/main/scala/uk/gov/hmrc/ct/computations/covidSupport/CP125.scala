@@ -26,7 +26,7 @@ case class CP125(value: Option[Int])extends CtBoxIdentifier(name = "Enter the am
 
     collectErrors(
       validateZeroOrPositiveInteger(this),
-      exceedsMax(value, amountReceivedFromEotho)
+      exceedsMax(value, amountReceivedFromEotho)()
     )
   }
 }

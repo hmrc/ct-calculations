@@ -31,11 +31,11 @@ package object formats {
   implicit val ac12Format: Format[AC12] = new OptionalIntegerFormat[AC12](AC12.apply)
   implicit val ac14Format: OptionalIntegerFormat[AC14] = new OptionalIntegerFormat[AC14](AC14.apply)
 
-  implicit val ac401Format = new OptionalIntegerFormat[AC401](AC401.apply)
-  implicit val ac402Format = new OptionalIntegerFormat[AC402](AC402.apply)
-  implicit val ac403Format = new OptionalIntegerFormat[AC403](AC403.apply)
-  implicit val ac404Format = new OptionalIntegerFormat[AC404](AC404.apply)
-  implicit val ac415Format = new OptionalIntegerFormat[AC415](AC415.apply)
+  implicit val ac401Format: OptionalIntegerFormat[AC401] = new OptionalIntegerFormat[AC401](AC401.apply)
+  implicit val ac402Format: OptionalIntegerFormat[AC402] = new OptionalIntegerFormat[AC402](AC402.apply)
+  implicit val ac403Format: OptionalIntegerFormat[AC403] = new OptionalIntegerFormat[AC403](AC403.apply)
+  implicit val ac404Format: OptionalIntegerFormat[AC404] = new OptionalIntegerFormat[AC404](AC404.apply)
+  implicit val ac415Format: OptionalIntegerFormat[AC415] = new OptionalIntegerFormat[AC415](AC415.apply)
 
   implicit val ac205Format: Format[AC205] = new OptionalDateFormat[AC205](AC205.apply)
   implicit val ac206Format: Format[AC206] = new OptionalDateFormat[AC206](AC206.apply)

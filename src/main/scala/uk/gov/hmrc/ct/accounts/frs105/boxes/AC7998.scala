@@ -32,9 +32,9 @@ case class AC7998(value: Option[Int]) extends CtBoxIdentifier(name = "Employee i
 
     passIf(startOfAccountingPeriod.isBefore(mandatoryNotesStartDate)) {
       collectErrors(
-        validateIntegerRange(minNumberOfEmployees, maxNumberOfEmployees),
-        validateIntegerAsMandatory()
+        validateIntegerRange(minNumberOfEmployees, maxNumberOfEmployees)(),
+        validateIntegerAsMandatory()()
       )
-    }
+    } ()
   }
 }

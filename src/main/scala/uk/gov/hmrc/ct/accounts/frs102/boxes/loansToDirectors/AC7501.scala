@@ -29,8 +29,8 @@ case class AC7501(value: Option[String]) extends CtBoxIdentifier(name = "Loans T
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      validateOptionalStringByLength(0, StandardCohoTextFieldLimit),
-      validateCoHoStringReturnIllegalChars()
+      validateOptionalStringByLength(0, StandardCohoTextFieldLimit)(),
+      validateCoHoStringReturnIllegalChars()()
     )
   }
 }

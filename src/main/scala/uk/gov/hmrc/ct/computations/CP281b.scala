@@ -31,8 +31,8 @@ case class CP281b(value: Option[Int])
 
   override def validate(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      requiredErrorIf(retriever.cpQ17().isTrue && lossReform2017Applies(retriever.cp2()) && !hasValue),
-      cannotExistErrorIf(hasValue && (retriever.cpQ17().isFalse || !lossReform2017Applies(retriever.cp2()))),
+      requiredErrorIf(retriever.cpQ17().isTrue && lossReform2017Applies(retriever.cp2()) && !hasValue)(),
+      cannotExistErrorIf(hasValue && (retriever.cpQ17().isFalse || !lossReform2017Applies(retriever.cp2())))(),
       validateZeroOrPositiveInteger(this),
       sumOfBreakdownErrors(retriever)/*,
       nirSumOfBreakdownErrors(retriever)*/
@@ -42,7 +42,7 @@ case class CP281b(value: Option[Int])
   private def sumOfBreakdownErrors(retriever: ComputationsBoxRetriever) = {
     failIf(retriever.cp283b() + retriever.cp288b() + retriever.chooseCp997() != this.orZero) {
       Set(CtValidation(None, "error.CP281b.breakdown.sum.incorrect"))
-    }
+    } ()
   }
 /*  private def nirSumOfBreakdownErrors(retriever: ComputationsBoxRetriever) = {
     failIf(retriever.cp281c() + retriever.cp281d() <= this.orZero) {

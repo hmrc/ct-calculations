@@ -33,16 +33,16 @@ case class CP281c(value: Option[Int])
       requiredErrorIf(retriever.cpQ117().isTrue &&
                       lossReform2017Applies(retriever.cp2()) &&
                       mayHaveNirLosses(retriever) &&
-                      !hasValue),
+                      !hasValue)(),
       cannotExistErrorIf(hasValue &&
                         (retriever.cpQ117().isFalse ||
                           !lossReform2017Applies(retriever.cp2()) ||
                           !mayHaveNirLosses(retriever))
-      ),
+      )(),
       sumOfLossesBroughtForwardError(retriever),
       passIf(lossesBroughtForwardTotalsCorrect(retriever)){
         Set(CtValidation(Some("CP281c"), "error." + "CP281b.breakdown.sum.incorrect"))
-      }
+      } ()
     )
 
   }
@@ -50,7 +50,7 @@ case class CP281c(value: Option[Int])
   private def sumOfLossesBroughtForwardError(retriever: ComputationsBoxRetriever) = {
     failIf(retriever.cpQ117().isTrue && this.orZero + retriever.cp281d().orZero != retriever.cp281b().orZero){
       Set(CtValidation(None,"error.lossesBroughtForward.incorrect"))
-    }
+    } ()
   }
 }
 

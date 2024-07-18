@@ -42,7 +42,7 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever {
 
   def b155(): B155
 
-  def b1(): B1 = B1(cp7)
+  def b1(): B1 = B1(cp7())
 
   def b3(): B3 = B3(cp256())
 
@@ -133,7 +133,7 @@ trait CT600BoxRetriever extends ComputationsBoxRetriever {
 
   def b172(): B172 = B172(cp88())
 
-  def b174(): B174 = B174(cp278)
+  def b174(): B174 = B174(cp278())
 
   def cato04(): CATO04 = CATO04.calculate(this)
 

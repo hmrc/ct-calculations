@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.box
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class CtValidation(boxId: Option[String], errorMessageKey: String, args:Option[Seq[String]] = None) {
   def isGlobalError = boxId.isEmpty
@@ -24,5 +24,5 @@ case class CtValidation(boxId: Option[String], errorMessageKey: String, args:Opt
 
 object CtValidation {
 
- lazy implicit val format = Json.format[CtValidation]
+ lazy implicit val format: OFormat[CtValidation] = Json.format[CtValidation]
 }

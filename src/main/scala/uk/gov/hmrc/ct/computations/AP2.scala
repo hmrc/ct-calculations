@@ -32,7 +32,7 @@ case class AP2(inputValue: Option[Int], defaultValue: Option[Int]) extends CtBox
 
     failIf(boxRetriever.ap1() + value.getOrElse(0) + boxRetriever.ap3() != (boxRetriever.ac12().orZero + boxRetriever.ac401().orZero)) {
       Set(CtValidation(None, "error.apportionmentTurnover.total"))
-    }
+    } ()
   }
 }
 

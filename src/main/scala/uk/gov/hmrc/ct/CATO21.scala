@@ -24,5 +24,5 @@ case class CATO21(value: BigDecimal) extends CtBoxIdentifier(name = "Apportioned
 
 object CATO21 extends Calculated[CATO21, ComputationsBoxRetriever]  {
 
-  override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CATO21 = CATO21(PoolPercentageCalculator().apportionedMainRate(fieldValueRetriever.cp1, fieldValueRetriever.cp2))
+  override def calculate(fieldValueRetriever: ComputationsBoxRetriever): CATO21 = CATO21(PoolPercentageCalculator().apportionedMainRate(fieldValueRetriever.cp1(), fieldValueRetriever.cp2()))
 }

@@ -23,6 +23,6 @@ case class AC39(value: Option[Int]) extends CtBoxIdentifier(name = "Previous Div
                                     with CtOptionalInteger with Input
                                     with SelfValidatableBox[AccountsBoxRetriever, Option[Int]] {
   override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
-    validateMoney(value, min = 0)
+    validateMoney(value, min = 0)()
   }
 }

@@ -29,17 +29,17 @@ case class CP672a(value: Option[Int]) extends CtBoxIdentifier(name = "Out Of Pro
       if (hasCompanyCeasedTrading) {
         val proceedsFromDisposals = boxRetriever.cp84().orZero
 
-        exceedsMax(value, proceedsFromDisposals, "CP84.exceeds.max")
+        exceedsMax(value, proceedsFromDisposals, "CP84.exceeds.max")()
       }
       else {
         val proceedsFromDisposalsFromMainPool = boxRetriever.cp672().orZero
 
-        exceedsMax(value, proceedsFromDisposalsFromMainPool, "CP672.exceeds.max")
+        exceedsMax(value, proceedsFromDisposalsFromMainPool, "CP672.exceeds.max")()
       }
     }
 
     collectErrors(
-      validateZeroOrPositiveInteger(),
+      validateZeroOrPositiveInteger()(),
       max
     )
 

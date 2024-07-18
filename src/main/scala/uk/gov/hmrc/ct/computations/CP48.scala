@@ -27,7 +27,7 @@ case class CP48(value: Option[Int]) extends CtBoxIdentifier(name = "Donations") 
       validateZeroOrPositiveInteger(this),
       failIf(cp29 != this.orZero) {
         Set(CtValidation(Some("CP48"), "error.CP48.must.equal.CP29", Some(Seq(cp29.toString))))
-      }
+      } ()
     )
   }
 

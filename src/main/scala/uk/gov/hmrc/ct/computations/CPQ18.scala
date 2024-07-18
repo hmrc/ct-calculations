@@ -36,27 +36,27 @@ case class CPQ18(value: Option[Boolean]) extends CtBoxIdentifier(name = "Claim a
   private def validateWhenEmpty(br: ComputationsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      requiredErrorIf(answeredNoToTradingLossesNotUsedFromPreviousPeriod(br)),
-      requiredErrorIf(answeredNoToCurrentTradingLossesAgainstNonTradingProfit(br)),
+      requiredErrorIf(answeredNoToTradingLossesNotUsedFromPreviousPeriod(br)())(),
+      requiredErrorIf(answeredNoToCurrentTradingLossesAgainstNonTradingProfit(br)()),
       requiredErrorIf(And(notAnsweredTradingLossesNotUsedFromPreviousPeriod(br),
                         notAnsweredCurrentTradingLossesAgainstNonTradingProfit(br),
-                        noTradingLoss(br), noTradingProfit(br), hasNonTradingProfit(br)))
+                        noTradingLoss(br), noTradingProfit(br), hasNonTradingProfit(br))())
     )
   }
 
   private def validateWhenPopulated(br: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       cannotExistErrorIf(And(answeredYesToTradingLossesNotUsedFromPreviousPeriod(br), noTradingLoss(br),
-                           noNonTradingProfit(br), netTradingProfitEqualsTradingProfit(br))),
+                           noNonTradingProfit(br), netTradingProfitEqualsTradingProfit(br))())(),
       cannotExistErrorIf(And(answeredYesToCurrentTradingLossesAgainstNonTradingProfit(br),
                            answeredYesToCurrentTradingLossesAgainstToPreviousPeriod(br), hasTradingLoss(br),
-                           hasNonTradingProfit(br))),
+                           hasNonTradingProfit(br))())(),
       cannotExistErrorIf(And(answeredYesToTradingLossesNotUsedFromPreviousPeriod(br), noTradingLoss(br),
-                           Or(noTradingProfit(br), netTradingProfitPlusNonTradingProfitEqualsZero(br)))),
+                           Or(noTradingProfit(br), netTradingProfitPlusNonTradingProfitEqualsZero(br)))())(),
       cannotExistErrorIf(And(answeredYesToCurrentTradingLossesAgainstNonTradingProfit(br), noTradingLoss(br),
-                           nonTradingProfitNotGreaterThanTradingLoss(br))),
+                           nonTradingProfitNotGreaterThanTradingLoss(br))())(),
       cannotExistErrorIf(And(notAnsweredCurrentTradingLossesAgainstNonTradingProfit(br),
-                           notAnsweredTradingLossesNotUsedFromPreviousPeriod(br), noNonTradingProfit(br)))
+                           notAnsweredTradingLossesNotUsedFromPreviousPeriod(br), noNonTradingProfit(br))())()
     )
   }
 }

@@ -22,6 +22,6 @@ import uk.gov.hmrc.ct.box._
 case class AC35(value: Option[Int]) extends CtBoxIdentifier(name = "Previous Tax on profit or loss") with CtOptionalInteger with Input
                                     with SelfValidatableBox[AccountsBoxRetriever, Option[Int]] {
   override def validate(boxRetriever: AccountsBoxRetriever): Set[CtValidation] = {
-    validateMoney(value)
+    validateMoney(value)()
   }
 }

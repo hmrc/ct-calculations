@@ -29,7 +29,7 @@ case class AC211(value: Option[Int]) extends CtBoxIdentifier(name = "Other adjus
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
 
     collectErrors(
-      validateMoney(value)
+      validateMoney(value)()
     )
   }
 }

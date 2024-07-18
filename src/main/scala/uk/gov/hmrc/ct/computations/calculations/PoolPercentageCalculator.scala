@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.computations.calculations
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
 
 import java.time.temporal.ChronoUnit
-import java.time.{LocalDate, Period}
+import java.time.LocalDate
 import scala.math.BigDecimal.RoundingMode
 
 

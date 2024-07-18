@@ -53,7 +53,7 @@ case class AC200(value: Option[String])
       boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
       validateAgainstAC200A(boxRetriever, this.boxId, value),
-      validateOptionalStringByLength(1, StandardCohoTextFieldLimit)
+      validateOptionalStringByLength(1, StandardCohoTextFieldLimit)()
     )
   }
 }

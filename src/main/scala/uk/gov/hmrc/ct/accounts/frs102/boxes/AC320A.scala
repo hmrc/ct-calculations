@@ -29,10 +29,10 @@ case class AC320A(value: Option[String]) extends CtBoxIdentifier(name = "Basis o
 
   override def validate(boxRetriever: Frs102AccountsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      cannotExistErrorIf(value.nonEmpty && boxRetriever.ac320().value.contains(true)),
-      requiredErrorIf(value.isEmpty && boxRetriever.ac320.value.contains(false)),
-      validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit),
-      validateCoHoStringReturnIllegalChars()
+      cannotExistErrorIf(value.nonEmpty && boxRetriever.ac320().value.contains(true))(),
+      requiredErrorIf(value.isEmpty && boxRetriever.ac320().value.contains(false))(),
+      validateStringMaxLength(value.getOrElse(""), StandardCohoTextFieldLimit)(),
+      validateCoHoStringReturnIllegalChars()()
     )
   }
 }

@@ -67,23 +67,23 @@ case class Building(
       validatePostcode(postcodeId, postcode),
       dateValidation(endOfAccountingPeriod),
       totalCostValidation(costId, cost),
-      validateAsMandatory(filingPeriodQuestionId, costsClaimedInThisPeriod),
+      validateAsMandatory(filingPeriodQuestionId, costsClaimedInThisPeriod)(),
       claimAmountValidation(claimId, startOfAccountingPeriod, endOfAccountingPeriod, buildingIndex),
       broughtForwardValidation(broughtForwardId, buildingIndex),
       carriedForwardValidation(carriedForwardId, buildingIndex),
-      validateOptionalStringByLength(claimNote, 1, StandardCohoTextFieldLimit, claimNoteId, Some(s"building$buildingIndex."))
+      validateOptionalStringByLength(claimNote, 1, StandardCohoTextFieldLimit, claimNoteId, Some(s"building$buildingIndex."))()
     )
   }
 
   private def mandatoryTextValidation(boxId: String, name: Option[String]) =
-    validateAsMandatory(boxId, name) ++ validateStringMaxLength(boxId, name.getOrElse(""), 100)
+    validateAsMandatory(boxId, name)() ++ validateStringMaxLength(boxId, name.getOrElse(""), 100)
 
   private def dateValidation(dateUpperBound: LocalDate): Set[CtValidation] =
     earliestWrittenContractValidation(dateUpperBound) ++ nonResidentialActivityValidation(dateUpperBound)
 
   private def earliestWrittenContractValidation(dateUpperBound: LocalDate): Set[CtValidation] =
     collectErrors(
-      validateAsMandatory(earliestWrittenContractId, earliestWrittenContract),
+      validateAsMandatory(earliestWrittenContractId, earliestWrittenContract)(),
       validateDateIsInclusive(earliestWrittenContractId, dateLowerBound, earliestWrittenContract, dateUpperBound)
     )
 

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.computations
 
-import java.time.{LocalDate, Period}
+import java.time.LocalDate
 import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.CP3020._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
@@ -27,28 +27,28 @@ case class CP3020(value: Option[Int]) extends CtBoxIdentifier(name = "Qualifying
   with CtOptionalInteger with Input with ValidatableBox[ComputationsBoxRetriever] {
   override def validate(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      requiredErrorIf(retriever.cpQ321().isTrue && !hasValue),
+      requiredErrorIf(retriever.cpQ321().isTrue && !hasValue)(),
       validateZeroOrPositiveInteger(this),
-      cannotExistErrorIf(hasValue && retriever.cpQ321().isFalse),
+      cannotExistErrorIf(hasValue && retriever.cpQ321().isFalse)(),
       apportionedLimitErrors(retriever)
     )
   }
 
-  private def apportionedLimitErrors(retriever: ComputationsBoxRetriever) = {
-    val limit = apportionedLimit(retriever.cp1.value, retriever.cp2.value)
+  private def apportionedLimitErrors(retriever: ComputationsBoxRetriever): Set[CtValidation] = {
+    val limit = apportionedLimit(retriever.cp1().value, retriever.cp2().value)
     failIf(orZero > limit) {
       Set(CtValidation(Some("CP3020"), "error.CP3020.apportionedLimit.exceeded", Some(Seq("£" + limit.toString))))
-    }
+    } ()
   }
 
-  private def apportionedLimit(apStart: LocalDate, apEnd: LocalDate) = {
+  private def apportionedLimit(apStart: LocalDate, apEnd: LocalDate): Long = {
     val daysAfter010417 = grassrootsStart.until(apEnd, ChronoUnit.DAYS) + 1
     val apDays = apStart.until(apEnd, ChronoUnit.DAYS) + 1
     val eligibleDays =  (daysAfter010417 min apDays) max 0
     (eligibleDays * maxQualifyingAmount) / daysInYear(apStart, apEnd)
   }
 
-  private def daysInYear(apStart: LocalDate, apEnd: LocalDate) = {
+  private def daysInYear(apStart: LocalDate, apEnd: LocalDate): Int = {
     val leapYearOption = (apStart.isLeapYear, apEnd.isLeapYear) match {
       case (true, _) => Some(apStart.getYear)
       case (_, true) => Some(apEnd.getYear)

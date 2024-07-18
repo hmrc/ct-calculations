@@ -24,10 +24,10 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 import scala.math.BigDecimal.RoundingMode
 
 case class CP668(value: Option[Int]) extends CtBoxIdentifier(name = "Writing down allowance claimed from special rate pool") with CtOptionalInteger with Input with ComputationValidatableBox[ComputationsBoxRetriever] with MachineryAndPlantCalculator {
-  override def validate(boxRetriever: ComputationsBoxRetriever) = {
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
     validateZeroOrPositiveInteger(this),
-    cannotExistErrorIf(hasValue && boxRetriever.cpQ8().isTrue) ++
+    cannotExistErrorIf(hasValue && boxRetriever.cpQ8().isTrue)() ++
     specialRatePoolAllowanceRequired(boxRetriever) ++
     specialRatePoolClaimedNotGreaterThanMaxSpecialPool(boxRetriever)
     )

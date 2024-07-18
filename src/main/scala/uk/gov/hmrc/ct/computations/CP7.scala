@@ -33,7 +33,7 @@ case class CP7(inputValue: Option[Int], defaultValue: Option[Int]) extends CtBox
 
   override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateHmrcTurnover(boxRetriever, compsStartDate, compsEndDate, errorSuffix = ""),
+      validateHmrcTurnover(boxRetriever, compsStartDate, compsEndDate, errorSuffix = "")(),
       validateAsMandatory(this),
       validateZeroOrPositiveInteger(this)
     )

@@ -31,7 +31,7 @@ case class CP283d(value: Option[Int])
       requiredErrorIf(
         boxRetriever.cp283b().isPositive &&
           mayHaveNirLosses(boxRetriever) &&
-          !hasValue),
+          !hasValue)(),
       validateIntegerRange("CP283d", this, 0, boxRetriever.cp283b().orZero)
     )
   }

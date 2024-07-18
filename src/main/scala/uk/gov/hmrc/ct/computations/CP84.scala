@@ -20,9 +20,9 @@ import uk.gov.hmrc.ct.box._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 case class CP84(value: Option[Int]) extends CtBoxIdentifier(name = "Disposal proceeds")  with CtOptionalInteger with Input with SelfValidatableBox[ComputationsBoxRetriever, Option[Int]] {
-  override def validate(boxRetriever: ComputationsBoxRetriever) = {
+  override def validate(boxRetriever: ComputationsBoxRetriever): Set[CtValidation] = {
     collectErrors(
-      validateZeroOrPositiveInteger()
+      validateZeroOrPositiveInteger()()
     )
   }
 }

@@ -33,7 +33,7 @@ case class AC36(value: Option[Int]) extends CtBoxIdentifier(name = "Profit or lo
         case br: FullAccountsBoxRetriever => validateFull(br)
         case _ => validateAbridged(boxRetriever)
       }
-    )
+    )()
   }
 
   private def validateFull(boxRetriever: FullAccountsBoxRetriever): Set[CtValidation] = {

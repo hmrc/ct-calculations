@@ -30,13 +30,13 @@ case class AC17(value: Option[Int]) extends CtBoxIdentifier(name = "Gross profit
 
   override def validate(boxRetriever: Frs10xAccountsBoxRetriever): Set[CtValidation] = {
     collectErrors (
-      validateInputAllowed("AC17", boxRetriever.ac205())
+      validateInputAllowed("AC17", boxRetriever.ac205())()
     )
   }
 }
 
 object AC17 extends Calculated[AC17, Frs10xAccountsBoxRetriever] with GrossProfitAndLossCalculator {
   override def calculate(boxRetriever: Frs10xAccountsBoxRetriever): AC17 = {
-    calculateAC17(boxRetriever.ac13(), boxRetriever.ac25, boxRetriever.ac402, boxRetriever.ac404, boxRetriever.ac15())
+    calculateAC17(boxRetriever.ac13(), boxRetriever.ac25(), boxRetriever.ac402(), boxRetriever.ac404(), boxRetriever.ac15())
   }
 }

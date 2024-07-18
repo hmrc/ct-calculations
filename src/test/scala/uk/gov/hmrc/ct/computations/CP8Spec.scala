@@ -19,15 +19,15 @@ package uk.gov.hmrc.ct.computations
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.formats._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
-import  uk.gov.hmrc.ct.utils.CatoInputBounds._
+import uk.gov.hmrc.ct.utils.CatoInputBounds._
 
 class CP8Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
-  implicit val format = Json.format[CP8Holder]
+  implicit val format: OFormat[CP8Holder] = Json.format[CP8Holder]
 
   "CP8 to json" should {
     "create valid json for int value" in {

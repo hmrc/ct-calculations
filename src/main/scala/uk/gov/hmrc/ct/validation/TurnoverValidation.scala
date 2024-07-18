@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ct.validation
 
-import java.time.{LocalDate, Period}
+import java.time.LocalDate
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.ValidatableBox.{commaForThousands, _}
 import uk.gov.hmrc.ct.box._
@@ -78,7 +78,7 @@ trait TurnoverValidation extends Validators {
     val maxHmrcTurnover = if (isCharity) 6500000.0 else 632000.0
     val maximumTurnoverInYear = Math.floor(maxHmrcTurnover * daysInPoa / daysInYear).toInt
     val minimumValue =minimumAmount.getOrElse(-maximumTurnoverInYear)
-    validateTurnoverRangeWithMinAndMaxMessages(this,  s"error.${this.id}$errorSuffix", minimumValue, maximumTurnoverInYear, secondaryIncome)
+    validateTurnoverRangeWithMinAndMaxMessages(this,  s"error.${this.id}$errorSuffix", minimumValue, maximumTurnoverInYear, secondaryIncome)()
   }
 
   protected def validateCoHoTurnover[BR <: AccountsBoxRetriever](
@@ -94,7 +94,7 @@ trait TurnoverValidation extends Validators {
     val maxTurnover = if (isFRS10x(boxRetriever)) 10200000.0 else 6500000.0
     val maximumTurnoverInYear = Math.floor(maxTurnover * daysInPoa / daysInYear).toInt
     val minimumValue = minimumAmount.getOrElse(-maximumTurnoverInYear)
-    validateTurnoverRangeWithMinAndMaxMessages(this, s"error.${this.id}$errorSuffix", minimumValue, maximumTurnoverInYear, secondaryIncome)
+    validateTurnoverRangeWithMinAndMaxMessages(this, s"error.${this.id}$errorSuffix", minimumValue, maximumTurnoverInYear, secondaryIncome)()
   }
 
   protected def validateTurnoverRangeWithMinAndMaxMessages(box: OptionalIntIdBox, message: String, min: Int, max: Int, secondaryIncome: Int)(): Set[CtValidation] = {
@@ -104,10 +104,10 @@ trait TurnoverValidation extends Validators {
           failIf(x + secondaryIncome < min) {
             // TODO: use proper localised currency values in the message args
             Set(CtValidation(Some(boxId), message+".below.min", Some(Seq(commaForThousands(min), commaForThousands(Math.abs(max))))))
-          },
+          } (),
           failIf(x + secondaryIncome > max) {
             Set(CtValidation(Some(boxId), message+".above.max", Some(Seq(commaForThousands(min), commaForThousands(max)))))
-          }
+          } ()
         )
       }
       case _ => Set()

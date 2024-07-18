@@ -30,7 +30,7 @@ case class AC403(value: Option[Int]) extends CtBoxIdentifier(name = "Current Ded
     collectErrors(
       failIf(ac401.value.isDefined && value.isEmpty){
         Set(CtValidation(Some("AC403"), "error.AC403.required"))
-      },
+      }(),
       DeductionCannotBeGreaterThanProfit(boxRetriever.ac401(), this)
     )
   }
