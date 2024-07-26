@@ -19,7 +19,7 @@ package uk.gov.hmrc.ct.computations.calculations
 import java.time.LocalDate
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4, AC401, AC403}
+import uk.gov.hmrc.ct.accounts.{AC12, AC3, AC4, AC401}
 import uk.gov.hmrc.ct.computations.{CP1, CP2}
 
 class ApportionedTurnoverCalculatorSpec extends AnyWordSpec with Matchers {

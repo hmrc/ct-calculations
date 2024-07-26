@@ -426,9 +426,9 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
 
   override def cpQ11(): CPQ11 = ???
 
-  override def sba01: SBA01 = ???
+  override def sba01(): SBA01 = ???
 
-  override def sba02: List[Option[Int]] = ???
+  override def sba02(): List[Option[Int]] = ???
 
   override def cp980(): CP980 = ???
 
@@ -438,27 +438,27 @@ class StubbedCT600BoxRetriever extends CT600BoxRetriever
 
   override def cp983(): CP983 = ???
 
-  override def cato24: CATO24 = ???
+  override def cato24(): CATO24 = ???
 
-  override def cp120: CP120 = ???
+  override def cp120(): CP120 = ???
 
-  override def cp121: CP121 = ???
+  override def cp121(): CP121 = ???
   
-  override def cp122: CP122 = ???
+  override def cp122(): CP122 = ???
 
-  override def cp123: CP123 = ???
+  override def cp123(): CP123 = ???
 
-  override def cp124: CP124 = ???
+  override def cp124(): CP124 = ???
 
-  override def cp125: CP125 = ???
+  override def cp125(): CP125 = ???
 
-  override def cp127: CP127 = ???
+  override def cp127(): CP127 = ???
 
-  override def cp128: CP128 = ???
+  override def cp128(): CP128 = ???
 
-  override def cp129: CP129 = ???
+  override def cp129(): CP129 = ???
 
-  override def acq8999a: ACQ8999 = ???
+  override def acq8999a(): ACQ8999 = ???
 
   override def ac5(): AC5 = ???
 

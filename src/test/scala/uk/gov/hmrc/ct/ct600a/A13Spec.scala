@@ -18,13 +18,13 @@ package uk.gov.hmrc.ct.ct600a
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.ct.ct600a.v2.formats._
 import uk.gov.hmrc.ct.ct600a.v2.A13
 
 class A13Spec extends AnyWordSpec with Matchers {
 
-  implicit val format = Json.format[A13Holder]
+  implicit val format: OFormat[A13Holder] = Json.format[A13Holder]
 
   "A13 to json" should {
     "create valid json for int value" in {

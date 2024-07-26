@@ -21,7 +21,7 @@ import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.ct.CATO13
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.Validators.DonationsValidationFixture
@@ -30,7 +30,7 @@ import uk.gov.hmrc.ct.computations.formats._
 
 class CPQ321Spec extends AnyWordSpec with Matchers with MockitoSugar with DonationsValidationFixture {
 
-  implicit val format = Json.format[CPQ321Holder]
+  implicit val format: OFormat[CPQ321Holder] = Json.format[CPQ321Holder]
 
   "CPQ321 to json" should {
     "create valid json for true value" in {
@@ -72,27 +72,27 @@ class CPQ321Spec extends AnyWordSpec with Matchers with MockitoSugar with Donati
       CPQ321(Some(false)).validate(retriever) shouldBe Set.empty[CtValidation]
     }
     "fail if true but all dependent boxes are 0" in {
-      when(retriever.cp3010).thenReturn(CP3010(0))
-      when(retriever.cp3020).thenReturn(CP3020(0))
-      when(retriever.cp3030).thenReturn(CP3030(0))
+      when(retriever.cp3010()).thenReturn(CP3010(0))
+      when(retriever.cp3020()).thenReturn(CP3020(0))
+      when(retriever.cp3030()).thenReturn(CP3030(0))
       CPQ321(Some(true)).validate(retriever) shouldBe Set(CtValidation(None, "error.CPQ321.no.grassroots.donations"))
     }
     "pass if true and cp3010 is positive" in {
-      when(retriever.cp3010).thenReturn(CP3010(1))
-      when(retriever.cp3020).thenReturn(CP3020(0))
-      when(retriever.cp3030).thenReturn(CP3030(0))
+      when(retriever.cp3010()).thenReturn(CP3010(1))
+      when(retriever.cp3020()).thenReturn(CP3020(0))
+      when(retriever.cp3030()).thenReturn(CP3030(0))
       CPQ321(Some(true)).validate(retriever) shouldBe empty
     }
     "pass if true and cp3020 is positive" in {
-      when(retriever.cp3010).thenReturn(CP3010(0))
-      when(retriever.cp3020).thenReturn(CP3020(1))
-      when(retriever.cp3030).thenReturn(CP3030(0))
+      when(retriever.cp3010()).thenReturn(CP3010(0))
+      when(retriever.cp3020()).thenReturn(CP3020(1))
+      when(retriever.cp3030()).thenReturn(CP3030(0))
       CPQ321(Some(true)).validate(retriever) shouldBe empty
     }
     "pass if true and cp3030 is positive" in {
-      when(retriever.cp3010).thenReturn(CP3010(0))
-      when(retriever.cp3020).thenReturn(CP3020(0))
-      when(retriever.cp3030).thenReturn(CP3030(1))
+      when(retriever.cp3010()).thenReturn(CP3010(0))
+      when(retriever.cp3020()).thenReturn(CP3020(0))
+      when(retriever.cp3030()).thenReturn(CP3030(1))
       CPQ321(Some(true)).validate(retriever) shouldBe empty
     }
   }
@@ -116,9 +116,9 @@ class CPQ321Spec extends AnyWordSpec with Matchers with MockitoSugar with Donati
   testGlobalDonationsValidationErrors(CPQ321(Some(true))) {
     val retriever = mock[ComputationsBoxRetriever]
     when(retriever.cp2()).thenReturn(CP2(LocalDate.parse("2017-04-01")))
-    when(retriever.cp3010).thenReturn(CP3010(1))
-    when(retriever.cp3020).thenReturn(CP3020(0))
-    when(retriever.cp3030).thenReturn(CP3030(0))
+    when(retriever.cp3010()).thenReturn(CP3010(1))
+    when(retriever.cp3020()).thenReturn(CP3020(0))
+    when(retriever.cp3030()).thenReturn(CP3030(0))
     retriever
   }
 }

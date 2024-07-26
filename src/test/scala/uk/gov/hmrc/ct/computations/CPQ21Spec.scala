@@ -17,20 +17,19 @@
 package uk.gov.hmrc.ct.computations
 
 import org.mockito.Mockito._
-import org.mockito.Matchers._
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.ct.CATO13
-import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
-import uk.gov.hmrc.ct.computations.Validators.{DonationsValidation, DonationsValidationFixture}
+import uk.gov.hmrc.ct.box.CtValidation
+import uk.gov.hmrc.ct.computations.Validators.DonationsValidationFixture
 import uk.gov.hmrc.ct.computations.formats._
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 class CPQ21Spec extends AnyWordSpec with Matchers with MockitoSugar with DonationsValidationFixture {
 
-  implicit val format = Json.format[CPQ21Holder]
+  implicit val format: OFormat[CPQ21Holder] = Json.format[CPQ21Holder]
 
   "CPQ21 to json" should {
     "create valid json for true value" in {

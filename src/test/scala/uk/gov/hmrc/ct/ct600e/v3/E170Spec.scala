@@ -20,7 +20,6 @@ import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.ct600e.v3.retriever.CT600EBoxRetriever
 
 class E170Spec extends AnyWordSpec with Matchers with MockitoSugar {

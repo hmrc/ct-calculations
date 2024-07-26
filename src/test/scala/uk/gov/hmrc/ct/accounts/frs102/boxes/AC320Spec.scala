@@ -43,8 +43,6 @@ class AC320Spec extends AnyWordSpec
   }
 
   "return value when AC320 is not empty" in {
-    val mockBoxRetriever = mock[Frs102AccountsBoxRetriever]
-
     AC320(Some(true)).value shouldBe Some(true)
   }
 }

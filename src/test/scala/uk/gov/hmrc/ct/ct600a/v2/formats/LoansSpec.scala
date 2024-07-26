@@ -18,12 +18,12 @@ package uk.gov.hmrc.ct.ct600a.v2.formats
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.Json
-import uk.gov.hmrc.ct.ct600a.v2.{Loan, LP02}
+import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.ct.ct600a.v2.{LP02, Loan}
 
 class LoansSpec extends AnyWordSpec with Matchers {
 
-  implicit val formatter = Json.format[LP02Holder]
+  implicit val formatter: OFormat[LP02Holder] = Json.format[LP02Holder]
 
   "LP02 to json" should {
     "create valid json for single item in list" in {
@@ -37,7 +37,6 @@ class LoansSpec extends AnyWordSpec with Matchers {
       json.toString shouldBe """{"lp02":{"loans":[{"id":"l-01","name":"Loan 1","amount":1999,"repaid":false},{"id":"l-01","name":"Loan 1","amount":2000,"repaid":false}]}}"""
     }
     "create valid json for empty list" in {
-      val loan = Loan(id = "l-01", name = "Loan 1", amount = 1999, repaid = false, lastRepaymentDate = None, totalAmountRepaid = None, endDateOfRepaymentAP = None)
       val json = Json.toJson(LP02Holder(LP02(Some(List.empty))))
       json.toString shouldBe """{"lp02":{"loans":[]}}"""
     }
@@ -59,7 +58,6 @@ class LoansSpec extends AnyWordSpec with Matchers {
       json.toString shouldBe """Some({"loans":[{"id":"l-01","name":"Loan 1","amount":1999,"repaid":false},{"id":"l-01","name":"Loan 1","amount":2000,"repaid":false}]})"""
     }
     "create valid json for empty list" in {
-      val loan = Loan(id = "l-01", name = "Loan 1", amount = 1999, repaid = false, lastRepaymentDate = None, totalAmountRepaid = None, endDateOfRepaymentAP = None)
       val json = LP02(Some(List.empty)).asBoxString
       json.toString shouldBe """Some({"loans":[]})"""
     }

@@ -72,18 +72,6 @@ class AC5064AFullSpec extends AnyWordSpec
     when(boxRetriever.ac5064A()).thenReturn(AC5064A(None))
   }
 
-  private def setupNonEmpty(): Unit = {
-    when(boxRetriever.ac156()).thenReturn(AC156(Some(1)))
-    when(boxRetriever.ac157()).thenReturn(AC157(Some(1)))
-    when(boxRetriever.ac158()).thenReturn(AC158(Some(1)))
-    when(boxRetriever.ac159()).thenReturn(AC159(Some(1)))
-    when(boxRetriever.ac160()).thenReturn(AC160(Some(1)))
-    when(boxRetriever.ac161()).thenReturn(AC161(Some(1)))
-    when(boxRetriever.ac162()).thenReturn(AC162(Some(1)))
-    when(boxRetriever.ac163()).thenReturn(AC163(Some(1)))
-    when(boxRetriever.ac5064A()).thenReturn(AC5064A(Some("test")))
-  }
-
   "AC5064A" should {
     "return cannot exist validation" when {
       "fail validation when AC156 populated and AC64 is empty" in {

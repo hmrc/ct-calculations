@@ -29,15 +29,15 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 class CP252Spec extends AnyWordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] with BeforeAndAfterEach {
 
-  val boxRetriever = mock[ComputationsBoxRetriever]
+  val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
 
-  override def setUpMocks = {
+  override def setUpMocks(): Unit = {
     when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
     when(boxRetriever.cp79()).thenReturn(CP79(Some(333)))
     when(boxRetriever.cp1()).thenReturn(CP1(LocalDate.parse("2019-04-01")))
   }
 
-  override def beforeEach = setUpMocks
+  override def beforeEach(): Unit = setUpMocks()
 
   testBoxIsZeroOrPositive("CP252", CP252.apply)
 

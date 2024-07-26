@@ -21,7 +21,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever, MockFrs102AccountsRetriever, MockFullAccountsRetriever}
+import uk.gov.hmrc.ct.accounts.{AccountsMoneyValidationFixture, MockAbridgedAccountsRetriever, MockFullAccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 

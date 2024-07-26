@@ -18,7 +18,6 @@ package uk.gov.hmrc.ct.ct600.v3.calculations
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import uk.gov.hmrc.ct.computations.CP291
 import uk.gov.hmrc.ct.ct600.v3._
 
 class B325CalculatorSpec extends AnyWordSpec with Matchers {

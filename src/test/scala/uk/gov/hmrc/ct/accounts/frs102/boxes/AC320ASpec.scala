@@ -23,7 +23,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.{AccountsFreeTextValidationFixture, MockFrs102AccountsRetriever}
 import uk.gov.hmrc.ct.accounts.frs102.retriever.Frs102AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.ValidatableBox._
-import uk.gov.hmrc.ct.box.{CtValidation, ValidatableBox}
+import uk.gov.hmrc.ct.box.CtValidation
 
 class AC320ASpec extends AnyWordSpec
   with MockitoSugar

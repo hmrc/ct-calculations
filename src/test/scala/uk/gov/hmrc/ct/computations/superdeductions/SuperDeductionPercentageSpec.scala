@@ -20,7 +20,7 @@ import java.time.LocalDate
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.{AC3, AC4, AC5, AC6}
-import uk.gov.hmrc.ct.computations.{HmrcAccountingPeriod, calculations}
+import uk.gov.hmrc.ct.computations.HmrcAccountingPeriod
 
 class SuperDeductionPercentageSpec extends AnyWordSpec with Matchers {
   val superDeductionPeriod = SuperDeductionPeriod(AC5(LocalDate.of(2021,4,1)), AC6(LocalDate.of(2023,3,31)))

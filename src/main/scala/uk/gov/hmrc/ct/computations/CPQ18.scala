@@ -37,10 +37,10 @@ case class CPQ18(value: Option[Boolean]) extends CtBoxIdentifier(name = "Claim a
 
     collectErrors(
       requiredErrorIf(answeredNoToTradingLossesNotUsedFromPreviousPeriod(br)())(),
-      requiredErrorIf(answeredNoToCurrentTradingLossesAgainstNonTradingProfit(br)()),
+      requiredErrorIf(answeredNoToCurrentTradingLossesAgainstNonTradingProfit(br)())(),
       requiredErrorIf(And(notAnsweredTradingLossesNotUsedFromPreviousPeriod(br),
                         notAnsweredCurrentTradingLossesAgainstNonTradingProfit(br),
-                        noTradingLoss(br), noTradingProfit(br), hasNonTradingProfit(br))())
+                        noTradingLoss(br), noTradingProfit(br), hasNonTradingProfit(br))())()
     )
   }
 

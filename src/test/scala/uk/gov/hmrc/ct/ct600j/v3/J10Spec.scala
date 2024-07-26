@@ -22,7 +22,6 @@ import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 
 
 class J10Spec extends AnyWordSpec with MockitoSugar with Matchers {

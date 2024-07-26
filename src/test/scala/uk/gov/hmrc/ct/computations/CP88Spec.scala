@@ -30,13 +30,13 @@ class CP88Spec extends AnyWordSpec with MockitoSugar with Matchers with BoxValid
 
   val boxRetriever = mock[ComputationsBoxRetriever]
 
-  override def setUpMocks = {
+  override def setUpMocks(): Unit = {
     when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
     when(boxRetriever.cp83()).thenReturn(CP83(5555))
     when(boxRetriever.cato02()).thenReturn(CATO02(5555))
   }
 
-  override def beforeEach = setUpMocks()
+  override def beforeEach(): Unit = setUpMocks()
 
   testBoxIsZeroOrPositive("CP88", CP88.apply)
 

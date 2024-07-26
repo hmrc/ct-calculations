@@ -17,38 +17,38 @@
 package uk.gov.hmrc.ct.accounts.frs102
 
 import org.mockito.Mockito._
+import org.mockito.stubbing.OngoingStubbing
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.ct.accounts.frs102.boxes._
 import uk.gov.hmrc.ct.accounts.frs102.retriever.FullAccountsBoxRetriever
 
 trait BoxesFixture extends MockitoSugar {
 
-  implicit val boxRetriever = mock[FullAccountsBoxRetriever]
+  implicit val boxRetriever: FullAccountsBoxRetriever = mock[FullAccountsBoxRetriever]
 
-  def ac42withValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.ac42()).thenReturn(AC42(Some(99)))
-  def ac42noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.ac42()).thenReturn(AC42(None))
-  def ac43noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.ac43()).thenReturn(AC43(None))
-  def ac43withValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.ac43()).thenReturn(AC43(Some(99)))
-  def acq5021noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5021()).thenReturn(ACQ5021(None))
-  def acq5021false(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5021()).thenReturn(ACQ5021(Some(false)))
-  def acq5021withValue(implicit boxRetriever: FullAccountsBoxRetriever) = acq5021false
-  def acq5022noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5022()).thenReturn(ACQ5022(None))
-  def acq5022false(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5022()).thenReturn(ACQ5022(Some(false)))
-  def acq5022withValue(implicit boxRetriever: FullAccountsBoxRetriever) = acq5022false
-  def ac44withValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.ac44()).thenReturn(AC44(Some(99)))
-  def ac44noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.ac44()).thenReturn(AC44(None))
-  def ac45noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.ac45()).thenReturn(AC45(None))
-  def ac45withValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.ac45()).thenReturn(AC45(Some(99)))
-  def acq5031noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5031()).thenReturn(ACQ5031(None))
-  def acq5031withValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5031()).thenReturn(ACQ5031(Some(false)))
-  def acq5032noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5032()).thenReturn(ACQ5032(None))
-  def acq5032withValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5032()).thenReturn(ACQ5032(Some(false)))
-  def acq5033noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5033()).thenReturn(ACQ5033(None))
-  def acq5033withValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5033()).thenReturn(ACQ5033(Some(false)))
-  def acq5034noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5034()).thenReturn(ACQ5034(None))
-  def acq5034withValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5034()).thenReturn(ACQ5034(Some(false)))
-  def acq5035noValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5035()).thenReturn(ACQ5035(None))
-  def acq5035withValue(implicit boxRetriever: FullAccountsBoxRetriever) = when(boxRetriever.acq5035()).thenReturn(ACQ5035(Some(false)))
-
+  def ac42withValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[AC42] = when(boxRetriever.ac42()).thenReturn(AC42(Some(99)))
+  def ac42noValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[AC42] = when(boxRetriever.ac42()).thenReturn(AC42(None))
+  def ac43noValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[AC43] = when(boxRetriever.ac43()).thenReturn(AC43(None))
+  def ac43withValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[AC43] = when(boxRetriever.ac43()).thenReturn(AC43(Some(99)))
+  def acq5021noValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5021] = when(boxRetriever.acq5021()).thenReturn(ACQ5021(None))
+  def acq5021false(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5021] = when(boxRetriever.acq5021()).thenReturn(ACQ5021(Some(false)))
+  def acq5021withValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5021] = acq5021false
+  def acq5022noValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5022] = when(boxRetriever.acq5022()).thenReturn(ACQ5022(None))
+  def acq5022false(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5022] = when(boxRetriever.acq5022()).thenReturn(ACQ5022(Some(false)))
+  def acq5022withValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5022] = acq5022false
+  def ac44withValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[AC44] = when(boxRetriever.ac44()).thenReturn(AC44(Some(99)))
+  def ac44noValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[AC44] = when(boxRetriever.ac44()).thenReturn(AC44(None))
+  def ac45noValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[AC45] = when(boxRetriever.ac45()).thenReturn(AC45(None))
+  def ac45withValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[AC45] = when(boxRetriever.ac45()).thenReturn(AC45(Some(99)))
+  def acq5031noValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5031] = when(boxRetriever.acq5031()).thenReturn(ACQ5031(None))
+  def acq5031withValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5031] = when(boxRetriever.acq5031()).thenReturn(ACQ5031(Some(false)))
+  def acq5032noValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5032] = when(boxRetriever.acq5032()).thenReturn(ACQ5032(None))
+  def acq5032withValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5032] = when(boxRetriever.acq5032()).thenReturn(ACQ5032(Some(false)))
+  def acq5033noValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5033] = when(boxRetriever.acq5033()).thenReturn(ACQ5033(None))
+  def acq5033withValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5033] = when(boxRetriever.acq5033()).thenReturn(ACQ5033(Some(false)))
+  def acq5034noValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5034] = when(boxRetriever.acq5034()).thenReturn(ACQ5034(None))
+  def acq5034withValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5034] = when(boxRetriever.acq5034()).thenReturn(ACQ5034(Some(false)))
+  def acq5035noValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5035] = when(boxRetriever.acq5035()).thenReturn(ACQ5035(None))
+  def acq5035withValue(implicit boxRetriever: FullAccountsBoxRetriever): OngoingStubbing[ACQ5035] = when(boxRetriever.acq5035()).thenReturn(ACQ5035(Some(false)))
 
 }

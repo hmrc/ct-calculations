@@ -149,7 +149,7 @@ class SBACalculatorSpec extends AnyWordSpec with Matchers {
       getDaysIntheYear(LocalDate.parse("2100-01-01")) shouldBe 365
     }
 
-    " apportion and calculate the right amount of sba claimable for a building"
+    " apportion and calculate the right amount of sba claimable for a building" should {
       "calculate using the 2% rate if the the end date is before 2020-04-01" in new SBACalculator {
 
       val apStartDate: LocalDate = LocalDate.parse("2019-03-31")
@@ -160,6 +160,7 @@ class SBACalculatorSpec extends AnyWordSpec with Matchers {
       val result = getSbaDetails(apStartDate, apEndDate, Some(firstUsageDate), Option(cost))
 
       result.get.totalCost shouldBe Some(201)
+      }
     }
 
     "calculate just using the 3% rate if the start date is after 2020-04-01" in new SBACalculator {

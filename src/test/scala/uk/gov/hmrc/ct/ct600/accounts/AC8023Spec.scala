@@ -21,7 +21,6 @@ import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.accounts.frs10x.boxes.AC8023
-import uk.gov.hmrc.ct.accounts.frs10x.boxes._
 import uk.gov.hmrc.ct.accounts.frs10x.retriever.Frs10xDirectorsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever

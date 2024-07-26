@@ -29,8 +29,8 @@ import uk.gov.hmrc.ct.box.CtValidation
 class AC5052CSpec extends AnyWordSpec with MockitoSugar with Matchers with MockFrs102AccountsRetriever with AccountsMoneyValidationFixture[Frs102AccountsBoxRetriever] with BeforeAndAfter {
 
   before {
-    when(boxRetriever.ac52).thenReturn(AC52(Some(STANDARD_MAX + 1)))
-    when(boxRetriever.ac53).thenReturn(AC53(Some(STANDARD_MAX + 1)))
+    when(boxRetriever.ac52()).thenReturn(AC52(Some(STANDARD_MAX + 1)))
+    when(boxRetriever.ac53()).thenReturn(AC53(Some(STANDARD_MAX + 1)))
   }
 
   testAccountsMoneyValidationWithMin("AC5052C", minValue = 0, AC5052C)

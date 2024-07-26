@@ -45,8 +45,6 @@ class AC8091Spec extends AnyWordSpec
     }
 
     "return value when AC8091 is true" in {
-      val mockBoxRetriever = mock[AbridgedAccountsBoxRetriever]
-
       AC8091(Some(true)).value shouldBe Some(true)
     }
   }

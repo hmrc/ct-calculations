@@ -422,7 +422,7 @@ class ValidatableBoxSpec  extends AnyWordSpec with MockitoSugar  with Matchers w
 
       val result = failIf (true) {
         Set(CtValidation(None, "", None))
-      }
+      } ()
 
       result shouldBe Set(CtValidation(None, "", None))
     }
@@ -431,7 +431,7 @@ class ValidatableBoxSpec  extends AnyWordSpec with MockitoSugar  with Matchers w
 
       val result = failIf (false) {
         Set(CtValidation(None, "", None))
-      }
+      } ()
 
       result shouldBe empty
     }
@@ -441,7 +441,7 @@ class ValidatableBoxSpec  extends AnyWordSpec with MockitoSugar  with Matchers w
 
         val result = passIf(true) {
           Set(CtValidation(None, "", None))
-        }
+        } ()
 
         result shouldBe empty
       }
@@ -450,7 +450,7 @@ class ValidatableBoxSpec  extends AnyWordSpec with MockitoSugar  with Matchers w
 
         val result = passIf(false) {
           Set(CtValidation(None, "", None))
-        }
+        } ()
 
         result shouldBe Set(CtValidation(None, "", None))
       }

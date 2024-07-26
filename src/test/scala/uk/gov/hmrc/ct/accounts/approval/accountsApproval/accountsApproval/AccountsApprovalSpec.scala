@@ -217,7 +217,7 @@ class AccountsApprovalSpec extends AnyWordSpec with Matchers with MockitoSugar {
     when(boxRetriever.ac4()).thenReturn(AC4(Date.get.minusDays(1)))
     val enabled = {
       b: Boolean =>
-        when(boxRetriever.coHoAccountsApprovalRequired).thenReturn(CoHoAccountsApprovalRequired(b))
+        when(boxRetriever.coHoAccountsApprovalRequired()).thenReturn(CoHoAccountsApprovalRequired(b))
     }
 
     approvalRequiredFalse(emptyApproval, CompaniesHouseAccountsApproval.apply, enabled, "CompaniesHouseAccountsApproval")

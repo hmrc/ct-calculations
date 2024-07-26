@@ -21,7 +21,6 @@ import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.BoxValidationFixture
-import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.Validators.LossesPreviousToCurrentFixture
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 

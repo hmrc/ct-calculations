@@ -24,7 +24,7 @@ import org.scalatest.prop.TableFor6
 import org.scalatest.prop.Tables.Table
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
@@ -34,7 +34,7 @@ import uk.gov.hmrc.ct.{AbridgedFiling, CATO24, CompaniesHouseFiling, FilingCompa
 
 class CP7Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
-  implicit val format = {
+  implicit val format: OFormat[CP7Holder] = {
     import uk.gov.hmrc.ct.computations.formats._
     Json.format[CP7Holder]
   }

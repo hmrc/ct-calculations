@@ -53,59 +53,59 @@ class MyStubbedComputationsRetriever(lec01: List[Car] = List(),
                                      cpAux3: Int = 0
                                       ) extends StubbedComputationsBoxRetriever {
 
-  override def lec01: LEC01 = lowEmissionCars.LEC01(lec01)
+  override def lec01(): LEC01 = lowEmissionCars.LEC01(lec01)
 
-  override def cpQ8: CPQ8 = CPQ8(cpq8)
+  override def cpQ8(): CPQ8 = CPQ8(cpq8)
 
-  override def cp1: CP1 = CP1(cp1)
+  override def cp1(): CP1 = CP1(cp1)
 
-  override def cp78: CP78 = CP78(cp78)
+  override def cp78(): CP78 = CP78(cp78)
 
-  override def cp79: CP79 = CP79(cp79)
+  override def cp79(): CP79 = CP79(cp79)
 
-  override def cp80: CP80 = CP80(cp80)
+  override def cp80(): CP80 = CP80(cp80)
 
-  override def cp666: CP666 = CP666(cp666)
+  override def cp666(): CP666 = CP666(cp666)
 
-  override def cp82: CP82 = CP82(cp82)
+  override def cp82(): CP82 = CP82(cp82)
 
-  override def cp83: CP83 = CP83(cp83)
+  override def cp83(): CP83 = CP83(cp83)
 
-  override def cp84: CP84 = CP84(cp84)
+  override def cp84(): CP84 = CP84(cp84)
 
-  override def cp667: CP667 = CP667(cp667)
+  override def cp667(): CP667 = CP667(cp667)
 
-  override def cp672: CP672 = CP672(cp672)
+  override def cp672(): CP672 = CP672(cp672)
 
-  override def cp672a: CP672a = CP672a(cp672a)
+  override def cp672a(): CP672a = CP672a(cp672a)
 
-  override def cp673: CP673 = CP673(cp673)
+  override def cp673(): CP673 = CP673(cp673)
 
-  override def cp674: CP674 = CP674(cp674)
+  override def cp674(): CP674 = CP674(cp674)
 
-  override def cp87Input: CP87Input = CP87Input(cp87Input)
+  override def cp87Input(): CP87Input = CP87Input(cp87Input)
 
-  override def cp87a: CP87a = CP87a(cp87a)
+  override def cp87a(): CP87a = CP87a(cp87a)
 
-  override def cp88: CP88 = CP88(cp88)
+  override def cp88(): CP88 = CP88(cp88)
 
-  override def cp89: CP89 = CP89(cp89)
+  override def cp89(): CP89 = CP89(cp89)
 
-  override def cp668: CP668 = CP668(cp668)
+  override def cp668(): CP668 = CP668(cp668)
 
-  override def cato02: CATO02 = CATO02(cato02)
+  override def cato02(): CATO02 = CATO02(cato02)
 
-  override def cato20: CATO20 = CATO20(cato20)
+  override def cato20(): CATO20 = CATO20(cato20)
 
-  override def cato21: CATO21 = CATO21(cato21)
+  override def cato21(): CATO21 = CATO21(cato21)
 
-  override def cato22: CATO22 = CATO22(cato22)
+  override def cato22(): CATO22 = CATO22(cato22)
 
-  override def cpAux1: CPAux1 = CPAux1(cpAux1)
+  override def cpAux1(): CPAux1 = CPAux1(cpAux1)
 
-  override def cpAux2: CPAux2 = CPAux2(cpAux2)
+  override def cpAux2(): CPAux2 = CPAux2(cpAux2)
 
-  override def cpAux3: CPAux3 = CPAux3(cpAux3)
+  override def cpAux3(): CPAux3 = CPAux3(cpAux3)
 
   override def countryOfRegistration(): CountryOfRegistration = CountryOfRegistration.Scotland
 }

@@ -28,9 +28,9 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 class CP87aSpec extends AnyWordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] with BeforeAndAfterEach {
 
-  val boxRetriever = mock[ComputationsBoxRetriever]
+  val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
 
-  override def setUpMocks = {
+  override def setUpMocks(): Unit = {
     when(boxRetriever.cp87Input()).thenReturn(CP87Input(Some(50)))
   }
 

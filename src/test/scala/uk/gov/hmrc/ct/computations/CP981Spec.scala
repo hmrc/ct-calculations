@@ -26,7 +26,7 @@ class CP981Spec extends AnyWordSpec with Matchers with MockitoSugar {
   "CP981 validation" should {
     "show correct error if under zero" in {
       val boxRetriever = new StubbedComputationsBoxRetriever {
-        override def cp983 = CP983(Some(1))
+        override def cp983(): CP983 = CP983(Some(1))
       }
 
       val result = CP981(Some(-1)).validate(boxRetriever)
@@ -36,7 +36,7 @@ class CP981Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
     "CP981 can't be greater than CP983" in {
       val boxRetriever = new StubbedComputationsBoxRetriever {
-        override def cp983 = CP983(Some(10))
+        override def cp983(): CP983 = CP983(Some(10))
       }
 
       val result = CP981(Some(11)).validate(boxRetriever)
@@ -46,7 +46,7 @@ class CP981Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
     "doesn't show error if zero" in {
       val boxRetriever = new StubbedComputationsBoxRetriever {
-        override def cp983 = CP983(Some(1))
+        override def cp983(): CP983 = CP983(Some(1))
       }
 
       val result = CP981(Some(0)).validate(boxRetriever)
@@ -56,7 +56,7 @@ class CP981Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
     "doesn't show error if None" in {
       val boxRetriever = new StubbedComputationsBoxRetriever {
-        override def cp983 = CP983(Some(1))
+        override def cp983(): CP983 = CP983(Some(1))
       }
 
       val result = CP981(None).validate(boxRetriever)

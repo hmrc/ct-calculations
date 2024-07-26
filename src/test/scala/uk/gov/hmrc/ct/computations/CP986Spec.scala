@@ -28,11 +28,11 @@ class CP986Spec extends AnyWordSpec with Matchers with MockitoSugar {
     "calculate cp986 as 0 if they have made a loss this year." in {
 
       val boxRetriever = new StubbedComputationsBoxRetriever {
-        override def cp980 = CP980(Some(53000))
+        override def cp980(): CP980 = CP980(Some(53000))
 
-        override def cp981 = CP981(Some(30000))
+        override def cp981(): CP981 = CP981(Some(30000))
 
-        override def cp982 = CP982(Some(7000))
+        override def cp982(): CP982 = CP982(Some(7000))
 
       }
 

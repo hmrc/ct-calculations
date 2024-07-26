@@ -21,7 +21,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import uk.gov.hmrc.ct.BoxValidationFixture
 import uk.gov.hmrc.ct.accounts.retriever.AccountsBoxRetriever
-import uk.gov.hmrc.ct.accounts.{AC12, AC401, AC403}
+import uk.gov.hmrc.ct.accounts.{AC12, AC401}
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever

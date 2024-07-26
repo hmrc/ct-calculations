@@ -32,7 +32,7 @@ class AC8081Spec extends AccountStatementValidationFixture[Frs10xAccountsBoxRetr
 
   override val boxRetriever = mock[MockRetriever] (RETURNS_SMART_NULLS)
 
-  override def setupMocks = {
+  override def setupMocks() = {
     when(boxRetriever.acq8999()).thenReturn(ACQ8999(None))
   }
 

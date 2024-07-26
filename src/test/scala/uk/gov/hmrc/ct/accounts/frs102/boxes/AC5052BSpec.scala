@@ -32,7 +32,7 @@ class AC5052BSpec extends AnyWordSpec with MockitoSugar with Matchers with Befor
   testTextFieldIllegalCharacterValidationReturnsIllegalCharacters("AC5052B", AC5052B)
 
   before {
-    when(boxRetriever.ac52).thenReturn(AC52(Some(33)))
+    when(boxRetriever.ac52()).thenReturn(AC52(Some(33)))
   }
 
 }

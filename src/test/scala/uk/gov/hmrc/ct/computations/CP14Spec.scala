@@ -18,12 +18,12 @@ package uk.gov.hmrc.ct.computations
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.ct.computations.formats._
 
 class CP14Spec extends AnyWordSpec with Matchers {
 
-  implicit val format = Json.format[CP14Holder]
+  implicit val format: OFormat[CP14Holder] = Json.format[CP14Holder]
 
   "CP14 to json" should {
     "create valid json for int value" in {

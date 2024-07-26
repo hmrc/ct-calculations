@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.computations
 
 import java.time.LocalDate
 import org.mockito.Mockito._
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.ct.computations.formats._
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
@@ -26,7 +26,7 @@ import uk.gov.hmrc.ct.utils.UnitSpec
 
 class CPQ8Spec extends UnitSpec {
 
-  implicit val format = Json.format[CPQ8Holder]
+  implicit val format: OFormat[CPQ8Holder] = Json.format[CPQ8Holder]
 
   private val boxId = "CPQ8"
 

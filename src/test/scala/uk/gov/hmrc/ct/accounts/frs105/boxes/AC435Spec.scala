@@ -40,20 +40,20 @@ class AC435Spec extends AccountsMoneyValidationFixture[Frs105AccountsBoxRetrieve
     val testAc401 = 890
     val testAc403 = 901
     val boxRetriever = new StubbedFrs105AccountsBoxRetriever {
-      override def ac12 = AC12(testAc12)
+      override def ac12(): AC12 = AC12(testAc12)
       override def ac14(): AC14 = AC14(Some(testAc14))
       override def ac15(): AC15 = AC15(Some(testAc15))
       override def ac16(): AC16 = AC16(Some(testAc16))
       override def ac17(): AC17 = AC17(Some(testAc17))
-      override def ac24 = AC24(Some(testAc24))
-      override def ac405 = AC405(Some(testAc405))
-      override def ac410 = AC410(Some(testAc410))
-      override def ac415 = AC415(Some(testAc415))
-      override def ac420 = AC420(Some(testAc420))
-      override def ac425 = AC425(Some(testAc425))
-      override def ac34 = AC34(Some(testAc34))
-      override def ac401 = AC401(testAc401)
-      override def ac403 = AC403(Some(testAc403))
+      override def ac24(): AC24 = AC24(Some(testAc24))
+      override def ac405(): AC405 = AC405(Some(testAc405))
+      override def ac410(): AC410 = AC410(Some(testAc410))
+      override def ac415(): AC415 = AC415(Some(testAc415))
+      override def ac420(): AC420 = AC420(Some(testAc420))
+      override def ac425(): AC425 = AC425(Some(testAc425))
+      override def ac34(): AC34 = AC34(Some(testAc34))
+      override def ac401(): AC401 = AC401(testAc401)
+      override def ac403(): AC403 = AC403(Some(testAc403))
     }
 
     val ac435 = AC435.calculate(boxRetriever)

@@ -76,7 +76,7 @@ class ProfitAndLossCalculatorSpec extends AnyWordSpec with Matchers {
                                                             cp43: CP43 = CP43(Some(0)),
                                                             cp501: CP501 = CP501(0),
                                                             cp502: CP502 = CP502(Some(0)),
-                                                            cp130: CP130 = CP130(0)) = calculateGrossProfitOrLossBeforeTax(cp14, cp40, cp43, cp501, cp502, cp130)
+                                                            cp130: CP130 = CP130(0)): CP44 = calculateGrossProfitOrLossBeforeTax(cp14, cp40, cp43, cp501, cp502, cp130)
 
 
       calculateGrossProfitOrLossBeforeTaxWithBaseParams(cp130 = CP130(20)) shouldBe CP44(20)

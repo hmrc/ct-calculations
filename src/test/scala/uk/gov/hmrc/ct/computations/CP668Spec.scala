@@ -26,9 +26,9 @@ import uk.gov.hmrc.ct.{BoxValidationFixture, CATO22}
 
 class CP668Spec extends AnyWordSpec with Matchers with MockitoSugar with BoxValidationFixture[ComputationsBoxRetriever] {
 
-  val boxRetriever = mock[ComputationsBoxRetriever]
+  val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
 
-  override def setUpMocks = {
+  override def setUpMocks(): Unit = {
     when(boxRetriever.cato22()).thenReturn(CATO22(0))
     when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
     when(boxRetriever.cpAux3()).thenReturn(CPAux3(50))

@@ -30,9 +30,9 @@ import uk.gov.hmrc.ct.{CompaniesHouseFiling, HMRCFiling, MicroEntityFiling, Stat
 
 class DirectorsSpec extends AnyWordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
 
-  val mockBoxRetriever = mock[MockableFrs10xBoxretrieverWithFilingAttributes]
+  val mockBoxRetriever: MockableFrs10xBoxretrieverWithFilingAttributes = mock[MockableFrs10xBoxretrieverWithFilingAttributes]
 
-  override def beforeEach = {
+  override def beforeEach(): Unit = {
     DirectorsMockSetup.setupDefaults(mockBoxRetriever)
   }
 

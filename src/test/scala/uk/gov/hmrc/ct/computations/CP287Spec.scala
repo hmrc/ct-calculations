@@ -18,10 +18,8 @@ package uk.gov.hmrc.ct.computations
 
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatest.prop.Tables.Table
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import uk.gov.hmrc.ct.CATO01
 import uk.gov.hmrc.ct.box.CtValidation
 import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 

@@ -18,7 +18,7 @@ package uk.gov.hmrc.ct.computations.calculations
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import uk.gov.hmrc.ct.computations.{CP79, CP80, CP81, CPAux1}
+import uk.gov.hmrc.ct.computations.{CP79, CP81, CPAux1}
 
 class TotalExpenditureQualifyingForTheFirstYearAllowanceCalculatorSpec extends AnyWordSpec with Matchers {
 

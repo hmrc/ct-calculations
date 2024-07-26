@@ -20,12 +20,8 @@ import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import uk.gov.hmrc.ct.accounts.frsse2008.retriever.Frsse2008AccountsBoxRetriever
 import uk.gov.hmrc.ct.box.CtValidation
-import uk.gov.hmrc.ct.box.retriever.FilingAttributesBoxValueRetriever
-import uk.gov.hmrc.ct.ct600.v3.retriever.CT600BoxRetriever
 import java.time.LocalDate
-import uk.gov.hmrc.ct.ct600j.v3.retriever.CT600JBoxRetriever
 
 
 class J5ASpec extends AnyWordSpec with MockitoSugar with Matchers {

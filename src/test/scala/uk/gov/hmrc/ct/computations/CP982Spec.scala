@@ -28,11 +28,11 @@ class CP982Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
     "show correct error" in {
       val boxRetriever = new StubbedComputationsBoxRetriever {
-        override def cp983 = CP983(1000)
+        override def cp983(): CP983 = CP983(1000)
 
-        override def cp981 = CP981(500)
+        override def cp981(): CP981 = CP981(500)
 
-        override def cp980 = CP980(500)
+        override def cp980(): CP980 = CP980(500)
       }
 
       val result = CP982(Some(500)).validate(boxRetriever)
@@ -42,11 +42,11 @@ class CP982Spec extends AnyWordSpec with Matchers with MockitoSugar {
 
     " not show error if value is entered correctly" in {
       val boxRetriever = new StubbedComputationsBoxRetriever {
-        override def cp983 = CP983(1000)
+        override def cp983(): CP983 = CP983(1000)
 
-        override def cp981 = CP981(250)
+        override def cp981(): CP981 = CP981(250)
 
-        override def cp980 = CP980(250)
+        override def cp980(): CP980 = CP980(250)
       }
 
 

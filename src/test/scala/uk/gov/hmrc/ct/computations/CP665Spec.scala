@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.ct.computations
 
-import org.mockito.Mockito.when
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar

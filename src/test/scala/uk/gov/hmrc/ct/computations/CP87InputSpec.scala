@@ -28,15 +28,15 @@ import uk.gov.hmrc.ct.computations.retriever.ComputationsBoxRetriever
 
 class CP87InputSpec extends AnyWordSpec with MockitoSugar with Matchers with BoxValidationFixture[ComputationsBoxRetriever] with BeforeAndAfterEach {
 
-  val boxRetriever = mock[ComputationsBoxRetriever]
+  val boxRetriever: ComputationsBoxRetriever = mock[ComputationsBoxRetriever]
 
-  override def setUpMocks = {
+  override def setUpMocks(): Unit = {
     when(boxRetriever.cpQ8()).thenReturn(CPQ8(Some(false)))
     when(boxRetriever.cp81()).thenReturn(CP81(5555))
     when(boxRetriever.cpAux1()).thenReturn(CPAux1(5555))
   }
 
-  override def beforeEach = setUpMocks()
+  override def beforeEach(): Unit = setUpMocks()
 
   testBoxIsZeroOrPositive("CP87Input", CP87Input.apply)
 
