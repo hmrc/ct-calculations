@@ -37,7 +37,7 @@ object AC131 extends Calculated[AC131, Frs102AccountsBoxRetriever] with BalanceS
   override def calculate(boxRetriever: Frs102AccountsBoxRetriever): AC131 = {
     boxRetriever match {
       case x: AbridgedAccountsBoxRetriever => calculateDepreciationOfTangibleAssetsAtEndOfThePeriod(x.ac128(), x.ac219(), x.ac130(), x.ac214())
-      case x: FullAccountsBoxRetriever => {
+      case x: FullAccountsBoxRetriever =>
         import x._
         calculateAC131(
           ac131A(),
@@ -46,7 +46,7 @@ object AC131 extends Calculated[AC131, Frs102AccountsBoxRetriever] with BalanceS
           ac131D(),
           ac131E()
         )
-      }
+      case _ => AC131(None)
     }
   }
 

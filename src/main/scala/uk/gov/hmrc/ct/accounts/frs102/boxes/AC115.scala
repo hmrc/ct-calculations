@@ -87,6 +87,7 @@ case class AC115(value: Option[Int]) extends CtBoxIdentifier(name = "Additions")
           ac211A().value,
           ac211B().value
         )
+      case _ => Set.empty
     }
   }
 

@@ -25,5 +25,6 @@
         "org.scalatest" %% "scalatest" % "3.2.18" % "test",
         "org.scalatestplus" %% "mockito-3-4" % "3.2.10.0" % "test",
         "com.vladsch.flexmark" % "flexmark-all" % "0.64.8" % "test"
-      )
+      ),
+      scalacOptions ++= Seq("-Wconf:msg=eta-expanded:ws")
     )

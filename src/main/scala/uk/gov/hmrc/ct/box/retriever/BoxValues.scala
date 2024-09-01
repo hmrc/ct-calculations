@@ -23,15 +23,16 @@ import java.lang.reflect.{Method, Modifier}
 object BoxValues {
 
   def generateValues[T <: BoxRetriever](retriever: T): Map[String, CtValue[_]] = {
-    boxIdFunctions(retriever.getClass).map { method =>
+    boxIdFunctions(retriever.getClass).flatMap { method =>
       val boxName = method.getReturnType.getSimpleName
       method.invoke(retriever) match {
-        case x: CtValue[_] => (boxName -> x)
+        case x: CtValue[_] => Some(boxName -> x)
+        case _ => None
       }
     }.toMap
   }
 
-  def boxIdFunctions(retrieverClass: Class[_]): Seq[Method] = retrieverClass.getMethods.filter(boxMethod)
+  def boxIdFunctions(retrieverClass: Class[_]): Seq[Method] = retrieverClass.getMethods.toIndexedSeq.filter(boxMethod)
 
   protected def boxMethod: (Method) => Boolean = x => isPublic(x) && hasNoParameters(x) && returnsCatoValue(x)
 

@@ -24,13 +24,13 @@ trait DebitAwareCalculation {
 
   protected final def sum[T](boxes: CtOptionalInteger*)(builder: Option[Int] => T): T = {
     if (boxes.exists(_.value.nonEmpty))
-      builder(Some(doSum(0, Seq(boxes:_*))))
+      builder(Some(doSum(0, List(boxes:_*))))
     else
       builder(None)
   }
 
   @tailrec
-  private def doSum(currentValue: Int, boxes: Seq[CtOptionalInteger]): Int = {
+  private def doSum(currentValue: Int, boxes: List[CtOptionalInteger]): Int = {
 
     def valueAsSum(box: CtOptionalInteger): Int = {
       box match {

@@ -33,7 +33,7 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
     val isMandatory = anyHaveValue(ac44(), ac45())
 
     boxRetriever match {
-      case x: AbridgedAccountsBoxRetriever =>
+      case _: AbridgedAccountsBoxRetriever =>
         collectErrors(
           failIf(isMandatory)(
             collectErrors(
@@ -53,6 +53,7 @@ case class AC125(value: Option[Int]) extends CtBoxIdentifier(name = "The cost of
           )(),
           failIf(!isMandatory)(validateFullNoteCannotExist(x))()
         )
+      case _ => Set.empty
     }
   }
 

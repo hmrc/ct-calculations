@@ -27,5 +27,6 @@ object AC26 extends Calculated[AC26, Frs102AccountsBoxRetriever] with OperatingP
   override def calculate(boxRetriever: Frs102AccountsBoxRetriever): AC26 = boxRetriever match {
       case br: FullAccountsBoxRetriever => calculateAC26(br.ac16(), br.ac18(), br.ac20(), ac22 = br.ac22())
       case br: AbridgedAccountsBoxRetriever => calculateAC26(br.ac16(), br.ac18(), br.ac20(), br.ac24())
+      case _ => AC26(None)
     }
 }

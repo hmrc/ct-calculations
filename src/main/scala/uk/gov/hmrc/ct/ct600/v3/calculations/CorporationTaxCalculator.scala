@@ -159,10 +159,6 @@ trait CorporationTaxCalculator extends CtTypeConverters {
     if (calc < BigDecimal(0)) None else Some(calc)
   }
 
-  private def noneIfNeg(calc: Int): Option[Int] = {
-    if (calc < BigDecimal(0)) None else Some(calc)
-  }
-
   def areAmountsCarriedBackFromLaterPeriods(cp286: CP286): B280 = cp286.value match {
     case Some(v) if v > 0 => B280(true)
     case _ => B280(false)

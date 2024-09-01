@@ -44,6 +44,7 @@ object AC117 extends Calculated[AC117, Frs102AccountsBoxRetriever]
         calculateAbridgedAC117(x.ac114(), x.ac115(), ac116(), ac209(), ac210())
 
       case x: FullAccountsBoxRetriever => calculateFullAC117(x.ac117A(), x.ac117B())
+      case _ => AC117(None)
     }
   }
 

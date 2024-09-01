@@ -32,6 +32,7 @@ with Validators {
     boxRetriever match {
       case x: AbridgedAccountsBoxRetriever => anyHaveValue(x.ac5052A(), x.ac5052B(), x.ac5052C())
       case x: FullAccountsBoxRetriever => anyHaveValue(x.ac134(), x.ac135(), x.ac138(), x.ac139(), x.ac136(), x.ac137(), x.ac140(), x.ac141(), x.ac5052A(), x.ac5052B(), x.ac5052C())
+      case _ => false
     }
   }
 

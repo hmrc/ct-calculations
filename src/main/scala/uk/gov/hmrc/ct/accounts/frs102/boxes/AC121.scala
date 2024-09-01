@@ -41,6 +41,7 @@ object AC121 extends Calculated[AC121, Frs102AccountsBoxRetriever]
     boxRetriever match {
       case x: AbridgedAccountsBoxRetriever => calculateAbridgedAC121(x.ac118(), x.ac119(), x.ac120(), x.ac211())
       case x: FullAccountsBoxRetriever => calculateFullAC121(x.ac121A(), x.ac121B())
+      case _ => AC121(None)
     }
   }
 

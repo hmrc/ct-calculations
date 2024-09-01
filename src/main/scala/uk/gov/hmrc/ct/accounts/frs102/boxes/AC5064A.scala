@@ -56,7 +56,7 @@ case class AC5064A(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
 
   private def validateCannotExist(boxRetriever: Frs102AccountsBoxRetriever)(): Set[CtValidation] = {
     boxRetriever match {
-      case x: AbridgedAccountsBoxRetriever =>
+      case _: AbridgedAccountsBoxRetriever =>
         if (hasValue)
           Set(CtValidation(None, "error.balanceSheet.creditorsAfterOneYear.cannotExist"))
         else
@@ -67,6 +67,8 @@ case class AC5064A(value: Option[String]) extends CtBoxIdentifier(name = "Balanc
           Set(CtValidation(None, "error.balanceSheet.creditorsAfterOneYear.cannotExist"))
         else
           Set.empty
+
+      case _ => Set.empty
     }
   }
 

@@ -28,6 +28,7 @@ object AC27 extends Calculated[AC27, Frs102AccountsBoxRetriever] with OperatingP
     boxRetriever match {
       case br: FullAccountsBoxRetriever => calculateAC27(br.ac17(), br.ac19(), br.ac21(), ac23 = br.ac23())
       case br: AbridgedAccountsBoxRetriever => calculateAC27(br.ac17(), br.ac19(), br.ac21(), br.ac25())
+      case _ => AC27(None)
     }
   }
 }
