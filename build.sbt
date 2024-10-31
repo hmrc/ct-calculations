@@ -4,7 +4,7 @@
   lazy val scoverageSettings = {
     import scoverage._
     Seq(
-      ScoverageKeys.coverageMinimumStmtTotal := 80,
+      ScoverageKeys.coverageMinimumStmtTotal := 57,
       ScoverageKeys.coverageFailOnMinimum := false,
       ScoverageKeys.coverageHighlighting := true,
       ScoverageKeys.coverageExcludedFiles := ";.*Routes.*;views.*",

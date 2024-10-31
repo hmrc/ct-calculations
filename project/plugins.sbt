@@ -5,4 +5,4 @@ resolvers += Resolver.url("HMRC-open-artefacts-ivy", url("https://open.artefacts
 resolvers += Resolver.jcenterRepo
 
 addSbtPlugin("uk.gov.hmrc" % "sbt-auto-build" % "3.22.0")
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "2.0.9")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "2.2.1")
